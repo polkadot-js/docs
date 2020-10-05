@@ -1,29 +1,33 @@
 module.exports = {
-  title: 'My Site',
-  tagline: 'The tagline of my site',
-  url: 'https://your-docusaurus-test-site.com',
+  title: 'polkadot{.js}',
+  tagline: 'Polkadot does JavaScript',
+  url: 'https://polkadot.js.org',
   baseUrl: '/',
   onBrokenLinks: 'throw',
   favicon: 'img/favicon.ico',
-  organizationName: 'facebook', // Usually your GitHub org/user name.
-  projectName: 'docusaurus', // Usually your repo name.
+  organizationName: 'polkadot-js', // Usually your GitHub org/user name.
+  projectName: 'docs', // Usually your repo name.
   themeConfig: {
     navbar: {
-      title: 'My Site',
+      title: 'polkadot{.js}',
       logo: {
-        alt: 'My Site Logo',
+        alt: 'polkadot{.js}',
         src: 'img/logo.svg',
       },
       items: [
         {
-          to: 'docs/',
-          activeBasePath: 'docs',
-          label: 'Docs',
+          to: 'r/',
+          activeBasePath: 'r',
+          label: 'Reference',
           position: 'left',
         },
-        {to: 'blog', label: 'Blog', position: 'left'},
+        // {
+        //   to: 'b/',
+        //   label: 'Blog',
+        //   position: 'left'
+        // },
         {
-          href: 'https://github.com/facebook/docusaurus',
+          href: 'https://github.com/polkadot-js/docs',
           label: 'GitHub',
           position: 'right',
         },
@@ -71,12 +75,12 @@ module.exports = {
             },
             {
               label: 'GitHub',
-              href: 'https://github.com/facebook/docusaurus',
+              href: 'https://github.com/polkadot-js/docs',
             },
           ],
         },
       ],
-      copyright: `Copyright © ${new Date().getFullYear()} My Project, Inc. Built with Docusaurus.`,
+      copyright: `Copyright © ${new Date().getFullYear()} polkadot{.js}. Built with Docusaurus.`,
     },
   },
   presets: [
@@ -85,15 +89,12 @@ module.exports = {
       {
         docs: {
           sidebarPath: require.resolve('./sidebars.js'),
-          // Please change this to your repo.
-          editUrl:
-            'https://github.com/facebook/docusaurus/edit/master/website/',
+          editUrl: 'https://github.com/polkadot-js/docs/edit/main/docs/',
+          routeBasePath: 'r/'
         },
         blog: {
           showReadingTime: true,
-          // Please change this to your repo.
-          editUrl:
-            'https://github.com/facebook/docusaurus/edit/master/website/blog/',
+          editUrl: 'https://github.com/polkadot-js/docs/edit/main/blog/',
         },
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
