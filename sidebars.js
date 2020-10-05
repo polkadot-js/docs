@@ -17,6 +17,8 @@ module.exports = {
       'api/start/api.tx.wrap',
       'api/start/types.basics',
       'api/start/types.extend',
+      'api/start/rpc.custom',
+      'api/start/types.create',
       'api/start/typescript',
       'api/start/typescript.user',
       'api/start/FAQ'
