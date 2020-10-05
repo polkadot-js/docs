@@ -1,4 +1,7 @@
-# TypeScript user generated
+---
+id: typescript.user
+title: TypeScript user generated
+---
 
 In the previous section we looked at the TypeScript definitions that are available and are generated from both the chain and definitions. Here we will expand upon the use of the infrastructure created to define types as part of the `@polkadot/types` library and see how to use them to generate your own definitions and chain types.
 
@@ -27,4 +30,4 @@ The [TypeScript augmentation example](../examples/promise/90_typegen/) example p
 
 ## And that's a wrap
 
-This brings us to the end of our overview and jump through the API. While the documentation is still very much an ever evolving item, we can encourage you to try out what you have learned with some [examples](../examples). As we [indicated right at the start of this journey](README.md#help-us-help-others), if there are areas for improvement, let us know.
+This brings us to the end of our overview and jump through the API. While the documentation is still very much an ever evolving item, we can encourage you to try out what you have learned with some [examples](../examples). As we [indicated right at the start of this journey](intro.md#help-us-help-others), if there are areas for improvement, let us know.

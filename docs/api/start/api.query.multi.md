@@ -1,4 +1,7 @@
-# Multi queries
+---
+id: api.query.multi
+title: Multi queries
+---
 
 In a number of applications, it is useful to monitor a number of like-queries at the same time. For instance, we may want to track the balances for a list of accounts we have. The `api.query` interfaces allows this via the `.multi` subscription call.
 

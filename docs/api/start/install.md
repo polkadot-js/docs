@@ -1,4 +1,7 @@
-# Installation
+---
+id: install
+title: Installation
+---
 
 Yes, it really is as simple as [installing from npm](https://www.npmjs.com/package/@polkadot/api), so we are not going to waste too much time with the bare basics, just install the API via
 

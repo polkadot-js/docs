@@ -1,4 +1,7 @@
-# Type creation
+---
+id: types.create
+title: Type creation
+---
 
 Circling back to metadata. There are two important things to remember when using the API to make queries or send transactions.
 
@@ -52,5 +55,5 @@ createType(api.registry, 'Balance', '123');
 
 ## Using with TypeScript
 
-The API is built with TypeScript (as are all projects in the [polkadot-js organization](https://github.com/polkadot-js/)) and as such allows developers using TS to have access to all the type interfaces defined on the chain, as well as having access to typings on interacting with the `api.*` namespaces. In the next section we will provide an overview of [what is available in terms of types and TypeScript](typescript.md).
+The API is built with TypeScript (as are all projects in the [polkadot-js organization](https://github.com/polkadot-js/) and as such allows developers using TS to have access to all the type interfaces defined on the chain, as well as having access to typings on interacting with the `api.*` namespaces. In the next section we will provide an overview of [what is available in terms of types and TypeScript](typescript.md).
 

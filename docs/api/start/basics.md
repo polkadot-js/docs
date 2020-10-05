@@ -1,4 +1,7 @@
-# Basics & Metadata
+---
+id: basics
+title: Basics & Metadata
+---
 
 One of the most important things to understand about the `@polkadot/api` is that most interfaces are actually generated automatically when it connects to a running node. This is quite a departure from other APIs in projects where the interfaces are static. While sounding quite scary, it actually is a powerful concept that exists in both Polkadot and Substrate chains, and allows the API to be used in environments where the chain is customized.
 

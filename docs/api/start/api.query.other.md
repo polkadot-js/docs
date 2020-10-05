@@ -1,4 +1,7 @@
-# Query extras
+---
+id: api.query.other
+title: Query extras
+---
 
 In previous sections we took a walk through queries, showing how to use one-shot queries, how to subscribe to results and how to combine multiple queries into one. This section will aim to extend that knowledge showing some other features and utilities that are available on the `api.query` interfaces.
 

@@ -1,4 +1,7 @@
-# Complex transactions
+---
+id: api.tx.wrap
+title: Complex transactions
+---
 
 Up till now we have focussed on the base operation of transactions. There are however some more complex operations that deserve some more information, for instance when doing either democracy proposals or executing sudo calls, in both these cases the transaction wraps a call or proposal to be evaluated.
 

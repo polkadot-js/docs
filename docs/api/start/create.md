@@ -1,4 +1,7 @@
-# Create an instance
+---
+id: create
+title: Create an instance
+---
 
 We have the API installed, we have an understanding of what will actually be exposed and how the API knows what to expose. So down the rabbit hole we go - let's create an actual API instance, and then take it from there -
 

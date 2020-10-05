@@ -1,4 +1,7 @@
-# Transactions
+---
+id: api.tx
+title: Transactions
+---
 
 Transaction endpoints are exposed, as determined by the metadata, on the `api.tx` endpoint. These allow you to submit transactions for inclusion in blocks, be it transfers, setting information or anything else your chain supports.
 
