@@ -1,4 +1,7 @@
-# FAQ
+---
+id: faq
+title: FAQ
+---
 
 The list will be updated/expanded as questions come up, dealing with some common issues that API users find.
 

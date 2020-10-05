@@ -1,4 +1,7 @@
-# TypeScript interfaces
+---
+id: typescript
+title: TypeScript interfaces
+---
 
 The API is written in TypeScript, and as such definitions for all actual exposed interfaces are available. In general terms, care has been taken to expose types via a `@polkadot/<package>/types` interface, for instance the `ApiOptions` type which is passed through on the `.create` interface is available under `@polkadot/api/types`.
 

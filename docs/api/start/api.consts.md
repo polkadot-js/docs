@@ -1,4 +1,7 @@
-# Runtime Constants
+---
+id: api.consts
+title: Runtime constants
+---
 
 Constant queries will introduce you to the concepts behind the types and the interaction of the API with those types. The same concepts are implemented in the remainder of the API - the runtime constants is just the simplest starting point.
 

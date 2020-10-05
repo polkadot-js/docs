@@ -1,4 +1,7 @@
-# Custom RPC
+---
+id: rpc.custom
+title: Custom RPC
+---
 
 In previous sections we looked at the injection of types, as in use and defined in modules from the node. Another area that can be customized is RPC definitions, and like with the types, the API provides the capability to add user-defined RPCs (in addition to the Polkadot/Substrate base) to allow use of these RPCs via the API.
 

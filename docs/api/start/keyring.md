@@ -1,4 +1,7 @@
-# Keyring
+---
+id: keyring
+title: Keyring
+---
 
 This section will give a quick introduction into the Keyring, including the addition of accounts, retrieving pairs and the signing of any data. Unlike the rest of the API, only the core concepts will be covered with the most-used-functions. However, what is covered is enough for 99.9 of the use-cases ... or rather, that is the aim.
 
