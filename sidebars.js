@@ -57,7 +57,8 @@ module.exports = {
           'keyring/examples/create-account',
           'keyring/examples/sign-verify',
         ]
-      }
+      },
+      'keyring/FAQ'
     ],
     'Crypto Utilities': [
       'util-crypto/intro',
@@ -69,7 +70,8 @@ module.exports = {
           'util-crypto/examples/encrypt-decrypt',
           'util-crypto/examples/create-multisig'
         ]
-      }
+      },
+      'util-crypto/FAQ'
     ],
     Substrate: [
       'substrate/intro',
