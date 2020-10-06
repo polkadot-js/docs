@@ -1,5 +1,4 @@
 ---
-id: intro
 title: Getting started
 ---
 

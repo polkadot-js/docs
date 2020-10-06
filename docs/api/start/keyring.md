@@ -1,5 +1,4 @@
 ---
-id: keyring
 title: Keyring
 ---
 

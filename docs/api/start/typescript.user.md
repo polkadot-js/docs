@@ -1,5 +1,4 @@
 ---
-id: typescript.user
 title: TypeScript user generated
 ---
 

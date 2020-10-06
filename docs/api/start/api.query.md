@@ -1,5 +1,4 @@
 ---
-id: api.query
 title: State queries
 ---
 

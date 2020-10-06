@@ -1,5 +1,4 @@
 ---
-id: create
 title: Create an instance
 ---
 

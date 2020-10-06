@@ -1,5 +1,4 @@
 ---
-id: blocks
 title: Blocks
 ---
 

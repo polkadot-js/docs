@@ -1,5 +1,4 @@
 ---
-id: tx
 title: Transactions
 ---
 

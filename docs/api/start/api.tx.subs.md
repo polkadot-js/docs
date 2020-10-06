@@ -1,5 +1,4 @@
 ---
-id: api.tx.subs
 title: Transaction subscriptions
 ---
 

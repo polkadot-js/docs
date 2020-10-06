@@ -1,5 +1,4 @@
 ---
-id: types.create
 title: Type creation
 ---
 

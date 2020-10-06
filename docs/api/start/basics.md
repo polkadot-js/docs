@@ -1,5 +1,4 @@
 ---
-id: basics
 title: Basics & Metadata
 ---
 

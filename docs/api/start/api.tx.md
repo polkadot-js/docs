@@ -1,5 +1,4 @@
 ---
-id: api.tx
 title: Transactions
 ---
 

@@ -1,5 +1,4 @@
 ---
-id: api.rpc
 title: RPC queries
 ---
 

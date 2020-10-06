@@ -1,5 +1,4 @@
 ---
-id: types.extend
 title: Extending types
 ---
 
