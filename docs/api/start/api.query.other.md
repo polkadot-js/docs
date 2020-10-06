@@ -1,5 +1,4 @@
 ---
-id: api.query.other
 title: Query extras
 ---
 

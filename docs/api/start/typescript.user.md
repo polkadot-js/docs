@@ -1,5 +1,4 @@
 ---
-id: typescript.user
 title: TypeScript user generated
 ---
 
@@ -26,8 +25,8 @@ In the root of your project, you can run `yarn polkadot-types-from-chain --endpo
 
 ## Example of actual use
 
-The [TypeScript augmentation example](../examples/promise/90_typegen/) example provides a full real-world example of these scripts in action. Additionally it shows all the configurations from a TypeScript as well as an in-use perspective, showing how the types and interfaces are fully augmented based on the provided metadata.
+The [TypeScript augmentation example](../examples/promise/typegen) example provides a full real-world example of these scripts in action. Additionally it shows all the configurations from a TypeScript as well as an in-use perspective, showing how the types and interfaces are fully augmented based on the provided metadata.
 
 ## And that's a wrap
 
-This brings us to the end of our overview and jump through the API. While the documentation is still very much an ever evolving item, we can encourage you to try out what you have learned with some [examples](../examples). As we [indicated right at the start of this journey](intro.md#help-us-help-others), if there are areas for improvement, let us know.
+This brings us to the end of our overview and jump through the API. While the documentation is still very much an ever evolving item, we can encourage you to try out what you have learned with some [examples](../examples/promise). As we [indicated right at the start of this journey](intro.md#help-us-help-others), if there are areas for improvement, let us know.

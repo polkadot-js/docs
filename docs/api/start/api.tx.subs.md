@@ -1,5 +1,4 @@
 ---
-id: api.tx.subs
 title: Transaction subscriptions
 ---
 
@@ -38,7 +37,7 @@ When the `status` enum is in `Finalized` state (checked via `isFinalized`), the 
 
 Any transaction will emit events, as a bare minimum this will always be either a `system.ExtrinsicSuccess` or `system.ExtrinsicFailed` event for the specific transaction. These provide the overall execution result for the transaction, i.e. execution has succeeded or failed.
 
-Depending on the transaction sent, some other events may however be emitted, for instance for a `balances.transfer` this could include one or more of `Transfer`, `NewAccount` or `ReapedAccount`, as defined in the [substrate balances event defaults](../substrate/events.md#balances).
+Depending on the transaction sent, some other events may however be emitted, for instance for a `balances.transfer` this could include one or more of `Transfer`, `NewAccount` or `ReapedAccount`, as defined in the [substrate balances event defaults](../../substrate/events.md#balances).
 
 To display or act on these events, we can do the following -
 

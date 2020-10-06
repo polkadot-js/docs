@@ -1,5 +1,4 @@
 ---
-id: types.extend
 title: Extending types
 ---
 
@@ -13,7 +12,7 @@ There is the [recommendation](install.md#betas) to use a `@polkadot/api@beta` sh
 
 ## Extension
 
-As a blockchain toolkit, Substrate makes it easy to add your own modules and types. In most non-trivial implementations, this would mean that developers are adding specific types for their implementation as well. The API will get to know the names of these types via the metadata, however it won't understand what they are, which means it cannot encode or decode them. Additionally, when a type is mismatched between the node and the API, the decoding can fail, yielding issues such as [Could not convert errors](FAQ.md#the-node-returns-a-could-not-convert-error-on-send) when submitting transactions.
+As a blockchain toolkit, Substrate makes it easy to add your own modules and types. In most non-trivial implementations, this would mean that developers are adding specific types for their implementation as well. The API will get to know the names of these types via the metadata, however it won't understand what they are, which means it cannot encode or decode them. Additionally, when a type is mismatched between the node and the API, the decoding can fail, yielding issues such as [Could not convert errors](../FAQ.md#the-node-returns-a-could-not-convert-error-on-send) when submitting transactions.
 
 To close this gap, the API allows for the injection of types, i.e. you can explicitly define (or override) types for the node/chain you are connecting to. In the simplest example, assuming you have a chain where your `Balance` type is a `u64` (as opposed to the default `u128`), you need to let the API know -
 
@@ -68,7 +67,7 @@ The example above defines non-primitive types (as found in the specific implemen
 
 ## Definition clashes
 
-As explained in a previous section, the underlying API Codec types have a [number of built-in properties](type.basics.md) and in some cases it could be that your struct has a field that conflicts. These should be minimal, however it can happen. Take the following example where a defined `hash` property clashes with the same-name Codec property -
+As explained in a previous section, the underlying API Codec types have a [number of built-in properties](types.basics.md) and in some cases it could be that your struct has a field that conflicts. These should be minimal, however it can happen. Take the following example where a defined `hash` property clashes with the same-name Codec property -
 
 ```js
 Document: {

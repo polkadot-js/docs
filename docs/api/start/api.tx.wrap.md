@@ -1,5 +1,4 @@
 ---
-id: api.tx.wrap
 title: Complex transactions
 ---
 

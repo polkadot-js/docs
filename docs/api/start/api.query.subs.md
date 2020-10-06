@@ -1,5 +1,4 @@
 ---
-id: api.query.subs
 title: Query subscriptions
 ---
 

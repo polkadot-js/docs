@@ -1,5 +1,4 @@
 ---
-id: rpc.custom
 title: Custom RPC
 ---
 
