@@ -1,4 +1,6 @@
-# Blocks
+---
+title: Blocks
+---
 
 The building blocks for each blockchain. As such there are a number of examples for working with blocks and headers, that could be useful.
 

@@ -1,11 +1,14 @@
+const BASE_URL = process.env.NODE_ENV === 'development' ? '/' : '/docs/';
+
 module.exports = {
   title: 'polkadot{.js}',
   tagline: 'Polkadot does JavaScript',
   url: 'https://polkadot.js.org',
-  baseUrl: '/',
+  baseUrl: BASE_URL,
   onBrokenLinks: 'throw',
   favicon: 'img/favicon.ico',
   organizationName: 'polkadot-js', // Usually your GitHub org/user name.
+  onBrokenLinks: 'warn',
   projectName: 'docs', // Usually your repo name.
   themeConfig: {
     navbar: {
@@ -15,12 +18,12 @@ module.exports = {
         src: 'img/logo.svg',
       },
       items: [
-        {
-          to: 'r/',
-          activeBasePath: 'r',
-          label: 'Reference',
-          position: 'left',
-        },
+        // {
+        //   to: '/',
+        //   activeBasePath: '/',
+        //   label: 'Reference',
+        //   position: 'left',
+        // },
         // {
         //   to: 'b/',
         //   label: 'Blog',
@@ -33,55 +36,55 @@ module.exports = {
         },
       ],
     },
-    footer: {
-      style: 'dark',
-      links: [
-        {
-          title: 'Docs',
-          items: [
-            {
-              label: 'Style Guide',
-              to: 'docs/',
-            },
-            {
-              label: 'Second Doc',
-              to: 'docs/doc2/',
-            },
-          ],
-        },
-        {
-          title: 'Community',
-          items: [
-            {
-              label: 'Stack Overflow',
-              href: 'https://stackoverflow.com/questions/tagged/docusaurus',
-            },
-            {
-              label: 'Discord',
-              href: 'https://discordapp.com/invite/docusaurus',
-            },
-            {
-              label: 'Twitter',
-              href: 'https://twitter.com/docusaurus',
-            },
-          ],
-        },
-        {
-          title: 'More',
-          items: [
-            {
-              label: 'Blog',
-              to: 'blog',
-            },
-            {
-              label: 'GitHub',
-              href: 'https://github.com/polkadot-js/docs',
-            },
-          ],
-        },
-      ],
-      copyright: `Copyright © ${new Date().getFullYear()} polkadot{.js}. Built with Docusaurus.`,
-    },
+    // footer: {
+    //   style: 'dark',
+    //   links: [
+    //     {
+    //       title: 'Docs',
+    //       items: [
+    //         {
+    //           label: 'Style Guide',
+    //           to: 'docs/',
+    //         },
+    //         {
+    //           label: 'Second Doc',
+    //           to: 'docs/doc2/',
+    //         },
+    //       ],
+    //     },
+    //     {
+    //       title: 'Community',
+    //       items: [
+    //         {
+    //           label: 'Stack Overflow',
+    //           href: 'https://stackoverflow.com/questions/tagged/docusaurus',
+    //         },
+    //         {
+    //           label: 'Discord',
+    //           href: 'https://discordapp.com/invite/docusaurus',
+    //         },
+    //         {
+    //           label: 'Twitter',
+    //           href: 'https://twitter.com/docusaurus',
+    //         },
+    //       ],
+    //     },
+    //     {
+    //       title: 'More',
+    //       items: [
+    //         {
+    //           label: 'Blog',
+    //           to: 'blog',
+    //         },
+    //         {
+    //           label: 'GitHub',
+    //           href: 'https://github.com/polkadot-js/docs',
+    //         },
+    //       ],
+    //     },
+    //   ],
+    //   copyright: `Copyright © ${new Date().getFullYear()} polkadot{.js}. Built with Docusaurus.`,
+    // },
   },
   presets: [
     [
@@ -89,12 +92,12 @@ module.exports = {
       {
         docs: {
           sidebarPath: require.resolve('./sidebars.js'),
-          editUrl: 'https://github.com/polkadot-js/docs/edit/main/docs/',
-          routeBasePath: 'r/'
+          editUrl: 'https://github.com/polkadot-js/docs/edit/master/docs/',
+          routeBasePath: '/'
         },
         blog: {
           showReadingTime: true,
-          editUrl: 'https://github.com/polkadot-js/docs/edit/main/blog/',
+          editUrl: 'https://github.com/polkadot-js/docs/edit/master/blog/',
         },
         theme: {
           customCss: require.resolve('./src/css/custom.css'),

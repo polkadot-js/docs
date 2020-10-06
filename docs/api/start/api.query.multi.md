@@ -1,5 +1,4 @@
 ---
-id: api.query.multi
 title: Multi queries
 ---
 

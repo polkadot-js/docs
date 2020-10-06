@@ -1,5 +1,4 @@
 ---
-id: types.basics
 title: Type basics
 ---
 
