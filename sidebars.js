@@ -55,6 +55,7 @@ module.exports = {
         Examples: [
           'keyring/examples/intro',
           'keyring/examples/create-account',
+          'keyring/examples/sign-verify',
         ]
       }
     ],
@@ -64,9 +65,9 @@ module.exports = {
         Examples: [
           'util-crypto/examples/intro',
           'util-crypto/examples/create-mnemonic',
+          'util-crypto/examples/validate-address',
           'util-crypto/examples/encrypt-decrypt',
-          'util-crypto/examples/create-multisig',
-          'util-crypto/examples/validate-address'
+          'util-crypto/examples/create-multisig'
         ]
       }
     ],

@@ -7,7 +7,11 @@ Substrate provides a multisig dispatch function in its
 address that would correspond to a set of addresses and threshold.
 
 ```javascript
-import { createKeyMulti, encodeAddress, sortAddresses } from '@polkadot/util-crypto';
+import {
+  createKeyMulti,
+  encodeAddress,
+  sortAddresses
+} from '@polkadot/util-crypto';
 
 const SS58Prefix = 0;
 

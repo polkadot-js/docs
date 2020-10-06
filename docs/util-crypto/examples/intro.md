@@ -1,5 +1,6 @@
 ---
 title: Overview
+slug: /util-crypto/examples
 ---
 
 Here you will find a list of examples that takes you through the basics of encrypting and decrypting messages using NaCl, signing a message with a seed and verifying it using NaCl, and generating and validating mnemonics for account seeds.
