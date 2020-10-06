@@ -1,6 +1,8 @@
-# typegen
+---
+title: TS type generation
+---
 
-This is a sample TypeScript project [with full source & config on GithHub](https://github.com/polkadot-js/api/tree/master/docs/examples/promise/90_typegen), that uses `@polkadot/typegen` to generate type definitions that can be used to decorate the `@polkadot/api`. It uses both types defined for the specific chain as well as the chain metadata to generate TypeScript interfaces. This means that interfaces such as `api.query.*`, `api.tx.*` and `api.consts.*` will be decorated based on chain-specific information, instead of an un-augmented catch-all definition.
+This is a sample TypeScript project [with full source & config on GithHub](https://github.com/polkadot-js/docs/tree/master/docs/api/examples/promise/typegen), that uses `@polkadot/typegen` to generate type definitions that can be used to decorate the `@polkadot/api`. It uses both types defined for the specific chain as well as the chain metadata to generate TypeScript interfaces. This means that interfaces such as `api.query.*`, `api.tx.*` and `api.consts.*` will be decorated based on chain-specific information, instead of an un-augmented catch-all definition.
 
 **NOTE** This is built using the updates in the `1.4.0` api track and as such it uses the latest (at the time of writing) `@polkadot/api 1.4.0`. If you want to play on your own, it is also suggested that you use the `1.4+` series since some generation types have moved around internally, making it easier to augment.
 
@@ -17,12 +19,12 @@ For the packages we need from the `@polkadot/*` we have added `@polkadot/api` (w
     "lint": "tsc --noEmit --pretty"
   },
   "dependencies": {
-    "@polkadot/api": "^1.4.0"
+    "@polkadot/api": "^2.1.0"
   },
   "devDependencies": {
-    "@polkadot/typegen": "^1.4.0",
+    "@polkadot/typegen": "^2.1.0",
     "ts-node": "^8.6.2",
-    "typescript": "^3.8.2"
+    "typescript": "^4.0.2"
   }
 }
 ```
@@ -186,7 +188,7 @@ Effectively what we do above is tell the TypeScript compiler to not use the buil
 
 For simple usage, we have added the `src/index.ts` file that show how the metadata and types actually decorate the API. In addition, we also have setup instructions included here.
 
-```js
+```javascript
 // We need to import the augmented definitions "somewhere" in our project, however since we have
 // it in tsconfig as an override and the api/types has imports, it is not strictly required here.
 // Because of the tsconfig override, we could import from '@polkadot/{api, types}/augment'

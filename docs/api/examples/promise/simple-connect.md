@@ -1,7 +1,10 @@
-/* eslint-disable header/header */
-/* eslint-disable @typescript-eslint/require-await */
-/* eslint-disable @typescript-eslint/unbound-method */
+---
+title: Simple Connect
+---
 
+The following example shows how to instantiate a Polkadot API object and use it to connect to a node using ApiPromise.
+
+```javascript
 // Required imports
 const { ApiPromise, WsProvider } = require('@polkadot/api');
 
@@ -23,3 +26,4 @@ async function main () {
 }
 
 main().catch(console.error).finally(() => process.exit());
+```

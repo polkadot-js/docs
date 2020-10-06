@@ -1,7 +1,10 @@
-/* eslint-disable header/header */
-/* eslint-disable @typescript-eslint/require-await */
-/* eslint-disable @typescript-eslint/unbound-method */
+---
+title: Make a simple transfer
+---
 
+This sample shows how to create a transaction to make a transfer from one an account to another.
+
+```javascript
 // Import the API, Keyring and some utility functions
 const { ApiPromise } = require('@polkadot/api');
 const { Keyring } = require('@polkadot/keyring');
@@ -28,3 +31,4 @@ async function main () {
 }
 
 main().catch(console.error).finally(() => process.exit());
+```

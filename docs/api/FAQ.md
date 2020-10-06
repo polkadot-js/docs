@@ -9,19 +9,19 @@ The list will be updated/expanded as questions come up, dealing with some common
 
 There are 2 causes for this, both related to the version of the API that you are using and the support of types. As explained in the elsewhere, types on Polkadot/Substrate are continuously evolving - the latest version of the API always tries to support types for the latest Polkadot networks, such as [Kusama](https://kusama.network/). So for Polkadot public chains, ensure that you are using the latest released API version.
 
-If however you are running against a master branch of either Polkadot or Substrate, you may well be better suited running [a beta version, tracking master](install.md#betas). If you are connected to a customized chain, you would rather want to [register the types](types.extend.md) either on your own, or via packages that the chain vendor provides.
+If however you are running against a master branch of either Polkadot or Substrate, you may well be better suited running [a beta version, tracking master](start/install.md#betas). If you are connected to a customized chain, you would rather want to [register the types](start/types.extend.md) either on your own, or via packages that the chain vendor provides.
 
 ## I am getting a "Metadata:: failed on MagicNumber" error
 
-Update your version of the API to the [latest version](install.md). Like types, the [metadata interfaces](basics.md) are continuously evolving. For instance with the Polkadot Alexander network, only metadata v3 is available. By the time Kusama launched, this has been bumped to v7. As these versions are added to the Polkadot/Substrate codebase, they are added to the API.
+Update your version of the API to the [latest version](start/install.md). Like types, the [metadata interfaces](start/basics.md) are continuously evolving. For instance with the Polkadot Alexander network, only metadata v3 is available. By the time Kusama launched, this has been bumped to v7. As these versions are added to the Polkadot/Substrate codebase, they are added to the API.
 
 ## The node returns a "Could not convert" error on send
 
 The typical error that you would see is `Verification Error: Execution(ApiError("Could not convert parameter 'tx' between node and runtime`. This means that the transaction data serialized from the API cannot be deserialized on the node.
 
-All data transferred between the API and the Node is in a SCALE-encoded binary format, so the [definition of the types](types.extend.md) between the API and the node needs to match 100%. When you find the above, it would mean the definition of the types on the API side does not match what is on the node. Specifically the API encodes against the definition, but since there is a mismatch the Node cannot parse the data correctly.
+All data transferred between the API and the Node is in a SCALE-encoded binary format, so the [definition of the types](start/types.extend.md) between the API and the node needs to match 100%. When you find the above, it would mean the definition of the types on the API side does not match what is on the node. Specifically the API encodes against the definition, but since there is a mismatch the Node cannot parse the data correctly.
 
-To fix this, you should look at the specific `api.tx.*` params and adjust the type definitions for those param types to match what is found on the node side. In some rare cases the cause could be extrinsic formatting related, to track these make an `api.tx.system.remark(data: Bytes)` call, if it fails, the API and node cannot agree on [an extrinsic format and adjustments are required](types.extend.md#impact-on-extrinsics).
+To fix this, you should look at the specific `api.tx.*` params and adjust the type definitions for those param types to match what is found on the node side. In some rare cases the cause could be extrinsic formatting related, to track these make an `api.tx.system.remark(data: Bytes)` call, if it fails, the API and node cannot agree on [an extrinsic format and adjustments are required](start/types.extend.md#impact-on-extrinsics).
 
 If you are using a node-template based version of substrate and you changed the specName you need to add these typings(In addition to other custom types) `{"Address": "AccountId","LookupSource": "AccountId"}`. This is also the case when you use [polkadot-js/apps](https://github.com/polkadot-js/apps) to connect to your node. When the specName stays node-template the API is smart enough to add the custom typings.
 
@@ -35,7 +35,7 @@ As of this writing we don't have an explicit example of implementing the signer 
 
 Some calls in Polkadot/Substrate can only be submitted as root, these are indicated by `ensure_root(origin)` in the Rust codebase. Root here does not refer to the actual account, i.e. `//Alice` on  a `--dev` chain, but rather that it cannot be submitted as a bare user transaction. This restriction applies to chain upgrades, changing balances or anything that modifies the state and/or chain operation.
 
-To submit these transactions, it needs to be send as a [wrapped transaction](api.tx.wrap.md#sudo-use) via either `sudo.sudo` (assuming you have access on your chain) or `democracy.proposal` (which would allow users of the chain to vote on it).
+To submit these transactions, it needs to be send as a [wrapped transaction](start/api.tx.wrap.md#sudo-use) via either `sudo.sudo` (assuming you have access on your chain) or `democracy.proposal` (which would allow users of the chain to vote on it).
 
 ## How do I call a function with a Tuple input
 
@@ -61,7 +61,7 @@ The API always injects the default type definitions as specified by the Substrat
 
 The Substrate node-template has added customizations for some types in the default template, specifically around the `Address` and `Lookup` types, removing any lookups based on indices. This means that the transaction payload saves 2 bytes for a transfer and is an approach followed by other chains as well, notably Polkadot & Kusama.
 
-Due to these customizations and differences that bleed through to the transaction formats, out-of-the-box chains based on the node-template will have issues when sending transactions. To fix this, you would need to add [the customized Address types into your API](types.extend.md#impact-on-extrinsics) instances (or UIs), allowing the API to have the information required to adjust the encoding.
+Due to these customizations and differences that bleed through to the transaction formats, out-of-the-box chains based on the node-template will have issues when sending transactions. To fix this, you would need to add [the customized Address types into your API](start/types.extend.md#impact-on-extrinsics) instances (or UIs), allowing the API to have the information required to adjust the encoding.
 
 ## Using a non-current-master node, I have issues parsing events
 

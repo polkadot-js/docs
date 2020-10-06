@@ -1,7 +1,10 @@
-/* eslint-disable header/header */
-/* eslint-disable @typescript-eslint/require-await */
-/* eslint-disable @typescript-eslint/unbound-method */
+---
+title: Read storage, at a specific blockhash
+---
 
+In addition to querying the latest storage, you can make storage queries at a specific blockhash. Be aware that the node applies a pruning strategy and typically only keeps the last 256 blocks, unless run in archive mode.
+
+```javascript
 // Import the API
 const { ApiPromise } = require('@polkadot/api');
 
@@ -31,3 +34,4 @@ async function main () {
 }
 
 main().catch(console.error).finally(() => process.exit());
+```

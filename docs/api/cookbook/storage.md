@@ -1,4 +1,7 @@
-# Storage
+---
+id: storage
+title: Storage
+---
 
 Here you will find snippets for working with storage.
 

@@ -1,8 +1,10 @@
-/* eslint-disable header/header */
-/* eslint-disable @typescript-eslint/require-await */
-/* eslint-disable @typescript-eslint/unbound-method */
-/* eslint-disable @typescript-eslint/no-floating-promises */
+---
+title: Listen to balance changes
+---
 
+This example shows how to instantiate a Polkadot API object and use it to connect to a node and retrieve balance updates.
+
+```javascript
 // Import the API
 const { ApiPromise } = require('@polkadot/api');
 
@@ -23,3 +25,4 @@ async function main () {
 }
 
 main().catch(console.error);
+```

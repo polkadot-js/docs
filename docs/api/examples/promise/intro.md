@@ -1,4 +1,7 @@
-# ApiPromise Examples
+---
+title: ApiPromise Examples
+slug: /r/examples/promise
+---
 
 Here you will find a list of examples that takes you through the basics of connecting to a local node, retrieving data from the Node and chain and execute transactions on the chain. It uses the [[ApiPromise]] interface.
 

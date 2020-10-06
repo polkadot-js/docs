@@ -1,7 +1,10 @@
-/* eslint-disable header/header */
-/* eslint-disable @typescript-eslint/require-await */
-/* eslint-disable @typescript-eslint/unbound-method */
+---
+title: Read storage
+---
 
+Many important variables are available through the storage API. This example shows how to call a few of those APIs.
+
+```javascript
 // Import the API
 const { ApiPromise } = require('@polkadot/api');
 
@@ -40,3 +43,4 @@ async function main () {
 }
 
 main().catch(console.error).finally(() => process.exit());
+```

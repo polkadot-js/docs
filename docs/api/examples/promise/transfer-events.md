@@ -1,8 +1,10 @@
-/* eslint-disable header/header */
-/* eslint-disable @typescript-eslint/require-await */
-/* eslint-disable @typescript-eslint/no-var-requires */
-/* eslint-disable @typescript-eslint/no-floating-promises */
+---
+title: Transfer events
+---
 
+Display the events that occur during a transfer by sending a value to a random account
+
+```javascript
 // Import the API & Provider and some utility functions
 const { ApiPromise } = require('@polkadot/api');
 
@@ -58,3 +60,4 @@ async function main () {
 }
 
 main().catch(console.error);
+```

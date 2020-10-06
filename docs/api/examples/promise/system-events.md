@@ -1,8 +1,10 @@
-/* eslint-disable header/header */
-/* eslint-disable @typescript-eslint/require-await */
-/* eslint-disable @typescript-eslint/unbound-method */
-/* eslint-disable @typescript-eslint/no-floating-promises */
+---
+title: Traverse events
+---
 
+Query the system events and extract information from them. This example runs until exited via Ctrl-C
+
+```javascript
 // Import the API
 const { ApiPromise } = require('@polkadot/api');
 
@@ -36,3 +38,4 @@ main().catch((error) => {
   console.error(error);
   process.exit(-1);
 });
+```

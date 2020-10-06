@@ -1,8 +1,10 @@
-/* eslint-disable header/header */
-/* eslint-disable @typescript-eslint/require-await */
-/* eslint-disable @typescript-eslint/unbound-method */
-/* eslint-disable @typescript-eslint/no-floating-promises */
+---
+title: Chain upgrade
+---
 
+Performs a chain upgrade using the `sudo` module. This may brick your chain, so use it as an educational sample. (use `substrate purge-chain --dev` to remove DB and recover).
+
+```javascript
 // Import the API & Provider and some utility functions
 const { ApiPromise, WsProvider } = require('@polkadot/api');
 
@@ -60,3 +62,4 @@ main().catch((error) => {
   console.error(error);
   process.exit(-1);
 });
+```

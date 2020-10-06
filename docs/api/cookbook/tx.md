@@ -1,4 +1,7 @@
-# Transactions
+---
+id: tx
+title: Transactions
+---
 
 A blockchain is no fun if you are not submitting transactions. Or at least if somebody is not submitting any. Here you will find some snippets for dealing with some common issues.
 
