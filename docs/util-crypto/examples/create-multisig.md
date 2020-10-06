@@ -1,4 +1,6 @@
-# Generate a Multisig Account
+---
+title: Generate a Multisig Account
+---
 
 Substrate provides a multisig dispatch function in its
 [Utility pallet](https://crates.parity.io/pallet_utility/index.html). This example generates the

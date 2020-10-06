@@ -1,4 +1,6 @@
-# Create & Generate Mnemonic using BIP39
+---
+title: Create Mnemonic
+---
 
 The following example shows how to create and generate mnemonics using BIP39.
 

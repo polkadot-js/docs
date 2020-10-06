@@ -1,4 +1,6 @@
-# Create Account
+---
+title: Create Account
+---
 
 The following example shows how to create and account with keyring.
 

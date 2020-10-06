@@ -1,4 +1,6 @@
-# Encrypt & Decrypt Message using NaCl
+---
+title: Encrypt & Decrypt Messages
+---
 
 The following example shows how to encrypt and decrypt a message with NaCl (pronouced "salt"), which is a Networking and Cryptography library used in util-crypto.
 

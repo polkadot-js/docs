@@ -1,4 +1,6 @@
-# Validate Adress
+---
+title: Validate Address
+---
 
 - This function will return true if the address is a legitamate Polkadot address and false if it is not
 
