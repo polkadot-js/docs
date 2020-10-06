@@ -18,7 +18,6 @@ jobs:
         token: ${{ secrets.GH_PAT }}
     - name: build
       env:
-      env:
         GH_PAGES_SRC: build
         GH_PAT: ${{ secrets.GH_PAT }}
       run: |
