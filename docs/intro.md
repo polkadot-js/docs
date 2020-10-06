@@ -3,15 +3,20 @@ title: Overview
 slug: /
 ---
 
-Here you will find a reference on the libraries that are available in the `@polkadot` family.
+This is an effort to provide a collection of tools, utilities and libraries for interacting with the [Polkadot network](https://polkadot.network) from JavaScript. All code is made available on [Github](https://github.com/polkadot-js/) with a [permissive Apache-2.0 license](https://en.wikipedia.org/wiki/Apache_License#Version_2.0).
+
+While there is a slant towards developer tools, providing libraries to allow others to build tools on top of, a collection of applications are made available that allows for interaction with the network from a pure user perspective. The documentation contained here has a focus on the developer libraries.
+
+If you are a end-user looking to interact with the network, you can interact with [Polkadot/Substrate (latest, project hosted)](https://polkadot.js.org/apps/) or [IPFS (stable, weekly releases)](https://dotapps.io/)
+
 
 ## Help us help others
 
 If you spot gaps in the information provided, or are uncertain about any specific area, please do [log an issue](https://github.com/polkadot-js/docs/issues) or if you are that way inclined, make a pull-request. We really want to have good documentation in these areas and allow people to be productive right from the start.
 
-## Areas
 
-The following areas are covered by the documentation -
+## Contributing
 
-- [API](api) The polkadot-js API that can be used to connect to any Substrate-based chain. Here we have a getting started guide, examples and short snippets in the form of cookbook examples.
-- [Substrate](substrate) This contains generated documentation from the metadata that Substrate exposes. It is not comprehensive on a per-chain basis, but rather details all the extrinsics, events and RPCs that are exposed by the Substrate node. Specific chains may have additional modules or even not have some of these as documented.
+This is a community effort to trial tooling while the network is being developed. Contributions are welcome. Feel free to use the tools and libraries, log issues as you find them or create pull requests for your bug-bears or features.
+
+As a new collection of projects, we take quality seriously - library code should be comprehensively [unit tested](https://facebook.github.io/jest/) and interfaces should have [full type definitions](http://typescriptlang.org).
