@@ -5,8 +5,17 @@ title: Sign & Verify Message
 The following example shows how to sign and verify a message with NaCl (pronouced "salt"), which is a Networking and Cryptography library used in util-crypto.
 
 ```javascript
-const { stringToU8a, u8aToHex } = require('@polkadot/util');
-const { naclEncrypt, naclKeypairFromSeed, naclSign, naclVerify, randomAsU8a } = require('@polkadot/util-crypto');
+const {
+  stringToU8a,
+  u8aToHex
+} = require('@polkadot/util');
+const {
+  naclEncrypt,
+  naclKeypairFromSeed,
+  naclSign,
+  naclVerify,
+  randomAsU8a
+} = require('@polkadot/util-crypto');
 
 async function main () {
   // Create account seed for Alice as fallback if generated mnemonic not valid

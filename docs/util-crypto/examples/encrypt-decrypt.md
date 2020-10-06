@@ -10,7 +10,10 @@ const {
   naclEncrypt,
   randomAsU8a
 } = require('@polkadot/util-crypto');
-const { stringToU8a, u8aToString } = require('@polkadot/util');
+const {
+  stringToU8a,
+  u8aToString
+} = require('@polkadot/util');
 
 async function main () {
   const secret = randomAsU8a();

@@ -6,8 +6,8 @@ The following example shows how to load all accounts from the keyring as pairs a
 
 ```javascript
 // Import Keyring class and utility function
-const Keyring = require('@polkadot/keyring').default;
-const stringToU8a = require('@polkadot/util/string/toU8a').default;
+const { Keyring } = require('@polkadot/keyring');
+const { stringToU8a } = require('@polkadot/util');
 
 async function main () {
   // Create account seed for Alice and Bob

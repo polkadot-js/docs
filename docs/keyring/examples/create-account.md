@@ -5,8 +5,8 @@ title: Create Account
 The following example shows how to create and account with keyring.
 
 ```javascript
-// Import Keyring class and utility function
-const Keyring = require('@polkadot/keyring').default;
+// Import Keyring class and utility functions
+const { Keyring } = require('@polkadot/keyring');
 const { stringToU8a } = require('@polkadot/util');
 
 async function main () {
