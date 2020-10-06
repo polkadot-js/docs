@@ -1,11 +1,14 @@
+const BASE_URL = process.env.NODE_ENV === 'development' ? '/' : '/docs/';
+
 module.exports = {
   title: 'polkadot{.js}',
   tagline: 'Polkadot does JavaScript',
   url: 'https://polkadot.js.org',
-  baseUrl: '/',
+  baseUrl: BASE_URL,
   onBrokenLinks: 'throw',
   favicon: 'img/favicon.ico',
   organizationName: 'polkadot-js', // Usually your GitHub org/user name.
+  onBrokenLinks: 'warn',
   projectName: 'docs', // Usually your repo name.
   themeConfig: {
     navbar: {
