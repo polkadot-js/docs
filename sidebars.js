@@ -1,9 +1,9 @@
 module.exports = {
   reference: {
-    Introduction: ['reference'],
+    Introduction: ['intro'],
     API: [
       {
-        Overview: [
+        'Getting started': [
           'api/start/intro',
           'api/start/install',
           'api/start/basics',
@@ -48,6 +48,14 @@ module.exports = {
       },
       'api/FAQ'
     ],
-    Docusaurus: ['doc1', 'doc2', 'doc3']
+    Substrate: [
+      'substrate/intro',
+      'substrate/rpc',
+      'substrate/constants',
+      'substrate/storage',
+      'substrate/extrinsics',
+      'substrate/events',
+      'substrate/errors'
+    ]
   },
 };

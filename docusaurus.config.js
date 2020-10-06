@@ -15,12 +15,12 @@ module.exports = {
         src: 'img/logo.svg',
       },
       items: [
-        {
-          to: 'r/',
-          activeBasePath: 'r',
-          label: 'Reference',
-          position: 'left',
-        },
+        // {
+        //   to: '/',
+        //   activeBasePath: '/',
+        //   label: 'Reference',
+        //   position: 'left',
+        // },
         // {
         //   to: 'b/',
         //   label: 'Blog',
@@ -89,12 +89,12 @@ module.exports = {
       {
         docs: {
           sidebarPath: require.resolve('./sidebars.js'),
-          editUrl: 'https://github.com/polkadot-js/docs/edit/main/docs/',
-          routeBasePath: 'r/'
+          editUrl: 'https://github.com/polkadot-js/docs/edit/master/docs/',
+          routeBasePath: '/'
         },
         blog: {
           showReadingTime: true,
-          editUrl: 'https://github.com/polkadot-js/docs/edit/main/blog/',
+          editUrl: 'https://github.com/polkadot-js/docs/edit/master/blog/',
         },
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
