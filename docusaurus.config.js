@@ -92,12 +92,12 @@ module.exports = {
       {
         docs: {
           sidebarPath: require.resolve('./sidebars.js'),
-          editUrl: 'https://github.com/polkadot-js/docs/edit/master/docs/',
+          editUrl: 'https://github.com/polkadot-js/docs/edit/master/',
           routeBasePath: '/'
         },
         blog: {
           showReadingTime: true,
-          editUrl: 'https://github.com/polkadot-js/docs/edit/master/blog/',
+          editUrl: 'https://github.com/polkadot-js/docs/edit/master/',
         },
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
