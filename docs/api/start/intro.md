@@ -1,6 +1,5 @@
 ---
 title: Overview
-slug: /api
 ---
 
 These sections should provide you with all the information needed to install the `@polkadot/api` package, understand the structure of the interfaces and allow you to start using it. For existing users this really should be titled "Things I wish I knew before I started using the api" - it really aims to close the gap to allow anybody to get to grips with using the packages.
