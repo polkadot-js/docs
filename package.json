@@ -6,7 +6,7 @@
     "docusaurus": "docusaurus",
     "start": "docusaurus start --port 8080",
     "build": "yarn polkadot-types-internal-metadata && docusaurus build",
-    "build:release": "yarn build",
+    "build:release": "yarn build && polkadot-ci-ghact-docs",
     "swizzle": "docusaurus swizzle",
     "deploy": "docusaurus deploy",
     "serve": "docusaurus serve --port 8080"
@@ -15,6 +15,7 @@
     "@docusaurus/core": "2.0.0-alpha.65",
     "@docusaurus/preset-classic": "2.0.0-alpha.65",
     "@mdx-js/react": "^1.5.8",
+    "@polkadot/dev": "^0.57.8",
     "@polkadot/typegen": "^2.1.2-1",
     "clsx": "^1.1.1",
     "react": "^16.8.4",
