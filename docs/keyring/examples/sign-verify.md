@@ -18,7 +18,7 @@ const {
 } = require('@polkadot/util-crypto');
 
 async function main () {
-  // Create account seed for Alice as fallback if generated mnemonic not valid
+  // Create account seed for an "Alice" account (generally rather use mnemonics)
   const seedAlice = 'Alice'.padEnd(32, ' ');
 
   // Generate new public/secret keypair for Alice from the supplied seed
