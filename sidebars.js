@@ -49,6 +49,30 @@ module.exports = {
       },
       'api/FAQ'
     ],
+    Keyring: [
+      'keyring/intro',
+      {
+        Examples: [
+          'keyring/examples/intro',
+          'keyring/examples/create-account',
+          'keyring/examples/sign-verify',
+        ]
+      },
+      'keyring/FAQ'
+    ],
+    'Crypto Utilities': [
+      'util-crypto/intro',
+      {
+        Examples: [
+          'util-crypto/examples/intro',
+          'util-crypto/examples/create-mnemonic',
+          'util-crypto/examples/validate-address',
+          'util-crypto/examples/encrypt-decrypt',
+          'util-crypto/examples/create-multisig'
+        ]
+      },
+      'util-crypto/FAQ'
+    ],
     Substrate: [
       'substrate/intro',
       'substrate/rpc',

@@ -13,5 +13,5 @@ If you spot gaps in the information provided, or are uncertain about any specifi
 
 The following areas are covered by the documentation -
 
-- [API](API) The polkadot-js API that can be used to connect to any Substrate-based chain. Here we have a getting started guide, examples and short snippets in the form of cookbook examples.
+- [API](api) The polkadot-js API that can be used to connect to any Substrate-based chain. Here we have a getting started guide, examples and short snippets in the form of cookbook examples.
 - [Substrate](substrate) This contains generated documentation from the metadata that Substrate exposes. It is not comprehensive on a per-chain basis, but rather details all the extrinsics, events and RPCs that are exposed by the Substrate node. Specific chains may have additional modules or even not have some of these as documented.
