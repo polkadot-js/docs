@@ -18,9 +18,9 @@ jobs:
         token: ${{ secrets.GH_PAT }}
     - name: build
       env:
+      env:
+        GH_PAGES_SRC: build
         GH_PAT: ${{ secrets.GH_PAT }}
-        GH_RELEASE_GITHUB_API_TOKEN: ${{ secrets.GH_PAT }}
-        NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
       run: |
         yarn install --immutable | grep -v 'YN0013'
         yarn ${{ matrix.step }}
