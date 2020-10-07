@@ -29,20 +29,8 @@ In the above example, the import is self-explanatory. Upon creation we pass thro
 
 So effectively, when creating an account and not specifying a type, it will be `sr25519` by default based on the above construction params, however we can also add an `ed25519` account and use it transparently in the same keyring.
 
-One "trick" that is done implicitly in the above sample is that that keyring is only initialized after the API. In the case of `sr25519` the keyring relies on a [WASM build](https://github.com/polkadot-js/wasm) of the [schnorrkel libraries](https://github.com/w3f/schnorrkel). Since the API inlitialization is already async, it initializes the WASM libraries are part of the setup.
+One "trick" that is done implicitly in the above sample is that that keyring is only initialized after the API. In the case of `sr25519` the keyring relies on a [WASM build](https://github.com/polkadot-js/wasm) of the [schnorrkel libraries](https://github.com/w3f/schnorrkel). Since the API inlitialization is already async, it initializes the [WASM libraries](../../util-crypto/FAQ.md#i-am-having-trouble-initializing-the-wasm-interface) as part of the setup.
 
-However, this initialization can also be done explicitly, mostly for more advances use-cases, or in cases where the API won't be attached until much later -
-
-```js
-// Crypto promise, package used by keyring internally
-import { cryptoWaitReady } from '@polkadot/util-crypto';
-
-// Wait for the promise to resolve, async WASM or `cryptoWaitReady().then(() => { ... })`
-await cryptoWaitReady();
-
-// Create a keyring instance
-const keyring = new Keyring({ type: 'sr25519' });
-```
 
 ## Adding accounts
 
@@ -65,6 +53,7 @@ const alice = keyring.addFromUri('//Alice', { name: 'Alice default' });
 ```
 
 The above additions cater for most of the use cases and aligns with the you would find in the Substrate `subkey`. Be very wary of the last "dev-seed" option, it is explicitly added for `subkey` compatibility and implies using the "known-everywhere" dev seed. It is however useful when running Polkadot/Substrate with a `--dev` flag.
+
 
 ## Adding accounts with raw seeds
 

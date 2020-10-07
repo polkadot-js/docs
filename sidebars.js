@@ -57,7 +57,9 @@ module.exports = {
           'keyring/start/install',
           'keyring/start/basics',
           'keyring/start/create',
-          'keyring/start/ss58'
+          'keyring/start/ss58',
+          'keyring/start/sign-verify',
+          'keyring/start/suri'
         ],
         // Examples: [
         //   'keyring/examples/intro',
