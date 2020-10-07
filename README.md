@@ -1,33 +1,9 @@
-# Website
+# polkadot-js docs
 
-This website is built using [Docusaurus 2](https://v2.docusaurus.io/), a modern static website generator.
+This is a documentation portal for the `@polkadot` family of tools and libraries. The latest version is always available at [https://polkadot.js.org/docs/](https://polkadot.js.org/docs/)
 
-## Installation
 
-```console
-yarn install
-```
+## Help us help others
 
-## Local Development
+If you spot gaps in the information provided, or are uncertain about any specific area, please do [log an issue](https://github.com/polkadot-js/docs/issues) or if you are that way inclined, make a pull-request. We really want to have good documentation in these areas and allow people to be productive right from the start.
 
-```console
-yarn start
-```
-
-This command starts a local development server and open up a browser window. Most changes are reflected live without having to restart the server.
-
-## Build
-
-```console
-yarn build
-```
-
-This command generates static content into the `build` directory and can be served using any static contents hosting service.
-
-## Deployment
-
-```console
-GIT_USER=<Your GitHub username> USE_SSH=true yarn deploy
-```
-
-If you are using GitHub pages for hosting, this command is a convenient way to build the website and push to the `gh-pages` branch.
