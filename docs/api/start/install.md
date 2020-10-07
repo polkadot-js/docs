@@ -22,7 +22,7 @@ In most cases, you don't need to do anything else apart from just installing `@p
 
 This means that by simply installing `@polkadot/api`, you will have access to utilities (crypto and normal), types, providers and even higher-order (derived) API functions. (We will get to all of these in follow-up sections)
 
-If you do however decide to explicitly install other packages (even though they are dependencies), please make sure that the versions inside the api package always match with your versions, i.e. if you installed `@polkadot/api` `0.91.0-beta.22` and you have your own version of `@polkadot/types`, ensure that it is also `0.91.0-beta.22`.
+If you do however decide to explicitly install other packages (even though they are dependencies), please make sure that the versions inside the api package always match with your versions, i.e. if you installed `@polkadot/api` `2.1.2-3` and you have your own version of `@polkadot/types`, ensure that it is also `2.1.2-3`.
 
 ## API basics
 
