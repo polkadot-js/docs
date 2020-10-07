@@ -20,6 +20,10 @@
   --ifm-toc-border-color: transparent;
 }
 
+h1 {
+  font-size: var(--ifm-h1-font-size) !important;
+}
+
 .docusaurus-highlight-code-line {
   background-color: rgb(72, 77, 91);
   display: block;
@@ -27,6 +31,6 @@
   padding: 0 var(--ifm-pre-padding);
 }
 
-h1 {
-  font-size: var(--ifm-h1-font-size) !important;
+.menu__link {
+  outline: none !important;
 }
