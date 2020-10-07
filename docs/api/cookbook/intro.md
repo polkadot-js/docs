@@ -1,5 +1,6 @@
 ---
 title: Overview
+slug: /api/cookbook
 ---
 
 The cookbook hosts small code snippets in a question-answer format. It does not walk you through the whole setup, like the [basic examples](../examples/promise), but rather aims to answer some questions around specific uses. It also does not replace the [FAQ](../FAQ.md), rather this is focussed explicitly on code samples, instead of general trouble-shooting for common mishaps.

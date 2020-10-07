@@ -1,5 +1,4 @@
 ---
-id: FAQ
 title: FAQ
 ---
 
