@@ -1,6 +1,9 @@
-# Account retrieval
+---
+title: Loading saved pairs
+---
 
 Adding accounts is good. Having access to these accounts when added via `const { pair } = keyring.addUr(...)` is better, but being able to access these to iterate over at a later point (even after reload), is magic. Here we will try to add some magic to your experience, allowing you to retrieve accounts as well as subscribe to changes as they happen.
+
 
 ## Loading all available
 
@@ -31,6 +34,7 @@ accounts.forEach(({ address }) => {
 
 Similarly we have a `getPairs()` that mirrors `getAccounts()`, but retrieves the list of available pairs - which is the output you probably expected from the initial `getAccounts()` call.
 
+
 ## Subscriptions (Optional)
 
 In addition to the retrieving of accounts on demand, we can actually subscribe to accounts for the keyring. This subscription returns a list of all accounts as they are updated, i.e. when a new account is added it will callback with a list of all the account, including the new one, when an account is removed, it will callback with a list of accounts, excluding the removed member.
@@ -51,7 +55,3 @@ sub.unsubscribe();
 ```
 
 As with the `get{Accounts|Addresses|Contracts}()` functions, similarly we have in addition to `keyring.accounts.subject` the `keyring.addresses.subject` and `keyring.contracts.subject` subscriptions available, with the same generic result set.
-
-## Other address types
-
-We have been referencing contacts and contracts and number of times up till now, up next we will take a look at [how to store other addresses, be if for an address book or contract](keyring.other.md).

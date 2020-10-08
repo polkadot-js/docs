@@ -1,6 +1,9 @@
-# Keyring accounts
+---
+title: Accounts
+---
 
 With our keyring setup completed in the previous section, and all available accounts loaded, we are ready to proceed. However we have not actually loaded any accounts yet, since well, we have not created or stored any previously. So let's change that.
+
 
 ## Adding accounts
 
@@ -25,11 +28,10 @@ Metadata is free form, with any indicators that you would find useful in your ap
 
 - `name` - a human-readable description for the account
 
-## Non-mnemonic accounts
 
-Generally, we would encourage all wallets and users to only support mnemonic phrases - these are portable between crypto implementations, has built-in checksums and is a standard across the blockchain environment.
+## Non-mnemonic seeds and derivation
 
-In some cases however, either due to the need to provide backwards compatibility or for closed environments, other seed types may be used. The `addUri` will detect the type of input, i.e. if a hex-encoded value is provided, it will treat it as a raw seed. With this in mind, we can rewrite our example above to generate a random raw seed -
+Generally, we would encourage all wallets and users to only support mnemonic phrases - these are portable between crypto implementations, has built-in checksums and is a standard across the blockchain environment. In some cases however, either due to the need to provide backwards compatibility or for closed environments, other seed types may be used. The `addUri` will detect the type of input, i.e. if a hex-encoded value is provided, it will treat it as a raw seed.
 
 ```js
 import { randomAsHex } from '@polkadot/util-crypto';
@@ -42,8 +44,9 @@ const seed = randomAsHex(32);
 const { pair, json } = keyring.addUri(seed, 'weakpass', { name: 'hex seed acc' }, 'ed25519');
 ```
 
-In addition to creating the account in the same fashion as in the preceding section, we are overriding the type of the account created here. Assuming we created the keyring with the `type: 'sr25519'` option, the first mnemonic account was created with an `sr25519` type. Here we specify the type of crypto explicitly, and therefore create a non-default (for this keyring instance) `ed25519` type.
+In all the above examples non-derived accounts are assumed. However, luke the `addFromUri` method in the base keyring, the UI Keyring also supports full [ss58 derivation paths](../../keyring/start/ss58.md). The only difference between the methods in the 2 libraries is that the UI variant requires the use of a password for all operations.
 
-## Deriving accounts
 
-In the next section, we will expand our account creation capabilities and take a look at [account derivation and passing suri options](keyring.derivation.md).
+## Managing addresses
+
+In addition to managing accounts, the keyring also allows the developer to manage [addresses where an actual secret is not available](addresses.md).

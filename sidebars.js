@@ -96,6 +96,19 @@ module.exports = {
       'identicon/react',
       'identicon/react-native',
       'identicon/vue'
+    ],
+    'Keyring (UI)': [
+      'keyring-ui/intro',
+      {
+        'Getting started': [
+          'keyring-ui/start/intro',
+          'keyring-ui/start/install',
+          'keyring-ui/start/init',
+          'keyring-ui/start/accounts',
+          'keyring-ui/start/addresses',
+          'keyring-ui/start/loading'
+        ]
+      }
     ]
   },
 };
