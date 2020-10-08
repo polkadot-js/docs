@@ -1,6 +1,6 @@
 ---
 title: Overview
-slug: /keyring-ui
+slug: /ui-keyring
 ---
 
 The [@polkadot/ui-keyring](https://www.npmjs.com/package/@polkadot/ui-keyring) package provides a wrapper around the [@polkadot/keyring](https://www.npmjs.com/package/@polkadot/keyring) package, specifically for use in browser environments. The `ui-keyring` only extends the `keyring`, but does not replace it. All underlying account management functions are provided by the base keyring, the browser-specific extensions allows for transparent management of account state in storage.
