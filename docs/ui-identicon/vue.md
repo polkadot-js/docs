@@ -28,7 +28,7 @@ Inside a Vue component, you can now render any account with the associated icon,
 </template>
 
 <script>
-  import Identicon from '@polkadot/vue-ui-identicon';
+  import Identicon from '@polkadot/vue-identicon';
 
   export default {
     ...
