@@ -4,12 +4,12 @@ title: Substrate Uri
 
 Substrate has a standard derivation format that applies on any seeds and mnemonics. This means that for a given secret, you can apply hard derivations, soft derivations to generate a new pair. In all the examples we have used either `addFromUri` or `createFromUri` and have supplied all with an empty derivation path.
 
-In general the derivation format is specified as `<mnemonic or mini-secret><//hard-derivation></soft-derivation><///password>` where
+In general the derivation format is specified as `<mnemonic or mini-secret>[//hard-derivation][/soft-derivation][///password]` where
 
 - `mnemonic or mini-secret` is either of the secret types. For mini-secrets we would supply 32 bytes in hex format (`0x`-prefixed with 64 additional `0`-`f` bytes)
-- `hard-derivation` is a hard path, always prefixed by `//` to indicate the type. Multiple hard derivations can be applied, i.e. `//hard//again` would be valid.
+- `hard-derivation` is a hard path, always prefixed by `//` to indicate the type. Multiple hard derivations can be applied, i.e. `//hard//again` would be valid. Underlying it will apply a hashing function on the secret, generating a new secret for the remainder of the derivations.
 - `soft-derivation` is a soft path, always prefixed by `/`. This derivation is only available and supported on `sr25519` pairs. While other crypto can do soft derivations, the Substrate implementation only supports this on Schnorrkel.
-- `password`, always prefixed by `///` indicates a derivation password, not to be confused with a pair password as implemented on the keyring. Using these means that an initial kdf is applied upon derivation, which means that even if the seed would leak, accounts cannot be derived without the initial password.
+- `password`, always prefixed by `///` indicates a derivation password, not to be confused with a pair password as implemented on the keyring. Using these means that an initial kdf is applied upon derivation, which means that even if the seed would leak, accounts cannot be derived without the initial password. Unlike hard and soft derivations that can be mixed, only a single password should be specified per derivation.
 
 
 ## Dev accounts

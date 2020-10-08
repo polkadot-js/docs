@@ -1,8 +1,11 @@
-# Other addresses
+---
+title: Addresses
+---
 
 As mentioned in previous sections, the keyring not only has the ability to manage accounts (i.e. keypairs), but also allows you to add addresses/contacts as well as contracts to the keyring. This is very useful in the case where you are developing a wallet and want to save external addresses to interact with.
 
 Here we will give an overview of working with addresses, the same concepts can be expanded to work with contracts.
+
 
 ## Adding an address
 
@@ -27,6 +30,7 @@ const json = keyring.saveAddress(FAUCET_ADDR, { name: 'Alexander Faucet' });
 
 And the already-saved address will be updated with the new metadata.
 
+
 ## Removing an address
 
 To clear and address and remove it from the keyring, we can use the `forgetAddress(address: string)` call, this mirrors the `forgetAccount(address: string)` and `forgetContract(address: string)` calls. For instance -
@@ -39,3 +43,7 @@ keyring.forgetAddress(FAUCET_ADDR);
 /// the faucet will not be in the list of addresses anymore
 keyring.getAddresses().forEach(...)
 ```
+
+## Retrieving previously-saved
+
+With all interactions with the keyring, the information is persisted. In the next section we will take a look at [retrieval of saved information](loading.md), typically done on first init.
