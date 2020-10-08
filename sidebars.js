@@ -49,6 +49,15 @@ module.exports = {
       },
       'api/FAQ'
     ],
+    'Substrate Metadata': [
+      'substrate/intro',
+      'substrate/rpc',
+      'substrate/constants',
+      'substrate/storage',
+      'substrate/extrinsics',
+      'substrate/events',
+      'substrate/errors'
+    ],
     Keyring: [
       'keyring/intro',
       {
@@ -82,14 +91,11 @@ module.exports = {
       },
       'util-crypto/FAQ'
     ],
-    Substrate: [
-      'substrate/intro',
-      'substrate/rpc',
-      'substrate/constants',
-      'substrate/storage',
-      'substrate/extrinsics',
-      'substrate/events',
-      'substrate/errors'
+    'Identicon (UI)': [
+      'identicon/intro',
+      'identicon/react',
+      'identicon/react-native',
+      'identicon/vue'
     ]
   },
 };
