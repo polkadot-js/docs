@@ -122,4 +122,4 @@ for (let i = 0; i < 10; i++) {
 }
 ```
 
-The latter form is preferred since it dispatches the RPC calls for nonce and blockHash (used for mortality) and in parallel and therefeor will yield a better throughput.
+The latter form is preferred since it dispatches the RPC calls for nonce and blockHash (used for mortality) in parallel and therefore will yield a better throughput, especially with the above bulk example.
