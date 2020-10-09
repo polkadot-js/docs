@@ -112,3 +112,14 @@ for (let i = 0; i < 10; i++) {
     .signAndSend(sender, { nonce });
 }
 ```
+As a convenience function, the `accountNextIndex` can be omitted by specifying a nonce of `-1`, allow the API to do the lookup. In this case the above can be simplified even further,
+
+```js
+for (let i = 0; i < 10; i++) {
+  const txhash = await api.tx.balances
+    .transfer(recipient, 123)
+    .signAndSend(sender, { nonce: -1 });
+}
+```
+
+The latter form is preferred since it dispatches the RPC calls for nonce and blockHash (used for mortality) and in parallel and therefeor will yield a better throughput.
