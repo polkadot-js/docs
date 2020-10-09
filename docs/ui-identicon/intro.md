@@ -1,6 +1,6 @@
 ---
 title: Overview
-slug: /identicon
+slug: /ui-identicon
 ---
 
 The identity icon components allows you to display an address (or publicKey) as an unique icon, generated based on the contents and/or hash of the provided value. Additionally it allows for a variety of themes, either based on a Polkadot theme, Substrate theme or as a colored "Beachball". Additionally a custom renderer is also provided for, i.e. for cases where an app-specific icon is required.

@@ -1,6 +1,6 @@
 ---
 title: Overview
-slug: /keyring-ui/start
+slug: /ui-keyring/start
 ---
 
 These sections should provide you with all the information needed to install the UI Keyring, understand the structure of the interfaces and allow you to start using it.

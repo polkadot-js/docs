@@ -92,21 +92,21 @@ module.exports = {
       'util-crypto/FAQ'
     ],
     'Identicon (UI)': [
-      'identicon/intro',
-      'identicon/react',
-      'identicon/react-native',
-      'identicon/vue'
+      'ui-identicon/intro',
+      'ui-identicon/react',
+      'ui-identicon/react-native',
+      'ui-identicon/vue'
     ],
     'Keyring (UI)': [
-      'keyring-ui/intro',
+      'ui-keyring/intro',
       {
         'Getting started': [
-          'keyring-ui/start/intro',
-          'keyring-ui/start/install',
-          'keyring-ui/start/init',
-          'keyring-ui/start/accounts',
-          'keyring-ui/start/addresses',
-          'keyring-ui/start/loading'
+          'ui-keyring/start/intro',
+          'ui-keyring/start/install',
+          'ui-keyring/start/init',
+          'ui-keyring/start/accounts',
+          'ui-keyring/start/addresses',
+          'ui-keyring/start/loading'
         ]
       }
     ]
