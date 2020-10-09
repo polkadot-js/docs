@@ -121,3 +121,5 @@ for (let i = 0; i < 10; i++) {
     .signAndSend(sender, { nonce: -1 });
 }
 ```
+
+The latter form is preferred since it dispatches the RPC calls for nonce and blockHash (used for mortality) and in parallel and therefeor will yield a better throughput.
