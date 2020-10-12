@@ -81,6 +81,6 @@ If you are on a chain that has not been upgraded yet, you need to add `Weight: '
 
 ## On a non-current, non Substrate 2.0 branch, my balances are wrong
 
-As part of the Substrate 2.0 release, the `RefCount` type has been changed from ` u8` to a `u32`. Since the API always track latest Substrate, this change has been applied by default. The impact of this type is that it is used in the `AccountInfo` type which is returned from `system.account`, which is turn tracks balances.
+As part of the Substrate 2.0 release, the `RefCount` type has been changed from ` u8` to a `u32`. Since the API always track latest Substrate, this change has been applied by default. The impact of this type is that it is used in the `AccountInfo` type which is returned from `system.account`, which, in turn, tracks balances.
 
-If on an older version of the chain apply the older type via `RefCount: 'u8'` to your types.
+If on an older version of the chain, apply the older type via `RefCount: 'u8'` to your types.
