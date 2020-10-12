@@ -39,6 +39,17 @@ console.log(value.result.toHuman());
 
 Underlying the above `.query.<messageName>` is using the `api.rpc.contracts.call` API on the contracts palette to retrieve the value. When executing it encodes the message using the selector and the input values to allow execution in the contract environment. This can be executed on any contract message, unlike the execution below it will only read state, not actually execute.
 
+An alternative for reading would be via the lower-level `.read` method, in this case
+
+```javascript
+// Perform the actual read (no params at the end, for the `get` message)
+// (We perform the send from an account address, it doesn't get executed)
+const value = await contract
+  .read('get', value, gasLimit)
+  .send(alicePair.address);
+```
+
+In cases where the ABI messages have conflicting names, instead of the `'get'` string the actual message index (or message from the Abi itself) can be passed-through.
 
 ## Sending a transaction
 

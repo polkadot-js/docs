@@ -33,7 +33,7 @@ const initValue = 123;
 
 let contract;
 
-// We pass the constructor (name, index or actual constructor from Abi),
+// We pass the constructor (named `new` in the actual Abi),
 // the endowment, gasLimit (weight) as well as any constructor params
 // (in this case `new (initValue: i32)` is the constructor)
 const unsub = await blueprint.tx
@@ -49,6 +49,18 @@ const unsub = await blueprint.tx
 
 As per the `Code` examples previously, the `tx.<constructorName>` interface is a normal submittable extrinsic with the result containing an actual `ContractPromise` instance as created with the address from the events from deployment. Internally it will use the `instantiate` extrinsic and interpret the events retrieved.
 
+For cases where we want to refer to the message via index (or actual Abi message), we can use the `.createContract` helper on the `Blieprint`, in this case the lower-level code would yield -
+
+```javascript
+// We pass the constructor (name, index or actual constructor from Abi),
+// the endowment, gasLimit (weight) as well as any constructor params
+// (in this case `new (initValue: i32)` is the constructor)
+const unsub = await blueprint
+  .createContract('new', endowment, gasLimit, initValue)
+  .signAndSend(alicePair, (result) => {
+    ...
+  });
+```
 
 ## Interact with contracts
 
