@@ -3,7 +3,7 @@ title: Overview
 slug: /
 ---
 
-Looking for the [Apps UI Wallet](https://polkadot.js.org/apps/)? Looking for developer documentation? Then you are at the right place.
+Got here looking for the [Apps UI (Wallet)](https://polkadot.js.org/apps/)? Just follow the preceding link. Looking for developer documentation? Then you are at the right place.
 
 This is an effort to provide a collection of tools, utilities and libraries for interacting with the [Polkadot network](https://polkadot.network) from JavaScript. All code is made available on [Github](https://github.com/polkadot-js/) with a [permissive Apache-2.0 license](https://en.wikipedia.org/wiki/Apache_License#Version_2.0).
 
