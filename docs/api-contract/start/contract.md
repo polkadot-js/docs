@@ -74,8 +74,19 @@ await contract.tx
   });
 ```
 
-If we perform the same `query.get` read on the value now, it would be `124`.
+If we perform the same `query.get` read on the value now, it would be `124`. For lower-level access, like we have in the `Blueprint` via `.createContract` you can also perform the execution via the `.exec` function, which would yield equivalent results -
 
+```javascript
+// Send the transaction, like elsewhere this is a normal submittable
+// extrinsic with the same rules as applied in the API
+await contract
+  .exec('inc', value, gasLimit, incValue)
+  .signAndSend(alicePair, (result) => {
+    ...
+  });
+```
+
+For the above interface we can specify the message as the string name, the index of the actual message as retrieved via the Abi.
 
 ## That is it... for now
 
