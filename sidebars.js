@@ -91,6 +91,20 @@ module.exports = {
       },
       'util-crypto/FAQ'
     ],
+    'Contracts (API)': [
+      'api-contract/intro',
+      {
+        'Getting started': [
+          'api-contract/start/intro',
+          'api-contract/start/install',
+          'api-contract/start/basics',
+          'api-contract/start/code',
+          'api-contract/start/blueprint',
+          'api-contract/start/contract'
+        ]
+      },
+      'api-contract/FAQ'
+    ],
     'Identicon (UI)': [
       'ui-identicon/intro',
       'ui-identicon/react',
