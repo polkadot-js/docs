@@ -30,6 +30,11 @@ module.exports = {
         //   position: 'left'
         // },
         {
+          href: 'https://polkadot.js.org/apps/',
+          label: 'Apps UI (Wallet)',
+          position: 'right',
+        },
+        {
           href: 'https://github.com/polkadot-js/docs',
           label: 'GitHub',
           position: 'right',
