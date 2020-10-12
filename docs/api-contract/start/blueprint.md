@@ -36,8 +36,8 @@ let contract;
 // We pass the constructor (name, index or actual constructor from Abi),
 // the endowment, gasLimit (weight) as well as any constructor params
 // (in this case `new (initValue: i32)` is the constructor)
-const unsub = await blueprint
-  .createContract('new', endowment, gasLimit, initValue)
+const unsub = await blueprint.tx
+  .new(endowment, gasLimit, initValue)
   .signAndSend(alicePair, (result) => {
     if (result.status.isInBlock || result.status.isFinalized) {
       // here we have an additional field in the result, containing the contract
@@ -47,7 +47,7 @@ const unsub = await blueprint
   });
 ```
 
-As per the `Code` examples previously, the `createContract` interface is a normal submittable extrinsic with the result containing an actual `ContractPromise` instance as created with the address from the events from deployment. Internally it will use the `instantiate` extrinsic and interpret the events retrieved.
+As per the `Code` examples previously, the `tx.<constructorName>` interface is a normal submittable extrinsic with the result containing an actual `ContractPromise` instance as created with the address from the events from deployment. Internally it will use the `instantiate` extrinsic and interpret the events retrieved.
 
 
 ## Interact with contracts
