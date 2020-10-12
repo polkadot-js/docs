@@ -27,7 +27,7 @@ const value = 0; // only useful on isPayable messages
 const gasLimit = 1000000n;
 
 // Perform the actual read (no params at the end, for the `get` message)
-// (We perform the send from an account address, it doesn't get executed)
+// (We perform the send from an account, here using Alice's address)
 const value = await contract.query.get(alicePair.address, value, gasLimit);
 
 // should output 123 as per our initial set (output here is an i32)
