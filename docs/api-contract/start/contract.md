@@ -32,8 +32,11 @@ const value = await contract
   .read('get', value, gasLimit)
   .send(alicePait.address);
 
-// should output 123 as per our initial set (value here is an i32 class)
-console.log(value.toHuman());
+// should output 123 as per our initial set (output here is an i32)
+console.log(value.output.toHuman());
+
+// the actual result from RPC as `ContractExecResult`
+console.log(value.result.toHuman());
 ```
 
 Underlying the above `.read` using the `.call` RPC on the contracts palette to retrieve the value. When executing it encodes the message using the selector and the input values to allow execution in the contract environment. This can be executed on any contract message, unlike the execution below it will only read state, not actually execute.
