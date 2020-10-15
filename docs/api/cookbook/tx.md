@@ -35,7 +35,7 @@ api.tx.balances
     if (status.isInBlock || status.isFinalized) {
       events
         // find/filter for failed events
-        .filter(({ section, method }) =>
+        .filter(({ event: { section, method } }) =>
           section === 'system' &&
           method === 'ExtrinsicFailed'
         )
