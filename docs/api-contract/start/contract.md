@@ -58,6 +58,9 @@ An alternative for reading would be via the lower-level `.read` method, in this 
 const value = await contract
   .read('get', value, gasLimit)
   .send(alicePair.address);
+
+// The actual result from RPC as `ContractExecResult`
+...
 ```
 
 In cases where the ABI messages have conflicting names, instead of the `'get'` string the actual message index (or message from the Abi itself) can be passed-through.
