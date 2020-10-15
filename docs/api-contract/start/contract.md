@@ -35,13 +35,15 @@ const value = await contract
 // The actual result from RPC as `ContractExecResult`
 console.log(value.result.toHuman());
 
-// check is the call was successful
+// check if the call was successful
 if (value.result.isSuccess) {
   // should output 123 as per our initial set (output here is an i32)
   console.log(value.output.toHuman());
 
   // the amount of gas consumed (u64 value)
   console.log(value.result.asSuccess.gasConsumed.toHuman());
+} else {
+  console.error('Call failed');
 }
 ```
 
