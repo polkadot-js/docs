@@ -30,7 +30,7 @@ const gasLimit = 1000000n;
 // (We perform the send from an account address, it doesn't get executed)
 const value = await contract
   .read('get', value, gasLimit)
-  .send(alicePait.address);
+  .send(alicePair.address);
 
 // The actual result from RPC as `ContractExecResult`
 console.log(value.result.toHuman());
