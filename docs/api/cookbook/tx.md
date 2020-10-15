@@ -68,7 +68,7 @@ api.tx.balances
     if (dispatchError) {
       if (dispatchError.isModule) {
         // for module errors, we have the section indexed, lookup
-        const decoded = api.registry.findMetaError(error.asModule);
+        const decoded = api.registry.findMetaError(dispatchError.asModule);
         const { documentation, method, section } = decoded;
 
         console.log(`${section}.${method}: ${documentation.join(' ')}`);
