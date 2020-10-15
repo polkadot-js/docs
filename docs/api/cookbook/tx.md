@@ -57,6 +57,29 @@ api.tx.balances
   });
 ```
 
+As of the `@polkadot/api` 2.3.1 additional result fields are exposed. Firstly there is `dispatchInfo: DispatchInfo` which occurs in both `ExtrinsicSuccess` & `ExtrinsicFailed` events. Additionally, on failures the `dispatchError: DispatchError` is exposed. With this in mind, the above can be simplified to be -
+
+```js
+api.tx.balances
+  .transfer(recipient, 123)
+  .signAndSend(sender, ({ status, events, dispatchError }) => {
+    // status would still be set, but in the case of error we can shortcut
+    // to just check it (so an error would indicate InBlock or Finalized)
+    if (dispatchError) {
+      if (dispatchError.isModule) {
+        // for module errors, we have the section indexed, lookup
+        const decoded = api.registry.findMetaError(error.asModule);
+        const { documentation, method, section } = decoded;
+
+        console.log(`${section}.${method}: ${documentation.join(' ')}`);
+      } else {
+        // Other, CannotLookup, BadOrigin, no extra info
+        console.log(error.toString());
+      }
+    }
+  });
+``` 
+
 ## How do I send an unsigned extrinsic?
 
 For most runtime modules, transactions need to be signed and validation for this happens node-side. There are however modules that accepts unsigned extrinsics, an example would be the Polkadot/Kusama token claims (which is here used as an example).
