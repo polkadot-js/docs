@@ -41,7 +41,7 @@ if (value.result.isSuccess) {
   // should output 123 as per our initial set (output here is an i32)
   console.log(value.output.toHuman());
 
-  // the amount of gas consumed (u64 value
+  // the amount of gas consumed (naturally a u64 value()
   console.log(success.gasConsumed.toHuman());
 } else {
   console.error('Call failed');
