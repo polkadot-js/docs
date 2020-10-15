@@ -30,13 +30,21 @@ const gasLimit = 1000000n;
 // (We perform the send from an account address, it doesn't get executed)
 const value = await contract
   .read('get', value, gasLimit)
-  .send(alicePait.address);
+  .send(alicePair.address);
 
-// should output 123 as per our initial set (output here is an i32)
-console.log(value.output.toHuman());
-
-// the actual result from RPC as `ContractExecResult`
+// The actual result from RPC as `ContractExecResult`
 console.log(value.result.toHuman());
+
+// check if the call was successful
+if (value.result.isSuccess) {
+  // should output 123 as per our initial set (output here is an i32)
+  console.log(value.output.toHuman());
+
+  // the amount of gas consumed (u64 value)
+  console.log(value.result.asSuccess.gasConsumed.toHuman());
+} else {
+  console.error('Call failed');
+}
 ```
 
 Underlying the above `.read` using the `.call` RPC on the contracts palette to retrieve the value. When executing it encodes the message using the selector and the input values to allow execution in the contract environment. This can be executed on any contract message, unlike the execution below it will only read state, not actually execute.
