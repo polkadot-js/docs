@@ -30,11 +30,22 @@ const gasLimit = 1000000n;
 // (We perform the send from an account, here using Alice's address)
 const value = await contract.query.get(alicePair.address, value, gasLimit);
 
-// should output 123 as per our initial set (output here is an i32)
-console.log(value.output.toHuman());
-
-// the actual result from RPC as `ContractExecResult`
+// The actual result from RPC as `ContractExecResult`
 console.log(value.result.toHuman());
+
+// check if the call was successful
+if (value.result.isSuccess) {
+  // data from the enum
+  const success = value.result.asSuccess;
+
+  // should output 123 as per our initial set (output here is an i32)
+  console.log(value.output.toHuman());
+
+  // the amount of gas consumed (u64 value
+  console.log(success.gasConsumed.toHuman());
+} else {
+  console.error('Call failed');
+}
 ```
 
 Underlying the above `.query.<messageName>` is using the `api.rpc.contracts.call` API on the contracts palette to retrieve the value. When executing it encodes the message using the selector and the input values to allow execution in the contract environment. This can be executed on any contract message, unlike the execution below it will only read state, not actually execute.
