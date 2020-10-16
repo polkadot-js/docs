@@ -4,6 +4,7 @@ title: Transactions
 
 A blockchain is no fun if you are not submitting transactions. Or at least if somebody is not submitting any. Here you will find some snippets for dealing with some common issues.
 
+
 ## How do I estimate the transaction fees?
 
 In addition to the `signAndSend` helper on transactions, `.paymentInfo` (with the exact same parameters) are also exposed. Using the same sender, it applies a dummy signature to the transaction and then gets the fee estimation via RPC.
@@ -23,6 +24,7 @@ console.log(`
   partialFee=${info.partialFee.toHuman()}
 `);
 ```
+
 
 ## How do I get the decoded enum for an ExtrinsicFailed event?
 
@@ -57,6 +59,7 @@ api.tx.balances
   });
 ```
 
+
 ## How do I send an unsigned extrinsic?
 
 For most runtime modules, transactions need to be signed and validation for this happens node-side. There are however modules that accepts unsigned extrinsics, an example would be the Polkadot/Kusama token claims (which is here used as an example).
@@ -74,6 +77,7 @@ tx.send(({ status }) => {
 ```
 
 The signing is indicated by the first byte in the transaction, so in this case we have called `.send` on it (no `.sign` or `.signAndSend`), so it will be sent using the unsigned state, without signature attached.
+
 
 ## How can I batch transactions?
 
@@ -97,6 +101,7 @@ api.tx.utility
   });
 ```
 
+
 ## How do I take the pending tx pool into account in my nonce?
 
 The `system.account` query will always contain the current state, i.e. it will reflect the nonce for the last known block. As such when sending multiple transactions in quick succession (see batching above), there may be transactions in the pool that has the same nonce that `signAndSend` would apply - this call doesn't do any magic, it simply reads the state for the nonce. Since we can specify options to the `signAndSend` operation, we can override the nonce, either by manually incrementing it or querying it via `rpc.system.accountNextIndex`.
@@ -112,6 +117,7 @@ for (let i = 0; i < 10; i++) {
     .signAndSend(sender, { nonce });
 }
 ```
+
 As a convenience function, the `accountNextIndex` can be omitted by specifying a nonce of `-1`, allow the API to do the lookup. In this case the above can be simplified even further,
 
 ```js
