@@ -4,6 +4,7 @@ title: Storage
 
 Here you will find snippets for working with storage.
 
+
 ## How do I check for storage existence?
 
 In the metadata, for each storage item a fallback is provided. This means that when an entry does not exist, the fallback (which is the default value for the type) will be provided. This means, that querying for a non-existent key (unless an option), will yield a value -
@@ -29,6 +30,7 @@ const sizeN = await api.query.staking.validators.size('EoukLS2Rzh6dZvMQSkqFy4zGv
 console.log(sizeY.isZero(), sizeY.toNumber()); // false 4
 console.log(sizeN.isZero(), sizeY.toNumber()); // true 0
 ```
+
 
 ## How do I use .entries()/.keys() on double maps?
 

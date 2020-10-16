@@ -7,6 +7,7 @@ The cookbook hosts small code snippets in a question-answer format. It does not 
 
 These questions are added as they do come up and the hope is that the snippets here is will be useful to others, instead of just the original person who asked on a specific use-case. As of today, it is only making a start and not fully comprehensive yet - check back early, check back often.
 
+
 ## Sections
 
 The following cookbook sections are available -
@@ -16,6 +17,7 @@ The following cookbook sections are available -
 - [Transactions](tx.md) - Snippets for working with transactions
 
 ... more to come.
+
 
 ## Contribute
 
