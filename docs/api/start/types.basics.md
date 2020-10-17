@@ -4,6 +4,7 @@ title: Type basics
 
 We've touched upon types in most previous sections, i.e. that these are driven by metadata and that they are created and converted to/from automatically by the API. Since they appear in all results, we will divert a bit from the regularly scheduled program in explaining the API interfaces to giving some info on the base types.
 
+
 ## Everything is a type
 
 Just to re-iterate from the above. Everything returned by the API is a type and has a consistent interface. This means that a `Vec<u32>` (an array of `u32` values) as well as a `Struct` (an pre-defined object) or an `Enum` has the same consistent base interface. Specific types types will have values, based on the type - decorated and available.
@@ -22,6 +23,7 @@ Additionally, the following getters and utilities are available -
 - `.isEmpty` - `true` if the value is an all-empty value, i.e. `0` in for numbers, all-zero for Arrays (or anything `Uint8Array`), `false` is non-zero
 - `.hash` - a `Hash` (once again with all the methods above) that is a `blake2-256` representation of the contained value
 
+
 ## Comparing types
 
 To reiterate the above API, the `.eq` method is the preferred means of comparing base types, rather than the JavaScript equality operator (`===`).
@@ -39,6 +41,7 @@ const modules = metadata.asLatest.modules;
 const system = modules.find(m => m.name.eq('system'));
 ```
 
+
 ## Working with numbers
 
 All numbers wrap and extend an instance of [bn.js](https://github.com/indutny/bn.js/). This means that in addition to the interfaces defined above, they have some additional methods -
@@ -49,6 +52,7 @@ All numbers wrap and extend an instance of [bn.js](https://github.com/indutny/bn
 
 In cases where a `Compact` is returned, i.e. `Compact<Balance>`, the value is wrapped. This object should be `.unwrap()`-ed first to gain access to the underlying `Balance` object.
 
+
 ## Working with structures
 
 All structures, a wrapping of an object containing a number of member variables, is an implementation of a standard JS `Map` object, so all the functions available on a `Map` such as `.entries()` are available. Additionally it is decorated with actual getters for the fields.
@@ -56,6 +60,7 @@ All structures, a wrapping of an object containing a number of member variables,
 As an example, a `Header` will have getters for the `.parentHash`, `.number`, `.stateRoot`, `.extrinsicsRoot` and `.digest` fields. The same applies for all structures, as they are returned, each member will have an associated getter.
 
 Be aware that in the JS version naming defaults to `camelCase` where names of fields in Substrate defaults to `snake_case`. (Each version aligning with conventions in the respective languages)
+
 
 ## Working with enums
 
@@ -73,6 +78,7 @@ An `Option<Type>` attempts to mimic the Rust approach of having `None` and `Some
 - `.unwrapOr(<default value>)` - this extends `unwrap()`, returning the wrapped value when `isSome` and in the case of `isNone` it will return the `<default value>` passed.
 - `.unwrapOrDefault()` - returns either the rapped value when `isSome`, or the default for the type when `isNone`
 
+
 ## Working with Tuples
 
 A tuple is defined in the form of `(u32, AccountId)`. To access the individual values, you can access t via the index, i.e.
@@ -85,6 +91,7 @@ console.log(`${accountId} has ${count.toNumber()} values`);
 ```
 
 When making a call that expect a `Tuple` input, pass it as an array, so to pass the example above into a call, it would be `.call([123, '5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY'])`
+
 
 ## Extending types
 

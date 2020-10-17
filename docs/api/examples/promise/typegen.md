@@ -6,6 +6,7 @@ This is a sample TypeScript project [with full source & config on GithHub](https
 
 **NOTE** This is built using the updates in the `1.4.0` api track and as such it uses the latest (at the time of writing) `@polkadot/api 1.4.0`. If you want to play on your own, it is also suggested that you use the `1.4+` series since some generation types have moved around internally, making it easier to augment.
 
+
 ## Packages
 
 For the packages we need from the `@polkadot/*` we have added `@polkadot/api` (we want to do API stuff) and `@polkadot/typegen` (to generate the actual interfaces). So our scripts and dependencies inside `package.json` contain the following -
@@ -31,6 +32,7 @@ For the packages we need from the `@polkadot/*` we have added `@polkadot/api` (w
 
 We will delve into the setup and running the scripts and what they do in a short bit, but as of now just notice that we are running the scripts via `ts-node`. Since we supply our definitions as `*.ts` files, this is important otherwise they will not be parsable. `build` will just run both the types and meta generators (in that order, so metadata can use the types) and we have a `lint` that can just check that everything is as it is meant to be.
 
+
 ## Metadata setup
 
 The idea here is to use the actual chain metadata to generate the actual api augmented endpoints. The metadata we are adding here (in addition to the user types), is from the Edgeware Berlin testnet. So this is a real-world example of configuring the API for a specific substrate chain. For the metadata retrieval, we just ran a simple curl command to get it from the node -
@@ -44,6 +46,7 @@ And then add the full JSONPC output as received to the `edgeware.json` file as s
 ```
 
 The generator can also use a `wss://` as an `--endpoint` param as part of the generation, but in most cases you would want a static metadata to work from in development, hence we are actually adding it here.
+
 
 ## Types setup
 
@@ -89,6 +92,7 @@ Just the type definitions (the structure of which you should be familiar with), 
 In the above, you will note that the `ProposalRecord` references a type for `voting`, i.e. `VoteStage`. The type generation and resolution will determine where the type comes from, and provide the required imports on generation.
 
 Looking at the example in this repo, it also has `augment*`, `index.ts` and `types.ts` files in the interfaces folder. These are all generated, and will be re-generated when the generator is run - so all edits to these files will be lost. The only requirement for user-edits are the `definitions.ts` files.
+
 
 ## Generating
 
@@ -136,6 +140,7 @@ $ tsc --noEmit --pretty
 ✨  Done in 2.28s.
 ```
 
+
 ## Peering at the output
 
 We are ready to use all these generated types this after some TS config. If you take a look at the generated `src/signaling/types.ts`, you would see generated TS interfaces, such as -
@@ -166,6 +171,7 @@ export interface ProposalTitle extends Bytes {}
 
 As mentioned earlier, here you will notice the `import { VoteStage }`, the generator has determined that `voting` exports that interface and has added the required imports.
 
+
 ## TypeScript config
 
 Now that we have files generated, it is time to make TypeScript aware of the types and add an explicit override into out `tsconfig.json`. After some changes, the paths in the config looks as follow (comments are in the actual config file here) -
@@ -183,6 +189,7 @@ Now that we have files generated, it is time to make TypeScript aware of the typ
 ```
 
 Effectively what we do above is tell the TypeScript compiler to not use the built-in API augmentation, but rather to replace it with our version. This means that all types from these are injected not by the substrate-latest-master version, but rather with what we have defined above.
+
 
 ## Usage
 
@@ -244,6 +251,7 @@ async function main (): Promise<void> {
 
 await main();
 ```
+
 
 ## And that is a ...
 

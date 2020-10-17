@@ -4,11 +4,13 @@ title: Keyring
 
 This section will give a quick introduction into the Keyring, including the addition of accounts, retrieving pairs and the signing of any data. Unlike the rest of the API, only the core concepts will be covered with the most-used-functions. However, what is covered is enough for 99.9 of the use-cases ... or rather, that is the aim.
 
+
 ## Installation
 
 The [@polkadot/keyring](https://github.com/polkadot-js/common/tree/master/packages/keyring) keyring is included directly with the API as a dependency, so it is directly importable (since the 0.92 version) alongside the API.
 
 If you do opt to install it separately, ensure that the version of `@polkadot/util-crypto` that is included with the API matches with the version of `@polkadot/keyring` installed. So if the API depends on `util-crypto 1.4.1`, it would make sense to include `keyring 1.4.1` as the installed version. (This helps in making sure extra versions of the libraries are not included as duplicates, especially in the case where bundles are created. Additionally, this makes sure that weird side-effects in the WASM initialization is avoided.)
+
 
 ## Creating a keyring instance
 
@@ -72,6 +74,7 @@ const strPair = keyring.addFromUri('Janice');
 
 You could extend derivation from these specified seeds with derivation paths if applicable, i.e. `Janice//hard` will perform a hard derivation with the path `hard` on the pair that is generated from the `Janice` seed. As far as possible, try to stick with mnemonics in your applications, unless you have a good reason to not do so. Humans are generally bad at generating their own entropy and mnemonics has additional properties such as built-in checksums.
 
+
 ## Working with pairs
 
 In the previous examples we added a pair to the keyring (and we actually immediately got access to the pair). From this pair there is some information we can retrieve -
@@ -104,6 +107,7 @@ console.log(`The signature ${u8aToHex(signature)}, is ${isValid ? '' : 'in'}vali
 ```
 
 This covers the keyring basics, however there are two additional functions here of interest, `keyring.getPairs()` to retrieve a list of all pairs in the keyring and `keyring.getPair(<address or publicKey>)` to retrieve a pair where we have an identifier.
+
 
 ## Back to transactions
 

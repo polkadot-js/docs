@@ -5,6 +5,7 @@ slug: /api/examples/promise
 
 Here you will find a list of examples that takes you through the basics of connecting to a local node, retrieving data from the Node and chain and execute transactions on the chain. It uses the [[ApiPromise]] interface.
 
+
 ## Prerequisites
 
 For the following examples, you need a local node. It is usually convenient testing with:
@@ -13,9 +14,11 @@ For the following examples, you need a local node. It is usually convenient test
 substrate --dev
 ```
 
+
 ## Running the examples
 
 From each folder, run `yarn` to install the required dependencies and then run `yarn start` to execute the example against the running node.
+
 
 ## Development accounts
 
