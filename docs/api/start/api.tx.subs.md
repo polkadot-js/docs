@@ -4,6 +4,7 @@ title: Transaction subscriptions
 
 Previously we sent simple transactions using the `api.tx` endpoints, in this section we will extend that to monitor the actual transactions for inclusion and also extend the monitoring for transaction events.
 
+
 ## Transaction inclusion
 
 To send a transaction and then waiting until it has been included in a block, we will use a subscription interface instead of just waiting for the transaction pool addition to yield the extrinsic hash. For the simplest form, we can do the following -
@@ -32,6 +33,7 @@ const unsub = await api.tx.balances
 As per all previous subscriptions, the transaction subscription returns in `unsub()` and the actual method has a subscription callback. The `result` object has 2 parts, `events` (to to covered in the next section) and the `status` enum.
 
 When the `status` enum is in `Finalized` state (checked via `isFinalized`), the underlying value contains the block hash of the block where the transaction has been finalized. `Finalized` will follow `InBlock`, which is the block where the transaction has been included. `InBlock` does not mean the block is finalized, but rather applies to the transaction state, where `Finalized` means that the transaction cannot be forked off the chain.
+
 
 ## Transaction events
 
@@ -64,6 +66,7 @@ const unsub = await api.tx.balances
 
 Be aware that when a transaction status is `isFinalized`, it means it is included, but it may still have failed - for instance if you try to send a larger amount that you have free, the transaction is included in a block, however from a end-user perspective the transaction failed since the transfer did not occur. In these cases a `system.ExtrinsicFailed` event will be available in the events array.
 
+
 ## Payment information
 
 The Polkadot/Substrate RPC endpoints exposes weight/payment information that takes an encoded extrinsic and calculates the on-chain weight fees for it. A wrapper for this is available on the tx itself, taking exactly the same parameters as you would pass to a normal `.signAndSend` operation, specifically `.paymentInfo(sender, <any options>)`. To expand on our previous example -
@@ -80,6 +83,7 @@ console.log(`transaction will have a weight of ${weight}, with ${partialFee.toHu
 // send the tx
 transfer.signAndSend(alice, ({ events = [], status }) => { ... });
 ```
+
 
 ## Complex transactions
 

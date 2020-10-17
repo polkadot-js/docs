@@ -22,6 +22,7 @@ console.log(api.consts.balances.transactionByteFee.toNumber());
 
 Since these are constants and defined by the metadata, it is not a call, but rather the values immediately available - as you'll see in subsequent sections, there is no need for `await` on these, it immediately returns the type and value for you to work with.
 
+
 ## The API and types
 
 There is some magic applied by the API. For instance as the `createFee` result is returned, the API knows the expected type and makes a `Balance` object available, hence the `toNumber`. This result mapping is consistent in retrieving constants, making queries or even sending transactions:
@@ -30,6 +31,7 @@ There is some magic applied by the API. For instance as the `createFee` result i
 - when a value is retrieved, the API will provide an object of the correct type that wraps this value
 
 From the last point, this means that a `Balance` will be returned as a number object extending [bn.js](https://github.com/indutny/bn.js/). In a later section we will go through a breakdown of all the commonly-used types and all [the basics available on types](types.basics.md).
+
 
 ## Making queries
 

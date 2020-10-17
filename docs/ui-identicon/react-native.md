@@ -4,6 +4,7 @@ title: React Native
 
 A generic identity icon that can render icons based on an address.
 
+
 ## Usage Examples
 
 To install the component, do `yarn add @polkadot/reactnative-identicon`

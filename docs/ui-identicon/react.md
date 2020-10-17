@@ -4,6 +4,7 @@ title: React
 
 A generic identity icon that can render icons based on the theme, be it Substrate or Polkadot
 
+
 ## Usage Examples
 
 To install the component, do `yarn add @polkadot/react-identicon`

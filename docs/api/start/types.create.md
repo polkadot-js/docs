@@ -13,6 +13,7 @@ Circling back to metadata. There are two important things to remember when using
 
 In cases where a value is returned such as storage queries, the response from the chain is always encoded into the correct `Codec` type. This means that while the node may return an encoded block (with encoded extrinsics) via `api.rpc.chain.getBlock()`, this is decoded into a proper `SignedBlock` by the API. Outputting this value via `.toJSON()` will yield an encoding for RPC, so if you are not using TypeScript (which adds code helpers on decoded objects), a representation via `.toHuman()` will be more representative of the actual object fields, re-formatted for human consumption.
 
+
 ## Why create types
 
 With the conversions done in the API, there are limited reasons to create types "manually". However, just because there are not thousands of reasons, does not mean it is not valid. For instance, you may retrieve an `Option` and for the sake of sanity would like to use `.unwrapOr()` on it, returning a `Codec` default value where the value `.isNone`.
@@ -28,6 +29,7 @@ const balance: Balance = balanceOpt.unwrapOr(api.createType('Balance'));
 ```
 
 In the example above, we introduced the `api.createType(<typeName>, [<value>])`. The same format is also exposed by the `TypeRegistry` (more on this in a short while) as well as `createType(...)` from the actual `@polkadot/types` package. All doing exactly the same.
+
 
 ## Choosing how to create
 
@@ -51,6 +53,7 @@ api.registry.createType('Balance', 123n);
 // via the low-level approach (not recommended)
 createType(api.registry, 'Balance', '123');
 ```
+
 
 ## Using with TypeScript
 

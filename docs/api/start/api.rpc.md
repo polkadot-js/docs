@@ -21,6 +21,7 @@ console.log(`${chain}: last block #${lastHeader.number} has hash ${lastHeader.ha
 
 In this example, you will see the same pattern as with queries: each result is a promise and a simple `await` makes the query and resolves with the result.
 
+
 ## Subscriptions
 
 The RPCs lend themselves to using subscriptions, for instance in the above case you would assume that once connected, the chain won't change, however new blocks will come in at intervals and we probably want to keep track of those. We can adapt the previous example to start using subscriptions -
@@ -54,6 +55,7 @@ const unsubHeads = await api.rpc.chain.subscribeNewHeads((lastHeader) => {
 
 Unlike single-shot queries, for subscriptions we are `await`-ing a function, taking no parameters (that also returns nothing) that can be used to unsubscribe for the subscription and clear the underlying RPC connection. So in the above example we set `unsubHeads` and then call it when we wish to cancel the subscription.
 
+
 ## Detour into derives
 
 The `api.derive` interfaces will be covered in a follow-up section, but since the above example deals with new head subscriptions, a quick detour is warranted. The derives are just helpers that define certain functions and combine results from multiple sources. For new headers, the following information is useful in certain scenarios -
@@ -66,6 +68,7 @@ const unsub = await api.derive.chain.subscribeNewHeads((lastHeader) => {
 ```
 
 In the above case the `subscribeNewHeads` derive augments the header retrieved with an `.author` getter. This is done by parsing the actual header and logs received and filling in the author from the `api.query.session.validators` call.
+
 
 ## Extended Queries
 
