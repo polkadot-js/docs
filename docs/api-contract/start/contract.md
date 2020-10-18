@@ -24,7 +24,9 @@ In the `Blueprint` example we have instantiated an incrementer contract. In the 
 ```javascript
 // Read from the contract via an RPC call
 const value = 0; // only useful on isPayable messages
-const gasLimit = 1000000n;
+
+// NOTE the apps UI specified these in mega units
+const gasLimit = 3000n * 1000000n;
 
 // Perform the actual read (no params at the end, for the `get` message)
 // (We perform the send from an account, here using Alice's address)
@@ -72,7 +74,7 @@ In addition to using the `.query.<messageName>` on a contract, the `.tx.<message
 ```javascript
 // We will use these values for the execution
 const value = 0; // only useful on isPayable messages
-const gasLimit = 1000000n;
+const gasLimit = 3000n * 1000000n;
 const incValue = 1;
 
 // Send the transaction, like elsewhere this is a normal submittable
