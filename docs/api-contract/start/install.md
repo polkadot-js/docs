@@ -13,7 +13,7 @@ Generally you would want to keep the versions of the 2 in lock-step, which mean 
 
 Be aware that Substrate chains are different, which means that some chains will not have the [Substrate contracts palette](../../substrate/intro.md) installed. For instance relay chains such as Polkadot does not have this functionality, however may have parachains that do.
 
-Additionally the contracts palette and [ink!](https://github.com/paritytech/ink) are still evolving. With the upgrade from ink! v2 to v3 the ABI structure has changed completely. As of the [polkadot-js API v2.2.1](https://github.com/polkadot-js/api/releases/tag/v2.2.1) only ink! v3.0-rc1 and later is supported. If you are using an earlier version, this guide will not be of use since the wrapper interfaces has changed in a major may to support the new formats.
+Additionally the contracts palette and [ink!](https://github.com/paritytech/ink) are still evolving. With the upgrade from ink! v2 to v3 the ABI structure has changed completely. As of the [polkadot-js API v2.2.1](https://github.com/polkadot-js/api/releases/tag/v2.2.1) only ink! v3.0-rc1 and later is supported. If you are using an earlier version, this guide will not be useful since the wrapper interfaces have changed in a major may to support the new formats.
 
 For development purposes it generally is preferred to use a local development network, that way you can swap and purge contracts while developing.
 
