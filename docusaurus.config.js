@@ -7,9 +7,12 @@ module.exports = {
   baseUrl: BASE_URL,
   onBrokenLinks: 'throw',
   favicon: 'img/favicon.ico',
-  organizationName: 'polkadot-js', // Usually your GitHub org/user name.
+  organizationName: 'polkadot-js',
   onBrokenLinks: 'warn',
-  projectName: 'docs', // Usually your repo name.
+  projectName: 'docs',
+  stylesheets: [
+    'fonts/fonts.css'
+  ],
   themeConfig: {
     navbar: {
       title: 'polkadot{.js}',
@@ -18,17 +21,6 @@ module.exports = {
         src: 'img/logo.svg',
       },
       items: [
-        // {
-        //   to: '/',
-        //   activeBasePath: '/',
-        //   label: 'Reference',
-        //   position: 'left',
-        // },
-        // {
-        //   to: 'b/',
-        //   label: 'Blog',
-        //   position: 'left'
-        // },
         {
           href: 'https://polkadot.js.org/apps/',
           label: 'Apps UI (Wallet)',
@@ -41,73 +33,21 @@ module.exports = {
         },
       ],
     },
-    // footer: {
-    //   style: 'dark',
-    //   links: [
-    //     {
-    //       title: 'Docs',
-    //       items: [
-    //         {
-    //           label: 'Style Guide',
-    //           to: 'docs/',
-    //         },
-    //         {
-    //           label: 'Second Doc',
-    //           to: 'docs/doc2/',
-    //         },
-    //       ],
-    //     },
-    //     {
-    //       title: 'Community',
-    //       items: [
-    //         {
-    //           label: 'Stack Overflow',
-    //           href: 'https://stackoverflow.com/questions/tagged/docusaurus',
-    //         },
-    //         {
-    //           label: 'Discord',
-    //           href: 'https://discordapp.com/invite/docusaurus',
-    //         },
-    //         {
-    //           label: 'Twitter',
-    //           href: 'https://twitter.com/docusaurus',
-    //         },
-    //       ],
-    //     },
-    //     {
-    //       title: 'More',
-    //       items: [
-    //         {
-    //           label: 'Blog',
-    //           to: 'blog',
-    //         },
-    //         {
-    //           label: 'GitHub',
-    //           href: 'https://github.com/polkadot-js/docs',
-    //         },
-    //       ],
-    //     },
-    //   ],
-    //   copyright: `Copyright © ${new Date().getFullYear()} polkadot{.js}. Built with Docusaurus.`,
-    // },
   },
   presets: [
-    [
-      '@docusaurus/preset-classic',
-      {
-        docs: {
-          sidebarPath: require.resolve('./sidebars.js'),
-          editUrl: 'https://github.com/polkadot-js/docs/edit/master/',
-          routeBasePath: '/'
-        },
-        blog: {
-          showReadingTime: true,
-          editUrl: 'https://github.com/polkadot-js/docs/edit/master/',
-        },
-        theme: {
-          customCss: require.resolve('./src/css/custom.css'),
-        },
+    ['@docusaurus/preset-classic', {
+      docs: {
+        sidebarPath: require.resolve('./sidebars.js'),
+        editUrl: 'https://github.com/polkadot-js/docs/edit/master/',
+        routeBasePath: '/'
       },
-    ],
+      blog: {
+        showReadingTime: true,
+        editUrl: 'https://github.com/polkadot-js/docs/edit/master/',
+      },
+      theme: {
+        customCss: require.resolve('./src/css/custom.css'),
+      },
+    }],
   ],
 };

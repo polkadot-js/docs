@@ -4,6 +4,7 @@ title: Transactions
 
 Transaction endpoints are exposed, as determined by the metadata, on the `api.tx` endpoint. These allow you to submit transactions for inclusion in blocks, be it transfers, setting information or anything else your chain supports.
 
+
 ## Simple transactions
 
 To start off, let's make a balance transfer from Alice to Bob.
@@ -26,6 +27,7 @@ As with all other API operations, the `to` params just needs to be "account-like
 
 The result for this call (we will deal with subscriptions in a short while), is the transaction hash. This is a hash of the data and receiving this does not mean that transaction has been included, but rather only that it has been accepted for propagation by the node. (It can still fail on execution, we will handle this in some of our follow-up sections.)
 
+
 ## Under the hood
 
 Despite the single-line format of `signAndSend`, there is a lot happening under the hood (and all of this can be manually provided) -
@@ -36,6 +38,7 @@ Despite the single-line format of `signAndSend`, there is a lot happening under 
 - The transaction is submitted to the node
 
 As suggested, you can override all of this, i.e. by retrieving the nonce yourself and passing that as an option, i.e. `signAndSend(alice, { nonce: aliceNonce })`, this could be useful when manually tracking and submitting transactions in bulk.
+
 
 ## Into the keyring we go
 

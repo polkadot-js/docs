@@ -10,6 +10,7 @@ Additionally, the API contains some logic for chain type detection, for instance
 
 There is the [recommendation](install.md#betas) to use a `@polkadot/api@beta` should you wish to track the master branches of Polkadot or Substrate, since master changes for the addition of new types do not make it into a stable release immediately.
 
+
 ## Extension
 
 As a blockchain toolkit, Substrate makes it easy to add your own modules and types. In most non-trivial implementations, this would mean that developers are adding specific types for their implementation as well. The API will get to know the names of these types via the metadata, however it won't understand what they are, which means it cannot encode or decode them. Additionally, when a type is mismatched between the node and the API, the decoding can fail, yielding issues such as [Could not convert errors](../FAQ.md#the-node-returns-a-could-not-convert-error-on-send) when submitting transactions.
@@ -28,6 +29,7 @@ const api = await ApiPromise.create({
 
 The above introduces the `types` registry, effectively allowing overrides and the definition of new types. The override above would mean that immediately the API will treat all occurrences of `Balance` not as the default, but rather as the defined size.
 
+
 ## Field ordering
 
 When defining any custom structures or types, it is critical that the following rules are applied -
@@ -36,6 +38,7 @@ When defining any custom structures or types, it is critical that the following 
 - Ensure that the field order is maintained in all definitions. The SCALE serialization is binary and contains no field names in the serialization, only the encoded values. Any decoding is therefore done based on the size of the type and the order thereof in the definitions.
 
 These rules apply everywhere. Always ensure that the types match exactly between the environments and that the ordering is maintained, be it for structs, tuples or enums.
+
 
 ## User-defined structs
 
@@ -65,6 +68,7 @@ const api = await ApiPromise.create({
 
 The example above defines non-primitive types (as found in the specific implementation) as structures. Additionally it also shows the user-defined types can depend on other user-defined types with `Transaction` referencing both `TransactionInput` and `TransactionOutput`. Here you can reference any known types, i.e. in the above we have referenced primitives such as `u32` and `Signature` (itself an alias for `H512`).
 
+
 ## Definition clashes
 
 As explained in a previous section, the underlying API Codec types have a [number of built-in properties](types.basics.md) and in some cases it could be that your struct has a field that conflicts. These should be minimal, however it can happen. Take the following example where a defined `hash` property clashes with the same-name Codec property -
@@ -86,6 +90,7 @@ Document: {
   docHash: 'Text'
 }
 ```
+
 
 ## User-defined enum
 
@@ -112,6 +117,7 @@ const api = await ApiPromise.create({
 ```
 
 As seen in these examples, types are built up in terms of primitives and aligns with the Rust-type definition model with `Compact`, `Option` and `Vec`.
+
 
 ## Node and chain-specific types
 
@@ -172,6 +178,7 @@ const api = await ApiPromise.create({
 
 `Balance` would be defined as an `u128` at the end. Effectively based on the flow it is first registered as a `u32`, then overridden as a `u64` and finally overridden once more as a `u128` by the chain types.
 
+
 ## Impact on extrinsics
 
 When configuring your chain, be cognizant of the types you are using, and always ensure that any changes are replicated back to the API. In an earlier example we configured `Balance` as `u64`, in this case the same changes needs to be applied on the API, especially when there are mismatches compared to Substrate master. Not doing so means that failures will occur. The same would happen when your own types have mismatched fields or types are lacking fields on structs or enums.
@@ -211,6 +218,7 @@ const api = await ApiPromise.create({
 ```
 
 Always look at customization and understand the impacts, replicating these changes between the node and the API. For the above the `Address` type is used in the construction of the `UncheckedExtrinsic` type, while the lookup type is applicable on transactions such as `balances.transfer(to: LookupSource, value: Balance)`
+
 
 ## Custom RPC
 
