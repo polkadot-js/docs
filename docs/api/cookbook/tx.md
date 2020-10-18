@@ -59,6 +59,29 @@ api.tx.balances
   });
 ```
 
+As of the `@polkadot/api` 2.3.1 additional result fields are exposed. Firstly there is `dispatchInfo: DispatchInfo` which occurs in both `ExtrinsicSuccess` & `ExtrinsicFailed` events. Additionally, on failures the `dispatchError: DispatchError` is exposed. With this in mind, the above can be simplified to be -
+
+```js
+api.tx.balances
+  .transfer(recipient, 123)
+  .signAndSend(sender, ({ status, events, dispatchError }) => {
+    // status would still be set, but in the case of error we can shortcut
+    // to just check it (so an error would indicate InBlock or Finalized)
+    if (dispatchError) {
+      if (dispatchError.isModule) {
+        // for module errors, we have the section indexed, lookup
+        const decoded = api.registry.findMetaError(dispatchError.asModule);
+        const { documentation, method, section } = decoded;
+
+        console.log(`${section}.${method}: ${documentation.join(' ')}`);
+      } else {
+        // Other, CannotLookup, BadOrigin, no extra info
+        console.log(error.toString());
+      }
+    }
+  });
+``` 
+
 
 ## How do I send an unsigned extrinsic?
 
