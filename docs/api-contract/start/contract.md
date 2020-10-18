@@ -24,46 +24,63 @@ In the `Blueprint` example we have instantiated an incrementer contract. In the 
 ```javascript
 // Read from the contract via an RPC call
 const value = 0; // only useful on isPayable messages
-const gasLimit = 1000000n;
 
-// Perform the actual read (no params at the end, for the get message)
-// (We perform the send from an account address, it doesn't get executed)
-const value = await contract
-  .read('get', value, gasLimit)
-  .send(alicePair.address);
+// NOTE the apps UI specified these in mega units
+const gasLimit = 3000n * 1000000n;
+
+// Perform the actual read (no params at the end, for the `get` message)
+// (We perform the send from an account, here using Alice's address)
+const value = await contract.query.get(alicePair.address, value, gasLimit);
 
 // The actual result from RPC as `ContractExecResult`
 console.log(value.result.toHuman());
 
 // check if the call was successful
 if (value.result.isSuccess) {
+  // data from the enum
+  const success = value.result.asSuccess;
+
   // should output 123 as per our initial set (output here is an i32)
   console.log(value.output.toHuman());
 
-  // the amount of gas consumed (u64 value)
-  console.log(value.result.asSuccess.gasConsumed.toHuman());
+  // the amount of gas consumed (naturally a u64 value()
+  console.log(success.gasConsumed.toHuman());
 } else {
   console.error('Call failed');
 }
 ```
 
-Underlying the above `.read` using the `.call` RPC on the contracts palette to retrieve the value. When executing it encodes the message using the selector and the input values to allow execution in the contract environment. This can be executed on any contract message, unlike the execution below it will only read state, not actually execute.
+Underlying the above `.query.<messageName>` is using the `api.rpc.contracts.call` API on the contracts palette to retrieve the value. When executing it encodes the message using the selector and the input values to allow execution in the contract environment. This can be executed on any contract message, unlike the execution below it will only read state, not actually execute.
 
+An alternative for reading would be via the lower-level `.read` method, in this case
+
+```javascript
+// Perform the actual read (no params at the end, for the `get` message)
+// (We perform the send from an account address, it doesn't get executed)
+const value = await contract
+  .read('get', value, gasLimit)
+  .send(alicePair.address);
+
+// The actual result from RPC as `ContractExecResult`
+...
+```
+
+In cases where the ABI messages have conflicting names, instead of the `'get'` string the actual message index (or message from the Abi itself) can be passed-through.
 
 ## Sending a transaction
 
-In addition to using the `.read` on a contract, the `.exec` method is provides to send an actual encoded transaction to the contract. Expanding on our above example, we can now execute and then retrieve the subsequent value -
+In addition to using the `.query.<messageName>` on a contract, the `.tx.<messageName>` method is provides to send an actual encoded transaction to the contract. Expanding on our above example, we can now execute and then retrieve the subsequent value -
 
 ```javascript
 // We will use these values for the execution
 const value = 0; // only useful on isPayable messages
-const gasLimit = 1000000n;
+const gasLimit = 3000n * 1000000n;
 const incValue = 1;
 
 // Send the transaction, like elsewhere this is a normal submittable
 // extrinsic with the same rules as applied in the API
-await contract
-  .exec('inc', value, gasLimit, incValue)
+await contract.tx
+  .inc(value, gasLimit, incValue)
   .signAndSend(alicePair, (result) => {
     if (result.status.isInBlock) {
       console.log('in a block');
@@ -73,8 +90,19 @@ await contract
   });
 ```
 
-If we perform the same `.get` read on the value now, it would be `124`.
+If we perform the same `query.get` read on the value now, it would be `124`. For lower-level access, like we have in the `Blueprint` via `.createContract` you can also perform the execution via the `.exec` function, which would yield equivalent results -
 
+```javascript
+// Send the transaction, like elsewhere this is a normal submittable
+// extrinsic with the same rules as applied in the API
+await contract
+  .exec('inc', value, gasLimit, incValue)
+  .signAndSend(alicePair, (result) => {
+    ...
+  });
+```
+
+For the above interface we can specify the message as the string name, the index of the actual message as retrieved via the Abi.
 
 ## That is it... for now
 
