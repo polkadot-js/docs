@@ -2,7 +2,7 @@
 title: Make a simple transfer
 ---
 
-This sample shows how to create a transaction to make a transfer from one an account to another.
+This sample shows how to create a transaction to make a transfer from one account to another.
 
 ```javascript
 // Import the API, Keyring and some utility functions
