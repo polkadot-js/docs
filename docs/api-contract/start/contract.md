@@ -104,6 +104,33 @@ await contract
 
 For the above interface we can specify the message as the string name, the index of the actual message as retrieved via the Abi.
 
+
+## Weight estimation
+
+To estimate the gasLimit (which in the Substrate context refers to the weight used), we can use the `.query` (read) interfaces with a sufficiently large value to retrieve the actual gas consumed. The API makes this easy - with a `gasLimit` or `-1` passed to the query it will use the maximum gas limit available to transactions and the return value will have the actual gas used.
+
+To see this in practice -
+
+```js
+// We will use these values for the execution
+const value = 0;
+const incValue = 1;
+
+// Instead of sending we use the `call` interface via `.query` that will return
+// the gas consoumed (the API aut-fill the max block tx weight when -1 is the gasLimit)
+const { result } = await contract.query.inc(value, -1, incValue)
+
+if (result.isSuccess) {
+  // extract the value from the Success portion of the enum
+  const gasConsumed = result.asSuccess.gasConsumed;
+
+  console.log(`Call execution will consume ${gasConsumed.toString()}`);
+}
+```
+
+We can use the `gasConsumed` input (potentially with a buffer for various execution paths) in any calls to `contract.tx.inc(...)` with the same input parameters specified on the `query` where the estimation was done.
+
+
 ## That is it... for now
 
 This was a whirl-wind tour of what the API provides in terms of the `@polkadot/api-contract` interface. It is not perfect yet, we would like to expand it to allow for greater type-checking on the contracts (instead of read/exec wit messages), but hopefully in the current state it already enhances the way you can interact with contracts.
