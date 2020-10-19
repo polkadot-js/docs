@@ -23,8 +23,11 @@ const allInjected = await web3Enable('my cool dapp');
 // meta.source contains the name of the extension that provides this account
 const allAccounts = await web3Accounts();
 
+// the address we use to use for signing, as injected
+const SENDER = '5DTestUPts3kjeXSTMyerHihn1uwMfLj8vU8sqF7qYrFabHE';
+
 // finds an injector for an address
-const injector = await web3FromAddress('5DTestUPts3kjeXSTMyerHihn1uwMfLj8vU8sqF7qYrFabHE');
+const injector = await web3FromAddress(SENDER);
 
 // sign and send our transaction - notice here that the address of the account
 // (as retrieved injected) is passed through as the param to the `signAndSend`,
@@ -32,5 +35,5 @@ const injector = await web3FromAddress('5DTestUPts3kjeXSTMyerHihn1uwMfLj8vU8sqF7
 // Once complete, the api sends the tx + signature via the normal process
 api.tx.balances
   .transfer('5C5555yEXUcmEJ5kkcCMvdZjUo7NGJiQJMS7vZXEeoMhj3VQ', 123456)
-  .signAndSend('5DTestUPts3kjeXSTMyerHihn1uwMfLj8vU8sqF7qYrFabHE', { signer: injector.signer }, (status) => { ... });
+  .signAndSend(SENDER, { signer: injector.signer }, (status) => { ... });
 ```
