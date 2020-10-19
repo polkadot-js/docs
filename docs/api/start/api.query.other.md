@@ -6,7 +6,7 @@ In previous sections we took a walk through queries, showing how to use one-shot
 
 ## State at a specific block
 
-Quite often is is useful (taking pruning into account, more on this later) to retrieve the state at a specific block. For instance we may wish to retrieve the current balance as well as the balance at a previous block for a specific account -
+Quite often it is useful (taking pruning into account, more on this later) to retrieve the state at a specific block. For instance we may wish to retrieve the current balance as well as the balance at a previous block for a specific account -
 
 ```js
 ...
