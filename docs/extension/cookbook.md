@@ -38,12 +38,12 @@ const account = allAccount[0];
 
 // to be able to retrieve the signer interface from this account
 // we can use web3FromSource which will return an InjectedExtension type
-const injected = await web3FromSource(account.meta.source);
+const injector = await web3FromSource(account.meta.source);
 
 
-// this InjectExtension object has a signer and a signRaw method
+// this injector object has a signer and a signRaw method
 // to be able to sign raw bytes
-const signRaw = injected?.signer?.signRaw;
+const signRaw = injector?.signer?.signRaw;
 
 if (!!signRaw) {
     // after making sure that signRaw is defined
@@ -69,6 +69,10 @@ const account = allAccount[0];
 
 // here we use the api to create a balance transfer to some account of a value of 12344
 const transferExtrinsic = api.tx.balances.transfer('5C5555yEXUcmEJ5kkcCMvdZjUo7NGJiQJMS7vZXEeoMhj3VQ', 123456)
+
+// to be able to retrieve the signer interface from this account
+// we can use web3FromSource which will return an InjectedExtension type
+const injector = await web3FromSource(account.meta.source);
 
 // passing the injected account address as the first argument of signAndSend
 // will allow the api to retrieve the signer and the user will see the extension
