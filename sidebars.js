@@ -86,7 +86,8 @@ module.exports = {
           'util-crypto/examples/create-mnemonic',
           'util-crypto/examples/validate-address',
           'util-crypto/examples/encrypt-decrypt',
-          'util-crypto/examples/create-multisig'
+          'util-crypto/examples/create-multisig',
+          'util-crypto/examples/verify-signature'
         ]
       },
       'util-crypto/FAQ'
@@ -123,6 +124,11 @@ module.exports = {
           'ui-keyring/start/loading'
         ]
       }
-    ]
+    ],
+    'Extension': [
+      'extension/intro',
+      'extension/usage',
+      'extension/cookbook'
+    ],
   },
 };
