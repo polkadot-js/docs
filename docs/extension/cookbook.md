@@ -73,7 +73,7 @@ const transferExtrinsic = api.tx.balances.transfer('5C5555yEXUcmEJ5kkcCMvdZjUo7N
 // passing the injected account address as the first argument of signAndSend
 // will allow the api to retrieve the signer and the user will see the extension
 // popup asking to sign the balance transfer transaction
-transferExtrinsic.signAndSend(account.address, ({ status }) => {
+transferExtrinsic.signAndSend(account.address, { signer: injector.signer }, ({ status }) => {
     if (status.isInBlock) {
         console.log(`Completed at block hash #${status.asInBlock.toString()}`);
     } else {
