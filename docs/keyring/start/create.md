@@ -31,7 +31,7 @@ import { mnemonicGenerate } from '@polkadot/util-crypto';
 // generate a mnemonic with default params (we can pass the number
 // of words required 12, 15, 18, 21 or 24, less than 12 words, while
 // valid, is not supported since it is more-easily crackable)
-const menmeonic = mnemonicGenerate();
+const mnemonic = mnemonicGenerate();
 
 // create & add the pair to the keyring with the type and some additional
 // metadata specified
