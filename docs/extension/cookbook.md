@@ -22,7 +22,7 @@ if (extensions.length === 0) {
     return;
 }
 
-// we are now informed that the user has a least one extension and that we
+// we are now informed that the user has at least one extension and that we
 // will be able to show and use accounts
 const allAccounts = await web3Accounts();
 ```
