@@ -68,6 +68,7 @@ Each enum has additional getters which are injected based on the fields wrapped.
 
 As a real-world example, when an extrinsic is applied, the `Phase` enum has one of two states, `ApplyExtrinsic(u32)` or `Finalization`. In this case `.isApplyExtrinsic` would be `true` when an extrinsic is being applied, and `.asApplyExtrinsic` would return the value as a `u32` (which is the index of the extrinsic in the block, as it is being applied). When `isApplyExtrinsic` is `false` and `asApplyExtrinsic` is called, the getter will throw.
 
+
 ## Working with Option&lt;Type&gt;
 
 An `Option<Type>` attempts to mimic the Rust approach of having `None` and `Some` available. This means the following getters & methods are available on an `Option` -
@@ -91,6 +92,13 @@ console.log(`${accountId} has ${count.toNumber()} values`);
 ```
 
 When making a call that expect a `Tuple` input, pass it as an array, so to pass the example above into a call, it would be `.call([123, '5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY'])`
+
+
+## Boolean values
+
+All `bool` values are returned as nomal JS `Booolean` objects, i.e. they extend the [JS Boolean](https://www.w3schools.com/jsref/jsref_obj_boolean.asp) to allow it to be used as a `Codec` type. 
+
+In addition to the default `getValue()` on the JS Boolean and the default interfaces explained above, two additional getters have been added for ease-of-use. These are `isTrue` and `isFalse` that will just return a normal JS primitive `boolean` for a quick check without using `getValue()`.
 
 
 ## Extending types
