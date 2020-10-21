@@ -30,18 +30,18 @@ const gasLimit = 3000n * 1000000n;
 
 // Perform the actual read (no params at the end, for the `get` message)
 // (We perform the send from an account, here using Alice's address)
-const value = await contract.query.get(alicePair.address, value, gasLimit);
+const callValue = await contract.query.get(alicePair.address, value, gasLimit);
 
 // The actual result from RPC as `ContractExecResult`
-console.log(value.result.toHuman());
+console.log(callValue.result.toHuman());
 
 // check if the call was successful
-if (value.result.isSuccess) {
+if (callValue.result.isSuccess) {
   // data from the enum
-  const success = value.result.asSuccess;
+  const success = callValue.result.asSuccess;
 
   // should output 123 as per our initial set (output here is an i32)
-  console.log(value.output.toHuman());
+  console.log(callValue.output.toHuman());
 
   // the amount of gas consumed (naturally a u64 value()
   console.log(success.gasConsumed.toHuman());
