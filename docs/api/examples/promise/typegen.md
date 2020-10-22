@@ -20,10 +20,10 @@ For the packages we need from the `@polkadot/*` we have added `@polkadot/api` (w
     "lint": "tsc --noEmit --pretty"
   },
   "dependencies": {
-    "@polkadot/api": "^2.1.0"
+    "@polkadot/api": "^2.3.1"
   },
   "devDependencies": {
-    "@polkadot/typegen": "^2.1.0",
+    "@polkadot/typegen": "^2.3.1",
     "ts-node": "^8.6.2",
     "typescript": "^4.0.2"
   }
