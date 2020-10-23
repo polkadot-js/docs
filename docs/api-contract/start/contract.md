@@ -57,7 +57,7 @@ An alternative for reading would be via the lower-level `.read` method, in this 
 ```javascript
 // Perform the actual read (no params at the end, for the `get` message)
 // (We perform the send from an account address, it doesn't get executed)
-const value = await contract
+const callValue = await contract
   .read('get', value, gasLimit)
   .send(alicePair.address);
 
