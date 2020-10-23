@@ -76,7 +76,7 @@ api.tx.balances
         console.log(`${section}.${method}: ${documentation.join(' ')}`);
       } else {
         // Other, CannotLookup, BadOrigin, no extra info
-        console.log(error.toString());
+        console.log(dispatchError.toString());
       }
     }
   });
