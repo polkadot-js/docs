@@ -13,14 +13,14 @@
     "serve": "docusaurus serve --port 8080"
   },
   "devDependencies": {
-    "@docusaurus/core": "2.0.0-alpha.65",
-    "@docusaurus/preset-classic": "2.0.0-alpha.65",
-    "@mdx-js/react": "^1.6.18",
-    "@polkadot/dev": "^0.59.3",
-    "@polkadot/typegen": "^2.3.2-12",
+    "@docusaurus/core": "2.0.0-alpha.66",
+    "@docusaurus/preset-classic": "2.0.0-alpha.66",
+    "@mdx-js/react": "^1.6.19",
+    "@polkadot/dev": "^0.59.4",
+    "@polkadot/typegen": "^2.3.2-13",
     "clsx": "^1.1.1",
-    "react": "^16.14.0",
-    "react-dom": "^16.14.0"
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1"
   },
   "browserslist": {
     "production": [

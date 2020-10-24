@@ -13,4 +13,4 @@ The [@polkadot/extension-dapp](https://www.npmjs.com/package/@polkadot/extension
 - `isWeb3Injected: boolean` - boolean to indicate if `injectedWeb3` was found on the page
 - `web3EnablePromise: Promise<InjectedExtension[]> | null` - `null` or the promise as a result of the last call to `web3Enable`
 
-To get started, follow the [installation and usage](start/usage.md) walk through.
+To get started, follow the [installation and usage](usage.md) walk through.
