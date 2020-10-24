@@ -50,7 +50,21 @@ if (callValue.result.isSuccess) {
 }
 ```
 
-Underlying the above `.query.<messageName>` is using the `api.rpc.contracts.call` API on the contracts palette to retrieve the value. When executing it encodes the message using the selector and the input values to allow execution in the contract environment. This can be executed on any contract message, unlike the execution below it will only read state, not actually execute.
+Underlying the above `.query.<messageName>` is using the `api.rpc.contracts.call` API on the contracts palette to retrieve the value. For this interface, the format is always of the form `messageName(<account address to use>, <value>, <gasLimit>, <...additional params>)`. An example of querying a balance of a specific account on an erc20 contract will therefore be -
+
+```js
+// the address we are going to query
+const target = '5GNJqTPyNqANBkUVMN1LPPrxXnFouWXoe2wNSmmEoLctxiZY';
+const from = '5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY';
+
+// only 1 param needed, the actual address we are querying for (more
+// params can follow at the end, separated by , if needed by the message)
+const callValue = await contract.query.balanceOf(from, 0, -1, target);
+```
+
+In this example we have specified a `gasLimit` of `-1`, in a subsequent section we will expand on this. for now, just remember that is indicated to use max available, i.e. we don't explicitly want to specify a value.
+
+When executing it encodes the message using the selector and the input values to allow execution in the contract environment. This can be executed on any contract message, unlike the examples that will follow below it will only read state, not actually execute and therefore not consume any real value from the account.
 
 An alternative for reading would be via the lower-level `.read` method, in this case
 
@@ -67,6 +81,7 @@ const callValue = await contract
 
 In cases where the ABI messages have conflicting names, instead of the `'get'` string the actual message index (or message from the Abi itself) can be passed-through.
 
+
 ## Sending a transaction
 
 In addition to using the `.query.<messageName>` on a contract, the `.tx.<messageName>` method is provides to send an actual encoded transaction to the contract. Expanding on our above example, we can now execute and then retrieve the subsequent value -
@@ -77,8 +92,9 @@ const value = 0; // only useful on isPayable messages
 const gasLimit = 3000n * 1000000n;
 const incValue = 1;
 
-// Send the transaction, like elsewhere this is a normal submittable
-// extrinsic with the same rules as applied in the API
+// Send the transaction, like elsewhere this is a normal extrinsic
+// with the same rules as applied in the API (As with the read example,
+// additional paras, if required can follow - here only one is needed)
 await contract.tx
   .inc(value, gasLimit, incValue)
   .signAndSend(alicePair, (result) => {
