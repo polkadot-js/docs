@@ -9,7 +9,9 @@ The list will be updated/expanded as questions come up, dealing with some common
 
 There are 2 causes for this, both related to the version of the API that you are using and the support of types. As explained in the elsewhere, types on Polkadot/Substrate are continuously evolving - the latest version of the API always tries to support types for the latest Polkadot networks, such as [Kusama](https://kusama.network/). So for Polkadot public chains, ensure that you are using the latest released API version.
 
-If however you are running against a master branch of either Polkadot or Substrate, you may well be better suited running [a beta version, tracking master](start/install.md#betas). If you are connected to a customized chain, you would rather want to [register the types](start/types.extend.md) either on your own, or via packages that the chain vendor provides.
+If you are connected to a customized chain, you would rather want to [register the types](start/types.extend.md) either on your own, or via packages that the chain vendor provides.
+
+If however you are running against a master branch of either Polkadot or Substrate, and the type additions are very new and have not made it into an API release yet you may well be better suited running [a beta version, tracking master](start/install.md#betas).
 
 
 ## I am getting a "Metadata:: failed on MagicNumber" error
