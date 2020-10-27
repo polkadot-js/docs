@@ -17,3 +17,17 @@ If you are using an older version you would need to use an older version of the 
 The API always tries to use `camelCase` where available. This aligns with the de-facto standards that are generally (not always!) used in JS interfaces. This means that when decorating the ABIs into `contract.<query|tx>.methodName` the `methodName` part would be in camelCase format.
 
 An example of this would be in the erc20 ink! ABI - the method in the above would be `balance_of` however the API (for consistency with the full quite of libraries), decorate this as `contract.query.balanceOf`. When calling the `.read` or `.exec` directly on the contract, you should still specify the original ABI identifier, e.g. `contract.read('balance_of', ...)` (In the next release this will also allow for camelCase lookups in addition to the original Rust/Solidity naming)
+
+## How do I subscribe to a contract query?
+Subscriptions, and queries to the raw storage are on their way! Unfortunately until then there isn't a proper way to subscribe to a contract query. A temporary workaround is to subscribe to `api.query.contracts.contractInfoOf`.
+
+```javascript
+const unsub = await api.query.contracts.contractInfoOf(contractAddress, async () => {
+    // Perform a read of the contract's `get` message
+    const callValue = await contract.query.get(alicePair.address, value, gasLimit);
+
+    // Do something with callValue
+  });
+```
+
+But this workaround is not without drawbacks. Since the callback will be executed every time the contract's storage is affected you will ultimately end up calling your contract query more often than necessary.
