@@ -27,7 +27,7 @@ We either have a `Blueprint` from a code deploy of a manual create. From here we
 
 ```javascript
 // Deploy a contract using the Blueprint
-const endowment = 12300000000n;
+const endowment = 1230000000000n;
 
 // NOTE The apps UI specifies these in Mgas
 const gasLimit = 100000n * 1000000n;
