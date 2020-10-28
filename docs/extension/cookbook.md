@@ -8,7 +8,7 @@ A set of code snippets ready to be used.
 ## Get all extensions accounts
 
 A dapp will not be aware whether or not the user has the extension installed on their browser until the `web3Enable` function is called.
-Calling this function returns the amount of extensions installed and for which the user has accepted to share their accounts.
+Calling this function returns the amount of extensions installed and for which the user has accepted to share their accounts. Using `web3Accounts`, you can then retrieve the visible accounts. See [below for `web3AccountsSubscribe`](#subscription-to-extensions-accounts) usage.
 
 ```javascript
 import { web3Accounts, web3Enable } from '@polkadot/extension-dapp';
@@ -86,4 +86,36 @@ transferExtrinsic.signAndSend(account.address, { signer: injector.signer }, ({ s
 }).catch((error: any) => {
     console.log(':( transaction failed', error);
 });
+```
+
+## Subscription to extensions' accounts
+
+Using `web3AccountsSubscribe` similarly as what we did above with `web3Accounts` allows to get all injected accounts, in this case though because we use a subscription, we will be aware of any account change.
+
+```javascript
+import { web3AccountsSubscribe, web3Enable } from '@polkadot/extension-dapp';
+
+// this call fires up the authorization popup
+const extensions = await web3Enable('my cool dapp');
+
+if (extensions.length === 0) {
+    // no extension installed, or the user did not accept the authorization
+    // in this case we should inform the use and give a link to the extension
+    return;
+}
+
+// we are now informed that the user has at least one extension and that we
+// will be able to show and use accounts
+let unsubscribe; // this is the function of type `() => void` that should be called to unsubscribe
+
+// we subscribe to any account change and log the new list.
+// note that `web3AccountsSubscribe` returns the function to unsubscribe
+unsubscribe = await web3AccountsSubscribe(( injectedAccounts ) => { 
+    injectedAccounts.map(( accounts ) => {
+        console.log(account.address);
+    })
+ });
+
+// don't forget to unsubscribe when needed, e.g when unmounting a component
+unsubscribe && unsubscribe();
 ```
