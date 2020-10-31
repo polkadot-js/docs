@@ -35,18 +35,15 @@ const callValue = await contract.query.get(alicePair.address, value, gasLimit);
 // The actual result from RPC as `ContractExecResult`
 console.log(callValue.result.toHuman());
 
+// gas consumed
+console.log(callValue.gasConsumed.toHuman());
+
 // check if the call was successful
-if (callValue.result.isSuccess) {
-  // data from the enum
-  const success = callValue.result.asSuccess;
-
+if (callValue.result.isOk) {
   // should output 123 as per our initial set (output here is an i32)
-  console.log(callValue.output.toHuman());
-
-  // the amount of gas consumed (naturally a u64 value()
-  console.log(success.gasConsumed.toHuman());
+  console.log('Success', callValue.output.toHuman());
 } else {
-  console.error('Call failed');
+  console.error('Call failed', callValue.result.asErr);
 }
 ```
 
@@ -133,15 +130,11 @@ const value = 0;
 const incValue = 1;
 
 // Instead of sending we use the `call` interface via `.query` that will return
-// the gas consoumed (the API aut-fill the max block tx weight when -1 is the gasLimit)
-const { result } = await contract.query.inc(value, -1, incValue)
+// the gas consumed (the API aut-fill the max block tx weight when -1 is the gasLimit)
+const { gasConsumed, result } = await contract.query.inc(value, -1, incValue)
 
-if (result.isSuccess) {
-  // extract the value from the Success portion of the enum
-  const gasConsumed = result.asSuccess.gasConsumed;
-
-  console.log(`Call execution will consume ${gasConsumed.toString()}`);
-}
+console.log(`outcome: ${result.isOk ? 'Ok' : 'Error'}`);
+console.log(`gasConsumed ${gasConsumed.toString()}`);
 ```
 
 We can use the `gasConsumed` input (potentially with a buffer for various execution paths) in any calls to `contract.tx.inc(...)` with the same input parameters specified on the `query` where the estimation was done.
