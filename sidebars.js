@@ -101,7 +101,8 @@ module.exports = {
           'api-contract/start/basics',
           'api-contract/start/code',
           'api-contract/start/blueprint',
-          'api-contract/start/contract'
+          'api-contract/start/contract.read',
+          'api-contract/start/contract.tx'
         ]
       },
       'api-contract/FAQ'

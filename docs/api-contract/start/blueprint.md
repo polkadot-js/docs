@@ -66,4 +66,4 @@ const unsub = await blueprint
 
 ## Interact with contracts
 
-We have made it this far. At this point you should be familiar with code deployments as well as contract instantiation, next up [we will read a contract and send transactions to it](contract.md).
+We have made it this far. At this point you should be familiar with code deployments as well as contract instantiation, next up [we will read a contract](contract.read.md).
