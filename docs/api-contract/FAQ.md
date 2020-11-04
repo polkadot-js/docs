@@ -7,14 +7,14 @@ The list will be updated/expanded as questions come up, dealing with some common
 
 ## My ABI cannot be parsed
 
-When passing an older pre ink! 3.0-rc1 version of the ABI, you will have an "Invalid JSON ABI structure supplied, expected a recent metadata version" error being returned. As explained in the [getting started guide](start/install.md) as of `@polkadot/api-contract` 2.2 (and later) the older ink! 2.1 versions are not supported.
+When passing an older pre ink! 3.0-rc1 version of the ABI, you will have an "Invalid JSON ABI structure supplied, expected a recent metadata version" error being returned. As explained in the [getting started guide](start/install.md) as of `@polkadot/api-contract` 2.2+ the older ink! 2.1 versions are not supported.
 
 If you are using an older version you would need to use an older version of the API or upgrade your contracts to ink! 3.0.
 
 
-## After upgrading I don't have isSuccess/isError
+## After upgrading to 2.5+ I'm missing isSuccess/isError
 
-In earlier versions of Substrate the call results via read had a slightly different interface to what it available now. Specifically on the `result` structure retrieved via read calls `isOk` was named `isSuccess` (and `isErr` was named `isError`). Since the `Contract` interface follows the Substrate convention these changes has been applied alongside the Substrate update to the `ContractExecResult` structure.
+In earlier versions of Substrate the call results via read had a slightly different interface to what it available now. Specifically on the `result` structure retrieved via read calls `isOk` was named `isSuccess` (and `isErr` was named `isError`). Since the `Contract` interface follows the Substrate convention these changes to `is{Ok,Err}` has been applied alongside the Substrate update to the `ContractExecResult` structure.
 
 In addition `asErr` (unlike the older `asError`) now also has a full error enum (mapping to `DispatchError`) containing failures, unlike the older interface where this was not available. On older chains due to lack of information this will always be `Other`, while on newer chains the result will be fully populated.
 
