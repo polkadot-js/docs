@@ -10,8 +10,10 @@ Assuming that we did not deploy code, we can start by creating one (if following
 import { BlueprintPromise } from '@polkadot/api-contract';
 
 ...
-// create a new blueprint from an existing hash
-// (the hash here is either a Hash, Uint8Array or hex string)
+// Create a new blueprint from an existing hash. As per the code example
+// the abi is an Abi object, an unparsed JSON string or the raw JSON data
+// (after doing a JSON.parse). The hash here is either a Hash, Uint8Array
+// or hex string
 const blueprint = new BlueprintPromise(api, abi, codeHash);
 
 // Deploy a contract using the Blueprint

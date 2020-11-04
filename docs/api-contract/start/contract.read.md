@@ -7,7 +7,10 @@ The `ContractPromise` interface allows you to interact with a deployed contract.
 ```javascript
 import { ContractPromise } from '@polkadot/api-contract';
 
-// Attach to an existing contract with a known ABI and address
+// Attach to an existing contract with a known ABI and address. As per the
+// code and blueprint examples the abi is an Abi object, an unparsed JSON
+// string or the raw JSON data (after doing a JSON.parse). The address is
+// the actual on-chain address as ss58 or AccountId object.
 const contract = new ContractPromise(api, abi, address);
 
 // Read from the contract
