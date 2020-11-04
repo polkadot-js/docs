@@ -1,6 +1,6 @@
 ---
 title: Overview
-slug: /api-contracts
+slug: /api-contract
 ---
 
 The `@polkadot/api-contract` interfaces provides a thin layer on-top of the available API transactions to allow you to manage Substrate contracts in a consistent way. Since not all Substrate chains have contracts available, using it assumes that you are connecting to a chain that has the contracts palette.

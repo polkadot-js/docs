@@ -13,9 +13,9 @@ import { CodePromise } from '@polkadot/api-contracts';
 // (as in all examples, this connects to a local chain)
 const api = await ApiPromise.create();
 
-// Construct our Code helper. The ABI is an Abi object, a string or the raw
-// data (after JSON.parse). Here the wasm is either a hex string (0x prefixed),
-// an Uint8Array or a Node.js Buffer object
+// Construct our Code helper. The abi is an Abi object, an unparsed JSON string
+// or the raw JSON data (after doing a JSON.parse). The wasm is either a hex
+// string (0x prefixed), an Uint8Array or a Node.js Buffer object
 const code = new CodePromise(api, abi, wasm);
 
 // Deploy the WASM, retrieve a Blueprint
