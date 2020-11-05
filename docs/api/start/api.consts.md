@@ -25,7 +25,7 @@ Since these are constants and defined by the metadata, it is not a call, but rat
 
 ## The API and types
 
-There is some magic applied by the API. For instance as the `createFee` result is returned, the API knows the expected type and makes a `Balance` object available, hence the `toNumber`. This result mapping is consistent in retrieving constants, making queries or even sending transactions:
+There is some magic applied by the API. For instance, as the `createFee` result is returned, the API knows the expected type and makes a `Balance` object available, hence the `toNumber`. This result mapping is consistent in retrieving constants, making queries or even sending transactions:
 
 - when values are passed to the API, the API will convert whatever is provided into the correct type as required by the call
 - when a value is retrieved, the API will provide an object of the correct type that wraps this value
