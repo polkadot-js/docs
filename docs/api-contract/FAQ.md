@@ -25,7 +25,7 @@ The `Contract` interface, despite these underlying naming changes, transparently
 
 The API always tries to use `camelCase` naming where available. This aligns with the de-facto standards that are generally (not always!) used in JS interfaces. This means that when decorating the ABIs into `contract.<query|tx>.methodName` the `methodName` part would be in camelCase format.
 
-An example of this would be in the erc20 ink! ABI - the method in the above would be `balance_of` however the API (for consistency with the full quite of libraries), decorate this as `contract.query.balanceOf`. When calling the `.read` or `.exec` directly on the contract, you should still specify the original ABI identifier, e.g. `contract.read('balance_of', ...)` (In the next release this will also allow for camelCase lookups in addition to the original Rust/Solidity naming)
+An example of this would be in the erc20 ink! ABI - the method in the above would be `balance_of` however the API (for consistency with the full suite of libraries), decorate this as `contract.query.balanceOf`. When calling the `.read` or `.exec` directly on the contract, you can still specify the original ABI identifier, e.g. `contract.read('balance_of', ...)`.
 
 
 ## How do I subscribe to a contract query?
