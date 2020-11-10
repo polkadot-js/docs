@@ -86,3 +86,20 @@ If you are on a chain that has not been upgraded yet, you need to add `Weight: '
 As part of the Substrate 2.0 release, the `RefCount` type has been changed from ` u8` to a `u32`. Since the API always track latest Substrate, this change has been applied by default. The impact of this type is that it is used in the `AccountInfo` type which is returned from `system.account`, which, in turn, tracks balances.
 
 If on an older version of the chain, apply the older type via `RefCount: 'u8'` to your types.
+
+
+## Under Webpack, I get Can't import the named export '...' from non EcmaScript module
+
+As of `@polkadot/api` 2.7 EcmaScript modules are also published as part of the package. This allows bundlers that have tree-shaking to create much smaller outputs. Additionally, it also allows newer Node.js installs to use ESM modules via the `.mjs` extension. Bundlers will determine this setup from the `"module": "index.mjs"` key in the `@polkadot/*` package.json and use it as available.
+
+Some older versions of Webpack may not know how to handle these module files and therefore will require an additional config to properly handle these modules. Should the above error arise, add the following to your webpack config under the rules config -
+
+```
+{
+  include: /node_modules/,
+  test: /\.mjs$/,
+  type: 'javascript/auto'
+}
+```
+
+This would just instruct it to handle the `.mjs` ESM modules are normal JS files and apply amy transform directly on it.
