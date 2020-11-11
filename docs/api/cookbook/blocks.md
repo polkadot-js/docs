@@ -79,7 +79,7 @@ In the above `.toHuman()` is used to format into a human-readable representation
 
 ## How do I map extrinsics to their events?
 
-While the blocks contain the extrinsics, the system event storage will contain the events and the details needed to allow for a mapping between. For events the `phase` is an enum that would be `isApplyExtrinsic` with the index in the cases where it refers to an extrinsic in a block. This index maps through the the order of the extrinsics as found.
+While the blocks contain the extrinsics, the system event storage will contain the events and the details needed to allow for a mapping between. For events the `phase` is an enum that would be `isApplyExtrinsic` with the index in the cases where it refers to an extrinsic in a block. This index maps through the order of the extrinsics as found.
 
 To perform a mapping between the two, we need information from both sources.
 
