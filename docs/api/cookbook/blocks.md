@@ -100,5 +100,5 @@ signedBlock.block.extrinsics.forEach(({ method: { method, section } }, index) =>
     .map(({ event }) => `${event.section}.${event.method}`);
 
   console.log(`${section}.${method}:: ${events.join(', ') || 'no events'}`);
-)};
+});
 ```
