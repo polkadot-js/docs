@@ -86,7 +86,7 @@ To perform a mapping between the two, we need information from both sources.
 ```js
 // no blockHash is specified, so we retrieve the latest
 const signedBlock = await this.api.rpc.chain.getBlock();
-const allRecords = await api.query.system.events(signedBlock.block.header.hash);
+const allRecords = await api.query.system.events.at(signedBlock.block.header.hash);
 
 // map between the extrinsics and events
 signedBlock.block.extrinsics.forEach(({ method: { method, section } }, index) => {
