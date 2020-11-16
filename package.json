@@ -15,9 +15,9 @@
   "devDependencies": {
     "@docusaurus/core": "2.0.0-alpha.66",
     "@docusaurus/preset-classic": "2.0.0-alpha.66",
-    "@mdx-js/react": "^1.6.19",
-    "@polkadot/dev": "^0.59.23",
-    "@polkadot/typegen": "^2.6.2-5",
+    "@mdx-js/react": "^1.6.21",
+    "@polkadot/dev": "^0.60.2",
+    "@polkadot/typegen": "^2.7.1",
     "clsx": "^1.1.1",
     "react": "^17.0.1",
     "react-dom": "^17.0.1"
