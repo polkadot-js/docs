@@ -88,6 +88,28 @@ Document: {
   docHash: 'Text'
 }
 ```
+## Type clashes
+
+Another kind of clash is a clash of types. For example a chain can have a `Balance` type defined in two pallets. In one, let's say the balances pallet, it is defined as `u128` and in the other, e.g. the assets pallet, it is defined as `u64`. 
+
+This will create an issue as polkadot JS will try to use the global balance defined (the `u128` in this case). In this scenario we would need a typeAlias. 
+
+```js
+{
+    typesAlias: {
+        "assets": {
+          "Balance": "u64"
+         }
+        },
+    types: {
+        "AssetDetails": {
+            "supply": "Balance"
+        }
+      }
+}
+```
+We define in our `typesAlias` that we want the type `Balance` to be a `u64` for the assets pallet, then we can define our types. 
+
 
 
 ## User-defined enum
