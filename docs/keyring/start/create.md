@@ -44,7 +44,7 @@ console.log(keyring.pairs.length, 'pairs available');
 console.log(pair.meta.name, 'has address', pair.address);
 ```
 
-Since we detailed overrides of types, here we added a `ed25519` keypair to our default `sr25519` keyring. Additionally here we also addedd metadata to the pair, which is just an object holding any values such as `name`, `genesisHash` or whatever the developer applies.
+Since we detailed overrides of types, here we added a `ed25519` keypair to our default `sr25519` keyring. Additionally here we also added metadata to the pair, which is just an object holding any values such as `name`, `genesisHash` or whatever the developer applies.
 
 
 ## Revisiting crypto
