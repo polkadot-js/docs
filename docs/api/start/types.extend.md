@@ -90,7 +90,7 @@ Document: {
 ```
 ## Type clashes
 
-Another type of clash is a clash of types. For example a chain can have a `balance` type defined in two pallets. In one let's say the balance pallet it is defined at `u128` and in the other the assets pallet it is defined as `u64`. 
+Another kind of clash is a clash of types. For example a chain can have a `Balance` type defined in two pallets. In one, let's say the balances pallet, it is defined as `u128` and in the other, e.g. the assets pallet, it is defined as `u64`. 
 
 This will create an issue as polkadot JS will try to use the global balance defined (the `u128` in this case). In this scenario we would need a typeAlias. 
 
