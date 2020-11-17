@@ -28,7 +28,7 @@ The `cryptoWaitReady()` promise resolves as soon as the underlying WASM librarie
 - initializes the underlying `@polkadot/keyring`
 - loads all available accounts, addresses band contracts previously stored
 - sets up the default address format with `42` (This is the substrate development default. When not specified, this defaults to `42`)
-- defaults to `sr25519` accounts (We can still add `ed25519` accounts, more on this later. When not specified this defaults to `ed25519`)
+- defaults to `sr25519` accounts (We can still add `ed25519` accounts, more on this later. When not specified this defaults to `sr25519`)
 
 Since you would generally want the keyring available before rendering the UI (although it can be done elsewhere, showing some info while loading), the following pattern is used in [our examples](https://github.com/polkadot-js/ui), both React and Vue shown here -
 
