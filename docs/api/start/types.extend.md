@@ -108,7 +108,7 @@ This will create an issue as polkadot JS will try to use the global balance defi
       }
 }
 ```
-We define in our typeAlias that we want the type Balance to be a `u64` for the assets pallet, then we can define our types. 
+We define in our `typesAlias` that we want the type `Balance` to be a `u64` for the assets pallet, then we can define our types. 
 
 
 
