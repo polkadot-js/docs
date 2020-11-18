@@ -8,9 +8,9 @@ The list will be updated/expanded as questions come up, dealing with some common
 
 ## How do I extract the secretKey from the keypair?
 
-It is not possible. Each pair has a closure around the actual sensitive information and while it exposes functions to use the secret, it oes not expose the secret itself. So while there is a `.publicKey` getter on a pair the equivalent `.secretKey` does not exist. Doing this allows extra protection for a certain kinds of attacks and leaks of keys in all JS-based environments.
+It is not possible. Each pair has a closure around the actual sensitive information and while it exposes functions to use the secret, it does not expose the secret itself. So while there is a `.publicKey` getter on a pair, the equivalent `.secretKey` does not exist. Doing this allows extra protection for a certain kinds of attacks and leaks of keys in all JS-based environments.
 
-If the interfaces on the pair are not enough and explicit access to the secret is required, the best approach would be to explicitly derive the keys for e.g. the mnemonic. As example of an [ed25519 secretKey extraction](../util-crypto/examples/create-mnemonic) can be found in the util-crypto examples.
+If the interfaces on the pair are not enough and explicit access to the secret is required, the best approach would be to explicitly derive the keys (e.g., the mnemonic). As example of an [ed25519 secretKey extraction](../util-crypto/examples/create-mnemonic) can be found in the util-crypto examples.
 
 
 ## My pair address does not match with my chain
