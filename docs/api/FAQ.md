@@ -27,7 +27,12 @@ All data transferred between the API and the Node is in a SCALE-encoded binary f
 
 To fix this, you should look at the specific `api.tx.*` params and adjust the type definitions for those param types to match what is found on the node side. In some rare cases the cause could be extrinsic formatting related, to track these make an `api.tx.system.remark(data: Bytes)` call, if it fails, the API and node cannot agree on [an extrinsic format and adjustments are required](start/types.extend.md#impact-on-extrinsics).
 
-If you are using a node-template based version of substrate and you changed the specName you need to add these typings(In addition to other custom types) `{"Address": "AccountId","LookupSource": "AccountId"}`. This is also the case when you use [polkadot-js/apps](https://github.com/polkadot-js/apps) to connect to your node. When the specName stays node-template the API is smart enough to add the custom typings.
+If you are using a node-template based version of substrate and you changed the specName you need to add these typings(In addition to other custom types) `{ "Address": "AccountId", "LookupSource": "AccountId" }`. This is also the case when you use [polkadot-js/apps](https://github.com/polkadot-js/apps) to connect to your node. When the specName stays node-template the API is smart enough to add the custom typings.
+
+
+## On the latest Substrate master I get a "MultiAddress" enum error
+
+This is related to the above entry, but deals with the addition of the `MultiAddress` type in the node. If your node has the latest `MultiAddress` format, add the following types - `{ "Address": "MultiAddress", "LookupSource": "MultiAddress" }`
 
 
 ## I would like to sign transactions offline
