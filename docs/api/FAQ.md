@@ -27,13 +27,6 @@ All data transferred between the API and the Node is in a SCALE-encoded binary f
 
 To fix this, you should look at the specific `api.tx.*` params and adjust the type definitions for those param types to match what is found on the node side. In some rare cases the cause could be extrinsic formatting related, to track these make an `api.tx.system.remark(data: Bytes)` call, if it fails, the API and node cannot agree on [an extrinsic format and adjustments are required](start/types.extend.md#impact-on-extrinsics).
 
-If you are using a node-template based version of substrate and you changed the specName you need to add these typings(In addition to other custom types) `{ "Address": "AccountId", "LookupSource": "AccountId" }`. This is also the case when you use [polkadot-js/apps](https://github.com/polkadot-js/apps) to connect to your node. When the specName stays node-template the API is smart enough to add the custom typings.
-
-
-## On the latest Substrate master I get a "MultiAddress" enum error
-
-This is related to the above entry, but deals with the addition of the `MultiAddress` type in the node. If your node has the latest `MultiAddress` format, add the following types - `{ "Address": "MultiAddress", "LookupSource": "MultiAddress" }`
-
 
 ## I would like to sign transactions offline
 
@@ -70,13 +63,21 @@ It is possible that you are connecting to an older chain that has not been upgra
 Likewise, if your chain has been upgraded recently and you are still using the old `system.accountNonce` or `balances.freeBalance` queries in your code (which is now not available in the chain metadata), you need to update it to query the new location.
 
 
-## I cannot send transactions from my node-template-based chain
+## I cannot send transactions, sending yields Address decoding failures
 
 The API always injects the default type definitions as specified by the Substrate master fully-featured node. This means that any customizations to chains needs needs to be applied as types, should there be differences in specific user-implementations.
 
-The Substrate node-template has added customizations for some types in the default template, specifically around the `Address` and `Lookup` types, removing any lookups based on indices. This means that the transaction payload saves 2 bytes for a transfer and is an approach followed by other chains as well, notably Polkadot & Kusama.
-
 Due to these customizations and differences that bleed through to the transaction formats, out-of-the-box chains based on the node-template will have issues when sending transactions. To fix this, you would need to add [the customized Address types into your API](start/types.extend.md#impact-on-extrinsics) instances (or UIs), allowing the API to have the information required to adjust the encoding.
+
+There are 3 `Address` types that are generally configured in different chains -
+
+- `type Address = <Indices as StaticLookup>::Source` (Rust), this is currently the default as applied in the API and yields types `{ "Address": "IndicesLookupSource", "LookupSource": "IndicesLookupSource" }` when explicitly specified;
+
+- `type Address = AccountId` (Rust), this is used in a number of chains such as Kusama/Polkadot and was the default for the node-template chain as well. To override to this type of Address, use the API types `{ "Address": "AccountId", "LookupSource": "AccountId" }`
+
+- `type Address = MultiAddress` (Rust), this is the current default in Substrate master and allows an enhancement to the original `Indices` lookup, catering for a wide array of address types. To configure this type in the API, use `{ "Address": "MultiAddress", "LookupSource": "MultiAddress" }`
+
+The above may also apply when when you use [polkadot-js/apps](https://github.com/polkadot-js/apps) to connect to your node. Known chains are correctly configured, however any custom chain may need additional types.
 
 
 ## Using a non-current-master node, I have issues parsing events
