@@ -92,3 +92,10 @@ If you are on a chain that has not been upgraded yet, you need to add `Weight: '
 As part of the Substrate 2.0 release, the `RefCount` type has been changed from ` u8` to a `u32`. Since the API always track latest Substrate, this change has been applied by default. The impact of this type is that it is used in the `AccountInfo` type which is returned from `system.account`, which, in turn, tracks balances.
 
 If on an older version of the chain, apply the older type via `RefCount: 'u8'` to your types.
+
+
+## Which API can I use to query by transaction hash?
+
+There is no such API. Substrate does not expose a "query-by-tx-hash" RPC, nor are transactions indexed by hash on the Substrate node. The reason for this is that transaction hashes are non-unique across the chain, although they will generally be unique inside a block.
+
+For more information around this, refer to the Polkadot wiki [on unique extrinsic identifiers](https://wiki.polkadot.network/docs/en/build-protocol-info#unique-identifiers-for-extrinsics).
