@@ -71,7 +71,7 @@ The API always injects the default type definitions as specified by the Substrat
 
 Due to these customizations and differences that bleed through to the transaction formats, out-of-the-box chains based on the node-template will have issues when sending transactions. To fix this, you would need to add [the customized Address types into your API](start/types.extend.md#impact-on-extrinsics) instances (or UIs), allowing the API to have the information required to adjust the encoding.
 
-There are 3 `Address` types that are generally configured in different chains -
+There are 3 `Address` types that are generally configured in different chains, and one variant should be passed to the `Api.create({ ... })` [options as types](https://polkadot.js.org/docs/api/start/types.extend/#extension) -
 
 - `type Address = <Indices as StaticLookup>::Source` (Rust), this is currently the default as applied in the API and yields types `{ "Address": "IndicesLookupSource", "LookupSource": "IndicesLookupSource" }` when explicitly specified;
 
