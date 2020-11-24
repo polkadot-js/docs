@@ -12,7 +12,7 @@ import { Keyring } from '@polkadot/keyring';
 const keyring = new Keyring({ type: 'sr25519', ss58Format: 2 });
 ```
 
-In the above we do an import and then subsequently create a keyring with a standard crypto type. As detailed earlier, in standard Polkadot/Substrate chains `ed25519`/`sr2551`/`ecdsa` types are supported. The `ss58Format` will be used to format addresses, more on this in a later section.
+In the above we do an import and then subsequently create a keyring with a standard crypto type. As detailed earlier, in standard Polkadot/Substrate chains `ed25519`/`sr25519`/`ecdsa` types are supported. The `ss58Format` will be used to format addresses, more on this in a later section.
 
 
 ## Crypto types
