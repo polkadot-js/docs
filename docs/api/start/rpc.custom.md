@@ -7,7 +7,7 @@ In previous sections we looked at the injection of types, as in use and defined 
 
 ## Custom definitions
 
-RPCs are exposed as a method on a specific module, this means that once available you can call any rpc via the `api.rpc.<module>.<method>(...params[])` endpoints. To extend with user-defined RPCs, the injection can happen at the time of API creation with the addition of the `rpc` key (in addition to any other params, such as `types` or `provider`) -
+RPCs are exposed as a method on a specific module, this means that once available you can call any rpc via the `api.rpc.<module>.<method>(...params[])` endpoints. As an example, you can define a `firstModule_testMethod` on the Rust node and once injected it will be callable via `api.rpc.firstModule.testMethod(...`). To extend with user-defined RPCs, the injection can happen at the time of API creation with the addition of the `rpc` key (in addition to any other params, such as `types` or `provider`) -
 
 ```js
 ...
@@ -41,7 +41,7 @@ const api = await ApiPromise.create({
 
 In the above example we have defined a new method, which is now available on the RPCs as `api.rpc.firstModule.testMethod(index: u64, at?: Hash) => Promise<Balance>`. In the case of optional params, we have added the `isOptional: true` flag alongside the `name` & `type` in the param definition.
 
-Be aware that while defined, the method will only appear on the API if it is in the list as returned by `api.rpc.rpc.methods()`, which is the list of known RPCs the node exposes. When making changes to the node, always ensure that it does expose the RPC method correctly, otherwise it will not be decorated.
+Be aware that while defined, the method will only appear on the API if it is in the list as returned by `api.rpc.rpc.methods()`, which is the list of known RPCs the node exposes. When making changes to the node, always ensure that it does expose the RPC method correctly, otherwise it will not be decorated. Additionally ensure that any method, as defined on the Rust side, consists of a `<module>` and `<method>` part, so `foo_bar` would be valid as a name (and can be defined above), while a standalone `bar` would not be, won't be detecte and cannot be decorated. When unsure, always follow the same approach as done in Substrate master.
 
 
 ## Definition breakdown
