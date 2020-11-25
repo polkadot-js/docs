@@ -8,7 +8,7 @@ This function will return true if a message passed as parameter has been signed 
 const { decodeAddress, signatureVerify } = require('@polkadot/util-crypto');
 const { u8aToHex } = require('@polkadot/util');
 
-const isValidSignature = (signedMessage, address, signature) => {
+const isValidSignature = (signedMessage, signature, address) => {
   const publicKey = decodeAddress(address);
   const hexPublicKey = u8aToHex(publicKey);
 
