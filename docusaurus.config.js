@@ -10,9 +10,7 @@ module.exports = {
   organizationName: 'polkadot-js',
   onBrokenLinks: 'warn',
   projectName: 'docs',
-  stylesheets: [
-    'fonts/fonts.css'
-  ],
+  stylesheets: [],
   themeConfig: {
     navbar: {
       title: 'polkadot{.js}',
