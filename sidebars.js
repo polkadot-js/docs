@@ -87,7 +87,8 @@ module.exports = {
           'util-crypto/examples/validate-address',
           'util-crypto/examples/encrypt-decrypt',
           'util-crypto/examples/create-multisig',
-          'util-crypto/examples/verify-signature'
+          'util-crypto/examples/verify-signature',
+          'util-crypto/examples/hash-data'
         ]
       },
       'util-crypto/FAQ'

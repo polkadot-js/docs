@@ -7,7 +7,7 @@ There are many different hashing algorithms exposed in the util-crypto package.
  * Blake2
  * Keccak
  * sha512
- * for all of them see [here]("https://github.com/polkadot-js/common/tree/master/packages/util-crypto/src")
+ * for all of them see [here](https://github.com/polkadot-js/common/tree/master/packages/util-crypto/src)
 
  Example of Blake2 hashing
 
