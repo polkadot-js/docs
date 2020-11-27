@@ -2,7 +2,7 @@
 title: Hash Data
 ---
 
-There are many different hashing algorithms exposed in the crypto Api.
+There are many different hashing algorithms exposed in the util-crypto package.
 
  * Blake2
  * Keccak
