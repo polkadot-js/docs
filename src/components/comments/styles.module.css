@@ -1,0 +1,7 @@
+@media (min-width: 997px) and (max-width: 1320px) {
+  .commentWrapper {
+    max-width: calc(
+      var(--ifm-container-width) - 300px - var(--ifm-spacing-horizontal) * 2
+    );
+  }
+}
