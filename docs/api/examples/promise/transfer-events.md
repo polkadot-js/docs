@@ -48,8 +48,8 @@ async function main () {
         console.log('Included at block hash', status.asInBlock.toHex());
         console.log('Events:');
 
-        events.forEach(({ event: { data, name, section }, phase }) => {
-          console.log('\t', phase.toString(), `: ${section}.${name}`, data.toString());
+        events.forEach(({ event: { data, method, section }, phase }) => {
+          console.log('\t', phase.toString(), `: ${section}.${method}`, data.toString());
         });
       } else if (status.isFinalized) {
         console.log('Finalized block hash', status.asFinalized.toHex());
