@@ -71,16 +71,16 @@ api.tx.balances
       if (dispatchError.isModule) {
         // for module errors, we have the section indexed, lookup
         const decoded = api.registry.findMetaError(dispatchError.asModule);
-        const { documentation, method, section } = decoded;
+        const { documentation, name, section } = decoded;
 
-        console.log(`${section}.${method}: ${documentation.join(' ')}`);
+        console.log(`${section}.${name}: ${documentation.join(' ')}`);
       } else {
         // Other, CannotLookup, BadOrigin, no extra info
         console.log(dispatchError.toString());
       }
     }
   });
-``` 
+```
 
 
 ## How do I send an unsigned extrinsic?

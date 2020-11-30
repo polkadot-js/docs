@@ -55,8 +55,8 @@ const unsub = await api.tx.balances
       console.log(`Transaction included at blockHash ${status.asFinalized}`);
 
       // Loop through Vec<EventRecord> to display all events
-      events.forEach(({ phase, event: { data, method, section } }) => {
-        console.log(`\t' ${phase}: ${section}.${method}:: ${data}`);
+      events.forEach(({ phase, event: { data, name, section } }) => {
+        console.log(`\t' ${phase}: ${section}.${name}:: ${data}`);
       });
 
       unsub();
