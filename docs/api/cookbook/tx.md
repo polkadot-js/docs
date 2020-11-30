@@ -80,8 +80,48 @@ api.tx.balances
       }
     }
   });
-``` 
+```
 
+## How do I get the Result of a Sudo event?
+
+The section above shows you how to listen for the result of a regular extrinsic. However, Sudo extrinsics do not directly report the success or failure of the underlying call. Instead, a Sudo transaction will return `Sudid(result)`, where `result` will be the information you are looking for.
+
+To properly parse this information, we will follow the steps above, but then specifically peek into the event data to find the final result:
+
+```js
+const unsub = await api.tx.sudo
+  .sudo(
+    api.tx.balances.forceTransfer(user1, user2, amount)
+  )
+  .signAndSend(sudoPair, ({ status, events }) => {
+    if (status.isInBlock || status.isFinalized) {
+      events
+        // We know this tx should result in `Sudid` event.
+        .filter(({ event: { section, method } }) =>
+          section === 'sudo' &&
+          method === 'Sudid'
+        )
+        // We know that `Sudid` returns just a `Result`
+        .forEach(({ event : { data: [result] } }) => {
+          // Now we look to see if the extrinsic was actually successful or not...
+          if (result.isError) {
+            let error = result.asError;
+            if (error.isModule) {
+              // for module errors, we have the section indexed, lookup
+              const decoded = api.registry.findMetaError(error.asModule);
+              const { documentation, name, section } = decoded;
+
+              console.log(`${section}.${name}: ${documentation.join(' ')}`);
+            } else {
+              // Other, CannotLookup, BadOrigin, no extra info
+              console.log(error.toString());
+            }
+          }
+        });
+      unsub();
+    }
+  });
+```
 
 ## How do I send an unsigned extrinsic?
 
