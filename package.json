@@ -8,6 +8,7 @@
     "build": "yarn polkadot-types-internal-metadata",
     "build:release": "polkadot-ci-ghact-build && polkadot-ci-ghact-docs",
     "docs": "docusaurus build",
+    "lint": "echo \"Skipping lint\"",
     "swizzle": "docusaurus swizzle",
     "deploy": "docusaurus deploy",
     "serve": "docusaurus serve --port 8080"
