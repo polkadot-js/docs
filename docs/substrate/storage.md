@@ -6,6 +6,8 @@ The following sections contain Storage methods are part of the default Substrate
 
 (NOTE: These were generated from a static/snapshot view of a recent Substrate master node. Some items may not be available in older nodes, or in any customized implementations.)
 
+- **[assets](#assets)**
+
 - **[authorship](#authorship)**
 
 - **[babe](#babe)**
@@ -68,6 +70,19 @@ The following sections contain Storage methods are part of the default Substrate
 ___
 
 
+## assets
+ 
+### account(`AssetId, AccountId`): `AssetBalance`
+- **interface**: `api.query.assets.account`
+- **summary**:   The number of units of assets held by any given account. 
+ 
+### asset(`AssetId`): `Option<AssetDetails>`
+- **interface**: `api.query.assets.asset`
+- **summary**:   Details of an asset. 
+
+___
+
+
 ## authorship
  
 ### author(): `Option<AccountId>`
@@ -90,6 +105,10 @@ ___
 ### authorities(): `Vec<(AuthorityId,BabeAuthorityWeight)>`
 - **interface**: `api.query.babe.authorities`
 - **summary**:   Current epoch authorities. 
+ 
+### authorVrfRandomness(): `MaybeRandomness`
+- **interface**: `api.query.babe.authorVrfRandomness`
+- **summary**:   Temporary value (cleared at block finalization) that includes the VRF output generated at this block. This field should always be populated during block processing unless secondary plain slots are enabled (which don't contain a VRF output). 
  
 ### currentSlot(): `u64`
 - **interface**: `api.query.babe.currentSlot`

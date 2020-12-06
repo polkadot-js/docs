@@ -16,8 +16,6 @@ The following sections contain the module constants, also known as parameter typ
 
 - **[elections](#elections)**
 
-- **[finalityTracker](#finalitytracker)**
-
 - **[identity](#identity)**
 
 - **[indices](#indices)**
@@ -169,19 +167,6 @@ ___
  
 ### votingBond: `BalanceOf`
 - **interface**: `api.consts.elections.votingBond`
-
-___
-
-
-## finalityTracker
- 
-### reportLatency: `BlockNumber`
-- **interface**: `api.consts.finalityTracker.reportLatency`
-- **summary**:   The delay after which point things become suspicious. Default is 1000. 
- 
-### windowSize: `BlockNumber`
-- **interface**: `api.consts.finalityTracker.windowSize`
-- **summary**:   The number of recent samples to keep from this chain. Default is 101. 
 
 ___
 

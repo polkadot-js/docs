@@ -26,6 +26,8 @@ The following sections contain RPC methods that are Remote Calls available by de
 
 - **[state](#state)**
 
+- **[syncstate](#syncstate)**
+
 - **[system](#system)**
 
 
@@ -337,12 +339,27 @@ ___
 ___
 
 
+## syncstate
+ 
+### genSyncSpec(raw: `bool`): `Json`
+- **interface**: `api.rpc.syncstate.genSyncSpec`
+- **jsonrpc**: `sync_state_genSyncSpec`
+- **summary**: Returns the json-serialized chainspec running the node, with a sync state.
+
+___
+
+
 ## system
  
 ### accountNextIndex(accountId: `AccountId`): `Index`
 - **interface**: `api.rpc.system.accountNextIndex`
 - **jsonrpc**: `system_accountNextIndex`
 - **summary**: Retrieves the next accountIndex as available on the node
+ 
+### addLogFilter(directives: `Text`): `Null`
+- **interface**: `api.rpc.system.addLogFilter`
+- **jsonrpc**: `system_addLogFilter`
+- **summary**: Adds the supplied directives to the current log filter
  
 ### addReservedPeer(peer: `Text`): `Text`
 - **interface**: `api.rpc.system.addReservedPeer`
@@ -408,6 +425,16 @@ ___
 - **interface**: `api.rpc.system.removeReservedPeer`
 - **jsonrpc**: `system_removeReservedPeer`
 - **summary**: Remove a reserved peer
+ 
+### resetLogFilter(): `Null`
+- **interface**: `api.rpc.system.resetLogFilter`
+- **jsonrpc**: `system_resetLogFilter`
+- **summary**: Resets the log filter to Substrate defaults
+ 
+### syncState(): `SyncState`
+- **interface**: `api.rpc.system.syncState`
+- **jsonrpc**: `system_syncState`
+- **summary**: Returns the state of the syncing of the node
  
 ### version(): `Text`
 - **interface**: `api.rpc.system.version`

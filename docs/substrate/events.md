@@ -6,6 +6,8 @@ Events are emitted for certain operations on the runtime. The following sections
 
 (NOTE: These were generated from a static/snapshot view of a recent Substrate master node. Some items may not be available in older nodes, or in any customized implementations.)
 
+- **[assets](#assets)**
+
 - **[balances](#balances)**
 
 - **[contracts](#contracts)**
@@ -54,6 +56,47 @@ Events are emitted for certain operations on the runtime. The following sections
 
 - **[vesting](#vesting)**
 
+
+___
+
+
+## assets
+ 
+### Burned(`AssetId`, `AccountId`, `Balance`)
+- **summary**:   Some assets were destroyed. \[asset_id, owner, balance\] 
+ 
+### Created(`AssetId`, `AccountId`, `AccountId`)
+- **summary**:   Some asset class was created. \[asset_id, creator, owner\] 
+ 
+### Destroyed(`AssetId`)
+- **summary**:   An asset class was destroyed. 
+ 
+### ForceCreated(`AssetId`, `AccountId`)
+- **summary**:   Some asset class was force-created. \[asset_id, owner\] 
+ 
+### ForceTransferred(`AssetId`, `AccountId`, `AccountId`, `Balance`)
+- **summary**:   Some assets was transferred by an admin. \[asset_id, from, to, amount\] 
+ 
+### Frozen(`AssetId`, `AccountId`)
+- **summary**:   Some account `who` was frozen. \[asset_id, who\] 
+ 
+### Issued(`AssetId`, `AccountId`, `Balance`)
+- **summary**:   Some assets were issued. \[asset_id, owner, total_supply\] 
+ 
+### MaxZombiesChanged(`AssetId`, `u32`)
+- **summary**:   The maximum amount of zombies allowed has changed. \[asset_id, max_zombies\] 
+ 
+### OwnerChanged(`AssetId`, `AccountId`)
+- **summary**:   The owner changed \[asset_id, owner\] 
+ 
+### TeamChanged(`AssetId`, `AccountId`, `AccountId`, `AccountId`)
+- **summary**:   The management team changed \[asset_id, issuer, admin, freezer\] 
+ 
+### Thawed(`AssetId`, `AccountId`)
+- **summary**:   Some account `who` was thawed. \[asset_id, who\] 
+ 
+### Transferred(`AssetId`, `AccountId`, `AccountId`, `Balance`)
+- **summary**:   Some assets were transferred. \[asset_id, from, to, amount\] 
 
 ___
 
@@ -213,6 +256,9 @@ ___
 
 ## elections
  
+### CandidateSlashed(`AccountId`, `Balance`)
+- **summary**:   A candidate was slashed due to failing to obtain a seat as member or runner-up 
+ 
 ### ElectionError()
 - **summary**:   Internal error happened while trying to perform election. 
  
@@ -227,6 +273,9 @@ ___
  
 ### NewTerm(`Vec<(AccountId,Balance)>`)
 - **summary**:   A new term with \[new_members\]. This indicates that enough candidates existed to run the election, not that enough have has been elected. The inner value must be examined for this purpose. A `NewTerm(\[\])` indicates that some candidates got their bond slashed and none were elected, whilst `EmptyTerm` means that no candidates existed to begin with. 
+ 
+### SeatHolderSlashed(`AccountId`, `Balance`)
+- **summary**:   A seat holder (member or runner-up) was slashed due to failing to retaining their position. 
  
 ### VoterReported(`AccountId`, `AccountId`, `bool`)
 - **summary**:   A voter was reported with the the report being successful or not. \[voter, reporter, success\] 
@@ -300,13 +349,13 @@ ___
 ## indices
  
 ### IndexAssigned(`AccountId`, `AccountIndex`)
-- **summary**:   A account index was assigned. \[who, index\] 
+- **summary**:   A account index was assigned. \[index, who\] 
  
 ### IndexFreed(`AccountIndex`)
 - **summary**:   A account index has been freed up (unassigned). \[index\] 
  
 ### IndexFrozen(`AccountIndex`, `AccountId`)
-- **summary**:   A account index has been frozen to its current account ID. \[who, index\] 
+- **summary**:   A account index has been frozen to its current account ID. \[index, who\] 
 
 ___
 
@@ -490,7 +539,7 @@ ___
 ### Sudid(`DispatchResult`)
 - **summary**:   A sudo just took place. \[result\] 
  
-### SudoAsDone(`bool`)
+### SudoAsDone(`DispatchResult`)
 - **summary**:   A sudo just took place. \[result\] 
 
 ___

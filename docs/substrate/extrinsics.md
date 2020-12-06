@@ -6,6 +6,8 @@ The following sections contain Extrinsics methods are part of the default Substr
 
 (NOTE: These were generated from a static/snapshot view of a recent Substrate master node. Some items may not be available in older nodes, or in any customized implementations.)
 
+- **[assets](#assets)**
+
 - **[authorship](#authorship)**
 
 - **[babe](#babe)**
@@ -19,8 +21,6 @@ The following sections contain Extrinsics methods are part of the default Substr
 - **[democracy](#democracy)**
 
 - **[elections](#elections)**
-
-- **[finalityTracker](#finalitytracker)**
 
 - **[grandpa](#grandpa)**
 
@@ -60,6 +60,212 @@ The following sections contain Extrinsics methods are part of the default Substr
 
 - **[vesting](#vesting)**
 
+
+___
+
+
+## assets
+ 
+### burn(id: `Compact<AssetId>`, who: `LookupSource`, amount: `Compact<Balance>`)
+- **interface**: `api.tx.assets.burn`
+- **summary**:   Reduce the balance of `who` by as much as possible up to `amount` assets of `id`. 
+
+  Origin must be Signed and the sender should be the Manager of the asset `id`. 
+
+  Bails with `BalanceZero` if the `who` is already dead. 
+
+  - `id`: The identifier of the asset to have some amount burned. 
+
+  - `who`: The account to be debited from.
+
+  - `amount`: The maximum amount by which `who`'s balance should be reduced.
+
+  Emits `Burned` with the actual amount burned. If this takes the balance to below the minimum for the asset, then the amount burned is increased to take it to zero. 
+
+  Weight: `O(1)` Modes: Post-existence of `who`; Pre & post Zombie-status of `who`. 
+ 
+### create(id: `Compact<AssetId>`, admin: `LookupSource`, max_zombies: `u32`, min_balance: `Balance`)
+- **interface**: `api.tx.assets.create`
+- **summary**:   Issue a new class of fungible assets from a public origin. 
+
+  This new asset class has no assets initially. 
+
+  The origin must be Signed and the sender must have sufficient funds free. 
+
+  Funds of sender are reserved according to the formula: `AssetDepositBase + AssetDepositPerZombie * max_zombies`. 
+
+  Parameters: 
+
+  - `id`: The identifier of the new asset. This must not be currently in use to identifyan existing asset. 
+
+  - `owner`: The owner of this class of assets. The owner has full superuser permissionsover this asset, but may later change and configure the permissions using `transfer_ownership` and `set_team`. 
+
+  - `max_zombies`: The total number of accounts which may hold assets in this class yethave no existential deposit. 
+
+  - `min_balance`: The minimum balance of this new asset that any single account musthave. If an account's balance is reduced below this, then it collapses to zero. 
+
+  Emits `Created` event when successful. 
+
+  Weight: `O(1)` 
+ 
+### destroy(id: `Compact<AssetId>`, zombies_witness: `Compact<u32>`)
+- **interface**: `api.tx.assets.destroy`
+- **summary**:   Destroy a class of fungible assets owned by the sender. 
+
+  The origin must be Signed and the sender must be the owner of the asset `id`. 
+
+  - `id`: The identifier of the asset to be destroyed. This must identify an existing asset. 
+
+  Emits `Destroyed` event when successful. 
+
+  Weight: `O(z)` where `z` is the number of zombie accounts. 
+ 
+### forceCreate(id: `Compact<AssetId>`, owner: `LookupSource`, max_zombies: `Compact<u32>`, min_balance: `Compact<Balance>`)
+- **interface**: `api.tx.assets.forceCreate`
+- **summary**:   Issue a new class of fungible assets from a privileged origin. 
+
+  This new asset class has no assets initially. 
+
+  The origin must conform to `ForceOrigin`. 
+
+  Unlike `create`, no funds are reserved. 
+
+  - `id`: The identifier of the new asset. This must not be currently in use to identify an existing asset. 
+
+  - `owner`: The owner of this class of assets. The owner has full superuser permissionsover this asset, but may later change and configure the permissions using `transfer_ownership` and `set_team`. 
+
+  - `max_zombies`: The total number of accounts which may hold assets in this class yethave no existential deposit. 
+
+  - `min_balance`: The minimum balance of this new asset that any single account musthave. If an account's balance is reduced below this, then it collapses to zero. 
+
+  Emits `ForceCreated` event when successful. 
+
+  Weight: `O(1)` 
+ 
+### forceDestroy(id: `Compact<AssetId>`, zombies_witness: `Compact<u32>`)
+- **interface**: `api.tx.assets.forceDestroy`
+- **summary**:   Destroy a class of fungible assets. 
+
+  The origin must conform to `ForceOrigin`. 
+
+  - `id`: The identifier of the asset to be destroyed. This must identify an existing asset. 
+
+  Emits `Destroyed` event when successful. 
+
+  Weight: `O(1)` 
+ 
+### forceTransfer(id: `Compact<AssetId>`, source: `LookupSource`, dest: `LookupSource`, amount: `Compact<Balance>`)
+- **interface**: `api.tx.assets.forceTransfer`
+- **summary**:   Move some assets from one account to another. 
+
+  Origin must be Signed and the sender should be the Admin of the asset `id`. 
+
+  - `id`: The identifier of the asset to have some amount transferred. 
+
+  - `source`: The account to be debited.
+
+  - `dest`: The account to be credited.
+
+  - `amount`: The amount by which the `source`'s balance of assets should be reduced and`dest`'s balance increased. The amount actually transferred may be slightly greater in the case that the transfer would otherwise take the `source` balance above zero but below the minimum balance. Must be greater than zero. 
+
+  Emits `Transferred` with the actual amount transferred. If this takes the source balance to below the minimum for the asset, then the amount transferred is increased to take it to zero. 
+
+  Weight: `O(1)` Modes: Pre-existence of `dest`; Post-existence of `source`; Prior & post zombie-status of `source`; Account pre-existence of `dest`. 
+ 
+### freeze(id: `Compact<AssetId>`, who: `LookupSource`)
+- **interface**: `api.tx.assets.freeze`
+- **summary**:   Disallow further unprivileged transfers from an account. 
+
+  Origin must be Signed and the sender should be the Freezer of the asset `id`. 
+
+  - `id`: The identifier of the asset to be frozen. 
+
+  - `who`: The account to be frozen.
+
+  Emits `Frozen`. 
+
+  Weight: `O(1)` 
+ 
+### mint(id: `Compact<AssetId>`, beneficiary: `LookupSource`, amount: `Compact<Balance>`)
+- **interface**: `api.tx.assets.mint`
+- **summary**:   Mint assets of a particular class. 
+
+  The origin must be Signed and the sender must be the Issuer of the asset `id`. 
+
+  - `id`: The identifier of the asset to have some amount minted. 
+
+  - `beneficiary`: The account to be credited with the minted assets.
+
+  - `amount`: The amount of the asset to be minted.
+
+  Emits `Destroyed` event when successful. 
+
+  Weight: `O(1)` Modes: Pre-existing balance of `beneficiary`; Account pre-existence of `beneficiary`. 
+ 
+### setMaxZombies(id: `Compact<AssetId>`, max_zombies: `Compact<u32>`)
+- **interface**: `api.tx.assets.setMaxZombies`
+ 
+### setTeam(id: `Compact<AssetId>`, issuer: `LookupSource`, admin: `LookupSource`, freezer: `LookupSource`)
+- **interface**: `api.tx.assets.setTeam`
+- **summary**:   Change the Issuer, Admin and Freezer of an asset. 
+
+  Origin must be Signed and the sender should be the Owner of the asset `id`. 
+
+  - `id`: The identifier of the asset to be frozen. 
+
+  - `issuer`: The new Issuer of this asset.
+
+  - `admin`: The new Admin of this asset.
+
+  - `freezer`: The new Freezer of this asset.
+
+  Emits `TeamChanged`. 
+
+  Weight: `O(1)` 
+ 
+### thaw(id: `Compact<AssetId>`, who: `LookupSource`)
+- **interface**: `api.tx.assets.thaw`
+- **summary**:   Allow unprivileged transfers from an account again. 
+
+  Origin must be Signed and the sender should be the Admin of the asset `id`. 
+
+  - `id`: The identifier of the asset to be frozen. 
+
+  - `who`: The account to be unfrozen.
+
+  Emits `Thawed`. 
+
+  Weight: `O(1)` 
+ 
+### transfer(id: `Compact<AssetId>`, target: `LookupSource`, amount: `Compact<Balance>`)
+- **interface**: `api.tx.assets.transfer`
+- **summary**:   Move some assets from the sender account to another. 
+
+  Origin must be Signed. 
+
+  - `id`: The identifier of the asset to have some amount transferred. 
+
+  - `target`: The account to be credited.
+
+  - `amount`: The amount by which the sender's balance of assets should be reduced and`target`'s balance increased. The amount actually transferred may be slightly greater in the case that the transfer would otherwise take the sender balance above zero but below the minimum balance. Must be greater than zero. 
+
+  Emits `Transferred` with the actual amount transferred. If this takes the source balance to below the minimum for the asset, then the amount transferred is increased to take it to zero. 
+
+  Weight: `O(1)` Modes: Pre-existence of `target`; Post-existence of sender; Prior & post zombie-status of sender; Account pre-existence of `target`. 
+ 
+### transferOwnership(id: `Compact<AssetId>`, owner: `LookupSource`)
+- **interface**: `api.tx.assets.transferOwnership`
+- **summary**:   Change the Owner of an asset. 
+
+  Origin must be Signed and the sender should be the Owner of the asset `id`. 
+
+  - `id`: The identifier of the asset to be frozen. 
+
+  - `owner`: The new Owner of this asset.
+
+  Emits `OwnerChanged`. 
+
+  Weight: `O(1)` 
 
 ___
 
@@ -141,13 +347,15 @@ ___
 
   If contract is not evicted as a result of this call, no actions are taken and the sender is not eligible for the reward. 
  
-### instantiate(endowment: `Compact<BalanceOf>`, gas_limit: `Compact<Gas>`, code_hash: `CodeHash`, data: `Bytes`)
+### instantiate(endowment: `Compact<BalanceOf>`, gas_limit: `Compact<Gas>`, code_hash: `CodeHash`, data: `Bytes`, salt: `Bytes`)
 - **interface**: `api.tx.contracts.instantiate`
-- **summary**:   Instantiates a new contract from the `codehash` generated by `put_code`, optionally transferring some balance. 
+- **summary**:   Instantiates a new contract from the `code_hash` generated by `put_code`, optionally transferring some balance. 
+
+  The supplied `salt` is used for contract address deriviation. See `fn contract_address`. 
 
   Instantiation is executed as follows: 
 
-  - The destination address is computed based on the sender and hash of the code. 
+  - The destination address is computed based on the sender, code_hash and the salt. 
 
   - The smart-contract account is created at the computed address.
 
@@ -623,15 +831,6 @@ ___
   It is the responsibility of the caller to not place all of their balance into the lock and keep some for further transactions. 
 
    
-
-___
-
-
-## finalityTracker
- 
-### finalHint(hint: `Compact<BlockNumber>`)
-- **interface**: `api.tx.finalityTracker.finalHint`
-- **summary**:   Hint that the author of this block thinks the best finalized block is the given number. 
 
 ___
 
@@ -2269,11 +2468,23 @@ ___
 
   - `calls`: The calls to be dispatched from the same origin. 
 
-  If origin is root then call are dispatch without checking origin filter. (This includes bypassing `frame_system::Trait::BaseCallFilter`). 
+  If origin is root then call are dispatch without checking origin filter. (This includes bypassing `frame_system::Config::BaseCallFilter`). 
 
    
 
   This will return `Ok` in all circumstances. To determine the success of the batch, an event is deposited. If a call failed and the batch was interrupted, then the `BatchInterrupted` event is deposited, along with the number of successful calls made and the error of the failed call. If all were successful, then the `BatchCompleted` event is deposited. 
+ 
+### batchAll(calls: `Vec<Call>`)
+- **interface**: `api.tx.utility.batchAll`
+- **summary**:   Send a batch of dispatch calls and atomically execute them. The whole transaction will rollback and fail if any of the calls failed. 
+
+  May be called from any origin. 
+
+  - `calls`: The calls to be dispatched from the same origin. 
+
+  If origin is root then call are dispatch without checking origin filter. (This includes bypassing `frame_system::Config::BaseCallFilter`). 
+
+   
 
 ___
 

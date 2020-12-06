@@ -6,6 +6,8 @@ This page lists the errors that can be encountered in the different modules.
 
 (NOTE: These were generated from a static/snapshot view of a recent Substrate master node. Some items may not be available in older nodes, or in any customized implementations.)
 
+- **[assets](#assets)**
+
 - **[authorship](#authorship)**
 
 - **[balances](#balances)**
@@ -17,8 +19,6 @@ This page lists the errors that can be encountered in the different modules.
 - **[democracy](#democracy)**
 
 - **[elections](#elections)**
-
-- **[finalityTracker](#finalitytracker)**
 
 - **[grandpa](#grandpa)**
 
@@ -50,6 +50,47 @@ This page lists the errors that can be encountered in the different modules.
 
 - **[vesting](#vesting)**
 
+
+___
+
+
+## assets
+ 
+### AmountZero
+- **summary**:   Transfer amount should be non-zero. 
+ 
+### BadWitness
+- **summary**:   Invalid witness data given. 
+ 
+### BalanceLow
+- **summary**:   Account balance must be greater than or equal to the transfer amount. 
+ 
+### BalanceZero
+- **summary**:   Balance should be non-zero. 
+ 
+### Frozen
+- **summary**:   The origin account is frozen. 
+ 
+### InUse
+- **summary**:   The asset ID is already taken. 
+ 
+### MinBalanceZero
+- **summary**:   Minimum balance should be non-zero. 
+ 
+### NoPermission
+- **summary**:   The signing account has no permission to do the operation. 
+ 
+### Overflow
+- **summary**:   A mint operation lead to an overflow. 
+ 
+### RefsLeft
+- **summary**:   Attempt to destroy an asset class when non-zombie, reference-bearing accounts exist. 
+ 
+### TooManyZombies
+- **summary**:   Too many zombie accounts in use. 
+ 
+### Unknown
+- **summary**:   The given asset ID is unknown. 
 
 ___
 
@@ -162,8 +203,14 @@ ___
 ### OutputBufferTooSmall
 - **summary**:   The output buffer supplied to a contract API call was too small. 
  
+### ReentranceDenied
+- **summary**:   The action performed is not allowed while the contract performing it is already on the call stack. Those actions are contract self destruction and restoration of a tombstone. 
+ 
 ### TransferFailed
 - **summary**:   Performing the requested transfer failed for a reason originating in the chosen currency implementation of the runtime. Most probably the balance is too low or locks are placed on it. 
+ 
+### ValueTooLarge
+- **summary**:   The size defined in `T::MaxValueSize` was exceeded. 
 
 ___
 
@@ -365,17 +412,6 @@ ___
  
 ### UnableToVote
 - **summary**:   Cannot vote when no candidates or members exist. 
-
-___
-
-
-## finalityTracker
- 
-### AlreadyUpdated
-- **summary**:   Final hint must be updated only once in the block 
- 
-### BadHint
-- **summary**:   Finalized height above block number 
 
 ___
 
@@ -598,11 +634,14 @@ ___
 
 ## scheduler
  
-### FailedToCancel
-- **summary**:   Failed to cancel a scheduled call 
- 
 ### FailedToSchedule
 - **summary**:   Failed to schedule a call 
+ 
+### NotFound
+- **summary**:   Cannot find the scheduled call. 
+ 
+### RescheduleNoChange
+- **summary**:   Reschedule failed because it does not change scheduled time. 
  
 ### TargetBlockNumberInPast
 - **summary**:   Given target block number is in the past. 
