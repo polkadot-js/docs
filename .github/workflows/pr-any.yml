@@ -13,4 +13,5 @@ jobs:
     - name: ${{ matrix.step }}
       run: |
         yarn install --immutable | grep -v 'YN0013'
-        yarn ${{ matrix.step }}
+        yarn build
+        yarn docs
