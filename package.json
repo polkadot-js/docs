@@ -5,9 +5,9 @@
   "scripts": {
     "docusaurus": "docusaurus",
     "start": "docusaurus start --port 8080",
-    "build": "yarn polkadot-types-internal-metadata && docusaurus build",
-    "build:release": "polkadot-ci-ghact-docs",
-    "docs": "yarn build",
+    "build": "yarn polkadot-types-internal-metadata",
+    "build:release": "polkadot-ci-ghact-build && polkadot-ci-ghact-docs",
+    "docs": "docusaurus build",
     "swizzle": "docusaurus swizzle",
     "deploy": "docusaurus deploy",
     "serve": "docusaurus serve --port 8080"
