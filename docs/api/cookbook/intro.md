@@ -3,7 +3,7 @@ title: Overview
 slug: /api/cookbook
 ---
 
-The cookbook hosts small code snippets in a question-answer format. It does not walk you through the whole setup, like the [basic examples](../examples/promise), but rather aims to answer some questions around specific uses. It also does not replace the [FAQ](../FAQ.md), rather this is focussed explicitly on code samples, instead of general trouble-shooting for common mishaps.
+The cookbook hosts small code snippets in a question-answer format. It does not walk you through the whole setup, like the [basic examples](/api/examples/promise), but rather aims to answer some questions around specific uses. It also does not replace the [FAQ](../FAQ.md), rather this is focussed explicitly on code samples, instead of general trouble-shooting for common mishaps.
 
 These questions are added as they do come up and the hope is that the snippets here is will be useful to others, instead of just the original person who asked on a specific use-case. As of today, it is only making a start and not fully comprehensive yet - check back early, check back often.
 

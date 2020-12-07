@@ -5,7 +5,7 @@ slug: /api/start
 
 These sections should provide you with all the information needed to install the `@polkadot/api` package, understand the structure of the interfaces and allow you to start using it. For existing users this really should be titled "Things I wish I knew before I started using the api" - it really aims to close the gap to allow anybody to get to grips with using the packages.
 
-We are basing all our examples on the [ApiPromise](../examples/promise) version of the API, however there is also an RxJS version available. Since Promises are a part of the ES2015 specification, it covers the greater amount of use and is the one that will be used in 95% of the cases and should be familiar to 100% of all developers. However if you are in an environment where RxJs is recommended or your have a great affinity ot it, you could take a look at the [RxJS examples](../examples/rx) once you are familiar with the base concepts introduced here.
+We are basing all our examples on the [ApiPromise](/api/examples/promise) version of the API, however there is also an RxJS version available. Since Promises are a part of the ES2015 specification, it covers the greater amount of use and is the one that will be used in 95% of the cases and should be familiar to 100% of all developers.
 
 For now... just ignore the various flavors and focus on understanding the concepts.
 
