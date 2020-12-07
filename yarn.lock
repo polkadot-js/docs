@@ -2479,9 +2479,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@polkadot/dev@npm:^0.60.7":
-  version: 0.60.7
-  resolution: "@polkadot/dev@npm:0.60.7"
+"@polkadot/dev@npm:^0.60.8":
+  version: 0.60.8
+  resolution: "@polkadot/dev@npm:0.60.8"
   dependencies:
     "@babel/cli": ^7.12.8
     "@babel/core": ^7.12.9
@@ -2567,7 +2567,7 @@ __metadata:
     polkadot-exec-typedoc: scripts/polkadot-exec-typedoc.cjs
     polkadot-exec-vuepress: scripts/polkadot-exec-vuepress.cjs
     polkadot-exec-webpack: scripts/polkadot-exec-webpack.cjs
-  checksum: 0241c5dfd9a9bb334b56712ef5c8caded11d5506753a4a2644dd3532d4159906eb5a1074f1014ca034c0b94c66e5112ad9ffe8d6bc2cc1500351149a30bdf719
+  checksum: e9b4dd08aa90de176f719fdfa4b2b810e9219fb554b7c1137dc6ae28f6ea7aa608447ce0050c16a739a98bbae979f4fd09e41a77ad08c7ada04784dcbf61fcc0
   languageName: node
   linkType: hard
 
@@ -13452,7 +13452,7 @@ fsevents@~2.1.2:
     "@docusaurus/core": 2.0.0-alpha.66
     "@docusaurus/preset-classic": 2.0.0-alpha.66
     "@mdx-js/react": ^1.6.22
-    "@polkadot/dev": ^0.60.7
+    "@polkadot/dev": ^0.60.8
     "@polkadot/typegen": ^2.9.2-13
     clsx: ^1.1.1
     react: ^17.0.1

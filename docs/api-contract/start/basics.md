@@ -6,7 +6,7 @@ The `@polkadot/api-contract` comes with 3 general helpers and has `*Rx`-based ve
 
 - [CodePromise](code.md) - This allows use to manage actual WASM code and deploy it,
 - [BlueprintPromise](blueprint.md) - This allows us to manage on-chain code hashes and use this as a blueprint for the creation of contracts
-- [ContractPromise](contract.md) - This allows us to manage on-chain contracts, making read calls and executing transactions on contracts
+- [ContractPromise](contract.read.md) - This allows us to manage on-chain contracts, making read calls and executing transactions on contracts
 - Abi - This is a generic registry that contains all the types and all the messages for a given ABI
 
 In terms of use this would mean that `Code` will create a `Blueprint` which in turn, would create `Contract`. In cases where you already have a on-chain `codeHash` or an on-chain contract, the relevant blueprint or contract instance can be created without helpers by direct instantiation.
