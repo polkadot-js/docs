@@ -43,7 +43,7 @@ api.tx.balances
         )
         // we know that data for system.ExtrinsicFailed is
         // (DispatchError, DispatchInfo)
-        .forEach(({ data: [error, info] }) => {
+        .forEach(({ event: { data: [error, info] } }) => {
           if (error.isModule) {
             // for module errors, we have the section indexed, lookup
             const decoded = api.registry.findMetaError(error.asModule);
