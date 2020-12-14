@@ -623,19 +623,19 @@ ___
 - **summary**:   A bounty is awarded to a beneficiary. [index, beneficiary] 
  
 ### BountyBecameActive(`BountyIndex`)
-- **summary**:   A bounty proposal is funded and became active. [index] 
+- **summary**:   A bounty proposal is funded and became active. \[index\] 
  
 ### BountyCanceled(`BountyIndex`)
-- **summary**:   A bounty is cancelled. [index] 
+- **summary**:   A bounty is cancelled. \[index\] 
  
 ### BountyClaimed(`BountyIndex`, `Balance`, `AccountId`)
 - **summary**:   A bounty is claimed by beneficiary. [index, payout, beneficiary] 
  
 ### BountyExtended(`BountyIndex`)
-- **summary**:   A bounty expiry is extended. [index] 
+- **summary**:   A bounty expiry is extended. \[index\] 
  
 ### BountyProposed(`BountyIndex`)
-- **summary**:   New bounty proposal. [index] 
+- **summary**:   New bounty proposal. \[index\] 
  
 ### BountyRejected(`BountyIndex`, `Balance`)
 - **summary**:   A bounty proposal was rejected; funds were slashed. [index, bond] 

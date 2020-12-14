@@ -354,29 +354,17 @@ ___
 
 ## system
  
-### blockExecutionWeight: `Weight`
-- **interface**: `api.consts.system.blockExecutionWeight`
-- **summary**:   The base weight of executing a block, independent of the transactions in the block. 
- 
 ### blockHashCount: `BlockNumber`
 - **interface**: `api.consts.system.blockHashCount`
 - **summary**:   The maximum number of blocks to allow in mortal eras. 
  
+### blockWeights: `BlockWeights`
+- **interface**: `api.consts.system.blockWeights`
+- **summary**:   The weight configuration (limits & base values) for each class of extrinsics and block. 
+ 
 ### dbWeight: `RuntimeDbWeight`
 - **interface**: `api.consts.system.dbWeight`
 - **summary**:   The weight of runtime database operations the runtime can invoke. 
- 
-### extrinsicBaseWeight: `Weight`
-- **interface**: `api.consts.system.extrinsicBaseWeight`
-- **summary**:   The base weight of an Extrinsic in the block, independent of the of extrinsic being executed. 
- 
-### maximumBlockLength: `u32`
-- **interface**: `api.consts.system.maximumBlockLength`
-- **summary**:   The maximum length of a block (in bytes). 
- 
-### maximumBlockWeight: `Weight`
-- **interface**: `api.consts.system.maximumBlockWeight`
-- **summary**:   The maximum weight of a block. 
 
 ___
 

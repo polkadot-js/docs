@@ -30,6 +30,8 @@ The following sections contain Storage methods are part of the default Substrate
 
 - **[indices](#indices)**
 
+- **[mmr](#mmr)**
+
 - **[multisig](#multisig)**
 
 - **[offences](#offences)**
@@ -438,6 +440,25 @@ ___
 ___
 
 
+## mmr
+ 
+### nodes(`u64`): `Option<Hash>`
+- **interface**: `api.query.mmr.nodes`
+- **summary**:   Hashes of the nodes in the MMR. 
+
+  Note this collection only contains MMR peaks, the inner nodes (and leaves) are pruned and only stored in the Offchain DB. 
+ 
+### numberOfLeaves(): `u64`
+- **interface**: `api.query.mmr.numberOfLeaves`
+- **summary**:   Current size of the MMR (number of leaves). 
+ 
+### rootHash(): `Hash`
+- **interface**: `api.query.mmr.rootHash`
+- **summary**:   Latest MMR Root hash. 
+
+___
+
+
 ## multisig
  
 ### calls(`[u8;32]`): `Option<(OpaqueCall,AccountId,BalanceOf)>`
@@ -839,7 +860,7 @@ ___
 - **interface**: `api.query.system.blockHash`
 - **summary**:   Map of block numbers to block hashes. 
  
-### blockWeight(): `ExtrinsicsWeight`
+### blockWeight(): `ConsumedWeight`
 - **interface**: `api.query.system.blockWeight`
 - **summary**:   The current weight for the block. 
  
