@@ -10,6 +10,8 @@ Events are emitted for certain operations on the runtime. The following sections
 
 - **[balances](#balances)**
 
+- **[bounties](#bounties)**
+
 - **[contracts](#contracts)**
 
 - **[council](#council)**
@@ -49,6 +51,8 @@ Events are emitted for certain operations on the runtime. The following sections
 - **[technicalCommittee](#technicalcommittee)**
 
 - **[technicalMembership](#technicalmembership)**
+
+- **[tips](#tips)**
 
 - **[treasury](#treasury)**
 
@@ -126,6 +130,32 @@ ___
  
 ### Unreserved(`AccountId`, `Balance`)
 - **summary**:   Some balance was unreserved (moved from reserved to free). \[who, value\] 
+
+___
+
+
+## bounties
+ 
+### BountyAwarded(`BountyIndex`, `AccountId`)
+- **summary**:   A bounty is awarded to a beneficiary. \[index, beneficiary\] 
+ 
+### BountyBecameActive(`BountyIndex`)
+- **summary**:   A bounty proposal is funded and became active. \[index\] 
+ 
+### BountyCanceled(`BountyIndex`)
+- **summary**:   A bounty is cancelled. \[index\] 
+ 
+### BountyClaimed(`BountyIndex`, `Balance`, `AccountId`)
+- **summary**:   A bounty is claimed by beneficiary. \[index, payout, beneficiary\] 
+ 
+### BountyExtended(`BountyIndex`)
+- **summary**:   A bounty expiry is extended. \[index\] 
+ 
+### BountyProposed(`BountyIndex`)
+- **summary**:   New bounty proposal. \[index\] 
+ 
+### BountyRejected(`BountyIndex`, `Balance`)
+- **summary**:   A bounty proposal was rejected; funds were slashed. \[index, bond\] 
 
 ___
 
@@ -614,40 +644,33 @@ ___
 ___
 
 
+## tips
+ 
+### NewTip(`Hash`)
+- **summary**:   A new tip suggestion has been opened. \[tip_hash\] 
+ 
+### TipClosed(`Hash`, `AccountId`, `Balance`)
+- **summary**:   A tip suggestion has been closed. \[tip_hash, who, payout\] 
+ 
+### TipClosing(`Hash`)
+- **summary**:   A tip suggestion has reached threshold and is closing. \[tip_hash\] 
+ 
+### TipRetracted(`Hash`)
+- **summary**:   A tip suggestion has been retracted. \[tip_hash\] 
+
+___
+
+
 ## treasury
  
 ### Awarded(`ProposalIndex`, `Balance`, `AccountId`)
 - **summary**:   Some funds have been allocated. \[proposal_index, award, beneficiary\] 
- 
-### BountyAwarded(`BountyIndex`, `AccountId`)
-- **summary**:   A bounty is awarded to a beneficiary. [index, beneficiary] 
- 
-### BountyBecameActive(`BountyIndex`)
-- **summary**:   A bounty proposal is funded and became active. \[index\] 
- 
-### BountyCanceled(`BountyIndex`)
-- **summary**:   A bounty is cancelled. \[index\] 
- 
-### BountyClaimed(`BountyIndex`, `Balance`, `AccountId`)
-- **summary**:   A bounty is claimed by beneficiary. [index, payout, beneficiary] 
- 
-### BountyExtended(`BountyIndex`)
-- **summary**:   A bounty expiry is extended. \[index\] 
- 
-### BountyProposed(`BountyIndex`)
-- **summary**:   New bounty proposal. \[index\] 
- 
-### BountyRejected(`BountyIndex`, `Balance`)
-- **summary**:   A bounty proposal was rejected; funds were slashed. [index, bond] 
  
 ### Burnt(`Balance`)
 - **summary**:   Some of our funds have been burnt. \[burn\] 
  
 ### Deposit(`Balance`)
 - **summary**:   Some funds have been deposited. \[deposit\] 
- 
-### NewTip(`Hash`)
-- **summary**:   A new tip suggestion has been opened. \[tip_hash\] 
  
 ### Proposed(`ProposalIndex`)
 - **summary**:   New proposal. \[proposal_index\] 
@@ -660,15 +683,6 @@ ___
  
 ### Spending(`Balance`)
 - **summary**:   We have ended a spend period and will now allocate funds. \[budget_remaining\] 
- 
-### TipClosed(`Hash`, `AccountId`, `Balance`)
-- **summary**:   A tip suggestion has been closed. \[tip_hash, who, payout\] 
- 
-### TipClosing(`Hash`)
-- **summary**:   A tip suggestion has reached threshold and is closing. \[tip_hash\] 
- 
-### TipRetracted(`Hash`)
-- **summary**:   A tip suggestion has been retracted. \[tip_hash\] 
 
 ___
 
