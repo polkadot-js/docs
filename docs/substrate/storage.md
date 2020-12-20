@@ -14,6 +14,8 @@ The following sections contain Storage methods are part of the default Substrate
 
 - **[balances](#balances)**
 
+- **[bounties](#bounties)**
+
 - **[contracts](#contracts)**
 
 - **[council](#council)**
@@ -59,6 +61,8 @@ The following sections contain Storage methods are part of the default Substrate
 - **[technicalMembership](#technicalmembership)**
 
 - **[timestamp](#timestamp)**
+
+- **[tips](#tips)**
 
 - **[transactionPayment](#transactionpayment)**
 
@@ -186,6 +190,27 @@ ___
 ### totalIssuance(): `Balance`
 - **interface**: `api.query.balances.totalIssuance`
 - **summary**:   The total units issued in the system. 
+
+___
+
+
+## bounties
+ 
+### bounties(`BountyIndex`): `Option<Bounty>`
+- **interface**: `api.query.bounties.bounties`
+- **summary**:   Bounties that have been made. 
+ 
+### bountyApprovals(): `Vec<BountyIndex>`
+- **interface**: `api.query.bounties.bountyApprovals`
+- **summary**:   Bounty indices that have been approved but not yet funded. 
+ 
+### bountyCount(): `BountyIndex`
+- **interface**: `api.query.bounties.bountyCount`
+- **summary**:   Number of bounty proposals that have been made. 
+ 
+### bountyDescriptions(`BountyIndex`): `Option<Bytes>`
+- **interface**: `api.query.bounties.bountyDescriptions`
+- **summary**:   The description of each bounty. 
 
 ___
 
@@ -974,6 +999,19 @@ ___
 ___
 
 
+## tips
+ 
+### reasons(`Hash`): `Option<Bytes>`
+- **interface**: `api.query.tips.reasons`
+- **summary**:   Simple preimage lookup from the reason's hash to the original data. Again, has an insecure enumerable hash since the key is guaranteed to be the result of a secure hash. 
+ 
+### tips(`Hash`): `Option<OpenTip>`
+- **interface**: `api.query.tips.tips`
+- **summary**:   TipsMap that are not yet completed. Keyed by the hash of `(reason, who)` from the value. This has the insecure enumerable hash function since the key itself is already guaranteed to be a secure hash. 
+
+___
+
+
 ## transactionPayment
  
 ### nextFeeMultiplier(): `Multiplier`
@@ -991,22 +1029,6 @@ ___
 - **interface**: `api.query.treasury.approvals`
 - **summary**:   Proposal indices that have been approved but not yet awarded. 
  
-### bounties(`BountyIndex`): `Option<Bounty>`
-- **interface**: `api.query.treasury.bounties`
-- **summary**:   Bounties that have been made. 
- 
-### bountyApprovals(): `Vec<BountyIndex>`
-- **interface**: `api.query.treasury.bountyApprovals`
-- **summary**:   Bounty indices that have been approved but not yet funded. 
- 
-### bountyCount(): `BountyIndex`
-- **interface**: `api.query.treasury.bountyCount`
-- **summary**:   Number of bounty proposals that have been made. 
- 
-### bountyDescriptions(`BountyIndex`): `Option<Bytes>`
-- **interface**: `api.query.treasury.bountyDescriptions`
-- **summary**:   The description of each bounty. 
- 
 ### proposalCount(): `ProposalIndex`
 - **interface**: `api.query.treasury.proposalCount`
 - **summary**:   Number of proposals that have been made. 
@@ -1014,14 +1036,6 @@ ___
 ### proposals(`ProposalIndex`): `Option<TreasuryProposal>`
 - **interface**: `api.query.treasury.proposals`
 - **summary**:   Proposals that have been made. 
- 
-### reasons(`Hash`): `Option<Bytes>`
-- **interface**: `api.query.treasury.reasons`
-- **summary**:   Simple preimage lookup from the reason's hash to the original data. Again, has an insecure enumerable hash since the key is guaranteed to be the result of a secure hash. 
- 
-### tips(`Hash`): `Option<OpenTip>`
-- **interface**: `api.query.treasury.tips`
-- **summary**:   Tips that are not yet completed. Keyed by the hash of `(reason, who)` from the value. This has the insecure enumerable hash function since the key itself is already guaranteed to be a secure hash. 
 
 ___
 

@@ -10,6 +10,8 @@ The following sections contain the module constants, also known as parameter typ
 
 - **[balances](#balances)**
 
+- **[bounties](#bounties)**
+
 - **[contracts](#contracts)**
 
 - **[democracy](#democracy)**
@@ -33,6 +35,8 @@ The following sections contain the module constants, also known as parameter typ
 - **[system](#system)**
 
 - **[timestamp](#timestamp)**
+
+- **[tips](#tips)**
 
 - **[transactionPayment](#transactionpayment)**
 
@@ -62,6 +66,35 @@ ___
 ### existentialDeposit: `Balance`
 - **interface**: `api.consts.balances.existentialDeposit`
 - **summary**:   The minimum amount required to keep an account open. 
+
+___
+
+
+## bounties
+ 
+### bountyCuratorDeposit: `Permill`
+- **interface**: `api.consts.bounties.bountyCuratorDeposit`
+- **summary**:   Percentage of the curator fee that will be reserved upfront as deposit for bounty curator. 
+ 
+### bountyDepositBase: `BalanceOf`
+- **interface**: `api.consts.bounties.bountyDepositBase`
+- **summary**:   The amount held on deposit for placing a bounty proposal. 
+ 
+### bountyDepositPayoutDelay: `BlockNumber`
+- **interface**: `api.consts.bounties.bountyDepositPayoutDelay`
+- **summary**:   The delay period for which a bounty beneficiary need to wait before claim the payout. 
+ 
+### bountyValueMinimum: `BalanceOf`
+- **interface**: `api.consts.bounties.bountyValueMinimum`
+- **summary**:   Minimum value for a bounty. 
+ 
+### dataDepositPerByte: `BalanceOf`
+- **interface**: `api.consts.bounties.dataDepositPerByte`
+- **summary**:   The amount held on deposit per byte within bounty description. 
+ 
+### maximumReasonLength: `u32`
+- **interface**: `api.consts.bounties.maximumReasonLength`
+- **summary**:   Maximum acceptable reason length. 
 
 ___
 
@@ -378,6 +411,31 @@ ___
 ___
 
 
+## tips
+ 
+### dataDepositPerByte: `BalanceOf`
+- **interface**: `api.consts.tips.dataDepositPerByte`
+- **summary**:   The amount held on deposit per byte within the tip report reason. 
+ 
+### maximumReasonLength: `u32`
+- **interface**: `api.consts.tips.maximumReasonLength`
+- **summary**:   Maximum acceptable reason length. 
+ 
+### tipCountdown: `BlockNumber`
+- **interface**: `api.consts.tips.tipCountdown`
+- **summary**:   The period for which a tip remains open after is has achieved threshold tippers. 
+ 
+### tipFindersFee: `Percent`
+- **interface**: `api.consts.tips.tipFindersFee`
+- **summary**:   The amount of the final tip which goes to the original reporter of the tip. 
+ 
+### tipReportDepositBase: `BalanceOf`
+- **interface**: `api.consts.tips.tipReportDepositBase`
+- **summary**:   The amount held on deposit for placing a tip report. 
+
+___
+
+
 ## transactionPayment
  
 ### transactionByteFee: `BalanceOf`
@@ -393,32 +451,9 @@ ___
 
 ## treasury
  
-### bountyCuratorDeposit: `Permill`
-- **interface**: `api.consts.treasury.bountyCuratorDeposit`
-- **summary**:   Percentage of the curator fee that will be reserved upfront as deposit for bounty curator. 
- 
-### bountyDepositBase: `BalanceOf`
-- **interface**: `api.consts.treasury.bountyDepositBase`
-- **summary**:   The amount held on deposit for placing a bounty proposal. 
- 
-### bountyDepositPayoutDelay: `BlockNumber`
-- **interface**: `api.consts.treasury.bountyDepositPayoutDelay`
-- **summary**:   The delay period for which a bounty beneficiary need to wait before claim the payout. 
- 
-### bountyValueMinimum: `BalanceOf`
-- **interface**: `api.consts.treasury.bountyValueMinimum`
- 
 ### burn: `Permill`
 - **interface**: `api.consts.treasury.burn`
 - **summary**:   Percentage of spare funds (if any) that are burnt per spend period. 
- 
-### dataDepositPerByte: `BalanceOf`
-- **interface**: `api.consts.treasury.dataDepositPerByte`
-- **summary**:   The amount held on deposit per byte within the tip report reason or bounty description. 
- 
-### maximumReasonLength: `u32`
-- **interface**: `api.consts.treasury.maximumReasonLength`
-- **summary**:   Maximum acceptable reason length. 
  
 ### moduleId: `ModuleId`
 - **interface**: `api.consts.treasury.moduleId`
@@ -435,18 +470,6 @@ ___
 ### spendPeriod: `BlockNumber`
 - **interface**: `api.consts.treasury.spendPeriod`
 - **summary**:   Period between successive spends. 
- 
-### tipCountdown: `BlockNumber`
-- **interface**: `api.consts.treasury.tipCountdown`
-- **summary**:   The period for which a tip remains open after is has achieved threshold tippers. 
- 
-### tipFindersFee: `Percent`
-- **interface**: `api.consts.treasury.tipFindersFee`
-- **summary**:   The amount of the final tip which goes to the original reporter of the tip. 
- 
-### tipReportDepositBase: `BalanceOf`
-- **interface**: `api.consts.treasury.tipReportDepositBase`
-- **summary**:   The amount held on deposit for placing a tip report. 
 
 ___
 

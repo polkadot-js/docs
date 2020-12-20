@@ -12,6 +12,8 @@ This page lists the errors that can be encountered in the different modules.
 
 - **[balances](#balances)**
 
+- **[bounties](#bounties)**
+
 - **[contracts](#contracts)**
 
 - **[council](#council)**
@@ -45,6 +47,8 @@ This page lists the errors that can be encountered in the different modules.
 - **[system](#system)**
 
 - **[technicalCommittee](#technicalcommittee)**
+
+- **[tips](#tips)**
 
 - **[treasury](#treasury)**
 
@@ -146,6 +150,38 @@ ___
  
 ### VestingBalance
 - **summary**:   Vesting balance too high to send value 
+
+___
+
+
+## bounties
+ 
+### InsufficientProposersBalance
+- **summary**:   Proposer's balance is too low. 
+ 
+### InvalidFee
+- **summary**:   Invalid bounty fee. 
+ 
+### InvalidIndex
+- **summary**:   No proposal or bounty at that index. 
+ 
+### InvalidValue
+- **summary**:   Invalid bounty value. 
+ 
+### PendingPayout
+- **summary**:   A bounty payout is pending. To cancel the bounty, you must unassign and slash the curator. 
+ 
+### Premature
+- **summary**:   The bounties cannot be claimed/closed because it's still in the countdown period. 
+ 
+### ReasonTooBig
+- **summary**:   The reason given is just too big. 
+ 
+### RequireCurator
+- **summary**:   Require bounty curator. 
+ 
+### UnexpectedStatus
+- **summary**:   The bounty status is unexpected. 
 
 ___
 
@@ -888,28 +924,13 @@ ___
 ___
 
 
-## treasury
+## tips
  
 ### AlreadyKnown
 - **summary**:   The tip was already found/started. 
  
-### InsufficientProposersBalance
-- **summary**:   Proposer's balance is too low. 
- 
-### InvalidFee
-- **summary**:   Invalid bounty fee. 
- 
-### InvalidIndex
-- **summary**:   No proposal or bounty at that index. 
- 
-### InvalidValue
-- **summary**:   Invalid bounty value. 
- 
 ### NotFinder
 - **summary**:   The account attempting to retract the tip is not the finder of the tip. 
- 
-### PendingPayout
-- **summary**:   A bounty payout is pending. To cancel the bounty, you must unassign and slash the curator. 
  
 ### Premature
 - **summary**:   The tip cannot be claimed/closed because it's still in the countdown period. 
@@ -917,17 +938,22 @@ ___
 ### ReasonTooBig
 - **summary**:   The reason given is just too big. 
  
-### RequireCurator
-- **summary**:   Require bounty curator. 
- 
 ### StillOpen
 - **summary**:   The tip cannot be claimed/closed because there are not enough tippers yet. 
  
-### UnexpectedStatus
-- **summary**:   The bounty status is unexpected. 
- 
 ### UnknownTip
 - **summary**:   The tip hash is unknown. 
+
+___
+
+
+## treasury
+ 
+### InsufficientProposersBalance
+- **summary**:   Proposer's balance is too low. 
+ 
+### InvalidIndex
+- **summary**:   No proposal or bounty at that index. 
 
 ___
 

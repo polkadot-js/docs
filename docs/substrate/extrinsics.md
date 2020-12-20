@@ -14,6 +14,8 @@ The following sections contain Extrinsics methods are part of the default Substr
 
 - **[balances](#balances)**
 
+- **[bounties](#bounties)**
+
 - **[contracts](#contracts)**
 
 - **[council](#council)**
@@ -53,6 +55,8 @@ The following sections contain Extrinsics methods are part of the default Substr
 - **[technicalMembership](#technicalmembership)**
 
 - **[timestamp](#timestamp)**
+
+- **[tips](#tips)**
 
 - **[treasury](#treasury)**
 
@@ -329,6 +333,109 @@ ___
 ___
 
 
+## bounties
+ 
+### acceptCurator(bounty_id: `Compact<BountyIndex>`)
+- **interface**: `api.tx.bounties.acceptCurator`
+- **summary**:   Accept the curator role for a bounty. A deposit will be reserved from curator and refund upon successful payout. 
+
+  May only be called from the curator. 
+
+   
+ 
+### approveBounty(bounty_id: `Compact<BountyIndex>`)
+- **interface**: `api.tx.bounties.approveBounty`
+- **summary**:   Approve a bounty proposal. At a later time, the bounty will be funded and become active and the original deposit will be returned. 
+
+  May only be called from `T::ApproveOrigin`. 
+
+   
+ 
+### awardBounty(bounty_id: `Compact<BountyIndex>`, beneficiary: `LookupSource`)
+- **interface**: `api.tx.bounties.awardBounty`
+- **summary**:   Award bounty to a beneficiary account. The beneficiary will be able to claim the funds after a delay. 
+
+  The dispatch origin for this call must be the curator of this bounty. 
+
+  - `bounty_id`: Bounty ID to award. 
+
+  - `beneficiary`: The beneficiary account whom will receive the payout.
+
+   
+ 
+### claimBounty(bounty_id: `Compact<BountyIndex>`)
+- **interface**: `api.tx.bounties.claimBounty`
+- **summary**:   Claim the payout from an awarded bounty after payout delay. 
+
+  The dispatch origin for this call must be the beneficiary of this bounty. 
+
+  - `bounty_id`: Bounty ID to claim. 
+
+   
+ 
+### closeBounty(bounty_id: `Compact<BountyIndex>`)
+- **interface**: `api.tx.bounties.closeBounty`
+- **summary**:   Cancel a proposed or active bounty. All the funds will be sent to treasury and the curator deposit will be unreserved if possible. 
+
+  Only `T::RejectOrigin` is able to cancel a bounty. 
+
+  - `bounty_id`: Bounty ID to cancel. 
+
+   
+ 
+### extendBountyExpiry(bounty_id: `Compact<BountyIndex>`, _remark: `Bytes`)
+- **interface**: `api.tx.bounties.extendBountyExpiry`
+- **summary**:   Extend the expiry time of an active bounty. 
+
+  The dispatch origin for this call must be the curator of this bounty. 
+
+  - `bounty_id`: Bounty ID to extend. 
+
+  - `remark`: additional information.
+
+   
+ 
+### proposeBounty(value: `Compact<BalanceOf>`, description: `Bytes`)
+- **interface**: `api.tx.bounties.proposeBounty`
+- **summary**:   Propose a new bounty. 
+
+  The dispatch origin for this call must be _Signed_. 
+
+  Payment: `TipReportDepositBase` will be reserved from the origin account, as well as `DataDepositPerByte` for each byte in `reason`. It will be unreserved upon approval, or slashed when rejected. 
+
+  - `curator`: The curator account whom will manage this bounty. 
+
+  - `fee`: The curator fee.
+
+  - `value`: The total payment amount of this bounty, curator fee included.
+
+  - `description`: The description of this bounty.
+ 
+### proposeCurator(bounty_id: `Compact<BountyIndex>`, curator: `LookupSource`, fee: `Compact<BalanceOf>`)
+- **interface**: `api.tx.bounties.proposeCurator`
+- **summary**:   Assign a curator to a funded bounty. 
+
+  May only be called from `T::ApproveOrigin`. 
+
+   
+ 
+### unassignCurator(bounty_id: `Compact<BountyIndex>`)
+- **interface**: `api.tx.bounties.unassignCurator`
+- **summary**:   Unassign curator from a bounty. 
+
+  This function can only be called by the `RejectOrigin` a signed origin. 
+
+  If this function is called by the `RejectOrigin`, we assume that the curator is malicious or inactive. As a result, we will slash the curator when possible. 
+
+  If the origin is the curator, we take this as a sign they are unable to do their job and they willingly give up. We could slash them, but for now we allow them to recover their deposit and exit without issue. (We may want to change this if it is abused.) 
+
+  Finally, the origin can be anyone if and only if the curator is "inactive". This allows anyone in the community to call out that a curator is not doing their due diligence, and we should pick a new curator. In this case the curator should also be slashed. 
+
+   
+
+___
+
+
 ## contracts
  
 ### call(dest: `LookupSource`, value: `Compact<BalanceOf>`, gas_limit: `Compact<Gas>`, data: `Bytes`)
@@ -388,6 +495,8 @@ ___
 
   If called after the end of the voting period abstentions are counted as rejections unless there is a prime member set and the prime member cast an approval. 
 
+  If the close operation completes successfully with disapproval, the transaction fee will be waived. Otherwise execution of the approved operation will be charged to the caller. 
+
   + `proposal_weight_bound`: The maximum amount of weight consumed by executing the closed proposal. + `length_bound`: The upper bound for the length of the proposal in storage. Checked via                   `storage::read` so it is `size_of::<u32>() == 4` larger than the pure length. 
 
    
@@ -444,7 +553,7 @@ ___
 
   Requires the sender to be a member. 
 
-   
+  Transaction fees will be waived if the member is voting on any particular proposal for the first time and the call is successful. Subsequent vote changes will charge a fee.  
 
 ___
 
@@ -2128,6 +2237,8 @@ ___
 
   If called after the end of the voting period abstentions are counted as rejections unless there is a prime member set and the prime member cast an approval. 
 
+  If the close operation completes successfully with disapproval, the transaction fee will be waived. Otherwise execution of the approved operation will be charged to the caller. 
+
   + `proposal_weight_bound`: The maximum amount of weight consumed by executing the closed proposal. + `length_bound`: The upper bound for the length of the proposal in storage. Checked via                   `storage::read` so it is `size_of::<u32>() == 4` larger than the pure length. 
 
    
@@ -2184,7 +2295,7 @@ ___
 
   Requires the sender to be a member. 
 
-   
+  Transaction fees will be waived if the member is voting on any particular proposal for the first time and the call is successful. Subsequent vote changes will charge a fee.  
 
 ___
 
@@ -2257,60 +2368,10 @@ ___
 ___
 
 
-## treasury
- 
-### acceptCurator(bounty_id: `Compact<ProposalIndex>`)
-- **interface**: `api.tx.treasury.acceptCurator`
-- **summary**:   Accept the curator role for a bounty. A deposit will be reserved from curator and refund upon successful payout. 
-
-  May only be called from the curator. 
-
-   
- 
-### approveBounty(bounty_id: `Compact<ProposalIndex>`)
-- **interface**: `api.tx.treasury.approveBounty`
-- **summary**:   Approve a bounty proposal. At a later time, the bounty will be funded and become active and the original deposit will be returned. 
-
-  May only be called from `T::ApproveOrigin`. 
-
-   
- 
-### approveProposal(proposal_id: `Compact<ProposalIndex>`)
-- **interface**: `api.tx.treasury.approveProposal`
-- **summary**:   Approve a proposal. At a later time, the proposal will be allocated to the beneficiary and the original deposit will be returned. 
-
-  May only be called from `T::ApproveOrigin`. 
-
-   
- 
-### awardBounty(bounty_id: `Compact<ProposalIndex>`, beneficiary: `LookupSource`)
-- **interface**: `api.tx.treasury.awardBounty`
-- **summary**:   Award bounty to a beneficiary account. The beneficiary will be able to claim the funds after a delay. 
-
-  The dispatch origin for this call must be the curator of this bounty. 
-
-  - `bounty_id`: Bounty ID to award. 
-
-  - `beneficiary`: The beneficiary account whom will receive the payout.
- 
-### claimBounty(bounty_id: `Compact<BountyIndex>`)
-- **interface**: `api.tx.treasury.claimBounty`
-- **summary**:   Claim the payout from an awarded bounty after payout delay. 
-
-  The dispatch origin for this call must be the beneficiary of this bounty. 
-
-  - `bounty_id`: Bounty ID to claim. 
- 
-### closeBounty(bounty_id: `Compact<BountyIndex>`)
-- **interface**: `api.tx.treasury.closeBounty`
-- **summary**:   Cancel a proposed or active bounty. All the funds will be sent to treasury and the curator deposit will be unreserved if possible. 
-
-  Only `T::RejectOrigin` is able to cancel a bounty. 
-
-  - `bounty_id`: Bounty ID to cancel. 
+## tips
  
 ### closeTip(hash: `Hash`)
-- **interface**: `api.tx.treasury.closeTip`
+- **interface**: `api.tx.tips.closeTip`
 - **summary**:   Close and payout a tip. 
 
   The dispatch origin for this call must be _Signed_. 
@@ -2321,35 +2382,74 @@ ___
 
    
  
-### extendBountyExpiry(bounty_id: `Compact<BountyIndex>`, _remark: `Bytes`)
-- **interface**: `api.tx.treasury.extendBountyExpiry`
-- **summary**:   Extend the expiry time of an active bounty. 
-
-  The dispatch origin for this call must be the curator of this bounty. 
-
-  - `bounty_id`: Bounty ID to extend. 
-
-  - `remark`: additional information.
- 
-### proposeBounty(value: `Compact<BalanceOf>`, description: `Bytes`)
-- **interface**: `api.tx.treasury.proposeBounty`
-- **summary**:   Propose a new bounty. 
+### reportAwesome(reason: `Bytes`, who: `AccountId`)
+- **interface**: `api.tx.tips.reportAwesome`
+- **summary**:   Report something `reason` that deserves a tip and claim any eventual the finder's fee. 
 
   The dispatch origin for this call must be _Signed_. 
 
-  Payment: `TipReportDepositBase` will be reserved from the origin account, as well as `DataDepositPerByte` for each byte in `reason`. It will be unreserved upon approval, or slashed when rejected. 
+  Payment: `TipReportDepositBase` will be reserved from the origin account, as well as `DataDepositPerByte` for each byte in `reason`. 
 
-  - `curator`: The curator account whom will manage this bounty. 
+  - `reason`: The reason for, or the thing that deserves, the tip; generally this will be   a UTF-8-encoded URL. 
 
-  - `fee`: The curator fee.
+  - `who`: The account which should be credited for the tip.
 
-  - `value`: The total payment amount of this bounty, curator fee included.
+  Emits `NewTip` if successful. 
 
-  - `description`: The description of this bounty.
+   
  
-### proposeCurator(bounty_id: `Compact<ProposalIndex>`, curator: `LookupSource`, fee: `Compact<BalanceOf>`)
-- **interface**: `api.tx.treasury.proposeCurator`
-- **summary**:   Assign a curator to a funded bounty. 
+### retractTip(hash: `Hash`)
+- **interface**: `api.tx.tips.retractTip`
+- **summary**:   Retract a prior tip-report from `report_awesome`, and cancel the process of tipping. 
+
+  If successful, the original deposit will be unreserved. 
+
+  The dispatch origin for this call must be _Signed_ and the tip identified by `hash` must have been reported by the signing account through `report_awesome` (and not through `tip_new`). 
+
+  - `hash`: The identity of the open tip for which a tip value is declared. This is formed   as the hash of the tuple of the original tip `reason` and the beneficiary account ID. 
+
+  Emits `TipRetracted` if successful. 
+
+   
+ 
+### tip(hash: `Hash`, tip_value: `Compact<BalanceOf>`)
+- **interface**: `api.tx.tips.tip`
+- **summary**:   Declare a tip value for an already-open tip. 
+
+  The dispatch origin for this call must be _Signed_ and the signing account must be a member of the `Tippers` set. 
+
+  - `hash`: The identity of the open tip for which a tip value is declared. This is formed   as the hash of the tuple of the hash of the original tip `reason` and the beneficiary   account ID. 
+
+  - `tip_value`: The amount of tip that the sender would like to give. The median tip  value of active tippers will be given to the `who`. 
+
+  Emits `TipClosing` if the threshold of tippers has been reached and the countdown period has started. 
+
+   
+ 
+### tipNew(reason: `Bytes`, who: `AccountId`, tip_value: `Compact<BalanceOf>`)
+- **interface**: `api.tx.tips.tipNew`
+- **summary**:   Give a tip for something new; no finder's fee will be taken. 
+
+  The dispatch origin for this call must be _Signed_ and the signing account must be a member of the `Tippers` set. 
+
+  - `reason`: The reason for, or the thing that deserves, the tip; generally this will be   a UTF-8-encoded URL. 
+
+  - `who`: The account which should be credited for the tip.
+
+  - `tip_value`: The amount of tip that the sender would like to give. The median tip  value of active tippers will be given to the `who`. 
+
+  Emits `NewTip` if successful. 
+
+   
+
+___
+
+
+## treasury
+ 
+### approveProposal(proposal_id: `Compact<ProposalIndex>`)
+- **interface**: `api.tx.treasury.approveProposal`
+- **summary**:   Approve a proposal. At a later time, the proposal will be allocated to the beneficiary and the original deposit will be returned. 
 
   May only be called from `T::ApproveOrigin`. 
 
@@ -2366,80 +2466,6 @@ ___
 - **summary**:   Reject a proposed spend. The original deposit will be slashed. 
 
   May only be called from `T::RejectOrigin`. 
-
-   
- 
-### reportAwesome(reason: `Bytes`, who: `AccountId`)
-- **interface**: `api.tx.treasury.reportAwesome`
-- **summary**:   Report something `reason` that deserves a tip and claim any eventual the finder's fee. 
-
-  The dispatch origin for this call must be _Signed_. 
-
-  Payment: `TipReportDepositBase` will be reserved from the origin account, as well as `DataDepositPerByte` for each byte in `reason`. 
-
-  - `reason`: The reason for, or the thing that deserves, the tip; generally this will be   a UTF-8-encoded URL. 
-
-  - `who`: The account which should be credited for the tip.
-
-  Emits `NewTip` if successful. 
-
-   
- 
-### retractTip(hash: `Hash`)
-- **interface**: `api.tx.treasury.retractTip`
-- **summary**:   Retract a prior tip-report from `report_awesome`, and cancel the process of tipping. 
-
-  If successful, the original deposit will be unreserved. 
-
-  The dispatch origin for this call must be _Signed_ and the tip identified by `hash` must have been reported by the signing account through `report_awesome` (and not through `tip_new`). 
-
-  - `hash`: The identity of the open tip for which a tip value is declared. This is formed   as the hash of the tuple of the original tip `reason` and the beneficiary account ID. 
-
-  Emits `TipRetracted` if successful. 
-
-   
- 
-### tip(hash: `Hash`, tip_value: `Compact<BalanceOf>`)
-- **interface**: `api.tx.treasury.tip`
-- **summary**:   Declare a tip value for an already-open tip. 
-
-  The dispatch origin for this call must be _Signed_ and the signing account must be a member of the `Tippers` set. 
-
-  - `hash`: The identity of the open tip for which a tip value is declared. This is formed   as the hash of the tuple of the hash of the original tip `reason` and the beneficiary   account ID. 
-
-  - `tip_value`: The amount of tip that the sender would like to give. The median tip  value of active tippers will be given to the `who`. 
-
-  Emits `TipClosing` if the threshold of tippers has been reached and the countdown period has started. 
-
-   
- 
-### tipNew(reason: `Bytes`, who: `AccountId`, tip_value: `Compact<BalanceOf>`)
-- **interface**: `api.tx.treasury.tipNew`
-- **summary**:   Give a tip for something new; no finder's fee will be taken. 
-
-  The dispatch origin for this call must be _Signed_ and the signing account must be a member of the `Tippers` set. 
-
-  - `reason`: The reason for, or the thing that deserves, the tip; generally this will be   a UTF-8-encoded URL. 
-
-  - `who`: The account which should be credited for the tip.
-
-  - `tip_value`: The amount of tip that the sender would like to give. The median tip  value of active tippers will be given to the `who`. 
-
-  Emits `NewTip` if successful. 
-
-   
- 
-### unassignCurator(bounty_id: `Compact<ProposalIndex>`)
-- **interface**: `api.tx.treasury.unassignCurator`
-- **summary**:   Unassign curator from a bounty. 
-
-  This function can only be called by the `RejectOrigin` a signed origin. 
-
-  If this function is called by the `RejectOrigin`, we assume that the curator is malicious or inactive. As a result, we will slash the curator when possible. 
-
-  If the origin is the curator, we take this as a sign they are unable to do their job and they willingly give up. We could slash them, but for now we allow them to recover their deposit and exit without issue. (We may want to change this if it is abused.) 
-
-  Finally, the origin can be anyone if and only if the curator is "inactive". This allows anyone in the community to call out that a curator is not doing their due diligence, and we should pick a new curator. In this case the curator should also be slashed. 
 
    
 
