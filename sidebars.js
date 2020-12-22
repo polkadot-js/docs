@@ -130,7 +130,8 @@ module.exports = {
     'Extension': [
       'extension/intro',
       'extension/usage',
-      'extension/cookbook'
+      'extension/cookbook',
+      'extension/FAQ'
     ],
   },
 };
