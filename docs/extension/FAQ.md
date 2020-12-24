@@ -8,18 +8,19 @@ The list will be updated/expanded as questions come up.
 ## How to report a phishing website so that the extension can warn users?
 The extension fetches the list of denied website from [https://github.com/polkadot-js/phishing](https://github.com/polkadot-js/phishing)
 repository. To help populate this list, please submit a pull request by editing [all.json](https://github.com/polkadot-js/phishing/edit/master/all.json)
-and adding any new sites in alphabetical order. Alternatively, you can [submit an issue](https://github.com/polkadot-js/phishing/issues/new)
+and adding any new sites in alphabetical order.  
+Alternatively, you can [submit an issue](https://github.com/polkadot-js/phishing/issues/new)
 to mention any new website. 
 
 
 ## How to help with the translation of the extension's interface?
 To add a new language, you can submit a PR to the [extension's repository](https://github.com/polkadot-js/extension).
 Start by creating a new directory in `extension/packages/extension/public/locales/` named after the language code you
-wish to add (e.g "es", for spanish).
-Add a file `translation.json` containing
-[the translation from the english](https://github.com/polkadot-js/extension/blob/master/packages/extension/public/locales/en/translation.json).
-Finally, add the new language in the selection menu by adding it to the array returned by the
-[getLanguageOptions](https://github.com/polkadot-js/extension/blob/master/packages/extension-ui/src/util/getLanguageOptions.ts#L12-L27).
+wish to add (e.g "es", for spanish).  
+Copy the file `translation.json` [from the english directory](https://github.com/polkadot-js/extension/blob/master/packages/extension/public/locales/en/translation.json) to the newly created directory and fill in the blanks.
+Take a look at the other translation files to see how it works.  
+Finally, add the new language in the selection menu by adding its name and code to the array returned by the
+[getLanguageOptions](https://github.com/polkadot-js/extension/blob/master/packages/extension-ui/src/util/getLanguageOptions.ts#L12-L27).  
 Once your PR is submitted and approved, the new language will be available in the next release of the extension.
 
 ## I want to send funds directly from the extension.
