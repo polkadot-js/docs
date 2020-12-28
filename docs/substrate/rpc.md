@@ -16,6 +16,8 @@ The following sections contain RPC methods that are Remote Calls available by de
 
 - **[engine](#engine)**
 
+- **[eth](#eth)**
+
 - **[grandpa](#grandpa)**
 
 - **[offchain](#offchain)**
@@ -185,6 +187,201 @@ ___
 - **interface**: `api.rpc.engine.finalizeBlock`
 - **jsonrpc**: `engine_finalizeBlock`
 - **summary**: Instructs the manual-seal authorship task to finalize a block
+
+___
+
+
+## eth
+ 
+### accounts(): `Vec<H160>`
+- **interface**: `api.rpc.eth.accounts`
+- **jsonrpc**: `eth_accounts`
+- **summary**: Returns accounts list.
+ 
+### blockNumber(): `U256`
+- **interface**: `api.rpc.eth.blockNumber`
+- **jsonrpc**: `eth_blockNumber`
+- **summary**: Returns balance of the given account.
+ 
+### call(request: `EthCallRequest`, number?: `BlockNumber`): `Bytes`
+- **interface**: `api.rpc.eth.call`
+- **jsonrpc**: `eth_call`
+- **summary**: Call contract, returning the output data.
+ 
+### chainId(): `U64`
+- **interface**: `api.rpc.eth.chainId`
+- **jsonrpc**: `eth_chainId`
+- **summary**: Returns the chain ID used for transaction signing at the current best block. None is returned if not available.
+ 
+### coinbase(): `H160`
+- **interface**: `api.rpc.eth.coinbase`
+- **jsonrpc**: `eth_coinbase`
+- **summary**: Returns block author.
+ 
+### estimateGas(request: `EthCallRequest`, number?: `BlockNumber`): `U256`
+- **interface**: `api.rpc.eth.estimateGas`
+- **jsonrpc**: `eth_estimateGas`
+- **summary**: Estimate gas needed for execution of given contract.
+ 
+### gasPrice(): `U256`
+- **interface**: `api.rpc.eth.gasPrice`
+- **jsonrpc**: `eth_gasPrice`
+- **summary**: Returns current gas price.
+ 
+### getBalance(address: `H160`, number?: `BlockNumber`): `U256`
+- **interface**: `api.rpc.eth.getBalance`
+- **jsonrpc**: `eth_getBalance`
+- **summary**: Returns balance of the given account.
+ 
+### getBlockByHash(hash: `H256`, full: `bool`): `Option<EthRichBlock>`
+- **interface**: `api.rpc.eth.getBlockByHash`
+- **jsonrpc**: `eth_getBlockByHash`
+- **summary**: Returns block with given hash.
+ 
+### getBlockByNumber(block: `BlockNumber`, full: `bool`): `Option<EthRichBlock>`
+- **interface**: `api.rpc.eth.getBlockByNumber`
+- **jsonrpc**: `eth_getBlockByNumber`
+- **summary**: Returns block with given number.
+ 
+### getBlockTransactionCountByHash(hash: `H256`): `U256`
+- **interface**: `api.rpc.eth.getBlockTransactionCountByHash`
+- **jsonrpc**: `eth_getBlockTransactionCountByHash`
+- **summary**: Returns the number of transactions in a block with given hash.
+ 
+### getBlockTransactionCountByNumber(block: `BlockNumber`): `U256`
+- **interface**: `api.rpc.eth.getBlockTransactionCountByNumber`
+- **jsonrpc**: `eth_getBlockTransactionCountByNumber`
+- **summary**: Returns the number of transactions in a block with given block number.
+ 
+### getCode(address: `H160`, number?: `BlockNumber`): `Bytes`
+- **interface**: `api.rpc.eth.getCode`
+- **jsonrpc**: `eth_getCode`
+- **summary**: Returns the code at given address at given time (block number).
+ 
+### getLogs(filter: `EthFilter`): `Vec<EthLog>`
+- **interface**: `api.rpc.eth.getLogs`
+- **jsonrpc**: `eth_getLogs`
+- **summary**: Returns logs matching given filter object.
+ 
+### getProof(address: `H160`, storageKeys: `Vec<H256>`, number: `BlockNumber`): `EthAccount`
+- **interface**: `api.rpc.eth.getProof`
+- **jsonrpc**: `eth_getProof`
+- **summary**: Returns proof for account and storage.
+ 
+### getStorageAt(address: `H160`, index: `U256`, number?: `BlockNumber`): `H256`
+- **interface**: `api.rpc.eth.getStorageAt`
+- **jsonrpc**: `eth_getStorageAt`
+- **summary**: Returns content of the storage at given address.
+ 
+### getTransactionByBlockHashAndIndex(hash: `H256`, index: `U256`): `EthTransaction`
+- **interface**: `api.rpc.eth.getTransactionByBlockHashAndIndex`
+- **jsonrpc**: `eth_getTransactionByBlockHashAndIndex`
+- **summary**: Returns transaction at given block hash and index.
+ 
+### getTransactionByBlockNumberAndIndex(number: `BlockNumber`, index: `U256`): `EthTransaction`
+- **interface**: `api.rpc.eth.getTransactionByBlockNumberAndIndex`
+- **jsonrpc**: `eth_getTransactionByBlockNumberAndIndex`
+- **summary**: Returns transaction by given block number and index.
+ 
+### getTransactionByHash(hash: `H256`): `EthTransaction`
+- **interface**: `api.rpc.eth.getTransactionByHash`
+- **jsonrpc**: `eth_getTransactionByHash`
+- **summary**: Get transaction by its hash.
+ 
+### getTransactionCount(hash: `H256`, number?: `BlockNumber`): `U256`
+- **interface**: `api.rpc.eth.getTransactionCount`
+- **jsonrpc**: `eth_getTransactionCount`
+- **summary**: Returns the number of transactions sent from given address at given time (block number).
+ 
+### getTransactionReceipt(hash: `H256`): `EthReceipt`
+- **interface**: `api.rpc.eth.getTransactionReceipt`
+- **jsonrpc**: `eth_getTransactionReceipt`
+- **summary**: Returns transaction receipt by transaction hash.
+ 
+### getUncleByBlockHashAndIndex(hash: `H256`, index: `U256`): `EthRichBlock`
+- **interface**: `api.rpc.eth.getUncleByBlockHashAndIndex`
+- **jsonrpc**: `eth_getUncleByBlockHashAndIndex`
+- **summary**: Returns an uncles at given block and index.
+ 
+### getUncleByBlockNumberAndIndex(number: `BlockNumber`, index: `U256`): `EthRichBlock`
+- **interface**: `api.rpc.eth.getUncleByBlockNumberAndIndex`
+- **jsonrpc**: `eth_getUncleByBlockNumberAndIndex`
+- **summary**: Returns an uncles at given block and index.
+ 
+### getUncleCountByBlockHash(hash: `H256`): `U256`
+- **interface**: `api.rpc.eth.getUncleCountByBlockHash`
+- **jsonrpc**: `eth_getUncleCountByBlockHash`
+- **summary**: Returns the number of uncles in a block with given hash.
+ 
+### getUncleCountByBlockNumber(number: `BlockNumber`): `U256`
+- **interface**: `api.rpc.eth.getUncleCountByBlockNumber`
+- **jsonrpc**: `eth_getUncleCountByBlockNumber`
+- **summary**: Returns the number of uncles in a block with given block number.
+ 
+### getWork(): `EthWork`
+- **interface**: `api.rpc.eth.getWork`
+- **jsonrpc**: `eth_getWork`
+- **summary**: Returns the hash of the current block, the seedHash, and the boundary condition to be met.
+ 
+### hashrate(): `U256`
+- **interface**: `api.rpc.eth.hashrate`
+- **jsonrpc**: `eth_hashrate`
+- **summary**: Returns the number of hashes per second that the node is mining with.
+ 
+### listening(): `bool`
+- **interface**: `api.rpc.eth.listening`
+- **jsonrpc**: `eth_listening`
+- **summary**: Returns true if client is actively listening for network connections. Otherwise false.
+ 
+### mining(): `bool`
+- **interface**: `api.rpc.eth.mining`
+- **jsonrpc**: `eth_mining`
+- **summary**: Returns true if client is actively mining new blocks.
+ 
+### peerCount(): `String`
+- **interface**: `api.rpc.eth.peerCount`
+- **jsonrpc**: `eth_peerCount`
+- **summary**: Returns number of peers connected to node.
+ 
+### protocolVersion(): `u64`
+- **interface**: `api.rpc.eth.protocolVersion`
+- **jsonrpc**: `eth_protocolVersion`
+- **summary**: Returns protocol version encoded as a string (quotes are necessary).
+ 
+### sendRawTransaction(bytes: `Bytes`): `H256`
+- **interface**: `api.rpc.eth.sendRawTransaction`
+- **jsonrpc**: `eth_sendRawTransaction`
+- **summary**: Sends signed transaction, returning its hash.
+ 
+### sendTransaction(tx: `EthTransactionRequest`): `H256`
+- **interface**: `api.rpc.eth.sendTransaction`
+- **jsonrpc**: `eth_sendTransaction`
+- **summary**: Sends transaction; will block waiting for signer to return the transaction hash
+ 
+### submitHashrate(index: `U256`, hash: `H256`): `bool`
+- **interface**: `api.rpc.eth.submitHashrate`
+- **jsonrpc**: `eth_submitHashrate`
+- **summary**: Used for submitting mining hashrate.
+ 
+### submitWork(nonce: `H64`, headerHash: `H256`, mixDigest: `H256`): `bool`
+- **interface**: `api.rpc.eth.submitWork`
+- **jsonrpc**: `eth_submitWork`
+- **summary**: Used for submitting a proof-of-work solution.
+ 
+### subscribe(kind: `EthSubKind`, params?: `EthSubParams`): `Null`
+- **interface**: `api.rpc.eth.subscribe`
+- **jsonrpc**: `eth_subscribe`
+- **summary**: Subscribe to Eth subscription.
+ 
+### syncing(): `EthSyncStatus`
+- **interface**: `api.rpc.eth.syncing`
+- **jsonrpc**: `eth_syncing`
+- **summary**: Returns an object with data about the sync status or false.
+ 
+### version(): `String`
+- **interface**: `api.rpc.eth.version`
+- **jsonrpc**: `eth_version`
+- **summary**: Returns protocol version.
 
 ___
 
