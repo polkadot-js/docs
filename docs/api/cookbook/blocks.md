@@ -11,9 +11,9 @@ A block hash refers to the hash over the header, the extrinsic hash refers to th
 
 ```js
 // returns Hash
-const blockHash = await this.api.rpc.chain.getBlockHash(blockNumber);
+const blockHash = await api.rpc.chain.getBlockHash(blockNumber);
 // returns SignedBlock
-const signedBlock = await this.api.rpc.chain.getBlock(blockHash);
+const signedBlock = await api.rpc.chain.getBlock(blockHash);
 
 // the hash for the block, always via header (Hash -> toHex()) - will be
 // the same as blockHash above (also available on any header retrieved,
