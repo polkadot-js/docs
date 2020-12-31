@@ -54,7 +54,7 @@ The transactions are included in a signed block as part of the extrinsics - some
 
 ```js
 // no blockHash is specified, so we retrieve the latest
-const signedBlock = await this.api.rpc.chain.getBlock();
+const signedBlock = await api.rpc.chain.getBlock();
 
 // the information for each of the contained extrinsics
 signedBlock.block.extrinsics.forEach((ex, index) => {
@@ -85,7 +85,7 @@ To perform a mapping between the two, we need information from both sources.
 
 ```js
 // no blockHash is specified, so we retrieve the latest
-const signedBlock = await this.api.rpc.chain.getBlock();
+const signedBlock = await api.rpc.chain.getBlock();
 const allRecords = await api.query.system.events.at(signedBlock.block.header.hash);
 
 // map between the extrinsics and events
