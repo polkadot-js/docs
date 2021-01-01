@@ -657,6 +657,9 @@ ___
  
 ### TipRetracted(`Hash`)
 - **summary**:   A tip suggestion has been retracted. \[tip_hash\] 
+ 
+### TipSlashed(`Hash`, `AccountId`, `Balance`)
+- **summary**:   A tip suggestion has been slashed. \[tip_hash, finder, deposit\] 
 
 ___
 

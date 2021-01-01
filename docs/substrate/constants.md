@@ -398,6 +398,12 @@ ___
 ### dbWeight: `RuntimeDbWeight`
 - **interface**: `api.consts.system.dbWeight`
 - **summary**:   The weight of runtime database operations the runtime can invoke. 
+ 
+### ss58Prefix: `u8`
+- **interface**: `api.consts.system.ss58Prefix`
+- **summary**:   The designated SS85 prefix of this chain. 
+
+  This replaces the "ss58Format" property declared in the chain spec. Reason is that the runtime should know about the prefix in order to make use of it as an identifier of the chain. 
 
 ___
 

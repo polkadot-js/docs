@@ -693,7 +693,7 @@ ___
 - **interface**: `api.query.staking.activeEra`
 - **summary**:   The active era information, it holds index and start. 
 
-  The active era is the era currently rewarded. Validator set of this era must be equal to `SessionInterface::validators`. 
+  The active era is the era being currently rewarded. Validator set of this era must be equal to [`SessionInterface::validators`]. 
  
 ### bonded(`AccountId`): `Option<AccountId>`
 - **interface**: `api.query.staking.bonded`
@@ -748,6 +748,8 @@ ___
 ### erasStartSessionIndex(`EraIndex`): `Option<SessionIndex>`
 - **interface**: `api.query.staking.erasStartSessionIndex`
 - **summary**:   The session index at which the era start for the last `HISTORY_DEPTH` eras. 
+
+  Note: This tracks the starting session (i.e. session index when era start being active) for the eras in `[CurrentEra - HISTORY_DEPTH, CurrentEra]`. 
  
 ### erasTotalStake(`EraIndex`): `BalanceOf`
 - **interface**: `api.query.staking.erasTotalStake`
@@ -920,10 +922,6 @@ ___
 ### extrinsicData(`u32`): `Bytes`
 - **interface**: `api.query.system.extrinsicData`
 - **summary**:   Extrinsics data for the current block (maps an extrinsic's index to its data). 
- 
-### extrinsicsRoot(): `Hash`
-- **interface**: `api.query.system.extrinsicsRoot`
-- **summary**:   Extrinsics root of the current block, also part of the block header. 
  
 ### lastRuntimeUpgrade(): `Option<LastRuntimeUpgradeInfo>`
 - **interface**: `api.query.system.lastRuntimeUpgrade`

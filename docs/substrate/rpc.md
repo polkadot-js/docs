@@ -18,6 +18,10 @@ The following sections contain RPC methods that are Remote Calls available by de
 
 - **[eth](#eth)**
 
+- **[eth/net](#eth/net)**
+
+- **[eth/web3](#eth/web3)**
+
 - **[grandpa](#grandpa)**
 
 - **[offchain](#offchain)**
@@ -328,20 +332,10 @@ ___
 - **jsonrpc**: `eth_hashrate`
 - **summary**: Returns the number of hashes per second that the node is mining with.
  
-### listening(): `bool`
-- **interface**: `api.rpc.eth.listening`
-- **jsonrpc**: `eth_listening`
-- **summary**: Returns true if client is actively listening for network connections. Otherwise false.
- 
 ### mining(): `bool`
 - **interface**: `api.rpc.eth.mining`
 - **jsonrpc**: `eth_mining`
 - **summary**: Returns true if client is actively mining new blocks.
- 
-### peerCount(): `String`
-- **interface**: `api.rpc.eth.peerCount`
-- **jsonrpc**: `eth_peerCount`
-- **summary**: Returns number of peers connected to node.
  
 ### protocolVersion(): `u64`
 - **interface**: `api.rpc.eth.protocolVersion`
@@ -377,11 +371,41 @@ ___
 - **interface**: `api.rpc.eth.syncing`
 - **jsonrpc**: `eth_syncing`
 - **summary**: Returns an object with data about the sync status or false.
+
+___
+
+
+## eth/net
+ 
+### listening(): `bool`
+- **interface**: `api.rpc.net.listening`
+- **jsonrpc**: `net_listening`
+- **summary**: Returns true if client is actively listening for network connections. Otherwise false.
+ 
+### peerCount(): `String`
+- **interface**: `api.rpc.net.peerCount`
+- **jsonrpc**: `net_peerCount`
+- **summary**: Returns number of peers connected to node.
  
 ### version(): `String`
-- **interface**: `api.rpc.eth.version`
-- **jsonrpc**: `eth_version`
+- **interface**: `api.rpc.net.version`
+- **jsonrpc**: `net_version`
 - **summary**: Returns protocol version.
+
+___
+
+
+## eth/web3
+ 
+### clientVersion(): `String`
+- **interface**: `api.rpc.web3.clientVersion`
+- **jsonrpc**: `web3_clientVersion`
+- **summary**: Returns current client version.
+ 
+### sha3(data: `Bytes`): `H256`
+- **interface**: `api.rpc.web3.sha3`
+- **jsonrpc**: `web3_sha3`
+- **summary**: Returns sha3 of the given data
 
 ___
 
