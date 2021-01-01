@@ -2412,6 +2412,18 @@ ___
 
    
  
+### slashTip(hash: `Hash`)
+- **interface**: `api.tx.tips.slashTip`
+- **summary**:   Remove and slash an already-open tip. 
+
+  May only be called from `T::RejectOrigin`. 
+
+  As a result, the finder is slashed and the deposits are lost. 
+
+  Emits `TipSlashed` if successful. 
+
+   
+ 
 ### tip(hash: `Hash`, tip_value: `Compact<BalanceOf>`)
 - **interface**: `api.tx.tips.tip`
 - **summary**:   Declare a tip value for an already-open tip. 

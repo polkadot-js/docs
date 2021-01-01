@@ -203,6 +203,12 @@ ___
 ### DecodingFailed
 - **summary**:   Input passed to a contract API function failed to decode as expected type. 
  
+### DuplicateTopics
+- **summary**:   The topics passed to `seal_deposit_events` contains at least one duplicate. 
+ 
+### InputAlreadyRead
+- **summary**:   `seal_input` was called twice from the same contract execution context. 
+ 
 ### InvalidContractOrigin
 - **summary**:   An origin TrieId written in the current block. 
  
@@ -239,8 +245,14 @@ ___
 ### OutputBufferTooSmall
 - **summary**:   The output buffer supplied to a contract API call was too small. 
  
+### RandomSubjectTooLong
+- **summary**:   The subject passed to `seal_random` exceeds the limit. 
+ 
 ### ReentranceDenied
 - **summary**:   The action performed is not allowed while the contract performing it is already on the call stack. Those actions are contract self destruction and restoration of a tombstone. 
+ 
+### TooManyTopics
+- **summary**:   The amount of topics passed to `seal_deposit_events` exceeds the limit. 
  
 ### TransferFailed
 - **summary**:   Performing the requested transfer failed for a reason originating in the chosen currency implementation of the runtime. Most probably the balance is too low or locks are placed on it. 
@@ -596,6 +608,9 @@ ___
  
 ### NoPermission
 - **summary**:   Call may not be made by proxy because it may escalate its privileges. 
+ 
+### NoSelfProxy
+- **summary**:   Cannot add self as proxy. 
  
 ### NotFound
 - **summary**:   Proxy registration not found. 
