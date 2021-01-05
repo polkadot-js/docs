@@ -37,9 +37,8 @@ api.tx.balances
     if (status.isInBlock || status.isFinalized) {
       events
         // find/filter for failed events
-        .filter(({ event: { section, method } }) =>
-          section === 'system' &&
-          method === 'ExtrinsicFailed'
+        .filter(({ event }) =>
+          api.events.system.ExtrinsicFailed.is(event)
         )
         // we know that data for system.ExtrinsicFailed is
         // (DispatchError, DispatchInfo)
@@ -97,9 +96,8 @@ const unsub = await api.tx.sudo
     if (status.isInBlock || status.isFinalized) {
       events
         // We know this tx should result in `Sudid` event.
-        .filter(({ event: { section, method } }) =>
-          section === 'sudo' &&
-          method === 'Sudid'
+        .filter(({ event }) =>
+          api.events.sudo.Sudid.is(event)
         )
         // We know that `Sudid` returns just a `Result`
         .forEach(({ event : { data: [result] } }) => {

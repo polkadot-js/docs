@@ -102,3 +102,54 @@ signedBlock.block.extrinsics.forEach(({ method: { method, section } }, index) =>
   console.log(`${section}.${method}:: ${events.join(', ') || 'no events'}`);
 });
 ```
+
+
+## How do I determine if an extrinsic succeeded/failed?
+
+This is an extension of the above example where extrinsics are mapped to their blocks. However in this example, we will look for specific extrinsic events, in this case the `system.ExtrinsicSuccess` and `system.ExtrinsicFailed` events. The same logic can be applied to inspect any other type of expected event.
+
+```js
+// no blockHash is specified, so we retrieve the latest
+const signedBlock = await api.rpc.chain.getBlock();
+const allRecords = await api.query.system.events.at(signedBlock.block.header.hash);
+
+// map between the extrinsics and events
+signedBlock.block.extrinsics.forEach(({ method: { method, section } }, index) => {
+  allRecords
+    // filter the specific events based on the phase and then the
+    // index of our extrinsic in the block
+    .filter(({ phase }) =>
+      phase.isApplyExtrinsic &&
+      phase.asApplyExtrinsic.eq(index)
+    )
+    // test the events against the specific types we are looking for
+    .forEach(({ event }) => {
+      if (api.events.system.ExtrinsicSuccess.is(event)) {
+        // extract the data for this event
+        // (In TS, because of the guard above, these will be typed)
+        const [dispatchInfo] = event.data;
+
+        console.log(`${section}.${method}:: ExtrinsicSuccess:: ${dispatchInfo.toHuman()}`);
+      } else if (api.events.system.ExtrinsicFailed.is(event)) {
+        // extract the data for this event
+        const [dispatchError, dispatchInfo] = event.data;
+        let errorInfo;
+
+        // decode the error
+        if (dispatchError.isModule) {
+          // for module errors, we have the section indexed, lookup
+          // (For specific known errors, we can also do a check against the
+          // api.errors.<module>.<ErrorName>.is(dispatchError.asModule) guard)
+          const decoded = api.registry.findMetaError(dispatchError.asModule);
+
+          errorInfo = `${decoded.section}.${decoded.method}`;
+        } else {
+          // Other, CannotLookup, BadOrigin, no extra info
+          errorInfo = dispatchError.toString();
+        }
+
+        console.log(`${section}.${method}:: ExtrinsicFailed:: ${errorInfo}`);
+      }
+    });
+});
+```
