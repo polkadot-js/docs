@@ -142,7 +142,7 @@ signedBlock.block.extrinsics.forEach(({ method: { method, section } }, index) =>
           // api.errors.<module>.<ErrorName>.is(dispatchError.asModule) guard)
           const decoded = api.registry.findMetaError(dispatchError.asModule);
 
-          errorInfo = `${decoded.section}.${decoded.method}`;
+          errorInfo = `${decoded.section}.${decoded.name}`;
         } else {
           // Other, CannotLookup, BadOrigin, no extra info
           errorInfo = dispatchError.toString();
