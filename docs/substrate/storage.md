@@ -32,6 +32,8 @@ The following sections contain Storage methods are part of the default Substrate
 
 - **[indices](#indices)**
 
+- **[lottery](#lottery)**
+
 - **[mmr](#mmr)**
 
 - **[multisig](#multisig)**
@@ -85,6 +87,10 @@ ___
 ### asset(`AssetId`): `Option<AssetDetails>`
 - **interface**: `api.query.assets.asset`
 - **summary**:   Details of an asset. 
+ 
+### metadata(`AssetId`): `AssetMetadata`
+- **interface**: `api.query.assets.metadata`
+- **summary**:   Metadata of an asset. 
 
 ___
 
@@ -137,6 +143,10 @@ ___
 - **summary**:   How late the current block is compared to its parent. 
 
   This entry is populated as part of block execution and is cleaned up on block finalization. Querying this storage entry outside of block execution context should always yield zero. 
+ 
+### nextAuthorities(): `Vec<(AuthorityId,BabeAuthorityWeight)>`
+- **interface**: `api.query.babe.nextAuthorities`
+- **summary**:   Next epoch authorities. 
  
 ### nextEpochConfig(): `Option<NextConfigDescriptor>`
 - **interface**: `api.query.babe.nextEpochConfig`
@@ -234,6 +244,12 @@ ___
 ### currentSchedule(): `Schedule`
 - **interface**: `api.query.contracts.currentSchedule`
 - **summary**:   Current cost schedule for contracts. 
+ 
+### deletionQueue(): `Vec<DeletedContract>`
+- **interface**: `api.query.contracts.deletionQueue`
+- **summary**:   Evicted contracts that await child trie deletion. 
+
+  Child trie deletion is a heavy operation depending on the amount of storage items stored in said trie. Therefore this operation is performed lazily in `on_initialize`. 
  
 ### pristineCode(`CodeHash`): `Option<Bytes>`
 - **interface**: `api.query.contracts.pristineCode`
@@ -348,27 +364,35 @@ ___
 
 ## elections
  
-### candidates(): `Vec<AccountId>`
+### candidates(): `Vec<(AccountId,BalanceOf)>`
 - **interface**: `api.query.elections.candidates`
-- **summary**:   The present candidate list. Sorted based on account-id. A current member or runner-up can never enter this vector and is always implicitly assumed to be a candidate. 
+- **summary**:   The present candidate list. A current member or runner-up can never enter this vector and is always implicitly assumed to be a candidate. 
+
+  Second element is the deposit. 
+
+  Invariant: Always sorted based on account id. 
  
 ### electionRounds(): `u32`
 - **interface**: `api.query.elections.electionRounds`
 - **summary**:   The total number of vote rounds that have happened, excluding the upcoming one. 
  
-### members(): `Vec<(AccountId,BalanceOf)>`
+### members(): `Vec<SeatHolder>`
 - **interface**: `api.query.elections.members`
-- **summary**:   The current elected membership. Sorted based on account id. 
+- **summary**:   The current elected members. 
+
+  Invariant: Always sorted based on account id. 
  
-### runnersUp(): `Vec<(AccountId,BalanceOf)>`
+### runnersUp(): `Vec<SeatHolder>`
 - **interface**: `api.query.elections.runnersUp`
-- **summary**:   The current runners_up. Sorted based on low to high merit (worse to best). 
+- **summary**:   The current reserved runners-up. 
+
+  Invariant: Always sorted based on rank (worse to best). Upon removal of a member, the last (i.e. _best_) runner-up will be replaced. 
  
-### voting(`AccountId`): `(BalanceOf,Vec<AccountId>)`
+### voting(`AccountId`): `Voter`
 - **interface**: `api.query.elections.voting`
 - **summary**:   Votes and locked stake of a particular voter. 
 
-  TWOX-NOTE: SAFE as `AccountId` is a crypto hash 
+  TWOX-NOTE: SAFE as `AccountId` is a crypto hash. 
 
 ___
 
@@ -461,6 +485,36 @@ ___
 ### accounts(`AccountIndex`): `Option<(AccountId,BalanceOf,bool)>`
 - **interface**: `api.query.indices.accounts`
 - **summary**:   The lookup from index to account. 
+
+___
+
+
+## lottery
+ 
+### callIndices(): `Vec<CallIndex>`
+- **interface**: `api.query.lottery.callIndices`
+- **summary**:   The calls stored in this pallet to be used in an active lottery if configured by `Config::ValidateCall`. 
+ 
+### lottery(): `Option<LotteryConfig>`
+- **interface**: `api.query.lottery.lottery`
+- **summary**:   The configuration for the current lottery. 
+ 
+### lotteryIndex(): `u32`
+- **interface**: `api.query.lottery.lotteryIndex`
+ 
+### participants(`AccountId`): `(u32,Vec<CallIndex>)`
+- **interface**: `api.query.lottery.participants`
+- **summary**:   Users who have purchased a ticket. (Lottery Index, Tickets Purchased) 
+ 
+### tickets(`u32`): `Option<AccountId>`
+- **interface**: `api.query.lottery.tickets`
+- **summary**:   Each ticket's owner. 
+
+  May have residual storage from previous lotteries. Use `TicketsCount` to see which ones are actually valid ticket mappings. 
+ 
+### ticketsCount(): `u32`
+- **interface**: `api.query.lottery.ticketsCount`
+- **summary**:   Total number of tickets sold. 
 
 ___
 
@@ -843,7 +897,7 @@ ___
 - **interface**: `api.query.staking.storageVersion`
 - **summary**:   True if network has been upgraded to this version. Storage version of the pallet. 
 
-  This is set to v3.0.0 for new networks. 
+  This is set to v5.0.0 for new networks. 
  
 ### unappliedSlashes(`EraIndex`): `Vec<UnappliedSlash>`
 - **interface**: `api.query.staking.unappliedSlashes`
@@ -934,6 +988,10 @@ ___
 ### parentHash(): `Hash`
 - **interface**: `api.query.system.parentHash`
 - **summary**:   Hash of the previous block. 
+ 
+### upgradedToDualRefCount(): `bool`
+- **interface**: `api.query.system.upgradedToDualRefCount`
+- **summary**:   True if we have upgraded so that AccountInfo contains two types of `RefCount`. False (default) if not. 
  
 ### upgradedToU32RefCount(): `bool`
 - **interface**: `api.query.system.upgradedToU32RefCount`

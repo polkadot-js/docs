@@ -32,6 +32,8 @@ The following sections contain Extrinsics methods are part of the default Substr
 
 - **[indices](#indices)**
 
+- **[lottery](#lottery)**
+
 - **[multisig](#multisig)**
 
 - **[proxy](#proxy)**
@@ -70,7 +72,7 @@ ___
 
 ## assets
  
-### burn(id: `Compact<AssetId>`, who: `LookupSource`, amount: `Compact<Balance>`)
+### burn(id: `Compact<AssetId>`, who: `LookupSource`, amount: `Compact<TAssetBalance>`)
 - **interface**: `api.tx.assets.burn`
 - **summary**:   Reduce the balance of `who` by as much as possible up to `amount` assets of `id`. 
 
@@ -88,7 +90,7 @@ ___
 
   Weight: `O(1)` Modes: Post-existence of `who`; Pre & post Zombie-status of `who`. 
  
-### create(id: `Compact<AssetId>`, admin: `LookupSource`, max_zombies: `u32`, min_balance: `Balance`)
+### create(id: `Compact<AssetId>`, admin: `LookupSource`, max_zombies: `u32`, min_balance: `TAssetBalance`)
 - **interface**: `api.tx.assets.create`
 - **summary**:   Issue a new class of fungible assets from a public origin. 
 
@@ -124,7 +126,7 @@ ___
 
   Weight: `O(z)` where `z` is the number of zombie accounts. 
  
-### forceCreate(id: `Compact<AssetId>`, owner: `LookupSource`, max_zombies: `Compact<u32>`, min_balance: `Compact<Balance>`)
+### forceCreate(id: `Compact<AssetId>`, owner: `LookupSource`, max_zombies: `Compact<u32>`, min_balance: `Compact<TAssetBalance>`)
 - **interface**: `api.tx.assets.forceCreate`
 - **summary**:   Issue a new class of fungible assets from a privileged origin. 
 
@@ -158,7 +160,7 @@ ___
 
   Weight: `O(1)` 
  
-### forceTransfer(id: `Compact<AssetId>`, source: `LookupSource`, dest: `LookupSource`, amount: `Compact<Balance>`)
+### forceTransfer(id: `Compact<AssetId>`, source: `LookupSource`, dest: `LookupSource`, amount: `Compact<TAssetBalance>`)
 - **interface**: `api.tx.assets.forceTransfer`
 - **summary**:   Move some assets from one account to another. 
 
@@ -190,7 +192,19 @@ ___
 
   Weight: `O(1)` 
  
-### mint(id: `Compact<AssetId>`, beneficiary: `LookupSource`, amount: `Compact<Balance>`)
+### freezeAsset(id: `Compact<AssetId>`)
+- **interface**: `api.tx.assets.freezeAsset`
+- **summary**:   Disallow further unprivileged transfers for the asset class. 
+
+  Origin must be Signed and the sender should be the Freezer of the asset `id`. 
+
+  - `id`: The identifier of the asset to be frozen. 
+
+  Emits `Frozen`. 
+
+  Weight: `O(1)` 
+ 
+### mint(id: `Compact<AssetId>`, beneficiary: `LookupSource`, amount: `Compact<TAssetBalance>`)
 - **interface**: `api.tx.assets.mint`
 - **summary**:   Mint assets of a particular class. 
 
@@ -208,6 +222,41 @@ ___
  
 ### setMaxZombies(id: `Compact<AssetId>`, max_zombies: `Compact<u32>`)
 - **interface**: `api.tx.assets.setMaxZombies`
+- **summary**:   Set the maximum number of zombie accounts for an asset. 
+
+  Origin must be Signed and the sender should be the Owner of the asset `id`. 
+
+  Funds of sender are reserved according to the formula: `AssetDepositBase + AssetDepositPerZombie * max_zombies` taking into account any already reserved funds. 
+
+  - `id`: The identifier of the asset to update zombie count. 
+
+  - `max_zombies`: The new number of zombies allowed for this asset.
+
+  Emits `MaxZombiesChanged`. 
+
+  Weight: `O(1)` 
+ 
+### setMetadata(id: `Compact<AssetId>`, name: `Bytes`, symbol: `Bytes`, decimals: `u8`)
+- **interface**: `api.tx.assets.setMetadata`
+- **summary**:   Set the metadata for an asset. 
+
+  NOTE: There is no `unset_metadata` call. Simply pass an empty name, symbol, and 0 decimals to this function to remove the metadata of an asset and return your deposit. 
+
+  Origin must be Signed and the sender should be the Owner of the asset `id`. 
+
+  Funds of sender are reserved according to the formula: `MetadataDepositBase + MetadataDepositPerByte * (name.len + symbol.len)` taking into account any already reserved funds. 
+
+  - `id`: The identifier of the asset to update. 
+
+  - `name`: The user friendly name of this asset. Limited in length by `StringLimit`.
+
+  - `symbol`: The exchange symbol for this asset. Limited in length by `StringLimit`.
+
+  - `decimals`: The number of decimals this asset uses to represent one unit.
+
+  Emits `MaxZombiesChanged`. 
+
+  Weight: `O(1)` 
  
 ### setTeam(id: `Compact<AssetId>`, issuer: `LookupSource`, admin: `LookupSource`, freezer: `LookupSource`)
 - **interface**: `api.tx.assets.setTeam`
@@ -241,7 +290,19 @@ ___
 
   Weight: `O(1)` 
  
-### transfer(id: `Compact<AssetId>`, target: `LookupSource`, amount: `Compact<Balance>`)
+### thawAsset(id: `Compact<AssetId>`)
+- **interface**: `api.tx.assets.thawAsset`
+- **summary**:   Allow unprivileged transfers for the asset again. 
+
+  Origin must be Signed and the sender should be the Admin of the asset `id`. 
+
+  - `id`: The identifier of the asset to be frozen. 
+
+  Emits `Thawed`. 
+
+  Weight: `O(1)` 
+ 
+### transfer(id: `Compact<AssetId>`, target: `LookupSource`, amount: `Compact<TAssetBalance>`)
 - **interface**: `api.tx.assets.transfer`
 - **summary**:   Move some assets from the sender account to another. 
 
@@ -452,7 +513,9 @@ ___
 - **interface**: `api.tx.contracts.claimSurcharge`
 - **summary**:   Allows block producers to claim a small reward for evicting a contract. If a block producer fails to do so, a regular users will be allowed to claim the reward. 
 
-  If contract is not evicted as a result of this call, no actions are taken and the sender is not eligible for the reward. 
+  In case of a successful eviction no fees are charged from the sender. However, the reward is capped by the total amount of rent that was payed by the contract while it was alive. 
+
+  If contract is not evicted as a result of this call, [`Error::ContractNotEvictable`] is returned and the sender is not eligible for the reward. 
  
 ### instantiate(endowment: `Compact<BalanceOf>`, gas_limit: `Compact<Gas>`, code_hash: `CodeHash`, data: `Bytes`, salt: `Bytes`)
 - **interface**: `api.tx.contracts.instantiate`
@@ -871,11 +934,23 @@ ___
 
 ## elections
  
+### cleanDefunctVoters(_num_voters: `u32`, _num_defunct: `u32`)
+- **interface**: `api.tx.elections.cleanDefunctVoters`
+- **summary**:   Clean all voters who are defunct (i.e. they do not serve any purpose at all). The deposit of the removed voters are returned. 
+
+  This is an root function to be used only for cleaning the state. 
+
+  The dispatch origin of this call must be root. 
+
+   
+ 
 ### removeMember(who: `LookupSource`, has_replacement: `bool`)
 - **interface**: `api.tx.elections.removeMember`
 - **summary**:   Remove a particular member from the set. This is effective immediately and the bond of the outgoing member is slashed. 
 
   If a runner-up is available, then the best runner-up will be removed and replaces the outgoing member. Otherwise, a new phragmen election is started. 
+
+  The dispatch origin of this call must be root. 
 
   Note that this does not affect the designated block number of the next election. 
 
@@ -883,45 +958,37 @@ ___
  
 ### removeVoter()
 - **interface**: `api.tx.elections.removeVoter`
-- **summary**:   Remove `origin` as a voter. This removes the lock and returns the bond. 
+- **summary**:   Remove `origin` as a voter. 
 
-   
+  This removes the lock and returns the deposit. 
+
+  The dispatch origin of this call must be signed and be a voter. 
  
 ### renounceCandidacy(renouncing: `Renouncing`)
 - **interface**: `api.tx.elections.renounceCandidacy`
 - **summary**:   Renounce one's intention to be a candidate for the next election round. 3 potential outcomes exist: 
 
-  - `origin` is a candidate and not elected in any set. In this case, the bond is  unreserved, returned and origin is removed as a candidate. 
+  - `origin` is a candidate and not elected in any set. In this case, the deposit is   unreserved, returned and origin is removed as a candidate. 
 
-  - `origin` is a current runner-up. In this case, the bond is unreserved, returned and  origin is removed as a runner-up. 
+  - `origin` is a current runner-up. In this case, the deposit is unreserved, returned and  origin is removed as a runner-up. 
 
-  - `origin` is a current member. In this case, the bond is unreserved and origin is  removed as a member, consequently not being a candidate for the next round anymore.   Similar to [`remove_voter`], if replacement runners exists, they are immediately used.  
- 
-### reportDefunctVoter(defunct: `DefunctVoter`)
-- **interface**: `api.tx.elections.reportDefunctVoter`
-- **summary**:   Report `target` for being an defunct voter. In case of a valid report, the reporter is rewarded by the bond amount of `target`. Otherwise, the reporter itself is removed and their bond is slashed. 
+  - `origin` is a current member. In this case, the deposit is unreserved and origin is  removed as a member, consequently not being a candidate for the next round anymore.   Similar to [`remove_members`], if replacement runners exists, they are immediately used.   If the prime is renouncing, then no prime will exist until the next round. 
 
-  A defunct voter is defined to be: 
-
-    - a voter whose current submitted votes are all invalid. i.e. all of them are no    longer a candidate nor an active member or a runner-up. 
-
-  
-
-  The origin must provide the number of current candidates and votes of the reported target for the purpose of accurate weight calculation. 
+  The dispatch origin of this call must be signed, and have one of the above roles. 
 
    
  
 ### submitCandidacy(candidate_count: `Compact<u32>`)
 - **interface**: `api.tx.elections.submitCandidacy`
-- **summary**:   Submit oneself for candidacy. 
+- **summary**:   Submit oneself for candidacy. A fixed amount of deposit is recorded. 
 
-  A candidate will either: 
+  All candidates are wiped at the end of the term. They either become a member/runner-up, or leave the system while their deposit is slashed. 
 
-    - Lose at the end of the term and forfeit their deposit.
+  The dispatch origin of this call must be signed. 
 
-    - Win and become a member. Members will eventually get their stash back.
+  #### Warning 
 
-    - Become a runner-up. Runners-ups are reserved members in case one gets forcefully    removed. 
+  Even if a candidate ends up being a member, they must call [`Call::renounce_candidacy`] to get their deposit back. Losing the spot in an election will always lead to a slash. 
 
    
  
@@ -929,7 +996,7 @@ ___
 - **interface**: `api.tx.elections.vote`
 - **summary**:   Vote for a set of candidates for the upcoming round of election. This can be called to set the initial votes, or update already existing votes. 
 
-  Upon initial voting, `value` units of `who`'s balance is locked and a bond amount is reserved. 
+  Upon initial voting, `value` units of `who`'s balance is locked and a deposit amount is reserved. The deposit is based on the number of votes and can be updated over time. 
 
   The `votes` should: 
 
@@ -937,7 +1004,13 @@ ___
 
     - be less than the number of possible candidates. Note that all current members and    runners-up are also automatically candidates for the next round. 
 
-  It is the responsibility of the caller to not place all of their balance into the lock and keep some for further transactions. 
+  If `value` is more than `who`'s total balance, then the maximum of the two is used. 
+
+  The dispatch origin of this call must be signed. 
+
+  #### Warning 
+
+  It is the responsibility of the caller to **NOT** place all of their balance into the lock and keep some for further operations. 
 
    
 
@@ -1228,6 +1301,51 @@ ___
   Emits `IndexAssigned` if successful. 
 
    
+
+___
+
+
+## lottery
+ 
+### buyTicket(call: `Call`)
+- **interface**: `api.tx.lottery.buyTicket`
+- **summary**:   Buy a ticket to enter the lottery. 
+
+  This extrinsic acts as a passthrough function for `call`. In all situations where `call` alone would succeed, this extrinsic should succeed. 
+
+  If `call` is successful, then we will attempt to purchase a ticket, which may fail silently. To detect success of a ticket purchase, you should listen for the `TicketBought` event. 
+
+  This extrinsic must be called by a signed origin. 
+ 
+### setCalls(calls: `Vec<Call>`)
+- **interface**: `api.tx.lottery.setCalls`
+- **summary**:   Set calls in storage which can be used to purchase a lottery ticket. 
+
+  This function only matters if you use the `ValidateCall` implementation provided by this pallet, which uses storage to determine the valid calls. 
+
+  This extrinsic must be called by the Manager origin. 
+ 
+### startLottery(price: `BalanceOf`, length: `BlockNumber`, delay: `BlockNumber`, repeat: `bool`)
+- **interface**: `api.tx.lottery.startLottery`
+- **summary**:   Start a lottery using the provided configuration. 
+
+  This extrinsic must be called by the `ManagerOrigin`. 
+
+  Parameters: 
+
+  * `price`: The cost of a single ticket. 
+
+  * `length`: How long the lottery should run for starting at the current block.
+
+  * `delay`: How long after the lottery end we should wait before picking a winner.
+
+  * `repeat`: If the lottery should repeat when completed.
+ 
+### stopRepeat()
+- **interface**: `api.tx.lottery.stopRepeat`
+- **summary**:   If a lottery is repeating, you can use this to stop the repeat. The lottery will continue to run to completion. 
+
+  This extrinsic must be called by the `ManagerOrigin`. 
 
 ___
 
@@ -1942,6 +2060,18 @@ ___
 
    
  
+### kick(who: `Vec<LookupSource>`)
+- **interface**: `api.tx.staking.kick`
+- **summary**:   Remove the given nominations from the calling validator. 
+
+  Effects will be felt at the beginning of the next era. 
+
+  The dispatch origin for this call must be _Signed_ by the controller, not the stash. And, it can be only called when [`EraElectionStatus`] is `Closed`. The controller account should represent a validator. 
+
+  - `who`: A list of nominator stash accounts who are nominating this validator which   should no longer be nominating this validator. 
+
+  Note: Making this call only makes sense if you first set the validator preferences to block any further nominations. 
+ 
 ### nominate(targets: `Vec<LookupSource>`)
 - **interface**: `api.tx.staking.nominate`
 - **summary**:   Declare the desire to nominate `targets` for the origin controller. 
@@ -1968,7 +2098,7 @@ ___
  
 ### reapStash(stash: `AccountId`, num_slashing_spans: `u32`)
 - **interface**: `api.tx.staking.reapStash`
-- **summary**:   Remove all data structure concerning a staker/stash once its balance is zero. This is essentially equivalent to `withdraw_unbonded` except it can be called by anyone and the target `stash` must have no funds left. 
+- **summary**:   Remove all data structure concerning a staker/stash once its balance is at the minimum. This is essentially equivalent to `withdraw_unbonded` except it can be called by anyone and the target `stash` must have no funds left beyond the ED. 
 
   This can be called from any origin. 
 
@@ -2213,12 +2343,6 @@ ___
 ### setStorage(items: `Vec<KeyValue>`)
 - **interface**: `api.tx.system.setStorage`
 - **summary**:   Set some items of storage. 
-
-   
- 
-### suicide()
-- **interface**: `api.tx.system.suicide`
-- **summary**:   Kill the sending account, assuming there are no references outstanding and the composite data is equal to its default value. 
 
    
 

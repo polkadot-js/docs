@@ -22,6 +22,8 @@ The following sections contain the module constants, also known as parameter typ
 
 - **[indices](#indices)**
 
+- **[lottery](#lottery)**
+
 - **[multisig](#multisig)**
 
 - **[proxy](#proxy)**
@@ -52,7 +54,7 @@ ___
  
 ### epochDuration: `u64`
 - **interface**: `api.consts.babe.epochDuration`
-- **summary**:   The number of **slots** that an epoch takes. We couple sessions to epochs, i.e. we start a new session once the new epoch begins. 
+- **summary**:   The number of **slots** that an epoch takes. We couple sessions to epochs, i.e. we start a new session once the new epoch begins. NOTE: Currently it is not possible to change the epoch duration after the chain has started. Attempting to do so will brick block production. 
  
 ### expectedBlockTime: `Moment`
 - **interface**: `api.consts.babe.expectedBlockTime`
@@ -84,6 +86,10 @@ ___
 - **interface**: `api.consts.bounties.bountyDepositPayoutDelay`
 - **summary**:   The delay period for which a bounty beneficiary need to wait before claim the payout. 
  
+### bountyUpdatePeriod: `BlockNumber`
+- **interface**: `api.consts.bounties.bountyUpdatePeriod`
+- **summary**:   Bounty duration in blocks. 
+ 
 ### bountyValueMinimum: `BalanceOf`
 - **interface**: `api.consts.bounties.bountyValueMinimum`
 - **summary**:   Minimum value for a bounty. 
@@ -101,6 +107,34 @@ ___
 
 ## contracts
  
+### deletionQueueDepth: `u32`
+- **interface**: `api.consts.contracts.deletionQueueDepth`
+- **summary**:   The maximum number of tries that can be queued for deletion. 
+ 
+### deletionWeightLimit: `Weight`
+- **interface**: `api.consts.contracts.deletionWeightLimit`
+- **summary**:   The maximum amount of weight that can be consumed per block for lazy trie removal. 
+ 
+### depositPerContract: `BalanceOf`
+- **interface**: `api.consts.contracts.depositPerContract`
+- **summary**:   The balance every contract needs to deposit to stay alive indefinitely. 
+
+  This is different from the [`Self::TombstoneDeposit`] because this only needs to be deposited while the contract is alive. Costs for additional storage are added to this base cost. 
+
+  This is a simple way to ensure that contracts with empty storage eventually get deleted by making them pay rent. This creates an incentive to remove them early in order to save rent. 
+ 
+### depositPerStorageByte: `BalanceOf`
+- **interface**: `api.consts.contracts.depositPerStorageByte`
+- **summary**:   The balance a contract needs to deposit per storage byte to stay alive indefinitely. 
+
+  Let's suppose the deposit is 1,000 BU (balance units)/byte and the rent is 1 BU/byte/day, then a contract with 1,000,000 BU that uses 1,000 bytes of storage would pay no rent. But if the balance reduced to 500,000 BU and the storage stayed the same at 1,000, then it would pay 500 BU/day. 
+ 
+### depositPerStorageItem: `BalanceOf`
+- **interface**: `api.consts.contracts.depositPerStorageItem`
+- **summary**:   The balance a contract needs to deposit per storage item to stay alive indefinitely. 
+
+  It works the same as [`Self::DepositPerStorageByte`] but for storage items. 
+ 
 ### maxDepth: `u32`
 - **interface**: `api.consts.contracts.maxDepth`
 - **summary**:   The maximum nesting level of a call/instantiate stack. A reasonable default value is 100. 
@@ -109,27 +143,17 @@ ___
 - **interface**: `api.consts.contracts.maxValueSize`
 - **summary**:   The maximum size of a storage value in bytes. A reasonable default is 16 KiB. 
  
-### rentByteFee: `BalanceOf`
-- **interface**: `api.consts.contracts.rentByteFee`
-- **summary**:   Price of a byte of storage per one block interval. Should be greater than 0. 
- 
-### rentDepositOffset: `BalanceOf`
-- **interface**: `api.consts.contracts.rentDepositOffset`
-- **summary**:   The amount of funds a contract should deposit in order to offset the cost of one byte. 
+### rentFraction: `Perbill`
+- **interface**: `api.consts.contracts.rentFraction`
+- **summary**:   The fraction of the deposit that should be used as rent per block. 
 
-  Let's suppose the deposit is 1,000 BU (balance units)/byte and the rent is 1 BU/byte/day, then a contract with 1,000,000 BU that uses 1,000 bytes of storage would pay no rent. But if the balance reduced to 500,000 BU and the storage stayed the same at 1,000, then it would pay 500 BU/day. 
+  When a contract hasn't enough balance deposited to stay alive indefinitely it needs to pay per block for the storage it consumes that is not covered by the deposit. This determines how high this rent payment is per block as a fraction of the deposit. 
  
 ### signedClaimHandicap: `BlockNumber`
 - **interface**: `api.consts.contracts.signedClaimHandicap`
 - **summary**:   Number of block delay an extrinsic claim surcharge has. 
 
   When claim surcharge is called by an extrinsic the rent is checked for current_block - delay 
- 
-### storageSizeOffset: `u32`
-- **interface**: `api.consts.contracts.storageSizeOffset`
-- **summary**:   A size offset for an contract. A just created account with untouched storage will have that much of storage from the perspective of the state rent. 
-
-  This is a simple way to ensure that contracts with empty storage eventually get deleted by making them pay rent. This creates an incentive to remove them early in order to save rent. 
  
 ### surchargeReward: `BalanceOf`
 - **interface**: `api.consts.contracts.surchargeReward`
@@ -198,8 +222,11 @@ ___
 ### termDuration: `BlockNumber`
 - **interface**: `api.consts.elections.termDuration`
  
-### votingBond: `BalanceOf`
-- **interface**: `api.consts.elections.votingBond`
+### votingBondBase: `BalanceOf`
+- **interface**: `api.consts.elections.votingBondBase`
+ 
+### votingBondFactor: `BalanceOf`
+- **interface**: `api.consts.elections.votingBondFactor`
 
 ___
 
@@ -238,6 +265,17 @@ ___
 ### deposit: `BalanceOf`
 - **interface**: `api.consts.indices.deposit`
 - **summary**:   The deposit needed for reserving an index. 
+
+___
+
+
+## lottery
+ 
+### maxCalls: `u32`
+- **interface**: `api.consts.lottery.maxCalls`
+ 
+### moduleId: `ModuleId`
+- **interface**: `api.consts.lottery.moduleId`
 
 ___
 
@@ -389,11 +427,15 @@ ___
  
 ### blockHashCount: `BlockNumber`
 - **interface**: `api.consts.system.blockHashCount`
-- **summary**:   The maximum number of blocks to allow in mortal eras. 
+- **summary**:   Maximum number of block number to block hash mappings to keep (oldest pruned first). 
+ 
+### blockLength: `BlockLength`
+- **interface**: `api.consts.system.blockLength`
+- **summary**:   The maximum length of a block (in bytes). 
  
 ### blockWeights: `BlockWeights`
 - **interface**: `api.consts.system.blockWeights`
-- **summary**:   The weight configuration (limits & base values) for each class of extrinsics and block. 
+- **summary**:   Block & extrinsics weights: base values and limits. 
  
 ### dbWeight: `RuntimeDbWeight`
 - **interface**: `api.consts.system.dbWeight`
@@ -404,6 +446,10 @@ ___
 - **summary**:   The designated SS85 prefix of this chain. 
 
   This replaces the "ss58Format" property declared in the chain spec. Reason is that the runtime should know about the prefix in order to make use of it as an identifier of the chain. 
+ 
+### version: `RuntimeVersion`
+- **interface**: `api.consts.system.version`
+- **summary**:   Get the chain's current version. 
 
 ___
 
