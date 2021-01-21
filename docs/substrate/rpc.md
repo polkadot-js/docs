@@ -447,6 +447,11 @@ ___
 
 ## payment
  
+### queryFeeDetails(extrinsic: `Bytes`, at?: `BlockHash`): `FeeDetails`
+- **interface**: `api.rpc.payment.queryFeeDetails`
+- **jsonrpc**: `payment_queryFeeDetails`
+- **summary**: Query the detailed fee of a given encoded extrinsic
+ 
 ### queryInfo(extrinsic: `Bytes`, at?: `BlockHash`): `RuntimeDispatchInfo`
 - **interface**: `api.rpc.payment.queryInfo`
 - **jsonrpc**: `payment_queryInfo`
