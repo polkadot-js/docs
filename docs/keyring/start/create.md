@@ -63,7 +63,7 @@ await cryptoWaitReady();
 const ep = keyring.createFromUri(mnemonic, { name: 'ed25519' }, 'ed25519');
 
 // create an sr25519 pair from the mnemonic (keyring defaults)
-const ep = keyring.createFromUri(mnemonic, { name: 'sr25519' });
+const sp = keyring.createFromUri(mnemonic, { name: 'sr25519' });
 
 // log the addresses, different cryptos, different results
 console.log(ep.meta.name, ep.address);
