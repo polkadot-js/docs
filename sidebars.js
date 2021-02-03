@@ -44,7 +44,8 @@ module.exports = {
           'api/examples/promise/system-events',
           'api/examples/promise/transfer-events',
           'api/examples/promise/upgrade-chain',
-          'api/examples/promise/typegen'
+          'api/examples/promise/typegen',
+          'api/examples/promise/chain-info',
         ]
       },
       'api/FAQ'
