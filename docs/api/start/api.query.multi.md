@@ -29,7 +29,7 @@ A couple of items to note in the example above: we don't call `account` directly
 const validatorKeys = await api.query.session.validators.keys();
 
 // Subscribe to the balances for these accounts
-const unsub = await api.query.balances.account.multi(validators, (balances) => {
+const unsub = await api.query.balances.account.multi(validatorKeys, (balances) => {
   console.log(`The nonce and free balances are: ${balances.map(([nonce, { free }]) => [nonce, free])}`);
 });
 ```
