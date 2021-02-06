@@ -27,6 +27,29 @@ All data transferred between the API and the Node is in a SCALE-encoded binary f
 
 To fix this, you should look at the specific `api.tx.*` params and adjust the type definitions for those param types to match what is found on the node side. In some rare cases the cause could be extrinsic formatting related, to track these make an `api.tx.system.remark(data: Bytes)` call, if it fails, the API and node cannot agree on [an extrinsic format and adjustments are required](start/types.extend.md#impact-on-extrinsics).
 
+Also see the next entry for causes related to wrng `Address` formats.
+
+
+## I cannot send transactions, sending yields decoding failures
+
+Depending on the chain, you could get either an `Address` or `Signature` or extensions decoding error when sending the transaction returned from the node. This is due to a type mismatch on the `Address` types defined on the node vs what the API uses. This is not something the API can detect via the metadata and it is generally configured on a per-chain basis.
+
+The API always injects the default type definitions as specified by the Substrate master fully-featured node. This means that any customizations to chains needs needs to be applied as types, should there be differences in specific user-implementations.
+
+Due to these customizations and differences that bleed through to the transaction formats, out-of-the-box chains based on the node-template will have issues when sending transactions. To fix this, you would need to add [the customized Address types into your API](start/types.extend.md#impact-on-extrinsics) instances (or UIs), allowing the API to have the information required to adjust the encoding.
+
+There are 3 `Address` types that are generally configured in different chains, and one variant should be passed to the `Api.create({ ... })` [options as types](https://polkadot.js.org/docs/api/start/types.extend/#extension) -
+
+
+- `type Address = MultiAddress` (Rust), this is the current default in Substrate master and the API and used in chains such as Polkadot/Kusama from runtime 28. It allows an enhancement to the original `Indices` lookup, catering for a wide array of address types. To configure this type in the API, use `{ "Address": "MultiAddress", "LookupSource": "MultiAddress" }`
+
+- `type Address = <Indices as StaticLookup>::Source` (Rust), this is the previous the default as applied in the API and yields types `{ "Address": "IndicesLookupSource", "LookupSource": "IndicesLookupSource" }` when explicitly specified;
+
+- `type Address = AccountId` (Rust), this is used in a number of chains such as Kusama/Polkadot (prior to the 28 runtime) and a previous default for the node-template chain as well. To override to this type of Address, use the API types `{ "Address": "AccountId", "LookupSource": "AccountId" }`
+
+
+The above may also apply when when you use [polkadot-js/apps](https://github.com/polkadot-js/apps) to connect to your node. Known chains are correctly configured, however any custom chain may need additional types.
+
 
 ## I would like to sign transactions offline
 
@@ -61,27 +84,6 @@ The API always tracks the latest Substrate master in terms of examples. This mea
 It is possible that you are connecting to an older chain that has not been upgraded yet. For these chains, this storage entry won't be available (yet). To query the nonce on older chains, you can do a query to `api.query.system.accountNonce(<account>)` and balances can be retrieved via `api.query.balances.freeBalance(<account>)`.
 
 Likewise, if your chain has been upgraded recently and you are still using the old `system.accountNonce` or `balances.freeBalance` queries in your code (which is now not available in the chain metadata), you need to update it to query the new location.
-
-
-## I cannot send transactions, sending yields decoding failures
-
-Depending on the chain, you could get either an `Address` or `Signature` or extensions decoding error when sending the transaction returned from the node. This is due to a type mismatch on the `Address` types defined on the node vs what the API uses. This is not something the API can detect via the metadata and it is generally configured on a per-chain basis.
-
-The API always injects the default type definitions as specified by the Substrate master fully-featured node. This means that any customizations to chains needs needs to be applied as types, should there be differences in specific user-implementations.
-
-Due to these customizations and differences that bleed through to the transaction formats, out-of-the-box chains based on the node-template will have issues when sending transactions. To fix this, you would need to add [the customized Address types into your API](start/types.extend.md#impact-on-extrinsics) instances (or UIs), allowing the API to have the information required to adjust the encoding.
-
-There are 3 `Address` types that are generally configured in different chains, and one variant should be passed to the `Api.create({ ... })` [options as types](https://polkadot.js.org/docs/api/start/types.extend/#extension) -
-
-
-- `type Address = MultiAddress` (Rust), this is the current default in Substrate master and the API and used in chains such as Polkadot/Kusama from runtime 2. It allows an enhancement to the original `Indices` lookup, catering for a wide array of address types. To configure this type in the API, use `{ "Address": "MultiAddress", "LookupSource": "MultiAddress" }`
-
-- `type Address = <Indices as StaticLookup>::Source` (Rust), this is the previous the default as applied in the API and yields types `{ "Address": "IndicesLookupSource", "LookupSource": "IndicesLookupSource" }` when explicitly specified;
-
-- `type Address = AccountId` (Rust), this is used in a number of chains such as Kusama/Polkadot (prior to the 28 runtime) and a previous default for the node-template chain as well. To override to this type of Address, use the API types `{ "Address": "AccountId", "LookupSource": "AccountId" }`
-
-
-The above may also apply when when you use [polkadot-js/apps](https://github.com/polkadot-js/apps) to connect to your node. Known chains are correctly configured, however any custom chain may need additional types.
 
 
 ## Using a non-current-master node, I have issues parsing events
