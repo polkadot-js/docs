@@ -7,9 +7,9 @@ We've touched upon types in most previous sections, i.e. that these are driven b
 
 ## Everything is a type
 
-Just to re-iterate from the above. Everything returned by the API is a type and has a consistent interface. This means that a `Vec<u32>` (an array of `u32` values) as well as a `Struct` (an pre-defined object) or an `Enum` has the same consistent base interface. Specific types types will have values, based on the type - decorated and available.
+Just to re-iterate from the above. Everything returned by the API is a type and has a consistent interface: `Codec`. This means that a `Vec<u32>` (an array of `u32` values) as well as a `Struct` (an pre-defined object) or an `Enum` has the same consistent base interface. Specific types types will have values, based on the type - decorated and available.
 
-As a minimum, anything returned by the API, be it a `Vec<...>`, `Option<...>`, `Struct` or any normal type will always have the following methods -
+As a minimum, anything returned by the API, be it a `Vec<...>`, `Option<...>`, `Struct` or any normal type will always have the following methods - as defined on the `Codec` interface:
 
 - `.eq(<other value>)` - checks for equality against the other value. In all cases, it will accept "like" values, i.e. in the case of a number you can pass a primitive (such as `1`), a hex value (such as `0x01`) or even an `Unit8Array`
 - `toHex()` - returns a hex-base representation of the value, always prefixed by `0x`
@@ -77,12 +77,12 @@ An `Option<Type>` attempts to mimic the Rust approach of having `None` and `Some
 - `.isSome` - this is `true` is a value is wrapped, i.e. if a `Option<u32>` has an actual underlying `u32`
 - `.unwrap()` - when `isSome`, this will return the wrapped value, i.e. for `Option<u32>`, this would return the `u32`. When the value is `isNone`, this call will throw an exception.
 - `.unwrapOr(<default value>)` - this extends `unwrap()`, returning the wrapped value when `isSome` and in the case of `isNone` it will return the `<default value>` passed.
-- `.unwrapOrDefault()` - returns either the rapped value when `isSome`, or the default for the type when `isNone`
+- `.unwrapOrDefault()` - returns either the wrapped value when `isSome`, or the default for the type when `isNone`
 
 
 ## Working with Tuples
 
-A tuple is defined in the form of `(u32, AccountId)`. To access the individual values, you can access t via the index, i.e.
+A tuple is defined in the form of `(u32, AccountId)`. To access the individual values, you can access it via its index, i.e.
 
 ```js
 // Assuming a tuple defined as `(32, AccountId)`
