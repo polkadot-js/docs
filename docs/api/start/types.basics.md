@@ -77,12 +77,12 @@ An `Option<Type>` attempts to mimic the Rust approach of having `None` and `Some
 - `.isSome` - this is `true` is a value is wrapped, i.e. if a `Option<u32>` has an actual underlying `u32`
 - `.unwrap()` - when `isSome`, this will return the wrapped value, i.e. for `Option<u32>`, this would return the `u32`. When the value is `isNone`, this call will throw an exception.
 - `.unwrapOr(<default value>)` - this extends `unwrap()`, returning the wrapped value when `isSome` and in the case of `isNone` it will return the `<default value>` passed.
-- `.unwrapOrDefault()` - returns either the rapped value when `isSome`, or the default for the type when `isNone`
+- `.unwrapOrDefault()` - returns either the wrapped value when `isSome`, or the default for the type when `isNone`
 
 
 ## Working with Tuples
 
-A tuple is defined in the form of `(u32, AccountId)`. To access the individual values, you can access t via the index, i.e.
+A tuple is defined in the form of `(u32, AccountId)`. To access the individual values, you can access it via its index, i.e.
 
 ```js
 // Assuming a tuple defined as `(32, AccountId)`
