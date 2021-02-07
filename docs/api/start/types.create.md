@@ -37,7 +37,7 @@ In most cases, you would always want to use the `api.createType` helper. What th
 
 The registry contains a listing of all internal types and their classes that have been registered. So upon creation of an API instance, a `registry` object  is attached to the API and this is passed through to all created types. This allows the type definitions to not pollute the global namespace, but rather be contained and able to reference one another.
 
-As mentioned, the `createType` functions all do exactly the same, and it 99.99% of the cases you would be recommended to just forget about everything and use `api.createType` if and when required. In some cases, you may just have a type object and from that want to create another type instance. For that you can access the `registry` on the type object and call `createType` on it. (If this type object was created from an API instance, the registry on the type and on the API will point to the same instance.)
+As mentioned, the `createType` functions all do exactly the same, and in 99.99% of the cases you would be recommended to just forget about everything and use `api.createType` if and when required. In some cases, you may just have a type object and from that want to create another type instance. For that you can access the `registry` on the type object and call `createType` on it. (If this type object was created from an API instance, the registry on the type and on the API will point to the same instance.)
 
 Basically, this means that we have equivalency in creation for all the items below, all creating on the same registry (containing all injected types), and all wrapping the same value -
 
