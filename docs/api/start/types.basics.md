@@ -7,9 +7,9 @@ We've touched upon types in most previous sections, i.e. that these are driven b
 
 ## Everything is a type
 
-Just to re-iterate from the above. Everything returned by the API is a type and has a consistent interface. This means that a `Vec<u32>` (an array of `u32` values) as well as a `Struct` (an pre-defined object) or an `Enum` has the same consistent base interface. Specific types types will have values, based on the type - decorated and available.
+Just to re-iterate from the above. Everything returned by the API is a type and has a consistent interface: `Codec`. This means that a `Vec<u32>` (an array of `u32` values) as well as a `Struct` (an pre-defined object) or an `Enum` has the same consistent base interface. Specific types types will have values, based on the type - decorated and available.
 
-As a minimum, anything returned by the API, be it a `Vec<...>`, `Option<...>`, `Struct` or any normal type will always have the following methods -
+As a minimum, anything returned by the API, be it a `Vec<...>`, `Option<...>`, `Struct` or any normal type will always have the following methods - as defined on the `Codec` interface:
 
 - `.eq(<other value>)` - checks for equality against the other value. In all cases, it will accept "like" values, i.e. in the case of a number you can pass a primitive (such as `1`), a hex value (such as `0x01`) or even an `Unit8Array`
 - `toHex()` - returns a hex-base representation of the value, always prefixed by `0x`
