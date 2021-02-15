@@ -1,3 +1,5 @@
+[![Gitpod ready-to-code](https://img.shields.io/badge/Gitpod-ready--to--code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/polkadot-js/docs)
+
 # polkadot-js docs
 
 This is a documentation portal for the `@polkadot` family of tools and libraries. The latest version is always available at [https://polkadot.js.org/docs/](https://polkadot.js.org/docs/)
