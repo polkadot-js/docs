@@ -122,7 +122,7 @@ ___
 - **interface**: `api.query.babe.authorVrfRandomness`
 - **summary**:   Temporary value (cleared at block finalization) that includes the VRF output generated at this block. This field should always be populated during block processing unless secondary plain slots are enabled (which don't contain a VRF output). 
  
-### currentSlot(): `u64`
+### currentSlot(): `Slot`
 - **interface**: `api.query.babe.currentSlot`
 - **summary**:   Current slot number. 
  
@@ -130,7 +130,7 @@ ___
 - **interface**: `api.query.babe.epochIndex`
 - **summary**:   Current epoch index. 
  
-### genesisSlot(): `u64`
+### genesisSlot(): `Slot`
 - **interface**: `api.query.babe.genesisSlot`
 - **summary**:   The slot at which the first epoch actually started. This is 0 until the first block of the chain. 
  
@@ -185,7 +185,7 @@ ___
 - **interface**: `api.query.balances.account`
 - **summary**:   The balance of an account. 
 
-  NOTE: This is only used in the case that this module is used to store balances. 
+  NOTE: This is only used in the case that this pallet is used to store balances. 
  
 ### locks(`AccountId`): `Vec<BalanceLock>`
 - **interface**: `api.query.balances.locks`
@@ -461,7 +461,7 @@ ___
  
 ### authoredBlocks(`SessionIndex, ValidatorId`): `u32`
 - **interface**: `api.query.imOnline.authoredBlocks`
-- **summary**:   For each session index, we keep a mapping of `T::ValidatorId` to the number of blocks authored by the given authority. 
+- **summary**:   For each session index, we keep a mapping of `ValidatorId<T>` to the number of blocks authored by the given authority. 
  
 ### heartbeatAfter(): `BlockNumber`
 - **interface**: `api.query.imOnline.heartbeatAfter`
