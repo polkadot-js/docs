@@ -242,7 +242,7 @@ ___
  
 ### CodeTooLarge
 - **interface**: `api.errors.contracts.CodeTooLarge.is`
-- **summary**:   The code supplied to `put_code` exceeds the limit specified in the current schedule. 
+- **summary**:   The code supplied to `instantiate_with_code` exceeds the limit specified in the current schedule. 
  
 ### ContractNotEvictable
 - **interface**: `api.errors.contracts.ContractNotEvictable.is`
@@ -263,6 +263,10 @@ ___
 - **summary**:   Removal of a contract failed because the deletion queue is full. 
 
   This can happen when either calling [`Module::claim_surcharge`] or `seal_terminate`. The queue is filled by deleting contracts and emptied by a fixed amount each block. Trying again during another block is the only way to resolve this issue. 
+ 
+### DuplicateContract
+- **interface**: `api.errors.contracts.DuplicateContract.is`
+- **summary**:   A contract with the same AccountId already exists. 
  
 ### DuplicateTopics
 - **interface**: `api.errors.contracts.DuplicateTopics.is`

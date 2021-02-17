@@ -262,6 +262,16 @@ ___
 - **jsonrpc**: `eth_getCode`
 - **summary**: Returns the code at given address at given time (block number).
  
+### getFilterChanges(index: `U256`): `EthFilterChanges`
+- **interface**: `api.rpc.eth.getFilterChanges`
+- **jsonrpc**: `eth_getFilterChanges`
+- **summary**: Returns filter changes since last poll.
+ 
+### getFilterLogs(index: `U256`): `Vec<EthLog>`
+- **interface**: `api.rpc.eth.getFilterLogs`
+- **jsonrpc**: `eth_getFilterLogs`
+- **summary**: Returns all logs matching given filter (in a range 'from' - 'to').
+ 
 ### getLogs(filter: `EthFilter`): `Vec<EthLog>`
 - **interface**: `api.rpc.eth.getLogs`
 - **jsonrpc**: `eth_getLogs`
@@ -337,6 +347,21 @@ ___
 - **jsonrpc**: `eth_mining`
 - **summary**: Returns true if client is actively mining new blocks.
  
+### newBlockFilter(): `U256`
+- **interface**: `api.rpc.eth.newBlockFilter`
+- **jsonrpc**: `eth_newBlockFilter`
+- **summary**: Returns id of new block filter.
+ 
+### newFilter(filter: `EthFilter`): `U256`
+- **interface**: `api.rpc.eth.newFilter`
+- **jsonrpc**: `eth_newFilter`
+- **summary**: Returns id of new filter.
+ 
+### newPendingTransactionFilter(): `U256`
+- **interface**: `api.rpc.eth.newPendingTransactionFilter`
+- **jsonrpc**: `eth_newPendingTransactionFilter`
+- **summary**: Returns id of new block filter.
+ 
 ### protocolVersion(): `u64`
 - **interface**: `api.rpc.eth.protocolVersion`
 - **jsonrpc**: `eth_protocolVersion`
@@ -371,6 +396,11 @@ ___
 - **interface**: `api.rpc.eth.syncing`
 - **jsonrpc**: `eth_syncing`
 - **summary**: Returns an object with data about the sync status or false.
+ 
+### uninstallFilter(index: `U256`): `bool`
+- **interface**: `api.rpc.eth.uninstallFilter`
+- **jsonrpc**: `eth_uninstallFilter`
+- **summary**: Uninstalls filter.
 
 ___
 

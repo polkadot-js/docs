@@ -203,45 +203,69 @@ ___
 
 ## contracts
  
+### CodeRemoved(`Hash`)
+- **interface**: `api.events.contracts.CodeRemoved.is`
+- **summary**:   A code with the specified hash was removed. \[code_hash\] 
+
+  This happens when the last contract that uses this code hash was removed or evicted. 
+ 
 ### CodeStored(`Hash`)
 - **interface**: `api.events.contracts.CodeStored.is`
 - **summary**:   Code with the specified hash has been stored. \[code_hash\] 
  
-### ContractExecution(`AccountId`, `Bytes`)
-- **interface**: `api.events.contracts.ContractExecution.is`
-- **summary**:   An event deposited upon execution of a contract from the account. \[account, data\] 
- 
-### Evicted(`AccountId`, `bool`)
-- **interface**: `api.events.contracts.Evicted.is`
-- **summary**:   Contract has been evicted and is now in tombstone state. \[contract, tombstone\] 
+### ContractEmitted(`AccountId`, `Bytes`)
+- **interface**: `api.events.contracts.ContractEmitted.is`
+- **summary**:   A custom event emitted by the contract. \[contract, data\] 
 
   #### Params 
 
-  - `contract`: `AccountId`: The account ID of the evicted contract. 
+  - `contract`: The contract that emitted the event. 
 
-  - `tombstone`: `bool`: True if the evicted contract left behind a tombstone.
+  - `data`: Data supplied by the contract. Metadata generated during contract          compilation is needed to decode it. 
+ 
+### Evicted(`AccountId`)
+- **interface**: `api.events.contracts.Evicted.is`
+- **summary**:   Contract has been evicted and is now in tombstone state. \[contract\] 
  
 ### Instantiated(`AccountId`, `AccountId`)
 - **interface**: `api.events.contracts.Instantiated.is`
-- **summary**:   Contract deployed by address at the specified address. \[owner, contract\] 
+- **summary**:   Contract deployed by address at the specified address. \[deployer, contract\] 
  
 ### Restored(`AccountId`, `AccountId`, `Hash`, `Balance`)
 - **interface**: `api.events.contracts.Restored.is`
-- **summary**:   Restoration for a contract has been successful. \[donor, dest, code_hash, rent_allowance\] 
+- **summary**:   Restoration of a contract has been successful. \[restorer, dest, code_hash, rent_allowance\] 
 
   #### Params 
 
-  - `donor`: `AccountId`: Account ID of the restoring contract 
+  - `restorer`: Account ID of the restoring contract. 
 
-  - `dest`: `AccountId`: Account ID of the restored contract
+  - `dest`: Account ID of the restored contract.
 
-  - `code_hash`: `Hash`: Code hash of the restored contract
+  - `code_hash`: Code hash of the restored contract.
 
-  - `rent_allowance: `Balance`: Rent allowance of the restored contract
+  - `rent_allowance`: Rent allowance of the restored contract.
  
 ### ScheduleUpdated(`u32`)
 - **interface**: `api.events.contracts.ScheduleUpdated.is`
-- **summary**:   Triggered when the current \[schedule\] is updated. 
+- **summary**:   Triggered when the current schedule is updated. \[version\] 
+
+  #### Params 
+
+  - `version`: The version of the newly set schedule. 
+ 
+### Terminated(`AccountId`, `AccountId`)
+- **interface**: `api.events.contracts.Terminated.is`
+- **summary**:   Contract has been terminated without leaving a tombstone. \[contract, beneficiary\] 
+
+  #### Params 
+
+  - `contract`: The contract that was terminated. 
+
+  - `beneficiary`: The account that received the contracts remaining balance.
+
+  #### Note 
+
+  The only way for a contract to be removed without a tombstone and emitting this event is by calling `seal_terminate`. 
 
 ___
 
