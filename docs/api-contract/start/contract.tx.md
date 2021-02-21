@@ -52,7 +52,7 @@ const incValue = 1;
 
 // Instead of sending we use the `call` interface via `.query` that will return
 // the gas consumed (the API aut-fill the max block tx weight when -1 is the gasLimit)
-const { gasConsumed, result } = await contract.query.inc({ value, gasLimit: -1 }, incValue)
+const { gasConsumed, result } = await contract.query.inc(slicePair, { value, gasLimit: -1 }, incValue)
 
 console.log(`outcome: ${result.isOk ? 'Ok' : 'Error'}`);
 console.log(`gasConsumed ${gasConsumed.toString()}`);
