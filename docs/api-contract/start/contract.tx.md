@@ -14,7 +14,7 @@ const incValue = 1;
 // with the same rules as applied in the API (As with the read example,
 // additional params, if required can follow - here only one is needed)
 await contract.tx
-  .inc(value, gasLimit, incValue)
+  .inc({ value, gasLimit }, incValue)
   .signAndSend(alicePair, (result) => {
     if (result.status.isInBlock) {
       console.log('in a block');
@@ -30,7 +30,7 @@ If we perform the same `query.get` read on the value now, it would be `124`. For
 // Send the transaction, like elsewhere this is a normal submittable
 // extrinsic with the same rules as applied in the API
 await contract
-  .exec('inc', value, gasLimit, incValue)
+  .exec('inc', { value, gasLimit }, incValue)
   .signAndSend(alicePair, (result) => {
     ...
   });
@@ -52,7 +52,7 @@ const incValue = 1;
 
 // Instead of sending we use the `call` interface via `.query` that will return
 // the gas consumed (the API aut-fill the max block tx weight when -1 is the gasLimit)
-const { gasConsumed, result } = await contract.query.inc(value, -1, incValue)
+const { gasConsumed, result } = await contract.query.inc({ value, gasLimit: -1 }, incValue)
 
 console.log(`outcome: ${result.isOk ? 'Ok' : 'Error'}`);
 console.log(`gasConsumed ${gasConsumed.toString()}`);
