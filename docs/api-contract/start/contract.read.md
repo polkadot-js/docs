@@ -33,7 +33,7 @@ const gasLimit = 3000n * 1000000n;
 
 // Perform the actual read (no params at the end, for the `get` message)
 // (We perform the send from an account, here using Alice's address)
-const { gasConsumed, result, outcome } = await contract.query.get(alicePair.address, value, gasLimit);
+const { gasConsumed, result, outcome } = await contract.query.get(alicePair.address, { value, gasLimit });
 
 // The actual result from RPC as `ContractExecResult`
 console.log(result.toHuman());
@@ -59,7 +59,7 @@ const from = '5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY';
 
 // only 1 param needed, the actual address we are querying for (more
 // params can follow at the end, separated by , if needed by the message)
-const callValue = await contract.query.balanceOf(from, 0, -1, target);
+const callValue = await contract.query.balanceOf(from, { value: 0, gasLimit: -1 }, target);
 ```
 
 In this example we have specified a `gasLimit` of `-1`, in a subsequent section we will expand on this. for now, just remember that is indicated to use max available, i.e. we don't explicitly want to specify a value.
@@ -72,7 +72,7 @@ An alternative for reading would be via the lower-level `.read` method, in this 
 // Perform the actual read (no params at the end, for the `get` message)
 // (We perform the send from an account address, it doesn't get executed)
 const callValue = await contract
-  .read('get', value, gasLimit)
+  .read('get', { value, gasLimit })
   .send(alicePair.address);
 
 // The actual result from RPC as `ContractExecResult`
