@@ -16,6 +16,8 @@ The following sections contain the module constants, also known as parameter typ
 
 - **[democracy](#democracy)**
 
+- **[electionProviderMultiPhase](#electionprovidermultiphase)**
+
 - **[elections](#elections)**
 
 - **[identity](#identity)**
@@ -135,13 +137,17 @@ ___
 
   It works the same as [`Self::DepositPerStorageByte`] but for storage items. 
  
+### maxCodeSize: `u32`
+- **interface**: `api.consts.contracts.maxCodeSize`
+- **summary**:   The maximum length of a contract code in bytes. This limit applies to the instrumented version of the code. Therefore `instantiate_with_code` can fail even when supplying a wasm binary below this maximum size. 
+ 
 ### maxDepth: `u32`
 - **interface**: `api.consts.contracts.maxDepth`
-- **summary**:   The maximum nesting level of a call/instantiate stack. A reasonable default value is 100. 
+- **summary**:   The maximum nesting level of a call/instantiate stack. 
  
 ### maxValueSize: `u32`
 - **interface**: `api.consts.contracts.maxValueSize`
-- **summary**:   The maximum size of a storage value in bytes. A reasonable default is 16 KiB. 
+- **summary**:   The maximum size of a storage value and event payload in bytes. 
  
 ### rentFraction: `Perbill`
 - **interface**: `api.consts.contracts.rentFraction`
@@ -201,6 +207,23 @@ ___
 ### votingPeriod: `BlockNumber`
 - **interface**: `api.consts.democracy.votingPeriod`
 - **summary**:   How often (in blocks) to check for new votes. 
+
+___
+
+
+## electionProviderMultiPhase
+ 
+### signedPhase: `BlockNumber`
+- **interface**: `api.consts.electionProviderMultiPhase.signedPhase`
+- **summary**:   Duration of the signed phase. 
+ 
+### solutionImprovementThreshold: `Perbill`
+- **interface**: `api.consts.electionProviderMultiPhase.solutionImprovementThreshold`
+- **summary**:   The minimum amount of improvement to the solution score that defines a solution as "better" (in any phase). 
+ 
+### unsignedPhase: `BlockNumber`
+- **interface**: `api.consts.electionProviderMultiPhase.unsignedPhase`
+- **summary**:   Duration of the unsigned phase. 
 
 ___
 

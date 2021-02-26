@@ -20,6 +20,8 @@ This page lists the errors that can be encountered in the different modules.
 
 - **[democracy](#democracy)**
 
+- **[electionProviderMultiPhase](#electionprovidermultiphase)**
+
 - **[elections](#elections)**
 
 - **[grandpa](#grandpa)**
@@ -248,7 +250,7 @@ ___
 - **interface**: `api.errors.contracts.ContractNotEvictable.is`
 - **summary**:   A contract could not be evicted because it has enough balance to pay rent. 
 
-  This can be returned from [`Module::claim_surcharge`] because the target contract has enough balance to pay for its rent. 
+  This can be returned from [`Pallet::claim_surcharge`] because the target contract has enough balance to pay for its rent. 
  
 ### ContractTrapped
 - **interface**: `api.errors.contracts.ContractTrapped.is`
@@ -262,7 +264,7 @@ ___
 - **interface**: `api.errors.contracts.DeletionQueueFull.is`
 - **summary**:   Removal of a contract failed because the deletion queue is full. 
 
-  This can happen when either calling [`Module::claim_surcharge`] or `seal_terminate`. The queue is filled by deleting contracts and emptied by a fixed amount each block. Trying again during another block is the only way to resolve this issue. 
+  This can happen when either calling [`Pallet::claim_surcharge`] or `seal_terminate`. The queue is filled by deleting contracts and emptied by a fixed amount each block. Trying again during another block is the only way to resolve this issue. 
  
 ### DuplicateContract
 - **interface**: `api.errors.contracts.DuplicateContract.is`
@@ -547,6 +549,23 @@ ___
 ___
 
 
+## electionProviderMultiPhase
+ 
+### PreDispatchEarlySubmission
+- **interface**: `api.errors.electionProviderMultiPhase.PreDispatchEarlySubmission.is`
+- **summary**:   Submission was too early. 
+ 
+### PreDispatchWeakSubmission
+- **interface**: `api.errors.electionProviderMultiPhase.PreDispatchWeakSubmission.is`
+- **summary**:   Submission was too weak, score-wise. 
+ 
+### PreDispatchWrongWinnerCount
+- **interface**: `api.errors.electionProviderMultiPhase.PreDispatchWrongWinnerCount.is`
+- **summary**:   Wrong number of winners presented. 
+
+___
+
+
 ## elections
  
 ### DuplicatedCandidate
@@ -745,6 +764,10 @@ ___
 - **interface**: `api.errors.multisig.AlreadyStored.is`
 - **summary**:   The data to be stored is already stored. 
  
+### MaxWeightTooLow
+- **interface**: `api.errors.multisig.MaxWeightTooLow.is`
+- **summary**:   The maximum weight information provided was too low. 
+ 
 ### MinimumThreshold
 - **interface**: `api.errors.multisig.MinimumThreshold.is`
 - **summary**:   Threshold must be 2 or greater. 
@@ -784,10 +807,6 @@ ___
 ### UnexpectedTimepoint
 - **interface**: `api.errors.multisig.UnexpectedTimepoint.is`
 - **summary**:   A timepoint was given, yet no multisig operation is underway. 
- 
-### WeightTooLow
-- **interface**: `api.errors.multisig.WeightTooLow.is`
-- **summary**:   The maximum weight information provided was too low. 
  
 ### WrongTimepoint
 - **interface**: `api.errors.multisig.WrongTimepoint.is`

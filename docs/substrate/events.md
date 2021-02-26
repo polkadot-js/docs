@@ -18,6 +18,8 @@ Events are emitted for certain operations on the runtime. The following sections
 
 - **[democracy](#democracy)**
 
+- **[electionProviderMultiPhase](#electionprovidermultiphase)**
+
 - **[elections](#elections)**
 
 - **[grandpa](#grandpa)**
@@ -376,6 +378,37 @@ ___
 ### Vetoed(`AccountId`, `Hash`, `BlockNumber`)
 - **interface**: `api.events.democracy.Vetoed.is`
 - **summary**:   An external proposal has been vetoed. \[who, proposal_hash, until\] 
+
+___
+
+
+## electionProviderMultiPhase
+ 
+### ElectionFinalized(`Option<ElectionCompute>`)
+- **interface**: `api.events.electionProviderMultiPhase.ElectionFinalized.is`
+- **summary**:   The election has been finalized, with `Some` of the given computation, or else if the election failed, `None`. 
+ 
+### Rewarded(`AccountId`)
+- **interface**: `api.events.electionProviderMultiPhase.Rewarded.is`
+- **summary**:   An account has been rewarded for their signed submission being finalized. 
+ 
+### SignedPhaseStarted(`u32`)
+- **interface**: `api.events.electionProviderMultiPhase.SignedPhaseStarted.is`
+- **summary**:   The signed phase of the given round has started. 
+ 
+### Slashed(`AccountId`)
+- **interface**: `api.events.electionProviderMultiPhase.Slashed.is`
+- **summary**:   An account has been slashed for submitting an invalid signed submission. 
+ 
+### SolutionStored(`ElectionCompute`)
+- **interface**: `api.events.electionProviderMultiPhase.SolutionStored.is`
+- **summary**:   A solution was stored with the given compute. 
+
+  If the solution is signed, this means that it hasn't yet been processed. If the solution is unsigned, this means that it has also been processed. 
+ 
+### UnsignedPhaseStarted(`u32`)
+- **interface**: `api.events.electionProviderMultiPhase.UnsignedPhaseStarted.is`
+- **summary**:   The unsigned phase of the given round has started. 
 
 ___
 
