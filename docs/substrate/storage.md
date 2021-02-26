@@ -22,6 +22,8 @@ The following sections contain Storage methods are part of the default Substrate
 
 - **[democracy](#democracy)**
 
+- **[electionProviderMultiPhase](#electionprovidermultiphase)**
+
 - **[elections](#elections)**
 
 - **[grandpa](#grandpa)**
@@ -358,6 +360,45 @@ ___
 - **summary**:   All votes for a particular voter. We store the balance for the number of votes that we have recorded. The second item is the total amount of delegations, that will be added. 
 
   TWOX-NOTE: SAFE as `AccountId`s are crypto hashes anyway. 
+
+___
+
+
+## electionProviderMultiPhase
+ 
+### currentPhase(): `Phase`
+- **interface**: `api.query.electionProviderMultiPhase.currentPhase`
+- **summary**:   Current phase. 
+ 
+### desiredTargets(): `Option<u32>`
+- **interface**: `api.query.electionProviderMultiPhase.desiredTargets`
+- **summary**:   Desired number of targets to elect for this round. 
+
+  Only exists when [`Snapshot`] is present. 
+ 
+### queuedSolution(): `Option<ReadySolution>`
+- **interface**: `api.query.electionProviderMultiPhase.queuedSolution`
+- **summary**:   Current best solution, signed or unsigned, queued to be returned upon `elect`. 
+ 
+### round(): `u32`
+- **interface**: `api.query.electionProviderMultiPhase.round`
+- **summary**:   Internal counter for the number of rounds. 
+
+  This is useful for de-duplication of transactions submitted to the pool, and general diagnostics of the pallet. 
+
+  This is merely incremented once per every time that an upstream `elect` is called. 
+ 
+### snapshot(): `Option<RoundSnapshot>`
+- **interface**: `api.query.electionProviderMultiPhase.snapshot`
+- **summary**:   Snapshot data of the round. 
+
+  This is created at the beginning of the signed phase and cleared upon calling `elect`. 
+ 
+### snapshotMetadata(): `Option<SolutionOrSnapshotSize>`
+- **interface**: `api.query.electionProviderMultiPhase.snapshotMetadata`
+- **summary**:   The metadata of the [`RoundSnapshot`] 
+
+  Only exists when [`Snapshot`] is present. 
 
 ___
 
@@ -769,6 +810,12 @@ ___
 
   This is the latest planned era, depending on how the Session pallet queues the validator set, it might be active or not. 
  
+### currentPlannedSession(): `SessionIndex`
+- **interface**: `api.query.staking.currentPlannedSession`
+- **summary**:   The last planned session scheduled by the session pallet. 
+
+  This is basically in sync with the call to [`SessionManager::new_session`]. 
+ 
 ### earliestUnappliedSlash(): `Option<EraIndex>`
 - **interface**: `api.query.staking.earliestUnappliedSlash`
 - **summary**:   The earliest era for which we have a pending, unapplied slash. 
@@ -776,6 +823,8 @@ ___
 ### eraElectionStatus(): `ElectionStatus`
 - **interface**: `api.query.staking.eraElectionStatus`
 - **summary**:   Flag to control the execution of the offchain election. When `Open(_)`, we accept solutions to be submitted. 
+
+  TWO_PHASE_NOTE: should be removed once we switch to multi-phase. 
  
 ### erasRewardPoints(`EraIndex`): `EraRewardPoints`
 - **interface**: `api.query.staking.erasRewardPoints`
@@ -842,6 +891,8 @@ ___
 ### isCurrentSessionFinal(): `bool`
 - **interface**: `api.query.staking.isCurrentSessionFinal`
 - **summary**:   True if the current **planned** session is final. Note that this does not take era forcing into account. 
+
+  TWO_PHASE_NOTE: should be removed once we switch to multi-phase. 
  
 ### ledger(`AccountId`): `Option<StakingLedger>`
 - **interface**: `api.query.staking.ledger`
@@ -866,10 +917,14 @@ ___
 ### queuedElected(): `Option<ElectionResult>`
 - **interface**: `api.query.staking.queuedElected`
 - **summary**:   The next validator set. At the end of an era, if this is available (potentially from the result of an offchain worker), it is immediately used. Otherwise, the on-chain election is executed. 
+
+  TWO_PHASE_NOTE: should be removed once we switch to multi-phase. 
  
 ### queuedScore(): `Option<ElectionScore>`
 - **interface**: `api.query.staking.queuedScore`
 - **summary**:   The score of the current [`QueuedElected`]. 
+
+  TWO_PHASE_NOTE: should be removed once we switch to multi-phase. 
  
 ### slashingSpans(`AccountId`): `Option<SlashingSpans>`
 - **interface**: `api.query.staking.slashingSpans`
@@ -884,10 +939,14 @@ ___
 ### snapshotNominators(): `Option<Vec<AccountId>>`
 - **interface**: `api.query.staking.snapshotNominators`
 - **summary**:   Snapshot of nominators at the beginning of the current election window. This should only have a value when [`EraElectionStatus`] == `ElectionStatus::Open(_)`. 
+
+  TWO_PHASE_NOTE: should be removed once we switch to multi-phase. 
  
 ### snapshotValidators(): `Option<Vec<AccountId>>`
 - **interface**: `api.query.staking.snapshotValidators`
 - **summary**:   Snapshot of validators at the beginning of the current election window. This should only have a value when [`EraElectionStatus`] == `ElectionStatus::Open(_)`. 
+
+  TWO_PHASE_NOTE: should be removed once we switch to multi-phase. 
  
 ### spanSlash(`(AccountId,SpanIndex)`): `SpanRecord`
 - **interface**: `api.query.staking.spanSlash`

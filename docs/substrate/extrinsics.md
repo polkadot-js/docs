@@ -22,6 +22,8 @@ The following sections contain Extrinsics methods are part of the default Substr
 
 - **[democracy](#democracy)**
 
+- **[electionProviderMultiPhase](#electionprovidermultiphase)**
+
 - **[elections](#elections)**
 
 - **[grandpa](#grandpa)**
@@ -499,7 +501,7 @@ ___
 
 ## contracts
  
-### call(dest: `LookupSource`, value: `Compact<BalanceOf>`, gas_limit: `Compact<Gas>`, data: `Bytes`)
+### call(dest: `LookupSource`, value: `Compact<BalanceOf>`, gas_limit: `Compact<Weight>`, data: `Bytes`)
 - **interface**: `api.tx.contracts.call`
 - **summary**:   Makes a call to an account, optionally transferring some balance. 
 
@@ -517,13 +519,13 @@ ___
 
   If contract is not evicted as a result of this call, [`Error::ContractNotEvictable`] is returned and the sender is not eligible for the reward. 
  
-### instantiate(endowment: `Compact<BalanceOf>`, gas_limit: `Compact<Gas>`, code_hash: `CodeHash`, data: `Bytes`, salt: `Bytes`)
+### instantiate(endowment: `Compact<BalanceOf>`, gas_limit: `Compact<Weight>`, code_hash: `CodeHash`, data: `Bytes`, salt: `Bytes`)
 - **interface**: `api.tx.contracts.instantiate`
 - **summary**:   Instantiates a contract from a previously deployed wasm binary. 
 
   This function is identical to [`Self::instantiate_with_code`] but without the code deployment step. Instead, the `code_hash` of an on-chain deployed wasm binary must be supplied. 
  
-### instantiateWithCode(endowment: `Compact<BalanceOf>`, gas_limit: `Compact<Gas>`, code: `Bytes`, data: `Bytes`, salt: `Bytes`)
+### instantiateWithCode(endowment: `Compact<BalanceOf>`, gas_limit: `Compact<Weight>`, code: `Bytes`, data: `Bytes`, salt: `Bytes`)
 - **interface**: `api.tx.contracts.instantiateWithCode`
 - **summary**:   Instantiates a new contract from the supplied `code` optionally transferring some balance. 
 
@@ -946,6 +948,23 @@ ___
   - `vote`: The vote configuration.
 
   Weight: `O(R)` where R is the number of referendums the voter has voted on. 
+
+___
+
+
+## electionProviderMultiPhase
+ 
+### submitUnsigned(solution: `RawSolution`, witness: `SolutionOrSnapshotSize`)
+- **interface**: `api.tx.electionProviderMultiPhase.submitUnsigned`
+- **summary**:   Submit a solution for the unsigned phase. 
+
+  The dispatch origin fo this call must be __none__. 
+
+  This submission is checked on the fly. Moreover, this unsigned solution is only validated when submitted to the pool from the **local** node. Effectively, this means that only active validators can submit this transaction when authoring a block (similar to an inherent). 
+
+  To prevent any incorrect solution (and thus wasted time/weight), this transaction will panic if the solution submitted by the validator is invalid in any way, effectively putting their authoring reward at risk. 
+
+  No deposit or reward is associated with this submission. 
 
 ___
 
