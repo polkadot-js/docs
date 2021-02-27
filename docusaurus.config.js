@@ -31,6 +31,7 @@ module.exports = {
         },
       ],
     },
+    footer: {}
   },
   presets: [
     ['@docusaurus/preset-classic', {
@@ -45,7 +46,7 @@ module.exports = {
       },
       theme: {
         customCss: require.resolve('./src/css/custom.css'),
-      },
-    }],
-  ],
+      }
+    }]
+  ]
 };
