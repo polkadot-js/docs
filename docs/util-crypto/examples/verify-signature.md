@@ -12,7 +12,7 @@ const isValidSignature = (signedMessage, signature, address) => {
   const publicKey = decodeAddress(address);
   const hexPublicKey = u8aToHex(publicKey);
 
-  return signatureVerify(message, signature, hexPublicKey).isValid;
+  return signatureVerify(signedMessage, signature, hexPublicKey).isValid;
 };
 
 const isValid = isValidSignature(
