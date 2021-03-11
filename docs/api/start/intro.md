@@ -24,7 +24,7 @@ const { ApiPromise, WsProvider } = require('@polkadot/api');
 ...
 ```
 
-While Node.js as of later versions supports the `import` syntax, we are only exporting CommonJS modules, hence the need for require.
+While Node.js versions `>=12` support the `import` syntax, we are only exporting CommonJS modules, hence the need for require.
 
 
 ## What this is not
