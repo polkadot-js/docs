@@ -27,7 +27,7 @@ All data transferred between the API and the Node is in a SCALE-encoded binary f
 
 To fix this, you should look at the specific `api.tx.*` params and adjust the type definitions for those param types to match what is found on the node side. In some rare cases the cause could be extrinsic formatting related, to track these make an `api.tx.system.remark(data: Bytes)` call, if it fails, the API and node cannot agree on [an extrinsic format and adjustments are required](start/types.extend.md#impact-on-extrinsics).
 
-Also see the next entry for causes related to wrng `Address` formats.
+Also see the next entry for causes related to wrong `Address` formats.
 
 
 ## I cannot send transactions, sending yields decoding failures
