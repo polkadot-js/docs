@@ -22,6 +22,8 @@ Events are emitted for certain operations on the runtime. The following sections
 
 - **[elections](#elections)**
 
+- **[gilt](#gilt)**
+
 - **[grandpa](#grandpa)**
 
 - **[identity](#identity)**
@@ -70,9 +72,21 @@ ___
 
 ## assets
  
+### ApprovalCancelled(`AssetId`, `AccountId`, `AccountId`)
+- **interface**: `api.events.assets.ApprovalCancelled.is`
+- **summary**:   An approval for account `delegate` was cancelled by `owner`. \[id, owner, delegate\] 
+ 
+### ApprovedTransfer(`AssetId`, `AccountId`, `AccountId`, `TAssetBalance`)
+- **interface**: `api.events.assets.ApprovedTransfer.is`
+- **summary**:   (Additional) funds have been approved for transfer to a destination account. \[asset_id, source, delegate, amount\] 
+ 
 ### AssetFrozen(`AssetId`)
 - **interface**: `api.events.assets.AssetFrozen.is`
 - **summary**:   Some asset `asset_id` was frozen. \[asset_id\] 
+ 
+### AssetStatusChanged(`AssetId`)
+- **interface**: `api.events.assets.AssetStatusChanged.is`
+- **summary**:   An asset has had its attributes changed by the `Force` origin. \[id\] 
  
 ### AssetThawed(`AssetId`)
 - **interface**: `api.events.assets.AssetThawed.is`
@@ -94,10 +108,6 @@ ___
 - **interface**: `api.events.assets.ForceCreated.is`
 - **summary**:   Some asset class was force-created. \[asset_id, owner\] 
  
-### ForceTransferred(`AssetId`, `AccountId`, `AccountId`, `TAssetBalance`)
-- **interface**: `api.events.assets.ForceTransferred.is`
-- **summary**:   Some assets was transferred by an admin. \[asset_id, from, to, amount\] 
- 
 ### Frozen(`AssetId`, `AccountId`)
 - **interface**: `api.events.assets.Frozen.is`
 - **summary**:   Some account `who` was frozen. \[asset_id, who\] 
@@ -106,13 +116,13 @@ ___
 - **interface**: `api.events.assets.Issued.is`
 - **summary**:   Some assets were issued. \[asset_id, owner, total_supply\] 
  
-### MaxZombiesChanged(`AssetId`, `u32`)
-- **interface**: `api.events.assets.MaxZombiesChanged.is`
-- **summary**:   The maximum amount of zombies allowed has changed. \[asset_id, max_zombies\] 
+### MetadataCleared(`AssetId`)
+- **interface**: `api.events.assets.MetadataCleared.is`
+- **summary**:   Metadata has been cleared for an asset. \[asset_id\] 
  
-### MetadataSet(`AssetId`, `Bytes`, `Bytes`, `u8`)
+### MetadataSet(`AssetId`, `Bytes`, `Bytes`, `u8`, `bool`)
 - **interface**: `api.events.assets.MetadataSet.is`
-- **summary**:   New metadata has been set for an asset. \[asset_id, name, symbol, decimals\] 
+- **summary**:   New metadata has been set for an asset. \[asset_id, name, symbol, decimals, is_frozen\] 
  
 ### OwnerChanged(`AssetId`, `AccountId`)
 - **interface**: `api.events.assets.OwnerChanged.is`
@@ -129,6 +139,10 @@ ___
 ### Transferred(`AssetId`, `AccountId`, `AccountId`, `TAssetBalance`)
 - **interface**: `api.events.assets.Transferred.is`
 - **summary**:   Some assets were transferred. \[asset_id, from, to, amount\] 
+ 
+### TransferredApproved(`AssetId`, `AccountId`, `AccountId`, `AccountId`, `TAssetBalance`)
+- **interface**: `api.events.assets.TransferredApproved.is`
+- **summary**:   An `amount` was transferred in its entirety from `owner` to `destination` by the approved `delegate`. \[id, owner, delegate, destination\] 
 
 ___
 
@@ -444,6 +458,27 @@ ___
 ### SeatHolderSlashed(`AccountId`, `Balance`)
 - **interface**: `api.events.elections.SeatHolderSlashed.is`
 - **summary**:   A \[seat holder\] was slashed by \[amount\] by being forcefully removed from the set. 
+
+___
+
+
+## gilt
+ 
+### BidPlaced(`AccountId`, `BalanceOf`, `u32`)
+- **interface**: `api.events.gilt.BidPlaced.is`
+- **summary**:   A bid was successfully placed. \[ who, amount, duration \] 
+ 
+### BidRetracted(`AccountId`, `BalanceOf`, `u32`)
+- **interface**: `api.events.gilt.BidRetracted.is`
+- **summary**:   A bid was successfully removed (before being accepted as a gilt). \[ who, amount, duration \] 
+ 
+### GiltIssued(`ActiveIndex`, `BlockNumber`, `AccountId`, `BalanceOf`)
+- **interface**: `api.events.gilt.GiltIssued.is`
+- **summary**:   A bid was accepted as a gilt. The balance may not be released until expiry. \[ index, expiry, who, amount \] 
+ 
+### GiltThawed(`ActiveIndex`, `AccountId`, `BalanceOf`, `BalanceOf`)
+- **interface**: `api.events.gilt.GiltThawed.is`
+- **summary**:   An expired gilt has been thawed. \[ index, who, original_amount, additional_amount \] 
 
 ___
 
@@ -764,13 +799,9 @@ ___
 - **interface**: `api.events.staking.Slash.is`
 - **summary**:   One validator (and its nominators) has been slashed by the given amount. \[validator, amount\] 
  
-### SolutionStored(`ElectionCompute`)
-- **interface**: `api.events.staking.SolutionStored.is`
-- **summary**:   A new solution for the upcoming election has been stored. \[compute\] 
- 
-### StakingElection(`ElectionCompute`)
+### StakingElection()
 - **interface**: `api.events.staking.StakingElection.is`
-- **summary**:   A new set of stakers was elected with the given \[compute\]. 
+- **summary**:   A new set of stakers was elected. 
  
 ### Unbonded(`AccountId`, `Balance`)
 - **interface**: `api.events.staking.Unbonded.is`
@@ -821,6 +852,10 @@ ___
 ### NewAccount(`AccountId`)
 - **interface**: `api.events.system.NewAccount.is`
 - **summary**:   A new \[account\] was created. 
+ 
+### Remarked(`AccountId`, `Hash`)
+- **interface**: `api.events.system.Remarked.is`
+- **summary**:   On on-chain remark happened. \[origin, remark_hash\] 
 
 ___
 

@@ -10,6 +10,8 @@ This page lists the errors that can be encountered in the different modules.
 
 - **[authorship](#authorship)**
 
+- **[babe](#babe)**
+
 - **[balances](#balances)**
 
 - **[bounties](#bounties)**
@@ -24,11 +26,17 @@ This page lists the errors that can be encountered in the different modules.
 
 - **[elections](#elections)**
 
+- **[gilt](#gilt)**
+
 - **[grandpa](#grandpa)**
 
 - **[identity](#identity)**
 
 - **[imOnline](#imonline)**
+
+- **[indices](#indices)**
+
+- **[lottery](#lottery)**
 
 - **[multisig](#multisig)**
 
@@ -50,6 +58,8 @@ This page lists the errors that can be encountered in the different modules.
 
 - **[technicalCommittee](#technicalcommittee)**
 
+- **[technicalMembership](#technicalmembership)**
+
 - **[tips](#tips)**
 
 - **[treasury](#treasury)**
@@ -62,17 +72,9 @@ ___
 
 ## assets
  
-### AmountZero
-- **interface**: `api.errors.assets.AmountZero.is`
-- **summary**:   Transfer amount should be non-zero. 
- 
 ### BadMetadata
 - **interface**: `api.errors.assets.BadMetadata.is`
 - **summary**:   Invalid metadata given. 
- 
-### BadState
-- **interface**: `api.errors.assets.BadState.is`
-- **summary**:   Some internal state is broken. 
  
 ### BadWitness
 - **interface**: `api.errors.assets.BadWitness.is`
@@ -102,21 +104,25 @@ ___
 - **interface**: `api.errors.assets.NoPermission.is`
 - **summary**:   The signing account has no permission to do the operation. 
  
+### NoProvider
+- **interface**: `api.errors.assets.NoProvider.is`
+- **summary**:   No provider reference exists to allow a non-zero balance of a non-self-sufficient asset. 
+ 
 ### Overflow
 - **interface**: `api.errors.assets.Overflow.is`
 - **summary**:   A mint operation lead to an overflow. 
  
-### RefsLeft
-- **interface**: `api.errors.assets.RefsLeft.is`
-- **summary**:   Attempt to destroy an asset class when non-zombie, reference-bearing accounts exist. 
- 
-### TooManyZombies
-- **interface**: `api.errors.assets.TooManyZombies.is`
-- **summary**:   Too many zombie accounts in use. 
+### Unapproved
+- **interface**: `api.errors.assets.Unapproved.is`
+- **summary**:   No approval exists that would allow the transfer. 
  
 ### Unknown
 - **interface**: `api.errors.assets.Unknown.is`
 - **summary**:   The given asset ID is unknown. 
+ 
+### WouldDie
+- **interface**: `api.errors.assets.WouldDie.is`
+- **summary**:   The source account would not survive the transfer and it needs to stay alive. 
 
 ___
 
@@ -150,6 +156,23 @@ ___
 ### UnclesAlreadySet
 - **interface**: `api.errors.authorship.UnclesAlreadySet.is`
 - **summary**:   Uncles already set in the block. 
+
+___
+
+
+## babe
+ 
+### DuplicateOffenceReport
+- **interface**: `api.errors.babe.DuplicateOffenceReport.is`
+- **summary**:   A given equivocation report is valid but already previously reported. 
+ 
+### InvalidEquivocationProof
+- **interface**: `api.errors.babe.InvalidEquivocationProof.is`
+- **summary**:   An equivocation proof provided as part of an equivocation report is invalid. 
+ 
+### InvalidKeyOwnershipProof
+- **interface**: `api.errors.babe.InvalidKeyOwnershipProof.is`
+- **summary**:   A key ownership proof provided as part of an equivocation report is invalid. 
 
 ___
 
@@ -639,6 +662,43 @@ ___
 ___
 
 
+## gilt
+ 
+### AmountTooSmall
+- **interface**: `api.errors.gilt.AmountTooSmall.is`
+- **summary**:   The amount of the bid is less than the minimum allowed. 
+ 
+### BidTooLow
+- **interface**: `api.errors.gilt.BidTooLow.is`
+- **summary**:   The queue for the bid's duration is full and the amount bid is too low to get in through replacing an existing bid. 
+ 
+### DurationTooBig
+- **interface**: `api.errors.gilt.DurationTooBig.is`
+- **summary**:   The duration is the bid is greater than the number of queues. 
+ 
+### DurationTooSmall
+- **interface**: `api.errors.gilt.DurationTooSmall.is`
+- **summary**:   The duration of the bid is less than one. 
+ 
+### NotExpired
+- **interface**: `api.errors.gilt.NotExpired.is`
+- **summary**:   Gilt not yet at expiry date. 
+ 
+### NotFound
+- **interface**: `api.errors.gilt.NotFound.is`
+- **summary**:   The given bid for retraction is not found. 
+ 
+### NotOwner
+- **interface**: `api.errors.gilt.NotOwner.is`
+- **summary**:   Not the owner of the gilt. 
+ 
+### Unknown
+- **interface**: `api.errors.gilt.Unknown.is`
+- **summary**:   Gilt index is unknown. 
+
+___
+
+
 ## grandpa
  
 ### ChangePending
@@ -750,6 +810,68 @@ ___
 ### InvalidKey
 - **interface**: `api.errors.imOnline.InvalidKey.is`
 - **summary**:   Non existent public key. 
+
+___
+
+
+## indices
+ 
+### InUse
+- **interface**: `api.errors.indices.InUse.is`
+- **summary**:   The index was not available. 
+ 
+### NotAssigned
+- **interface**: `api.errors.indices.NotAssigned.is`
+- **summary**:   The index was not already assigned. 
+ 
+### NotOwner
+- **interface**: `api.errors.indices.NotOwner.is`
+- **summary**:   The index is assigned to another account. 
+ 
+### NotTransfer
+- **interface**: `api.errors.indices.NotTransfer.is`
+- **summary**:   The source and destination accounts are identical. 
+ 
+### Permanent
+- **interface**: `api.errors.indices.Permanent.is`
+- **summary**:   The index is permanent and may not be freed/changed. 
+
+___
+
+
+## lottery
+ 
+### AlreadyEnded
+- **interface**: `api.errors.lottery.AlreadyEnded.is`
+- **summary**:   A lottery has already ended. 
+ 
+### AlreadyParticipating
+- **interface**: `api.errors.lottery.AlreadyParticipating.is`
+- **summary**:   You are already participating in the lottery with this call. 
+ 
+### EncodingFailed
+- **interface**: `api.errors.lottery.EncodingFailed.is`
+- **summary**:   Failed to encode calls 
+ 
+### InProgress
+- **interface**: `api.errors.lottery.InProgress.is`
+- **summary**:   A lottery is already in progress. 
+ 
+### InvalidCall
+- **interface**: `api.errors.lottery.InvalidCall.is`
+- **summary**:   The call is not valid for an open lottery. 
+ 
+### NotConfigured
+- **interface**: `api.errors.lottery.NotConfigured.is`
+- **summary**:   A lottery has not been configured. 
+ 
+### Overflow
+- **interface**: `api.errors.lottery.Overflow.is`
+- **summary**:   An overflow has occurred. 
+ 
+### TooManyCalls
+- **interface**: `api.errors.lottery.TooManyCalls.is`
+- **summary**:   Too many calls for a single lottery. 
 
 ___
 
@@ -1070,10 +1192,6 @@ ___
 - **interface**: `api.errors.staking.BadTarget.is`
 - **summary**:   A nomination target was supplied that was blocked or otherwise not a validator. 
  
-### CallNotAllowed
-- **interface**: `api.errors.staking.CallNotAllowed.is`
-- **summary**:   The call is not allowed at the given time due to restrictions of election period. 
- 
 ### DuplicateIndex
 - **interface**: `api.errors.staking.DuplicateIndex.is`
 - **summary**:   Duplicate index. 
@@ -1129,58 +1247,6 @@ ___
 ### NoUnlockChunk
 - **interface**: `api.errors.staking.NoUnlockChunk.is`
 - **summary**:   Can not rebond without unlocking chunks. 
- 
-### OffchainElectionBogusCompact
-- **interface**: `api.errors.staking.OffchainElectionBogusCompact.is`
-- **summary**:   Error while building the assignment type from the compact. This can happen if an index is invalid, or if the weights _overflow_. 
- 
-### OffchainElectionBogusEdge
-- **interface**: `api.errors.staking.OffchainElectionBogusEdge.is`
-- **summary**:   The submitted result has unknown edges that are not among the presented winners. 
- 
-### OffchainElectionBogusElectionSize
-- **interface**: `api.errors.staking.OffchainElectionBogusElectionSize.is`
-- **summary**:   The election size is invalid. 
- 
-### OffchainElectionBogusNomination
-- **interface**: `api.errors.staking.OffchainElectionBogusNomination.is`
-- **summary**:   One of the submitted nominators has an edge to which they have not voted on chain. 
- 
-### OffchainElectionBogusNominator
-- **interface**: `api.errors.staking.OffchainElectionBogusNominator.is`
-- **summary**:   One of the submitted nominators is not an active nominator on chain. 
- 
-### OffchainElectionBogusScore
-- **interface**: `api.errors.staking.OffchainElectionBogusScore.is`
-- **summary**:   The claimed score does not match with the one computed from the data. 
- 
-### OffchainElectionBogusSelfVote
-- **interface**: `api.errors.staking.OffchainElectionBogusSelfVote.is`
-- **summary**:   A self vote must only be originated from a validator to ONLY themselves. 
- 
-### OffchainElectionBogusWinner
-- **interface**: `api.errors.staking.OffchainElectionBogusWinner.is`
-- **summary**:   One of the submitted winners is not an active candidate on chain (index is out of range in snapshot). 
- 
-### OffchainElectionBogusWinnerCount
-- **interface**: `api.errors.staking.OffchainElectionBogusWinnerCount.is`
-- **summary**:   Incorrect number of winners were presented. 
- 
-### OffchainElectionEarlySubmission
-- **interface**: `api.errors.staking.OffchainElectionEarlySubmission.is`
-- **summary**:   The submitted result is received out of the open window. 
- 
-### OffchainElectionSlashedNomination
-- **interface**: `api.errors.staking.OffchainElectionSlashedNomination.is`
-- **summary**:   One of the submitted nominators has an edge which is submitted before the last non-zero slash of the target. 
- 
-### OffchainElectionWeakSubmission
-- **interface**: `api.errors.staking.OffchainElectionWeakSubmission.is`
-- **summary**:   The submitted result is not as good as the one stored on chain. 
- 
-### SnapshotUnavailable
-- **interface**: `api.errors.staking.SnapshotUnavailable.is`
-- **summary**:   The snapshot data of the current window is missing. 
  
 ### TooManyTargets
 - **interface**: `api.errors.staking.TooManyTargets.is`
@@ -1266,6 +1332,19 @@ ___
 ### WrongProposalWeight
 - **interface**: `api.errors.technicalCommittee.WrongProposalWeight.is`
 - **summary**:   The given weight bound for the proposal was too low. 
+
+___
+
+
+## technicalMembership
+ 
+### AlreadyMember
+- **interface**: `api.errors.technicalMembership.AlreadyMember.is`
+- **summary**:   Already a member. 
+ 
+### NotMember
+- **interface**: `api.errors.technicalMembership.NotMember.is`
+- **summary**:   Not a member. 
 
 ___
 

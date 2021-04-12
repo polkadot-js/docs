@@ -20,6 +20,8 @@ The following sections contain the module constants, also known as parameter typ
 
 - **[elections](#elections)**
 
+- **[gilt](#gilt)**
+
 - **[identity](#identity)**
 
 - **[indices](#indices)**
@@ -56,7 +58,7 @@ ___
  
 ### epochDuration: `u64`
 - **interface**: `api.consts.babe.epochDuration`
-- **summary**:   The number of **slots** that an epoch takes. We couple sessions to epochs, i.e. we start a new session once the new epoch begins. NOTE: Currently it is not possible to change the epoch duration after the chain has started. Attempting to do so will brick block production. 
+- **summary**:   The amount of time, in slots, that each epoch should last. NOTE: Currently it is not possible to change the epoch duration after the chain has started. Attempting to do so will brick block production. 
  
 ### expectedBlockTime: `Moment`
 - **interface**: `api.consts.babe.expectedBlockTime`
@@ -239,8 +241,8 @@ ___
 ### desiredRunnersUp: `u32`
 - **interface**: `api.consts.elections.desiredRunnersUp`
  
-### moduleId: `LockIdentifier`
-- **interface**: `api.consts.elections.moduleId`
+### palletId: `LockIdentifier`
+- **interface**: `api.consts.elections.palletId`
  
 ### termDuration: `BlockNumber`
 - **interface**: `api.consts.elections.termDuration`
@@ -250,6 +252,45 @@ ___
  
 ### votingBondFactor: `BalanceOf`
 - **interface**: `api.consts.elections.votingBondFactor`
+
+___
+
+
+## gilt
+ 
+### fifoQueueLen: `u32`
+- **interface**: `api.consts.gilt.fifoQueueLen`
+- **summary**:   Portion of the queue which is free from ordering and just a FIFO. 
+
+  Must be no greater than `MaxQueueLen`. 
+ 
+### intakePeriod: `BlockNumber`
+- **interface**: `api.consts.gilt.intakePeriod`
+- **summary**:   The number of blocks between consecutive attempts to issue more gilts in an effort to get to the target amount to be frozen. 
+
+  A larger value results in fewer storage hits each block, but a slower period to get to the target. 
+ 
+### maxIntakeBids: `u32`
+- **interface**: `api.consts.gilt.maxIntakeBids`
+- **summary**:   The maximum amount of bids that can be turned into issued gilts each block. A larger value here means less of the block available for transactions should there be a glut of bids to make into gilts to reach the target. 
+ 
+### maxQueueLen: `u32`
+- **interface**: `api.consts.gilt.maxQueueLen`
+- **summary**:   Maximum number of items that may be in each duration queue. 
+ 
+### minFreeze: `BalanceOf`
+- **interface**: `api.consts.gilt.minFreeze`
+- **summary**:   The minimum amount of funds that may be offered to freeze for a gilt. Note that this does not actually limit the amount which may be frozen in a gilt since gilts may be split up in order to satisfy the desired amount of funds under gilts. 
+
+  It should be at least big enough to ensure that there is no possible storage spam attack or queue-filling attack. 
+ 
+### period: `BlockNumber`
+- **interface**: `api.consts.gilt.period`
+- **summary**:   The base period for the duration queues. This is the common multiple across all supported freezing durations that can be bid upon. 
+ 
+### queueCount: `u32`
+- **interface**: `api.consts.gilt.queueCount`
+- **summary**:   Number of duration queues in total. This sets the maximum duration supported, which is this value multiplied by `Period`. 
 
 ___
 
@@ -297,8 +338,8 @@ ___
 ### maxCalls: `u32`
 - **interface**: `api.consts.lottery.maxCalls`
  
-### moduleId: `ModuleId`
-- **interface**: `api.consts.lottery.moduleId`
+### palletId: `PalletId`
+- **interface**: `api.consts.lottery.palletId`
 
 ___
 
@@ -324,15 +365,19 @@ ___
  
 ### announcementDepositBase: `BalanceOf`
 - **interface**: `api.consts.proxy.announcementDepositBase`
-- **summary**:   `AnnouncementDepositBase` metadata shadow. 
+- **summary**:   The base amount of currency needed to reserve for creating an announcement. 
+
+  This is held when a new storage item holding a `Balance` is created (typically 16 bytes). 
  
 ### announcementDepositFactor: `BalanceOf`
 - **interface**: `api.consts.proxy.announcementDepositFactor`
-- **summary**:   `AnnouncementDepositFactor` metadata shadow. 
+- **summary**:   The amount of currency needed per announcement made. 
+
+  This is held for adding an `AccountId`, `Hash` and `BlockNumber` (typically 68 bytes) into a pre-existing storage value. 
  
 ### maxPending: `u32`
 - **interface**: `api.consts.proxy.maxPending`
-- **summary**:   `MaxPending` metadata shadow. 
+- **summary**:   The maximum amount of time-delayed announcements that are allowed to be pending. 
  
 ### maxProxies: `u16`
 - **interface**: `api.consts.proxy.maxProxies`
@@ -341,10 +386,14 @@ ___
 ### proxyDepositBase: `BalanceOf`
 - **interface**: `api.consts.proxy.proxyDepositBase`
 - **summary**:   The base amount of currency needed to reserve for creating a proxy. 
+
+  This is held for an additional storage item whose value size is `sizeof(Balance)` bytes and whose key size is `sizeof(AccountId)` bytes. 
  
 ### proxyDepositFactor: `BalanceOf`
 - **interface**: `api.consts.proxy.proxyDepositFactor`
 - **summary**:   The amount of currency needed per proxy added. 
+
+  This is held for adding 32 bytes plus an instance of `ProxyType` more into a pre-existing storage value. Thus, when configuring `ProxyDepositFactor` one should take into account `32 + proxy_type.encode().len()` bytes of data. 
 
 ___
 
@@ -380,12 +429,16 @@ ___
 - **interface**: `api.consts.society.challengePeriod`
 - **summary**:   The number of blocks between membership challenges. 
  
+### maxCandidateIntake: `u32`
+- **interface**: `api.consts.society.maxCandidateIntake`
+- **summary**:   Maximum candidate intake per round. 
+ 
 ### maxStrikes: `u32`
 - **interface**: `api.consts.society.maxStrikes`
 - **summary**:   The number of times a member may vote the wrong way (or not at all, when they are a skeptic) before they become suspended. 
  
-### moduleId: `ModuleId`
-- **interface**: `api.consts.society.moduleId`
+### palletId: `PalletId`
+- **interface**: `api.consts.society.palletId`
 - **summary**:   The societies's module id 
  
 ### periodSpend: `BalanceOf`
@@ -409,29 +462,15 @@ ___
 - **interface**: `api.consts.staking.bondingDuration`
 - **summary**:   Number of eras that staked funds must remain bonded for. 
  
-### electionLookahead: `BlockNumber`
-- **interface**: `api.consts.staking.electionLookahead`
-- **summary**:   The number of blocks before the end of the era from which election submissions are allowed. 
-
-  Setting this to zero will disable the offchain compute and only on-chain seq-phragmen will be used. 
-
-  This is bounded by being within the last session. Hence, setting it to a value more than the length of a session will be pointless. 
- 
-### maxIterations: `u32`
-- **interface**: `api.consts.staking.maxIterations`
-- **summary**:   Maximum number of balancing iterations to run in the offchain submission. 
-
-  If set to 0, balance_solution will not be executed at all. 
+### maxNominations: `u32`
+- **interface**: `api.consts.staking.maxNominations`
+- **summary**:   Maximum number of nominations per nominator. 
  
 ### maxNominatorRewardedPerValidator: `u32`
 - **interface**: `api.consts.staking.maxNominatorRewardedPerValidator`
 - **summary**:   The maximum number of nominators rewarded for each validator. 
 
   For each validator only the `$MaxNominatorRewardedPerValidator` biggest stakers can claim their reward. This used to limit the i/o cost for the nominator payout. 
- 
-### minSolutionScoreBump: `Perbill`
-- **interface**: `api.consts.staking.minSolutionScoreBump`
-- **summary**:   The threshold of improvement that should be provided for a new solution to be accepted. 
  
 ### sessionsPerEra: `SessionIndex`
 - **interface**: `api.consts.staking.sessionsPerEra`
@@ -530,8 +569,8 @@ ___
 - **interface**: `api.consts.treasury.burn`
 - **summary**:   Percentage of spare funds (if any) that are burnt per spend period. 
  
-### moduleId: `ModuleId`
-- **interface**: `api.consts.treasury.moduleId`
+### palletId: `PalletId`
+- **interface**: `api.consts.treasury.palletId`
 - **summary**:   The treasury's module id, used for deriving its sovereign account ID. 
  
 ### proposalBond: `Permill`
@@ -553,4 +592,4 @@ ___
  
 ### minVestedTransfer: `BalanceOf`
 - **interface**: `api.consts.vesting.minVestedTransfer`
-- **summary**:   The minimum amount to be transferred to create a new vesting schedule. 
+- **summary**:   The minimum amount transferred to call `vested_transfer`. 

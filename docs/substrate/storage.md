@@ -26,6 +26,8 @@ The following sections contain Storage methods are part of the default Substrate
 
 - **[elections](#elections)**
 
+- **[gilt](#gilt)**
+
 - **[grandpa](#grandpa)**
 
 - **[identity](#identity)**
@@ -86,6 +88,10 @@ ___
 - **interface**: `api.query.assets.account`
 - **summary**:   The number of units of assets held by any given account. 
  
+### approvals(`AssetId, AssetApprovalKey`): `Option<AssetApproval>`
+- **interface**: `api.query.assets.approvals`
+- **summary**:   Approved balance transfers. First balance is the amount approved for transfer. Second is the amount of `T::Currency` reserved for storing this. 
+ 
 ### asset(`AssetId`): `Option<AssetDetails>`
 - **interface**: `api.query.assets.asset`
 - **summary**:   Details of an asset. 
@@ -128,9 +134,17 @@ ___
 - **interface**: `api.query.babe.currentSlot`
 - **summary**:   Current slot number. 
  
+### epochConfig(): `Option<BabeEpochConfiguration>`
+- **interface**: `api.query.babe.epochConfig`
+- **summary**:   The configuration for the current epoch. Should never be `None` as it is initialized in genesis. 
+ 
 ### epochIndex(): `u64`
 - **interface**: `api.query.babe.epochIndex`
 - **summary**:   Current epoch index. 
+ 
+### epochStart(): `(BlockNumber,BlockNumber)`
+- **interface**: `api.query.babe.epochStart`
+- **summary**:   The block numbers when the last and current epoch have started, respectively `N-1` and `N`. NOTE: We track this is in order to annotate the block number when a given pool of entropy was fixed (i.e. it was known to chain observers). Since epochs are defined in slots, which may be skipped, the block numbers may not line up with the slot numbers. 
  
 ### genesisSlot(): `Slot`
 - **interface**: `api.query.babe.genesisSlot`
@@ -150,13 +164,17 @@ ___
 - **interface**: `api.query.babe.nextAuthorities`
 - **summary**:   Next epoch authorities. 
  
-### nextEpochConfig(): `Option<NextConfigDescriptor>`
+### nextEpochConfig(): `Option<BabeEpochConfiguration>`
 - **interface**: `api.query.babe.nextEpochConfig`
-- **summary**:   Next epoch configuration, if changed. 
+- **summary**:   The configuration for the next epoch, `None` if the config will not change (you can fallback to `EpochConfig` instead in that case). 
  
 ### nextRandomness(): `Randomness`
 - **interface**: `api.query.babe.nextRandomness`
 - **summary**:   Next epoch randomness. 
+ 
+### pendingEpochConfigChange(): `Option<NextConfigDescriptor>`
+- **interface**: `api.query.babe.pendingEpochConfigChange`
+- **summary**:   Pending epoch configuration change that will be applied when the next epoch is enacted. 
  
 ### randomness(): `Randomness`
 - **interface**: `api.query.babe.randomness`
@@ -366,7 +384,7 @@ ___
 
 ## electionProviderMultiPhase
  
-### currentPhase(): `Phase`
+### currentPhase(): `ElectionPhase`
 - **interface**: `api.query.electionProviderMultiPhase.currentPhase`
 - **summary**:   Current phase. 
  
@@ -434,6 +452,29 @@ ___
 - **summary**:   Votes and locked stake of a particular voter. 
 
   TWOX-NOTE: SAFE as `AccountId` is a crypto hash. 
+
+___
+
+
+## gilt
+ 
+### active(`ActiveIndex`): `Option<ActiveGilt>`
+- **interface**: `api.query.gilt.active`
+- **summary**:   The currently active gilts, indexed according to the order of creation. 
+ 
+### activeTotal(): `ActiveGiltsTotal`
+- **interface**: `api.query.gilt.activeTotal`
+- **summary**:   Information relating to the gilts currently active. 
+ 
+### queues(`u32`): `Vec<GiltBid>`
+- **interface**: `api.query.gilt.queues`
+- **summary**:   The queues of bids ready to become gilts. Indexed by duration (in `Period`s). 
+ 
+### queueTotals(): `Vec<(u32,BalanceOf)>`
+- **interface**: `api.query.gilt.queueTotals`
+- **summary**:   The totals of items and balances within each queue. Saves a lot of storage reads in the case of sparsely packed queues. 
+
+  The vector is indexed by duration in `Period`s, offset by one, so information on the queue whose duration is one `Period` would be storage `0`. 
 
 ___
 
@@ -506,9 +547,11 @@ ___
  
 ### heartbeatAfter(): `BlockNumber`
 - **interface**: `api.query.imOnline.heartbeatAfter`
-- **summary**:   The block number after which it's ok to send heartbeats in current session. 
+- **summary**:   The block number after which it's ok to send heartbeats in the current session. 
 
   At the beginning of each session we set this to a value that should fall roughly in the middle of the session duration. The idea is to first wait for the validators to produce a block in the current session, so that the heartbeat later on will not be necessary. 
+
+  This value will only be used as a fallback if we fail to get a proper session progress estimate from `NextSessionRotation`, as those estimates should be more accurate then the value we calculate for `HeartbeatAfter`. 
  
 ### keys(): `Vec<AuthorityId>`
 - **interface**: `api.query.imOnline.keys`
@@ -820,12 +863,6 @@ ___
 - **interface**: `api.query.staking.earliestUnappliedSlash`
 - **summary**:   The earliest era for which we have a pending, unapplied slash. 
  
-### eraElectionStatus(): `ElectionStatus`
-- **interface**: `api.query.staking.eraElectionStatus`
-- **summary**:   Flag to control the execution of the offchain election. When `Open(_)`, we accept solutions to be submitted. 
-
-  TWO_PHASE_NOTE: should be removed once we switch to multi-phase. 
- 
 ### erasRewardPoints(`EraIndex`): `EraRewardPoints`
 - **interface**: `api.query.staking.erasRewardPoints`
 - **summary**:   Rewards for the last `HISTORY_DEPTH` eras. If reward hasn't been set or has been removed then 0 reward is returned. 
@@ -888,12 +925,6 @@ ___
 - **interface**: `api.query.staking.invulnerables`
 - **summary**:   Any validators that may never be slashed or forcibly kicked. It's a Vec since they're easy to initialize and the performance hit is minimal (we expect no more than four invulnerables) and restricted to testnets. 
  
-### isCurrentSessionFinal(): `bool`
-- **interface**: `api.query.staking.isCurrentSessionFinal`
-- **summary**:   True if the current **planned** session is final. Note that this does not take era forcing into account. 
-
-  TWO_PHASE_NOTE: should be removed once we switch to multi-phase. 
- 
 ### ledger(`AccountId`): `Option<StakingLedger>`
 - **interface**: `api.query.staking.ledger`
 - **summary**:   Map from all (unlocked) "controller" accounts to the info regarding the staking. 
@@ -914,18 +945,6 @@ ___
 - **interface**: `api.query.staking.payee`
 - **summary**:   Where the reward payment should be made. Keyed by stash. 
  
-### queuedElected(): `Option<ElectionResult>`
-- **interface**: `api.query.staking.queuedElected`
-- **summary**:   The next validator set. At the end of an era, if this is available (potentially from the result of an offchain worker), it is immediately used. Otherwise, the on-chain election is executed. 
-
-  TWO_PHASE_NOTE: should be removed once we switch to multi-phase. 
- 
-### queuedScore(): `Option<ElectionScore>`
-- **interface**: `api.query.staking.queuedScore`
-- **summary**:   The score of the current [`QueuedElected`]. 
-
-  TWO_PHASE_NOTE: should be removed once we switch to multi-phase. 
- 
 ### slashingSpans(`AccountId`): `Option<SlashingSpans>`
 - **interface**: `api.query.staking.slashingSpans`
 - **summary**:   Slashing spans for stash accounts. 
@@ -936,18 +955,6 @@ ___
 
   The rest of the slashed value is handled by the `Slash`. 
  
-### snapshotNominators(): `Option<Vec<AccountId>>`
-- **interface**: `api.query.staking.snapshotNominators`
-- **summary**:   Snapshot of nominators at the beginning of the current election window. This should only have a value when [`EraElectionStatus`] == `ElectionStatus::Open(_)`. 
-
-  TWO_PHASE_NOTE: should be removed once we switch to multi-phase. 
- 
-### snapshotValidators(): `Option<Vec<AccountId>>`
-- **interface**: `api.query.staking.snapshotValidators`
-- **summary**:   Snapshot of validators at the beginning of the current election window. This should only have a value when [`EraElectionStatus`] == `ElectionStatus::Open(_)`. 
-
-  TWO_PHASE_NOTE: should be removed once we switch to multi-phase. 
- 
 ### spanSlash(`(AccountId,SpanIndex)`): `SpanRecord`
 - **interface**: `api.query.staking.spanSlash`
 - **summary**:   Records information about the maximum slash of a stash within a slashing span, as well as how much reward has been paid out. 
@@ -956,7 +963,7 @@ ___
 - **interface**: `api.query.staking.storageVersion`
 - **summary**:   True if network has been upgraded to this version. Storage version of the pallet. 
 
-  This is set to v5.0.0 for new networks. 
+  This is set to v6.0.0 for new networks. 
  
 ### unappliedSlashes(`EraIndex`): `Vec<UnappliedSlash>`
 - **interface**: `api.query.staking.unappliedSlashes`
@@ -1048,9 +1055,9 @@ ___
 - **interface**: `api.query.system.parentHash`
 - **summary**:   Hash of the previous block. 
  
-### upgradedToDualRefCount(): `bool`
-- **interface**: `api.query.system.upgradedToDualRefCount`
-- **summary**:   True if we have upgraded so that AccountInfo contains two types of `RefCount`. False (default) if not. 
+### upgradedToTripleRefCount(): `bool`
+- **interface**: `api.query.system.upgradedToTripleRefCount`
+- **summary**:   True if we have upgraded so that AccountInfo contains three types of `RefCount`. False (default) if not. 
  
 ### upgradedToU32RefCount(): `bool`
 - **interface**: `api.query.system.upgradedToU32RefCount`

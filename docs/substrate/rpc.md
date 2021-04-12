@@ -24,6 +24,8 @@ The following sections contain RPC methods that are Remote Calls available by de
 
 - **[grandpa](#grandpa)**
 
+- **[mmr](#mmr)**
+
 - **[offchain](#offchain)**
 
 - **[payment](#payment)**
@@ -456,6 +458,16 @@ ___
 - **interface**: `api.rpc.grandpa.subscribeJustifications`
 - **jsonrpc**: `grandpa_subscribeJustifications`
 - **summary**: Subscribes to grandpa justifications
+
+___
+
+
+## mmr
+ 
+### generateProof(leafIndex: `u64`, at?: `BlockHash`): `MmrLeafProof`
+- **interface**: `api.rpc.mmr.generateProof`
+- **jsonrpc**: `mmr_generateProof`
+- **summary**: Generate MMR proof for given leaf index.
 
 ___
 

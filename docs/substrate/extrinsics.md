@@ -26,6 +26,8 @@ The following sections contain Extrinsics methods are part of the default Substr
 
 - **[elections](#elections)**
 
+- **[gilt](#gilt)**
+
 - **[grandpa](#grandpa)**
 
 - **[identity](#identity)**
@@ -74,6 +76,26 @@ ___
 
 ## assets
  
+### approveTransfer(id: `Compact<AssetId>`, delegate: `LookupSource`, amount: `Compact<TAssetBalance>`)
+- **interface**: `api.tx.assets.approveTransfer`
+- **summary**:   Approve an amount of asset for transfer by a delegated third-party account. 
+
+  Origin must be Signed. 
+
+  Ensures that `ApprovalDeposit` worth of `Currency` is reserved from signing account for the purpose of holding the approval. If some non-zero amount of assets is already approved from signing account to `delegate`, then it is topped up or unreserved to meet the right value. 
+
+  NOTE: The signing account does not need to own `amount` of assets at the point of making this call. 
+
+  - `id`: The identifier of the asset. 
+
+  - `delegate`: The account to delegate permission to transfer asset.
+
+  - `amount`: The amount of asset that may be transferred by `delegate`. If there isalready an approval in place, then this acts additively. 
+
+  Emits `ApprovedTransfer` on success. 
+
+  Weight: `O(1)` 
+ 
 ### burn(id: `Compact<AssetId>`, who: `LookupSource`, amount: `Compact<TAssetBalance>`)
 - **interface**: `api.tx.assets.burn`
 - **summary**:   Reduce the balance of `who` by as much as possible up to `amount` assets of `id`. 
@@ -92,23 +114,51 @@ ___
 
   Weight: `O(1)` Modes: Post-existence of `who`; Pre & post Zombie-status of `who`. 
  
-### create(id: `Compact<AssetId>`, admin: `LookupSource`, max_zombies: `u32`, min_balance: `TAssetBalance`)
+### cancelApproval(id: `Compact<AssetId>`, delegate: `LookupSource`)
+- **interface**: `api.tx.assets.cancelApproval`
+- **summary**:   Cancel all of some asset approved for delegated transfer by a third-party account. 
+
+  Origin must be Signed and there must be an approval in place between signer and `delegate`. 
+
+  Unreserves any deposit previously reserved by `approve_transfer` for the approval. 
+
+  - `id`: The identifier of the asset. 
+
+  - `delegate`: The account delegated permission to transfer asset.
+
+  Emits `ApprovalCancelled` on success. 
+
+  Weight: `O(1)` 
+ 
+### clearMetadata(id: `Compact<AssetId>`)
+- **interface**: `api.tx.assets.clearMetadata`
+- **summary**:   Clear the metadata for an asset. 
+
+  Origin must be Signed and the sender should be the Owner of the asset `id`. 
+
+  Any deposit is freed for the asset owner. 
+
+  - `id`: The identifier of the asset to clear. 
+
+  Emits `MetadataCleared`. 
+
+  Weight: `O(1)` 
+ 
+### create(id: `Compact<AssetId>`, admin: `LookupSource`, min_balance: `TAssetBalance`)
 - **interface**: `api.tx.assets.create`
 - **summary**:   Issue a new class of fungible assets from a public origin. 
 
-  This new asset class has no assets initially. 
+  This new asset class has no assets initially and its owner is the origin. 
 
   The origin must be Signed and the sender must have sufficient funds free. 
 
-  Funds of sender are reserved according to the formula: `AssetDepositBase + AssetDepositPerZombie * max_zombies`. 
+  Funds of sender are reserved by `AssetDeposit`. 
 
   Parameters: 
 
   - `id`: The identifier of the new asset. This must not be currently in use to identifyan existing asset. 
 
-  - `owner`: The owner of this class of assets. The owner has full superuser permissionsover this asset, but may later change and configure the permissions using `transfer_ownership` and `set_team`. 
-
-  - `max_zombies`: The total number of accounts which may hold assets in this class yethave no existential deposit. 
+  - `admin`: The admin of this class of assets. The admin is the initial address of eachmember of the asset class's admin team. 
 
   - `min_balance`: The minimum balance of this new asset that any single account musthave. If an account's balance is reduced below this, then it collapses to zero. 
 
@@ -116,19 +166,81 @@ ___
 
   Weight: `O(1)` 
  
-### destroy(id: `Compact<AssetId>`, zombies_witness: `Compact<u32>`)
+### destroy(id: `Compact<AssetId>`, witness: `AssetDestroyWitness`)
 - **interface**: `api.tx.assets.destroy`
-- **summary**:   Destroy a class of fungible assets owned by the sender. 
+- **summary**:   Destroy a class of fungible assets. 
 
-  The origin must be Signed and the sender must be the owner of the asset `id`. 
+  The origin must conform to `ForceOrigin` or must be Signed and the sender must be the owner of the asset `id`. 
 
   - `id`: The identifier of the asset to be destroyed. This must identify an existing asset. 
 
   Emits `Destroyed` event when successful. 
 
-  Weight: `O(z)` where `z` is the number of zombie accounts. 
+  Weight: `O(c + p + a)` where: 
+
+  - `c = (witness.accounts - witness.sufficients)`
+
+  - `s = witness.sufficients`
+
+  - `a = witness.approvals`
  
-### forceCreate(id: `Compact<AssetId>`, owner: `LookupSource`, max_zombies: `Compact<u32>`, min_balance: `Compact<TAssetBalance>`)
+### forceAssetStatus(id: `Compact<AssetId>`, owner: `LookupSource`, issuer: `LookupSource`, admin: `LookupSource`, freezer: `LookupSource`, min_balance: `Compact<TAssetBalance>`, is_sufficient: `bool`, is_frozen: `bool`)
+- **interface**: `api.tx.assets.forceAssetStatus`
+- **summary**:   Alter the attributes of a given asset. 
+
+  Origin must be `ForceOrigin`. 
+
+  - `id`: The identifier of the asset. 
+
+  - `owner`: The new Owner of this asset.
+
+  - `issuer`: The new Issuer of this asset.
+
+  - `admin`: The new Admin of this asset.
+
+  - `freezer`: The new Freezer of this asset.
+
+  - `min_balance`: The minimum balance of this new asset that any single account musthave. If an account's balance is reduced below this, then it collapses to zero. 
+
+  - `is_sufficient`: Whether a non-zero balance of this asset is deposit of sufficientvalue to account for the state bloat associated with its balance storage. If set to `true`, then non-zero balances may be stored without a `consumer` reference (and thus an ED in the Balances pallet or whatever else is used to control user-account state growth). 
+
+  - `is_frozen`: Whether this asset class is frozen except for permissioned/admininstructions. 
+
+  Emits `AssetStatusChanged` with the identity of the asset. 
+
+  Weight: `O(1)` 
+ 
+### forceCancelApproval(id: `Compact<AssetId>`, owner: `LookupSource`, delegate: `LookupSource`)
+- **interface**: `api.tx.assets.forceCancelApproval`
+- **summary**:   Cancel all of some asset approved for delegated transfer by a third-party account. 
+
+  Origin must be either ForceOrigin or Signed origin with the signer being the Admin account of the asset `id`. 
+
+  Unreserves any deposit previously reserved by `approve_transfer` for the approval. 
+
+  - `id`: The identifier of the asset. 
+
+  - `delegate`: The account delegated permission to transfer asset.
+
+  Emits `ApprovalCancelled` on success. 
+
+  Weight: `O(1)` 
+ 
+### forceClearMetadata(id: `Compact<AssetId>`)
+- **interface**: `api.tx.assets.forceClearMetadata`
+- **summary**:   Clear the metadata for an asset. 
+
+  Origin must be ForceOrigin. 
+
+  Any deposit is returned. 
+
+  - `id`: The identifier of the asset to clear. 
+
+  Emits `MetadataCleared`. 
+
+  Weight: `O(1)` 
+ 
+### forceCreate(id: `Compact<AssetId>`, owner: `LookupSource`, is_sufficient: `bool`, min_balance: `Compact<TAssetBalance>`)
 - **interface**: `api.tx.assets.forceCreate`
 - **summary**:   Issue a new class of fungible assets from a privileged origin. 
 
@@ -150,17 +262,25 @@ ___
 
   Weight: `O(1)` 
  
-### forceDestroy(id: `Compact<AssetId>`, zombies_witness: `Compact<u32>`)
-- **interface**: `api.tx.assets.forceDestroy`
-- **summary**:   Destroy a class of fungible assets. 
+### forceSetMetadata(id: `Compact<AssetId>`, name: `Bytes`, symbol: `Bytes`, decimals: `u8`, is_frozen: `bool`)
+- **interface**: `api.tx.assets.forceSetMetadata`
+- **summary**:   Force the metadata for an asset to some value. 
 
-  The origin must conform to `ForceOrigin`. 
+  Origin must be ForceOrigin. 
 
-  - `id`: The identifier of the asset to be destroyed. This must identify an existing asset. 
+  Any deposit is left alone. 
 
-  Emits `Destroyed` event when successful. 
+  - `id`: The identifier of the asset to update. 
 
-  Weight: `O(1)` 
+  - `name`: The user friendly name of this asset. Limited in length by `StringLimit`.
+
+  - `symbol`: The exchange symbol for this asset. Limited in length by `StringLimit`.
+
+  - `decimals`: The number of decimals this asset uses to represent one unit.
+
+  Emits `MetadataSet`. 
+
+  Weight: `O(N + S)` where N and S are the length of the name and symbol respectively. 
  
 ### forceTransfer(id: `Compact<AssetId>`, source: `LookupSource`, dest: `LookupSource`, amount: `Compact<TAssetBalance>`)
 - **interface**: `api.tx.assets.forceTransfer`
@@ -222,27 +342,9 @@ ___
 
   Weight: `O(1)` Modes: Pre-existing balance of `beneficiary`; Account pre-existence of `beneficiary`. 
  
-### setMaxZombies(id: `Compact<AssetId>`, max_zombies: `Compact<u32>`)
-- **interface**: `api.tx.assets.setMaxZombies`
-- **summary**:   Set the maximum number of zombie accounts for an asset. 
-
-  Origin must be Signed and the sender should be the Owner of the asset `id`. 
-
-  Funds of sender are reserved according to the formula: `AssetDepositBase + AssetDepositPerZombie * max_zombies` taking into account any already reserved funds. 
-
-  - `id`: The identifier of the asset to update zombie count. 
-
-  - `max_zombies`: The new number of zombies allowed for this asset.
-
-  Emits `MaxZombiesChanged`. 
-
-  Weight: `O(1)` 
- 
 ### setMetadata(id: `Compact<AssetId>`, name: `Bytes`, symbol: `Bytes`, decimals: `u8`)
 - **interface**: `api.tx.assets.setMetadata`
 - **summary**:   Set the metadata for an asset. 
-
-  NOTE: There is no `unset_metadata` call. Simply pass an empty name, symbol, and 0 decimals to this function to remove the metadata of an asset and return your deposit. 
 
   Origin must be Signed and the sender should be the Owner of the asset `id`. 
 
@@ -256,7 +358,7 @@ ___
 
   - `decimals`: The number of decimals this asset uses to represent one unit.
 
-  Emits `MaxZombiesChanged`. 
+  Emits `MetadataSet`. 
 
   Weight: `O(1)` 
  
@@ -320,13 +422,49 @@ ___
 
   Weight: `O(1)` Modes: Pre-existence of `target`; Post-existence of sender; Prior & post zombie-status of sender; Account pre-existence of `target`. 
  
+### transferApproved(id: `Compact<AssetId>`, owner: `LookupSource`, destination: `LookupSource`, amount: `Compact<TAssetBalance>`)
+- **interface**: `api.tx.assets.transferApproved`
+- **summary**:   Transfer some asset balance from a previously delegated account to some third-party account. 
+
+  Origin must be Signed and there must be an approval in place by the `owner` to the signer. 
+
+  If the entire amount approved for transfer is transferred, then any deposit previously reserved by `approve_transfer` is unreserved. 
+
+  - `id`: The identifier of the asset. 
+
+  - `owner`: The account which previously approved for a transfer of at least `amount` andfrom which the asset balance will be withdrawn. 
+
+  - `destination`: The account to which the asset balance of `amount` will be transferred.
+
+  - `amount`: The amount of assets to transfer.
+
+  Emits `TransferredApproved` on success. 
+
+  Weight: `O(1)` 
+ 
+### transferKeepAlive(id: `Compact<AssetId>`, target: `LookupSource`, amount: `Compact<TAssetBalance>`)
+- **interface**: `api.tx.assets.transferKeepAlive`
+- **summary**:   Move some assets from the sender account to another, keeping the sender account alive. 
+
+  Origin must be Signed. 
+
+  - `id`: The identifier of the asset to have some amount transferred. 
+
+  - `target`: The account to be credited.
+
+  - `amount`: The amount by which the sender's balance of assets should be reduced and`target`'s balance increased. The amount actually transferred may be slightly greater in the case that the transfer would otherwise take the sender balance above zero but below the minimum balance. Must be greater than zero. 
+
+  Emits `Transferred` with the actual amount transferred. If this takes the source balance to below the minimum for the asset, then the amount transferred is increased to take it to zero. 
+
+  Weight: `O(1)` Modes: Pre-existence of `target`; Post-existence of sender; Prior & post zombie-status of sender; Account pre-existence of `target`. 
+ 
 ### transferOwnership(id: `Compact<AssetId>`, owner: `LookupSource`)
 - **interface**: `api.tx.assets.transferOwnership`
 - **summary**:   Change the Owner of an asset. 
 
   Origin must be Signed and the sender should be the Owner of the asset `id`. 
 
-  - `id`: The identifier of the asset to be frozen. 
+  - `id`: The identifier of the asset. 
 
   - `owner`: The new Owner of this asset.
 
@@ -347,6 +485,10 @@ ___
 
 
 ## babe
+ 
+### planConfigChange(config: `NextConfigDescriptor`)
+- **interface**: `api.tx.babe.planConfigChange`
+- **summary**:   Plan an epoch config change. The epoch config change is recorded and will be enacted on the next call to `enact_epoch_change`. The config will be activated one epoch after. Multiple calls to this method will replace any existing planned config change that had not been enacted yet. 
  
 ### reportEquivocation(equivocation_proof: `BabeEquivocationProof`, key_owner_proof: `KeyOwnerProof`)
 - **interface**: `api.tx.babe.reportEquivocation`
@@ -541,7 +683,7 @@ ___
 
   * `data`: The input data to pass to the contract constructor.
 
-  * `salt`: Used for the address derivation. See [`Self::contract_address`].
+  * `salt`: Used for the address derivation. See [`Pallet::contract_address`].
 
   Instantiation is executed as follows: 
 
@@ -561,7 +703,7 @@ ___
 - **interface**: `api.tx.contracts.updateSchedule`
 - **summary**:   Updates the schedule for metering contracts. 
 
-  The schedule must have a greater version than the stored schedule. 
+  The schedule's version cannot be less than the version of the stored schedule. If a schedule does not change the instruction weights the version does not need to be increased. Therefore we allow storing a schedule that has the same version as the stored one. 
 
 ___
 
@@ -1050,6 +1192,51 @@ ___
   It is the responsibility of the caller to **NOT** place all of their balance into the lock and keep some for further operations. 
 
    
+
+___
+
+
+## gilt
+ 
+### placeBid(amount: `Compact<BalanceOf>`, duration: `u32`)
+- **interface**: `api.tx.gilt.placeBid`
+- **summary**:   Place a bid for a gilt to be issued. 
+
+  Origin must be Signed, and account must have at least `amount` in free balance. 
+
+  - `amount`: The amount of the bid; these funds will be reserved. If the bid is successfully elevated into an issued gilt, then these funds will continue to be reserved until the gilt expires. Must be at least `MinFreeze`. 
+
+  - `duration`: The number of periods for which the funds will be locked if the gilt isissued. It will expire only after this period has elapsed after the point of issuance. Must be greater than 1 and no more than `QueueCount`. 
+
+  Complexities: 
+
+  - `Queues[duration].len()` (just take max).
+ 
+### retractBid(amount: `Compact<BalanceOf>`, duration: `u32`)
+- **interface**: `api.tx.gilt.retractBid`
+- **summary**:   Retract a previously placed bid. 
+
+  Origin must be Signed, and the account should have previously issued a still-active bid of `amount` for `duration`. 
+
+  - `amount`: The amount of the previous bid. 
+
+  - `duration`: The duration of the previous bid.
+ 
+### setTarget(target: `Compact<Perquintill>`)
+- **interface**: `api.tx.gilt.setTarget`
+- **summary**:   Set target proportion of gilt-funds. 
+
+  Origin must be `AdminOrigin`. 
+
+  - `target`: The target proportion of effective issued funds that should be under gilts at any one time. 
+ 
+### thaw(index: `Compact<ActiveIndex>`)
+- **interface**: `api.tx.gilt.thaw`
+- **summary**:   Remove an active but expired gilt. Reserved funds under gilt are freed and balance is adjusted to ensure that the funds grow or shrink to maintain the equivalent proportion of effective total issued funds. 
+
+  Origin must be Signed and the account must be the owner of the gilt of the given index. 
+
+  - `index`: The index of the gilt to be thawed. 
 
 ___
 
@@ -1564,7 +1751,7 @@ ___
  
 ### proxyAnnounced(delegate: `AccountId`, real: `AccountId`, force_proxy_type: `Option<ProxyType>`, call: `Call`)
 - **interface**: `api.tx.proxy.proxyAnnounced`
-- **summary**:   Dispatch the given `call` from an account that the sender is authorised for through `add_proxy`. 
+- **summary**:   Dispatch the given `call` from an account that the sender is authorized for through `add_proxy`. 
 
   Removes any corresponding announcement(s). 
 
@@ -2209,44 +2396,6 @@ ___
 
    
  
-### submitElectionSolution(winners: `Vec<ValidatorIndex>`, compact: `CompactAssignments`, score: `ElectionScore`, era: `EraIndex`, size: `ElectionSize`)
-- **interface**: `api.tx.staking.submitElectionSolution`
-- **summary**:   Submit an election result to the chain. If the solution: 
-
-  1. is valid. 2. has a better score than a potentially existing solution on chain. 
-
-  then, it will be _put_ on chain. 
-
-  A solution consists of two pieces of data: 
-
-  1. `winners`: a flat vector of all the winners of the round. 2. `assignments`: the compact version of an assignment vector that encodes the edge    weights. 
-
-  Both of which may be computed using _phragmen_, or any other algorithm. 
-
-  Additionally, the submitter must provide: 
-
-  - The `score` that they claim their solution has. 
-
-  Both validators and nominators will be represented by indices in the solution. The indices should respect the corresponding types ([`ValidatorIndex`] and [`NominatorIndex`]). Moreover, they should be valid when used to index into [`SnapshotValidators`] and [`SnapshotNominators`]. Any invalid index will cause the solution to be rejected. These two storage items are set during the election window and may be used to determine the indices. 
-
-  A solution is valid if: 
-
-  0. It is submitted when [`EraElectionStatus`] is `Open`. 1. Its claimed score is equal to the score computed on-chain. 2. Presents the correct number of winners. 3. All indexes must be value according to the snapshot vectors. All edge values must    also be correct and should not overflow the granularity of the ratio type (i.e. 256    or billion). 4. For each edge, all targets are actually nominated by the voter. 5. Has correct self-votes. 
-
-  A solutions score is consisted of 3 parameters: 
-
-  1. `min { support.total }` for each support of a winner. This value should be maximized. 2. `sum { support.total }` for each support of a winner. This value should be minimized. 3. `sum { support.total^2 }` for each support of a winner. This value should be    minimized (to ensure less variance) 
-
-   
- 
-### submitElectionSolutionUnsigned(winners: `Vec<ValidatorIndex>`, compact: `CompactAssignments`, score: `ElectionScore`, era: `EraIndex`, size: `ElectionSize`)
-- **interface**: `api.tx.staking.submitElectionSolutionUnsigned`
-- **summary**:   Unsigned version of `submit_election_solution`. 
-
-  Note that this must pass the [`ValidateUnsigned`] check which only allows transactions from the local node to be included. In other words, only the block author can include a transaction in the block. 
-
-   
- 
 ### unbond(value: `Compact<BalanceOf>`)
 - **interface**: `api.tx.staking.unbond`
 - **summary**:   Schedule a portion of the stash to be unlocked ready for transfer out after the bond period ends. If this leaves an amount actively bonded less than T::Currency::minimum_balance(), then it is increased to the full amount. 
@@ -2350,6 +2499,12 @@ ___
 ### remark(_remark: `Bytes`)
 - **interface**: `api.tx.system.remark`
 - **summary**:   Make some on-chain remark. 
+
+   
+ 
+### remarkWithEvent(remark: `Bytes`)
+- **interface**: `api.tx.system.remarkWithEvent`
+- **summary**:   Make some on-chain remark and emit event. 
 
    
  
@@ -2712,7 +2867,7 @@ ___
 - **interface**: `api.tx.vesting.vest`
 - **summary**:   Unlock any vested funds of the sender account. 
 
-  The dispatch origin for this call must be _Signed_ and the sender must have funds still locked under this module. 
+  The dispatch origin for this call must be _Signed_ and the sender must have funds still locked under this pallet. 
 
   Emits either `VestingCompleted` or `VestingUpdated`. 
 
@@ -2724,7 +2879,7 @@ ___
 
   The dispatch origin for this call must be _Signed_. 
 
-  - `target`: The account whose vested funds should be unlocked. Must have funds still locked under this module. 
+  - `target`: The account whose vested funds should be unlocked. Must have funds still locked under this pallet. 
 
   Emits either `VestingCompleted` or `VestingUpdated`. 
 
