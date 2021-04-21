@@ -8,6 +8,8 @@ The following sections contain RPC methods that are Remote Calls available by de
 
 - **[babe](#babe)**
 
+- **[beefy](#beefy)**
+
 - **[chain](#chain)**
 
 - **[childstate](#childstate)**
@@ -93,6 +95,16 @@ ___
 - **interface**: `api.rpc.babe.epochAuthorship`
 - **jsonrpc**: `babe_epochAuthorship`
 - **summary**: Returns data about which slots (primary or secondary) can be claimed in the current epoch with the keys in the keystore
+
+___
+
+
+## beefy
+ 
+### subscribeJustifications(): `BeefySignedCommitment`
+- **interface**: `api.rpc.beefy.subscribeJustifications`
+- **jsonrpc**: `beefy_subscribeJustifications`
+- **summary**: Returns the block most recently finalized by BEEFY, alongside side its justification.
 
 ___
 
