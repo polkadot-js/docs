@@ -58,6 +58,8 @@ The following sections contain Storage methods are part of the default Substrate
 
 - **[staking](#staking)**
 
+- **[substrate](#substrate)**
+
 - **[sudo](#sudo)**
 
 - **[system](#system)**
@@ -75,8 +77,6 @@ The following sections contain Storage methods are part of the default Substrate
 - **[treasury](#treasury)**
 
 - **[vesting](#vesting)**
-
-- **[substrate](#substrate)**
 
 
 ___
@@ -984,6 +984,33 @@ ___
 ___
 
 
+## substrate
+
+_These are well-known keys that are always available to the runtime implementation of any Substrate-based network._
+ 
+### changesTrieConfig(): `u32`
+- **interface**: `api.query.substrate.changesTrieConfig`
+- **summary**:   Changes trie configuration is stored under this key. 
+ 
+### childStorageKeyPrefix(): `u32`
+- **interface**: `api.query.substrate.childStorageKeyPrefix`
+- **summary**:   Prefix of child storage keys. 
+ 
+### code(): `Bytes`
+- **interface**: `api.query.substrate.code`
+- **summary**:   Wasm code of the runtime. 
+ 
+### extrinsicIndex(): `u32`
+- **interface**: `api.query.substrate.extrinsicIndex`
+- **summary**:   Current extrinsic index (u32) is stored under this key. 
+ 
+### heapPages(): `u64`
+- **interface**: `api.query.substrate.heapPages`
+- **summary**:   Number of wasm linear memory pages required for execution of the runtime. 
+
+___
+
+
 ## sudo
  
 ### key(): `AccountId`
@@ -1167,30 +1194,3 @@ ___
 ### vesting(`AccountId`): `Option<VestingInfo>`
 - **interface**: `api.query.vesting.vesting`
 - **summary**:   Information regarding the vesting of a given account. 
-
-___
-
-
-## substrate
-
-_These are well-known keys that are always available to the runtime implementation of any Substrate-based network._
- 
-### changesTrieConfig(): `u32`
-- **interface**: `api.query.substrate.changesTrieConfig`
-- **summary**:   Changes trie configuration is stored under this key. 
- 
-### childStorageKeyPrefix(): `u32`
-- **interface**: `api.query.substrate.childStorageKeyPrefix`
-- **summary**:   Prefix of child storage keys. 
- 
-### code(): `Bytes`
-- **interface**: `api.query.substrate.code`
-- **summary**:   Wasm code of the runtime. 
- 
-### extrinsicIndex(): `u32`
-- **interface**: `api.query.substrate.extrinsicIndex`
-- **summary**:   Current extrinsic index (u32) is stored under this key. 
- 
-### heapPages(): `u64`
-- **interface**: `api.query.substrate.heapPages`
-- **summary**:   Number of wasm linear memory pages required for execution of the runtime. 
