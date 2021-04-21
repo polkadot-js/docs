@@ -1177,20 +1177,20 @@ _These are well-known keys that are always available to the runtime implementati
  
 ### changesTrieConfig(): `u32`
 - **interface**: `api.query.substrate.changesTrieConfig`
-- **summary**:   hanges trie configuration is stored under this key. 
+- **summary**:   Changes trie configuration is stored under this key. 
  
 ### childStorageKeyPrefix(): `u32`
 - **interface**: `api.query.substrate.childStorageKeyPrefix`
-- **summary**:   refix of child storage keys. 
+- **summary**:   Prefix of child storage keys. 
  
 ### code(): `Bytes`
 - **interface**: `api.query.substrate.code`
-- **summary**:   asm code of the runtime. 
+- **summary**:   Wasm code of the runtime. 
  
 ### extrinsicIndex(): `u32`
 - **interface**: `api.query.substrate.extrinsicIndex`
-- **summary**:   urrent extrinsic index (u32) is stored under this key. 
+- **summary**:   Current extrinsic index (u32) is stored under this key. 
  
 ### heapPages(): `u64`
 - **interface**: `api.query.substrate.heapPages`
-- **summary**:   umber of wasm linear memory pages required for execution of the runtime. 
+- **summary**:   Number of wasm linear memory pages required for execution of the runtime. 
