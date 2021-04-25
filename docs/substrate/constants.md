@@ -234,24 +234,33 @@ ___
  
 ### candidacyBond: `BalanceOf`
 - **interface**: `api.consts.elections.candidacyBond`
+- **summary**:   How much should be locked up in order to submit one's candidacy. 
  
 ### desiredMembers: `u32`
 - **interface**: `api.consts.elections.desiredMembers`
+- **summary**:   Number of members to elect. 
  
 ### desiredRunnersUp: `u32`
 - **interface**: `api.consts.elections.desiredRunnersUp`
+- **summary**:   Number of runners_up to keep. 
  
 ### palletId: `LockIdentifier`
 - **interface**: `api.consts.elections.palletId`
+- **summary**:   Identifier for the elections-phragmen pallet's lock 
  
 ### termDuration: `BlockNumber`
 - **interface**: `api.consts.elections.termDuration`
+- **summary**:   How long each seat is kept. This defines the next block number at which an election round will happen. If set to zero, no elections are ever triggered and the module will be in passive mode. 
  
 ### votingBondBase: `BalanceOf`
 - **interface**: `api.consts.elections.votingBondBase`
+- **summary**:   Base deposit associated with voting. 
+
+  This should be sensibly high to economically ensure the pallet cannot be attacked by creating a gigantic number of votes. 
  
 ### votingBondFactor: `BalanceOf`
 - **interface**: `api.consts.elections.votingBondFactor`
+- **summary**:   The amount of bond that need to be locked for each vote (32 bytes). 
 
 ___
 
