@@ -30,7 +30,7 @@ There have been some additions in the code above comparing with retrieving runti
 ```js
 ...
 // Retrieve last block timestamp, account nonce & balances
-const [now, { nonce, data: balances }] = await Promise.all([
+const [now, { nonce, data: balance }] = await Promise.all([
   api.query.timestamp.now(),
   api.query.system.account(ADDR)
 ]);
