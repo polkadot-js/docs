@@ -13,7 +13,7 @@ Additionally, the API contains some logic for chain type detection, for instance
 
 As a blockchain toolkit, Substrate makes it easy to add your own modules and types. In most non-trivial implementations, this would mean that developers are adding specific types for their implementation as well. The API will get to know the names of these types via the metadata, however it won't understand what they are, which means it cannot encode or decode them. Additionally, when a type is mismatched between the node and the API, the decoding can fail, yielding issues such as [Could not convert errors](../FAQ.md#the-node-returns-a-could-not-convert-error-on-send) when submitting transactions.
 
-To close this gap, the API allows for the injection of types, i.e. you can explicitly define (or override) types for the node/chain you are connecting to. In the simplest example, assuming you have a chain where your `Balance` type is a `u64` (as opposed to the default `u128`), you need to let the API know -
+To close this gap, the API allows for the injection of types, i.e. you can explicitly define (or override) types for the node/chain you are connecting to. In the simplest example, assuming you have a chain where your `Balance` type is a `u64` (as opposed to the default `u128`), you need to let the API know.
 
 ```js
 ...
