@@ -7,7 +7,7 @@ We've touched upon types in most previous sections, i.e. that these are driven b
 
 ## Everything is a type
 
-Just to re-iterate from the above. Everything returned by the API is a type and has a consistent interface: `Codec`. This means that a `Vec<u32>` (an array of `u32` values) as well as a `Struct` (an pre-defined object) or an `Enum` has the same consistent base interface. Specific types types will have values, based on the type - decorated and available.
+Just to re-iterate from the above. Everything returned by the API is a type and has a consistent interface: `Codec`. This means that a `Vec<u32>` (an array of `u32` values) as well as a `Struct` (an pre-defined object) or an `Enum` has the same consistent base interface. Specific types will have values, based on the type - decorated and available.
 
 As a minimum, anything returned by the API, be it a `Vec<...>`, `Option<...>`, `Struct` or any normal type will always have the following methods - as defined on the `Codec` interface:
 
@@ -96,7 +96,7 @@ When making a call that expect a `Tuple` input, pass it as an array, so to pass 
 
 ## Boolean values
 
-All `bool` values are returned as nomal JS `Booolean` objects, i.e. they extend the [JS Boolean](https://www.w3schools.com/jsref/jsref_obj_boolean.asp) to allow it to be used as a `Codec` type. 
+All `bool` values are returned as nomal JS `Boolean` objects, i.e. they extend the [JS Boolean](https://www.w3schools.com/jsref/jsref_obj_boolean.asp) to allow it to be used as a `Codec` type. 
 
 In addition to the default `getValue()` on the JS Boolean and the default interfaces explained above, two additional getters have been added for ease-of-use. These are `isTrue` and `isFalse` that will just return a normal JS primitive `boolean` for a quick check without using `getValue()`.
 
