@@ -186,6 +186,11 @@ ___
 - **jsonrpc**: `contracts_getStorage`
 - **summary**: Returns the value under a specified storage key in a contract
  
+### instantiate(request: `InstantiateRequest`, at?: `BlockHash`): `ContractInstantiateResult`
+- **interface**: `api.rpc.contracts.instantiate`
+- **jsonrpc**: `contracts_instantiate`
+- **summary**: Instantiate a new contract
+ 
 ### rentProjection(address: `AccountId`, at?: `BlockHash`): `Option<BlockNumber>`
 - **interface**: `api.rpc.contracts.rentProjection`
 - **jsonrpc**: `contracts_rentProjection`
@@ -615,6 +620,11 @@ ___
 - **interface**: `api.rpc.state.subscribeStorage`
 - **jsonrpc**: `state_subscribeStorage`
 - **summary**: Subscribes to storage changes for the provided keys
+ 
+### traceBlock(block: `Hash`, targets: `Option<Text>`, storageKeys: `Option<Text>`): `TraceBlockResponse`
+- **interface**: `api.rpc.state.traceBlock`
+- **jsonrpc**: `state_traceBlock`
+- **summary**: Provides a way to trace the re-execution of a single block
 
 ___
 
@@ -705,6 +715,11 @@ ___
 - **interface**: `api.rpc.system.removeReservedPeer`
 - **jsonrpc**: `system_removeReservedPeer`
 - **summary**: Remove a reserved peer
+ 
+### reservedPeers(): `Vec<Text>`
+- **interface**: `api.rpc.system.reservedPeers`
+- **jsonrpc**: `system_reservedPeers`
+- **summary**: Returns the list of reserved peers
  
 ### resetLogFilter(): `Null`
 - **interface**: `api.rpc.system.resetLogFilter`

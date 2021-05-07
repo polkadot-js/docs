@@ -623,9 +623,9 @@ ___
 
 ## offences
  
-### Offence(`Kind`, `OpaqueTimeSlot`, `bool`)
+### Offence(`Kind`, `OpaqueTimeSlot`)
 - **interface**: `api.events.offences.Offence.is`
-- **summary**:   There is an offence reported of the given `kind` happened at the `session_index` and (kind-specific) time slot. This event is not deposited for duplicate slashes. last element indicates of the offence was applied (true) or queued (false) \[kind, timeslot, applied\]. 
+- **summary**:   There is an offence reported of the given `kind` happened at the `session_index` and (kind-specific) time slot. This event is not deposited for duplicate slashes. \[kind, timeslot\]. 
 
 ___
 

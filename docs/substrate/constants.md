@@ -215,6 +215,12 @@ ___
 
 ## electionProviderMultiPhase
  
+### offchainRepeat: `BlockNumber`
+- **interface**: `api.consts.electionProviderMultiPhase.offchainRepeat`
+- **summary**:   The repeat threshold of the offchain worker. 
+
+  For example, if it is 5, that means that at least 5 blocks will elapse between attempts to submit the worker's solution. 
+ 
 ### signedPhase: `BlockNumber`
 - **interface**: `api.consts.electionProviderMultiPhase.signedPhase`
 - **summary**:   Duration of the signed phase. 
@@ -308,7 +314,7 @@ ___
  
 ### basicDeposit: `BalanceOf`
 - **interface**: `api.consts.identity.basicDeposit`
-- **summary**:   The amount held on deposit for a registered identity. 
+- **summary**:   The amount held on deposit for a registered identity 
  
 ### fieldDeposit: `BalanceOf`
 - **interface**: `api.consts.identity.fieldDeposit`

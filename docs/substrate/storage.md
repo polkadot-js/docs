@@ -640,10 +640,6 @@ ___
 - **interface**: `api.query.offences.concurrentReportsIndex`
 - **summary**:   A vector of reports of the same kind that happened at the same time slot. 
  
-### deferredOffences(): `Vec<DeferredOffenceOf>`
-- **interface**: `api.query.offences.deferredOffences`
-- **summary**:   Deferred reports that have been rejected by the offence handler and need to be submitted at a later time. 
- 
 ### reports(`ReportIdOf`): `Option<OffenceDetails>`
 - **interface**: `api.query.offences.reports`
 - **summary**:   The primary structure that holds all offence records keyed by report identifiers. 

@@ -574,6 +574,10 @@ ___
 
 ## electionProviderMultiPhase
  
+### OcwCallWrongEra
+- **interface**: `api.errors.electionProviderMultiPhase.OcwCallWrongEra.is`
+- **summary**:   OCW submitted solution for wrong round 
+ 
 ### PreDispatchEarlySubmission
 - **interface**: `api.errors.electionProviderMultiPhase.PreDispatchEarlySubmission.is`
 - **summary**:   Submission was too early. 
@@ -1387,6 +1391,10 @@ ___
 ### InvalidIndex
 - **interface**: `api.errors.treasury.InvalidIndex.is`
 - **summary**:   No proposal or bounty at that index. 
+ 
+### TooManyApprovals
+- **interface**: `api.errors.treasury.TooManyApprovals.is`
+- **summary**:   Too many approvals in the queue. 
 
 ___
 
