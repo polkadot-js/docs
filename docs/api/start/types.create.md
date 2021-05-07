@@ -8,8 +8,8 @@ Circling back to metadata. There are two important things to remember when using
 
 2. When you supply a value to the API, internally it will convert that value to the correct type as expected by the chain, i.e. as determined by the metadata. This means that a function such as `balances.transfer(address: Address, value: Balance)` can take at least the following inputs, which are all converted to the correct types -
 
-- `address` can be an `Address`, an `AccountId`, an `Uint8Array` publicKey, a hex publicKey or an ss58 formatted address;
-- `value` can be a `Balance`, a value encoded in hex, a `BN` object, a base-10 string, a JS `number`, a JS `BigInt` or even a SCALE-encoded `Uint8Array`
+   - `address` can be an `Address`, an `AccountId`, an `Uint8Array` publicKey, a hex publicKey or an ss58 formatted address;
+   - `value` can be a `Balance`, a value encoded in hex, a `BN` object, a base-10 string, a JS `number`, a JS `BigInt` or even a SCALE-encoded `Uint8Array`
 
 In cases where a value is returned such as storage queries, the response from the chain is always encoded into the correct `Codec` type. This means that while the node may return an encoded block (with encoded extrinsics) via `api.rpc.chain.getBlock()`, this is decoded into a proper `SignedBlock` by the API. Outputting this value via `.toJSON()` will yield an encoding for RPC, so if you are not using TypeScript (which adds code helpers on decoded objects), a representation via `.toHuman()` will be more representative of the actual object fields, re-formatted for human consumption.
 

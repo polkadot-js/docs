@@ -4,7 +4,7 @@ title: Extending types
 
 Circling back to metadata, by default the metadata information (at this point in time), only returns the type names as they apply to any section, be it a call, event or query. As an example, this means that transfers are defined as `balances.transfer(AccountId, Balance)` with no details as to the mapping of the `Balance` type to a `u128`. (The underlying Polkadot/Substrate default)
 
-Therefore to cater for all types, a mapping in done on the [@polkadot/types library](https://github.com/polkadot-js/api/tree/master/packages/types/src/interfaces) to define each of the types and align with their underlying structures as it maps to a default Polkadot or Substrate chain.
+Therefore to cater for all types, a mapping is done in the [@polkadot/types library](https://github.com/polkadot-js/api/tree/master/packages/types/src/interfaces) to define each of the types and align with their underlying structures as it maps to a default Polkadot or Substrate chain.
 
 Additionally, the API contains some logic for chain type detection, for instance in the case of Substrate 1.x based chains, it will define `BlockNumber` & `Index` (nonce) as a `u64`, while for current-generation chains, these will be defined as `u32`. Some of the work in maintaining the API for Polkadot/Substrate is the addition of types as they appear and gets used in the Rust codebase.
 
@@ -13,7 +13,7 @@ Additionally, the API contains some logic for chain type detection, for instance
 
 As a blockchain toolkit, Substrate makes it easy to add your own modules and types. In most non-trivial implementations, this would mean that developers are adding specific types for their implementation as well. The API will get to know the names of these types via the metadata, however it won't understand what they are, which means it cannot encode or decode them. Additionally, when a type is mismatched between the node and the API, the decoding can fail, yielding issues such as [Could not convert errors](../FAQ.md#the-node-returns-a-could-not-convert-error-on-send) when submitting transactions.
 
-To close this gap, the API allows for the injection of types, i.e. you can explicitly define (or override) types for the node/chain you are connecting to. In the simplest example, assuming you have a chain where your `Balance` type is a `u64` (as opposed to the default `u128`), you need to let the API know -
+To close this gap, the API allows for the injection of types, i.e. you can explicitly define (or override) types for the node/chain you are connecting to. In the simplest example, assuming you have a chain where your `Balance` type is a `u64` (as opposed to the default `u128`), you need to let the API know.
 
 ```js
 ...
