@@ -17,7 +17,7 @@ console.log(api.consts.babe.epochDuration.toNumber());
 console.log(api.consts.balances.creationFee.toNumber());
 
 // The amount required per byte on an extrinsic
-console.log(api.consts.balances.transactionByteFee.toNumber());
+console.log(api.consts.transactionPayment.transactionByteFee.toNumber());
 ```
 
 Since these are constants and defined by the metadata, it is not a call, but rather the values immediately available - as you'll see in subsequent sections, there is no need for `await` on these, it immediately returns the type and value for you to work with.
