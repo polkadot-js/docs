@@ -74,7 +74,7 @@ As a real-world example, when an extrinsic is applied, the `Phase` enum has one 
 An `Option<Type>` attempts to mimic the Rust approach of having `None` and `Some` available. This means the following getters & methods are available on an `Option` -
 
 - `.isNone` - is `true` if no underlying values is wrapped, effectively the same as `.isEmpty`
-- `.isSome` - this is `true` is a value is wrapped, i.e. if a `Option<u32>` has an actual underlying `u32`
+- `.isSome` - this is `true` if a value is wrapped, i.e. if a `Option<u32>` has an actual underlying `u32`
 - `.unwrap()` - when `isSome`, this will return the wrapped value, i.e. for `Option<u32>`, this would return the `u32`. When the value is `isNone`, this call will throw an exception.
 - `.unwrapOr(<default value>)` - this extends `unwrap()`, returning the wrapped value when `isSome` and in the case of `isNone` it will return the `<default value>` passed.
 - `.unwrapOrDefault()` - returns either the wrapped value when `isSome`, or the default for the type when `isNone`
