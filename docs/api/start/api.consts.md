@@ -14,7 +14,7 @@ For some background: constants are values that are defined in the runtime and us
 console.log(api.consts.babe.epochDuration.toNumber());
 
 // The amount required to create a new account
-console.log(api.consts.balances.creationFee.toNumber());
+console.log(api.consts.balances.existentialDeposit.toNumber());
 
 // The amount required per byte on an extrinsic
 console.log(api.consts.transactionPayment.transactionByteFee.toNumber());
