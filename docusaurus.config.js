@@ -5,7 +5,6 @@ module.exports = {
   tagline: 'Polkadot does JavaScript',
   url: 'https://polkadot.js.org',
   baseUrl: BASE_URL,
-  onBrokenLinks: 'throw',
   favicon: 'img/favicon.ico',
   organizationName: 'polkadot-js',
   onBrokenLinks: 'warn',
