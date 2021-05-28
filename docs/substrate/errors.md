@@ -108,10 +108,6 @@ ___
 - **interface**: `api.errors.assets.NoProvider.is`
 - **summary**:   No provider reference exists to allow a non-zero balance of a non-self-sufficient asset. 
  
-### Overflow
-- **interface**: `api.errors.assets.Overflow.is`
-- **summary**:   A mint operation lead to an overflow. 
- 
 ### Unapproved
 - **interface**: `api.errors.assets.Unapproved.is`
 - **summary**:   No approval exists that would allow the transfer. 
@@ -203,10 +199,6 @@ ___
 - **interface**: `api.errors.balances.LiquidityRestrictions.is`
 - **summary**:   Account liquidity restrictions prevent withdrawal 
  
-### Overflow
-- **interface**: `api.errors.balances.Overflow.is`
-- **summary**:   Got an overflow after adding 
- 
 ### VestingBalance
 - **interface**: `api.errors.balances.VestingBalance.is`
 - **summary**:   Vesting balance too high to send value 
@@ -269,15 +261,29 @@ ___
 - **interface**: `api.errors.contracts.CodeTooLarge.is`
 - **summary**:   The code supplied to `instantiate_with_code` exceeds the limit specified in the current schedule. 
  
+### ContractIsTombstone
+- **interface**: `api.errors.contracts.ContractIsTombstone.is`
+- **summary**:   A tombstone exist at the specified address. 
+
+  Tombstone cannot be called. Anyone can use `seal_restore_to` in order to revive the contract, though. 
+ 
 ### ContractNotEvictable
 - **interface**: `api.errors.contracts.ContractNotEvictable.is`
 - **summary**:   A contract could not be evicted because it has enough balance to pay rent. 
 
   This can be returned from [`Pallet::claim_surcharge`] because the target contract has enough balance to pay for its rent. 
  
+### ContractNotFound
+- **interface**: `api.errors.contracts.ContractNotFound.is`
+- **summary**:   No contract was found at the specified address. 
+ 
 ### ContractTrapped
 - **interface**: `api.errors.contracts.ContractTrapped.is`
 - **summary**:   Contract trapped during execution. 
+ 
+### DebugMessageInvalidUTF8
+- **interface**: `api.errors.contracts.DebugMessageInvalidUTF8.is`
+- **summary**:   The debug message specified to `seal_debug_message` does contain invalid UTF-8. 
  
 ### DecodingFailed
 - **interface**: `api.errors.contracts.DecodingFailed.is`
@@ -337,10 +343,6 @@ ___
 - **interface**: `api.errors.contracts.NoChainExtension.is`
 - **summary**:   The chain does not provide a chain extension. Calling the chain extension results in this error. Note that this usually  shouldn't happen as deploying such contracts is rejected. 
  
-### NotCallable
-- **interface**: `api.errors.contracts.NotCallable.is`
-- **summary**:   The contract that was called is either no contract at all (a plain account) or is a tombstone. 
- 
 ### OutOfBounds
 - **interface**: `api.errors.contracts.OutOfBounds.is`
 - **summary**:   A buffer outside of sandbox memory was passed to a contract API function. 
@@ -361,11 +363,23 @@ ___
 - **interface**: `api.errors.contracts.ReentranceDenied.is`
 - **summary**:   The action performed is not allowed while the contract performing it is already on the call stack. Those actions are contract self destruction and restoration of a tombstone. 
  
+### RentNotPaid
+- **interface**: `api.errors.contracts.RentNotPaid.is`
+- **summary**:   The called contract does not have enough balance to pay for its storage. 
+
+  The contract ran out of balance and is therefore eligible for eviction into a tombstone. Anyone can evict the contract by submitting a `claim_surcharge` extrinsic. Alternatively, a plain balance transfer can be used in order to increase the contracts funds so that it can be called again. 
+ 
 ### StorageExhausted
 - **interface**: `api.errors.contracts.StorageExhausted.is`
 - **summary**:   A storage modification exhausted the 32bit type that holds the storage size. 
 
   This can either happen when the accumulated storage in bytes is too large or when number of storage items is too large. 
+ 
+### TerminatedInConstructor
+- **interface**: `api.errors.contracts.TerminatedInConstructor.is`
+- **summary**:   A contract self destructed in its constructor. 
+
+  This can be triggered by a call to `seal_terminate` or `seal_restore_to`. 
  
 ### TooManyTopics
 - **interface**: `api.errors.contracts.TooManyTopics.is`
@@ -521,10 +535,6 @@ ___
 - **interface**: `api.errors.democracy.NotVoter.is`
 - **summary**:   The given account did not vote on the referendum. 
  
-### Overflow
-- **interface**: `api.errors.democracy.Overflow.is`
-- **summary**:   An unexpected integer overflow occurred. 
- 
 ### PreimageInvalid
 - **interface**: `api.errors.democracy.PreimageInvalid.is`
 - **summary**:   Invalid preimage 
@@ -552,10 +562,6 @@ ___
 ### TooManyProposals
 - **interface**: `api.errors.democracy.TooManyProposals.is`
 - **summary**:   Maximum number of proposals reached. 
- 
-### Underflow
-- **interface**: `api.errors.democracy.Underflow.is`
-- **summary**:   An unexpected integer underflow occurred. 
  
 ### ValueLow
 - **interface**: `api.errors.democracy.ValueLow.is`
@@ -869,10 +875,6 @@ ___
 - **interface**: `api.errors.lottery.NotConfigured.is`
 - **summary**:   A lottery has not been configured. 
  
-### Overflow
-- **interface**: `api.errors.lottery.Overflow.is`
-- **summary**:   An overflow has occurred. 
- 
 ### TooManyCalls
 - **interface**: `api.errors.lottery.TooManyCalls.is`
 - **summary**:   Too many calls for a single lottery. 
@@ -1031,10 +1033,6 @@ ___
 ### NotStarted
 - **interface**: `api.errors.recovery.NotStarted.is`
 - **summary**:   A recovery process has not started for this rescuer 
- 
-### Overflow
-- **interface**: `api.errors.recovery.Overflow.is`
-- **summary**:   There was an overflow in a calculation 
  
 ### StillActive
 - **interface**: `api.errors.recovery.StillActive.is`

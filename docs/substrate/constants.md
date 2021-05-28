@@ -139,23 +139,15 @@ ___
 
   It works the same as [`Self::DepositPerStorageByte`] but for storage items. 
  
-### maxCodeSize: `u32`
-- **interface**: `api.consts.contracts.maxCodeSize`
-- **summary**:   The maximum length of a contract code in bytes. This limit applies to the instrumented version of the code. Therefore `instantiate_with_code` can fail even when supplying a wasm binary below this maximum size. 
- 
-### maxDepth: `u32`
-- **interface**: `api.consts.contracts.maxDepth`
-- **summary**:   The maximum nesting level of a call/instantiate stack. 
- 
-### maxValueSize: `u32`
-- **interface**: `api.consts.contracts.maxValueSize`
-- **summary**:   The maximum size of a storage value and event payload in bytes. 
- 
 ### rentFraction: `Perbill`
 - **interface**: `api.consts.contracts.rentFraction`
 - **summary**:   The fraction of the deposit that should be used as rent per block. 
 
   When a contract hasn't enough balance deposited to stay alive indefinitely it needs to pay per block for the storage it consumes that is not covered by the deposit. This determines how high this rent payment is per block as a fraction of the deposit. 
+ 
+### schedule: `Schedule`
+- **interface**: `api.consts.contracts.schedule`
+- **summary**:   Cost schedule and limits. 
  
 ### signedClaimHandicap: `BlockNumber`
 - **interface**: `api.consts.contracts.signedClaimHandicap`
@@ -352,9 +344,11 @@ ___
  
 ### maxCalls: `u32`
 - **interface**: `api.consts.lottery.maxCalls`
+- **summary**:   The max number of calls available in a single lottery. 
  
 ### palletId: `PalletId`
 - **interface**: `api.consts.lottery.palletId`
+- **summary**:   The Lottery's pallet id 
 
 ___
 
@@ -364,14 +358,18 @@ ___
 ### depositBase: `BalanceOf`
 - **interface**: `api.consts.multisig.depositBase`
 - **summary**:   The base amount of currency needed to reserve for creating a multisig execution or to store a dispatch call for later. 
+
+  This is held for an additional storage item whose value size is `4 + sizeof((BlockNumber, Balance, AccountId))` bytes and whose key size is `32 + sizeof(AccountId)` bytes. 
  
 ### depositFactor: `BalanceOf`
 - **interface**: `api.consts.multisig.depositFactor`
 - **summary**:   The amount of currency needed per unit threshold when creating a multisig execution. 
+
+  This is held for adding 32 bytes more into a pre-existing storage value. 
  
 ### maxSignatories: `u16`
 - **interface**: `api.consts.multisig.maxSignatories`
-- **summary**:   The maximum amount of signatories allowed for a given multisig. 
+- **summary**:   The maximum amount of signatories allowed in the multisig. 
 
 ___
 
@@ -418,10 +416,14 @@ ___
 ### configDepositBase: `BalanceOf`
 - **interface**: `api.consts.recovery.configDepositBase`
 - **summary**:   The base amount of currency needed to reserve for creating a recovery configuration. 
+
+  This is held for an additional storage item whose value size is `2 + sizeof(BlockNumber, Balance)` bytes. 
  
 ### friendDepositFactor: `BalanceOf`
 - **interface**: `api.consts.recovery.friendDepositFactor`
 - **summary**:   The amount of currency needed per additional user when creating a recovery configuration. 
+
+  This is held for adding `sizeof(AccountId)` bytes more into a pre-existing storage value. 
  
 ### maxFriends: `u16`
 - **interface**: `api.consts.recovery.maxFriends`
@@ -430,6 +432,8 @@ ___
 ### recoveryDeposit: `BalanceOf`
 - **interface**: `api.consts.recovery.recoveryDeposit`
 - **summary**:   The base amount of currency needed to reserve for starting a recovery. 
+
+  This is primarily held for deterring malicious recovery attempts, and should have a value large enough that a bad actor would choose not to place this deposit. It also acts to fund additional storage item whose value size is `sizeof(BlockNumber, Balance + T * AccountId)` bytes. Where T is a configurable threshold. 
 
 ___
 

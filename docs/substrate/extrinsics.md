@@ -657,7 +657,7 @@ ___
 - **interface**: `api.tx.contracts.claimSurcharge`
 - **summary**:   Allows block producers to claim a small reward for evicting a contract. If a block producer fails to do so, a regular users will be allowed to claim the reward. 
 
-  In case of a successful eviction no fees are charged from the sender. However, the reward is capped by the total amount of rent that was payed by the contract while it was alive. 
+  In case of a successful eviction no fees are charged from the sender. However, the reward is capped by the total amount of rent that was paid by the contract while it was alive. 
 
   If contract is not evicted as a result of this call, [`Error::ContractNotEvictable`] is returned and the sender is not eligible for the reward. 
  
@@ -698,12 +698,6 @@ ___
   - The `endowment` is transferred to the new account.
 
   - The `deploy` function is executed in the context of the newly-created account.
- 
-### updateSchedule(schedule: `Schedule`)
-- **interface**: `api.tx.contracts.updateSchedule`
-- **summary**:   Updates the schedule for metering contracts. 
-
-  The schedule's version cannot be less than the version of the stored schedule. If a schedule does not change the instruction weights the version does not need to be increased. Therefore we allow storing a schedule that has the same version as the stored one. 
 
 ___
 
@@ -1095,6 +1089,14 @@ ___
 
 
 ## electionProviderMultiPhase
+ 
+### setMinimumUntrustedScore(maybe_next_score: `Option<ElectionScore>`)
+- **interface**: `api.tx.electionProviderMultiPhase.setMinimumUntrustedScore`
+- **summary**:   Set a new value for `MinimumUntrustedScore`. 
+
+  Dispatch origin must be aligned with `T::ForceOrigin`. 
+
+  This check can be turned off by setting the value to `None`. 
  
 ### submitUnsigned(solution: `RawSolution`, witness: `SolutionOrSnapshotSize`)
 - **interface**: `api.tx.electionProviderMultiPhase.submitUnsigned`

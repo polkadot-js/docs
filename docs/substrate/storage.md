@@ -88,9 +88,9 @@ ___
 - **interface**: `api.query.assets.account`
 - **summary**:   The number of units of assets held by any given account. 
  
-### approvals(`AssetId, AssetApprovalKey`): `Option<AssetApproval>`
+### approvals(`AssetId, AccountId, AccountId`): `Option<AssetApproval>`
 - **interface**: `api.query.assets.approvals`
-- **summary**:   Approved balance transfers. First balance is the amount approved for transfer. Second is the amount of `T::Currency` reserved for storing this. 
+- **summary**:   Approved balance transfers. First balance is the amount approved for transfer. Second is the amount of `T::Currency` reserved for storing this. First key is the asset ID, second key is the owner and third key is the delegate. 
  
 ### asset(`AssetId`): `Option<AssetDetails>`
 - **interface**: `api.query.assets.asset`
@@ -261,10 +261,6 @@ ___
 
   TWOX-NOTE: SAFE since `AccountId` is a secure hash. 
  
-### currentSchedule(): `Schedule`
-- **interface**: `api.query.contracts.currentSchedule`
-- **summary**:   Current cost schedule for contracts. 
- 
 ### deletionQueue(): `Vec<DeletedContract>`
 - **interface**: `api.query.contracts.deletionQueue`
 - **summary**:   Evicted contracts that await child trie deletion. 
@@ -393,6 +389,12 @@ ___
 - **summary**:   Desired number of targets to elect for this round. 
 
   Only exists when [`Snapshot`] is present. 
+ 
+### minimumUntrustedScore(): `Option<ElectionScore>`
+- **interface**: `api.query.electionProviderMultiPhase.minimumUntrustedScore`
+- **summary**:   The minimum score that each 'untrusted' solution must attain in order to be considered feasible. 
+
+  Can be set via `set_minimum_untrusted_score`. 
  
 ### queuedSolution(): `Option<ReadySolution>`
 - **interface**: `api.query.electionProviderMultiPhase.queuedSolution`

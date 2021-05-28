@@ -541,6 +541,11 @@ ___
 - **jsonrpc**: `state_getChildKeys`
 - **summary**: Retrieves the keys with prefix of a specific child storage
  
+### getChildReadProof(childStorageKey: `PrefixedStorageKey`, keys: `Vec<StorageKey>`, at?: `BlockHash`): `ReadProof`
+- **interface**: `api.rpc.state.getChildReadProof`
+- **jsonrpc**: `state_getChildReadProof`
+- **summary**: Returns proof of storage for child key entries at a specific block state.
+ 
 ### getChildStorage(childStorageKey: `StorageKey`, childDefinition: `StorageKey`, childType: `u32`, key: `StorageKey`, at?: `BlockHash`): `StorageData`
 - **interface**: `api.rpc.state.getChildStorage`
 - **jsonrpc**: `state_getChildStorage`
