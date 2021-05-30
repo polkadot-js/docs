@@ -224,7 +224,7 @@ ___
 ### blockNumber(): `U256`
 - **interface**: `api.rpc.eth.blockNumber`
 - **jsonrpc**: `eth_blockNumber`
-- **summary**: Returns balance of the given account.
+- **summary**: Returns the blockNumber
  
 ### call(request: `EthCallRequest`, number?: `BlockNumber`): `Bytes`
 - **interface**: `api.rpc.eth.call`
