@@ -60,7 +60,11 @@ Events are emitted for certain operations on the runtime. The following sections
 
 - **[tips](#tips)**
 
+- **[transactionStorage](#transactionstorage)**
+
 - **[treasury](#treasury)**
+
+- **[uniques](#uniques)**
 
 - **[utility](#utility)**
 
@@ -947,6 +951,23 @@ ___
 ___
 
 
+## transactionStorage
+ 
+### ProofChecked()
+- **interface**: `api.events.transactionStorage.ProofChecked.is`
+- **summary**:   Storage proof was successfully checked. 
+ 
+### Renewed(`u32`)
+- **interface**: `api.events.transactionStorage.Renewed.is`
+- **summary**:   Renewed data under specified index. 
+ 
+### Stored(`u32`)
+- **interface**: `api.events.transactionStorage.Stored.is`
+- **summary**:   Stored data under specified index. 
+
+___
+
+
 ## treasury
  
 ### Awarded(`ProposalIndex`, `Balance`, `AccountId`)
@@ -976,6 +997,99 @@ ___
 ### Spending(`Balance`)
 - **interface**: `api.events.treasury.Spending.is`
 - **summary**:   We have ended a spend period and will now allocate funds. \[budget_remaining\] 
+
+___
+
+
+## uniques
+ 
+### ApprovalCancelled(`ClassId`, `InstanceId`, `AccountId`, `AccountId`)
+- **interface**: `api.events.uniques.ApprovalCancelled.is`
+- **summary**:   An approval for a `delegate` account to transfer the `instance` of an asset `class` was cancelled by its `owner`. \[ class, instance, owner, delegate \] 
+ 
+### ApprovedTransfer(`ClassId`, `InstanceId`, `AccountId`, `AccountId`)
+- **interface**: `api.events.uniques.ApprovedTransfer.is`
+- **summary**:   An `instance` of an asset `class` has been approved by the `owner` for transfer by a `delegate`. \[ class, instance, owner, delegate \] 
+ 
+### AssetStatusChanged(`ClassId`)
+- **interface**: `api.events.uniques.AssetStatusChanged.is`
+- **summary**:   An asset `class` has had its attributes changed by the `Force` origin. \[ class \] 
+ 
+### AttributeCleared(`ClassId`, `Option<InstanceId>`, `Bytes`)
+- **interface**: `api.events.uniques.AttributeCleared.is`
+- **summary**:   Attribute metadata has been cleared for an asset class or instance. \[ class, maybe_instance, key, maybe_value \] 
+ 
+### AttributeSet(`ClassId`, `Option<InstanceId>`, `Bytes`, `Bytes`)
+- **interface**: `api.events.uniques.AttributeSet.is`
+- **summary**:   New attribute metadata has been set for an asset class or instance. \[ class, maybe_instance, key, value \] 
+ 
+### Burned(`ClassId`, `InstanceId`, `AccountId`)
+- **interface**: `api.events.uniques.Burned.is`
+- **summary**:   An asset `instance` was destroyed. \[ class, instance, owner \] 
+ 
+### ClassFrozen(`ClassId`)
+- **interface**: `api.events.uniques.ClassFrozen.is`
+- **summary**:   Some asset `class` was frozen. \[ class \] 
+ 
+### ClassMetadataCleared(`ClassId`)
+- **interface**: `api.events.uniques.ClassMetadataCleared.is`
+- **summary**:   Metadata has been cleared for an asset class. \[ class \] 
+ 
+### ClassMetadataSet(`ClassId`, `Bytes`, `bool`)
+- **interface**: `api.events.uniques.ClassMetadataSet.is`
+- **summary**:   New metadata has been set for an asset class. \[ class, data, is_frozen \] 
+ 
+### ClassThawed(`ClassId`)
+- **interface**: `api.events.uniques.ClassThawed.is`
+- **summary**:   Some asset `class` was thawed. \[ class \] 
+ 
+### Created(`ClassId`, `AccountId`, `AccountId`)
+- **interface**: `api.events.uniques.Created.is`
+- **summary**:   An asset class was created. \[ class, creator, owner \] 
+ 
+### Destroyed(`ClassId`)
+- **interface**: `api.events.uniques.Destroyed.is`
+- **summary**:   An asset `class` was destroyed. \[ class \] 
+ 
+### ForceCreated(`ClassId`, `AccountId`)
+- **interface**: `api.events.uniques.ForceCreated.is`
+- **summary**:   An asset class was force-created. \[ class, owner \] 
+ 
+### Frozen(`ClassId`, `InstanceId`)
+- **interface**: `api.events.uniques.Frozen.is`
+- **summary**:   Some asset `instance` was frozen. \[ class, instance \] 
+ 
+### Issued(`ClassId`, `InstanceId`, `AccountId`)
+- **interface**: `api.events.uniques.Issued.is`
+- **summary**:   An asset `instace` was issued. \[ class, instance, owner \] 
+ 
+### MetadataCleared(`ClassId`, `InstanceId`)
+- **interface**: `api.events.uniques.MetadataCleared.is`
+- **summary**:   Metadata has been cleared for an asset instance. \[ class, instance \] 
+ 
+### MetadataSet(`ClassId`, `InstanceId`, `Bytes`, `bool`)
+- **interface**: `api.events.uniques.MetadataSet.is`
+- **summary**:   New metadata has been set for an asset instance. \[ class, instance, data, is_frozen \] 
+ 
+### OwnerChanged(`ClassId`, `AccountId`)
+- **interface**: `api.events.uniques.OwnerChanged.is`
+- **summary**:   The owner changed \[ class, new_owner \] 
+ 
+### Redeposited(`ClassId`, `Vec<InstanceId>`)
+- **interface**: `api.events.uniques.Redeposited.is`
+- **summary**:   Metadata has been cleared for an asset instance. \[ class, successful_instances \] 
+ 
+### TeamChanged(`ClassId`, `AccountId`, `AccountId`, `AccountId`)
+- **interface**: `api.events.uniques.TeamChanged.is`
+- **summary**:   The management team changed \[ class, issuer, admin, freezer \] 
+ 
+### Thawed(`ClassId`, `InstanceId`)
+- **interface**: `api.events.uniques.Thawed.is`
+- **summary**:   Some asset `instance` was thawed. \[ class, instance \] 
+ 
+### Transferred(`ClassId`, `InstanceId`, `AccountId`, `AccountId`)
+- **interface**: `api.events.uniques.Transferred.is`
+- **summary**:   An asset `instace` was transferred. \[ class, instance, from, to \] 
 
 ___
 

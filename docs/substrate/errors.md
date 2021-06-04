@@ -62,7 +62,11 @@ This page lists the errors that can be encountered in the different modules.
 
 - **[tips](#tips)**
 
+- **[transactionStorage](#transactionstorage)**
+
 - **[treasury](#treasury)**
+
+- **[uniques](#uniques)**
 
 - **[vesting](#vesting)**
 
@@ -198,6 +202,10 @@ ___
 ### LiquidityRestrictions
 - **interface**: `api.errors.balances.LiquidityRestrictions.is`
 - **summary**:   Account liquidity restrictions prevent withdrawal 
+ 
+### TooManyReserves
+- **interface**: `api.errors.balances.TooManyReserves.is`
+- **summary**:   Number of named reserves exceed MaxReserves 
  
 ### VestingBalance
 - **interface**: `api.errors.balances.VestingBalance.is`
@@ -1380,6 +1388,63 @@ ___
 ___
 
 
+## transactionStorage
+ 
+### BadContext
+- **interface**: `api.errors.transactionStorage.BadContext.is`
+- **summary**:   Attempted to call `store` outside of block execution. 
+ 
+### DoubleCheck
+- **interface**: `api.errors.transactionStorage.DoubleCheck.is`
+- **summary**:   Double proof check in the block. 
+ 
+### EmptyTransaction
+- **interface**: `api.errors.transactionStorage.EmptyTransaction.is`
+- **summary**:   Attempting to store empty transaction 
+ 
+### InsufficientFunds
+- **interface**: `api.errors.transactionStorage.InsufficientFunds.is`
+- **summary**:   Insufficient account balance. 
+ 
+### InvalidProof
+- **interface**: `api.errors.transactionStorage.InvalidProof.is`
+- **summary**:   Proof failed verification. 
+ 
+### MissingProof
+- **interface**: `api.errors.transactionStorage.MissingProof.is`
+- **summary**:   Missing storage proof. 
+ 
+### MissingStateData
+- **interface**: `api.errors.transactionStorage.MissingStateData.is`
+- **summary**:   Unable to verify proof becasue state data is missing. 
+ 
+### NotConfigured
+- **interface**: `api.errors.transactionStorage.NotConfigured.is`
+- **summary**:   Invalid configuration. 
+ 
+### ProofNotChecked
+- **interface**: `api.errors.transactionStorage.ProofNotChecked.is`
+- **summary**:   Storage proof was not checked in the block. 
+ 
+### RenewedNotFound
+- **interface**: `api.errors.transactionStorage.RenewedNotFound.is`
+- **summary**:   Renewed extrinsic is not found. 
+ 
+### TooManyTransactions
+- **interface**: `api.errors.transactionStorage.TooManyTransactions.is`
+- **summary**:   Too many transactions in the block. 
+ 
+### TransactionTooLarge
+- **interface**: `api.errors.transactionStorage.TransactionTooLarge.is`
+- **summary**:   Transaction is too large. 
+ 
+### UnexpectedProof
+- **interface**: `api.errors.transactionStorage.UnexpectedProof.is`
+- **summary**:   Proof was not expected in this block. 
+
+___
+
+
 ## treasury
  
 ### InsufficientProposersBalance
@@ -1393,6 +1458,51 @@ ___
 ### TooManyApprovals
 - **interface**: `api.errors.treasury.TooManyApprovals.is`
 - **summary**:   Too many approvals in the queue. 
+
+___
+
+
+## uniques
+ 
+### AlreadyExists
+- **interface**: `api.errors.uniques.AlreadyExists.is`
+- **summary**:   The asset instance ID has already been used for an asset. 
+ 
+### BadWitness
+- **interface**: `api.errors.uniques.BadWitness.is`
+- **summary**:   Invalid witness data given. 
+ 
+### Frozen
+- **interface**: `api.errors.uniques.Frozen.is`
+- **summary**:   The asset instance or class is frozen. 
+ 
+### InUse
+- **interface**: `api.errors.uniques.InUse.is`
+- **summary**:   The asset ID is already taken. 
+ 
+### NoDelegate
+- **interface**: `api.errors.uniques.NoDelegate.is`
+- **summary**:   There is no delegate approved. 
+ 
+### NoPermission
+- **interface**: `api.errors.uniques.NoPermission.is`
+- **summary**:   The signing account has no permission to do the operation. 
+ 
+### Unapproved
+- **interface**: `api.errors.uniques.Unapproved.is`
+- **summary**:   No approval exists that would allow the transfer. 
+ 
+### Unknown
+- **interface**: `api.errors.uniques.Unknown.is`
+- **summary**:   The given asset ID is unknown. 
+ 
+### WrongDelegate
+- **interface**: `api.errors.uniques.WrongDelegate.is`
+- **summary**:   The delegate turned out to be different to what was expected. 
+ 
+### WrongOwner
+- **interface**: `api.errors.uniques.WrongOwner.is`
+- **summary**:   The owner turned out to be different to what was expected. 
 
 ___
 

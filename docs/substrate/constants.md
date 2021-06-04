@@ -180,7 +180,7 @@ ___
  
 ### fastTrackVotingPeriod: `BlockNumber`
 - **interface**: `api.consts.democracy.fastTrackVotingPeriod`
-- **summary**:   Minimum voting period allowed for an emergency referendum. 
+- **summary**:   Minimum voting period allowed for a fast-track referendum. 
  
 ### launchPeriod: `BlockNumber`
 - **interface**: `api.consts.democracy.launchPeriod`
@@ -189,6 +189,8 @@ ___
 ### maxVotes: `u32`
 - **interface**: `api.consts.democracy.maxVotes`
 - **summary**:   The maximum number of votes for an account. 
+
+  Also used to compute weight, an overly big value can lead to extrinsic with very big weight: see `delegate` for instance. 
  
 ### minimumDeposit: `BalanceOf`
 - **interface**: `api.consts.democracy.minimumDeposit`
@@ -392,7 +394,7 @@ ___
 - **interface**: `api.consts.proxy.maxPending`
 - **summary**:   The maximum amount of time-delayed announcements that are allowed to be pending. 
  
-### maxProxies: `u16`
+### maxProxies: `u32`
 - **interface**: `api.consts.proxy.maxProxies`
 - **summary**:   The maximum amount of proxies allowed for a single account. 
  

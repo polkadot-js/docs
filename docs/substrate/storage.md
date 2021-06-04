@@ -74,7 +74,11 @@ The following sections contain Storage methods are part of the default Substrate
 
 - **[transactionPayment](#transactionpayment)**
 
+- **[transactionStorage](#transactionstorage)**
+
 - **[treasury](#treasury)**
+
+- **[uniques](#uniques)**
 
 - **[vesting](#vesting)**
 
@@ -210,6 +214,10 @@ ___
 ### locks(`AccountId`): `Vec<BalanceLock>`
 - **interface**: `api.query.balances.locks`
 - **summary**:   Any liquidity locks on some account balances. NOTE: Should only be accessed when setting, changing and freeing a lock. 
+ 
+### reserves(`AccountId`): `Vec<ReserveData>`
+- **interface**: `api.query.balances.reserves`
+- **summary**:   Named reserves on some account balances. 
  
 ### storageVersion(): `Releases`
 - **interface**: `api.query.balances.storageVersion`
@@ -1170,6 +1178,46 @@ ___
 ___
 
 
+## transactionStorage
+ 
+### blockTransactions(): `Vec<TransactionInfo>`
+- **interface**: `api.query.transactionStorage.blockTransactions`
+ 
+### byteFee(): `Option<BalanceOf>`
+- **interface**: `api.query.transactionStorage.byteFee`
+- **summary**:   Storage fee per byte. 
+ 
+### chunkCount(`BlockNumber`): `u32`
+- **interface**: `api.query.transactionStorage.chunkCount`
+- **summary**:   Count indexed chunks for each block. 
+ 
+### entryFee(): `Option<BalanceOf>`
+- **interface**: `api.query.transactionStorage.entryFee`
+- **summary**:   Storage fee per transaction. 
+ 
+### maxBlockTransactions(): `u32`
+- **interface**: `api.query.transactionStorage.maxBlockTransactions`
+- **summary**:   Maximum number of indexed transactions in the block. 
+ 
+### maxTransactionSize(): `u32`
+- **interface**: `api.query.transactionStorage.maxTransactionSize`
+- **summary**:   Maximum data set in a single transaction in bytes. 
+ 
+### proofChecked(): `bool`
+- **interface**: `api.query.transactionStorage.proofChecked`
+- **summary**:   Was the proof checked in this block? 
+ 
+### storagePeriod(): `BlockNumber`
+- **interface**: `api.query.transactionStorage.storagePeriod`
+- **summary**:   Storage period for data in blocks. Should match `sp_storage_proof::DEFAULT_STORAGE_PERIOD` for block authoring. 
+ 
+### transactions(`BlockNumber`): `Option<Vec<TransactionInfo>>`
+- **interface**: `api.query.transactionStorage.transactions`
+- **summary**:   Collection of transaction metadata by block number. 
+
+___
+
+
 ## treasury
  
 ### approvals(): `Vec<ProposalIndex>`
@@ -1183,6 +1231,35 @@ ___
 ### proposals(`ProposalIndex`): `Option<TreasuryProposal>`
 - **interface**: `api.query.treasury.proposals`
 - **summary**:   Proposals that have been made. 
+
+___
+
+
+## uniques
+ 
+### account(`AccountId, ClassId, InstanceId`): `Option<()>`
+- **interface**: `api.query.uniques.account`
+- **summary**:   The assets held by any given account; set out this way so that assets owned by a single account can be enumerated. 
+ 
+### asset(`ClassId, InstanceId`): `Option<InstanceDetails>`
+- **interface**: `api.query.uniques.asset`
+- **summary**:   The assets in existence and their ownership details. 
+ 
+### attribute(`ClassId, Option<InstanceId>, Bytes`): `Option<(Bytes,DepositBalanceOf)>`
+- **interface**: `api.query.uniques.attribute`
+- **summary**:   Metadata of an asset class. 
+ 
+### class(`ClassId`): `Option<ClassDetails>`
+- **interface**: `api.query.uniques.class`
+- **summary**:   Details of an asset class. 
+ 
+### classMetadataOf(`ClassId`): `Option<ClassMetadata>`
+- **interface**: `api.query.uniques.classMetadataOf`
+- **summary**:   Metadata of an asset class. 
+ 
+### instanceMetadataOf(`ClassId, InstanceId`): `Option<InstanceMetadata>`
+- **interface**: `api.query.uniques.instanceMetadataOf`
+- **summary**:   Metadata of an asset instance. 
 
 ___
 

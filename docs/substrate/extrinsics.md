@@ -64,7 +64,11 @@ The following sections contain Extrinsics methods are part of the default Substr
 
 - **[tips](#tips)**
 
+- **[transactionStorage](#transactionstorage)**
+
 - **[treasury](#treasury)**
+
+- **[uniques](#uniques)**
 
 - **[utility](#utility)**
 
@@ -254,8 +258,6 @@ ___
 
   - `owner`: The owner of this class of assets. The owner has full superuser permissionsover this asset, but may later change and configure the permissions using `transfer_ownership` and `set_team`. 
 
-  - `max_zombies`: The total number of accounts which may hold assets in this class yethave no existential deposit. 
-
   - `min_balance`: The minimum balance of this new asset that any single account musthave. If an account's balance is reduced below this, then it collapses to zero. 
 
   Emits `ForceCreated` event when successful. 
@@ -298,7 +300,7 @@ ___
 
   Emits `Transferred` with the actual amount transferred. If this takes the source balance to below the minimum for the asset, then the amount transferred is increased to take it to zero. 
 
-  Weight: `O(1)` Modes: Pre-existence of `dest`; Post-existence of `source`; Prior & post zombie-status of `source`; Account pre-existence of `dest`. 
+  Weight: `O(1)` Modes: Pre-existence of `dest`; Post-existence of `source`; Account pre-existence of `dest`. 
  
 ### freeze(id: `Compact<AssetId>`, who: `LookupSource`)
 - **interface**: `api.tx.assets.freeze`
@@ -338,7 +340,7 @@ ___
 
   - `amount`: The amount of the asset to be minted.
 
-  Emits `Destroyed` event when successful. 
+  Emits `Issued` event when successful. 
 
   Weight: `O(1)` Modes: Pre-existing balance of `beneficiary`; Account pre-existence of `beneficiary`. 
  
@@ -400,7 +402,7 @@ ___
 
   Origin must be Signed and the sender should be the Admin of the asset `id`. 
 
-  - `id`: The identifier of the asset to be frozen. 
+  - `id`: The identifier of the asset to be thawed. 
 
   Emits `Thawed`. 
 
@@ -420,7 +422,7 @@ ___
 
   Emits `Transferred` with the actual amount transferred. If this takes the source balance to below the minimum for the asset, then the amount transferred is increased to take it to zero. 
 
-  Weight: `O(1)` Modes: Pre-existence of `target`; Post-existence of sender; Prior & post zombie-status of sender; Account pre-existence of `target`. 
+  Weight: `O(1)` Modes: Pre-existence of `target`; Post-existence of sender; Account pre-existence of `target`. 
  
 ### transferApproved(id: `Compact<AssetId>`, owner: `LookupSource`, destination: `LookupSource`, amount: `Compact<TAssetBalance>`)
 - **interface**: `api.tx.assets.transferApproved`
@@ -456,7 +458,7 @@ ___
 
   Emits `Transferred` with the actual amount transferred. If this takes the source balance to below the minimum for the asset, then the amount transferred is increased to take it to zero. 
 
-  Weight: `O(1)` Modes: Pre-existence of `target`; Post-existence of sender; Prior & post zombie-status of sender; Account pre-existence of `target`. 
+  Weight: `O(1)` Modes: Pre-existence of `target`; Post-existence of sender; Account pre-existence of `target`. 
  
 ### transferOwnership(id: `Compact<AssetId>`, owner: `LookupSource`)
 - **interface**: `api.tx.assets.transferOwnership`
@@ -2775,6 +2777,23 @@ ___
 ___
 
 
+## transactionStorage
+ 
+### checkProof(proof: `TransactionStorageProof`)
+- **interface**: `api.tx.transactionStorage.checkProof`
+- **summary**:   Check storage proof for block number `block_number() - StoragePeriod`. If such block does not exist the proof is expected to be `None`.  
+ 
+### renew(block: `BlockNumber`, index: `u32`)
+- **interface**: `api.tx.transactionStorage.renew`
+- **summary**:   Renew previously stored data. Parameters are the block number that contains previous `store` or `renew` call and transaction index within that block. Transaction index is emitted in the `Stored` or `Renewed` event. Applies same fees as `store`.  
+ 
+### store(data: `Bytes`)
+- **interface**: `api.tx.transactionStorage.store`
+- **summary**:   Index and store data on chain. Minimum data size is 1 bytes, maximum is `MaxTransactionSize`. Data will be removed after `STORAGE_PERIOD` blocks, unless `renew` is called.  
+
+___
+
+
 ## treasury
  
 ### approveProposal(proposal_id: `Compact<ProposalIndex>`)
@@ -2798,6 +2817,397 @@ ___
   May only be called from `T::RejectOrigin`. 
 
    
+
+___
+
+
+## uniques
+ 
+### approveTransfer(class: `Compact<ClassId>`, instance: `Compact<InstanceId>`, delegate: `LookupSource`)
+- **interface**: `api.tx.uniques.approveTransfer`
+- **summary**:   Approve an instance to be transferred by a delegated third-party account. 
+
+  Origin must be Signed and must be the owner of the asset `instance`. 
+
+  - `class`: The class of the asset to be approved for delegated transfer. 
+
+  - `instance`: The instance of the asset to be approved for delegated transfer.
+
+  - `delegate`: The account to delegate permission to transfer the asset.
+
+  Emits `ApprovedTransfer` on success. 
+
+  Weight: `O(1)` 
+ 
+### burn(class: `Compact<ClassId>`, instance: `Compact<InstanceId>`, check_owner: `Option<LookupSource>`)
+- **interface**: `api.tx.uniques.burn`
+- **summary**:   Destroy a single asset instance. 
+
+  Origin must be Signed and the sender should be the Admin of the asset `class`. 
+
+  - `class`: The class of the asset to be burned. 
+
+  - `instance`: The instance of the asset to be burned.
+
+  - `check_owner`: If `Some` then the operation will fail with `WrongOwner` unless the  asset is owned by this value. 
+
+  Emits `Burned` with the actual amount burned. 
+
+  Weight: `O(1)` Modes: `check_owner.is_some()`. 
+ 
+### cancelApproval(class: `Compact<ClassId>`, instance: `Compact<InstanceId>`, maybe_check_delegate: `Option<LookupSource>`)
+- **interface**: `api.tx.uniques.cancelApproval`
+- **summary**:   Cancel the prior approval for the transfer of an asset by a delegate. 
+
+  Origin must be either: 
+
+  - the `Force` origin;
+
+  - `Signed` with the signer being the Admin of the asset `class`;
+
+  - `Signed` with the signer being the Owner of the asset `instance`;
+
+  Arguments: 
+
+  - `class`: The class of the asset of whose approval will be cancelled.
+
+  - `instance`: The instance of the asset of whose approval will be cancelled.
+
+  - `maybe_check_delegate`: If `Some` will ensure that the given account is the one to  which permission of transfer is delegated. 
+
+  Emits `ApprovalCancelled` on success. 
+
+  Weight: `O(1)` 
+ 
+### clearAttribute(class: `Compact<ClassId>`, maybe_instance: `Option<InstanceId>`, key: `Bytes`)
+- **interface**: `api.tx.uniques.clearAttribute`
+- **summary**:   Set an attribute for an asset class or instance. 
+
+  Origin must be either `ForceOrigin` or Signed and the sender should be the Owner of the asset `class`. 
+
+  If the origin is Signed, then funds of signer are reserved according to the formula: `MetadataDepositBase + DepositPerByte * (key.len + value.len)` taking into account any already reserved funds. 
+
+  - `class`: The identifier of the asset class whose instance's metadata to set. 
+
+  - `instance`: The identifier of the asset instance whose metadata to set.
+
+  - `key`: The key of the attribute.
+
+  - `value`: The value to which to set the attribute.
+
+  Emits `AttributeSet`. 
+
+  Weight: `O(1)` 
+ 
+### clearClassMetadata(class: `Compact<ClassId>`)
+- **interface**: `api.tx.uniques.clearClassMetadata`
+- **summary**:   Clear the metadata for an asset class. 
+
+  Origin must be either `ForceOrigin` or `Signed` and the sender should be the Owner of the asset `class`. 
+
+  Any deposit is freed for the asset class owner. 
+
+  - `class`: The identifier of the asset class whose metadata to clear. 
+
+  Emits `ClassMetadataCleared`. 
+
+  Weight: `O(1)` 
+ 
+### clearMetadata(class: `Compact<ClassId>`, instance: `Compact<InstanceId>`)
+- **interface**: `api.tx.uniques.clearMetadata`
+- **summary**:   Clear the metadata for an asset instance. 
+
+  Origin must be either `ForceOrigin` or Signed and the sender should be the Owner of the asset `instance`. 
+
+  Any deposit is freed for the asset class owner. 
+
+  - `class`: The identifier of the asset class whose instance's metadata to clear. 
+
+  - `instance`: The identifier of the asset instance whose metadata to clear.
+
+  Emits `MetadataCleared`. 
+
+  Weight: `O(1)` 
+ 
+### create(class: `Compact<ClassId>`, admin: `LookupSource`)
+- **interface**: `api.tx.uniques.create`
+- **summary**:   Issue a new class of non-fungible assets from a public origin. 
+
+  This new asset class has no assets initially and its owner is the origin. 
+
+  The origin must be Signed and the sender must have sufficient funds free. 
+
+  `AssetDeposit` funds of sender are reserved. 
+
+  Parameters: 
+
+  - `class`: The identifier of the new asset class. This must not be currently in use.
+
+  - `admin`: The admin of this class of assets. The admin is the initial address of eachmember of the asset class's admin team. 
+
+  Emits `Created` event when successful. 
+
+  Weight: `O(1)` 
+ 
+### destroy(class: `Compact<ClassId>`, witness: `DestroyWitness`)
+- **interface**: `api.tx.uniques.destroy`
+- **summary**:   Destroy a class of fungible assets. 
+
+  The origin must conform to `ForceOrigin` or must be `Signed` and the sender must be the owner of the asset `class`. 
+
+  - `class`: The identifier of the asset class to be destroyed. 
+
+  - `witness`: Information on the instances minted in the asset class. This must becorrect. 
+
+  Emits `Destroyed` event when successful. 
+
+  Weight: `O(n + m)` where: 
+
+  - `n = witness.instances`
+
+  - `m = witness.instance_metdadatas`
+
+  - `a = witness.attributes`
+ 
+### forceAssetStatus(class: `Compact<ClassId>`, owner: `LookupSource`, issuer: `LookupSource`, admin: `LookupSource`, freezer: `LookupSource`, free_holding: `bool`, is_frozen: `bool`)
+- **interface**: `api.tx.uniques.forceAssetStatus`
+- **summary**:   Alter the attributes of a given asset. 
+
+  Origin must be `ForceOrigin`. 
+
+  - `class`: The identifier of the asset. 
+
+  - `owner`: The new Owner of this asset.
+
+  - `issuer`: The new Issuer of this asset.
+
+  - `admin`: The new Admin of this asset.
+
+  - `freezer`: The new Freezer of this asset.
+
+  - `free_holding`: Whether a deposit is taken for holding an instance of this asset  class. 
+
+  - `is_frozen`: Whether this asset class is frozen except for permissioned/admininstructions. 
+
+  Emits `AssetStatusChanged` with the identity of the asset. 
+
+  Weight: `O(1)` 
+ 
+### forceCreate(class: `Compact<ClassId>`, owner: `LookupSource`, free_holding: `bool`)
+- **interface**: `api.tx.uniques.forceCreate`
+- **summary**:   Issue a new class of non-fungible assets from a privileged origin. 
+
+  This new asset class has no assets initially. 
+
+  The origin must conform to `ForceOrigin`. 
+
+  Unlike `create`, no funds are reserved. 
+
+  - `class`: The identifier of the new asset. This must not be currently in use. 
+
+  - `owner`: The owner of this class of assets. The owner has full superuser permissionsover this asset, but may later change and configure the permissions using `transfer_ownership` and `set_team`. 
+
+  Emits `ForceCreated` event when successful. 
+
+  Weight: `O(1)` 
+ 
+### freeze(class: `Compact<ClassId>`, instance: `Compact<InstanceId>`)
+- **interface**: `api.tx.uniques.freeze`
+- **summary**:   Disallow further unprivileged transfer of an asset instance. 
+
+  Origin must be Signed and the sender should be the Freezer of the asset `class`. 
+
+  - `class`: The class of the asset to be frozen. 
+
+  - `instance`: The instance of the asset to be frozen.
+
+  Emits `Frozen`. 
+
+  Weight: `O(1)` 
+ 
+### freezeClass(class: `Compact<ClassId>`)
+- **interface**: `api.tx.uniques.freezeClass`
+- **summary**:   Disallow further unprivileged transfers for a whole asset class. 
+
+  Origin must be Signed and the sender should be the Freezer of the asset `class`. 
+
+  - `class`: The asset class to be frozen. 
+
+  Emits `ClassFrozen`. 
+
+  Weight: `O(1)` 
+ 
+### mint(class: `Compact<ClassId>`, instance: `Compact<InstanceId>`, owner: `LookupSource`)
+- **interface**: `api.tx.uniques.mint`
+- **summary**:   Mint an asset instance of a particular class. 
+
+  The origin must be Signed and the sender must be the Issuer of the asset `class`. 
+
+  - `class`: The class of the asset to be minted. 
+
+  - `instance`: The instance value of the asset to be minted.
+
+  - `beneficiary`: The initial owner of the minted asset.
+
+  Emits `Issued` event when successful. 
+
+  Weight: `O(1)` 
+ 
+### redeposit(class: `Compact<ClassId>`, instances: `Vec<InstanceId>`)
+- **interface**: `api.tx.uniques.redeposit`
+- **summary**:   Reevaluate the deposits on some assets. 
+
+  Origin must be Signed and the sender should be the Owner of the asset `class`. 
+
+  - `class`: The class of the asset to be frozen. 
+
+  - `instances`: The instances of the asset class whose deposits will be reevaluated.
+
+  NOTE: This exists as a best-effort function. Any asset instances which are unknown or in the case that the owner account does not have reservable funds to pay for a deposit increase are ignored. Generally the owner isn't going to call this on instances whose existing deposit is less than the refreshed deposit as it would only cost them, so it's of little consequence. 
+
+  It will still return an error in the case that the class is unknown of the signer is not permitted to call it. 
+
+  Weight: `O(instances.len())` 
+ 
+### setAttribute(class: `Compact<ClassId>`, maybe_instance: `Option<InstanceId>`, key: `Bytes`, value: `Bytes`)
+- **interface**: `api.tx.uniques.setAttribute`
+- **summary**:   Set an attribute for an asset class or instance. 
+
+  Origin must be either `ForceOrigin` or Signed and the sender should be the Owner of the asset `class`. 
+
+  If the origin is Signed, then funds of signer are reserved according to the formula: `MetadataDepositBase + DepositPerByte * (key.len + value.len)` taking into account any already reserved funds. 
+
+  - `class`: The identifier of the asset class whose instance's metadata to set. 
+
+  - `maybe_instance`: The identifier of the asset instance whose metadata to set.
+
+  - `key`: The key of the attribute.
+
+  - `value`: The value to which to set the attribute.
+
+  Emits `AttributeSet`. 
+
+  Weight: `O(1)` 
+ 
+### setClassMetadata(class: `Compact<ClassId>`, data: `Bytes`, is_frozen: `bool`)
+- **interface**: `api.tx.uniques.setClassMetadata`
+- **summary**:   Set the metadata for an asset class. 
+
+  Origin must be either `ForceOrigin` or `Signed` and the sender should be the Owner of the asset `class`. 
+
+  If the origin is `Signed`, then funds of signer are reserved according to the formula: `MetadataDepositBase + DepositPerByte * data.len` taking into account any already reserved funds. 
+
+  - `class`: The identifier of the asset whose metadata to update. 
+
+  - `data`: The general information of this asset. Limited in length by `StringLimit`.
+
+  - `is_frozen`: Whether the metadata should be frozen against further changes.
+
+  Emits `ClassMetadataSet`. 
+
+  Weight: `O(1)` 
+ 
+### setMetadata(class: `Compact<ClassId>`, instance: `Compact<InstanceId>`, data: `Bytes`, is_frozen: `bool`)
+- **interface**: `api.tx.uniques.setMetadata`
+- **summary**:   Set the metadata for an asset instance. 
+
+  Origin must be either `ForceOrigin` or Signed and the sender should be the Owner of the asset `class`. 
+
+  If the origin is Signed, then funds of signer are reserved according to the formula: `MetadataDepositBase + DepositPerByte * data.len` taking into account any already reserved funds. 
+
+  - `class`: The identifier of the asset class whose instance's metadata to set. 
+
+  - `instance`: The identifier of the asset instance whose metadata to set.
+
+  - `data`: The general information of this asset. Limited in length by `StringLimit`.
+
+  - `is_frozen`: Whether the metadata should be frozen against further changes.
+
+  Emits `MetadataSet`. 
+
+  Weight: `O(1)` 
+ 
+### setTeam(class: `Compact<ClassId>`, issuer: `LookupSource`, admin: `LookupSource`, freezer: `LookupSource`)
+- **interface**: `api.tx.uniques.setTeam`
+- **summary**:   Change the Issuer, Admin and Freezer of an asset class. 
+
+  Origin must be Signed and the sender should be the Owner of the asset `class`. 
+
+  - `class`: The asset class whose team should be changed. 
+
+  - `issuer`: The new Issuer of this asset class.
+
+  - `admin`: The new Admin of this asset class.
+
+  - `freezer`: The new Freezer of this asset class.
+
+  Emits `TeamChanged`. 
+
+  Weight: `O(1)` 
+ 
+### thaw(class: `Compact<ClassId>`, instance: `Compact<InstanceId>`)
+- **interface**: `api.tx.uniques.thaw`
+- **summary**:   Re-allow unprivileged transfer of an asset instance. 
+
+  Origin must be Signed and the sender should be the Freezer of the asset `class`. 
+
+  - `class`: The class of the asset to be thawed. 
+
+  - `instance`: The instance of the asset to be thawed.
+
+  Emits `Thawed`. 
+
+  Weight: `O(1)` 
+ 
+### thawClass(class: `Compact<ClassId>`)
+- **interface**: `api.tx.uniques.thawClass`
+- **summary**:   Re-allow unprivileged transfers for a whole asset class. 
+
+  Origin must be Signed and the sender should be the Admin of the asset `class`. 
+
+  - `class`: The class to be thawed. 
+
+  Emits `ClassThawed`. 
+
+  Weight: `O(1)` 
+ 
+### transfer(class: `Compact<ClassId>`, instance: `Compact<InstanceId>`, dest: `LookupSource`)
+- **interface**: `api.tx.uniques.transfer`
+- **summary**:   Move an asset from the sender account to another. 
+
+  Origin must be Signed and the signing account must be either: 
+
+  - the Admin of the asset `class`;
+
+  - the Owner of the asset `instance`;
+
+  - the approved delegate for the asset `instance` (in this case, the approval is reset).
+
+  Arguments: 
+
+  - `class`: The class of the asset to be transferred.
+
+  - `instance`: The instance of the asset to be transferred.
+
+  - `dest`: The account to receive ownership of the asset.
+
+  Emits `Transferred`. 
+
+  Weight: `O(1)` 
+ 
+### transferOwnership(class: `Compact<ClassId>`, owner: `LookupSource`)
+- **interface**: `api.tx.uniques.transferOwnership`
+- **summary**:   Change the Owner of an asset class. 
+
+  Origin must be Signed and the sender should be the Owner of the asset `class`. 
+
+  - `class`: The asset class whose owner should be changed. 
+
+  - `owner`: The new Owner of this asset class.
+
+  Emits `OwnerChanged`. 
+
+  Weight: `O(1)` 
 
 ___
 
