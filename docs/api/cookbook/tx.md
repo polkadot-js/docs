@@ -162,7 +162,7 @@ api.tx.utility
   });
 ```
 
-The fee for a batch transaction can be estimated similar to the fee for a single transaction using the exposed `.paymentInfo` helper method that is described earlier, and it is usually less than the sum of the fees for each included transaction, if they would run individually.
+The fee for a batch transaction can be estimated similar to the fee for a single transaction using the exposed `.paymentInfo` helper method that was described earlier, and it is usually less than the sum of the fees for each individual transaction.
 
 ## How do I take the pending tx pool into account in my nonce?
 
