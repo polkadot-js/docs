@@ -156,6 +156,11 @@ ___
 - **jsonrpc**: `childstate_getKeys`
 - **summary**: Returns the keys with prefix from a child storage, leave empty to get all the keys
  
+### getKeysPaged(childKey: `PrefixedStorageKey`, prefix: `StorageKey`, count: `u32`, startKey?: `StorageKey`, at?: `Hash`): `Vec<StorageKey>`
+- **interface**: `api.rpc.childstate.getKeysPaged`
+- **jsonrpc**: `childstate_getKeysPaged`
+- **summary**: Returns the keys with prefix from a child storage with pagination support
+ 
 ### getStorage(childKey: `PrefixedStorageKey`, key: `StorageKey`, at?: `Hash`): `Option<StorageData>`
 - **interface**: `api.rpc.childstate.getStorage`
 - **jsonrpc**: `childstate_getStorage`
