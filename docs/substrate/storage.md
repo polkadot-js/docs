@@ -853,6 +853,14 @@ ___
 - **interface**: `api.query.staking.canceledSlashPayout`
 - **summary**:    The amount of currency given to reporters of a slash event which was  canceled by extraordinary circumstances (e.g. governance). 
  
+### counterForNominators(): `u32`
+- **interface**: `api.query.staking.counterForNominators`
+- **summary**:    A tracker to keep count of the number of items in the `Nominators` map. 
+ 
+### counterForValidators(): `u32`
+- **interface**: `api.query.staking.counterForValidators`
+- **summary**:    A tracker to keep count of the number of items in the `Validators` map. 
+ 
 ### currentEra(): `Option<EraIndex>`
 - **interface**: `api.query.staking.currentEra`
 - **summary**:    The current era index. 
@@ -935,13 +943,35 @@ ___
 - **interface**: `api.query.staking.ledger`
 - **summary**:    Map from all (unlocked) "controller" accounts to the info regarding the staking. 
  
+### maxNominatorsCount(): `Option<u32>`
+- **interface**: `api.query.staking.maxNominatorsCount`
+- **summary**:    The maximum nominator count before we stop allowing new validators to join. 
+
+   When this value is not set, no limits are enforced. 
+ 
+### maxValidatorsCount(): `Option<u32>`
+- **interface**: `api.query.staking.maxValidatorsCount`
+- **summary**:    The maximum validator count before we stop allowing new validators to join. 
+
+   When this value is not set, no limits are enforced. 
+ 
 ### minimumValidatorCount(): `u32`
 - **interface**: `api.query.staking.minimumValidatorCount`
 - **summary**:    Minimum number of staking participants before emergency conditions are imposed. 
  
+### minNominatorBond(): `BalanceOf`
+- **interface**: `api.query.staking.minNominatorBond`
+- **summary**:    The minimum active bond to become and maintain the role of a nominator. 
+ 
+### minValidatorBond(): `BalanceOf`
+- **interface**: `api.query.staking.minValidatorBond`
+- **summary**:    The minimum active bond to become and maintain the role of a validator. 
+ 
 ### nominators(`AccountId`): `Option<Nominations>`
 - **interface**: `api.query.staking.nominators`
 - **summary**:    The map from nominator stash key to the set of stash keys of all validators to nominate. 
+
+   When updating this storage item, you must also update the `CounterForNominators`. 
  
 ### nominatorSlashInEra(`EraIndex, AccountId`): `Option<BalanceOf>`
 - **interface**: `api.query.staking.nominatorSlashInEra`
@@ -982,6 +1012,8 @@ ___
 ### validators(`AccountId`): `ValidatorPrefs`
 - **interface**: `api.query.staking.validators`
 - **summary**:    The map from (wannabe) validator stash key to the preferences of that validator. 
+
+   When updating this storage item, you must also update the `CounterForValidators`. 
  
 ### validatorSlashInEra(`EraIndex, AccountId`): `Option<(Perbill,BalanceOf)>`
 - **interface**: `api.query.staking.validatorSlashInEra`

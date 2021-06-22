@@ -1106,6 +1106,14 @@ ___
 
 ## electionProviderMultiPhase
  
+### setEmergencyElectionResult(solution: `ReadySolution`)
+- **interface**: `api.tx.electionProviderMultiPhase.setEmergencyElectionResult`
+- **summary**:    Set a solution in the queue, to be handed out to the client of this pallet in the next  call to `ElectionProvider::elect`. 
+
+   This can only be set by `T::ForceOrigin`, and only when the phase is `Emergency`. 
+
+   The solution is not checked for any feasibility and is assumed to be trustworthy, as any  feasibility check itself can in principle cause the election process to fail (due to  memory/weight constrains). 
+ 
 ### setMinimumUntrustedScore(maybe_next_score: `Option<ElectionScore>`)
 - **interface**: `api.tx.electionProviderMultiPhase.setMinimumUntrustedScore`
 - **summary**:    Set a new value for `MinimumUntrustedScore`. 
@@ -2262,11 +2270,29 @@ ___
 
     
  
+### chillOther(controller: `AccountId`)
+- **interface**: `api.tx.staking.chillOther`
+- **summary**:    Declare a `controller` as having no desire to either validator or nominate. 
+
+   Effects will be felt at the beginning of the next era. 
+
+   The dispatch origin for this call must be _Signed_, but can be called by anyone. 
+
+   If the caller is the same as the controller being targeted, then no further checks  are enforced. However, this call can also be made by an third party user who witnesses  that this controller does not satisfy the minimum bond requirements to be in their role. 
+
+   This can be helpful if bond requirements are updated, and we need to remove old users  who do not satisfy these requirements. 
+
+  
+ 
 ### forceNewEra()
 - **interface**: `api.tx.staking.forceNewEra`
 - **summary**:    Force there to be a new era at the end of the next session. After this, it will be  reset to normal (non-forced) behaviour. 
 
    The dispatch origin must be Root. 
+
+   #### Warning 
+
+   The election process starts multiple blocks before the end of the era.  If this is called just before a new era is triggered, the election process may not  have enough blocks to get a result. 
 
     
  
@@ -2276,6 +2302,10 @@ ___
 
    The dispatch origin must be Root. 
 
+   #### Warning 
+
+   The election process starts multiple blocks before the end of the era.  If this is called just before a new era is triggered, the election process may not  have enough blocks to get a result. 
+
     
  
 ### forceNoEras()
@@ -2283,6 +2313,10 @@ ___
 - **summary**:    Force there to be no new eras indefinitely. 
 
    The dispatch origin must be Root. 
+
+   #### Warning 
+
+   The election process starts multiple blocks before the end of the era.  Thus the election process may be ongoing when this is called. In this case the  election will continue until the next era is triggered. 
 
     
  
@@ -2422,6 +2456,8 @@ ___
 
    No more than a limited number of unlocking chunks (see `MAX_UNLOCKING_CHUNKS`)  can co-exists at the same time. In that case, [`Call::withdraw_unbonded`] need  to be called first to remove some of the chunks (if possible). 
 
+   If a user encounters the `InsufficientBond` error when calling this extrinsic,  they should call `chill` first in order to free up their bonded funds. 
+
    The dispatch origin for this call must be _Signed_ by the controller, not the stash.  And, it can be only called when [`EraElectionStatus`] is `Closed`. 
 
    Emits `Unbonded`. 
@@ -2429,6 +2465,22 @@ ___
    See also [`Call::withdraw_unbonded`]. 
 
     
+ 
+### updateStakingLimits(min_nominator_bond: `BalanceOf`, min_validator_bond: `BalanceOf`, max_nominator_count: `Option<u32>`, max_validator_count: `Option<u32>`)
+- **interface**: `api.tx.staking.updateStakingLimits`
+- **summary**:    Update the various staking limits this pallet. 
+
+   * `min_nominator_bond`: The minimum active bond needed to be a nominator. 
+
+  * `min_validator_bond`: The minimum active bond needed to be a validator.
+
+  * `max_nominator_count`: The max number of users who can be a nominator at once.   When set to `None`, no limit is enforced. 
+
+  * `max_validator_count`: The max number of users who can be a validator at once.   When set to `None`, no limit is enforced. 
+
+   Origin must be Root to call this function. 
+
+   NOTE: Existing nominators and validators will not be affected by this update.  to kick people under the new limits, `chill_other` should be called. 
  
 ### validate(prefs: `ValidatorPrefs`)
 - **interface**: `api.tx.staking.validate`

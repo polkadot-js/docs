@@ -807,6 +807,10 @@ ___
 - **interface**: `api.events.staking.StakingElection.is`
 - **summary**:    A new set of stakers was elected. 
  
+### StakingElectionFailed()
+- **interface**: `api.events.staking.StakingElectionFailed.is`
+- **summary**:    The election failed. No new era is planned. 
+ 
 ### Unbonded(`AccountId`, `Balance`)
 - **interface**: `api.events.staking.Unbonded.is`
 - **summary**:    An account has unbonded this amount. \[stash, amount\] 

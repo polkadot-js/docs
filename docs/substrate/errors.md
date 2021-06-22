@@ -592,6 +592,10 @@ ___
 
 ## electionProviderMultiPhase
  
+### CallNotAllowed
+- **interface**: `api.errors.electionProviderMultiPhase.CallNotAllowed.is`
+- **summary**:    The call is not allowed at this point. 
+ 
 ### OcwCallWrongEra
 - **interface**: `api.errors.electionProviderMultiPhase.OcwCallWrongEra.is`
 - **summary**:    OCW submitted solution for wrong round 
@@ -1206,6 +1210,10 @@ ___
 - **interface**: `api.errors.staking.BadTarget.is`
 - **summary**:    A nomination target was supplied that was blocked or otherwise not a validator. 
  
+### CannotChillOther
+- **interface**: `api.errors.staking.CannotChillOther.is`
+- **summary**:    The user has enough bond and thus cannot be chilled forcefully by an external person. 
+ 
 ### DuplicateIndex
 - **interface**: `api.errors.staking.DuplicateIndex.is`
 - **summary**:    Duplicate index. 
@@ -1226,9 +1234,9 @@ ___
 - **interface**: `api.errors.staking.IncorrectSlashingSpans.is`
 - **summary**:    Incorrect number of slashing spans provided. 
  
-### InsufficientValue
-- **interface**: `api.errors.staking.InsufficientValue.is`
-- **summary**:    Can not bond with value less than minimum balance. 
+### InsufficientBond
+- **interface**: `api.errors.staking.InsufficientBond.is`
+- **summary**:    Can not bond with value less than minimum required. 
  
 ### InvalidEraToReward
 - **interface**: `api.errors.staking.InvalidEraToReward.is`
@@ -1262,9 +1270,17 @@ ___
 - **interface**: `api.errors.staking.NoUnlockChunk.is`
 - **summary**:    Can not rebond without unlocking chunks. 
  
+### TooManyNominators
+- **interface**: `api.errors.staking.TooManyNominators.is`
+- **summary**:    There are too many nominators in the system. Governance needs to adjust the staking settings  to keep things safe for the runtime. 
+ 
 ### TooManyTargets
 - **interface**: `api.errors.staking.TooManyTargets.is`
 - **summary**:    Too many nomination targets supplied. 
+ 
+### TooManyValidators
+- **interface**: `api.errors.staking.TooManyValidators.is`
+- **summary**:    There are too many validators in the system. Governance needs to adjust the staking settings  to keep things safe for the runtime. 
 
 ___
 
