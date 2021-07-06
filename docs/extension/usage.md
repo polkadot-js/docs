@@ -1,12 +1,3 @@
----
-title: Usage
-slug: /extension/usage
----
-
-To install the component, do `yarn add @polkadot/extension-dapp`
-Here is a brief walk through how to use the different utilities from @polkadot/extension-dapp.
-
-```javascript
 import {
   web3Accounts,
   web3Enable,
@@ -36,4 +27,3 @@ const injector = await web3FromAddress(SENDER);
 api.tx.balances
   .transfer('5C5555yEXUcmEJ5kkcCMvdZjUo7NGJiQJMS7vZXEeoMhj3VQ', 123456)
   .signAndSend(SENDER, { signer: injector.signer }, (status) => { ... });
-```
