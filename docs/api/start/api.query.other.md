@@ -48,7 +48,7 @@ const lastHdr = await api.rpc.chain.getHeader();
 const startHdr = await api.rpc.chain.getBlockHash(lastHdr.number.unwrap().subn(500));
 
 // retrieve the range of changes
-const changes = await api.query.system.account.range([startHdr]);
+const changes = await api.query.system.account.range([startHdr],ADDR);
 
 changes.forEach(([hash, value]) => {
   console.log(hash.toHex(), value.toHuman());
