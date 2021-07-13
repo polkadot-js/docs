@@ -33,7 +33,7 @@ const gasLimit = 3000n * 1000000n;
 
 // Perform the actual read (no params at the end, for the `get` message)
 // (We perform the send from an account, here using Alice's address)
-const { gasConsumed, result, outcome } = await contract.query.get(alicePair.address, { value, gasLimit });
+const { gasConsumed, result, output } = await contract.query.get(alicePair.address, { value, gasLimit });
 
 // The actual result from RPC as `ContractExecResult`
 console.log(result.toHuman());
