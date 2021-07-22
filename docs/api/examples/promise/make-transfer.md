@@ -15,7 +15,7 @@ async function main () {
   // Instantiate the API
   const api = await ApiPromise.create();
 
-  // Constuct the keying after the API (crypto has an async init)
+  // Constuct the keyring after the API (crypto has an async init)
   const keyring = new Keyring({ type: 'sr25519' });
 
   // Add Alice to our keyring with a hard-deived path (empty phrase, so uses dev)
