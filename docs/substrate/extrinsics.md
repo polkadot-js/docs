@@ -549,7 +549,7 @@ ___
 
    99% of the time you want [`transfer`] instead. 
 
-   [`transfer`]: #transferdest-lookupsource-value-compactbalance
+   [`transfer`]: struct.Pallet.html#method.transfer   
 
 ___
 
