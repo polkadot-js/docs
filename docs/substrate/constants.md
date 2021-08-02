@@ -6,6 +6,10 @@ The following sections contain the module constants, also known as parameter typ
 
 (NOTE: These were generated from a static/snapshot view of a recent Substrate master node. Some items may not be available in older nodes, or in any customized implementations.)
 
+- **[assets](#assets)**
+
+- **[authorship](#authorship)**
+
 - **[babe](#babe)**
 
 - **[balances](#balances)**
@@ -24,6 +28,8 @@ The following sections contain the module constants, also known as parameter typ
 
 - **[identity](#identity)**
 
+- **[imOnline](#imonline)**
+
 - **[indices](#indices)**
 
 - **[lottery](#lottery)**
@@ -33,6 +39,8 @@ The following sections contain the module constants, also known as parameter typ
 - **[proxy](#proxy)**
 
 - **[recovery](#recovery)**
+
+- **[scheduler](#scheduler)**
 
 - **[society](#society)**
 
@@ -48,8 +56,44 @@ The following sections contain the module constants, also known as parameter typ
 
 - **[treasury](#treasury)**
 
+- **[uniques](#uniques)**
+
 - **[vesting](#vesting)**
 
+
+___
+
+
+## assets
+ 
+### approvalDeposit: `DepositBalanceOf`
+- **interface**: `api.consts.assets.approvalDeposit`
+- **summary**:    The amount of funds that must be reserved when creating a new approval. 
+ 
+### assetDeposit: `DepositBalanceOf`
+- **interface**: `api.consts.assets.assetDeposit`
+- **summary**:    The basic amount of funds that must be reserved for an asset. 
+ 
+### metadataDepositBase: `DepositBalanceOf`
+- **interface**: `api.consts.assets.metadataDepositBase`
+- **summary**:    The basic amount of funds that must be reserved when adding metadata to your asset. 
+ 
+### metadataDepositPerByte: `DepositBalanceOf`
+- **interface**: `api.consts.assets.metadataDepositPerByte`
+- **summary**:    The additional funds that must be reserved for the number of bytes you store in your  metadata. 
+ 
+### stringLimit: `u32`
+- **interface**: `api.consts.assets.stringLimit`
+- **summary**:    The maximum length of a name or symbol stored on-chain. 
+
+___
+
+
+## authorship
+ 
+### uncleGenerations: `BlockNumber`
+- **interface**: `api.consts.authorship.uncleGenerations`
+- **summary**:    The number of blocks back we should accept uncles.  This means that we will deal with uncle-parents that are  `UncleGenerations + 1` before `now`. 
 
 ___
 
@@ -72,6 +116,14 @@ ___
 ### existentialDeposit: `Balance`
 - **interface**: `api.consts.balances.existentialDeposit`
 - **summary**:    The minimum amount required to keep an account open. 
+ 
+### maxLocks: `u32`
+- **interface**: `api.consts.balances.maxLocks`
+- **summary**:    The maximum number of locks that should exist on an account.  Not strictly enforced, but used for weight estimation. 
+ 
+### maxReserves: `u32`
+- **interface**: `api.consts.balances.maxReserves`
+- **summary**:    The maximum number of named reserves that can exist on an account. 
 
 ___
 
@@ -182,9 +234,17 @@ ___
 - **interface**: `api.consts.democracy.fastTrackVotingPeriod`
 - **summary**:    Minimum voting period allowed for a fast-track referendum. 
  
+### instantAllowed: `bool`
+- **interface**: `api.consts.democracy.instantAllowed`
+- **summary**:    Indicator for whether an emergency origin is even allowed to happen. Some chains may want  to set this permanently to `false`, others may want to condition it on things such as  an upgrade having happened recently. 
+ 
 ### launchPeriod: `BlockNumber`
 - **interface**: `api.consts.democracy.launchPeriod`
 - **summary**:    How often (in blocks) new public referenda are launched. 
+ 
+### maxProposals: `u32`
+- **interface**: `api.consts.democracy.maxProposals`
+- **summary**:    The maximum number of public proposals that can exist at any time. 
  
 ### maxVotes: `u32`
 - **interface**: `api.consts.democracy.maxVotes`
@@ -209,15 +269,63 @@ ___
 
 ## electionProviderMultiPhase
  
+### minerMaxIterations: `u32`
+- **interface**: `api.consts.electionProviderMultiPhase.minerMaxIterations`
+- **summary**:    Maximum number of iteration of balancing that will be executed in the embedded miner of  the pallet. 
+ 
+### minerMaxLength: `u32`
+- **interface**: `api.consts.electionProviderMultiPhase.minerMaxLength`
+- **summary**:    Maximum length (bytes) that the mined solution should consume. 
+
+   The miner will ensure that the total length of the unsigned solution will not exceed  this value. 
+ 
+### minerMaxWeight: `Weight`
+- **interface**: `api.consts.electionProviderMultiPhase.minerMaxWeight`
+- **summary**:    Maximum weight that the miner should consume. 
+
+   The miner will ensure that the total weight of the unsigned solution will not exceed  this value, based on [`WeightInfo::submit_unsigned`]. 
+ 
+### minerTxPriority: `TransactionPriority`
+- **interface**: `api.consts.electionProviderMultiPhase.minerTxPriority`
+- **summary**:    The priority of the unsigned transaction submitted in the unsigned-phase 
+ 
 ### offchainRepeat: `BlockNumber`
 - **interface**: `api.consts.electionProviderMultiPhase.offchainRepeat`
 - **summary**:    The repeat threshold of the offchain worker. 
 
    For example, if it is 5, that means that at least 5 blocks will elapse between attempts  to submit the worker's solution. 
  
+### signedDepositBase: `BalanceOf`
+- **interface**: `api.consts.electionProviderMultiPhase.signedDepositBase`
+- **summary**:    Base deposit for a signed solution. 
+ 
+### signedDepositByte: `BalanceOf`
+- **interface**: `api.consts.electionProviderMultiPhase.signedDepositByte`
+- **summary**:    Per-byte deposit for a signed solution. 
+ 
+### signedDepositWeight: `BalanceOf`
+- **interface**: `api.consts.electionProviderMultiPhase.signedDepositWeight`
+- **summary**:    Per-weight deposit for a signed solution. 
+ 
+### signedMaxSubmissions: `u32`
+- **interface**: `api.consts.electionProviderMultiPhase.signedMaxSubmissions`
+- **summary**:    Maximum number of signed submissions that can be queued. 
+
+   It is best to avoid adjusting this during an election, as it impacts downstream data  structures. In particular, `SignedSubmissionIndices<T>` is bounded on this value. If you  update this value during an election, you _must_ ensure that  `SignedSubmissionIndices.len()` is less than or equal to the new value. Otherwise,  attempts to submit new solutions may cause a runtime panic. 
+ 
+### signedMaxWeight: `Weight`
+- **interface**: `api.consts.electionProviderMultiPhase.signedMaxWeight`
+- **summary**:    Maximum weight of a signed solution. 
+
+   This should probably be similar to [`Config::MinerMaxWeight`]. 
+ 
 ### signedPhase: `BlockNumber`
 - **interface**: `api.consts.electionProviderMultiPhase.signedPhase`
 - **summary**:    Duration of the signed phase. 
+ 
+### signedRewardBase: `BalanceOf`
+- **interface**: `api.consts.electionProviderMultiPhase.signedRewardBase`
+- **summary**:    Base reward for a signed solution 
  
 ### solutionImprovementThreshold: `Perbill`
 - **interface**: `api.consts.electionProviderMultiPhase.solutionImprovementThreshold`
@@ -272,6 +380,10 @@ ___
 - **summary**:    Portion of the queue which is free from ordering and just a FIFO. 
 
    Must be no greater than `MaxQueueLen`. 
+ 
+### ignoredIssuance: `BalanceOf`
+- **interface**: `api.consts.gilt.ignoredIssuance`
+- **summary**:    The issuance to ignore. This is subtracted from the `Currency`'s `total_issuance` to get  the issuance by which we inflate or deflate the gilt. 
  
 ### intakePeriod: `BlockNumber`
 - **interface**: `api.consts.gilt.intakePeriod`
@@ -333,6 +445,17 @@ ___
 ___
 
 
+## imOnline
+ 
+### unsignedPriority: `TransactionPriority`
+- **interface**: `api.consts.imOnline.unsignedPriority`
+- **summary**:    A configuration for base priority of unsigned transactions. 
+
+   This is exposed so that it can be tuned for particular runtime, when  multiple pallets send unsigned transactions. 
+
+___
+
+
 ## indices
  
 ### deposit: `BalanceOf`
@@ -347,6 +470,10 @@ ___
 ### maxCalls: `u32`
 - **interface**: `api.consts.lottery.maxCalls`
 - **summary**:    The max number of calls available in a single lottery. 
+ 
+### maxGenerateRandom: `u32`
+- **interface**: `api.consts.lottery.maxGenerateRandom`
+- **summary**:    Number of time we should try to generate a random number that has no modulo bias.  The larger this number, the more potential computation is used for picking the winner,  but also the more likely that the chosen winner is done fairly. 
  
 ### palletId: `PalletId`
 - **interface**: `api.consts.lottery.palletId`
@@ -436,6 +563,19 @@ ___
 - **summary**:    The base amount of currency needed to reserve for starting a recovery. 
 
    This is primarily held for deterring malicious recovery attempts, and should  have a value large enough that a bad actor would choose not to place this  deposit. It also acts to fund additional storage item whose value size is  `sizeof(BlockNumber, Balance + T * AccountId)` bytes. Where T is a configurable  threshold. 
+
+___
+
+
+## scheduler
+ 
+### maximumWeight: `Weight`
+- **interface**: `api.consts.scheduler.maximumWeight`
+- **summary**:    The maximum weight that may be scheduled per block for any dispatchables of less priority  than `schedule::HARD_DEADLINE`. 
+ 
+### maxScheduledPerBlock: `u32`
+- **interface**: `api.consts.scheduler.maxScheduledPerBlock`
+- **summary**:    The maximum number of scheduled calls in the queue for a single block.  Not strictly enforced, but used for weight estimation. 
 
 ___
 
@@ -589,9 +729,13 @@ ___
 - **interface**: `api.consts.treasury.burn`
 - **summary**:    Percentage of spare funds (if any) that are burnt per spend period. 
  
+### maxApprovals: `u32`
+- **interface**: `api.consts.treasury.maxApprovals`
+- **summary**:    The maximum number of approvals that can wait in the spending queue. 
+ 
 ### palletId: `PalletId`
 - **interface**: `api.consts.treasury.palletId`
-- **summary**:    The treasury's module id, used for deriving its sovereign account ID. 
+- **summary**:    The treasury's pallet id, used for deriving its sovereign account ID. 
  
 ### proposalBond: `Permill`
 - **interface**: `api.consts.treasury.proposalBond`
@@ -604,6 +748,43 @@ ___
 ### spendPeriod: `BlockNumber`
 - **interface**: `api.consts.treasury.spendPeriod`
 - **summary**:    Period between successive spends. 
+
+___
+
+
+## uniques
+ 
+### attributeDepositBase: `DepositBalanceOf`
+- **interface**: `api.consts.uniques.attributeDepositBase`
+- **summary**:    The basic amount of funds that must be reserved when adding an attribute to an asset. 
+ 
+### classDeposit: `DepositBalanceOf`
+- **interface**: `api.consts.uniques.classDeposit`
+- **summary**:    The basic amount of funds that must be reserved for an asset class. 
+ 
+### depositPerByte: `DepositBalanceOf`
+- **interface**: `api.consts.uniques.depositPerByte`
+- **summary**:    The additional funds that must be reserved for the number of bytes store in metadata,  either "normal" metadata or attribute metadata. 
+ 
+### instanceDeposit: `DepositBalanceOf`
+- **interface**: `api.consts.uniques.instanceDeposit`
+- **summary**:    The basic amount of funds that must be reserved for an asset instance. 
+ 
+### keyLimit: `u32`
+- **interface**: `api.consts.uniques.keyLimit`
+- **summary**:    The maximum length of an attribute key. 
+ 
+### metadataDepositBase: `DepositBalanceOf`
+- **interface**: `api.consts.uniques.metadataDepositBase`
+- **summary**:    The basic amount of funds that must be reserved when adding metadata to your asset. 
+ 
+### stringLimit: `u32`
+- **interface**: `api.consts.uniques.stringLimit`
+- **summary**:    The maximum length of data stored on-chain. 
+ 
+### valueLimit: `u32`
+- **interface**: `api.consts.uniques.valueLimit`
+- **summary**:    The maximum length of an attribute value. 
 
 ___
 

@@ -132,7 +132,9 @@ ___
  
 ### authorVrfRandomness(): `MaybeRandomness`
 - **interface**: `api.query.babe.authorVrfRandomness`
-- **summary**:    Temporary value (cleared at block finalization) that includes the VRF output generated  at this block. This field should always be populated during block processing unless  secondary plain slots are enabled (which don't contain a VRF output). 
+- **summary**:    This field should always be populated during block processing unless  secondary plain slots are enabled (which don't contain a VRF output). 
+
+   It is set in `on_initialize`, before it will contain the value from the last block. 
  
 ### currentSlot(): `Slot`
 - **interface**: `api.query.babe.currentSlot`
@@ -415,6 +417,28 @@ ___
    This is useful for de-duplication of transactions submitted to the pool, and general  diagnostics of the pallet. 
 
    This is merely incremented once per every time that an upstream `elect` is called. 
+ 
+### signedSubmissionIndices(): `SubmissionIndicesOf`
+- **interface**: `api.query.electionProviderMultiPhase.signedSubmissionIndices`
+- **summary**:    A sorted, bounded set of `(score, index)`, where each `index` points to a value in  `SignedSubmissions`. 
+
+   We never need to process more than a single signed submission at a time. Signed submissions  can be quite large, so we're willing to pay the cost of multiple database accesses to access  them one at a time instead of reading and decoding all of them at once. 
+ 
+### signedSubmissionNextIndex(): `u32`
+- **interface**: `api.query.electionProviderMultiPhase.signedSubmissionNextIndex`
+- **summary**:    The next index to be assigned to an incoming signed submission. 
+
+   Every accepted submission is assigned a unique index; that index is bound to that particular  submission for the duration of the election. On election finalization, the next index is  reset to 0. 
+
+   We can't just use `SignedSubmissionIndices.len()`, because that's a bounded set; past its  capacity, it will simply saturate. We can't just iterate over `SignedSubmissionsMap`,  because iteration is slow. Instead, we store the value here. 
+ 
+### signedSubmissionsMap(`u32`): `SignedSubmissionOf`
+- **interface**: `api.query.electionProviderMultiPhase.signedSubmissionsMap`
+- **summary**:    Unchecked, signed solutions. 
+
+   Together with `SubmissionIndices`, this stores a bounded set of `SignedSubmissions` while  allowing us to keep only a single one in memory at a time. 
+
+   Twox note: the key of the map is an auto-incrementing index which users cannot inspect or  affect; we shouldn't need a cryptographically secure hasher. 
  
 ### snapshot(): `Option<RoundSnapshot>`
 - **interface**: `api.query.electionProviderMultiPhase.snapshot`
@@ -853,6 +877,10 @@ ___
 - **interface**: `api.query.staking.canceledSlashPayout`
 - **summary**:    The amount of currency given to reporters of a slash event which was  canceled by extraordinary circumstances (e.g. governance). 
  
+### chillThreshold(): `Option<Percent>`
+- **interface**: `api.query.staking.chillThreshold`
+- **summary**:    The threshold for when users can start calling `chill_other` for other validators / nominators.  The threshold is compared to the actual number of validators / nominators (`CountFor*`) in  the system compared to the configured max (`Max*Count`). 
+ 
 ### counterForNominators(): `u32`
 - **interface**: `api.query.staking.counterForNominators`
 - **summary**:    A tracker to keep count of the number of items in the `Nominators` map. 
@@ -871,7 +899,7 @@ ___
 - **interface**: `api.query.staking.currentPlannedSession`
 - **summary**:    The last planned session scheduled by the session pallet. 
 
-   This is basically in sync with the call to [`SessionManager::new_session`]. 
+   This is basically in sync with the call to [`pallet_session::SessionManager::new_session`]. 
  
 ### earliestUnappliedSlash(): `Option<EraIndex>`
 - **interface**: `api.query.staking.earliestUnappliedSlash`
@@ -999,7 +1027,7 @@ ___
 - **interface**: `api.query.staking.storageVersion`
 - **summary**:    True if network has been upgraded to this version.  Storage version of the pallet. 
 
-   This is set to v6.0.0 for new networks. 
+   This is set to v7.0.0 for new networks. 
  
 ### unappliedSlashes(`EraIndex`): `Vec<UnappliedSlash>`
 - **interface**: `api.query.staking.unappliedSlashes`

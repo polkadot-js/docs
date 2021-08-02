@@ -337,9 +337,9 @@ ___
 - **interface**: `api.events.democracy.Delegated.is`
 - **summary**:    An account has delegated their vote to another account. \[who, target\] 
  
-### Executed(`ReferendumIndex`, `bool`)
+### Executed(`ReferendumIndex`, `DispatchResult`)
 - **interface**: `api.events.democracy.Executed.is`
-- **summary**:    A proposal has been enacted. \[ref_index, is_ok\] 
+- **summary**:    A proposal has been enacted. \[ref_index, result\] 
  
 ### ExternalTabled()
 - **interface**: `api.events.democracy.ExternalTabled.is`
@@ -406,7 +406,7 @@ ___
 - **interface**: `api.events.electionProviderMultiPhase.ElectionFinalized.is`
 - **summary**:    The election has been finalized, with `Some` of the given computation, or else if the  election failed, `None`. 
  
-### Rewarded(`AccountId`)
+### Rewarded(`AccountId`, `Balance`)
 - **interface**: `api.events.electionProviderMultiPhase.Rewarded.is`
 - **summary**:    An account has been rewarded for their signed submission being finalized. 
  
@@ -414,15 +414,17 @@ ___
 - **interface**: `api.events.electionProviderMultiPhase.SignedPhaseStarted.is`
 - **summary**:    The signed phase of the given round has started. 
  
-### Slashed(`AccountId`)
+### Slashed(`AccountId`, `Balance`)
 - **interface**: `api.events.electionProviderMultiPhase.Slashed.is`
 - **summary**:    An account has been slashed for submitting an invalid signed submission. 
  
-### SolutionStored(`ElectionCompute`)
+### SolutionStored(`ElectionCompute`, `bool`)
 - **interface**: `api.events.electionProviderMultiPhase.SolutionStored.is`
 - **summary**:    A solution was stored with the given compute. 
 
    If the solution is signed, this means that it hasn't yet been processed. If the  solution is unsigned, this means that it has also been processed. 
+
+   The `bool` is `true` when a previous solution was ejected to make room for this one. 
  
 ### UnsignedPhaseStarted(`u32`)
 - **interface**: `api.events.electionProviderMultiPhase.UnsignedPhaseStarted.is`
@@ -783,8 +785,12 @@ ___
 
    NOTE: This event is only emitted when funds are bonded via a dispatchable. Notably,  it will not be emitted for staking rewards when they are added to stake. 
  
-### EraPayout(`EraIndex`, `Balance`, `Balance`)
-- **interface**: `api.events.staking.EraPayout.is`
+### Chilled(`AccountId`)
+- **interface**: `api.events.staking.Chilled.is`
+- **summary**:    An account has stopped participating as either a validator or nominator.  \[stash\] 
+ 
+### EraPaid(`EraIndex`, `Balance`, `Balance`)
+- **interface**: `api.events.staking.EraPaid.is`
 - **summary**:    The era payout has been set; the first balance is the validator-payout; the second is  the remainder from the maximum amount of reward.  \[era_index, validator_payout, remainder\] 
  
 ### Kicked(`AccountId`, `AccountId`)
@@ -795,16 +801,20 @@ ___
 - **interface**: `api.events.staking.OldSlashingReportDiscarded.is`
 - **summary**:    An old slashing report from a prior era was discarded because it could  not be processed. \[session_index\] 
  
-### Reward(`AccountId`, `Balance`)
-- **interface**: `api.events.staking.Reward.is`
-- **summary**:    The staker has been rewarded by this amount. \[stash, amount\] 
+### PayoutStarted(`EraIndex`, `AccountId`)
+- **interface**: `api.events.staking.PayoutStarted.is`
+- **summary**:    The stakers' rewards are getting paid. \[era_index, validator_stash\] 
  
-### Slash(`AccountId`, `Balance`)
-- **interface**: `api.events.staking.Slash.is`
+### Rewarded(`AccountId`, `Balance`)
+- **interface**: `api.events.staking.Rewarded.is`
+- **summary**:    The nominator has been rewarded by this amount. \[stash, amount\] 
+ 
+### Slashed(`AccountId`, `Balance`)
+- **interface**: `api.events.staking.Slashed.is`
 - **summary**:    One validator (and its nominators) has been slashed by the given amount.  \[validator, amount\] 
  
-### StakingElection()
-- **interface**: `api.events.staking.StakingElection.is`
+### StakersElected()
+- **interface**: `api.events.staking.StakersElected.is`
 - **summary**:    A new set of stakers was elected. 
  
 ### StakingElectionFailed()
@@ -1107,6 +1117,10 @@ ___
 ### BatchInterrupted(`u32`, `DispatchError`)
 - **interface**: `api.events.utility.BatchInterrupted.is`
 - **summary**:    Batch of dispatches did not complete fully. Index of first failing dispatch given, as  well as the error. \[index, error\] 
+ 
+### ItemCompleted()
+- **interface**: `api.events.utility.ItemCompleted.is`
+- **summary**:    A single item within a Batch of dispatches has completed with no error. 
 
 ___
 

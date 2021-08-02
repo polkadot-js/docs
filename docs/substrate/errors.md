@@ -596,6 +596,14 @@ ___
 - **interface**: `api.errors.electionProviderMultiPhase.CallNotAllowed.is`
 - **summary**:    The call is not allowed at this point. 
  
+### InvalidSubmissionIndex
+- **interface**: `api.errors.electionProviderMultiPhase.InvalidSubmissionIndex.is`
+- **summary**:    `Self::insert_submission` returned an invalid index. 
+ 
+### MissingSnapshotMetadata
+- **interface**: `api.errors.electionProviderMultiPhase.MissingSnapshotMetadata.is`
+- **summary**:    Snapshot metadata should exist but didn't. 
+ 
 ### OcwCallWrongEra
 - **interface**: `api.errors.electionProviderMultiPhase.OcwCallWrongEra.is`
 - **summary**:    OCW submitted solution for wrong round 
@@ -611,6 +619,22 @@ ___
 ### PreDispatchWrongWinnerCount
 - **interface**: `api.errors.electionProviderMultiPhase.PreDispatchWrongWinnerCount.is`
 - **summary**:    Wrong number of winners presented. 
+ 
+### SignedCannotPayDeposit
+- **interface**: `api.errors.electionProviderMultiPhase.SignedCannotPayDeposit.is`
+- **summary**:    The origin failed to pay the deposit. 
+ 
+### SignedInvalidWitness
+- **interface**: `api.errors.electionProviderMultiPhase.SignedInvalidWitness.is`
+- **summary**:    Witness data to dispatchable is invalid. 
+ 
+### SignedQueueFull
+- **interface**: `api.errors.electionProviderMultiPhase.SignedQueueFull.is`
+- **summary**:    The queue was full, and the solution was not better than any of the existing ones. 
+ 
+### SignedTooMuchWeight
+- **interface**: `api.errors.electionProviderMultiPhase.SignedTooMuchWeight.is`
+- **summary**:    The signed submission consumes too much weight 
 
 ___
 

@@ -1106,7 +1106,7 @@ ___
 
 ## electionProviderMultiPhase
  
-### setEmergencyElectionResult(solution: `ReadySolution`)
+### setEmergencyElectionResult(supports: `Supports`)
 - **interface**: `api.tx.electionProviderMultiPhase.setEmergencyElectionResult`
 - **summary**:    Set a solution in the queue, to be handed out to the client of this pallet in the next  call to `ElectionProvider::elect`. 
 
@@ -1121,6 +1121,18 @@ ___
    Dispatch origin must be aligned with `T::ForceOrigin`. 
 
    This check can be turned off by setting the value to `None`. 
+ 
+### submit(solution: `RawSolution`, num_signed_submissions: `u32`)
+- **interface**: `api.tx.electionProviderMultiPhase.submit`
+- **summary**:    Submit a solution for the signed phase. 
+
+   The dispatch origin fo this call must be __signed__. 
+
+   The solution is potentially queued, based on the claimed score and processed at the end  of the signed phase. 
+
+   A deposit is reserved and recorded for the solution. Based on the outcome, the solution  might be rewarded, slashed, or get all or a part of the deposit back. 
+
+    
  
 ### submitUnsigned(solution: `RawSolution`, witness: `SolutionOrSnapshotSize`)
 - **interface**: `api.tx.electionProviderMultiPhase.submitUnsigned`
@@ -1177,7 +1189,7 @@ ___
 
   - `origin` is a current runner-up. In this case, the deposit is unreserved, returned and   origin is removed as a runner-up. 
 
-  - `origin` is a current member. In this case, the deposit is unreserved and origin is   removed as a member, consequently not being a candidate for the next round anymore.    Similar to [`remove_members`], if replacement runners exists, they are immediately    used. If the prime is renouncing, then no prime will exist until the next round. 
+  - `origin` is a current member. In this case, the deposit is unreserved and origin is   removed as a member, consequently not being a candidate for the next round anymore.    Similar to [`remove_member`](Self::remove_member), if replacement runners exists,    they are immediately used. If the prime is renouncing, then no prime will exist until    the next round. 
 
    The dispatch origin of this call must be signed, and have one of the above roles. 
 
@@ -2234,17 +2246,15 @@ ___
 
    The dispatch origin for this call must be _Signed_ by the stash account. 
 
-   Emits `Bonded`. 
-
-    
+   Emits `Bonded`.   
  
 ### bondExtra(max_additional: `Compact<BalanceOf>`)
 - **interface**: `api.tx.staking.bondExtra`
 - **summary**:    Add some extra amount that have appeared in the stash `free_balance` into the balance up  for staking. 
 
-   Use this if there are additional funds in your stash account that you wish to bond.  Unlike [`bond`] or [`unbond`] this function does not impose any limitation on the amount  that can be added. 
+   The dispatch origin for this call must be _Signed_ by the stash, not the controller. 
 
-   The dispatch origin for this call must be _Signed_ by the stash, not the controller and  it can be only called when [`EraElectionStatus`] is `Closed`. 
+   Use this if there are additional funds in your stash account that you wish to bond.  Unlike [`bond`](Self::bond) or [`unbond`](Self::unbond) this function does not impose any limitation  on the amount that can be added. 
 
    Emits `Bonded`. 
 
@@ -2266,23 +2276,29 @@ ___
 
    Effects will be felt at the beginning of the next era. 
 
-   The dispatch origin for this call must be _Signed_ by the controller, not the stash.  And, it can be only called when [`EraElectionStatus`] is `Closed`. 
+   The dispatch origin for this call must be _Signed_ by the controller, not the stash. 
 
     
  
 ### chillOther(controller: `AccountId`)
 - **interface**: `api.tx.staking.chillOther`
-- **summary**:    Declare a `controller` as having no desire to either validator or nominate. 
+- **summary**:    Declare a `controller` to stop participating as either a validator or nominator. 
 
    Effects will be felt at the beginning of the next era. 
 
    The dispatch origin for this call must be _Signed_, but can be called by anyone. 
 
-   If the caller is the same as the controller being targeted, then no further checks  are enforced. However, this call can also be made by an third party user who witnesses  that this controller does not satisfy the minimum bond requirements to be in their role. 
+   If the caller is the same as the controller being targeted, then no further checks are  enforced, and this function behaves just like `chill`. 
+
+   If the caller is different than the controller being targeted, the following conditions  must be met: 
+
+  * A `ChillThreshold` must be set and checked which defines how close to the max   nominators or validators we must reach before users can start chilling one-another. 
+
+  * A `MaxNominatorCount` and `MaxValidatorCount` must be set which is used to determine   how close we are to the threshold. 
+
+  * A `MinNominatorBond` and `MinValidatorBond` must be set and checked, which determines   if this is a person that should be chilled because they have not met the threshold    bond required. 
 
    This can be helpful if bond requirements are updated, and we need to remove old users  who do not satisfy these requirements. 
-
-  
  
 ### forceNewEra()
 - **interface**: `api.tx.staking.forceNewEra`
@@ -2342,7 +2358,7 @@ ___
 
    Effects will be felt at the beginning of the next era. 
 
-   The dispatch origin for this call must be _Signed_ by the controller, not the stash.  And, it can be only called when [`EraElectionStatus`] is `Closed`. The controller  account should represent a validator. 
+   The dispatch origin for this call must be _Signed_ by the controller, not the stash. 
 
    - `who`: A list of nominator stash accounts who are nominating this validator which    should no longer be nominating this validator. 
 
@@ -2352,9 +2368,9 @@ ___
 - **interface**: `api.tx.staking.nominate`
 - **summary**:    Declare the desire to nominate `targets` for the origin controller. 
 
-   Effects will be felt at the beginning of the next era. This can only be called when  [`EraElectionStatus`] is `Closed`. 
+   Effects will be felt at the beginning of the next era. 
 
-   The dispatch origin for this call must be _Signed_ by the controller, not the stash.  And, it can be only called when [`EraElectionStatus`] is `Closed`. 
+   The dispatch origin for this call must be _Signed_ by the controller, not the stash. 
 
     
  
@@ -2367,8 +2383,6 @@ ___
   - `era` may be any era between `[current_era - history_depth; current_era]`.
 
    The origin of this call must be _Signed_. Any account can call this function, even if  it is not one of the stakers. 
-
-   This can only be called when [`EraElectionStatus`] is `Closed`. 
 
     
  
@@ -2386,7 +2400,7 @@ ___
 - **interface**: `api.tx.staking.rebond`
 - **summary**:    Rebond a portion of the stash scheduled to be unlocked. 
 
-   The dispatch origin must be signed by the controller, and it can be only called when  [`EraElectionStatus`] is `Closed`. 
+   The dispatch origin must be signed by the controller. 
 
     
  
@@ -2440,34 +2454,8 @@ ___
 
     
  
-### setValidatorCount(new: `Compact<u32>`)
-- **interface**: `api.tx.staking.setValidatorCount`
-- **summary**:    Sets the ideal number of validators. 
-
-   The dispatch origin must be Root. 
-
-    
- 
-### unbond(value: `Compact<BalanceOf>`)
-- **interface**: `api.tx.staking.unbond`
-- **summary**:    Schedule a portion of the stash to be unlocked ready for transfer out after the bond  period ends. If this leaves an amount actively bonded less than  T::Currency::minimum_balance(), then it is increased to the full amount. 
-
-   Once the unlock period is done, you can call `withdraw_unbonded` to actually move  the funds out of management ready for transfer. 
-
-   No more than a limited number of unlocking chunks (see `MAX_UNLOCKING_CHUNKS`)  can co-exists at the same time. In that case, [`Call::withdraw_unbonded`] need  to be called first to remove some of the chunks (if possible). 
-
-   If a user encounters the `InsufficientBond` error when calling this extrinsic,  they should call `chill` first in order to free up their bonded funds. 
-
-   The dispatch origin for this call must be _Signed_ by the controller, not the stash.  And, it can be only called when [`EraElectionStatus`] is `Closed`. 
-
-   Emits `Unbonded`. 
-
-   See also [`Call::withdraw_unbonded`]. 
-
-    
- 
-### updateStakingLimits(min_nominator_bond: `BalanceOf`, min_validator_bond: `BalanceOf`, max_nominator_count: `Option<u32>`, max_validator_count: `Option<u32>`)
-- **interface**: `api.tx.staking.updateStakingLimits`
+### setStakingLimits(min_nominator_bond: `BalanceOf`, min_validator_bond: `BalanceOf`, max_nominator_count: `Option<u32>`, max_validator_count: `Option<u32>`, threshold: `Option<Percent>`)
+- **interface**: `api.tx.staking.setStakingLimits`
 - **summary**:    Update the various staking limits this pallet. 
 
    * `min_nominator_bond`: The minimum active bond needed to be a nominator. 
@@ -2482,15 +2470,37 @@ ___
 
    NOTE: Existing nominators and validators will not be affected by this update.  to kick people under the new limits, `chill_other` should be called. 
  
+### setValidatorCount(new: `Compact<u32>`)
+- **interface**: `api.tx.staking.setValidatorCount`
+- **summary**:    Sets the ideal number of validators. 
+
+   The dispatch origin must be Root. 
+
+    
+ 
+### unbond(value: `Compact<BalanceOf>`)
+- **interface**: `api.tx.staking.unbond`
+- **summary**:    Schedule a portion of the stash to be unlocked ready for transfer out after the bond  period ends. If this leaves an amount actively bonded less than  T::Currency::minimum_balance(), then it is increased to the full amount. 
+
+   The dispatch origin for this call must be _Signed_ by the controller, not the stash. 
+
+   Once the unlock period is done, you can call `withdraw_unbonded` to actually move  the funds out of management ready for transfer. 
+
+   No more than a limited number of unlocking chunks (see `MAX_UNLOCKING_CHUNKS`)  can co-exists at the same time. In that case, [`Call::withdraw_unbonded`] need  to be called first to remove some of the chunks (if possible). 
+
+   If a user encounters the `InsufficientBond` error when calling this extrinsic,  they should call `chill` first in order to free up their bonded funds. 
+
+   Emits `Unbonded`. 
+
+   See also [`Call::withdraw_unbonded`]. 
+ 
 ### validate(prefs: `ValidatorPrefs`)
 - **interface**: `api.tx.staking.validate`
 - **summary**:    Declare the desire to validate for the origin controller. 
 
    Effects will be felt at the beginning of the next era. 
 
-   The dispatch origin for this call must be _Signed_ by the controller, not the stash.  And, it can be only called when [`EraElectionStatus`] is `Closed`. 
-
-    
+   The dispatch origin for this call must be _Signed_ by the controller, not the stash. 
  
 ### withdrawUnbonded(num_slashing_spans: `u32`)
 - **interface**: `api.tx.staking.withdrawUnbonded`
@@ -2498,7 +2508,7 @@ ___
 
    This essentially frees up that balance to be used by the stash account to do  whatever it wants. 
 
-   The dispatch origin for this call must be _Signed_ by the controller, not the stash.  And, it can be only called when [`EraElectionStatus`] is `Closed`. 
+   The dispatch origin for this call must be _Signed_ by the controller. 
 
    Emits `Withdrawn`. 
 
@@ -3031,7 +3041,7 @@ ___
 
   - `n = witness.instances`
 
-  - `m = witness.instance_metdadatas`
+  - `m = witness.instance_metadatas`
 
   - `a = witness.attributes`
  
