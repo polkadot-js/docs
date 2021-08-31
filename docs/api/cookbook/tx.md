@@ -46,9 +46,9 @@ api.tx.balances
           if (error.isModule) {
             // for module errors, we have the section indexed, lookup
             const decoded = api.registry.findMetaError(error.asModule);
-            const { documentation, method, section } = decoded;
+            const { docs, method, section } = decoded;
 
-            console.log(`${section}.${method}: ${documentation.join(' ')}`);
+            console.log(`${section}.${method}: ${docs.join(' ')}`);
           } else {
             // Other, CannotLookup, BadOrigin, no extra info
             console.log(error.toString());
@@ -70,9 +70,9 @@ api.tx.balances
       if (dispatchError.isModule) {
         // for module errors, we have the section indexed, lookup
         const decoded = api.registry.findMetaError(dispatchError.asModule);
-        const { documentation, name, section } = decoded;
+        const { docs, name, section } = decoded;
 
-        console.log(`${section}.${name}: ${documentation.join(' ')}`);
+        console.log(`${section}.${name}: ${docs.join(' ')}`);
       } else {
         // Other, CannotLookup, BadOrigin, no extra info
         console.log(dispatchError.toString());
@@ -107,9 +107,9 @@ const unsub = await api.tx.sudo
             if (error.isModule) {
               // for module errors, we have the section indexed, lookup
               const decoded = api.registry.findMetaError(error.asModule);
-              const { documentation, name, section } = decoded;
+              const { docs, name, section } = decoded;
 
-              console.log(`${section}.${name}: ${documentation.join(' ')}`);
+              console.log(`${section}.${name}: ${docs.join(' ')}`);
             } else {
               // Other, CannotLookup, BadOrigin, no extra info
               console.log(error.toString());
