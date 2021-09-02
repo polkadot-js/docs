@@ -58,6 +58,8 @@ The following sections contain the module constants, also known as parameter typ
 
 - **[uniques](#uniques)**
 
+- **[utility](#utility)**
+
 - **[vesting](#vesting)**
 
 
@@ -177,13 +179,13 @@ ___
 
    This is different from the [`Self::TombstoneDeposit`] because this only needs to be  deposited while the contract is alive. Costs for additional storage are added to  this base cost. 
 
-   This is a simple way to ensure that contracts with empty storage eventually get deleted by  making them pay rent. This creates an incentive to remove them early in order to save rent. 
+   This is a simple way to ensure that contracts with empty storage eventually get deleted  by making them pay rent. This creates an incentive to remove them early in order to save  rent. 
  
 ### depositPerStorageByte: `BalanceOf`
 - **interface**: `api.consts.contracts.depositPerStorageByte`
 - **summary**:    The balance a contract needs to deposit per storage byte to stay alive indefinitely. 
 
-   Let's suppose the deposit is 1,000 BU (balance units)/byte and the rent is 1 BU/byte/day,  then a contract with 1,000,000 BU that uses 1,000 bytes of storage would pay no rent.  But if the balance reduced to 500,000 BU and the storage stayed the same at 1,000,  then it would pay 500 BU/day. 
+   Let's suppose the deposit is 1,000 BU (balance units)/byte and the rent is 1  BU/byte/day, then a contract with 1,000,000 BU that uses 1,000 bytes of storage would  pay no rent. But if the balance reduced to 500,000 BU and the storage stayed the same at  1,000, then it would pay 500 BU/day. 
  
 ### depositPerStorageItem: `BalanceOf`
 - **interface**: `api.consts.contracts.depositPerStorageItem`
@@ -226,9 +228,9 @@ ___
  
 ### enactmentPeriod: `BlockNumber`
 - **interface**: `api.consts.democracy.enactmentPeriod`
-- **summary**:    The minimum period of locking and the period between a proposal being approved and enacted. 
+- **summary**:    The minimum period of locking and the period between a proposal being approved and  enacted. 
 
-   It should generally be a little more than the unstake period to ensure that  voting stakers have an opportunity to remove themselves from the system in the case where  they are on the losing side of a vote. 
+   It should generally be a little more than the unstake period to ensure that  voting stakers have an opportunity to remove themselves from the system in the case  where they are on the losing side of a vote. 
  
 ### fastTrackVotingPeriod: `BlockNumber`
 - **interface**: `api.consts.democracy.fastTrackVotingPeriod`
@@ -236,7 +238,7 @@ ___
  
 ### instantAllowed: `bool`
 - **interface**: `api.consts.democracy.instantAllowed`
-- **summary**:    Indicator for whether an emergency origin is even allowed to happen. Some chains may want  to set this permanently to `false`, others may want to condition it on things such as  an upgrade having happened recently. 
+- **summary**:    Indicator for whether an emergency origin is even allowed to happen. Some chains may  want to set this permanently to `false`, others may want to condition it on things such  as an upgrade having happened recently. 
  
 ### launchPeriod: `BlockNumber`
 - **interface**: `api.consts.democracy.launchPeriod`
@@ -440,7 +442,7 @@ ___
  
 ### subAccountDeposit: `BalanceOf`
 - **interface**: `api.consts.identity.subAccountDeposit`
-- **summary**:    The amount held on deposit for a registered subaccount. This should account for the fact  that one storage item's value will increase by the size of an account ID, and there will be  another trie item whose value is the size of an account ID plus 32 bytes. 
+- **summary**:    The amount held on deposit for a registered subaccount. This should account for the fact  that one storage item's value will increase by the size of an account ID, and there will  be another trie item whose value is the size of an account ID plus 32 bytes. 
 
 ___
 
@@ -486,7 +488,7 @@ ___
  
 ### depositBase: `BalanceOf`
 - **interface**: `api.consts.multisig.depositBase`
-- **summary**:    The base amount of currency needed to reserve for creating a multisig execution or to store  a dispatch call for later. 
+- **summary**:    The base amount of currency needed to reserve for creating a multisig execution or to  store a dispatch call for later. 
 
    This is held for an additional storage item whose value size is  `4 + sizeof((BlockNumber, Balance, AccountId))` bytes and whose key size is  `32 + sizeof(AccountId)` bytes. 
  
@@ -509,7 +511,7 @@ ___
 - **interface**: `api.consts.proxy.announcementDepositBase`
 - **summary**:    The base amount of currency needed to reserve for creating an announcement. 
 
-   This is held when a new storage item holding a `Balance` is created (typically 16 bytes). 
+   This is held when a new storage item holding a `Balance` is created (typically 16  bytes). 
  
 ### announcementDepositFactor: `BalanceOf`
 - **interface**: `api.consts.proxy.announcementDepositFactor`
@@ -535,7 +537,7 @@ ___
 - **interface**: `api.consts.proxy.proxyDepositFactor`
 - **summary**:    The amount of currency needed per proxy added. 
 
-   This is held for adding 32 bytes plus an instance of `ProxyType` more into a pre-existing  storage value. Thus, when configuring `ProxyDepositFactor` one should take into account  `32 + proxy_type.encode().len()` bytes of data. 
+   This is held for adding 32 bytes plus an instance of `ProxyType` more into a  pre-existing storage value. Thus, when configuring `ProxyDepositFactor` one should take  into account `32 + proxy_type.encode().len()` bytes of data. 
 
 ___
 
@@ -550,9 +552,9 @@ ___
  
 ### friendDepositFactor: `BalanceOf`
 - **interface**: `api.consts.recovery.friendDepositFactor`
-- **summary**:    The amount of currency needed per additional user when creating a recovery configuration. 
+- **summary**:    The amount of currency needed per additional user when creating a recovery  configuration. 
 
-   This is held for adding `sizeof(AccountId)` bytes more into a pre-existing storage value. 
+   This is held for adding `sizeof(AccountId)` bytes more into a pre-existing storage  value. 
  
 ### maxFriends: `u16`
 - **interface**: `api.consts.recovery.maxFriends`
@@ -571,7 +573,7 @@ ___
  
 ### maximumWeight: `Weight`
 - **interface**: `api.consts.scheduler.maximumWeight`
-- **summary**:    The maximum weight that may be scheduled per block for any dispatchables of less priority  than `schedule::HARD_DEADLINE`. 
+- **summary**:    The maximum weight that may be scheduled per block for any dispatchables of less  priority than `schedule::HARD_DEADLINE`. 
  
 ### maxScheduledPerBlock: `u32`
 - **interface**: `api.consts.scheduler.maxScheduledPerBlock`
@@ -630,7 +632,7 @@ ___
 - **interface**: `api.consts.staking.maxNominatorRewardedPerValidator`
 - **summary**:    The maximum number of nominators rewarded for each validator. 
 
-   For each validator only the `$MaxNominatorRewardedPerValidator` biggest stakers can claim  their reward. This used to limit the i/o cost for the nominator payout. 
+   For each validator only the `$MaxNominatorRewardedPerValidator` biggest stakers can  claim their reward. This used to limit the i/o cost for the nominator payout. 
  
 ### sessionsPerEra: `SessionIndex`
 - **interface**: `api.consts.staking.sessionsPerEra`
@@ -680,7 +682,7 @@ ___
  
 ### minimumPeriod: `Moment`
 - **interface**: `api.consts.timestamp.minimumPeriod`
-- **summary**:    The minimum period between blocks. Beware that this is different to the *expected* period  that the block production apparatus provides. Your chosen consensus system will generally  work with this to determine a sensible block time. e.g. For Aura, it will be double this  period on default settings. 
+- **summary**:    The minimum period between blocks. Beware that this is different to the *expected*  period that the block production apparatus provides. Your chosen consensus system will  generally work with this to determine a sensible block time. e.g. For Aura, it will be  double this period on default settings. 
 
 ___
 
@@ -785,6 +787,15 @@ ___
 ### valueLimit: `u32`
 - **interface**: `api.consts.uniques.valueLimit`
 - **summary**:    The maximum length of an attribute value. 
+
+___
+
+
+## utility
+ 
+### batchedCallsLimit: `u32`
+- **interface**: `api.consts.utility.batchedCallsLimit`
+- **summary**:    The limit on the number of batched calls. 
 
 ___
 

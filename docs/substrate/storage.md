@@ -142,7 +142,7 @@ ___
  
 ### epochConfig(): `Option<BabeEpochConfiguration>`
 - **interface**: `api.query.babe.epochConfig`
-- **summary**:    The configuration for the current epoch. Should never be `None` as it is initialized in genesis. 
+- **summary**:    The configuration for the current epoch. Should never be `None` as it is initialized in  genesis. 
  
 ### epochIndex(): `u64`
 - **interface**: `api.query.babe.epochIndex`
@@ -879,7 +879,7 @@ ___
  
 ### chillThreshold(): `Option<Percent>`
 - **interface**: `api.query.staking.chillThreshold`
-- **summary**:    The threshold for when users can start calling `chill_other` for other validators / nominators.  The threshold is compared to the actual number of validators / nominators (`CountFor*`) in  the system compared to the configured max (`Max*Count`). 
+- **summary**:    The threshold for when users can start calling `chill_other` for other validators /  nominators. The threshold is compared to the actual number of validators / nominators  (`CountFor*`) in the system compared to the configured max (`Max*Count`). 
  
 ### counterForNominators(): `u32`
 - **interface**: `api.query.staking.counterForNominators`

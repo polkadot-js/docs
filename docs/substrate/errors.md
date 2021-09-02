@@ -68,6 +68,8 @@ This page lists the errors that can be encountered in the different modules.
 
 - **[uniques](#uniques)**
 
+- **[utility](#utility)**
+
 - **[vesting](#vesting)**
 
 
@@ -110,7 +112,7 @@ ___
  
 ### NoProvider
 - **interface**: `api.errors.assets.NoProvider.is`
-- **summary**:    No provider reference exists to allow a non-zero balance of a non-self-sufficient asset. 
+- **summary**:    No provider reference exists to allow a non-zero balance of a non-self-sufficient  asset. 
  
 ### Unapproved
 - **interface**: `api.errors.assets.Unapproved.is`
@@ -467,10 +469,6 @@ ___
 - **interface**: `api.errors.democracy.AlreadyVetoed.is`
 - **summary**:    Identity may not veto a proposal twice 
  
-### BadIndex
-- **interface**: `api.errors.democracy.BadIndex.is`
-- **summary**:    Unknown index 
- 
 ### DuplicatePreimage
 - **interface**: `api.errors.democracy.DuplicatePreimage.is`
 - **summary**:    Preimage already noted 
@@ -495,10 +493,6 @@ ___
 - **interface**: `api.errors.democracy.InvalidHash.is`
 - **summary**:    Invalid hash 
  
-### InvalidWitness
-- **interface**: `api.errors.democracy.InvalidWitness.is`
-- **summary**:    The provided witness data is wrong. 
- 
 ### MaxVotesReached
 - **interface**: `api.errors.democracy.MaxVotesReached.is`
 - **summary**:    Maximum number of votes reached. 
@@ -519,25 +513,13 @@ ___
 - **interface**: `api.errors.democracy.NoProposal.is`
 - **summary**:    No external proposal 
  
-### NotDelegated
-- **interface**: `api.errors.democracy.NotDelegated.is`
-- **summary**:    Not delegated 
- 
 ### NotDelegating
 - **interface**: `api.errors.democracy.NotDelegating.is`
 - **summary**:    The account is not currently delegating. 
  
-### NotExpired
-- **interface**: `api.errors.democracy.NotExpired.is`
-- **summary**:    The lock on the account to be unlocked has not yet expired. 
- 
 ### NotImminent
 - **interface**: `api.errors.democracy.NotImminent.is`
 - **summary**:    Not imminent 
- 
-### NotLocked
-- **interface**: `api.errors.democracy.NotLocked.is`
-- **summary**:    The target account does not have a lock. 
  
 ### NotSimpleMajority
 - **interface**: `api.errors.democracy.NotSimpleMajority.is`
@@ -720,7 +702,7 @@ ___
  
 ### BidTooLow
 - **interface**: `api.errors.gilt.BidTooLow.is`
-- **summary**:    The queue for the bid's duration is full and the amount bid is too low to get in through  replacing an existing bid. 
+- **summary**:    The queue for the bid's duration is full and the amount bid is too low to get in  through replacing an existing bid. 
  
 ### DurationTooBig
 - **interface**: `api.errors.gilt.DurationTooBig.is`
@@ -1296,7 +1278,7 @@ ___
  
 ### TooManyNominators
 - **interface**: `api.errors.staking.TooManyNominators.is`
-- **summary**:    There are too many nominators in the system. Governance needs to adjust the staking settings  to keep things safe for the runtime. 
+- **summary**:    There are too many nominators in the system. Governance needs to adjust the staking  settings to keep things safe for the runtime. 
  
 ### TooManyTargets
 - **interface**: `api.errors.staking.TooManyTargets.is`
@@ -1304,7 +1286,7 @@ ___
  
 ### TooManyValidators
 - **interface**: `api.errors.staking.TooManyValidators.is`
-- **summary**:    There are too many validators in the system. Governance needs to adjust the staking settings  to keep things safe for the runtime. 
+- **summary**:    There are too many validators in the system. Governance needs to adjust the staking  settings to keep things safe for the runtime. 
 
 ___
 
@@ -1547,6 +1529,15 @@ ___
 ### WrongOwner
 - **interface**: `api.errors.uniques.WrongOwner.is`
 - **summary**:    The owner turned out to be different to what was expected. 
+
+___
+
+
+## utility
+ 
+### TooManyCalls
+- **interface**: `api.errors.utility.TooManyCalls.is`
+- **summary**:    Too many calls batched. 
 
 ___
 

@@ -241,7 +241,7 @@ ___
 
    - `contract`: The contract that emitted the event. 
 
-  - `data`: Data supplied by the contract. Metadata generated during contract           compilation is needed to decode it. 
+  - `data`: Data supplied by the contract. Metadata generated during contract compilation   is needed to decode it. 
  
 ### Evicted(`AccountId`)
 - **interface**: `api.events.contracts.Evicted.is`
@@ -383,15 +383,11 @@ ___
  
 ### Tabled(`PropIndex`, `Balance`, `Vec<AccountId>`)
 - **interface**: `api.events.democracy.Tabled.is`
-- **summary**:    A public proposal has been tabled for referendum vote. \[proposal_index, deposit, depositors\] 
+- **summary**:    A public proposal has been tabled for referendum vote. \[proposal_index, deposit,  depositors\] 
  
 ### Undelegated(`AccountId`)
 - **interface**: `api.events.democracy.Undelegated.is`
 - **summary**:    An \[account\] has cancelled a previous delegation operation. 
- 
-### Unlocked(`AccountId`)
-- **interface**: `api.events.democracy.Unlocked.is`
-- **summary**:    An \[account\] has been unlocked successfully. 
  
 ### Vetoed(`AccountId`, `Hash`, `BlockNumber`)
 - **interface**: `api.events.democracy.Vetoed.is`
@@ -644,7 +640,7 @@ ___
  
 ### AnonymousCreated(`AccountId`, `AccountId`, `ProxyType`, `u16`)
 - **interface**: `api.events.proxy.AnonymousCreated.is`
-- **summary**:    Anonymous account has been created by new proxy with given  disambiguation index and proxy type. \[anonymous, who, proxy_type, disambiguation_index\] 
+- **summary**:    Anonymous account has been created by new proxy with given  disambiguation index and proxy type. \[anonymous, who, proxy_type,  disambiguation_index\] 
  
 ### ProxyExecuted(`DispatchResult`)
 - **interface**: `api.events.proxy.ProxyExecuted.is`
@@ -703,7 +699,7 @@ ___
  
 ### NewSession(`SessionIndex`)
 - **interface**: `api.events.session.NewSession.is`
-- **summary**:    New session has happened. Note that the argument is the \[session_index\], not the block  number as the type might suggest. 
+- **summary**:    New session has happened. Note that the argument is the \[session_index\], not the  block number as the type might suggest. 
 
 ___
 
