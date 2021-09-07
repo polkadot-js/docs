@@ -1548,10 +1548,18 @@ ___
 - **interface**: `api.errors.vesting.AmountLow.is`
 - **summary**:    Amount being transferred is too low to create a vesting schedule. 
  
-### ExistingVestingSchedule
-- **interface**: `api.errors.vesting.ExistingVestingSchedule.is`
-- **summary**:    An existing vesting schedule already exists for this account that cannot be clobbered. 
+### AtMaxVestingSchedules
+- **interface**: `api.errors.vesting.AtMaxVestingSchedules.is`
+- **summary**:    The account already has `MaxVestingSchedules` count of schedules and thus  cannot add another one. Consider merging existing schedules in order to add another. 
+ 
+### InvalidScheduleParams
+- **interface**: `api.errors.vesting.InvalidScheduleParams.is`
+- **summary**:    Failed to create a new schedule because some parameter was invalid. 
  
 ### NotVesting
 - **interface**: `api.errors.vesting.NotVesting.is`
 - **summary**:    The account given is not vesting. 
+ 
+### ScheduleIndexOutOfBounds
+- **interface**: `api.errors.vesting.ScheduleIndexOutOfBounds.is`
+- **summary**:    An index was out of bounds of the vesting schedules. 

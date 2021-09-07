@@ -642,6 +642,10 @@ ___
 - **interface**: `api.events.proxy.AnonymousCreated.is`
 - **summary**:    Anonymous account has been created by new proxy with given  disambiguation index and proxy type. \[anonymous, who, proxy_type,  disambiguation_index\] 
  
+### ProxyAdded(`AccountId`, `AccountId`, `ProxyType`, `BlockNumber`)
+- **interface**: `api.events.proxy.ProxyAdded.is`
+- **summary**:    A proxy was added. \[delegator, delegatee, proxy_type, delay\] 
+ 
 ### ProxyExecuted(`DispatchResult`)
 - **interface**: `api.events.proxy.ProxyExecuted.is`
 - **summary**:    A proxy was executed correctly, with the given \[result\]. 
@@ -1071,7 +1075,7 @@ ___
  
 ### Issued(`ClassId`, `InstanceId`, `AccountId`)
 - **interface**: `api.events.uniques.Issued.is`
-- **summary**:    An asset `instace` was issued. \[ class, instance, owner \] 
+- **summary**:    An asset `instance` was issued. \[ class, instance, owner \] 
  
 ### MetadataCleared(`ClassId`, `InstanceId`)
 - **interface**: `api.events.uniques.MetadataCleared.is`
@@ -1099,7 +1103,7 @@ ___
  
 ### Transferred(`ClassId`, `InstanceId`, `AccountId`, `AccountId`)
 - **interface**: `api.events.uniques.Transferred.is`
-- **summary**:    An asset `instace` was transferred. \[ class, instance, from, to \] 
+- **summary**:    An asset `instance` was transferred. \[ class, instance, from, to \] 
 
 ___
 
@@ -1125,8 +1129,8 @@ ___
  
 ### VestingCompleted(`AccountId`)
 - **interface**: `api.events.vesting.VestingCompleted.is`
-- **summary**:    An \[account\] has become fully vested. No further vesting can happen. 
+- **summary**:    An \[account\] has become fully vested. 
  
 ### VestingUpdated(`AccountId`, `Balance`)
 - **interface**: `api.events.vesting.VestingUpdated.is`
-- **summary**:    The amount vested has been updated. This could indicate more funds are available. The  balance given is the amount which is left unvested (and thus locked).  \[account, unvested\] 
+- **summary**:    The amount vested has been updated. This could indicate a change in funds available.  The balance given is the amount which is left unvested (and thus locked).  \[account, unvested\] 

@@ -228,7 +228,7 @@ ___
  
 ### enactmentPeriod: `BlockNumber`
 - **interface**: `api.consts.democracy.enactmentPeriod`
-- **summary**:    The minimum period of locking and the period between a proposal being approved and  enacted. 
+- **summary**:    The period between a proposal being approved and enacted. 
 
    It should generally be a little more than the unstake period to ensure that  voting stakers have an opportunity to remove themselves from the system in the case  where they are on the losing side of a vote. 
  
@@ -261,6 +261,12 @@ ___
 ### preimageByteDeposit: `BalanceOf`
 - **interface**: `api.consts.democracy.preimageByteDeposit`
 - **summary**:    The amount of balance that must be deposited per byte of preimage stored. 
+ 
+### voteLockingPeriod: `BlockNumber`
+- **interface**: `api.consts.democracy.voteLockingPeriod`
+- **summary**:    The minimum period of vote locking. 
+
+   It should be no shorter than enactment period to ensure that in the case of an approval,  those successful voters are locked into the consequences that their votes entail. 
  
 ### votingPeriod: `BlockNumber`
 - **interface**: `api.consts.democracy.votingPeriod`
@@ -801,6 +807,9 @@ ___
 
 
 ## vesting
+ 
+### maxVestingSchedules: `u32`
+- **interface**: `api.consts.vesting.maxVestingSchedules`
  
 ### minVestedTransfer: `BalanceOf`
 - **interface**: `api.consts.vesting.minVestedTransfer`

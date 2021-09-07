@@ -1115,6 +1115,8 @@ ___
 ### events(): `Vec<EventRecord>`
 - **interface**: `api.query.system.events`
 - **summary**:    Events deposited for the current block. 
+
+   NOTE: This storage item is explicitly unbounded since it is never intended to be read  from within the runtime. 
  
 ### eventTopics(`Hash`): `Vec<(BlockNumber,EventIndex)>`
 - **interface**: `api.query.system.eventTopics`
@@ -1326,6 +1328,12 @@ ___
 
 ## vesting
  
-### vesting(`AccountId`): `Option<VestingInfo>`
+### storageVersion(): `Releases`
+- **interface**: `api.query.vesting.storageVersion`
+- **summary**:    Storage version of the pallet. 
+
+   New networks start with latest version, as determined by the genesis build. 
+ 
+### vesting(`AccountId`): `Option<Vec<VestingInfo>>`
 - **interface**: `api.query.vesting.vesting`
 - **summary**:    Information regarding the vesting of a given account. 
