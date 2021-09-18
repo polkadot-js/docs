@@ -261,7 +261,7 @@ ___
  
 ### BelowSubsistenceThreshold
 - **interface**: `api.errors.contracts.BelowSubsistenceThreshold.is`
-- **summary**:    Performing the requested transfer would have brought the contract below  the subsistence threshold. No transfer is allowed to do this in order to allow  for a tombstone to be created. Use `seal_terminate` to remove a contract without  leaving a tombstone behind. 
+- **summary**:    Performing the requested transfer would have brought the contract below  the subsistence threshold. No transfer is allowed to do this. Use `seal_terminate`  to recover a deposit. 
  
 ### CodeNotFound
 - **interface**: `api.errors.contracts.CodeNotFound.is`
@@ -270,18 +270,6 @@ ___
 ### CodeTooLarge
 - **interface**: `api.errors.contracts.CodeTooLarge.is`
 - **summary**:    The code supplied to `instantiate_with_code` exceeds the limit specified in the  current schedule. 
- 
-### ContractIsTombstone
-- **interface**: `api.errors.contracts.ContractIsTombstone.is`
-- **summary**:    A tombstone exist at the specified address. 
-
-   Tombstone cannot be called. Anyone can use `seal_restore_to` in order to revive  the contract, though. 
- 
-### ContractNotEvictable
-- **interface**: `api.errors.contracts.ContractNotEvictable.is`
-- **summary**:    A contract could not be evicted because it has enough balance to pay rent. 
-
-   This can be returned from [`Pallet::claim_surcharge`] because the target  contract has enough balance to pay for its rent. 
  
 ### ContractNotFound
 - **interface**: `api.errors.contracts.ContractNotFound.is`
@@ -303,7 +291,7 @@ ___
 - **interface**: `api.errors.contracts.DeletionQueueFull.is`
 - **summary**:    Removal of a contract failed because the deletion queue is full. 
 
-   This can happen when either calling [`Pallet::claim_surcharge`] or `seal_terminate`.  The queue is filled by deleting contracts and emptied by a fixed amount each block.  Trying again during another block is the only way to resolve this issue. 
+   This can happen when calling `seal_terminate`.  The queue is filled by deleting contracts and emptied by a fixed amount each block.  Trying again during another block is the only way to resolve this issue. 
  
 ### DuplicateContract
 - **interface**: `api.errors.contracts.DuplicateContract.is`
@@ -317,29 +305,9 @@ ___
 - **interface**: `api.errors.contracts.InputForwarded.is`
 - **summary**:    `seal_call` forwarded this contracts input. It therefore is no longer available. 
  
-### InvalidContractOrigin
-- **interface**: `api.errors.contracts.InvalidContractOrigin.is`
-- **summary**:    An origin TrieId written in the current block. 
- 
-### InvalidDestinationContract
-- **interface**: `api.errors.contracts.InvalidDestinationContract.is`
-- **summary**:    Cannot restore to nonexisting or alive contract. 
- 
 ### InvalidScheduleVersion
 - **interface**: `api.errors.contracts.InvalidScheduleVersion.is`
 - **summary**:    A new schedule must have a greater version than the current one. 
- 
-### InvalidSourceContract
-- **interface**: `api.errors.contracts.InvalidSourceContract.is`
-- **summary**:    Cannot restore from nonexisting or tombstone contract. 
- 
-### InvalidSurchargeClaim
-- **interface**: `api.errors.contracts.InvalidSurchargeClaim.is`
-- **summary**:    An origin must be signed or inherent and auxiliary sender only provided on inherent. 
- 
-### InvalidTombstone
-- **interface**: `api.errors.contracts.InvalidTombstone.is`
-- **summary**:    Tombstones don't match. 
  
 ### MaxCallDepthReached
 - **interface**: `api.errors.contracts.MaxCallDepthReached.is`
@@ -373,12 +341,6 @@ ___
 - **interface**: `api.errors.contracts.ReentranceDenied.is`
 - **summary**:    A call tried to invoke a contract that is flagged as non-reentrant. 
  
-### RentNotPaid
-- **interface**: `api.errors.contracts.RentNotPaid.is`
-- **summary**:    The called contract does not have enough balance to pay for its storage. 
-
-   The contract ran out of balance and is therefore eligible for eviction into a  tombstone. Anyone can evict the contract by submitting a `claim_surcharge`  extrinsic. Alternatively, a plain balance transfer can be used in order to  increase the contracts funds so that it can be called again. 
- 
 ### StorageExhausted
 - **interface**: `api.errors.contracts.StorageExhausted.is`
 - **summary**:    A storage modification exhausted the 32bit type that holds the storage size. 
@@ -389,11 +351,11 @@ ___
 - **interface**: `api.errors.contracts.TerminatedInConstructor.is`
 - **summary**:    A contract self destructed in its constructor. 
 
-   This can be triggered by a call to `seal_terminate` or `seal_restore_to`. 
+   This can be triggered by a call to `seal_terminate`. 
  
 ### TerminatedWhileReentrant
 - **interface**: `api.errors.contracts.TerminatedWhileReentrant.is`
-- **summary**:    Termination of a contract is not allowed while the contract is already  on the call stack. Can be triggered by `seal_terminate` or `seal_restore_to. 
+- **summary**:    Termination of a contract is not allowed while the contract is already  on the call stack. Can be triggered by `seal_terminate`. 
  
 ### TooManyTopics
 - **interface**: `api.errors.contracts.TooManyTopics.is`

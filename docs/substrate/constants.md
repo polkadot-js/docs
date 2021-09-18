@@ -68,19 +68,19 @@ ___
 
 ## assets
  
-### approvalDeposit: `DepositBalanceOf`
+### approvalDeposit: `u128`
 - **interface**: `api.consts.assets.approvalDeposit`
 - **summary**:    The amount of funds that must be reserved when creating a new approval. 
  
-### assetDeposit: `DepositBalanceOf`
+### assetDeposit: `u128`
 - **interface**: `api.consts.assets.assetDeposit`
 - **summary**:    The basic amount of funds that must be reserved for an asset. 
  
-### metadataDepositBase: `DepositBalanceOf`
+### metadataDepositBase: `u128`
 - **interface**: `api.consts.assets.metadataDepositBase`
 - **summary**:    The basic amount of funds that must be reserved when adding metadata to your asset. 
  
-### metadataDepositPerByte: `DepositBalanceOf`
+### metadataDepositPerByte: `u128`
 - **interface**: `api.consts.assets.metadataDepositPerByte`
 - **summary**:    The additional funds that must be reserved for the number of bytes you store in your  metadata. 
  
@@ -93,7 +93,7 @@ ___
 
 ## authorship
  
-### uncleGenerations: `BlockNumber`
+### uncleGenerations: `u32`
 - **interface**: `api.consts.authorship.uncleGenerations`
 - **summary**:    The number of blocks back we should accept uncles.  This means that we will deal with uncle-parents that are  `UncleGenerations + 1` before `now`. 
 
@@ -106,7 +106,7 @@ ___
 - **interface**: `api.consts.babe.epochDuration`
 - **summary**:    The amount of time, in slots, that each epoch should last.  NOTE: Currently it is not possible to change the epoch duration after  the chain has started. Attempting to do so will brick block production. 
  
-### expectedBlockTime: `Moment`
+### expectedBlockTime: `u64`
 - **interface**: `api.consts.babe.expectedBlockTime`
 - **summary**:    The expected average block time at which BABE should be creating  blocks. Since BABE is probabilistic it is not trivial to figure out  what the expected average block time should be based on the slot  duration and the security parameter `c` (where `1 - c` represents  the probability of a slot being empty). 
 
@@ -115,7 +115,7 @@ ___
 
 ## balances
  
-### existentialDeposit: `Balance`
+### existentialDeposit: `u128`
 - **interface**: `api.consts.balances.existentialDeposit`
 - **summary**:    The minimum amount required to keep an account open. 
  
@@ -136,23 +136,23 @@ ___
 - **interface**: `api.consts.bounties.bountyCuratorDeposit`
 - **summary**:    Percentage of the curator fee that will be reserved upfront as deposit for bounty curator. 
  
-### bountyDepositBase: `BalanceOf`
+### bountyDepositBase: `u128`
 - **interface**: `api.consts.bounties.bountyDepositBase`
 - **summary**:    The amount held on deposit for placing a bounty proposal. 
  
-### bountyDepositPayoutDelay: `BlockNumber`
+### bountyDepositPayoutDelay: `u32`
 - **interface**: `api.consts.bounties.bountyDepositPayoutDelay`
 - **summary**:    The delay period for which a bounty beneficiary need to wait before claim the payout. 
  
-### bountyUpdatePeriod: `BlockNumber`
+### bountyUpdatePeriod: `u32`
 - **interface**: `api.consts.bounties.bountyUpdatePeriod`
 - **summary**:    Bounty duration in blocks. 
  
-### bountyValueMinimum: `BalanceOf`
+### bountyValueMinimum: `u128`
 - **interface**: `api.consts.bounties.bountyValueMinimum`
 - **summary**:    Minimum value for a bounty. 
  
-### dataDepositPerByte: `BalanceOf`
+### dataDepositPerByte: `u128`
 - **interface**: `api.consts.bounties.dataDepositPerByte`
 - **summary**:    The amount held on deposit per byte within bounty description. 
  
@@ -165,74 +165,38 @@ ___
 
 ## contracts
  
+### contractDeposit: `u128`
+- **interface**: `api.consts.contracts.contractDeposit`
+- **summary**:    The deposit that must be placed into the contract's account to instantiate it.  This is in **addition** to the [`pallet_balances::Pallet::ExistenialDeposit`].  The minimum balance for a contract's account can be queried using  [`Pallet::subsistence_threshold`]. 
+ 
 ### deletionQueueDepth: `u32`
 - **interface**: `api.consts.contracts.deletionQueueDepth`
 - **summary**:    The maximum number of tries that can be queued for deletion. 
  
-### deletionWeightLimit: `Weight`
+### deletionWeightLimit: `u64`
 - **interface**: `api.consts.contracts.deletionWeightLimit`
 - **summary**:    The maximum amount of weight that can be consumed per block for lazy trie removal. 
  
-### depositPerContract: `BalanceOf`
-- **interface**: `api.consts.contracts.depositPerContract`
-- **summary**:    The balance every contract needs to deposit to stay alive indefinitely. 
-
-   This is different from the [`Self::TombstoneDeposit`] because this only needs to be  deposited while the contract is alive. Costs for additional storage are added to  this base cost. 
-
-   This is a simple way to ensure that contracts with empty storage eventually get deleted  by making them pay rent. This creates an incentive to remove them early in order to save  rent. 
- 
-### depositPerStorageByte: `BalanceOf`
-- **interface**: `api.consts.contracts.depositPerStorageByte`
-- **summary**:    The balance a contract needs to deposit per storage byte to stay alive indefinitely. 
-
-   Let's suppose the deposit is 1,000 BU (balance units)/byte and the rent is 1  BU/byte/day, then a contract with 1,000,000 BU that uses 1,000 bytes of storage would  pay no rent. But if the balance reduced to 500,000 BU and the storage stayed the same at  1,000, then it would pay 500 BU/day. 
- 
-### depositPerStorageItem: `BalanceOf`
-- **interface**: `api.consts.contracts.depositPerStorageItem`
-- **summary**:    The balance a contract needs to deposit per storage item to stay alive indefinitely. 
-
-   It works the same as [`Self::DepositPerStorageByte`] but for storage items. 
- 
-### rentFraction: `Perbill`
-- **interface**: `api.consts.contracts.rentFraction`
-- **summary**:    The fraction of the deposit that should be used as rent per block. 
-
-   When a contract hasn't enough balance deposited to stay alive indefinitely it needs  to pay per block for the storage it consumes that is not covered by the deposit.  This determines how high this rent payment is per block as a fraction of the deposit. 
- 
-### schedule: `Schedule`
+### schedule: `{"limits":"PalletContractsScheduleLimits","instructionWeights":"PalletContractsScheduleInstructionWeights","hostFnWeights":"PalletContractsScheduleHostFnWeights"}`
 - **interface**: `api.consts.contracts.schedule`
 - **summary**:    Cost schedule and limits. 
- 
-### signedClaimHandicap: `BlockNumber`
-- **interface**: `api.consts.contracts.signedClaimHandicap`
-- **summary**:    Number of block delay an extrinsic claim surcharge has. 
-
-   When claim surcharge is called by an extrinsic the rent is checked  for current_block - delay 
- 
-### surchargeReward: `BalanceOf`
-- **interface**: `api.consts.contracts.surchargeReward`
-- **summary**:    Reward that is received by the party whose touch has led  to removal of a contract. 
- 
-### tombstoneDeposit: `BalanceOf`
-- **interface**: `api.consts.contracts.tombstoneDeposit`
-- **summary**:    The minimum amount required to generate a tombstone. 
 
 ___
 
 
 ## democracy
  
-### cooloffPeriod: `BlockNumber`
+### cooloffPeriod: `u32`
 - **interface**: `api.consts.democracy.cooloffPeriod`
 - **summary**:    Period in blocks where an external proposal may not be re-submitted after being vetoed. 
  
-### enactmentPeriod: `BlockNumber`
+### enactmentPeriod: `u32`
 - **interface**: `api.consts.democracy.enactmentPeriod`
 - **summary**:    The period between a proposal being approved and enacted. 
 
    It should generally be a little more than the unstake period to ensure that  voting stakers have an opportunity to remove themselves from the system in the case  where they are on the losing side of a vote. 
  
-### fastTrackVotingPeriod: `BlockNumber`
+### fastTrackVotingPeriod: `u32`
 - **interface**: `api.consts.democracy.fastTrackVotingPeriod`
 - **summary**:    Minimum voting period allowed for a fast-track referendum. 
  
@@ -240,7 +204,7 @@ ___
 - **interface**: `api.consts.democracy.instantAllowed`
 - **summary**:    Indicator for whether an emergency origin is even allowed to happen. Some chains may  want to set this permanently to `false`, others may want to condition it on things such  as an upgrade having happened recently. 
  
-### launchPeriod: `BlockNumber`
+### launchPeriod: `u32`
 - **interface**: `api.consts.democracy.launchPeriod`
 - **summary**:    How often (in blocks) new public referenda are launched. 
  
@@ -254,21 +218,21 @@ ___
 
    Also used to compute weight, an overly big value can  lead to extrinsic with very big weight: see `delegate` for instance. 
  
-### minimumDeposit: `BalanceOf`
+### minimumDeposit: `u128`
 - **interface**: `api.consts.democracy.minimumDeposit`
 - **summary**:    The minimum amount to be used as a deposit for a public referendum proposal. 
  
-### preimageByteDeposit: `BalanceOf`
+### preimageByteDeposit: `u128`
 - **interface**: `api.consts.democracy.preimageByteDeposit`
 - **summary**:    The amount of balance that must be deposited per byte of preimage stored. 
  
-### voteLockingPeriod: `BlockNumber`
+### voteLockingPeriod: `u32`
 - **interface**: `api.consts.democracy.voteLockingPeriod`
 - **summary**:    The minimum period of vote locking. 
 
    It should be no shorter than enactment period to ensure that in the case of an approval,  those successful voters are locked into the consequences that their votes entail. 
  
-### votingPeriod: `BlockNumber`
+### votingPeriod: `u32`
 - **interface**: `api.consts.democracy.votingPeriod`
 - **summary**:    How often (in blocks) to check for new votes. 
 
@@ -277,41 +241,37 @@ ___
 
 ## electionProviderMultiPhase
  
-### minerMaxIterations: `u32`
-- **interface**: `api.consts.electionProviderMultiPhase.minerMaxIterations`
-- **summary**:    Maximum number of iteration of balancing that will be executed in the embedded miner of  the pallet. 
- 
 ### minerMaxLength: `u32`
 - **interface**: `api.consts.electionProviderMultiPhase.minerMaxLength`
 - **summary**:    Maximum length (bytes) that the mined solution should consume. 
 
    The miner will ensure that the total length of the unsigned solution will not exceed  this value. 
  
-### minerMaxWeight: `Weight`
+### minerMaxWeight: `u64`
 - **interface**: `api.consts.electionProviderMultiPhase.minerMaxWeight`
 - **summary**:    Maximum weight that the miner should consume. 
 
    The miner will ensure that the total weight of the unsigned solution will not exceed  this value, based on [`WeightInfo::submit_unsigned`]. 
  
-### minerTxPriority: `TransactionPriority`
+### minerTxPriority: `u64`
 - **interface**: `api.consts.electionProviderMultiPhase.minerTxPriority`
 - **summary**:    The priority of the unsigned transaction submitted in the unsigned-phase 
  
-### offchainRepeat: `BlockNumber`
+### offchainRepeat: `u32`
 - **interface**: `api.consts.electionProviderMultiPhase.offchainRepeat`
 - **summary**:    The repeat threshold of the offchain worker. 
 
    For example, if it is 5, that means that at least 5 blocks will elapse between attempts  to submit the worker's solution. 
  
-### signedDepositBase: `BalanceOf`
+### signedDepositBase: `u128`
 - **interface**: `api.consts.electionProviderMultiPhase.signedDepositBase`
 - **summary**:    Base deposit for a signed solution. 
  
-### signedDepositByte: `BalanceOf`
+### signedDepositByte: `u128`
 - **interface**: `api.consts.electionProviderMultiPhase.signedDepositByte`
 - **summary**:    Per-byte deposit for a signed solution. 
  
-### signedDepositWeight: `BalanceOf`
+### signedDepositWeight: `u128`
 - **interface**: `api.consts.electionProviderMultiPhase.signedDepositWeight`
 - **summary**:    Per-weight deposit for a signed solution. 
  
@@ -321,17 +281,17 @@ ___
 
    It is best to avoid adjusting this during an election, as it impacts downstream data  structures. In particular, `SignedSubmissionIndices<T>` is bounded on this value. If you  update this value during an election, you _must_ ensure that  `SignedSubmissionIndices.len()` is less than or equal to the new value. Otherwise,  attempts to submit new solutions may cause a runtime panic. 
  
-### signedMaxWeight: `Weight`
+### signedMaxWeight: `u64`
 - **interface**: `api.consts.electionProviderMultiPhase.signedMaxWeight`
 - **summary**:    Maximum weight of a signed solution. 
 
    This should probably be similar to [`Config::MinerMaxWeight`]. 
  
-### signedPhase: `BlockNumber`
+### signedPhase: `u32`
 - **interface**: `api.consts.electionProviderMultiPhase.signedPhase`
 - **summary**:    Duration of the signed phase. 
  
-### signedRewardBase: `BalanceOf`
+### signedRewardBase: `u128`
 - **interface**: `api.consts.electionProviderMultiPhase.signedRewardBase`
 - **summary**:    Base reward for a signed solution 
  
@@ -339,7 +299,7 @@ ___
 - **interface**: `api.consts.electionProviderMultiPhase.solutionImprovementThreshold`
 - **summary**:    The minimum amount of improvement to the solution score that defines a solution as  "better" (in any phase). 
  
-### unsignedPhase: `BlockNumber`
+### unsignedPhase: `u32`
 - **interface**: `api.consts.electionProviderMultiPhase.unsignedPhase`
 - **summary**:    Duration of the unsigned phase. 
 
@@ -348,7 +308,7 @@ ___
 
 ## elections
  
-### candidacyBond: `BalanceOf`
+### candidacyBond: `u128`
 - **interface**: `api.consts.elections.candidacyBond`
 - **summary**:    How much should be locked up in order to submit one's candidacy. 
  
@@ -360,21 +320,21 @@ ___
 - **interface**: `api.consts.elections.desiredRunnersUp`
 - **summary**:    Number of runners_up to keep. 
  
-### palletId: `LockIdentifier`
+### palletId: `[u8;8]`
 - **interface**: `api.consts.elections.palletId`
 - **summary**:    Identifier for the elections-phragmen pallet's lock 
  
-### termDuration: `BlockNumber`
+### termDuration: `u32`
 - **interface**: `api.consts.elections.termDuration`
 - **summary**:    How long each seat is kept. This defines the next block number at which an election  round will happen. If set to zero, no elections are ever triggered and the module will  be in passive mode. 
  
-### votingBondBase: `BalanceOf`
+### votingBondBase: `u128`
 - **interface**: `api.consts.elections.votingBondBase`
 - **summary**:    Base deposit associated with voting. 
 
    This should be sensibly high to economically ensure the pallet cannot be attacked by  creating a gigantic number of votes. 
  
-### votingBondFactor: `BalanceOf`
+### votingBondFactor: `u128`
 - **interface**: `api.consts.elections.votingBondFactor`
 - **summary**:    The amount of bond that need to be locked for each vote (32 bytes). 
 
@@ -389,11 +349,11 @@ ___
 
    Must be no greater than `MaxQueueLen`. 
  
-### ignoredIssuance: `BalanceOf`
+### ignoredIssuance: `u128`
 - **interface**: `api.consts.gilt.ignoredIssuance`
 - **summary**:    The issuance to ignore. This is subtracted from the `Currency`'s `total_issuance` to get  the issuance by which we inflate or deflate the gilt. 
  
-### intakePeriod: `BlockNumber`
+### intakePeriod: `u32`
 - **interface**: `api.consts.gilt.intakePeriod`
 - **summary**:    The number of blocks between consecutive attempts to issue more gilts in an effort to  get to the target amount to be frozen. 
 
@@ -407,13 +367,13 @@ ___
 - **interface**: `api.consts.gilt.maxQueueLen`
 - **summary**:    Maximum number of items that may be in each duration queue. 
  
-### minFreeze: `BalanceOf`
+### minFreeze: `u128`
 - **interface**: `api.consts.gilt.minFreeze`
 - **summary**:    The minimum amount of funds that may be offered to freeze for a gilt. Note that this  does not actually limit the amount which may be frozen in a gilt since gilts may be  split up in order to satisfy the desired amount of funds under gilts. 
 
    It should be at least big enough to ensure that there is no possible storage spam attack  or queue-filling attack. 
  
-### period: `BlockNumber`
+### period: `u32`
 - **interface**: `api.consts.gilt.period`
 - **summary**:    The base period for the duration queues. This is the common multiple across all  supported freezing durations that can be bid upon. 
  
@@ -426,11 +386,11 @@ ___
 
 ## identity
  
-### basicDeposit: `BalanceOf`
+### basicDeposit: `u128`
 - **interface**: `api.consts.identity.basicDeposit`
 - **summary**:    The amount held on deposit for a registered identity 
  
-### fieldDeposit: `BalanceOf`
+### fieldDeposit: `u128`
 - **interface**: `api.consts.identity.fieldDeposit`
 - **summary**:    The amount held on deposit per additional field for a registered identity. 
  
@@ -446,7 +406,7 @@ ___
 - **interface**: `api.consts.identity.maxSubAccounts`
 - **summary**:    The maximum number of sub-accounts allowed per identified account. 
  
-### subAccountDeposit: `BalanceOf`
+### subAccountDeposit: `u128`
 - **interface**: `api.consts.identity.subAccountDeposit`
 - **summary**:    The amount held on deposit for a registered subaccount. This should account for the fact  that one storage item's value will increase by the size of an account ID, and there will  be another trie item whose value is the size of an account ID plus 32 bytes. 
 
@@ -455,7 +415,7 @@ ___
 
 ## imOnline
  
-### unsignedPriority: `TransactionPriority`
+### unsignedPriority: `u64`
 - **interface**: `api.consts.imOnline.unsignedPriority`
 - **summary**:    A configuration for base priority of unsigned transactions. 
 
@@ -466,7 +426,7 @@ ___
 
 ## indices
  
-### deposit: `BalanceOf`
+### deposit: `u128`
 - **interface**: `api.consts.indices.deposit`
 - **summary**:    The deposit needed for reserving an index. 
 
@@ -483,7 +443,7 @@ ___
 - **interface**: `api.consts.lottery.maxGenerateRandom`
 - **summary**:    Number of time we should try to generate a random number that has no modulo bias.  The larger this number, the more potential computation is used for picking the winner,  but also the more likely that the chosen winner is done fairly. 
  
-### palletId: `PalletId`
+### palletId: `[u8;8]`
 - **interface**: `api.consts.lottery.palletId`
 - **summary**:    The Lottery's pallet id 
 
@@ -492,13 +452,13 @@ ___
 
 ## multisig
  
-### depositBase: `BalanceOf`
+### depositBase: `u128`
 - **interface**: `api.consts.multisig.depositBase`
 - **summary**:    The base amount of currency needed to reserve for creating a multisig execution or to  store a dispatch call for later. 
 
    This is held for an additional storage item whose value size is  `4 + sizeof((BlockNumber, Balance, AccountId))` bytes and whose key size is  `32 + sizeof(AccountId)` bytes. 
  
-### depositFactor: `BalanceOf`
+### depositFactor: `u128`
 - **interface**: `api.consts.multisig.depositFactor`
 - **summary**:    The amount of currency needed per unit threshold when creating a multisig execution. 
 
@@ -513,13 +473,13 @@ ___
 
 ## proxy
  
-### announcementDepositBase: `BalanceOf`
+### announcementDepositBase: `u128`
 - **interface**: `api.consts.proxy.announcementDepositBase`
 - **summary**:    The base amount of currency needed to reserve for creating an announcement. 
 
    This is held when a new storage item holding a `Balance` is created (typically 16  bytes). 
  
-### announcementDepositFactor: `BalanceOf`
+### announcementDepositFactor: `u128`
 - **interface**: `api.consts.proxy.announcementDepositFactor`
 - **summary**:    The amount of currency needed per announcement made. 
 
@@ -533,13 +493,13 @@ ___
 - **interface**: `api.consts.proxy.maxProxies`
 - **summary**:    The maximum amount of proxies allowed for a single account. 
  
-### proxyDepositBase: `BalanceOf`
+### proxyDepositBase: `u128`
 - **interface**: `api.consts.proxy.proxyDepositBase`
 - **summary**:    The base amount of currency needed to reserve for creating a proxy. 
 
    This is held for an additional storage item whose value size is  `sizeof(Balance)` bytes and whose key size is `sizeof(AccountId)` bytes. 
  
-### proxyDepositFactor: `BalanceOf`
+### proxyDepositFactor: `u128`
 - **interface**: `api.consts.proxy.proxyDepositFactor`
 - **summary**:    The amount of currency needed per proxy added. 
 
@@ -550,13 +510,13 @@ ___
 
 ## recovery
  
-### configDepositBase: `BalanceOf`
+### configDepositBase: `u128`
 - **interface**: `api.consts.recovery.configDepositBase`
 - **summary**:    The base amount of currency needed to reserve for creating a recovery configuration. 
 
    This is held for an additional storage item whose value size is  `2 + sizeof(BlockNumber, Balance)` bytes. 
  
-### friendDepositFactor: `BalanceOf`
+### friendDepositFactor: `u128`
 - **interface**: `api.consts.recovery.friendDepositFactor`
 - **summary**:    The amount of currency needed per additional user when creating a recovery  configuration. 
 
@@ -566,7 +526,7 @@ ___
 - **interface**: `api.consts.recovery.maxFriends`
 - **summary**:    The maximum amount of friends allowed in a recovery configuration. 
  
-### recoveryDeposit: `BalanceOf`
+### recoveryDeposit: `u128`
 - **interface**: `api.consts.recovery.recoveryDeposit`
 - **summary**:    The base amount of currency needed to reserve for starting a recovery. 
 
@@ -577,7 +537,7 @@ ___
 
 ## scheduler
  
-### maximumWeight: `Weight`
+### maximumWeight: `u64`
 - **interface**: `api.consts.scheduler.maximumWeight`
 - **summary**:    The maximum weight that may be scheduled per block for any dispatchables of less  priority than `schedule::HARD_DEADLINE`. 
  
@@ -590,11 +550,11 @@ ___
 
 ## society
  
-### candidateDeposit: `BalanceOf`
+### candidateDeposit: `u128`
 - **interface**: `api.consts.society.candidateDeposit`
 - **summary**:    The minimum amount of a deposit required for a bid to be made. 
  
-### challengePeriod: `BlockNumber`
+### challengePeriod: `u32`
 - **interface**: `api.consts.society.challengePeriod`
 - **summary**:    The number of blocks between membership challenges. 
  
@@ -606,19 +566,19 @@ ___
 - **interface**: `api.consts.society.maxStrikes`
 - **summary**:    The number of times a member may vote the wrong way (or not at all, when they are a skeptic)  before they become suspended. 
  
-### palletId: `PalletId`
+### palletId: `[u8;8]`
 - **interface**: `api.consts.society.palletId`
 - **summary**:    The societies's module id 
  
-### periodSpend: `BalanceOf`
+### periodSpend: `u128`
 - **interface**: `api.consts.society.periodSpend`
 - **summary**:    The amount of incentive paid within each period. Doesn't include VoterTip. 
  
-### rotationPeriod: `BlockNumber`
+### rotationPeriod: `u32`
 - **interface**: `api.consts.society.rotationPeriod`
 - **summary**:    The number of blocks between candidate/membership rotation periods. 
  
-### wrongSideDeduction: `BalanceOf`
+### wrongSideDeduction: `u128`
 - **interface**: `api.consts.society.wrongSideDeduction`
 - **summary**:    The amount of the unpaid reward that gets deducted in the case that either a skeptic  doesn't vote or someone votes in the wrong way. 
 
@@ -627,7 +587,7 @@ ___
 
 ## staking
  
-### bondingDuration: `EraIndex`
+### bondingDuration: `u32`
 - **interface**: `api.consts.staking.bondingDuration`
 - **summary**:    Number of eras that staked funds must remain bonded for. 
  
@@ -640,11 +600,11 @@ ___
 
    For each validator only the `$MaxNominatorRewardedPerValidator` biggest stakers can  claim their reward. This used to limit the i/o cost for the nominator payout. 
  
-### sessionsPerEra: `SessionIndex`
+### sessionsPerEra: `u32`
 - **interface**: `api.consts.staking.sessionsPerEra`
 - **summary**:    Number of sessions per era. 
  
-### slashDeferDuration: `EraIndex`
+### slashDeferDuration: `u32`
 - **interface**: `api.consts.staking.slashDeferDuration`
 - **summary**:    Number of eras that slashes are deferred by, after computation. 
 
@@ -655,19 +615,19 @@ ___
 
 ## system
  
-### blockHashCount: `BlockNumber`
+### blockHashCount: `u32`
 - **interface**: `api.consts.system.blockHashCount`
 - **summary**:    Maximum number of block number to block hash mappings to keep (oldest pruned first). 
  
-### blockLength: `BlockLength`
+### blockLength: `{"max":"FrameSupportWeightsPerDispatchClassU32"}`
 - **interface**: `api.consts.system.blockLength`
 - **summary**:    The maximum length of a block (in bytes). 
  
-### blockWeights: `BlockWeights`
+### blockWeights: `{"baseBlock":"u64","maxBlock":"u64","perClass":"FrameSupportWeightsPerDispatchClassWeightsPerClass"}`
 - **interface**: `api.consts.system.blockWeights`
 - **summary**:    Block & extrinsics weights: base values and limits. 
  
-### dbWeight: `RuntimeDbWeight`
+### dbWeight: `{"read":"u64","write":"u64"}`
 - **interface**: `api.consts.system.dbWeight`
 - **summary**:    The weight of runtime database operations the runtime can invoke. 
  
@@ -677,7 +637,7 @@ ___
 
    This replaces the "ss58Format" property declared in the chain spec. Reason is  that the runtime should know about the prefix in order to make use of it as  an identifier of the chain. 
  
-### version: `RuntimeVersion`
+### version: `{"specName":"Text","implName":"Text","authoringVersion":"u32","specVersion":"u32","implVersion":"u32","apis":"Vec<([u8;8],u32)>","transactionVersion":"u32"}`
 - **interface**: `api.consts.system.version`
 - **summary**:    Get the chain's current version. 
 
@@ -686,7 +646,7 @@ ___
 
 ## timestamp
  
-### minimumPeriod: `Moment`
+### minimumPeriod: `u64`
 - **interface**: `api.consts.timestamp.minimumPeriod`
 - **summary**:    The minimum period between blocks. Beware that this is different to the *expected*  period that the block production apparatus provides. Your chosen consensus system will  generally work with this to determine a sensible block time. e.g. For Aura, it will be  double this period on default settings. 
 
@@ -695,23 +655,23 @@ ___
 
 ## tips
  
-### dataDepositPerByte: `BalanceOf`
+### dataDepositPerByte: `u128`
 - **interface**: `api.consts.tips.dataDepositPerByte`
-- **summary**:    The amount held on deposit per byte within the tip report reason. 
+- **summary**:    The amount held on deposit per byte within the tip report reason or bounty description. 
  
 ### maximumReasonLength: `u32`
 - **interface**: `api.consts.tips.maximumReasonLength`
 - **summary**:    Maximum acceptable reason length. 
  
-### tipCountdown: `BlockNumber`
+### tipCountdown: `u32`
 - **interface**: `api.consts.tips.tipCountdown`
 - **summary**:    The period for which a tip remains open after is has achieved threshold tippers. 
  
 ### tipFindersFee: `Percent`
 - **interface**: `api.consts.tips.tipFindersFee`
-- **summary**:    The amount of the final tip which goes to the original reporter of the tip. 
+- **summary**:    The percent of the final tip which goes to the original reporter of the tip. 
  
-### tipReportDepositBase: `BalanceOf`
+### tipReportDepositBase: `u128`
 - **interface**: `api.consts.tips.tipReportDepositBase`
 - **summary**:    The amount held on deposit for placing a tip report. 
 
@@ -720,11 +680,11 @@ ___
 
 ## transactionPayment
  
-### transactionByteFee: `BalanceOf`
+### transactionByteFee: `u128`
 - **interface**: `api.consts.transactionPayment.transactionByteFee`
 - **summary**:    The fee to be paid for making a transaction; the per-byte portion. 
  
-### weightToFee: `Vec<WeightToFeeCoefficient>`
+### weightToFee: `Vec<FrameSupportWeightsWeightToFeeCoefficient>`
 - **interface**: `api.consts.transactionPayment.weightToFee`
 - **summary**:    The polynomial that is applied in order to derive fee from weight. 
 
@@ -741,7 +701,7 @@ ___
 - **interface**: `api.consts.treasury.maxApprovals`
 - **summary**:    The maximum number of approvals that can wait in the spending queue. 
  
-### palletId: `PalletId`
+### palletId: `[u8;8]`
 - **interface**: `api.consts.treasury.palletId`
 - **summary**:    The treasury's pallet id, used for deriving its sovereign account ID. 
  
@@ -749,11 +709,11 @@ ___
 - **interface**: `api.consts.treasury.proposalBond`
 - **summary**:    Fraction of a proposal's value that should be bonded in order to place the proposal.  An accepted proposal gets these back. A rejected proposal does not. 
  
-### proposalBondMinimum: `BalanceOf`
+### proposalBondMinimum: `u128`
 - **interface**: `api.consts.treasury.proposalBondMinimum`
 - **summary**:    Minimum amount of funds that should be placed in a deposit for making a proposal. 
  
-### spendPeriod: `BlockNumber`
+### spendPeriod: `u32`
 - **interface**: `api.consts.treasury.spendPeriod`
 - **summary**:    Period between successive spends. 
 
@@ -762,19 +722,19 @@ ___
 
 ## uniques
  
-### attributeDepositBase: `DepositBalanceOf`
+### attributeDepositBase: `u128`
 - **interface**: `api.consts.uniques.attributeDepositBase`
 - **summary**:    The basic amount of funds that must be reserved when adding an attribute to an asset. 
  
-### classDeposit: `DepositBalanceOf`
+### classDeposit: `u128`
 - **interface**: `api.consts.uniques.classDeposit`
 - **summary**:    The basic amount of funds that must be reserved for an asset class. 
  
-### depositPerByte: `DepositBalanceOf`
+### depositPerByte: `u128`
 - **interface**: `api.consts.uniques.depositPerByte`
 - **summary**:    The additional funds that must be reserved for the number of bytes store in metadata,  either "normal" metadata or attribute metadata. 
  
-### instanceDeposit: `DepositBalanceOf`
+### instanceDeposit: `u128`
 - **interface**: `api.consts.uniques.instanceDeposit`
 - **summary**:    The basic amount of funds that must be reserved for an asset instance. 
  
@@ -782,7 +742,7 @@ ___
 - **interface**: `api.consts.uniques.keyLimit`
 - **summary**:    The maximum length of an attribute key. 
  
-### metadataDepositBase: `DepositBalanceOf`
+### metadataDepositBase: `u128`
 - **interface**: `api.consts.uniques.metadataDepositBase`
 - **summary**:    The basic amount of funds that must be reserved when adding metadata to your asset. 
  
@@ -811,6 +771,6 @@ ___
 ### maxVestingSchedules: `u32`
 - **interface**: `api.consts.vesting.maxVestingSchedules`
  
-### minVestedTransfer: `BalanceOf`
+### minVestedTransfer: `u128`
 - **interface**: `api.consts.vesting.minVestedTransfer`
 - **summary**:    The minimum amount transferred to call `vested_transfer`. 
