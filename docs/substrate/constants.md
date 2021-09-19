@@ -177,7 +177,7 @@ ___
 - **interface**: `api.consts.contracts.deletionWeightLimit`
 - **summary**:    The maximum amount of weight that can be consumed per block for lazy trie removal. 
  
-### schedule: `{"limits":"PalletContractsScheduleLimits","instructionWeights":"PalletContractsScheduleInstructionWeights","hostFnWeights":"PalletContractsScheduleHostFnWeights"}`
+### schedule: `PalletContractsSchedule`
 - **interface**: `api.consts.contracts.schedule`
 - **summary**:    Cost schedule and limits. 
 
@@ -443,7 +443,7 @@ ___
 - **interface**: `api.consts.lottery.maxGenerateRandom`
 - **summary**:    Number of time we should try to generate a random number that has no modulo bias.  The larger this number, the more potential computation is used for picking the winner,  but also the more likely that the chosen winner is done fairly. 
  
-### palletId: `[u8;8]`
+### palletId: `FrameSupportPalletId`
 - **interface**: `api.consts.lottery.palletId`
 - **summary**:    The Lottery's pallet id 
 
@@ -566,7 +566,7 @@ ___
 - **interface**: `api.consts.society.maxStrikes`
 - **summary**:    The number of times a member may vote the wrong way (or not at all, when they are a skeptic)  before they become suspended. 
  
-### palletId: `[u8;8]`
+### palletId: `FrameSupportPalletId`
 - **interface**: `api.consts.society.palletId`
 - **summary**:    The societies's module id 
  
@@ -619,15 +619,15 @@ ___
 - **interface**: `api.consts.system.blockHashCount`
 - **summary**:    Maximum number of block number to block hash mappings to keep (oldest pruned first). 
  
-### blockLength: `{"max":"FrameSupportWeightsPerDispatchClassU32"}`
+### blockLength: `FrameSystemLimitsBlockLength`
 - **interface**: `api.consts.system.blockLength`
 - **summary**:    The maximum length of a block (in bytes). 
  
-### blockWeights: `{"baseBlock":"u64","maxBlock":"u64","perClass":"FrameSupportWeightsPerDispatchClassWeightsPerClass"}`
+### blockWeights: `FrameSystemLimitsBlockWeights`
 - **interface**: `api.consts.system.blockWeights`
 - **summary**:    Block & extrinsics weights: base values and limits. 
  
-### dbWeight: `{"read":"u64","write":"u64"}`
+### dbWeight: `FrameSupportWeightsRuntimeDbWeight`
 - **interface**: `api.consts.system.dbWeight`
 - **summary**:    The weight of runtime database operations the runtime can invoke. 
  
@@ -637,7 +637,7 @@ ___
 
    This replaces the "ss58Format" property declared in the chain spec. Reason is  that the runtime should know about the prefix in order to make use of it as  an identifier of the chain. 
  
-### version: `{"specName":"Text","implName":"Text","authoringVersion":"u32","specVersion":"u32","implVersion":"u32","apis":"Vec<([u8;8],u32)>","transactionVersion":"u32"}`
+### version: `SpVersionRuntimeVersion`
 - **interface**: `api.consts.system.version`
 - **summary**:    Get the chain's current version. 
 
@@ -701,7 +701,7 @@ ___
 - **interface**: `api.consts.treasury.maxApprovals`
 - **summary**:    The maximum number of approvals that can wait in the spending queue. 
  
-### palletId: `[u8;8]`
+### palletId: `FrameSupportPalletId`
 - **interface**: `api.consts.treasury.palletId`
 - **summary**:    The treasury's pallet id, used for deriving its sovereign account ID. 
  
