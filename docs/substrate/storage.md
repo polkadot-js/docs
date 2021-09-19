@@ -88,19 +88,19 @@ ___
 
 ## assets
  
-### account(`4, 0`): `{"balance":"u64","isFrozen":"bool","sufficient":"bool","extra":"Null"}`
+### account(`u32, AccountId32`): `PalletAssetsAssetBalance`
 - **interface**: `api.query.assets.account`
 - **summary**:    The number of units of assets held by any given account. 
  
-### approvals(`4, 0, 0`): `Option<{"amount":"u64","deposit":"u128"}>`
+### approvals(`u32, AccountId32, AccountId32`): `Option<PalletAssetsApproval>`
 - **interface**: `api.query.assets.approvals`
 - **summary**:    Approved balance transfers. First balance is the amount approved for transfer. Second  is the amount of `T::Currency` reserved for storing this.  First key is the asset ID, second key is the owner and third key is the delegate. 
  
-### asset(`4`): `Option<{"owner":"AccountId32","issuer":"AccountId32","admin":"AccountId32","freezer":"AccountId32","supply":"u64","deposit":"u128","minBalance":"u64","isSufficient":"bool","accounts":"u32","sufficients":"u32","approvals":"u32","isFrozen":"bool"}>`
+### asset(`u32`): `Option<PalletAssetsAssetDetails>`
 - **interface**: `api.query.assets.asset`
 - **summary**:    Details of an asset. 
  
-### metadata(`4`): `{"deposit":"u128","name":"Bytes","symbol":"Bytes","decimals":"u8","isFrozen":"bool"}`
+### metadata(`u32`): `PalletAssetsAssetMetadata`
 - **interface**: `api.query.assets.metadata`
 - **summary**:    Metadata of an asset. 
 
@@ -140,7 +140,7 @@ ___
 - **interface**: `api.query.babe.currentSlot`
 - **summary**:    Current slot number. 
  
-### epochConfig(): `Option<{"c":"(u64,u64)","allowedSlots":"SpConsensusBabeAllowedSlots"}>`
+### epochConfig(): `Option<SpConsensusBabeBabeEpochConfiguration>`
 - **interface**: `api.query.babe.epochConfig`
 - **summary**:    The configuration for the current epoch. Should never be `None` as it is initialized in  genesis. 
  
@@ -170,7 +170,7 @@ ___
 - **interface**: `api.query.babe.nextAuthorities`
 - **summary**:    Next epoch authorities. 
  
-### nextEpochConfig(): `Option<{"c":"(u64,u64)","allowedSlots":"SpConsensusBabeAllowedSlots"}>`
+### nextEpochConfig(): `Option<SpConsensusBabeBabeEpochConfiguration>`
 - **interface**: `api.query.babe.nextEpochConfig`
 - **summary**:    The configuration for the next epoch, `None` if the config will not change  (you can fallback to `EpochConfig` instead in that case). 
  
@@ -178,7 +178,7 @@ ___
 - **interface**: `api.query.babe.nextRandomness`
 - **summary**:    Next epoch randomness. 
  
-### pendingEpochConfigChange(): `Option<{"_enum":{"Unused0":"Null","V1":"{\"c\":\"(u64,u64)\",\"allowedSlots\":\"SpConsensusBabeAllowedSlots\"}"}}>`
+### pendingEpochConfigChange(): `Option<SpConsensusBabeDigestsNextConfigDescriptor>`
 - **interface**: `api.query.babe.pendingEpochConfigChange`
 - **summary**:    Pending epoch configuration change that will be applied when the next epoch is enacted. 
  
@@ -198,7 +198,7 @@ ___
 
    Once a segment reaches this length, we begin the next one.  We reset all segments and return to `0` at the beginning of every  epoch. 
  
-### underConstruction(`4`): `Vec<[u8;32]>`
+### underConstruction(`u32`): `Vec<[u8;32]>`
 - **interface**: `api.query.babe.underConstruction`
 - **summary**:    TWOX-NOTE: `SegmentIndex` is an increasing integer, so this is okay. 
 
@@ -207,21 +207,21 @@ ___
 
 ## balances
  
-### account(`0`): `{"free":"u128","reserved":"u128","miscFrozen":"u128","feeFrozen":"u128"}`
+### account(`AccountId32`): `PalletBalancesAccountData`
 - **interface**: `api.query.balances.account`
 - **summary**:    The balance of an account. 
 
    NOTE: This is only used in the case that this pallet is used to store balances. 
  
-### locks(`0`): `Vec<PalletBalancesBalanceLock>`
+### locks(`AccountId32`): `Vec<PalletBalancesBalanceLock>`
 - **interface**: `api.query.balances.locks`
 - **summary**:    Any liquidity locks on some account balances.  NOTE: Should only be accessed when setting, changing and freeing a lock. 
  
-### reserves(`0`): `Vec<PalletBalancesReserveData>`
+### reserves(`AccountId32`): `Vec<PalletBalancesReserveData>`
 - **interface**: `api.query.balances.reserves`
 - **summary**:    Named reserves on some account balances. 
  
-### storageVersion(): `{"_enum":["V1_0_0","V2_0_0"]}`
+### storageVersion(): `PalletBalancesReleases`
 - **interface**: `api.query.balances.storageVersion`
 - **summary**:    Storage version of the pallet. 
 
@@ -236,7 +236,7 @@ ___
 
 ## bounties
  
-### bounties(`4`): `Option<{"proposer":"AccountId32","value":"u128","fee":"u128","curatorDeposit":"u128","bond":"u128","status":"PalletBountiesBountyStatus"}>`
+### bounties(`u32`): `Option<PalletBountiesBounty>`
 - **interface**: `api.query.bounties.bounties`
 - **summary**:    Bounties that have been made. 
  
@@ -248,7 +248,7 @@ ___
 - **interface**: `api.query.bounties.bountyCount`
 - **summary**:    Number of bounty proposals that have been made. 
  
-### bountyDescriptions(`4`): `Option<Bytes>`
+### bountyDescriptions(`u32`): `Option<Bytes>`
 - **interface**: `api.query.bounties.bountyDescriptions`
 - **summary**:    The description of each bounty. 
 
@@ -261,11 +261,11 @@ ___
 - **interface**: `api.query.contracts.accountCounter`
 - **summary**:    The subtrie counter. 
  
-### codeStorage(`9`): `Option<{"instructionWeightsVersion":"Compact<u32>","initial":"Compact<u32>","maximum":"Compact<u32>","refcount":"Compact<u64>","reserved":"Option<Null>","code":"Bytes","originalCodeLen":"u32"}>`
+### codeStorage(`H256`): `Option<PalletContractsWasmPrefabWasmModule>`
 - **interface**: `api.query.contracts.codeStorage`
 - **summary**:    A mapping between an original code hash and instrumented wasm code, ready for execution. 
  
-### contractInfoOf(`0`): `Option<{"trieId":"Bytes","codeHash":"H256","reserved":"Option<Null>"}>`
+### contractInfoOf(`AccountId32`): `Option<PalletContractsStorageRawContractInfo>`
 - **interface**: `api.query.contracts.contractInfoOf`
 - **summary**:    The code associated with a given account. 
 
@@ -277,7 +277,7 @@ ___
 
    Child trie deletion is a heavy operation depending on the amount of storage items  stored in said trie. Therefore this operation is performed lazily in `on_initialize`. 
  
-### pristineCode(`9`): `Option<Bytes>`
+### pristineCode(`H256`): `Option<Bytes>`
 - **interface**: `api.query.contracts.pristineCode`
 - **summary**:    A mapping from an original code hash to the original code, untouched by instrumentation. 
 
@@ -298,7 +298,7 @@ ___
 - **interface**: `api.query.council.proposalCount`
 - **summary**:    Proposals so far. 
  
-### proposalOf(`9`): `Option<Call>`
+### proposalOf(`H256`): `Option<Call>`
 - **interface**: `api.query.council.proposalOf`
 - **summary**:    Actual proposal for a given hash, if it's current. 
  
@@ -306,7 +306,7 @@ ___
 - **interface**: `api.query.council.proposals`
 - **summary**:    The hashes of the active proposals. 
  
-### voting(`9`): `Option<{"index":"u32","threshold":"u32","ayes":"Vec<AccountId32>","nays":"Vec<AccountId32>","end":"u32"}>`
+### voting(`H256`): `Option<PalletCollectiveVotes>`
 - **interface**: `api.query.council.voting`
 - **summary**:    Votes on a given proposal, if it is ongoing. 
 
@@ -315,15 +315,15 @@ ___
 
 ## democracy
  
-### blacklist(`9`): `Option<(u32,Vec<AccountId32>)>`
+### blacklist(`H256`): `Option<(u32,Vec<AccountId32>)>`
 - **interface**: `api.query.democracy.blacklist`
 - **summary**:    A record of who vetoed what. Maps proposal hash to a possible existent block number  (until when it may not be resubmitted) and who vetoed it. 
  
-### cancellations(`9`): `bool`
+### cancellations(`H256`): `bool`
 - **interface**: `api.query.democracy.cancellations`
 - **summary**:    Record of all proposals that have been subject to emergency cancellation. 
  
-### depositOf(`4`): `Option<(Vec<AccountId32>,u128)>`
+### depositOf(`u32`): `Option<(Vec<AccountId32>,u128)>`
 - **interface**: `api.query.democracy.depositOf`
 - **summary**:    Those who have locked a deposit. 
 
@@ -333,7 +333,7 @@ ___
 - **interface**: `api.query.democracy.lastTabledWasExternal`
 - **summary**:    True if the last referendum tabled was submitted externally. False if it was a public  proposal. 
  
-### locks(`0`): `Option<u32>`
+### locks(`AccountId32`): `Option<u32>`
 - **interface**: `api.query.democracy.locks`
 - **summary**:    Accounts for which there are locks in action which may be removed at some point in the  future. The value is the block number at which the lock expires and may be removed. 
 
@@ -351,7 +351,7 @@ ___
 
   - `PublicProps` is empty.
  
-### preimages(`9`): `Option<{"_enum":{"Missing":"u32","Available":"{\"data\":\"Bytes\",\"provider\":\"AccountId32\",\"deposit\":\"u128\",\"since\":\"u32\",\"expiry\":\"Option<u32>\"}"}}>`
+### preimages(`H256`): `Option<PalletDemocracyPreimageStatus>`
 - **interface**: `api.query.democracy.preimages`
 - **summary**:    Map of hashes to the proposal preimage, along with who registered it and their deposit.  The block number is the block at which it was deposited. 
  
@@ -367,19 +367,19 @@ ___
 - **interface**: `api.query.democracy.referendumCount`
 - **summary**:    The next free referendum index, aka the number of referenda started so far. 
  
-### referendumInfoOf(`4`): `Option<{"_enum":{"Ongoing":"PalletDemocracyReferendumStatus","Finished":"{\"approved\":\"bool\",\"end\":\"u32\"}"}}>`
+### referendumInfoOf(`u32`): `Option<PalletDemocracyReferendumInfo>`
 - **interface**: `api.query.democracy.referendumInfoOf`
 - **summary**:    Information concerning any given referendum. 
 
    TWOX-NOTE: SAFE as indexes are not under an attacker’s control. 
  
-### storageVersion(): `Option<{"_enum":["V1"]}>`
+### storageVersion(): `Option<PalletDemocracyReleases>`
 - **interface**: `api.query.democracy.storageVersion`
 - **summary**:    Storage version of the pallet. 
 
    New networks start with last version. 
  
-### votingOf(`0`): `{"_enum":{"Direct":"{\"votes\":\"Vec<(u32,PalletDemocracyVoteAccountVote)>\",\"delegations\":\"PalletDemocracyDelegations\",\"prior\":\"PalletDemocracyVotePriorLock\"}","Delegating":"{\"balance\":\"u128\",\"target\":\"AccountId32\",\"conviction\":\"PalletDemocracyConviction\",\"delegations\":\"PalletDemocracyDelegations\",\"prior\":\"PalletDemocracyVotePriorLock\"}"}}`
+### votingOf(`AccountId32`): `PalletDemocracyVoteVoting`
 - **interface**: `api.query.democracy.votingOf`
 - **summary**:    All votes for a particular voter. We store the balance for the number of votes that we  have recorded. The second item is the total amount of delegations, that will be added. 
 
@@ -390,7 +390,7 @@ ___
 
 ## electionProviderMultiPhase
  
-### currentPhase(): `{"_enum":{"Off":"Null","Signed":"Null","Unsigned":"(bool,u32)","Emergency":"Null"}}`
+### currentPhase(): `PalletElectionProviderMultiPhasePhase`
 - **interface**: `api.query.electionProviderMultiPhase.currentPhase`
 - **summary**:    Current phase. 
  
@@ -406,7 +406,7 @@ ___
 
    Can be set via `set_minimum_untrusted_score`. 
  
-### queuedSolution(): `Option<{"supports":"Vec<(AccountId32,SpNposElectionsSupport)>","score":"[u128;3]","compute":"PalletElectionProviderMultiPhaseElectionCompute"}>`
+### queuedSolution(): `Option<PalletElectionProviderMultiPhaseReadySolution>`
 - **interface**: `api.query.electionProviderMultiPhase.queuedSolution`
 - **summary**:    Current best solution, signed or unsigned, queued to be returned upon `elect`. 
  
@@ -432,7 +432,7 @@ ___
 
    We can't just use `SignedSubmissionIndices.len()`, because that's a bounded set; past its  capacity, it will simply saturate. We can't just iterate over `SignedSubmissionsMap`,  because iteration is slow. Instead, we store the value here. 
  
-### signedSubmissionsMap(`4`): `{"who":"AccountId32","deposit":"u128","rawSolution":"PalletElectionProviderMultiPhaseRawSolution","reward":"u128"}`
+### signedSubmissionsMap(`u32`): `PalletElectionProviderMultiPhaseSignedSignedSubmission`
 - **interface**: `api.query.electionProviderMultiPhase.signedSubmissionsMap`
 - **summary**:    Unchecked, signed solutions. 
 
@@ -440,13 +440,13 @@ ___
 
    Twox note: the key of the map is an auto-incrementing index which users cannot inspect or  affect; we shouldn't need a cryptographically secure hasher. 
  
-### snapshot(): `Option<{"voters":"Vec<(AccountId32,u64,Vec<AccountId32>)>","targets":"Vec<AccountId32>"}>`
+### snapshot(): `Option<PalletElectionProviderMultiPhaseRoundSnapshot>`
 - **interface**: `api.query.electionProviderMultiPhase.snapshot`
 - **summary**:    Snapshot data of the round. 
 
    This is created at the beginning of the signed phase and cleared upon calling `elect`. 
  
-### snapshotMetadata(): `Option<{"voters":"Compact<u32>","targets":"Compact<u32>"}>`
+### snapshotMetadata(): `Option<PalletElectionProviderMultiPhaseSolutionOrSnapshotSize>`
 - **interface**: `api.query.electionProviderMultiPhase.snapshotMetadata`
 - **summary**:    The metadata of the [`RoundSnapshot`] 
 
@@ -481,7 +481,7 @@ ___
 
    Invariant: Always sorted based on rank (worse to best). Upon removal of a member, the  last (i.e. _best_) runner-up will be replaced. 
  
-### voting(`0`): `{"votes":"Vec<AccountId32>","stake":"u128","deposit":"u128"}`
+### voting(`AccountId32`): `PalletElectionsPhragmenVoter`
 - **interface**: `api.query.elections.voting`
 - **summary**:    Votes and locked stake of a particular voter. 
 
@@ -492,15 +492,15 @@ ___
 
 ## gilt
  
-### active(`4`): `Option<{"proportion":"Perquintill","amount":"u128","who":"AccountId32","expiry":"u32"}>`
+### active(`u32`): `Option<PalletGiltActiveGilt>`
 - **interface**: `api.query.gilt.active`
 - **summary**:    The currently active gilts, indexed according to the order of creation. 
  
-### activeTotal(): `{"frozen":"u128","proportion":"Perquintill","index":"u32","target":"Perquintill"}`
+### activeTotal(): `PalletGiltActiveGiltsTotal`
 - **interface**: `api.query.gilt.activeTotal`
 - **summary**:    Information relating to the gilts currently active. 
  
-### queues(`4`): `Vec<PalletGiltGiltBid>`
+### queues(`u32`): `Vec<PalletGiltGiltBid>`
 - **interface**: `api.query.gilt.queues`
 - **summary**:    The queues of bids ready to become gilts. Indexed by duration (in `Period`s). 
  
@@ -523,11 +523,11 @@ ___
 - **interface**: `api.query.grandpa.nextForced`
 - **summary**:    next block number where we can force a change. 
  
-### pendingChange(): `Option<{"scheduledAt":"u32","delay":"u32","nextAuthorities":"Vec<(SpFinalityGrandpaAppPublic,u64)>","forced":"Option<u32>"}>`
+### pendingChange(): `Option<PalletGrandpaStoredPendingChange>`
 - **interface**: `api.query.grandpa.pendingChange`
 - **summary**:    Pending change: (signaled at, scheduled change). 
  
-### setIdSession(`8`): `Option<u32>`
+### setIdSession(`u64`): `Option<u32>`
 - **interface**: `api.query.grandpa.setIdSession`
 - **summary**:    A mapping from grandpa set ID to the index of the *most recent* session for which its  members were responsible. 
 
@@ -537,7 +537,7 @@ ___
 - **interface**: `api.query.grandpa.stalled`
 - **summary**:    `true` if we are currently stalled. 
  
-### state(): `{"_enum":{"Live":"Null","PendingPause":"{\"scheduledAt\":\"u32\",\"delay\":\"u32\"}","Paused":"Null","PendingResume":"{\"scheduledAt\":\"u32\",\"delay\":\"u32\"}"}}`
+### state(): `PalletGrandpaStoredState`
 - **interface**: `api.query.grandpa.state`
 - **summary**:    State of the current authority set. 
 
@@ -546,7 +546,7 @@ ___
 
 ## identity
  
-### identityOf(`0`): `Option<{"judgements":"Vec<(u32,PalletIdentityJudgement)>","deposit":"u128","info":"PalletIdentityIdentityInfo"}>`
+### identityOf(`AccountId32`): `Option<PalletIdentityRegistration>`
 - **interface**: `api.query.identity.identityOf`
 - **summary**:    Information that is pertinent to identify the entity behind an account. 
 
@@ -558,7 +558,7 @@ ___
 
    The index into this can be cast to `RegistrarIndex` to get a valid value. 
  
-### subsOf(`0`): `(u128,Vec<AccountId32>)`
+### subsOf(`AccountId32`): `(u128,Vec<AccountId32>)`
 - **interface**: `api.query.identity.subsOf`
 - **summary**:    Alternative "sub" identities of this account. 
 
@@ -566,7 +566,7 @@ ___
 
    TWOX-NOTE: OK ― `AccountId` is a secure hash. 
  
-### superOf(`0`): `Option<(AccountId32,Data)>`
+### superOf(`AccountId32`): `Option<(AccountId32,Data)>`
 - **interface**: `api.query.identity.superOf`
 - **summary**:    The super-identity of an alternative "sub" identity together with its name, within that  context. If the account is not some other account's sub-identity, then just `None`. 
 
@@ -575,7 +575,7 @@ ___
 
 ## imOnline
  
-### authoredBlocks(`4, 0`): `u32`
+### authoredBlocks(`u32, AccountId32`): `u32`
 - **interface**: `api.query.imOnline.authoredBlocks`
 - **summary**:    For each session index, we keep a mapping of `ValidatorId<T>` to the  number of blocks authored by the given authority. 
  
@@ -591,7 +591,7 @@ ___
 - **interface**: `api.query.imOnline.keys`
 - **summary**:    The current set of keys that may issue a heartbeat. 
  
-### receivedHeartbeats(`4, 4`): `Option<Bytes>`
+### receivedHeartbeats(`u32, u32`): `Option<Bytes>`
 - **interface**: `api.query.imOnline.receivedHeartbeats`
 - **summary**:    For each session index, we keep a mapping of `AuthIndex` to  `offchain::OpaqueNetworkState`. 
 
@@ -600,7 +600,7 @@ ___
 
 ## indices
  
-### accounts(`4`): `Option<(AccountId32,u128,bool)>`
+### accounts(`u32`): `Option<(AccountId32,u128,bool)>`
 - **interface**: `api.query.indices.accounts`
 - **summary**:    The lookup from index to account. 
 
@@ -613,18 +613,18 @@ ___
 - **interface**: `api.query.lottery.callIndices`
 - **summary**:    The calls stored in this pallet to be used in an active lottery if configured  by `Config::ValidateCall`. 
  
-### lottery(): `Option<{"price":"u128","start":"u32","length":"u32","delay":"u32","repeat":"bool"}>`
+### lottery(): `Option<PalletLotteryLotteryConfig>`
 - **interface**: `api.query.lottery.lottery`
 - **summary**:    The configuration for the current lottery. 
  
 ### lotteryIndex(): `u32`
 - **interface**: `api.query.lottery.lotteryIndex`
  
-### participants(`0`): `(u32,Vec<(u8,u8)>)`
+### participants(`AccountId32`): `(u32,Vec<(u8,u8)>)`
 - **interface**: `api.query.lottery.participants`
 - **summary**:    Users who have purchased a ticket. (Lottery Index, Tickets Purchased) 
  
-### tickets(`4`): `Option<AccountId32>`
+### tickets(`u32`): `Option<AccountId32>`
 - **interface**: `api.query.lottery.tickets`
 - **summary**:    Each ticket's owner. 
 
@@ -639,7 +639,7 @@ ___
 
 ## mmr
  
-### nodes(`8`): `Option<H256>`
+### nodes(`u64`): `Option<H256>`
 - **interface**: `api.query.mmr.nodes`
 - **summary**:    Hashes of the nodes in the MMR. 
 
@@ -658,10 +658,10 @@ ___
 
 ## multisig
  
-### calls(`1`): `Option<(Bytes,AccountId32,u128)>`
+### calls(`[u8;32]`): `Option<(Bytes,AccountId32,u128)>`
 - **interface**: `api.query.multisig.calls`
  
-### multisigs(`0, 1`): `Option<{"when":"PalletMultisigTimepoint","deposit":"u128","depositor":"AccountId32","approvals":"Vec<AccountId32>"}>`
+### multisigs(`AccountId32, [u8;32]`): `Option<PalletMultisigMultisig>`
 - **interface**: `api.query.multisig.multisigs`
 - **summary**:    The set of open multisig operations. 
 
@@ -670,15 +670,15 @@ ___
 
 ## offences
  
-### concurrentReportsIndex(`67, 10`): `Vec<H256>`
+### concurrentReportsIndex(`[u8;16], Bytes`): `Vec<H256>`
 - **interface**: `api.query.offences.concurrentReportsIndex`
 - **summary**:    A vector of reports of the same kind that happened at the same time slot. 
  
-### reports(`9`): `Option<{"offender":"(AccountId32,PalletStakingExposure)","reporters":"Vec<AccountId32>"}>`
+### reports(`H256`): `Option<SpStakingOffenceOffenceDetails>`
 - **interface**: `api.query.offences.reports`
 - **summary**:    The primary structure that holds all offence records keyed by report identifiers. 
  
-### reportsByKindIndex(`67`): `Bytes`
+### reportsByKindIndex(`[u8;16]`): `Bytes`
 - **interface**: `api.query.offences.reportsByKindIndex`
 - **summary**:    Enumerates all reports of a kind along with the time they happened. 
 
@@ -691,11 +691,11 @@ ___
 
 ## proxy
  
-### announcements(`0`): `(Vec<PalletProxyAnnouncement>,u128)`
+### announcements(`AccountId32`): `(Vec<PalletProxyAnnouncement>,u128)`
 - **interface**: `api.query.proxy.announcements`
 - **summary**:    The announcements made by the proxy (key). 
  
-### proxies(`0`): `(Vec<PalletProxyProxyDefinition>,u128)`
+### proxies(`AccountId32`): `(Vec<PalletProxyProxyDefinition>,u128)`
 - **interface**: `api.query.proxy.proxies`
 - **summary**:    The set of account proxies. Maps the account which has delegated to the accounts  which are being delegated to, together with the amount held on deposit. 
 
@@ -713,19 +713,19 @@ ___
 
 ## recovery
  
-### activeRecoveries(`0, 0`): `Option<{"created":"u32","deposit":"u128","friends":"Vec<AccountId32>"}>`
+### activeRecoveries(`AccountId32, AccountId32`): `Option<PalletRecoveryActiveRecovery>`
 - **interface**: `api.query.recovery.activeRecoveries`
 - **summary**:    Active recovery attempts. 
 
    First account is the account to be recovered, and the second account  is the user trying to recover the account. 
  
-### proxy(`0`): `Option<AccountId32>`
+### proxy(`AccountId32`): `Option<AccountId32>`
 - **interface**: `api.query.recovery.proxy`
 - **summary**:    The list of allowed proxy accounts. 
 
    Map from the user who can access it to the recovered account. 
  
-### recoverable(`0`): `Option<{"delayPeriod":"u32","deposit":"u128","friends":"Vec<AccountId32>","threshold":"u16"}>`
+### recoverable(`AccountId32`): `Option<PalletRecoveryRecoveryConfig>`
 - **interface**: `api.query.recovery.recoverable`
 - **summary**:    The set of recoverable accounts and their recovery configuration. 
 
@@ -734,15 +734,15 @@ ___
 
 ## scheduler
  
-### agenda(`4`): `Vec<Option<PalletSchedulerScheduledV2>>`
+### agenda(`u32`): `Vec<Option<PalletSchedulerScheduledV2>>`
 - **interface**: `api.query.scheduler.agenda`
 - **summary**:    Items to be executed, indexed by the block number that they should be executed on. 
  
-### lookup(`10`): `Option<(u32,u32)>`
+### lookup(`Bytes`): `Option<(u32,u32)>`
 - **interface**: `api.query.scheduler.lookup`
 - **summary**:    Lookup from identity to the block number and index of the task. 
  
-### storageVersion(): `{"_enum":["V1","V2"]}`
+### storageVersion(): `PalletSchedulerReleases`
 - **interface**: `api.query.scheduler.storageVersion`
 - **summary**:    Storage version of the pallet. 
 
@@ -763,11 +763,11 @@ ___
 
    The set is cleared when `on_session_ending` returns a new set of identities. 
  
-### keyOwner(`362`): `Option<AccountId32>`
+### keyOwner(`(SpCoreCryptoKeyTypeId,Bytes)`): `Option<AccountId32>`
 - **interface**: `api.query.session.keyOwner`
 - **summary**:    The owner of a key. The key is the `KeyTypeId` + the encoded key. 
  
-### nextKeys(`0`): `Option<{"grandpa":"SpFinalityGrandpaAppPublic","babe":"SpConsensusBabeAppPublic","imOnline":"PalletImOnlineSr25519AppSr25519Public","authorityDiscovery":"SpAuthorityDiscoveryAppPublic"}>`
+### nextKeys(`AccountId32`): `Option<NodeRuntimeSessionKeys>`
 - **interface**: `api.query.session.nextKeys`
 - **summary**:    The next session keys for a validator. 
  
@@ -800,7 +800,7 @@ ___
 - **interface**: `api.query.society.defender`
 - **summary**:    The defending member currently being challenged. 
  
-### defenderVotes(`0`): `Option<{"_enum":["Skeptic","Reject","Approve"]}>`
+### defenderVotes(`AccountId32`): `Option<PalletSocietyVote>`
 - **interface**: `api.query.society.defenderVotes`
 - **summary**:    Votes for the defender. 
  
@@ -820,7 +820,7 @@ ___
 - **interface**: `api.query.society.members`
 - **summary**:    The current set of members, ordered. 
  
-### payouts(`0`): `Vec<(u32,u128)>`
+### payouts(`AccountId32`): `Vec<(u32,u128)>`
 - **interface**: `api.query.society.payouts`
 - **summary**:    Pending payouts; ordered by block number, with the amount that should be paid out. 
  
@@ -832,23 +832,23 @@ ___
 - **interface**: `api.query.society.rules`
 - **summary**:    A hash of the rules of this society concerning membership. Can only be set once and  only by the founder. 
  
-### strikes(`0`): `u32`
+### strikes(`AccountId32`): `u32`
 - **interface**: `api.query.society.strikes`
 - **summary**:    The ongoing number of losing votes cast by the member. 
  
-### suspendedCandidates(`0`): `Option<(u128,PalletSocietyBidKind)>`
+### suspendedCandidates(`AccountId32`): `Option<(u128,PalletSocietyBidKind)>`
 - **interface**: `api.query.society.suspendedCandidates`
 - **summary**:    The set of suspended candidates. 
  
-### suspendedMembers(`0`): `bool`
+### suspendedMembers(`AccountId32`): `bool`
 - **interface**: `api.query.society.suspendedMembers`
 - **summary**:    The set of suspended members. 
  
-### votes(`0, 0`): `Option<{"_enum":["Skeptic","Reject","Approve"]}>`
+### votes(`AccountId32, AccountId32`): `Option<PalletSocietyVote>`
 - **interface**: `api.query.society.votes`
 - **summary**:    Double map from Candidate -> Voter -> (Maybe) Vote. 
  
-### vouching(`0`): `Option<{"_enum":["Vouching","Banned"]}>`
+### vouching(`AccountId32`): `Option<PalletSocietyVouchingStatus>`
 - **interface**: `api.query.society.vouching`
 - **summary**:    Members currently vouching or banned from vouching again 
 
@@ -857,13 +857,13 @@ ___
 
 ## staking
  
-### activeEra(): `Option<{"index":"u32","start":"Option<u64>"}>`
+### activeEra(): `Option<PalletStakingActiveEraInfo>`
 - **interface**: `api.query.staking.activeEra`
 - **summary**:    The active era information, it holds index and start. 
 
    The active era is the era being currently rewarded. Validator set of this era must be  equal to [`SessionInterface::validators`]. 
  
-### bonded(`0`): `Option<AccountId32>`
+### bonded(`AccountId32`): `Option<AccountId32>`
 - **interface**: `api.query.staking.bonded`
 - **summary**:    Map from all locked "stash" accounts to the controller account. 
  
@@ -905,11 +905,11 @@ ___
 - **interface**: `api.query.staking.earliestUnappliedSlash`
 - **summary**:    The earliest era for which we have a pending, unapplied slash. 
  
-### erasRewardPoints(`4`): `{"total":"u32","individual":"BTreeMap<AccountId32, u32>"}`
+### erasRewardPoints(`u32`): `PalletStakingEraRewardPoints`
 - **interface**: `api.query.staking.erasRewardPoints`
 - **summary**:    Rewards for the last `HISTORY_DEPTH` eras.  If reward hasn't been set or has been removed then 0 reward is returned. 
  
-### erasStakers(`4, 0`): `{"total":"Compact<u128>","own":"Compact<u128>","others":"Vec<PalletStakingIndividualExposure>"}`
+### erasStakers(`u32, AccountId32`): `PalletStakingExposure`
 - **interface**: `api.query.staking.erasStakers`
 - **summary**:    Exposure of validator at era. 
 
@@ -917,7 +917,7 @@ ___
 
    Is it removed after `HISTORY_DEPTH` eras.  If stakers hasn't been set or has been removed then empty exposure is returned. 
  
-### erasStakersClipped(`4, 0`): `{"total":"Compact<u128>","own":"Compact<u128>","others":"Vec<PalletStakingIndividualExposure>"}`
+### erasStakersClipped(`u32, AccountId32`): `PalletStakingExposure`
 - **interface**: `api.query.staking.erasStakersClipped`
 - **summary**:    Clipped Exposure of validator at era. 
 
@@ -927,17 +927,17 @@ ___
 
    Is it removed after `HISTORY_DEPTH` eras.  If stakers hasn't been set or has been removed then empty exposure is returned. 
  
-### erasStartSessionIndex(`4`): `Option<u32>`
+### erasStartSessionIndex(`u32`): `Option<u32>`
 - **interface**: `api.query.staking.erasStartSessionIndex`
 - **summary**:    The session index at which the era start for the last `HISTORY_DEPTH` eras. 
 
    Note: This tracks the starting session (i.e. session index when era start being active)  for the eras in `[CurrentEra - HISTORY_DEPTH, CurrentEra]`. 
  
-### erasTotalStake(`4`): `u128`
+### erasTotalStake(`u32`): `u128`
 - **interface**: `api.query.staking.erasTotalStake`
 - **summary**:    The total amount staked for the last `HISTORY_DEPTH` eras.  If total hasn't been set or has been removed then 0 stake is returned. 
  
-### erasValidatorPrefs(`4, 0`): `{"commission":"Compact<Perbill>","blocked":"bool"}`
+### erasValidatorPrefs(`u32, AccountId32`): `PalletStakingValidatorPrefs`
 - **interface**: `api.query.staking.erasValidatorPrefs`
 - **summary**:    Similar to `ErasStakers`, this holds the preferences of validators. 
 
@@ -945,13 +945,13 @@ ___
 
    Is it removed after `HISTORY_DEPTH` eras. 
  
-### erasValidatorReward(`4`): `Option<u128>`
+### erasValidatorReward(`u32`): `Option<u128>`
 - **interface**: `api.query.staking.erasValidatorReward`
 - **summary**:    The total validator era payout for the last `HISTORY_DEPTH` eras. 
 
    Eras that haven't finished yet or has been removed doesn't have reward. 
  
-### forceEra(): `{"_enum":["NotForcing","ForceNew","ForceNone","ForceAlways"]}`
+### forceEra(): `PalletStakingForcing`
 - **interface**: `api.query.staking.forceEra`
 - **summary**:    Mode of era forcing. 
  
@@ -967,7 +967,7 @@ ___
 - **interface**: `api.query.staking.invulnerables`
 - **summary**:    Any validators that may never be slashed or forcibly kicked. It's a Vec since they're  easy to initialize and the performance hit is minimal (we expect no more than four  invulnerables) and restricted to testnets. 
  
-### ledger(`0`): `Option<{"stash":"AccountId32","total":"Compact<u128>","active":"Compact<u128>","unlocking":"Vec<PalletStakingUnlockChunk>","claimedRewards":"Vec<u32>"}>`
+### ledger(`AccountId32`): `Option<PalletStakingStakingLedger>`
 - **interface**: `api.query.staking.ledger`
 - **summary**:    Map from all (unlocked) "controller" accounts to the info regarding the staking. 
  
@@ -995,21 +995,21 @@ ___
 - **interface**: `api.query.staking.minValidatorBond`
 - **summary**:    The minimum active bond to become and maintain the role of a validator. 
  
-### nominators(`0`): `Option<{"targets":"Vec<AccountId32>","submittedIn":"u32","suppressed":"bool"}>`
+### nominators(`AccountId32`): `Option<PalletStakingNominations>`
 - **interface**: `api.query.staking.nominators`
 - **summary**:    The map from nominator stash key to the set of stash keys of all validators to nominate. 
 
    When updating this storage item, you must also update the `CounterForNominators`. 
  
-### nominatorSlashInEra(`4, 0`): `Option<u128>`
+### nominatorSlashInEra(`u32, AccountId32`): `Option<u128>`
 - **interface**: `api.query.staking.nominatorSlashInEra`
 - **summary**:    All slashing events on nominators, mapped by era to the highest slash value of the era. 
  
-### payee(`0`): `{"_enum":{"Staked":"Null","Stash":"Null","Controller":"Null","Account":"AccountId32","None":"Null"}}`
+### payee(`AccountId32`): `PalletStakingRewardDestination`
 - **interface**: `api.query.staking.payee`
 - **summary**:    Where the reward payment should be made. Keyed by stash. 
  
-### slashingSpans(`0`): `Option<{"spanIndex":"u32","lastStart":"u32","lastNonzeroSlash":"u32","prior":"Vec<u32>"}>`
+### slashingSpans(`AccountId32`): `Option<PalletStakingSlashingSlashingSpans>`
 - **interface**: `api.query.staking.slashingSpans`
 - **summary**:    Slashing spans for stash accounts. 
  
@@ -1019,17 +1019,17 @@ ___
 
    The rest of the slashed value is handled by the `Slash`. 
  
-### spanSlash(`351`): `{"slashed":"u128","paidOut":"u128"}`
+### spanSlash(`(AccountId32,u32)`): `PalletStakingSlashingSpanRecord`
 - **interface**: `api.query.staking.spanSlash`
 - **summary**:    Records information about the maximum slash of a stash within a slashing span,  as well as how much reward has been paid out. 
  
-### storageVersion(): `{"_enum":["V1_0_0Ancient","V2_0_0","V3_0_0","V4_0_0","V5_0_0","V6_0_0","V7_0_0"]}`
+### storageVersion(): `PalletStakingReleases`
 - **interface**: `api.query.staking.storageVersion`
 - **summary**:    True if network has been upgraded to this version.  Storage version of the pallet. 
 
    This is set to v7.0.0 for new networks. 
  
-### unappliedSlashes(`4`): `Vec<PalletStakingUnappliedSlash>`
+### unappliedSlashes(`u32`): `Vec<PalletStakingUnappliedSlash>`
 - **interface**: `api.query.staking.unappliedSlashes`
 - **summary**:    All unapplied slashes that are queued for later. 
  
@@ -1037,13 +1037,13 @@ ___
 - **interface**: `api.query.staking.validatorCount`
 - **summary**:    The ideal number of staking participants. 
  
-### validators(`0`): `{"commission":"Compact<Perbill>","blocked":"bool"}`
+### validators(`AccountId32`): `PalletStakingValidatorPrefs`
 - **interface**: `api.query.staking.validators`
 - **summary**:    The map from (wannabe) validator stash key to the preferences of that validator. 
 
    When updating this storage item, you must also update the `CounterForValidators`. 
  
-### validatorSlashInEra(`4, 0`): `Option<(Perbill,u128)>`
+### validatorSlashInEra(`u32, AccountId32`): `Option<(Perbill,u128)>`
 - **interface**: `api.query.staking.validatorSlashInEra`
 - **summary**:    All slashing events on validators, mapped by era to the highest slash proportion  and slash value of the era. 
 
@@ -1088,7 +1088,7 @@ ___
 
 ## system
  
-### account(`0`): `{"nonce":"u32","consumers":"u32","providers":"u32","sufficients":"u32","data":"PalletBalancesAccountData"}`
+### account(`AccountId32`): `FrameSystemAccountInfo`
 - **interface**: `api.query.system.account`
 - **summary**:    The full account information for a particular account ID. 
  
@@ -1096,15 +1096,15 @@ ___
 - **interface**: `api.query.system.allExtrinsicsLen`
 - **summary**:    Total length (in bytes) for all extrinsics put together, for the current block. 
  
-### blockHash(`4`): `H256`
+### blockHash(`u32`): `H256`
 - **interface**: `api.query.system.blockHash`
 - **summary**:    Map of block numbers to block hashes. 
  
-### blockWeight(): `{"normal":"u64","operational":"u64","mandatory":"u64"}`
+### blockWeight(): `FrameSupportWeightsPerDispatchClassU64`
 - **interface**: `api.query.system.blockWeight`
 - **summary**:    The current weight for the block. 
  
-### digest(): `{"logs":"Vec<SpRuntimeGenericDigestDigestItem>"}`
+### digest(): `SpRuntimeGenericDigest`
 - **interface**: `api.query.system.digest`
 - **summary**:    Digest of the current block, also part of the block header. 
  
@@ -1118,7 +1118,7 @@ ___
 
    NOTE: This storage item is explicitly unbounded since it is never intended to be read  from within the runtime. 
  
-### eventTopics(`9`): `Vec<(u32,u32)>`
+### eventTopics(`H256`): `Vec<(u32,u32)>`
 - **interface**: `api.query.system.eventTopics`
 - **summary**:    Mapping between a topic (represented by T::Hash) and a vector of indexes  of events in the `<Events<T>>` list. 
 
@@ -1126,7 +1126,7 @@ ___
 
    The value has the type `(T::BlockNumber, EventIndex)` because if we used only just  the `EventIndex` then in case if the topic has the same contents on the next block  no notification will be triggered thus the event might be lost. 
  
-### executionPhase(): `Option<{"_enum":{"ApplyExtrinsic":"u32","Finalization":"Null","Initialization":"Null"}}>`
+### executionPhase(): `Option<FrameSystemPhase>`
 - **interface**: `api.query.system.executionPhase`
 - **summary**:    The execution phase of the block. 
  
@@ -1134,11 +1134,11 @@ ___
 - **interface**: `api.query.system.extrinsicCount`
 - **summary**:    Total extrinsics count for the current block. 
  
-### extrinsicData(`4`): `Bytes`
+### extrinsicData(`u32`): `Bytes`
 - **interface**: `api.query.system.extrinsicData`
 - **summary**:    Extrinsics data for the current block (maps an extrinsic's index to its data). 
  
-### lastRuntimeUpgrade(): `Option<{"specVersion":"Compact<u32>","specName":"Text"}>`
+### lastRuntimeUpgrade(): `Option<FrameSystemLastRuntimeUpgradeInfo>`
 - **interface**: `api.query.system.lastRuntimeUpgrade`
 - **summary**:    Stores the `spec_version` and `spec_name` of when the last runtime upgrade happened. 
  
@@ -1175,7 +1175,7 @@ ___
 - **interface**: `api.query.technicalCommittee.proposalCount`
 - **summary**:    Proposals so far. 
  
-### proposalOf(`9`): `Option<Call>`
+### proposalOf(`H256`): `Option<Call>`
 - **interface**: `api.query.technicalCommittee.proposalOf`
 - **summary**:    Actual proposal for a given hash, if it's current. 
  
@@ -1183,7 +1183,7 @@ ___
 - **interface**: `api.query.technicalCommittee.proposals`
 - **summary**:    The hashes of the active proposals. 
  
-### voting(`9`): `Option<{"index":"u32","threshold":"u32","ayes":"Vec<AccountId32>","nays":"Vec<AccountId32>","end":"u32"}>`
+### voting(`H256`): `Option<PalletCollectiveVotes>`
 - **interface**: `api.query.technicalCommittee.voting`
 - **summary**:    Votes on a given proposal, if it is ongoing. 
 
@@ -1218,11 +1218,11 @@ ___
 
 ## tips
  
-### reasons(`9`): `Option<Bytes>`
+### reasons(`H256`): `Option<Bytes>`
 - **interface**: `api.query.tips.reasons`
 - **summary**:    Simple preimage lookup from the reason's hash to the original data. Again, has an  insecure enumerable hash since the key is guaranteed to be the result of a secure hash. 
  
-### tips(`9`): `Option<{"reason":"H256","who":"AccountId32","finder":"AccountId32","deposit":"u128","closes":"Option<u32>","tips":"Vec<(AccountId32,u128)>","findersFee":"bool"}>`
+### tips(`H256`): `Option<PalletTipsOpenTip>`
 - **interface**: `api.query.tips.tips`
 - **summary**:    TipsMap that are not yet completed. Keyed by the hash of `(reason, who)` from the value.  This has the insecure enumerable hash function since the key itself is already  guaranteed to be a secure hash. 
 
@@ -1234,7 +1234,7 @@ ___
 ### nextFeeMultiplier(): `u128`
 - **interface**: `api.query.transactionPayment.nextFeeMultiplier`
  
-### storageVersion(): `{"_enum":["V1Ancient","V2"]}`
+### storageVersion(): `PalletTransactionPaymentReleases`
 - **interface**: `api.query.transactionPayment.storageVersion`
 
 ___
@@ -1249,7 +1249,7 @@ ___
 - **interface**: `api.query.transactionStorage.byteFee`
 - **summary**:    Storage fee per byte. 
  
-### chunkCount(`4`): `u32`
+### chunkCount(`u32`): `u32`
 - **interface**: `api.query.transactionStorage.chunkCount`
 - **summary**:    Count indexed chunks for each block. 
  
@@ -1273,7 +1273,7 @@ ___
 - **interface**: `api.query.transactionStorage.storagePeriod`
 - **summary**:    Storage period for data in blocks. Should match `sp_storage_proof::DEFAULT_STORAGE_PERIOD`  for block authoring. 
  
-### transactions(`4`): `Option<Vec<PalletTransactionStorageTransactionInfo>>`
+### transactions(`u32`): `Option<Vec<PalletTransactionStorageTransactionInfo>>`
 - **interface**: `api.query.transactionStorage.transactions`
 - **summary**:    Collection of transaction metadata by block number. 
 
@@ -1290,7 +1290,7 @@ ___
 - **interface**: `api.query.treasury.proposalCount`
 - **summary**:    Number of proposals that have been made. 
  
-### proposals(`4`): `Option<{"proposer":"AccountId32","value":"u128","beneficiary":"AccountId32","bond":"u128"}>`
+### proposals(`u32`): `Option<PalletTreasuryProposal>`
 - **interface**: `api.query.treasury.proposals`
 - **summary**:    Proposals that have been made. 
 
@@ -1299,27 +1299,27 @@ ___
 
 ## uniques
  
-### account(`0, 4, 4`): `Option<Null>`
+### account(`AccountId32, u32, u32`): `Option<Null>`
 - **interface**: `api.query.uniques.account`
 - **summary**:    The assets held by any given account; set out this way so that assets owned by a single  account can be enumerated. 
  
-### asset(`4, 4`): `Option<{"owner":"AccountId32","approved":"Option<AccountId32>","isFrozen":"bool","deposit":"u128"}>`
+### asset(`u32, u32`): `Option<PalletUniquesInstanceDetails>`
 - **interface**: `api.query.uniques.asset`
 - **summary**:    The assets in existence and their ownership details. 
  
-### attribute(`4, 90, 91`): `Option<(Bytes,u128)>`
+### attribute(`u32, Option<u32>, Bytes`): `Option<(Bytes,u128)>`
 - **interface**: `api.query.uniques.attribute`
 - **summary**:    Metadata of an asset class. 
  
-### class(`4`): `Option<{"owner":"AccountId32","issuer":"AccountId32","admin":"AccountId32","freezer":"AccountId32","totalDeposit":"u128","freeHolding":"bool","instances":"u32","instanceMetadatas":"u32","attributes":"u32","isFrozen":"bool"}>`
+### class(`u32`): `Option<PalletUniquesClassDetails>`
 - **interface**: `api.query.uniques.class`
 - **summary**:    Details of an asset class. 
  
-### classMetadataOf(`4`): `Option<{"deposit":"u128","data":"Bytes","isFrozen":"bool"}>`
+### classMetadataOf(`u32`): `Option<PalletUniquesClassMetadata>`
 - **interface**: `api.query.uniques.classMetadataOf`
 - **summary**:    Metadata of an asset class. 
  
-### instanceMetadataOf(`4, 4`): `Option<{"deposit":"u128","data":"Bytes","isFrozen":"bool"}>`
+### instanceMetadataOf(`u32, u32`): `Option<PalletUniquesInstanceMetadata>`
 - **interface**: `api.query.uniques.instanceMetadataOf`
 - **summary**:    Metadata of an asset instance. 
 
@@ -1328,12 +1328,12 @@ ___
 
 ## vesting
  
-### storageVersion(): `{"_enum":["V0","V1"]}`
+### storageVersion(): `PalletVestingReleases`
 - **interface**: `api.query.vesting.storageVersion`
 - **summary**:    Storage version of the pallet. 
 
    New networks start with latest version, as determined by the genesis build. 
  
-### vesting(`0`): `Option<Vec<PalletVestingVestingInfo>>`
+### vesting(`AccountId32`): `Option<Vec<PalletVestingVestingInfo>>`
 - **interface**: `api.query.vesting.vesting`
 - **summary**:    Information regarding the vesting of a given account. 

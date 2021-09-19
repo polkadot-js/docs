@@ -170,7 +170,7 @@ ___
 
    Weight: `O(1)` 
  
-### destroy(id: `Compact<u32>`, witness: `{"accounts":"Compact<u32>","sufficients":"Compact<u32>","approvals":"Compact<u32>"}`)
+### destroy(id: `Compact<u32>`, witness: `PalletAssetsDestroyWitness`)
 - **interface**: `api.tx.assets.destroy`
 - **summary**:    Destroy a class of fungible assets. 
 
@@ -490,15 +490,15 @@ ___
 
 ## babe
  
-### planConfigChange(config: `{"_enum":{"Unused0":"Null","V1":"{\"c\":\"(u64,u64)\",\"allowedSlots\":\"SpConsensusBabeAllowedSlots\"}"}}`)
+### planConfigChange(config: `SpConsensusBabeDigestsNextConfigDescriptor`)
 - **interface**: `api.tx.babe.planConfigChange`
 - **summary**:    Plan an epoch config change. The epoch config change is recorded and will be enacted on  the next call to `enact_epoch_change`. The config will be activated one epoch after.  Multiple calls to this method will replace any existing planned config change that had  not been enacted yet. 
  
-### reportEquivocation(equivocation_proof: `{"offender":"SpConsensusBabeAppPublic","slot":"u64","firstHeader":"SpRuntimeGenericHeader","secondHeader":"SpRuntimeGenericHeader"}`, key_owner_proof: `{"session":"u32","trieNodes":"Vec<Bytes>","validatorCount":"u32"}`)
+### reportEquivocation(equivocation_proof: `SpConsensusSlotsEquivocationProof`, key_owner_proof: `SpSessionMembershipProof`)
 - **interface**: `api.tx.babe.reportEquivocation`
 - **summary**:    Report authority equivocation/misbehavior. This method will verify  the equivocation proof and validate the given key ownership proof  against the extracted offender. If both are valid, the offence will  be reported. 
  
-### reportEquivocationUnsigned(equivocation_proof: `{"offender":"SpConsensusBabeAppPublic","slot":"u64","firstHeader":"SpRuntimeGenericHeader","secondHeader":"SpRuntimeGenericHeader"}`, key_owner_proof: `{"session":"u32","trieNodes":"Vec<Bytes>","validatorCount":"u32"}`)
+### reportEquivocationUnsigned(equivocation_proof: `SpConsensusSlotsEquivocationProof`, key_owner_proof: `SpSessionMembershipProof`)
 - **interface**: `api.tx.babe.reportEquivocationUnsigned`
 - **summary**:    Report authority equivocation/misbehavior. This method will verify  the equivocation proof and validate the given key ownership proof  against the extracted offender. If both are valid, the offence will  be reported.  This extrinsic must be called unsigned and it is expected that only  block authors will call it (validated in `ValidateUnsigned`), as such  if the block author is defined it will be defined as the equivocation  reporter. 
 
@@ -839,7 +839,7 @@ ___
 
    Weight: `O(1)`. 
  
-### delegate(to: `AccountId32`, conviction: `{"_enum":["None","Locked1x","Locked2x","Locked3x","Locked4x","Locked5x","Locked6x"]}`, balance: `u128`)
+### delegate(to: `AccountId32`, conviction: `PalletDemocracyConviction`, balance: `u128`)
 - **interface**: `api.tx.democracy.delegate`
 - **summary**:    Delegate the voting power (with some given conviction) of the sending account. 
 
@@ -1081,7 +1081,7 @@ ___
 
    Weight: `O(V + log(V))` where V is number of `existing vetoers` 
  
-### vote(ref_index: `Compact<u32>`, vote: `{"_enum":{"Standard":"{\"vote\":\"Vote\",\"balance\":\"u128\"}","Split":"{\"aye\":\"u128\",\"nay\":\"u128\"}"}}`)
+### vote(ref_index: `Compact<u32>`, vote: `PalletDemocracyVoteAccountVote`)
 - **interface**: `api.tx.democracy.vote`
 - **summary**:    Vote in a referendum. If `vote.is_aye()`, the vote is to enact the proposal;  otherwise it is a vote to keep the status quo. 
 
@@ -1114,7 +1114,7 @@ ___
 
    This check can be turned off by setting the value to `None`. 
  
-### submit(raw_solution: `{"solution":"NodeRuntimeNposSolution16","score":"[u128;3]","round":"u32"}`, num_signed_submissions: `u32`)
+### submit(raw_solution: `PalletElectionProviderMultiPhaseRawSolution`, num_signed_submissions: `u32`)
 - **interface**: `api.tx.electionProviderMultiPhase.submit`
 - **summary**:    Submit a solution for the signed phase. 
 
@@ -1126,7 +1126,7 @@ ___
 
     
  
-### submitUnsigned(raw_solution: `{"solution":"NodeRuntimeNposSolution16","score":"[u128;3]","round":"u32"}`, witness: `{"voters":"Compact<u32>","targets":"Compact<u32>"}`)
+### submitUnsigned(raw_solution: `PalletElectionProviderMultiPhaseRawSolution`, witness: `PalletElectionProviderMultiPhaseSolutionOrSnapshotSize`)
 - **interface**: `api.tx.electionProviderMultiPhase.submitUnsigned`
 - **summary**:    Submit a solution for the unsigned phase. 
 
@@ -1173,7 +1173,7 @@ ___
 
    The dispatch origin of this call must be signed and be a voter. 
  
-### renounceCandidacy(renouncing: `{"_enum":{"Member":"Null","RunnerUp":"Null","Candidate":"Compact<u32>"}}`)
+### renounceCandidacy(renouncing: `PalletElectionsPhragmenRenouncing`)
 - **interface**: `api.tx.elections.renounceCandidacy`
 - **summary**:    Renounce one's intention to be a candidate for the next election round. 3 potential  outcomes exist: 
 
@@ -1277,11 +1277,11 @@ ___
 - **interface**: `api.tx.grandpa.noteStalled`
 - **summary**:    Note that the current authority set of the GRANDPA finality gadget has  stalled. This will trigger a forced authority set change at the beginning  of the next session, to be enacted `delay` blocks after that. The delay  should be high enough to safely assume that the block signalling the  forced change will not be re-orged (e.g. 1000 blocks). The GRANDPA voters  will start the new authority set using the given finalized block as base.  Only callable by root. 
  
-### reportEquivocation(equivocation_proof: `{"setId":"u64","equivocation":"SpFinalityGrandpaEquivocation"}`, key_owner_proof: `{"session":"u32","trieNodes":"Vec<Bytes>","validatorCount":"u32"}`)
+### reportEquivocation(equivocation_proof: `SpFinalityGrandpaEquivocationProof`, key_owner_proof: `SpSessionMembershipProof`)
 - **interface**: `api.tx.grandpa.reportEquivocation`
 - **summary**:    Report voter equivocation/misbehavior. This method will verify the  equivocation proof and validate the given key ownership proof  against the extracted offender. If both are valid, the offence  will be reported. 
  
-### reportEquivocationUnsigned(equivocation_proof: `{"setId":"u64","equivocation":"SpFinalityGrandpaEquivocation"}`, key_owner_proof: `{"session":"u32","trieNodes":"Vec<Bytes>","validatorCount":"u32"}`)
+### reportEquivocationUnsigned(equivocation_proof: `SpFinalityGrandpaEquivocationProof`, key_owner_proof: `SpSessionMembershipProof`)
 - **interface**: `api.tx.grandpa.reportEquivocationUnsigned`
 - **summary**:    Report voter equivocation/misbehavior. This method will verify the  equivocation proof and validate the given key ownership proof  against the extracted offender. If both are valid, the offence  will be reported. 
 
@@ -1352,7 +1352,7 @@ ___
 
     
  
-### provideJudgement(reg_index: `Compact<u32>`, target: `MultiAddress`, judgement: `{"_enum":{"Unknown":"Null","FeePaid":"u128","Reasonable":"Null","KnownGood":"Null","OutOfDate":"Null","LowQuality":"Null","Erroneous":"Null"}}`)
+### provideJudgement(reg_index: `Compact<u32>`, target: `MultiAddress`, judgement: `PalletIdentityJudgement`)
 - **interface**: `api.tx.identity.provideJudgement`
 - **summary**:    Provide a judgement for an account's identity. 
 
@@ -1434,7 +1434,7 @@ ___
 
     
  
-### setFields(index: `Compact<u32>`, fields: `{"_set":{"_bitLength":64,"Display":1,"Legal":2,"Web":4,"Riot":8,"Email":16,"PgpFingerprint":32,"Image":64,"Twitter":128}}`)
+### setFields(index: `Compact<u32>`, fields: `PalletIdentityBitFlags`)
 - **interface**: `api.tx.identity.setFields`
 - **summary**:    Set the field information for a registrar. 
 
@@ -1446,7 +1446,7 @@ ___
 
     
  
-### setIdentity(info: `{"additional":"Vec<(Data,Data)>","display":"Data","legal":"Data","web":"Data","riot":"Data","email":"Data","pgpFingerprint":"Option<[u8;20]>","image":"Data","twitter":"Data"}`)
+### setIdentity(info: `PalletIdentityIdentityInfo`)
 - **interface**: `api.tx.identity.setIdentity`
 - **summary**:    Set an account's identity information and reserve the appropriate deposit. 
 
@@ -1477,7 +1477,7 @@ ___
 
 ## imOnline
  
-### heartbeat(heartbeat: `{"blockNumber":"u32","networkState":"SpCoreOffchainOpaqueNetworkState","sessionIndex":"u32","authorityIndex":"u32","validatorsLen":"u32"}`, signature: `[u8;64]`)
+### heartbeat(heartbeat: `PalletImOnlineHeartbeat`, signature: `PalletImOnlineSr25519AppSr25519Signature`)
 - **interface**: `api.tx.imOnline.heartbeat`
 - **summary**:     
 
@@ -1664,7 +1664,7 @@ ___
 
     
  
-### cancelAsMulti(threshold: `u16`, other_signatories: `Vec<AccountId32>`, timepoint: `{"height":"u32","index":"u32"}`, call_hash: `[u8;32]`)
+### cancelAsMulti(threshold: `u16`, other_signatories: `Vec<AccountId32>`, timepoint: `PalletMultisigTimepoint`, call_hash: `[u8;32]`)
 - **interface**: `api.tx.multisig.cancelAsMulti`
 - **summary**:    Cancel a pre-existing, on-going multisig transaction. Any deposit reserved previously  for this operation will be unreserved on success. 
 
@@ -1685,7 +1685,7 @@ ___
 
 ## proxy
  
-### addProxy(delegate: `AccountId32`, proxy_type: `{"_enum":["Any","NonTransfer","Governance","Staking"]}`, delay: `u32`)
+### addProxy(delegate: `AccountId32`, proxy_type: `NodeRuntimeProxyType`, delay: `u32`)
 - **interface**: `api.tx.proxy.addProxy`
 - **summary**:    Register a proxy account for the sender that is able to make calls on its behalf. 
 
@@ -1721,7 +1721,7 @@ ___
 
     
  
-### anonymous(proxy_type: `{"_enum":["Any","NonTransfer","Governance","Staking"]}`, delay: `u32`, index: `u16`)
+### anonymous(proxy_type: `NodeRuntimeProxyType`, delay: `u32`, index: `u16`)
 - **interface**: `api.tx.proxy.anonymous`
 - **summary**:    Spawn a fresh new account that is guaranteed to be otherwise inaccessible, and  initialize it with a proxy of `proxy_type` for `origin` sender. 
 
@@ -1739,7 +1739,7 @@ ___
 
      TODO: Might be over counting 1 read 
  
-### killAnonymous(spawner: `AccountId32`, proxy_type: `{"_enum":["Any","NonTransfer","Governance","Staking"]}`, index: `u16`, height: `Compact<u32>`, ext_index: `Compact<u32>`)
+### killAnonymous(spawner: `AccountId32`, proxy_type: `NodeRuntimeProxyType`, index: `u16`, height: `Compact<u32>`, ext_index: `Compact<u32>`)
 - **interface**: `api.tx.proxy.killAnonymous`
 - **summary**:    Removes a previously spawned anonymous proxy. 
 
@@ -1839,7 +1839,7 @@ ___
 
     
  
-### removeProxy(delegate: `AccountId32`, proxy_type: `{"_enum":["Any","NonTransfer","Governance","Staking"]}`, delay: `u32`)
+### removeProxy(delegate: `AccountId32`, proxy_type: `NodeRuntimeProxyType`, delay: `u32`)
 - **interface**: `api.tx.proxy.removeProxy`
 - **summary**:    Unregister a proxy account for the sender. 
 
@@ -2038,7 +2038,7 @@ ___
 
     
  
-### setKeys(keys: `{"grandpa":"SpFinalityGrandpaAppPublic","babe":"SpConsensusBabeAppPublic","imOnline":"PalletImOnlineSr25519AppSr25519Public","authorityDiscovery":"SpAuthorityDiscoveryAppPublic"}`, proof: `Bytes`)
+### setKeys(keys: `NodeRuntimeSessionKeys`, proof: `Bytes`)
 - **interface**: `api.tx.session.setKeys`
 - **summary**:    Sets the session key(s) of the function caller to `keys`.  Allows an account to set its session key prior to becoming a validator.  This doesn't take effect until the next session. 
 
@@ -2095,7 +2095,7 @@ ___
 
     
  
-### judgeSuspendedCandidate(who: `AccountId32`, judgement: `{"_enum":["Rebid","Reject","Approve"]}`)
+### judgeSuspendedCandidate(who: `AccountId32`, judgement: `PalletSocietyJudgement`)
 - **interface**: `api.tx.society.judgeSuspendedCandidate`
 - **summary**:    Allow suspended judgement origin to make judgement on a suspended candidate. 
 
@@ -2230,7 +2230,7 @@ ___
 
 ## staking
  
-### bond(controller: `MultiAddress`, value: `Compact<u128>`, payee: `{"_enum":{"Staked":"Null","Stash":"Null","Controller":"Null","Account":"AccountId32","None":"Null"}}`)
+### bond(controller: `MultiAddress`, value: `Compact<u128>`, payee: `PalletStakingRewardDestination`)
 - **interface**: `api.tx.staking.bond`
 - **summary**:    Take the origin account as a stash and lock up `value` of its balance. `controller` will  be the account that controls it. 
 
@@ -2436,7 +2436,7 @@ ___
 
     
  
-### setPayee(payee: `{"_enum":{"Staked":"Null","Stash":"Null","Controller":"Null","Account":"AccountId32","None":"Null"}}`)
+### setPayee(payee: `PalletStakingRewardDestination`)
 - **interface**: `api.tx.staking.setPayee`
 - **summary**:    (Re-)set the payment target for a controller. 
 
@@ -2486,7 +2486,7 @@ ___
 
    See also [`Call::withdraw_unbonded`]. 
  
-### validate(prefs: `{"commission":"Compact<Perbill>","blocked":"bool"}`)
+### validate(prefs: `PalletStakingValidatorPrefs`)
 - **interface**: `api.tx.staking.validate`
 - **summary**:    Declare the desire to validate for the origin controller. 
 
@@ -2847,7 +2847,7 @@ ___
 
 ## transactionStorage
  
-### checkProof(proof: `{"chunk":"Bytes","proof":"Vec<Bytes>"}`)
+### checkProof(proof: `SpTransactionStorageProofTransactionStorageProof`)
 - **interface**: `api.tx.transactionStorage.checkProof`
 - **summary**:    Check storage proof for block number `block_number() - StoragePeriod`.  If such block does not exist the proof is expected to be `None`.   
  
@@ -3017,7 +3017,7 @@ ___
 
    Weight: `O(1)` 
  
-### destroy(class: `Compact<u32>`, witness: `{"instances":"Compact<u32>","instanceMetadatas":"Compact<u32>","attributes":"Compact<u32>"}`)
+### destroy(class: `Compact<u32>`, witness: `PalletUniquesDestroyWitness`)
 - **interface**: `api.tx.uniques.destroy`
 - **summary**:    Destroy a class of fungible assets. 
 
@@ -3325,7 +3325,7 @@ ___
 
 ## vesting
  
-### forceVestedTransfer(source: `MultiAddress`, target: `MultiAddress`, schedule: `{"locked":"u128","perBlock":"u128","startingBlock":"u32"}`)
+### forceVestedTransfer(source: `MultiAddress`, target: `MultiAddress`, schedule: `PalletVestingVestingInfo`)
 - **interface**: `api.tx.vesting.forceVestedTransfer`
 - **summary**:    Force a vested transfer. 
 
@@ -3385,7 +3385,7 @@ ___
 
     
  
-### vestedTransfer(target: `MultiAddress`, schedule: `{"locked":"u128","perBlock":"u128","startingBlock":"u32"}`)
+### vestedTransfer(target: `MultiAddress`, schedule: `PalletVestingVestingInfo`)
 - **interface**: `api.tx.vesting.vestedTransfer`
 - **summary**:    Create a vested transfer. 
 

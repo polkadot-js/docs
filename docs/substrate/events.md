@@ -173,7 +173,7 @@ ___
 - **interface**: `api.events.balances.Reserved.is`
 - **summary**:    Some balance was reserved (moved from free to reserved). \[who, value\] 
  
-### ReserveRepatriated(`AccountId32`, `AccountId32`, `u128`, `{"_enum":["Free","Reserved"]}`)
+### ReserveRepatriated(`AccountId32`, `AccountId32`, `u128`, `FrameSupportTokensMiscBalanceStatus`)
 - **interface**: `api.events.balances.ReserveRepatriated.is`
 - **summary**:    Some balance was moved from the reserve of the first account to the second account.  Final argument indicates the destination balance type.  \[from, to, balance, destination_status\] 
  
@@ -359,7 +359,7 @@ ___
 - **interface**: `api.events.democracy.Proposed.is`
 - **summary**:    A motion has been proposed by a public account. \[proposal_index, deposit\] 
  
-### Started(`u32`, `{"_enum":["SuperMajorityApprove","SuperMajorityAgainst","SimpleMajority"]}`)
+### Started(`u32`, `PalletDemocracyVoteThreshold`)
 - **interface**: `api.events.democracy.Started.is`
 - **summary**:    A referendum has begun. \[ref_index, threshold\] 
  
@@ -396,7 +396,7 @@ ___
 - **interface**: `api.events.electionProviderMultiPhase.Slashed.is`
 - **summary**:    An account has been slashed for submitting an invalid signed submission. 
  
-### SolutionStored(`{"_enum":["OnChain","Signed","Unsigned","Fallback","Emergency"]}`, `bool`)
+### SolutionStored(`PalletElectionProviderMultiPhaseElectionCompute`, `bool`)
 - **interface**: `api.events.electionProviderMultiPhase.SolutionStored.is`
 - **summary**:    A solution was stored with the given compute. 
 
@@ -535,7 +535,7 @@ ___
 - **interface**: `api.events.imOnline.AllGood.is`
 - **summary**:    At the end of the session, no offence was committed. 
  
-### HeartbeatReceived(`[u8;32]`)
+### HeartbeatReceived(`PalletImOnlineSr25519AppSr25519Public`)
 - **interface**: `api.events.imOnline.HeartbeatReceived.is`
 - **summary**:    A new heartbeat was received from `AuthorityId` \[authority_id\] 
  
@@ -586,15 +586,15 @@ ___
 
 ## multisig
  
-### MultisigApproval(`AccountId32`, `{"height":"u32","index":"u32"}`, `AccountId32`, `[u8;32]`)
+### MultisigApproval(`AccountId32`, `PalletMultisigTimepoint`, `AccountId32`, `[u8;32]`)
 - **interface**: `api.events.multisig.MultisigApproval.is`
 - **summary**:    A multisig operation has been approved by someone.  \[approving, timepoint, multisig, call_hash\] 
  
-### MultisigCancelled(`AccountId32`, `{"height":"u32","index":"u32"}`, `AccountId32`, `[u8;32]`)
+### MultisigCancelled(`AccountId32`, `PalletMultisigTimepoint`, `AccountId32`, `[u8;32]`)
 - **interface**: `api.events.multisig.MultisigCancelled.is`
 - **summary**:    A multisig operation has been cancelled. \[cancelling, timepoint, multisig, call_hash\] 
  
-### MultisigExecuted(`AccountId32`, `{"height":"u32","index":"u32"}`, `AccountId32`, `[u8;32]`, `Result<Null, SpRuntimeDispatchError>`)
+### MultisigExecuted(`AccountId32`, `PalletMultisigTimepoint`, `AccountId32`, `[u8;32]`, `Result<Null, SpRuntimeDispatchError>`)
 - **interface**: `api.events.multisig.MultisigExecuted.is`
 - **summary**:    A multisig operation has been executed. \[approving, timepoint, multisig, call_hash\] 
  
@@ -620,11 +620,11 @@ ___
 - **interface**: `api.events.proxy.Announced.is`
 - **summary**:    An announcement was placed to make a call in the future. \[real, proxy, call_hash\] 
  
-### AnonymousCreated(`AccountId32`, `AccountId32`, `{"_enum":["Any","NonTransfer","Governance","Staking"]}`, `u16`)
+### AnonymousCreated(`AccountId32`, `AccountId32`, `NodeRuntimeProxyType`, `u16`)
 - **interface**: `api.events.proxy.AnonymousCreated.is`
 - **summary**:    Anonymous account has been created by new proxy with given  disambiguation index and proxy type. \[anonymous, who, proxy_type,  disambiguation_index\] 
  
-### ProxyAdded(`AccountId32`, `AccountId32`, `{"_enum":["Any","NonTransfer","Governance","Staking"]}`, `u32`)
+### ProxyAdded(`AccountId32`, `AccountId32`, `NodeRuntimeProxyType`, `u32`)
 - **interface**: `api.events.proxy.ProxyAdded.is`
 - **summary**:    A proxy was added. \[delegator, delegatee, proxy_type, delay\] 
  
@@ -837,11 +837,11 @@ ___
 - **interface**: `api.events.system.CodeUpdated.is`
 - **summary**:    `:code` was updated. 
  
-### ExtrinsicFailed(`{"_enum":{"Other":"Null","CannotLookup":"Null","BadOrigin":"Null","Module":"{\"index\":\"u8\",\"error\":\"u8\"}","ConsumerRemaining":"Null","NoProviders":"Null","Token":"SpRuntimeTokenError","Arithmetic":"SpRuntimeArithmeticError"}}`, `{"weight":"u64","class":"FrameSupportWeightsDispatchClass","paysFee":"FrameSupportWeightsPays"}`)
+### ExtrinsicFailed(`SpRuntimeDispatchError`, `FrameSupportWeightsDispatchInfo`)
 - **interface**: `api.events.system.ExtrinsicFailed.is`
 - **summary**:    An extrinsic failed. \[error, info\] 
  
-### ExtrinsicSuccess(`{"weight":"u64","class":"FrameSupportWeightsDispatchClass","paysFee":"FrameSupportWeightsPays"}`)
+### ExtrinsicSuccess(`FrameSupportWeightsDispatchInfo`)
 - **interface**: `api.events.system.ExtrinsicSuccess.is`
 - **summary**:    An extrinsic completed successfully. \[info\] 
  
@@ -1096,7 +1096,7 @@ ___
 - **interface**: `api.events.utility.BatchCompleted.is`
 - **summary**:    Batch of dispatches completed fully with no error. 
  
-### BatchInterrupted(`u32`, `{"_enum":{"Other":"Null","CannotLookup":"Null","BadOrigin":"Null","Module":"{\"index\":\"u8\",\"error\":\"u8\"}","ConsumerRemaining":"Null","NoProviders":"Null","Token":"SpRuntimeTokenError","Arithmetic":"SpRuntimeArithmeticError"}}`)
+### BatchInterrupted(`u32`, `SpRuntimeDispatchError`)
 - **interface**: `api.events.utility.BatchInterrupted.is`
 - **summary**:    Batch of dispatches did not complete fully. Index of first failing dispatch given, as  well as the error. \[index, error\] 
  
