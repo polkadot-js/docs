@@ -49,7 +49,7 @@ if (!!signRaw) {
     // after making sure that signRaw is defined
     // we can use it to sign our message
     const { signature } = await signRaw({
-        account.address,
+        address: account.address,
         data: stringToHex('message to sign'),
         type: 'bytes'
     });
