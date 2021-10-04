@@ -8,6 +8,8 @@ Events are emitted for certain operations on the runtime. The following sections
 
 - **[assets](#assets)**
 
+- **[bagsList](#bagslist)**
+
 - **[balances](#balances)**
 
 - **[bounties](#bounties)**
@@ -151,6 +153,15 @@ ___
 ___
 
 
+## bagsList
+ 
+### Rebagged(`AccountId32`, `u64`, `u64`)
+- **interface**: `api.events.bagsList.Rebagged.is`
+- **summary**:    Moved an account from one bag to another. \[who, from, to\]. 
+
+___
+
+
 ## balances
  
 ### BalanceSet(`AccountId32`, `u128`, `u128`)
@@ -225,45 +236,29 @@ ___
  
 ### CodeRemoved(`H256`)
 - **interface**: `api.events.contracts.CodeRemoved.is`
-- **summary**:    A code with the specified hash was removed.  \[code_hash\] 
+- **summary**:    A code with the specified hash was removed. 
 
    This happens when the last contract that uses this code hash was removed. 
  
 ### CodeStored(`H256`)
 - **interface**: `api.events.contracts.CodeStored.is`
-- **summary**:    Code with the specified hash has been stored. \[code_hash\] 
+- **summary**:    Code with the specified hash has been stored. 
  
 ### ContractEmitted(`AccountId32`, `Bytes`)
 - **interface**: `api.events.contracts.ContractEmitted.is`
-- **summary**:    A custom event emitted by the contract.  \[contract, data\] 
-
-   #### Params 
-
-   - `contract`: The contract that emitted the event. 
-
-  - `data`: Data supplied by the contract. Metadata generated during contract compilation is needed to decode it. 
+- **summary**:    A custom event emitted by the contract. 
  
 ### Instantiated(`AccountId32`, `AccountId32`)
 - **interface**: `api.events.contracts.Instantiated.is`
-- **summary**:    Contract deployed by address at the specified address. \[deployer, contract\] 
+- **summary**:    Contract deployed by address at the specified address. 
  
 ### ScheduleUpdated(`u32`)
 - **interface**: `api.events.contracts.ScheduleUpdated.is`
-- **summary**:    Triggered when the current schedule is updated.  \[version\] 
-
-   #### Params 
-
-   - `version`: The version of the newly set schedule. 
+- **summary**:    Triggered when the current schedule is updated. 
  
 ### Terminated(`AccountId32`, `AccountId32`)
 - **interface**: `api.events.contracts.Terminated.is`
-- **summary**:    Contract has been removed.  \[contract, beneficiary\] 
-
-   #### Params 
-
-   - `contract`: The contract that was terminated. 
-
-  - `beneficiary`: The account that received the contracts remaining balance.
+- **summary**:    Contract has been removed. 
 
    #### Note 
 
@@ -754,7 +749,7 @@ ___
  
 ### Vouch(`AccountId32`, `u128`, `AccountId32`)
 - **interface**: `api.events.society.Vouch.is`
-- **summary**:    A membership bid just happened by vouching. The given account is the candidate's ID and  their offer is the second. The vouching party is the third. \[candidate_id, offer, vouching\] 
+- **summary**:    A membership bid just happened by vouching. The given account is the candidate's ID and  their offer is the second. The vouching party is the third. \[candidate_id, offer,  vouching\] 
 
 ___
 
