@@ -12,6 +12,8 @@ The following sections contain Extrinsics methods are part of the default Substr
 
 - **[babe](#babe)**
 
+- **[bagsList](#bagslist)**
+
 - **[balances](#balances)**
 
 - **[bounties](#bounties)**
@@ -505,11 +507,30 @@ ___
 ___
 
 
+## bagsList
+ 
+### rebag(dislocated: `AccountId32`)
+- **interface**: `api.tx.bagsList.rebag`
+- **summary**:    Declare that some `dislocated` account has, through rewards or penalties, sufficiently  changed its weight that it should properly fall into a different bag than its current  one. 
+
+   Anyone can call this function about any potentially dislocated account. 
+
+   Will never return an error; if `dislocated` does not exist or doesn't need a rebag, then  it is a noop and fees are still collected from `origin`. 
+
+___
+
+
 ## balances
  
 ### forceTransfer(source: `MultiAddress`, dest: `MultiAddress`, value: `Compact<u128>`)
 - **interface**: `api.tx.balances.forceTransfer`
 - **summary**:    Exactly as `transfer`, except the origin must be root and the source account may be  specified.   
+ 
+### forceUnreserve(who: `MultiAddress`, amount: `u128`)
+- **interface**: `api.tx.balances.forceUnreserve`
+- **summary**:    Unreserve some balance from a user by force. 
+
+   Can only be called by ROOT. 
  
 ### setBalance(who: `MultiAddress`, new_free: `Compact<u128>`, new_reserved: `Compact<u128>`)
 - **interface**: `api.tx.balances.setBalance`
@@ -574,7 +595,7 @@ ___
  
 ### awardBounty(bounty_id: `Compact<u32>`, beneficiary: `MultiAddress`)
 - **interface**: `api.tx.bounties.awardBounty`
-- **summary**:    Award bounty to a beneficiary account. The beneficiary will be able to claim the funds after a delay. 
+- **summary**:    Award bounty to a beneficiary account. The beneficiary will be able to claim the funds  after a delay. 
 
    The dispatch origin for this call must be the curator of this bounty. 
 
@@ -604,7 +625,7 @@ ___
 
     
  
-### extendBountyExpiry(bounty_id: `Compact<u32>`, _remark: `Bytes`)
+### extendBountyExpiry(bounty_id: `Compact<u32>`, remark: `Bytes`)
 - **interface**: `api.tx.bounties.extendBountyExpiry`
 - **summary**:    Extend the expiry time of an active bounty. 
 
@@ -646,7 +667,7 @@ ___
 
    This function can only be called by the `RejectOrigin` a signed origin. 
 
-   If this function is called by the `RejectOrigin`, we assume that the curator is malicious  or inactive. As a result, we will slash the curator when possible. 
+   If this function is called by the `RejectOrigin`, we assume that the curator is  malicious or inactive. As a result, we will slash the curator when possible. 
 
    If the origin is the curator, we take this as a sign they are unable to do their job and  they willingly give up. We could slash them, but for now we allow them to recover their  deposit and exit without issue. (We may want to change this if it is abused.) 
 
@@ -2081,7 +2102,7 @@ ___
 - **interface**: `api.tx.society.found`
 - **summary**:    Found the society. 
 
-   This is done as a discrete action in order to allow for the  module to be included into a running chain and can only be done once. 
+   This is done as a discrete action in order to allow for the  pallet to be included into a running chain and can only be done once. 
 
    The dispatch origin for this call must be from the _FounderSetOrigin_. 
 
@@ -2137,7 +2158,7 @@ ___
 - **interface**: `api.tx.society.payout`
 - **summary**:    Transfer the first matured payout for the sender and remove it from the records. 
 
-   NOTE: This extrinsic needs to be called multiple times to claim multiple matured payouts. 
+   NOTE: This extrinsic needs to be called multiple times to claim multiple matured  payouts. 
 
    Payment: The member will receive a payment equal to their first matured  payout to their free balance. 
 

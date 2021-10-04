@@ -166,6 +166,11 @@ ___
 - **jsonrpc**: `childstate_getStorage`
 - **summary**: Returns a child storage entry at a specific block state
  
+### getStorageEntries(childKey: `PrefixedStorageKey`, keys: `Vec<StorageKey>`, at?: `Hash`): `Vec<Option<StorageData>>`
+- **interface**: `api.rpc.childstate.getStorageEntries`
+- **jsonrpc**: `childstate_getStorageEntries`
+- **summary**: Returns child storage entries for multiple keys at a specific block state
+ 
 ### getStorageHash(childKey: `PrefixedStorageKey`, key: `StorageKey`, at?: `Hash`): `Option<Hash>`
 - **interface**: `api.rpc.childstate.getStorageHash`
 - **jsonrpc**: `childstate_getStorageHash`

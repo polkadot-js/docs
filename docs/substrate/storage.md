@@ -12,6 +12,8 @@ The following sections contain Storage methods are part of the default Substrate
 
 - **[babe](#babe)**
 
+- **[bagsList](#bagslist)**
+
 - **[balances](#balances)**
 
 - **[bounties](#bounties)**
@@ -201,6 +203,27 @@ ___
 ### underConstruction(`u32`): `Vec<[u8;32]>`
 - **interface**: `api.query.babe.underConstruction`
 - **summary**:    TWOX-NOTE: `SegmentIndex` is an increasing integer, so this is okay. 
+
+___
+
+
+## bagsList
+ 
+### counterForListNodes(): `u32`
+- **interface**: `api.query.bagsList.counterForListNodes`
+- **summary**:    How many ids are registered. 
+ 
+### listBags(`u64`): `Option<PalletBagsListListBag>`
+- **interface**: `api.query.bagsList.listBags`
+- **summary**:    A bag stored in storage. 
+
+   Stores a `Bag` struct, which stores head and tail pointers to itself. 
+ 
+### listNodes(`AccountId32`): `Option<PalletBagsListListNode>`
+- **interface**: `api.query.bagsList.listNodes`
+- **summary**:    A single node, within some bag. 
+
+   Nodes store links forward and back within their respective bags. 
 
 ___
 
@@ -591,9 +614,9 @@ ___
 - **interface**: `api.query.imOnline.keys`
 - **summary**:    The current set of keys that may issue a heartbeat. 
  
-### receivedHeartbeats(`u32, u32`): `Option<Bytes>`
+### receivedHeartbeats(`u32, u32`): `Option<WrapperOpaque<PalletImOnlineBoundedOpaqueNetworkState>>`
 - **interface**: `api.query.imOnline.receivedHeartbeats`
-- **summary**:    For each session index, we keep a mapping of `AuthIndex` to  `offchain::OpaqueNetworkState`. 
+- **summary**:    For each session index, we keep a mapping of `SessionIndex` and `AuthIndex` to  `WrapperOpaque<BoundedOpaqueNetworkState>`. 
 
 ___
 

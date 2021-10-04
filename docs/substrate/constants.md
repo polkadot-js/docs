@@ -12,6 +12,8 @@ The following sections contain the module constants, also known as parameter typ
 
 - **[babe](#babe)**
 
+- **[bagsList](#bagslist)**
+
 - **[balances](#balances)**
 
 - **[bounties](#bounties)**
@@ -25,6 +27,8 @@ The following sections contain the module constants, also known as parameter typ
 - **[elections](#elections)**
 
 - **[gilt](#gilt)**
+
+- **[grandpa](#grandpa)**
 
 - **[identity](#identity)**
 
@@ -109,6 +113,49 @@ ___
 ### expectedBlockTime: `u64`
 - **interface**: `api.consts.babe.expectedBlockTime`
 - **summary**:    The expected average block time at which BABE should be creating  blocks. Since BABE is probabilistic it is not trivial to figure out  what the expected average block time should be based on the slot  duration and the security parameter `c` (where `1 - c` represents  the probability of a slot being empty). 
+ 
+### maxAuthorities: `u32`
+- **interface**: `api.consts.babe.maxAuthorities`
+- **summary**:    Max number of authorities allowed 
+
+___
+
+
+## bagsList
+ 
+### bagThresholds: `Vec<u64>`
+- **interface**: `api.consts.bagsList.bagThresholds`
+- **summary**:    The list of thresholds separating the various bags. 
+
+   Ids are separated into unsorted bags according to their vote weight. This specifies the  thresholds separating the bags. An id's bag is the largest bag for which the id's weight  is less than or equal to its upper threshold. 
+
+   When ids are iterated, higher bags are iterated completely before lower bags. This means  that iteration is _semi-sorted_: ids of higher weight tend to come before ids of lower  weight, but peer ids within a particular bag are sorted in insertion order. 
+
+   #### Expressing the constant 
+
+   This constant must be sorted in strictly increasing order. Duplicate items are not  permitted. 
+
+   There is an implied upper limit of `VoteWeight::MAX`; that value does not need to be  specified within the bag. For any two threshold lists, if one ends with  `VoteWeight::MAX`, the other one does not, and they are otherwise equal, the two lists  will behave identically. 
+
+   #### Calculation 
+
+   It is recommended to generate the set of thresholds in a geometric series, such that  there exists some constant ratio such that `threshold[k + 1] == (threshold[k] *  constant_ratio).max(threshold[k] + 1)` for all `k`. 
+
+   The helpers in the `/utils/frame/generate-bags` module can simplify this calculation. 
+
+   #### Examples 
+
+   - If `BagThresholds::get().is_empty()`, then all ids are put into the same bag, and  iteration is strictly in insertion order. 
+
+  - If `BagThresholds::get().len() == 64`, and the thresholds are determined according to the procedure given above, then the constant ratio is equal to 2. 
+
+  - If `BagThresholds::get().len() == 200`, and the thresholds are determined according to the procedure given above, then the constant ratio is approximately equal to 1.248. 
+
+  - If the threshold list begins `[1, 2, 3, ...]`, then an id with weight 0 or 1 will fall into bag 0, an id with weight 2 will fall into bag 1, etc. 
+
+   #### Migration 
+
+   In the event that this list ever changes, a copy of the old bags list must be retained.  With that `List::migrate` can be called, which will perform the appropriate migration. 
 
 ___
 
@@ -134,7 +181,7 @@ ___
  
 ### bountyCuratorDeposit: `Permill`
 - **interface**: `api.consts.bounties.bountyCuratorDeposit`
-- **summary**:    Percentage of the curator fee that will be reserved upfront as deposit for bounty curator. 
+- **summary**:    Percentage of the curator fee that will be reserved upfront as deposit for bounty  curator. 
  
 ### bountyDepositBase: `u128`
 - **interface**: `api.consts.bounties.bountyDepositBase`
@@ -154,7 +201,7 @@ ___
  
 ### dataDepositPerByte: `u128`
 - **interface**: `api.consts.bounties.dataDepositPerByte`
-- **summary**:    The amount held on deposit per byte within bounty description. 
+- **summary**:    The amount held on deposit per byte within the tip report reason or bounty description. 
  
 ### maximumReasonLength: `u32`
 - **interface**: `api.consts.bounties.maximumReasonLength`
@@ -302,6 +349,12 @@ ___
 ### unsignedPhase: `u32`
 - **interface**: `api.consts.electionProviderMultiPhase.unsignedPhase`
 - **summary**:    Duration of the unsigned phase. 
+ 
+### voterSnapshotPerBlock: `u32`
+- **interface**: `api.consts.electionProviderMultiPhase.voterSnapshotPerBlock`
+- **summary**:    The maximum number of voters to put in the snapshot. At the moment, snapshots are only  over a single block, but once multi-block elections are introduced they will take place  over multiple blocks. 
+
+   Also, note the data type: If the voters are represented by a `u32` in `type  CompactSolution`, the same `u32` is used here to ensure bounds are respected. 
 
 ___
 
@@ -380,6 +433,15 @@ ___
 ### queueCount: `u32`
 - **interface**: `api.consts.gilt.queueCount`
 - **summary**:    Number of duration queues in total. This sets the maximum duration supported, which is  this value multiplied by `Period`. 
+
+___
+
+
+## grandpa
+ 
+### maxAuthorities: `u32`
+- **interface**: `api.consts.grandpa.maxAuthorities`
+- **summary**:    Max Authorities in use 
 
 ___
 
@@ -560,15 +622,19 @@ ___
  
 ### maxCandidateIntake: `u32`
 - **interface**: `api.consts.society.maxCandidateIntake`
-- **summary**:    Maximum candidate intake per round. 
+- **summary**:    The maximum number of candidates that we accept per round. 
+ 
+### maxLockDuration: `u32`
+- **interface**: `api.consts.society.maxLockDuration`
+- **summary**:    The maximum duration of the payout lock. 
  
 ### maxStrikes: `u32`
 - **interface**: `api.consts.society.maxStrikes`
-- **summary**:    The number of times a member may vote the wrong way (or not at all, when they are a skeptic)  before they become suspended. 
+- **summary**:    The number of times a member may vote the wrong way (or not at all, when they are a  skeptic) before they become suspended. 
  
 ### palletId: `FrameSupportPalletId`
 - **interface**: `api.consts.society.palletId`
-- **summary**:    The societies's module id 
+- **summary**:    The societies's pallet id 
  
 ### periodSpend: `u128`
 - **interface**: `api.consts.society.periodSpend`
