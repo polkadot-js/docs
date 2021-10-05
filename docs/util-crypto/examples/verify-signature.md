@@ -6,13 +6,13 @@ This function will return true if a message passed as parameter has been signed 
 
 ```javascript
 const { cryptoWaitReady, decodeAddress, signatureVerify } = require('@polkadot/util-crypto');
-const { u8aToHex, u8aWrapBytes } = require('@polkadot/util');
+const { u8aToHex } = require('@polkadot/util');
 
 const isValidSignature = (signedMessage, signature, address) => {
   const publicKey = decodeAddress(address);
   const hexPublicKey = u8aToHex(publicKey);
 
-  return signatureVerify(u8aWrapBytes(signedMessage), signature, hexPublicKey).isValid;
+  return signatureVerify(signedMessage, signature, hexPublicKey).isValid;
 };
 
 const main = async () => {
