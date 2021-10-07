@@ -784,7 +784,7 @@ ___
 - **interface**: `api.query.session.disabledValidators`
 - **summary**:    Indices of disabled validators. 
 
-   The set is cleared when `on_session_ending` returns a new set of identities. 
+   The vec is always kept sorted so that we can find whether a given validator is  disabled using binary search. It gets cleared when `on_session_ending` returns  a new set of identities. 
  
 ### keyOwner(`(SpCoreCryptoKeyTypeId,Bytes)`): `Option<AccountId32>`
 - **interface**: `api.query.session.keyOwner`
@@ -1027,6 +1027,12 @@ ___
 ### nominatorSlashInEra(`u32, AccountId32`): `Option<u128>`
 - **interface**: `api.query.staking.nominatorSlashInEra`
 - **summary**:    All slashing events on nominators, mapped by era to the highest slash value of the era. 
+ 
+### offendingValidators(): `Vec<(u32,bool)>`
+- **interface**: `api.query.staking.offendingValidators`
+- **summary**:    Indices of validators that have offended in the active era and whether they are currently  disabled. 
+
+   This value should be a superset of disabled validators since not all offences lead to the  validator being disabled (if there was no slash). This is needed to track the percentage of  validators that have offended in the current era, ensuring a new era is forced if  `OffendingValidatorsThreshold` is reached. The vec is always kept sorted so that we can find  whether a given validator has previously offended using binary search. It gets cleared when  the era ends. 
  
 ### payee(`AccountId32`): `PalletStakingRewardDestination`
 - **interface**: `api.query.staking.payee`
