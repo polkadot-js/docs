@@ -2053,9 +2053,11 @@ ___
  
 ### purgeKeys()
 - **interface**: `api.tx.session.purgeKeys`
-- **summary**:    Removes any session key(s) of the function caller.  This doesn't take effect until the next session. 
+- **summary**:    Removes any session key(s) of the function caller. 
 
-   The dispatch origin of this function must be signed. 
+   This doesn't take effect until the next session. 
+
+   The dispatch origin of this function must be Signed and the account must be either be  convertible to a validator ID using the chain's typical addressing system (this usually  means being a controller account) or directly convertible into a validator ID (which  usually means being a stash account). 
 
     
  

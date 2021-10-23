@@ -170,7 +170,7 @@ ___
  
 ### Deposit(`AccountId32`, `u128`)
 - **interface**: `api.events.balances.Deposit.is`
-- **summary**:    Some amount was deposited (e.g. for transaction fees). \[who, deposit\] 
+- **summary**:    Some amount was deposited into the account (e.g. for transaction fees). \[who,  deposit\] 
  
 ### DustLost(`AccountId32`, `u128`)
 - **interface**: `api.events.balances.DustLost.is`
@@ -188,6 +188,10 @@ ___
 - **interface**: `api.events.balances.ReserveRepatriated.is`
 - **summary**:    Some balance was moved from the reserve of the first account to the second account.  Final argument indicates the destination balance type.  \[from, to, balance, destination_status\] 
  
+### Slashed(`AccountId32`, `u128`)
+- **interface**: `api.events.balances.Slashed.is`
+- **summary**:    Some amount was removed from the account (e.g. for misbehavior). \[who,  amount_slashed\] 
+ 
 ### Transfer(`AccountId32`, `AccountId32`, `u128`)
 - **interface**: `api.events.balances.Transfer.is`
 - **summary**:    Transfer succeeded. \[from, to, value\] 
@@ -195,6 +199,10 @@ ___
 ### Unreserved(`AccountId32`, `u128`)
 - **interface**: `api.events.balances.Unreserved.is`
 - **summary**:    Some balance was unreserved (moved from reserved to free). \[who, value\] 
+ 
+### Withdraw(`AccountId32`, `u128`)
+- **interface**: `api.events.balances.Withdraw.is`
+- **summary**:    Some amount was withdrawn from the account (e.g. for transaction fees). \[who, value\] 
 
 ___
 
