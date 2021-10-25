@@ -111,6 +111,6 @@ For more information around this, refer to the Polkadot wiki [on unique extrinsi
 
 When running into TypeScript errors, ensure that you are on a recent version. The API (and common utilities), reply extensively on [template literals](https://www.typescriptlang.org/docs/handbook/2/template-literal-types.html) which were introduced in the [Typescript 4.1 version](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-4-1.html).
 
-Additionally the [rxjs library]() (used internally by the API), requires at least a [TypeScript 4.2 version](https://github.com/ReactiveX/rxjs/blob/6bd1c5f3cf0e387973b44698c48bc933e8c528aa/package.json#L9), without it the Observale types are not correctly resolved.
+Additionally the [rxjs library](https://github.com/ReactiveX/rxjs/) (used internally by the API), requires at least a [TypeScript 4.2 version](https://github.com/ReactiveX/rxjs/blob/6bd1c5f3cf0e387973b44698c48bc933e8c528aa/package.json#L9), without it the Observable types are not correctly resolved.
 
 The API itself generally always uses the latest TypeScript versions under development, but the use of new of features are delayed to at least 2 major versions to not require immediate upgrades of the compilers.
