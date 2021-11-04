@@ -32,7 +32,7 @@ async function main () {
   const { encrypted } = naclEncrypt(messagePreEncryption, secret, noncePreEncryption);
 
   // Sign the message with a valid signature
-  const messageSignature = naclSign(encrypted, secretKey);
+  const messageSignature = naclSign(encrypted,{publicKey,secretKey});
 
   console.log(`Message signature: ${u8aToHex(messageSignature)}`);
 
