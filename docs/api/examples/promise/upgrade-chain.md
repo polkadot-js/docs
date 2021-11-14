@@ -2,7 +2,7 @@
 title: Chain upgrade
 ---
 
-Performs a chain upgrade using the `sudo` module. This may brick your chain, so use it as an educational sample. (use `substrate purge-chain --dev` to remove DB and recover).
+Performs a chain upgrade using the `sudo` module. This may break your chain, so use it as an educational sample. (use `substrate purge-chain --dev` to remove DB and recover).
 
 ```javascript
 // Import the API & Provider and some utility functions
