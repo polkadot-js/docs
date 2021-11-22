@@ -15,7 +15,7 @@ For the packages we need from the `@polkadot/*` we have added `@polkadot/api` (w
 {
   "scripts": {
     "build": "yarn generate:defs && yarn generate:meta",
-    "generate:defs": "ts-node --skip-project node_modules/.bin/polkadot-types-from-defs --package sample-polkadotjs-typegen/interfaces --input ./src/interfaces",
+    "generate:defs": "ts-node --skip-project node_modules/.bin/polkadot-types-from-defs --package sample-polkadotjs-typegen/interfaces --input ./src/interfaces --endpoint ./edgeware.json",
     "generate:meta": "ts-node --skip-project node_modules/.bin/polkadot-types-from-chain --package sample-polkadotjs-typegen/interfaces --endpoint ./edgeware.json --output ./src/interfaces",
     "lint": "tsc --noEmit --pretty"
   },
@@ -35,7 +35,7 @@ We will delve into the setup and running the scripts and what they do in a short
 
 ## Metadata setup
 
-The idea here is to use the actual chain metadata to generate the actual api augmented endpoints. The metadata we are adding here (in addition to the user types), is from the Edgeware Berlin testnet. So this is a real-world example of configuring the API for a specific substrate chain. For the metadata retrieval, we just ran a simple curl command to get it from the node -
+The idea here is to use the actual chain metadata to generate the actual api types and augmented endpoints. The metadata we are adding here (in addition to the manually-defined user types), is from the Edgeware Berlin testnet. So this is a real-world example of configuring the API for a specific substrate chain. For the metadata retrieval, we just ran a simple curl command to get it from the node -
 
 `curl -H "Content-Type: application/json" -d '{"id":"1", "jsonrpc":"2.0", "method": "state_getMetadata", "params":[]}' http://localhost:9933`
 
@@ -50,10 +50,10 @@ The generator can also use a `wss://` as an `--endpoint` param as part of the ge
 
 ## Types setup
 
-The types are defined in the `src/interfaces` folder. While this repo contains a number of generated files in there as well, you basically only need to manually add the following -
+The types are defined in the `src/interfaces` folder. While this repo contains a number of generated files in there as well, including auto-generated types, you can specify additional type definitions by adding the following -
 
 - `src/interfaces/definitions.ts` - this just exports all the sub-folder definitions in one go
-- `src/interfaces/<module>/definitions.ts` - type definitions for a specific module
+- `src/interfaces/<module>/definitions.ts` - manual type definitions for a specific module
 
 This structure fully matches what is available in the `@polkadot/type/interfaces` folder, so the structure is setup based on the convention used in the `@polkadot/types` library. The generating scripts will expect something matching this since the same underlying code is actually used inside `@polkadot/types` as well. The top-level `interfaces/` folder can be name anything, however the internal content structure need to match what is defined above.
 
@@ -105,6 +105,7 @@ $ ts-node --skip-project \
   node_modules/.bin/polkadot-types-from-defs \
     --package sample-polkadotjs-typegen/interfaces \
     --input ./src/interfaces
+    --endpoint ./edgeware.json
 
 sample-polkadotjs-typegen/src/interfaces/types.ts
 	Generating
@@ -143,7 +144,7 @@ $ tsc --noEmit --pretty
 
 ## Peering at the output
 
-We are ready to use all these generated types this after some TS config. If you take a look at the generated `src/signaling/types.ts`, you would see generated TS interfaces, such as -
+We are ready to use all these generated types after some TS config. If you take a look at the generated `src/signaling/types.ts`, you would see generated TS interfaces, such as -
 
 ```js
 import { Struct } from '@polkadot/types/codec';
@@ -171,6 +172,7 @@ export interface ProposalTitle extends Bytes {}
 
 As mentioned earlier, here you will notice the `import { VoteStage }`, the generator has determined that `voting` exports that interface and has added the required imports.
 
+The metadata-generated types can be imported from `@polkadot/types/lookup`, which is declared in `src/interfaces/types-lookup.ts`.
 
 ## TypeScript config
 
