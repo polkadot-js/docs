@@ -595,7 +595,7 @@ ___
  
 ### MultisigCancelled(`AccountId32`, `PalletMultisigTimepoint`, `AccountId32`, `[u8;32]`)
 - **interface**: `api.events.multisig.MultisigCancelled.is`
-- **summary**:    A multisig operation has been cancelled. \[cancelling, timepoint, multisig, call_hash\] 
+- **summary**:    A multisig operation has been cancelled. \[canceling, timepoint, multisig, call_hash\] 
  
 ### MultisigExecuted(`AccountId32`, `PalletMultisigTimepoint`, `AccountId32`, `[u8;32]`, `Result<Null, SpRuntimeDispatchError>`)
 - **interface**: `api.events.multisig.MultisigExecuted.is`
@@ -1102,6 +1102,10 @@ ___
 ### BatchInterrupted(`u32`, `SpRuntimeDispatchError`)
 - **interface**: `api.events.utility.BatchInterrupted.is`
 - **summary**:    Batch of dispatches did not complete fully. Index of first failing dispatch given, as  well as the error. \[index, error\] 
+ 
+### DispatchedAs(`Result<Null, SpRuntimeDispatchError>`)
+- **interface**: `api.events.utility.DispatchedAs.is`
+- **summary**:    A call was dispatched. \[result\] 
  
 ### ItemCompleted()
 - **interface**: `api.events.utility.ItemCompleted.is`

@@ -1264,6 +1264,10 @@ ___
 
 ## system
  
+### CallFiltered
+- **interface**: `api.errors.system.CallFiltered.is`
+- **summary**:    The origin filter prevent the call to be dispatched. 
+ 
 ### FailedToExtractRuntimeVersion
 - **interface**: `api.errors.system.FailedToExtractRuntimeVersion.is`
 - **summary**:    Failed to extract the runtime version from the new runtime. 

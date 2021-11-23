@@ -483,7 +483,7 @@ ___
 
 ## authorship
  
-### setUncles(new_uncles: `Vec<SpRuntimeGenericHeader>`)
+### setUncles(new_uncles: `Vec<SpRuntimeHeader>`)
 - **interface**: `api.tx.authorship.setUncles`
 - **summary**:    Provide a set of uncles. 
 
@@ -3340,6 +3340,14 @@ ___
    - `calls`: The calls to be dispatched from the same origin. The number of call must not  exceed the constant: `batched_calls_limit` (available in constant metadata). 
 
    If origin is root then call are dispatch without checking origin filter. (This includes  bypassing `frame_system::Config::BaseCallFilter`). 
+
+    
+ 
+### dispatchAs(as_origin: `NodeRuntimeOriginCaller`, call: `Call`)
+- **interface**: `api.tx.utility.dispatchAs`
+- **summary**:    Dispatches a function call with a provided origin. 
+
+   The dispatch origin for this call must be _Root_. 
 
     
 
