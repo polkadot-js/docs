@@ -33,7 +33,8 @@ const injector = await web3FromAddress(SENDER);
 // (as retrieved injected) is passed through as the param to the `signAndSend`,
 // the API then calls the extension to present to the user and get it signed.
 // Once complete, the api sends the tx + signature via the normal process
-api.tx.balances
-  .transfer('5C5555yEXUcmEJ5kkcCMvdZjUo7NGJiQJMS7vZXEeoMhj3VQ', 123456)
-  .signAndSend(SENDER, { signer: injector.signer }, (status) => { ... });
+api.tx.balances@polkadot/extension-dapp
+  .transfer('5C5555yEXUcmEJ5kkcCMvdZjUo7NGJiQJMS7vZXEeoMhj3VQ', 
+)
+  .signAndSend(SENDER, { signer: injector.signer }, (status) => { ... });@polkadot/extension-dapp
 ```
