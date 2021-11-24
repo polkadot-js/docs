@@ -8,6 +8,8 @@ The following sections contain Storage methods are part of the default Substrate
 
 - **[assets](#assets)**
 
+- **[authorityDiscovery](#authoritydiscovery)**
+
 - **[authorship](#authorship)**
 
 - **[babe](#babe)**
@@ -109,6 +111,19 @@ ___
 ___
 
 
+## authorityDiscovery
+ 
+### keys(): `Vec<SpAuthorityDiscoveryAppPublic>`
+- **interface**: `api.query.authorityDiscovery.keys`
+- **summary**:    Keys of the current authority set. 
+ 
+### nextKeys(): `Vec<SpAuthorityDiscoveryAppPublic>`
+- **interface**: `api.query.authorityDiscovery.nextKeys`
+- **summary**:    Keys of the next authority set. 
+
+___
+
+
 ## authorship
  
 ### author(): `Option<AccountId32>`
@@ -196,7 +211,7 @@ ___
 - **interface**: `api.query.babe.segmentIndex`
 - **summary**:    Randomness under construction. 
 
-   We make a tradeoff between storage accesses and list length.  We store the under-construction randomness in segments of up to  `UNDER_CONSTRUCTION_SEGMENT_LENGTH`. 
+   We make a trade-off between storage accesses and list length.  We store the under-construction randomness in segments of up to  `UNDER_CONSTRUCTION_SEGMENT_LENGTH`. 
 
    Once a segment reaches this length, we begin the next one.  We reset all segments and return to `0` at the beginning of every  epoch. 
  
@@ -1133,7 +1148,7 @@ ___
 - **interface**: `api.query.system.blockWeight`
 - **summary**:    The current weight for the block. 
  
-### digest(): `SpRuntimeGenericDigest`
+### digest(): `SpRuntimeDigest`
 - **interface**: `api.query.system.digest`
 - **summary**:    Digest of the current block, also part of the block header. 
  
