@@ -1204,7 +1204,7 @@ ___
  
 ### InsufficientBond
 - **interface**: `api.errors.staking.InsufficientBond.is`
-- **summary**:    Can not bond with value less than minimum required. 
+- **summary**:    Cannot have a validator or nominator role, with value less than the minimum defined by  governance (see `MinValidatorBond` and `MinNominatorBond`). If unbonding is the  intention, `chill` first to remove one's role as validator/nominator. 
  
 ### InvalidEraToReward
 - **interface**: `api.errors.staking.InvalidEraToReward.is`

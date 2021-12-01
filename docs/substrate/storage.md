@@ -226,7 +226,7 @@ ___
  
 ### counterForListNodes(): `u32`
 - **interface**: `api.query.bagsList.counterForListNodes`
-- **summary**:    How many ids are registered. 
+- **summary**:    Counter for the related counted storage map 
  
 ### listBags(`u64`): `Option<PalletBagsListListBag>`
 - **interface**: `api.query.bagsList.listBags`

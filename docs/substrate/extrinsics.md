@@ -82,7 +82,7 @@ ___
 
 ## assets
  
-### approveTransfer(id: `Compact<u32>`, delegate: `MultiAddress`, amount: `Compact<u64>`)
+### approveTransfer(id: `Compact<u32>`, delegate: `MultiAddress`, amount: `Compact<u128>`)
 - **interface**: `api.tx.assets.approveTransfer`
 - **summary**:    Approve an amount of asset for transfer by a delegated third-party account. 
 
@@ -102,7 +102,7 @@ ___
 
    Weight: `O(1)` 
  
-### burn(id: `Compact<u32>`, who: `MultiAddress`, amount: `Compact<u64>`)
+### burn(id: `Compact<u32>`, who: `MultiAddress`, amount: `Compact<u128>`)
 - **interface**: `api.tx.assets.burn`
 - **summary**:    Reduce the balance of `who` by as much as possible up to `amount` assets of `id`. 
 
@@ -150,7 +150,7 @@ ___
 
    Weight: `O(1)` 
  
-### create(id: `Compact<u32>`, admin: `MultiAddress`, min_balance: `u64`)
+### create(id: `Compact<u32>`, admin: `MultiAddress`, min_balance: `u128`)
 - **interface**: `api.tx.assets.create`
 - **summary**:    Issue a new class of fungible assets from a public origin. 
 
@@ -192,7 +192,7 @@ ___
 
   - `a = witness.approvals`
  
-### forceAssetStatus(id: `Compact<u32>`, owner: `MultiAddress`, issuer: `MultiAddress`, admin: `MultiAddress`, freezer: `MultiAddress`, min_balance: `Compact<u64>`, is_sufficient: `bool`, is_frozen: `bool`)
+### forceAssetStatus(id: `Compact<u32>`, owner: `MultiAddress`, issuer: `MultiAddress`, admin: `MultiAddress`, freezer: `MultiAddress`, min_balance: `Compact<u128>`, is_sufficient: `bool`, is_frozen: `bool`)
 - **interface**: `api.tx.assets.forceAssetStatus`
 - **summary**:    Alter the attributes of a given asset. 
 
@@ -248,7 +248,7 @@ ___
 
    Weight: `O(1)` 
  
-### forceCreate(id: `Compact<u32>`, owner: `MultiAddress`, is_sufficient: `bool`, min_balance: `Compact<u64>`)
+### forceCreate(id: `Compact<u32>`, owner: `MultiAddress`, is_sufficient: `bool`, min_balance: `Compact<u128>`)
 - **interface**: `api.tx.assets.forceCreate`
 - **summary**:    Issue a new class of fungible assets from a privileged origin. 
 
@@ -288,7 +288,7 @@ ___
 
    Weight: `O(N + S)` where N and S are the length of the name and symbol respectively. 
  
-### forceTransfer(id: `Compact<u32>`, source: `MultiAddress`, dest: `MultiAddress`, amount: `Compact<u64>`)
+### forceTransfer(id: `Compact<u32>`, source: `MultiAddress`, dest: `MultiAddress`, amount: `Compact<u128>`)
 - **interface**: `api.tx.assets.forceTransfer`
 - **summary**:    Move some assets from one account to another. 
 
@@ -332,7 +332,7 @@ ___
 
    Weight: `O(1)` 
  
-### mint(id: `Compact<u32>`, beneficiary: `MultiAddress`, amount: `Compact<u64>`)
+### mint(id: `Compact<u32>`, beneficiary: `MultiAddress`, amount: `Compact<u128>`)
 - **interface**: `api.tx.assets.mint`
 - **summary**:    Mint assets of a particular class. 
 
@@ -412,7 +412,7 @@ ___
 
    Weight: `O(1)` 
  
-### transfer(id: `Compact<u32>`, target: `MultiAddress`, amount: `Compact<u64>`)
+### transfer(id: `Compact<u32>`, target: `MultiAddress`, amount: `Compact<u128>`)
 - **interface**: `api.tx.assets.transfer`
 - **summary**:    Move some assets from the sender account to another. 
 
@@ -428,7 +428,7 @@ ___
 
    Weight: `O(1)`  Modes: Pre-existence of `target`; Post-existence of sender; Account pre-existence of  `target`. 
  
-### transferApproved(id: `Compact<u32>`, owner: `MultiAddress`, destination: `MultiAddress`, amount: `Compact<u64>`)
+### transferApproved(id: `Compact<u32>`, owner: `MultiAddress`, destination: `MultiAddress`, amount: `Compact<u128>`)
 - **interface**: `api.tx.assets.transferApproved`
 - **summary**:    Transfer some asset balance from a previously delegated account to some third-party  account. 
 
@@ -448,7 +448,7 @@ ___
 
    Weight: `O(1)` 
  
-### transferKeepAlive(id: `Compact<u32>`, target: `MultiAddress`, amount: `Compact<u64>`)
+### transferKeepAlive(id: `Compact<u32>`, target: `MultiAddress`, amount: `Compact<u128>`)
 - **interface**: `api.tx.assets.transferKeepAlive`
 - **summary**:    Move some assets from the sender account to another, keeping the sender account alive. 
 
@@ -792,6 +792,10 @@ ___
    Requires root origin. 
 
    NOTE: Does not enforce the expected `MaxMembers` limit on the amount of members, but  the weight estimations rely on it to estimate dispatchable weight. 
+
+   #### WARNING: 
+
+   The `pallet-collective` can also be managed by logic outside of the pallet through the  implementation of the trait [`ChangeMembers`].  Any call to `set_members` must be careful that the member set doesn't get out of sync  with other logic managing the member set. 
 
     
  
@@ -2403,13 +2407,15 @@ ___
  
 ### reapStash(stash: `AccountId32`, num_slashing_spans: `u32`)
 - **interface**: `api.tx.staking.reapStash`
-- **summary**:    Remove all data structure concerning a staker/stash once its balance is at the minimum.  This is essentially equivalent to `withdraw_unbonded` except it can be called by anyone  and the target `stash` must have no funds left beyond the ED. 
+- **summary**:    Remove all data structures concerning a staker/stash once it is at a state where it can  be considered `dust` in the staking system. The requirements are: 
 
-   This can be called from any origin. 
+   1. the `total_balance` of the stash is below existential deposit.  2. or, the `ledger.total` of the stash is below existential deposit. 
 
-   - `stash`: The stash account to reap. Its balance must be zero. 
+   The former can happen in cases like a slash; the latter when a fully unbonded account  is still receiving staking rewards in `RewardDestination::Staked`. 
 
-    
+   It can be called by anyone, as long as `stash` meets the above requirements. 
+
+   Refunds the transaction fees upon successful execution. 
  
 ### rebond(value: `Compact<u128>`)
 - **interface**: `api.tx.staking.rebond`
@@ -2603,12 +2609,6 @@ ___
 
     
  
-### setChangesTrieConfig(changes_trie_config: `Option<SpCoreChangesTrieChangesTrieConfiguration>`)
-- **interface**: `api.tx.system.setChangesTrieConfig`
-- **summary**:    Set the new changes trie configuration. 
-
-    
- 
 ### setCode(code: `Bytes`)
 - **interface**: `api.tx.system.setCode`
 - **summary**:    Set the new runtime code. 
@@ -2697,6 +2697,10 @@ ___
    Requires root origin. 
 
    NOTE: Does not enforce the expected `MaxMembers` limit on the amount of members, but  the weight estimations rely on it to estimate dispatchable weight. 
+
+   #### WARNING: 
+
+   The `pallet-collective` can also be managed by logic outside of the pallet through the  implementation of the trait [`ChangeMembers`].  Any call to `set_members` must be careful that the member set doesn't get out of sync  with other logic managing the member set. 
 
     
  
