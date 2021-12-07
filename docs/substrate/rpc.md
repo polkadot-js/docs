@@ -636,7 +636,7 @@ ___
 - **jsonrpc**: `state_subscribeStorage`
 - **summary**: Subscribes to storage changes for the provided keys
  
-### traceBlock(block: `Hash`, targets: `Option<Text>`, storageKeys: `Option<Text>`): `TraceBlockResponse`
+### traceBlock(block: `Hash`, targets: `Option<Text>`, storageKeys: `Option<Text>`, methods: `Option<Text>`): `TraceBlockResponse`
 - **interface**: `api.rpc.state.traceBlock`
 - **jsonrpc**: `state_traceBlock`
 - **summary**: Provides a way to trace the re-execution of a single block

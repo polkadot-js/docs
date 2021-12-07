@@ -207,6 +207,8 @@ ___
 - **interface**: `api.consts.bounties.maximumReasonLength`
 - **summary**:    Maximum acceptable reason length. 
 
+   Benchmarks depend on this value, be sure to update weights file when changing this value 
+
 ___
 
 
@@ -214,7 +216,7 @@ ___
  
 ### contractDeposit: `u128`
 - **interface**: `api.consts.contracts.contractDeposit`
-- **summary**:    The deposit that must be placed into the contract's account to instantiate it.  This is in **addition** to the [`pallet_balances::Pallet::ExistenialDeposit`].  The minimum balance for a contract's account can be queried using  [`Pallet::subsistence_threshold`]. 
+- **summary**:    The deposit that must be placed into the contract's account to instantiate it.  This is in **addition** to the [`Currency::minimum_balance`].  The minimum balance for a contract's account can be queried using  [`Pallet::subsistence_threshold`]. 
  
 ### deletionQueueDepth: `u32`
 - **interface**: `api.consts.contracts.deletionQueueDepth`
@@ -693,8 +695,8 @@ ___
 - **interface**: `api.consts.system.dbWeight`
 - **summary**:    The weight of runtime database operations the runtime can invoke. 
  
-### sS58Prefix: `u16`
-- **interface**: `api.consts.system.sS58Prefix`
+### ss58Prefix: `u16`
+- **interface**: `api.consts.system.ss58Prefix`
 - **summary**:    The designated SS85 prefix of this chain. 
 
    This replaces the "ss58Format" property declared in the chain spec. Reason is  that the runtime should know about the prefix in order to make use of it as  an identifier of the chain. 
@@ -724,6 +726,8 @@ ___
 ### maximumReasonLength: `u32`
 - **interface**: `api.consts.tips.maximumReasonLength`
 - **summary**:    Maximum acceptable reason length. 
+
+   Benchmarks depend on this value, be sure to update weights file when changing this value 
  
 ### tipCountdown: `u32`
 - **interface**: `api.consts.tips.tipCountdown`

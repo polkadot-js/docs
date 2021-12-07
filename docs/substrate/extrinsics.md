@@ -539,8 +539,6 @@ ___
    This will alter `FreeBalance` and `ReservedBalance` in storage. it will  also decrease the total issuance of the system (`TotalIssuance`).  If the new free or reserved balance is below the existential deposit,  it will reset the account nonce (`frame_system::AccountNonce`). 
 
    The dispatch origin for this call is `root`. 
-
-    
  
 ### transfer(dest: `MultiAddress`, value: `Compact<u128>`)
 - **interface**: `api.tx.balances.transfer`
@@ -570,7 +568,7 @@ ___
 
    99% of the time you want [`transfer`] instead. 
 
-   [`transfer`]: struct.Pallet.html#method.transfer   
+   [`transfer`]: struct.Pallet.html#method.transfer 
 
 ___
 
@@ -2017,20 +2015,14 @@ ___
 ### cancel(when: `u32`, index: `u32`)
 - **interface**: `api.tx.scheduler.cancel`
 - **summary**:    Cancel an anonymously scheduled task. 
-
-    
  
 ### cancelNamed(id: `Bytes`)
 - **interface**: `api.tx.scheduler.cancelNamed`
 - **summary**:    Cancel a named scheduled task. 
-
-    
  
 ### schedule(when: `u32`, maybe_periodic: `Option<(u32,u32)>`, priority: `u8`, call: `Call`)
 - **interface**: `api.tx.scheduler.schedule`
 - **summary**:    Anonymously schedule a task. 
-
-    
  
 ### scheduleAfter(after: `u32`, maybe_periodic: `Option<(u32,u32)>`, priority: `u8`, call: `Call`)
 - **interface**: `api.tx.scheduler.scheduleAfter`
@@ -2041,8 +2033,6 @@ ___
 ### scheduleNamed(id: `Bytes`, when: `u32`, maybe_periodic: `Option<(u32,u32)>`, priority: `u8`, call: `Call`)
 - **interface**: `api.tx.scheduler.scheduleNamed`
 - **summary**:    Schedule a named task. 
-
-    
  
 ### scheduleNamedAfter(id: `Bytes`, after: `u32`, maybe_periodic: `Option<(u32,u32)>`, priority: `u8`, call: `Call`)
 - **interface**: `api.tx.scheduler.scheduleNamedAfter`
@@ -2475,9 +2465,9 @@ ___
 
     
  
-### setStakingLimits(min_nominator_bond: `u128`, min_validator_bond: `u128`, max_nominator_count: `Option<u32>`, max_validator_count: `Option<u32>`, threshold: `Option<Percent>`)
-- **interface**: `api.tx.staking.setStakingLimits`
-- **summary**:    Update the various staking limits this pallet. 
+### setStakingConfigs(min_nominator_bond: `u128`, min_validator_bond: `u128`, max_nominator_count: `Option<u32>`, max_validator_count: `Option<u32>`, chill_threshold: `Option<Percent>`, min_commission: `Perbill`)
+- **interface**: `api.tx.staking.setStakingConfigs`
+- **summary**:    Update the various staking configurations . 
 
    * `min_nominator_bond`: The minimum active bond needed to be a nominator. 
 
@@ -2486,6 +2476,10 @@ ___
   * `max_nominator_count`: The max number of users who can be a nominator at once. When set to `None`, no limit is enforced. 
 
   * `max_validator_count`: The max number of users who can be a validator at once. When set to `None`, no limit is enforced. 
+
+  * `chill_threshold`: The ratio of `max_nominator_count` or `max_validator_count` which should be filled in order for the `chill_other` transaction to work. 
+
+  * `min_commission`: The minimum amount of commission that each validators must maintain. This is checked only upon calling `validate`. Existing validators are not affected. 
 
    Origin must be Root to call this function. 
 
@@ -2588,14 +2582,10 @@ ___
 - **summary**:    Kill all storage items with a key that starts with the given prefix. 
 
    **NOTE:** We rely on the Root origin to provide us the number of subkeys under  the prefix we are removing to accurately calculate the weight of this function. 
-
-    
  
 ### killStorage(keys: `Vec<Bytes>`)
 - **interface**: `api.tx.system.killStorage`
 - **summary**:    Kill some items from storage. 
-
-    
  
 ### remark(remark: `Bytes`)
 - **interface**: `api.tx.system.remark`
@@ -2624,14 +2614,10 @@ ___
 ### setHeapPages(pages: `u64`)
 - **interface**: `api.tx.system.setHeapPages`
 - **summary**:    Set the number of pages in the WebAssembly environment's heap. 
-
-    
  
 ### setStorage(items: `Vec<(Bytes,Bytes)>`)
 - **interface**: `api.tx.system.setStorage`
 - **summary**:    Set some items of storage. 
-
-    
 
 ___
 

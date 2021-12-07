@@ -362,6 +362,10 @@ ___
 - **interface**: `api.events.democracy.Proposed.is`
 - **summary**:    A motion has been proposed by a public account. 
  
+### Seconded(`AccountId32`, `u32`)
+- **interface**: `api.events.democracy.Seconded.is`
+- **summary**:    An account has secconded a proposal 
+ 
 ### Started(`u32`, `PalletDemocracyVoteThreshold`)
 - **interface**: `api.events.democracy.Started.is`
 - **summary**:    A referendum has begun. 
@@ -377,6 +381,10 @@ ___
 ### Vetoed(`AccountId32`, `H256`, `u32`)
 - **interface**: `api.events.democracy.Vetoed.is`
 - **summary**:    An external proposal has been vetoed. 
+ 
+### Voted(`AccountId32`, `u32`, `PalletDemocracyVoteAccountVote`)
+- **interface**: `api.events.democracy.Voted.is`
+- **summary**:    An account has voted in a referendum 
 
 ___
 
@@ -671,15 +679,15 @@ ___
  
 ### Canceled(`u32`, `u32`)
 - **interface**: `api.events.scheduler.Canceled.is`
-- **summary**:    Canceled some task. \[when, index\] 
+- **summary**:    Canceled some task. 
  
 ### Dispatched(`(u32,u32)`, `Option<Bytes>`, `Result<Null, SpRuntimeDispatchError>`)
 - **interface**: `api.events.scheduler.Dispatched.is`
-- **summary**:    Dispatched some task. \[task, id, result\] 
+- **summary**:    Dispatched some task. 
  
 ### Scheduled(`u32`, `u32`)
 - **interface**: `api.events.scheduler.Scheduled.is`
-- **summary**:    Scheduled some task. \[when, index\] 
+- **summary**:    Scheduled some task. 
 
 ___
 
@@ -697,39 +705,39 @@ ___
  
 ### AutoUnbid(`AccountId32`)
 - **interface**: `api.events.society.AutoUnbid.is`
-- **summary**:    A \[candidate\] was dropped (due to an excess of bids in the system). 
+- **summary**:    A candidate was dropped (due to an excess of bids in the system). 
  
 ### Bid(`AccountId32`, `u128`)
 - **interface**: `api.events.society.Bid.is`
-- **summary**:    A membership bid just happened. The given account is the candidate's ID and their offer  is the second. \[candidate_id, offer\] 
+- **summary**:    A membership bid just happened. The given account is the candidate's ID and their offer  is the second. 
  
 ### CandidateSuspended(`AccountId32`)
 - **interface**: `api.events.society.CandidateSuspended.is`
-- **summary**:    A \[candidate\] has been suspended 
+- **summary**:    A candidate has been suspended 
  
 ### Challenged(`AccountId32`)
 - **interface**: `api.events.society.Challenged.is`
-- **summary**:    A \[member\] has been challenged 
+- **summary**:    A member has been challenged 
  
 ### DefenderVote(`AccountId32`, `bool`)
 - **interface**: `api.events.society.DefenderVote.is`
-- **summary**:    A vote has been placed for a defending member \[voter, vote\] 
+- **summary**:    A vote has been placed for a defending member 
  
 ### Deposit(`u128`)
 - **interface**: `api.events.society.Deposit.is`
-- **summary**:    Some funds were deposited into the society account. \[value\] 
+- **summary**:    Some funds were deposited into the society account. 
  
 ### Founded(`AccountId32`)
 - **interface**: `api.events.society.Founded.is`
-- **summary**:    The society is founded by the given identity. \[founder\] 
+- **summary**:    The society is founded by the given identity. 
  
 ### Inducted(`AccountId32`, `Vec<AccountId32>`)
 - **interface**: `api.events.society.Inducted.is`
-- **summary**:    A group of candidates have been inducted. The batch's primary is the first value, the  batch in full is the second. \[primary, candidates\] 
+- **summary**:    A group of candidates have been inducted. The batch's primary is the first value, the  batch in full is the second. 
  
 ### MemberSuspended(`AccountId32`)
 - **interface**: `api.events.society.MemberSuspended.is`
-- **summary**:    A \[member\] has been suspended 
+- **summary**:    A member has been suspended 
  
 ### NewMaxMembers(`u32`)
 - **interface**: `api.events.society.NewMaxMembers.is`
@@ -737,27 +745,27 @@ ___
  
 ### SuspendedMemberJudgement(`AccountId32`, `bool`)
 - **interface**: `api.events.society.SuspendedMemberJudgement.is`
-- **summary**:    A suspended member has been judged. \[who, judged\] 
+- **summary**:    A suspended member has been judged. 
  
 ### Unbid(`AccountId32`)
 - **interface**: `api.events.society.Unbid.is`
-- **summary**:    A \[candidate\] was dropped (by their request). 
+- **summary**:    A candidate was dropped (by their request). 
  
 ### Unfounded(`AccountId32`)
 - **interface**: `api.events.society.Unfounded.is`
-- **summary**:    Society is unfounded. \[founder\] 
+- **summary**:    Society is unfounded. 
  
 ### Unvouch(`AccountId32`)
 - **interface**: `api.events.society.Unvouch.is`
-- **summary**:    A \[candidate\] was dropped (by request of who vouched for them). 
+- **summary**:    A candidate was dropped (by request of who vouched for them). 
  
 ### Vote(`AccountId32`, `AccountId32`, `bool`)
 - **interface**: `api.events.society.Vote.is`
-- **summary**:    A vote has been placed \[candidate, voter, vote\] 
+- **summary**:    A vote has been placed 
  
 ### Vouch(`AccountId32`, `u128`, `AccountId32`)
 - **interface**: `api.events.society.Vouch.is`
-- **summary**:    A membership bid just happened by vouching. The given account is the candidate's ID and  their offer is the second. The vouching party is the third. \[candidate_id, offer,  vouching\] 
+- **summary**:    A membership bid just happened by vouching. The given account is the candidate's ID and  their offer is the second. The vouching party is the third. 
 
 ___
 
@@ -842,23 +850,23 @@ ___
  
 ### ExtrinsicFailed(`SpRuntimeDispatchError`, `FrameSupportWeightsDispatchInfo`)
 - **interface**: `api.events.system.ExtrinsicFailed.is`
-- **summary**:    An extrinsic failed. \[error, info\] 
+- **summary**:    An extrinsic failed. 
  
 ### ExtrinsicSuccess(`FrameSupportWeightsDispatchInfo`)
 - **interface**: `api.events.system.ExtrinsicSuccess.is`
-- **summary**:    An extrinsic completed successfully. \[info\] 
+- **summary**:    An extrinsic completed successfully. 
  
 ### KilledAccount(`AccountId32`)
 - **interface**: `api.events.system.KilledAccount.is`
-- **summary**:    An \[account\] was reaped. 
+- **summary**:    An account was reaped. 
  
 ### NewAccount(`AccountId32`)
 - **interface**: `api.events.system.NewAccount.is`
-- **summary**:    A new \[account\] was created. 
+- **summary**:    A new account was created. 
  
 ### Remarked(`AccountId32`, `H256`)
 - **interface**: `api.events.system.Remarked.is`
-- **summary**:    On on-chain remark happened. \[origin, remark_hash\] 
+- **summary**:    On on-chain remark happened. 
 
 ___
 
@@ -971,31 +979,31 @@ ___
  
 ### Awarded(`u32`, `u128`, `AccountId32`)
 - **interface**: `api.events.treasury.Awarded.is`
-- **summary**:    Some funds have been allocated. \[proposal_index, award, beneficiary\] 
+- **summary**:    Some funds have been allocated. 
  
 ### Burnt(`u128`)
 - **interface**: `api.events.treasury.Burnt.is`
-- **summary**:    Some of our funds have been burnt. \[burn\] 
+- **summary**:    Some of our funds have been burnt. 
  
 ### Deposit(`u128`)
 - **interface**: `api.events.treasury.Deposit.is`
-- **summary**:    Some funds have been deposited. \[deposit\] 
+- **summary**:    Some funds have been deposited. 
  
 ### Proposed(`u32`)
 - **interface**: `api.events.treasury.Proposed.is`
-- **summary**:    New proposal. \[proposal_index\] 
+- **summary**:    New proposal. 
  
 ### Rejected(`u32`, `u128`)
 - **interface**: `api.events.treasury.Rejected.is`
-- **summary**:    A proposal was rejected; funds were slashed. \[proposal_index, slashed\] 
+- **summary**:    A proposal was rejected; funds were slashed. 
  
 ### Rollover(`u128`)
 - **interface**: `api.events.treasury.Rollover.is`
-- **summary**:    Spending has finished; this is the amount that rolls over until next spend.  \[budget_remaining\] 
+- **summary**:    Spending has finished; this is the amount that rolls over until next spend. 
  
 ### Spending(`u128`)
 - **interface**: `api.events.treasury.Spending.is`
-- **summary**:    We have ended a spend period and will now allocate funds. \[budget_remaining\] 
+- **summary**:    We have ended a spend period and will now allocate funds. 
 
 ___
 
@@ -1105,7 +1113,7 @@ ___
  
 ### DispatchedAs(`Result<Null, SpRuntimeDispatchError>`)
 - **interface**: `api.events.utility.DispatchedAs.is`
-- **summary**:    A call was dispatched. \[result\] 
+- **summary**:    A call was dispatched. 
  
 ### ItemCompleted()
 - **interface**: `api.events.utility.ItemCompleted.is`

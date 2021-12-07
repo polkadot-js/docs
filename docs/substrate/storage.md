@@ -1021,6 +1021,12 @@ ___
 
    When this value is not set, no limits are enforced. 
  
+### minCommission(): `Perbill`
+- **interface**: `api.query.staking.minCommission`
+- **summary**:    The minimum amount of commission that validators can set. 
+
+   If set to `0`, no limit exists. 
+ 
 ### minimumValidatorCount(): `u32`
 - **interface**: `api.query.staking.minimumValidatorCount`
 - **summary**:    Minimum number of staking participants before emergency conditions are imposed. 

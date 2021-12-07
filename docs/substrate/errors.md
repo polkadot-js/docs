@@ -1182,6 +1182,10 @@ ___
 - **interface**: `api.errors.staking.CannotChillOther.is`
 - **summary**:    The user has enough bond and thus cannot be chilled forcefully by an external person. 
  
+### CommissionTooLow
+- **interface**: `api.errors.staking.CommissionTooLow.is`
+- **summary**:    Commission is too low. Must be at least `MinCommission`. 
+ 
 ### DuplicateIndex
 - **interface**: `api.errors.staking.DuplicateIndex.is`
 - **summary**:    Duplicate index. 
