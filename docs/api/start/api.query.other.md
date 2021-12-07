@@ -92,6 +92,11 @@ const nominatorIds = keys.map(({ args: [nominatorId] }) => nominatorId);
 console.log('all nominators:', nominatorIds.join(', '));
 ```
 
+
+There is also the `keysAt(<hash>)` and `entriesAt(<hash>)` methods for another source of single-shot calls to retrieve lists from a particular block. Note, that the state pruning limits described above also apply here.
+
+
+
 ## State entries
 
 In addition to using `api.query` to make actual on-chain queries, it can also be used to retrieve some information on the state entries. For instance to retrieve both the hash and size of an existing entry, we can make the following calls -
