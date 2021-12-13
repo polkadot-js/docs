@@ -69,7 +69,7 @@ Be aware that when a transaction status is `isFinalized`, it means it is include
 
 ## Payment information
 
-The Polkadot/Substrate RPC endpoints exposes weight/payment information that takes an encoded extrinsic and calculates the on-chain weight fees for it. A wrapper for this is available on the tx itself, taking exactly the same parameters as you would pass to a normal `.signAndSend` operation, specifically `.paymentInfo(sender, <any options>)`. To expand on our previous example -
+The Polkadot/Substrate RPC endpoints exposes weight/payment information that takes an encoded extrinsic and calculates the transaction fees for it. A wrapper for this is available on the tx itself, taking exactly the same parameters as you would pass to a normal `.signAndSend` operation, specifically `.paymentInfo(sender, <any options>)`. To expand on our previous example -
 
 ```js
 // construct a transaction
@@ -78,11 +78,13 @@ const transfer = api.tx.balances.transfer(BOB, 12345);
 // retrieve the payment info
 const { partialFee, weight } = await transfer.paymentInfo(alice);
 
-console.log(`transaction will have a weight of ${weight}, with ${partialFee.toHuman()} weight fees`);
+console.log(`transaction will have a weight of ${weight}, with ${partialFee.toHuman()} transaction fees fees`);
 
 // send the tx
 transfer.signAndSend(alice, ({ events = [], status }) => { ... });
 ```
+
+The field is called `partialFee` as it contains weight and length fees, but not the included tip (see https://wiki.polkadot.network/docs/learn-transaction-fees for details).
 
 
 ## Complex transactions
