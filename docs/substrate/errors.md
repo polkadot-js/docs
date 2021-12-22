@@ -12,9 +12,13 @@ This page lists the errors that can be encountered in the different modules.
 
 - **[babe](#babe)**
 
+- **[bagsList](#bagslist)**
+
 - **[balances](#balances)**
 
 - **[bounties](#bounties)**
+
+- **[childBounties](#childbounties)**
 
 - **[contracts](#contracts)**
 
@@ -39,6 +43,8 @@ This page lists the errors that can be encountered in the different modules.
 - **[lottery](#lottery)**
 
 - **[multisig](#multisig)**
+
+- **[preimage](#preimage)**
 
 - **[proxy](#proxy)**
 
@@ -78,6 +84,10 @@ ___
 
 ## assets
  
+### AlreadyExists
+- **interface**: `api.errors.assets.AlreadyExists.is`
+- **summary**:    The asset-account already exists. 
+ 
 ### BadMetadata
 - **interface**: `api.errors.assets.BadMetadata.is`
 - **summary**:    Invalid metadata given. 
@@ -89,10 +99,6 @@ ___
 ### BalanceLow
 - **interface**: `api.errors.assets.BalanceLow.is`
 - **summary**:    Account balance must be greater than or equal to the transfer amount. 
- 
-### BalanceZero
-- **interface**: `api.errors.assets.BalanceZero.is`
-- **summary**:    Balance should be non-zero. 
  
 ### Frozen
 - **interface**: `api.errors.assets.Frozen.is`
@@ -106,13 +112,21 @@ ___
 - **interface**: `api.errors.assets.MinBalanceZero.is`
 - **summary**:    Minimum balance should be non-zero. 
  
+### NoAccount
+- **interface**: `api.errors.assets.NoAccount.is`
+- **summary**:    The account to alter does not exist. 
+ 
+### NoDeposit
+- **interface**: `api.errors.assets.NoDeposit.is`
+- **summary**:    The asset-account doesn't have an associated deposit. 
+ 
 ### NoPermission
 - **interface**: `api.errors.assets.NoPermission.is`
 - **summary**:    The signing account has no permission to do the operation. 
  
 ### NoProvider
 - **interface**: `api.errors.assets.NoProvider.is`
-- **summary**:    No provider reference exists to allow a non-zero balance of a non-self-sufficient  asset. 
+- **summary**:    Unable to increment the consumer reference counters on the account. Either no provider  reference exists to allow a non-zero balance of a non-self-sufficient asset, or the  maximum number of consumers has been reached. 
  
 ### Unapproved
 - **interface**: `api.errors.assets.Unapproved.is`
@@ -121,6 +135,10 @@ ___
 ### Unknown
 - **interface**: `api.errors.assets.Unknown.is`
 - **summary**:    The given asset ID is unknown. 
+ 
+### WouldBurn
+- **interface**: `api.errors.assets.WouldBurn.is`
+- **summary**:    The operation would result in funds being burned. 
  
 ### WouldDie
 - **interface**: `api.errors.assets.WouldDie.is`
@@ -179,6 +197,23 @@ ___
 ___
 
 
+## bagsList
+ 
+### IdNotFound
+- **interface**: `api.errors.bagsList.IdNotFound.is`
+- **summary**:    Id not found in list. 
+ 
+### NotHeavier
+- **interface**: `api.errors.bagsList.NotHeavier.is`
+- **summary**:    An Id does not have a greater vote weight than another Id. 
+ 
+### NotInSameBag
+- **interface**: `api.errors.bagsList.NotInSameBag.is`
+- **summary**:    Attempted to place node in front of a node in another bag. 
+
+___
+
+
 ## balances
  
 ### DeadAccount
@@ -217,6 +252,10 @@ ___
 
 
 ## bounties
+ 
+### HasActiveChildBounty
+- **interface**: `api.errors.bounties.HasActiveChildBounty.is`
+- **summary**:    The bounty cannot be closed because it has active child-bounties. 
  
 ### InsufficientProposersBalance
 - **interface**: `api.errors.bounties.InsufficientProposersBalance.is`
@@ -257,11 +296,28 @@ ___
 ___
 
 
+## childBounties
+ 
+### InsufficientBountyBalance
+- **interface**: `api.errors.childBounties.InsufficientBountyBalance.is`
+- **summary**:    The bounty balance is not enough to add new child-bounty. 
+ 
+### ParentBountyNotActive
+- **interface**: `api.errors.childBounties.ParentBountyNotActive.is`
+- **summary**:    The parent bounty is not in active state. 
+ 
+### TooManyChildBounties
+- **interface**: `api.errors.childBounties.TooManyChildBounties.is`
+- **summary**:    Number of child-bounties exceeds limit `MaxActiveChildBountyCount`. 
+
+___
+
+
 ## contracts
  
-### BelowSubsistenceThreshold
-- **interface**: `api.errors.contracts.BelowSubsistenceThreshold.is`
-- **summary**:    Performing the requested transfer would have brought the contract below  the subsistence threshold. No transfer is allowed to do this. Use `seal_terminate`  to recover a deposit. 
+### CodeInUse
+- **interface**: `api.errors.contracts.CodeInUse.is`
+- **summary**:    Code removal was denied because the code is still in use by at least one contract. 
  
 ### CodeNotFound
 - **interface**: `api.errors.contracts.CodeNotFound.is`
@@ -274,6 +330,10 @@ ___
 ### ContractNotFound
 - **interface**: `api.errors.contracts.ContractNotFound.is`
 - **summary**:    No contract was found at the specified address. 
+ 
+### ContractReverted
+- **interface**: `api.errors.contracts.ContractReverted.is`
+- **summary**:    The contract ran to completion but decided to revert its storage changes.  Please note that this error is only returned from extrinsics. When called directly  or via RPC an `Ok` will be returned. In this case the caller needs to inspect the flags  to determine whether a reversion has taken place. 
  
 ### ContractTrapped
 - **interface**: `api.errors.contracts.ContractTrapped.is`
@@ -313,10 +373,6 @@ ___
 - **interface**: `api.errors.contracts.MaxCallDepthReached.is`
 - **summary**:    Performing a call was denied because the calling depth reached the limit  of what is specified in the schedule. 
  
-### NewContractNotFunded
-- **interface**: `api.errors.contracts.NewContractNotFunded.is`
-- **summary**:    The newly created contract is below the subsistence threshold after executing  its contructor. No contracts are allowed to exist below that threshold. 
- 
 ### NoChainExtension
 - **interface**: `api.errors.contracts.NoChainExtension.is`
 - **summary**:    The chain does not provide a chain extension. Calling the chain extension results  in this error. Note that this usually  shouldn't happen as deploying such contracts  is rejected. 
@@ -341,11 +397,13 @@ ___
 - **interface**: `api.errors.contracts.ReentranceDenied.is`
 - **summary**:    A call tried to invoke a contract that is flagged as non-reentrant. 
  
-### StorageExhausted
-- **interface**: `api.errors.contracts.StorageExhausted.is`
-- **summary**:    A storage modification exhausted the 32bit type that holds the storage size. 
-
-   This can either happen when the accumulated storage in bytes is too large or  when number of storage items is too large. 
+### StorageDepositLimitExhausted
+- **interface**: `api.errors.contracts.StorageDepositLimitExhausted.is`
+- **summary**:    More storage was created than allowed by the storage deposit limit. 
+ 
+### StorageDepositNotEnoughFunds
+- **interface**: `api.errors.contracts.StorageDepositNotEnoughFunds.is`
+- **summary**:    Origin doesn't have enough balance to pay the required storage deposits. 
  
 ### TerminatedInConstructor
 - **interface**: `api.errors.contracts.TerminatedInConstructor.is`
@@ -363,7 +421,7 @@ ___
  
 ### TransferFailed
 - **interface**: `api.errors.contracts.TransferFailed.is`
-- **summary**:    Performing the requested transfer failed for a reason originating in the  chosen currency implementation of the runtime. Most probably the balance is  too low or locks are placed on it. 
+- **summary**:    Performing the requested transfer failed. Probably because there isn't enough  free balance in the sender's account. 
  
 ### ValueTooLarge
 - **interface**: `api.errors.contracts.ValueTooLarge.is`
@@ -923,6 +981,35 @@ ___
 ### WrongTimepoint
 - **interface**: `api.errors.multisig.WrongTimepoint.is`
 - **summary**:    A different timepoint was given to the multisig operation that is underway. 
+
+___
+
+
+## preimage
+ 
+### AlreadyNoted
+- **interface**: `api.errors.preimage.AlreadyNoted.is`
+- **summary**:    Preimage has already been noted on-chain. 
+ 
+### NotAuthorized
+- **interface**: `api.errors.preimage.NotAuthorized.is`
+- **summary**:    The user is not authorized to perform this action. 
+ 
+### NotNoted
+- **interface**: `api.errors.preimage.NotNoted.is`
+- **summary**:    The preimage cannot be removed since it has not yet been noted. 
+ 
+### NotRequested
+- **interface**: `api.errors.preimage.NotRequested.is`
+- **summary**:    The preimage request cannot be removed since no outstanding requests exist. 
+ 
+### Requested
+- **interface**: `api.errors.preimage.Requested.is`
+- **summary**:    A preimage may not be removed when there are outstanding requests. 
+ 
+### TooLarge
+- **interface**: `api.errors.preimage.TooLarge.is`
+- **summary**:    Preimage is too large to store on-chain. 
 
 ___
 

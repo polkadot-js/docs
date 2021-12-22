@@ -18,6 +18,8 @@ The following sections contain the module constants, also known as parameter typ
 
 - **[bounties](#bounties)**
 
+- **[childBounties](#childbounties)**
+
 - **[contracts](#contracts)**
 
 - **[democracy](#democracy)**
@@ -75,6 +77,10 @@ ___
 ### approvalDeposit: `u128`
 - **interface**: `api.consts.assets.approvalDeposit`
 - **summary**:    The amount of funds that must be reserved when creating a new approval. 
+ 
+### assetAccountDeposit: `u128`
+- **interface**: `api.consts.assets.assetAccountDeposit`
+- **summary**:    The amount of funds that must be reserved for a non-provider asset account to be  maintained. 
  
 ### assetDeposit: `u128`
 - **interface**: `api.consts.assets.assetDeposit`
@@ -212,11 +218,24 @@ ___
 ___
 
 
-## contracts
+## childBounties
  
-### contractDeposit: `u128`
-- **interface**: `api.consts.contracts.contractDeposit`
-- **summary**:    The deposit that must be placed into the contract's account to instantiate it.  This is in **addition** to the [`Currency::minimum_balance`].  The minimum balance for a contract's account can be queried using  [`Pallet::subsistence_threshold`]. 
+### childBountyCuratorDepositBase: `Permill`
+- **interface**: `api.consts.childBounties.childBountyCuratorDepositBase`
+- **summary**:    Percentage of child-bounty value to be reserved as curator deposit  when curator fee is zero. 
+ 
+### childBountyValueMinimum: `u128`
+- **interface**: `api.consts.childBounties.childBountyValueMinimum`
+- **summary**:    Minimum value for a child-bounty. 
+ 
+### maxActiveChildBountyCount: `u32`
+- **interface**: `api.consts.childBounties.maxActiveChildBountyCount`
+- **summary**:    Maximum number of child-bounties that can be added to a parent bounty. 
+
+___
+
+
+## contracts
  
 ### deletionQueueDepth: `u32`
 - **interface**: `api.consts.contracts.deletionQueueDepth`
@@ -225,6 +244,20 @@ ___
 ### deletionWeightLimit: `u64`
 - **interface**: `api.consts.contracts.deletionWeightLimit`
 - **summary**:    The maximum amount of weight that can be consumed per block for lazy trie removal. 
+ 
+### depositPerByte: `u128`
+- **interface**: `api.consts.contracts.depositPerByte`
+- **summary**:    The amount of balance a caller has to pay for each byte of storage. 
+
+   #### Note 
+
+   Changing this value for an existing chain might need a storage migration. 
+ 
+### depositPerItem: `u128`
+- **interface**: `api.consts.contracts.depositPerItem`
+- **summary**:    The amount of balance a caller has to pay for each storage item.  #### Note 
+
+   Changing this value for an existing chain might need a storage migration. 
  
 ### schedule: `PalletContractsSchedule`
 - **interface**: `api.consts.contracts.schedule`

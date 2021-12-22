@@ -20,6 +20,8 @@ The following sections contain Storage methods are part of the default Substrate
 
 - **[bounties](#bounties)**
 
+- **[childBounties](#childbounties)**
+
 - **[contracts](#contracts)**
 
 - **[council](#council)**
@@ -47,6 +49,8 @@ The following sections contain Storage methods are part of the default Substrate
 - **[multisig](#multisig)**
 
 - **[offences](#offences)**
+
+- **[preimage](#preimage)**
 
 - **[proxy](#proxy)**
 
@@ -92,9 +96,9 @@ ___
 
 ## assets
  
-### account(`u32, AccountId32`): `PalletAssetsAssetBalance`
+### account(`u32, AccountId32`): `Option<PalletAssetsAssetAccount>`
 - **interface**: `api.query.assets.account`
-- **summary**:    The number of units of assets held by any given account. 
+- **summary**:    The holdings of a specific account for a specific asset. 
  
 ### approvals(`u32, AccountId32, AccountId32`): `Option<PalletAssetsApproval>`
 - **interface**: `api.query.assets.approvals`
@@ -293,6 +297,31 @@ ___
 ___
 
 
+## childBounties
+ 
+### childBounties(`u32, u32`): `Option<PalletChildBountiesChildBounty>`
+- **interface**: `api.query.childBounties.childBounties`
+- **summary**:    Child-bounties that have been added. 
+ 
+### childBountyCount(): `u32`
+- **interface**: `api.query.childBounties.childBountyCount`
+- **summary**:    Number of total child bounties. 
+ 
+### childBountyDescriptions(`u32`): `Option<Bytes>`
+- **interface**: `api.query.childBounties.childBountyDescriptions`
+- **summary**:    The description of each child-bounty. 
+ 
+### childrenCuratorFees(`u32`): `u128`
+- **interface**: `api.query.childBounties.childrenCuratorFees`
+- **summary**:    The cumulative child-bounty curator fee for each parent bounty. 
+ 
+### parentChildBounties(`u32`): `u32`
+- **interface**: `api.query.childBounties.parentChildBounties`
+- **summary**:    Number of child-bounties per parent bounty.  Map of parent bounty index to number of child bounties. 
+
+___
+
+
 ## contracts
  
 ### accountCounter(): `u64`
@@ -314,6 +343,10 @@ ___
 - **summary**:    Evicted contracts that await child trie deletion. 
 
    Child trie deletion is a heavy operation depending on the amount of storage items  stored in said trie. Therefore this operation is performed lazily in `on_initialize`. 
+ 
+### ownerInfoOf(`H256`): `Option<PalletContractsWasmOwnerInfo>`
+- **interface**: `api.query.contracts.ownerInfoOf`
+- **summary**:    A mapping between an original code hash and its owner information. 
  
 ### pristineCode(`H256`): `Option<Bytes>`
 - **interface**: `api.query.contracts.pristineCode`
@@ -470,7 +503,7 @@ ___
 
    We can't just use `SignedSubmissionIndices.len()`, because that's a bounded set; past its  capacity, it will simply saturate. We can't just iterate over `SignedSubmissionsMap`,  because iteration is slow. Instead, we store the value here. 
  
-### signedSubmissionsMap(`u32`): `PalletElectionProviderMultiPhaseSignedSignedSubmission`
+### signedSubmissionsMap(`u32`): `Option<PalletElectionProviderMultiPhaseSignedSignedSubmission>`
 - **interface**: `api.query.electionProviderMultiPhase.signedSubmissionsMap`
 - **summary**:    Unchecked, signed solutions. 
 
@@ -727,6 +760,19 @@ ___
 ___
 
 
+## preimage
+ 
+### preimageFor(`H256`): `Option<Bytes>`
+- **interface**: `api.query.preimage.preimageFor`
+- **summary**:    The preimages stored by this pallet. 
+ 
+### statusFor(`H256`): `Option<PalletPreimageRequestStatus>`
+- **interface**: `api.query.preimage.statusFor`
+- **summary**:    The request status of a given hash. 
+
+___
+
+
 ## proxy
  
 ### announcements(`AccountId32`): `(Vec<PalletProxyAnnouncement>,u128)`
@@ -772,7 +818,7 @@ ___
 
 ## scheduler
  
-### agenda(`u32`): `Vec<Option<PalletSchedulerScheduledV2>>`
+### agenda(`u32`): `Vec<Option<PalletSchedulerScheduledV3>>`
 - **interface**: `api.query.scheduler.agenda`
 - **summary**:    Items to be executed, indexed by the block number that they should be executed on. 
  
@@ -921,11 +967,11 @@ ___
  
 ### counterForNominators(): `u32`
 - **interface**: `api.query.staking.counterForNominators`
-- **summary**:    A tracker to keep count of the number of items in the `Nominators` map. 
+- **summary**:    Counter for the related counted storage map 
  
 ### counterForValidators(): `u32`
 - **interface**: `api.query.staking.counterForValidators`
-- **summary**:    A tracker to keep count of the number of items in the `Validators` map. 
+- **summary**:    Counter for the related counted storage map 
  
 ### currentEra(): `Option<u32>`
 - **interface**: `api.query.staking.currentEra`
@@ -1042,8 +1088,6 @@ ___
 ### nominators(`AccountId32`): `Option<PalletStakingNominations>`
 - **interface**: `api.query.staking.nominators`
 - **summary**:    The map from nominator stash key to the set of stash keys of all validators to nominate. 
-
-   When updating this storage item, you must also update the `CounterForNominators`. 
  
 ### nominatorSlashInEra(`u32, AccountId32`): `Option<u128>`
 - **interface**: `api.query.staking.nominatorSlashInEra`
@@ -1090,8 +1134,6 @@ ___
 ### validators(`AccountId32`): `PalletStakingValidatorPrefs`
 - **interface**: `api.query.staking.validators`
 - **summary**:    The map from (wannabe) validator stash key to the preferences of that validator. 
-
-   When updating this storage item, you must also update the `CounterForValidators`. 
  
 ### validatorSlashInEra(`u32, AccountId32`): `Option<(Perbill,u128)>`
 - **interface**: `api.query.staking.validatorSlashInEra`
@@ -1129,7 +1171,7 @@ ___
 
 ## sudo
  
-### key(): `AccountId32`
+### key(): `Option<AccountId32>`
 - **interface**: `api.query.sudo.key`
 - **summary**:    The `AccountId` of the sudo key. 
 
@@ -1364,6 +1406,10 @@ ___
 ### class(`u32`): `Option<PalletUniquesClassDetails>`
 - **interface**: `api.query.uniques.class`
 - **summary**:    Details of an asset class. 
+ 
+### classAccount(`AccountId32, u32`): `Option<Null>`
+- **interface**: `api.query.uniques.classAccount`
+- **summary**:    The classes owned by any given account; set out this way so that classes owned by a single  account can be enumerated. 
  
 ### classMetadataOf(`u32`): `Option<PalletUniquesClassMetadata>`
 - **interface**: `api.query.uniques.classMetadataOf`

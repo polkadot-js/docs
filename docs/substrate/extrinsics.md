@@ -18,6 +18,8 @@ The following sections contain Extrinsics methods are part of the default Substr
 
 - **[bounties](#bounties)**
 
+- **[childBounties](#childbounties)**
+
 - **[contracts](#contracts)**
 
 - **[council](#council)**
@@ -41,6 +43,8 @@ The following sections contain Extrinsics methods are part of the default Substr
 - **[lottery](#lottery)**
 
 - **[multisig](#multisig)**
+
+- **[preimage](#preimage)**
 
 - **[proxy](#proxy)**
 
@@ -108,7 +112,7 @@ ___
 
    Origin must be Signed and the sender should be the Manager of the asset `id`. 
 
-   Bails with `BalanceZero` if the `who` is already dead. 
+   Bails with `NoAccount` if the `who` is already dead. 
 
    - `id`: The identifier of the asset to have some amount burned. 
 
@@ -348,6 +352,18 @@ ___
 
    Weight: `O(1)`  Modes: Pre-existing balance of `beneficiary`; Account pre-existence of `beneficiary`. 
  
+### refund(id: `Compact<u32>`, allow_burn: `bool`)
+- **interface**: `api.tx.assets.refund`
+- **summary**:    Return the deposit (if any) of an asset account. 
+
+   The origin must be Signed. 
+
+   - `id`: The identifier of the asset for the account to be created. 
+
+  - `allow_burn`: If `true` then assets may be destroyed in order to complete the refund.
+
+   Emits `Refunded` event when successful. 
+ 
 ### setMetadata(id: `Compact<u32>`, name: `Bytes`, symbol: `Bytes`, decimals: `u8`)
 - **interface**: `api.tx.assets.setMetadata`
 - **summary**:    Set the metadata for an asset. 
@@ -411,6 +427,18 @@ ___
    Emits `Thawed`. 
 
    Weight: `O(1)` 
+ 
+### touch(id: `Compact<u32>`)
+- **interface**: `api.tx.assets.touch`
+- **summary**:    Create an asset account for non-provider assets. 
+
+   A deposit will be taken from the signer account. 
+
+   - `origin`: Must be Signed; the signer account must have sufficient funds for a deposit  to be taken. 
+
+  - `id`: The identifier of the asset for the account to be created.
+
+   Emits `Touched` event when successful. 
  
 ### transfer(id: `Compact<u32>`, target: `MultiAddress`, amount: `Compact<u128>`)
 - **interface**: `api.tx.assets.transfer`
@@ -508,6 +536,18 @@ ___
 
 
 ## bagsList
+ 
+### putInFrontOf(lighter: `AccountId32`)
+- **interface**: `api.tx.bagsList.putInFrontOf`
+- **summary**:    Move the caller's Id directly in front of `lighter`. 
+
+   The dispatch origin for this call must be _Signed_ and can only be called by the Id of  the account going in front of `lighter`. 
+
+   Only works if 
+
+  - both nodes are within the same bag,
+
+  - and `origin` has a greater `VoteWeight` than `lighter`.
  
 ### rebag(dislocated: `AccountId32`)
 - **interface**: `api.tx.bagsList.rebag`
@@ -676,11 +716,156 @@ ___
 ___
 
 
+## childBounties
+ 
+### acceptCurator(parent_bounty_id: `Compact<u32>`, child_bounty_id: `Compact<u32>`)
+- **interface**: `api.tx.childBounties.acceptCurator`
+- **summary**:    Accept the curator role for the child-bounty. 
+
+   The dispatch origin for this call must be the curator of this  child-bounty. 
+
+   A deposit will be reserved from the curator and refund upon  successful payout or cancellation. 
+
+   Fee for curator is deducted from curator fee of parent bounty. 
+
+   Parent bounty must be in active state, for this child-bounty call to  work. 
+
+   Child-bounty must be in "CuratorProposed" state, for processing the  call. And state of child-bounty is moved to "Active" on successful  call completion. 
+
+   - `parent_bounty_id`: Index of parent bounty. 
+
+  - `child_bounty_id`: Index of child bounty.
+ 
+### addChildBounty(parent_bounty_id: `Compact<u32>`, value: `Compact<u128>`, description: `Bytes`)
+- **interface**: `api.tx.childBounties.addChildBounty`
+- **summary**:    Add a new child-bounty. 
+
+   The dispatch origin for this call must be the curator of parent  bounty and the parent bounty must be in "active" state. 
+
+   Child-bounty gets added successfully & fund gets transferred from  parent bounty to child-bounty account, if parent bounty has enough  funds, else the call fails. 
+
+   Upper bound to maximum number of active  child-bounties that can be  added are managed via runtime trait config  [`Config::MaxActiveChildBountyCount`]. 
+
+   If the call is success, the status of child-bounty is updated to  "Added". 
+
+   - `parent_bounty_id`: Index of parent bounty for which child-bounty is being added. 
+
+  - `value`: Value for executing the proposal.
+
+  - `description`: Text description for the child-bounty.
+ 
+### awardChildBounty(parent_bounty_id: `Compact<u32>`, child_bounty_id: `Compact<u32>`, beneficiary: `MultiAddress`)
+- **interface**: `api.tx.childBounties.awardChildBounty`
+- **summary**:    Award child-bounty to a beneficiary. 
+
+   The beneficiary will be able to claim the funds after a delay. 
+
+   The dispatch origin for this call must be the master curator or  curator of this child-bounty. 
+
+   Parent bounty must be in active state, for this child-bounty call to  work. 
+
+   Child-bounty must be in active state, for processing the call. And  state of child-bounty is moved to "PendingPayout" on successful call  completion. 
+
+   - `parent_bounty_id`: Index of parent bounty. 
+
+  - `child_bounty_id`: Index of child bounty.
+
+  - `beneficiary`: Beneficiary account.
+ 
+### claimChildBounty(parent_bounty_id: `Compact<u32>`, child_bounty_id: `Compact<u32>`)
+- **interface**: `api.tx.childBounties.claimChildBounty`
+- **summary**:    Claim the payout from an awarded child-bounty after payout delay. 
+
+   The dispatch origin for this call may be any signed origin. 
+
+   Call works independent of parent bounty state, No need for parent  bounty to be in active state. 
+
+   The Beneficiary is paid out with agreed bounty value. Curator fee is  paid & curator deposit is unreserved. 
+
+   Child-bounty must be in "PendingPayout" state, for processing the  call. And instance of child-bounty is removed from the state on  successful call completion. 
+
+   - `parent_bounty_id`: Index of parent bounty. 
+
+  - `child_bounty_id`: Index of child bounty.
+ 
+### closeChildBounty(parent_bounty_id: `Compact<u32>`, child_bounty_id: `Compact<u32>`)
+- **interface**: `api.tx.childBounties.closeChildBounty`
+- **summary**:    Cancel a proposed or active child-bounty. Child-bounty account funds  are transferred to parent bounty account. The child-bounty curator  deposit may be unreserved if possible. 
+
+   The dispatch origin for this call must be either parent curator or  `T::RejectOrigin`. 
+
+   If the state of child-bounty is `Active`, curator deposit is  unreserved. 
+
+   If the state of child-bounty is `PendingPayout`, call fails &  returns `PendingPayout` error. 
+
+   For the origin other than T::RejectOrigin, parent bounty must be in  active state, for this child-bounty call to work. For origin  T::RejectOrigin execution is forced. 
+
+   Instance of child-bounty is removed from the state on successful  call completion. 
+
+   - `parent_bounty_id`: Index of parent bounty. 
+
+  - `child_bounty_id`: Index of child bounty.
+ 
+### proposeCurator(parent_bounty_id: `Compact<u32>`, child_bounty_id: `Compact<u32>`, curator: `MultiAddress`, fee: `Compact<u128>`)
+- **interface**: `api.tx.childBounties.proposeCurator`
+- **summary**:    Propose curator for funded child-bounty. 
+
+   The dispatch origin for this call must be curator of parent bounty. 
+
+   Parent bounty must be in active state, for this child-bounty call to  work. 
+
+   Child-bounty must be in "Added" state, for processing the call. And  state of child-bounty is moved to "CuratorProposed" on successful  call completion. 
+
+   - `parent_bounty_id`: Index of parent bounty. 
+
+  - `child_bounty_id`: Index of child bounty.
+
+  - `curator`: Address of child-bounty curator.
+
+  - `fee`: payment fee to child-bounty curator for execution.
+ 
+### unassignCurator(parent_bounty_id: `Compact<u32>`, child_bounty_id: `Compact<u32>`)
+- **interface**: `api.tx.childBounties.unassignCurator`
+- **summary**:    Unassign curator from a child-bounty. 
+
+   The dispatch origin for this call can be either `RejectOrigin`, or  the curator of the parent bounty, or any signed origin. 
+
+   For the origin other than T::RejectOrigin and the child-bounty  curator, parent-bounty must be in active state, for this call to  work. We allow child-bounty curator and T::RejectOrigin to execute  this call irrespective of the parent-bounty state. 
+
+   If this function is called by the `RejectOrigin` or the  parent-bounty curator, we assume that the child-bounty curator is  malicious or inactive. As a result, child-bounty curator deposit is  slashed. 
+
+   If the origin is the child-bounty curator, we take this as a sign  that they are unable to do their job, and are willingly giving up.  We could slash the deposit, but for now we allow them to unreserve  their deposit and exit without issue. (We may want to change this if  it is abused.) 
+
+   Finally, the origin can be anyone iff the child-bounty curator is  "inactive". Expiry update due of parent bounty is used to estimate  inactive state of child-bounty curator. 
+
+   This allows anyone in the community to call out that a child-bounty  curator is not doing their due diligence, and we should pick a new  one. In this case the child-bounty curator deposit is slashed. 
+
+   State of child-bounty is moved to Added state on successful call  completion. 
+
+   - `parent_bounty_id`: Index of parent bounty. 
+
+  - `child_bounty_id`: Index of child bounty.
+
+___
+
+
 ## contracts
  
-### call(dest: `MultiAddress`, value: `Compact<u128>`, gas_limit: `Compact<u64>`, data: `Bytes`)
+### call(dest: `MultiAddress`, value: `Compact<u128>`, gas_limit: `Compact<u64>`, storage_deposit_limit: `Option<Compact<u128>>`, data: `Bytes`)
 - **interface**: `api.tx.contracts.call`
 - **summary**:    Makes a call to an account, optionally transferring some balance. 
+
+   #### Parameters 
+
+   * `dest`: Address of the contract to call. 
+
+  * `value`: The balance to transfer from the `origin` to `dest`.
+
+  * `gas_limit`: The gas limit enforced when executing the constructor.
+
+  * `storage_deposit_limit`: The maximum amount of balance that can be charged from the caller to pay for the storage consumed. 
+
+  * `data`: The input data to pass to the contract.
 
    * If the account is a smart-contract account, the associated code will be  executed and any value will be transferred. 
 
@@ -688,23 +873,25 @@ ___
 
   * If no account exists and the call value is not less than `existential_deposit`, a regular account will be created and any value will be transferred. 
  
-### instantiate(endowment: `Compact<u128>`, gas_limit: `Compact<u64>`, code_hash: `H256`, data: `Bytes`, salt: `Bytes`)
+### instantiate(value: `Compact<u128>`, gas_limit: `Compact<u64>`, storage_deposit_limit: `Option<Compact<u128>>`, code_hash: `H256`, data: `Bytes`, salt: `Bytes`)
 - **interface**: `api.tx.contracts.instantiate`
 - **summary**:    Instantiates a contract from a previously deployed wasm binary. 
 
    This function is identical to [`Self::instantiate_with_code`] but without the  code deployment step. Instead, the `code_hash` of an on-chain deployed wasm binary  must be supplied. 
  
-### instantiateWithCode(endowment: `Compact<u128>`, gas_limit: `Compact<u64>`, code: `Bytes`, data: `Bytes`, salt: `Bytes`)
+### instantiateWithCode(value: `Compact<u128>`, gas_limit: `Compact<u64>`, storage_deposit_limit: `Option<Compact<u128>>`, code: `Bytes`, data: `Bytes`, salt: `Bytes`)
 - **interface**: `api.tx.contracts.instantiateWithCode`
 - **summary**:    Instantiates a new contract from the supplied `code` optionally transferring  some balance. 
 
-   This is the only function that can deploy new code to the chain. 
+   This dispatchable has the same effect as calling [`Self::upload_code`] +  [`Self::instantiate`]. Bundling them together provides efficiency gains. Please  also check the documentation of [`Self::upload_code`]. 
 
    #### Parameters 
 
-   * `endowment`: The balance to transfer from the `origin` to the newly created contract. 
+   * `value`: The balance to transfer from the `origin` to the newly created contract. 
 
   * `gas_limit`: The gas limit enforced when executing the constructor.
+
+  * `storage_deposit_limit`: The maximum amount of balance that can be charged/reserved from the caller to pay for the storage consumed. 
 
   * `code`: The contract code to deploy in raw bytes.
 
@@ -722,9 +909,27 @@ ___
 
   - The smart-contract account is created at the computed address.
 
-  - The `endowment` is transferred to the new account.
+  - The `value` is transferred to the new account.
 
   - The `deploy` function is executed in the context of the newly-created account.
+ 
+### removeCode(code_hash: `H256`)
+- **interface**: `api.tx.contracts.removeCode`
+- **summary**:    Remove the code stored under `code_hash` and refund the deposit to its owner. 
+
+   A code can only be removed by its original uploader (its owner) and only if it is  not used by any contract. 
+ 
+### uploadCode(code: `Bytes`, storage_deposit_limit: `Option<Compact<u128>>`)
+- **interface**: `api.tx.contracts.uploadCode`
+- **summary**:    Upload new `code` without instantiating a contract from it. 
+
+   If the code does not already exist a deposit is reserved from the caller  and unreserved only when [`Self::remove_code`] is called. The size of the reserve  depends on the instrumented size of the the supplied `code`. 
+
+   If the code already exists in storage it will still return `Ok` and upgrades  the in storage version to the current  [`InstructionWeights::version`](InstructionWeights). 
+
+   #### Note 
+
+   Anyone can instantiate a contract from any uploaded code and thus prevent its removal.  To avoid this situation a constructor could employ access control so that it can  only be instantiated by permissioned entities. The same is true when uploading  through [`Self::instantiate_with_code`]. 
 
 ___
 
@@ -1706,6 +1911,33 @@ ___
 ___
 
 
+## preimage
+ 
+### notePreimage(bytes: `Bytes`)
+- **interface**: `api.tx.preimage.notePreimage`
+- **summary**:    Register a preimage on-chain. 
+
+   If the preimage was previously requested, no fees or deposits are taken for providing  the preimage. Otherwise, a deposit is taken proportional to the size of the preimage. 
+ 
+### requestPreimage(hash: `H256`)
+- **interface**: `api.tx.preimage.requestPreimage`
+- **summary**:    Request a preimage be uploaded to the chain without paying any fees or deposits. 
+
+   If the preimage requests has already been provided on-chain, we unreserve any deposit  a user may have paid, and take the control of the preimage out of their hands. 
+ 
+### unnotePreimage(hash: `H256`)
+- **interface**: `api.tx.preimage.unnotePreimage`
+- **summary**:    Clear an unrequested preimage from the runtime storage. 
+ 
+### unrequestPreimage(hash: `H256`)
+- **interface**: `api.tx.preimage.unrequestPreimage`
+- **summary**:    Clear a previously made request for a preimage. 
+
+   NOTE: THIS MUST NOT BE CALLED ON `hash` MORE TIMES THAN `request_preimage`. 
+
+___
+
+
 ## proxy
  
 ### addProxy(delegate: `AccountId32`, proxy_type: `NodeRuntimeProxyType`, delay: `u32`)
@@ -2020,21 +2252,21 @@ ___
 - **interface**: `api.tx.scheduler.cancelNamed`
 - **summary**:    Cancel a named scheduled task. 
  
-### schedule(when: `u32`, maybe_periodic: `Option<(u32,u32)>`, priority: `u8`, call: `Call`)
+### schedule(when: `u32`, maybe_periodic: `Option<(u32,u32)>`, priority: `u8`, call: `FrameSupportScheduleMaybeHashed`)
 - **interface**: `api.tx.scheduler.schedule`
 - **summary**:    Anonymously schedule a task. 
  
-### scheduleAfter(after: `u32`, maybe_periodic: `Option<(u32,u32)>`, priority: `u8`, call: `Call`)
+### scheduleAfter(after: `u32`, maybe_periodic: `Option<(u32,u32)>`, priority: `u8`, call: `FrameSupportScheduleMaybeHashed`)
 - **interface**: `api.tx.scheduler.scheduleAfter`
 - **summary**:    Anonymously schedule a task after a delay. 
 
     
  
-### scheduleNamed(id: `Bytes`, when: `u32`, maybe_periodic: `Option<(u32,u32)>`, priority: `u8`, call: `Call`)
+### scheduleNamed(id: `Bytes`, when: `u32`, maybe_periodic: `Option<(u32,u32)>`, priority: `u8`, call: `FrameSupportScheduleMaybeHashed`)
 - **interface**: `api.tx.scheduler.scheduleNamed`
 - **summary**:    Schedule a named task. 
  
-### scheduleNamedAfter(id: `Bytes`, after: `u32`, maybe_periodic: `Option<(u32,u32)>`, priority: `u8`, call: `Call`)
+### scheduleNamedAfter(id: `Bytes`, after: `u32`, maybe_periodic: `Option<(u32,u32)>`, priority: `u8`, call: `FrameSupportScheduleMaybeHashed`)
 - **interface**: `api.tx.scheduler.scheduleNamedAfter`
 - **summary**:    Schedule a named task after a delay. 
 

@@ -14,6 +14,8 @@ Events are emitted for certain operations on the runtime. The following sections
 
 - **[bounties](#bounties)**
 
+- **[childBounties](#childbounties)**
+
 - **[contracts](#contracts)**
 
 - **[council](#council)**
@@ -39,6 +41,8 @@ Events are emitted for certain operations on the runtime. The following sections
 - **[multisig](#multisig)**
 
 - **[offences](#offences)**
+
+- **[preimage](#preimage)**
 
 - **[proxy](#proxy)**
 
@@ -240,13 +244,32 @@ ___
 ___
 
 
+## childBounties
+ 
+### Added(`u32`, `u32`)
+- **interface**: `api.events.childBounties.Added.is`
+- **summary**:    A child-bounty is added. 
+ 
+### Awarded(`u32`, `u32`, `AccountId32`)
+- **interface**: `api.events.childBounties.Awarded.is`
+- **summary**:    A child-bounty is awarded to a beneficiary. 
+ 
+### Canceled(`u32`, `u32`)
+- **interface**: `api.events.childBounties.Canceled.is`
+- **summary**:    A child-bounty is cancelled. 
+ 
+### Claimed(`u32`, `u32`, `u128`, `AccountId32`)
+- **interface**: `api.events.childBounties.Claimed.is`
+- **summary**:    A child-bounty is claimed by beneficiary. 
+
+___
+
+
 ## contracts
  
 ### CodeRemoved(`H256`)
 - **interface**: `api.events.contracts.CodeRemoved.is`
 - **summary**:    A code with the specified hash was removed. 
-
-   This happens when the last contract that uses this code hash was removed. 
  
 ### CodeStored(`H256`)
 - **interface**: `api.events.contracts.CodeStored.is`
@@ -259,10 +282,6 @@ ___
 ### Instantiated(`AccountId32`, `AccountId32`)
 - **interface**: `api.events.contracts.Instantiated.is`
 - **summary**:    Contract deployed by address at the specified address. 
- 
-### ScheduleUpdated(`u32`)
-- **interface**: `api.events.contracts.ScheduleUpdated.is`
-- **summary**:    Triggered when the current schedule is updated. 
  
 ### Terminated(`AccountId32`, `AccountId32`)
 - **interface**: `api.events.contracts.Terminated.is`
@@ -625,6 +644,23 @@ ___
 ___
 
 
+## preimage
+ 
+### Cleared(`H256`)
+- **interface**: `api.events.preimage.Cleared.is`
+- **summary**:    A preimage has ben cleared. 
+ 
+### Noted(`H256`)
+- **interface**: `api.events.preimage.Noted.is`
+- **summary**:    A preimage has been noted. 
+ 
+### Requested(`H256`)
+- **interface**: `api.events.preimage.Requested.is`
+- **summary**:    A preimage has been requested. 
+
+___
+
+
 ## proxy
  
 ### Announced(`AccountId32`, `AccountId32`, `H256`)
@@ -676,6 +712,10 @@ ___
 
 
 ## scheduler
+ 
+### CallLookupFailed(`(u32,u32)`, `Option<Bytes>`, `FrameSupportScheduleLookupError`)
+- **interface**: `api.events.scheduler.CallLookupFailed.is`
+- **summary**:    The call for the provided hash was not found so the task has been aborted. 
  
 ### Canceled(`u32`, `u32`)
 - **interface**: `api.events.scheduler.Canceled.is`
@@ -827,9 +867,9 @@ ___
 
 ## sudo
  
-### KeyChanged(`AccountId32`)
+### KeyChanged(`Option<AccountId32>`)
 - **interface**: `api.events.sudo.KeyChanged.is`
-- **summary**:    The \[sudoer\] just switched identity; the old key is supplied. 
+- **summary**:    The \[sudoer\] just switched identity; the old key is supplied if one existed. 
  
 ### Sudid(`Result<Null, SpRuntimeDispatchError>`)
 - **interface**: `api.events.sudo.Sudid.is`
