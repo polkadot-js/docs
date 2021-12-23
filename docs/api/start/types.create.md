@@ -54,6 +54,66 @@ api.registry.createType('Balance', 123n);
 createType(api.registry, 'Balance', '123');
 ```
 
+## How to create types
+
+As all methods of creation basically expose the same API, we will explain only how `api.createType` works. If the type is an alias for another type (like `'Balance'`, which is just a `u128`), the second parameter of `api.createType` is the value of the object you are creating, as detailed in the previous section:
+
+```js
+const x = api.createType('Balance', 123);
+console.log(`x is equal to ${x.toNumber()}`);
+```
+
+If the type you want to create is a struct, then the second parameter is a dictionary which maps field names to their values:
+
+```js
+...
+const api = await ApiPromise.create({
+  types: {
+    MyStruct: {
+      a: "u32",
+      b: "Vec<u32>",
+      c: "Option<u32>"
+    }
+  }
+});
+
+const s = api.createType("MyStruct", {a: 1, b: [2, 3], c: 4});
+console.log(`s.a == ${s.a.toNumber()}`);
+console.log(`s.b == ${s.b.toJSON()}`);
+console.log(`s.c == ${s.c.unwrap().toNumber()}`);
+```
+
+If you don't specify a field, it will be initialized with the default value. Numbers are zero, vectors are empty, options are `None` by default.
+
+If you want to create an enum, the pattern is `api.createType(type, enumerator)` (for C-style enums or if you want to rely on default enumeration) or `api.createType(type, {enumerator: value})` (for typed enums). For example:
+
+```js
+const api = await ApiPromise.create({
+  ...
+  types: {
+    CLikeEnum: {
+      _enum: ['One', 'Two', 'Three']
+    },
+    TypedEnum: {
+      _enum: {
+        One: 'Compact<u32>',
+        Two: 'u64',
+        Three: 'Option<Balance>',
+        Four: null
+      }
+    }
+  }
+});
+
+const one = api.createType('CLikeEnum', 'One');
+console.log(one.isOne);  // true
+
+const two = api.createType('TypedEnum', {'Two': 123});
+console.log(two.asTwo.toNumber());  // 123
+
+const three = api.createType('TypedEnum', 'Three');  // Default initialization
+console.log(three.asThree.isNone);  // true
+```
 
 ## Using with TypeScript
 
