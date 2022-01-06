@@ -54,3 +54,13 @@ For sample usage, please see the test HTML bundles provides in each relevant rep
 - https://github.com/polkadot-js/common/blob/master/test-bundle.html
 - https://github.com/polkadot-js/api/blob/master/test-bundle.html
 - https://github.com/polkadot-js/extension/blob/master/test-bundle.html
+
+
+## I am having trouble with Jest, ESM and the libraries
+
+All the polkadot-js also use Jest for tests. When using Jest refer to the specific configuration for your environment -
+
+- Jest, https://jestjs.io/docs/ecmascript-modules
+- TS-Jest, https://kulshekhar.github.io/ts-jest/docs/guides/esm-support
+
+Additionally the [polkadot-js Jest config](https://github.com/polkadot-js/dev/blob/master/packages/dev/config/jest.cjs) may prove to be useful as a template, specifically the `transformIgnorePatterns` which excludes certain folders (assuming transforms are not empty as per the linked suggestions above).
