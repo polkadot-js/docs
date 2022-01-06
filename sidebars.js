@@ -134,5 +134,8 @@ module.exports = {
       'extension/cookbook',
       'extension/FAQ'
     ],
+    'Build & Deployment': [
+      'usage/FAQ'
+    ],
   },
 };
