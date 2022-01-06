@@ -114,3 +114,34 @@ When running into TypeScript errors, ensure that you are on a recent version. Th
 Additionally the [rxjs library](https://github.com/ReactiveX/rxjs/) (used internally by the API), requires at least a [TypeScript 4.2 version](https://github.com/ReactiveX/rxjs/blob/6bd1c5f3cf0e387973b44698c48bc933e8c528aa/package.json#L9), without it the Observable types are not correctly resolved.
 
 The API itself generally always uses the latest TypeScript versions under development, but the use of new of features are delayed to at least 2 major versions to not require immediate upgrades of the compilers.
+
+
+## On Webpack 4 I have a parse error on import.meta.url
+
+Under CJS environments `__dirname` is used to determine package locations, on ESM environments the `new URL('.', import.meta.url).pathname` form is used to yeild the same results. This resolves a long-running issue wher the functionality was not available under ESM environments.
+
+Webpack 4 doesn't support the `import.meta.url` syntax (the Webpack 5 betas added support, which was not backported), however there is a plugin available to add this functionality, specifically [https://www.npmjs.com/package/@open-wc/webpack-import-meta-loader](https://www.npmjs.com/package/@open-wc/webpack-import-meta-loader).
+
+The following config has been verified as working for old versions of Webpack -
+
+```js
+module: {
+	rules: [
+		{
+			test: /\.js$/,
+			loader: require.resolve('@open-wc/webpack-import-meta-loader'),
+		}
+	],
+},
+```
+
+
+## Under my babel build, I have a BigInt to number conversion error
+
+This is casued by a Babel config that transforms inputs such as `2 ** 32` to `Math.pow(2, 32)`. The `transform-exponentiation-operator` is not `BigInt` aware, which means that it aloso transforms
+`BigInt(2) ** BigInt(256)` into an invalid `Math.pow(BigInt(2), BigInt(256))` which then fails on execution.
+
+It is not specific to the API or libraries, but rather the local build environment and a known issue [https://github.com/blockstack/stacks.js/issues/1096#issuecomment-946350299](https://github.com/blockstack/stacks.js/issues/1096#issuecomment-946350299) which can be fixed with 1 of two overrides as per the linked issue -
+
+- exclude Babel `transform-exponentiation-operator`
+- adjust browserslist to exclude old versions
