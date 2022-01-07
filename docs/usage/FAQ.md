@@ -63,4 +63,6 @@ All the polkadot-js also use Jest for tests. When using Jest refer to the specif
 - Jest, https://jestjs.io/docs/ecmascript-modules
 - TS-Jest, https://kulshekhar.github.io/ts-jest/docs/guides/esm-support
 
+Also bear in mind that packages expose `main`, `module` and `exports` fields in `package.json`. Under environments such as [Jest using browserify/resolve](https://github.com/browserify/resolve/issues/222), it is advisable to import from the root, i.e. `import { ApiPromise } from '@polkadot/api'` as opposed to `import { ApiPromise } from '@polkadot/api/promise'`
+
 Additionally the [polkadot-js Jest config](https://github.com/polkadot-js/dev/blob/master/packages/dev/config/jest.cjs) may prove to be useful as a template, specifically the `transformIgnorePatterns` which excludes certain folders (assuming transforms are not empty as per the linked suggestions above).
