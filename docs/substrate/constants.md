@@ -239,11 +239,19 @@ ___
  
 ### deletionQueueDepth: `u32`
 - **interface**: `api.consts.contracts.deletionQueueDepth`
-- **summary**:    The maximum number of tries that can be queued for deletion. 
+- **summary**:    The maximum number of contracts that can be pending for deletion. 
+
+   When a contract is deleted by calling `seal_terminate` it becomes inaccessible  immediately, but the deletion of the storage items it has accumulated is performed  later. The contract is put into the deletion queue. This defines how many  contracts can be queued up at the same time. If that limit is reached `seal_terminate`  will fail. The action must be retried in a later block in that case. 
+
+   The reasons for limiting the queue depth are: 
+
+   1. The queue is in storage in order to be persistent between blocks. We want to limit  the amount of storage that can be consumed.  2. The queue is stored in a vector and needs to be decoded as a whole when reading  it at the end of each block. Longer queues take more weight to decode and hence  limit the amount of items that can be deleted per block. 
  
 ### deletionWeightLimit: `u64`
 - **interface**: `api.consts.contracts.deletionWeightLimit`
 - **summary**:    The maximum amount of weight that can be consumed per block for lazy trie removal. 
+
+   The amount of weight that is dedicated per block to work on the deletion queue. Larger  values allow more trie keys to be deleted in each block but reduce the amount of  weight that is left for transactions. See [`Self::DeletionQueueDepth`] for more  information about the deletion queue. 
  
 ### depositPerByte: `u128`
 - **interface**: `api.consts.contracts.depositPerByte`
@@ -255,7 +263,9 @@ ___
  
 ### depositPerItem: `u128`
 - **interface**: `api.consts.contracts.depositPerItem`
-- **summary**:    The amount of balance a caller has to pay for each storage item.  #### Note 
+- **summary**:    The amount of balance a caller has to pay for each storage item. 
+
+   #### Note 
 
    Changing this value for an existing chain might need a storage migration. 
  

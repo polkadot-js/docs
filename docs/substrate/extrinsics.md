@@ -576,7 +576,7 @@ ___
 - **interface**: `api.tx.balances.setBalance`
 - **summary**:    Set the balances of a given account. 
 
-   This will alter `FreeBalance` and `ReservedBalance` in storage. it will  also decrease the total issuance of the system (`TotalIssuance`).  If the new free or reserved balance is below the existential deposit,  it will reset the account nonce (`frame_system::AccountNonce`). 
+   This will alter `FreeBalance` and `ReservedBalance` in storage. it will  also alter the total issuance of the system (`TotalIssuance`) appropriately.  If the new free or reserved balance is below the existential deposit,  it will reset the account nonce (`frame_system::AccountNonce`). 
 
    The dispatch origin for this call is `root`. 
  
@@ -584,7 +584,7 @@ ___
 - **interface**: `api.tx.balances.transfer`
 - **summary**:    Transfer some liquid free balance to another account. 
 
-   `transfer` will set the `FreeBalance` of the sender and receiver.  It will decrease the total issuance of the system by the `TransferFee`.  If the sender's account is below the existential deposit as a result  of the transfer, the account will be reaped. 
+   `transfer` will set the `FreeBalance` of the sender and receiver.  If the sender's account is below the existential deposit as a result  of the transfer, the account will be reaped. 
 
    The dispatch origin for this call must be `Signed` by the transactor. 
 
@@ -1854,7 +1854,7 @@ ___
 
     
  
-### asMulti(threshold: `u16`, other_signatories: `Vec<AccountId32>`, maybe_timepoint: `Option<PalletMultisigTimepoint>`, call: `Bytes`, store_call: `bool`, max_weight: `u64`)
+### asMulti(threshold: `u16`, other_signatories: `Vec<AccountId32>`, maybe_timepoint: `Option<PalletMultisigTimepoint>`, call: `WrapperKeepOpaque<Call>`, store_call: `bool`, max_weight: `u64`)
 - **interface**: `api.tx.multisig.asMulti`
 - **summary**:    Register approval for a dispatch to be made from a deterministic composite account if  approved by a total of `threshold - 1` of `other_signatories`. 
 

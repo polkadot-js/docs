@@ -729,7 +729,7 @@ ___
 
 ## multisig
  
-### calls(`[u8;32]`): `Option<(Bytes,AccountId32,u128)>`
+### calls(`[u8;32]`): `Option<(WrapperKeepOpaque<Call>,AccountId32,u128)>`
 - **interface**: `api.query.multisig.calls`
  
 ### multisigs(`AccountId32, [u8;32]`): `Option<PalletMultisigMultisig>`
