@@ -1,30 +1,30 @@
-     159	Jaco
-       7	Kevin Veros Hamonangan
-       5	brettkolodny
-       5	Jhon
-       5	Thibaut Sardan
-       3	jakai7
-       3	Nikos Kontakis
-       3	Raoul Millais
-       3	Shawn Tabrizi
-       2	JesseAbram
-       2	Ronny Roeller
-       2	Viki Val
-       1	Andrew
-       1	Andrzej
-       1	angdiam
-       1	Antonio Savage
-       1	Daniel Savu
-       1	Evgeny
-       1	Fei Liu
-       1	Frozen
-       1	Gabriel Crispino
-       1	h4x3rotab
-       1	hamidra
-       1	Joshy Orndorff
-       1	Kingsley
-       1	Malte Kliemann
-       1	Michał Mirończuk
-       1	Spaceforce
-       1	yaohsin
-       1	Zoheb Salam
+     160	Jaco                          	Bump dev (#240)
+       7	Kevin Veros Hamonangan        	Update ss58.md (#81)
+       5	brettkolodny                  	Contract query subscriptions workaround in Contract FAQ (#60)
+       5	Jhon                          	Update types.basics.md (#165)
+       5	Thibaut Sardan                	Add an exemple to retrieve chain info (#125)
+       3	jakai7                        	typo (#47)
+       3	Nikos Kontakis                	Update extrinsics.md (#179)
+       3	Raoul Millais                 	Fix minor typo in type creation docs (#129)
+       3	Shawn Tabrizi                 	typo (#142)
+       2	JesseAbram                    	Hashing (#93)
+       2	Ronny Roeller                 	Fix typos (#156)
+       2	Viki Val                      	Updated documentation to docs in RegistryError (#188)
+       1	Andrew                        	Grammatical error in extrinsics.md (#217)
+       1	Andrzej                       	Fix typo in api.query.multi.md (#126)
+       1	angdiam                       	Update api.query.other.md (#181)
+       1	Antonio Savage                	Adding specifics to the Intro API (#140)
+       1	Daniel Savu                   	Detail types generation from metadata (#211)
+       1	Evgeny                        	* Fixed typo for signature schema (#88)
+       1	Fei Liu                       	Update tx.md (#104)
+       1	Frozen                        	Update blueprint.md (#139)
+       1	Gabriel Crispino              	Fix "keying" typo in make-transfer.md (#183)
+       1	h4x3rotab                     	Fix typo (#16)
+       1	hamidra                       	Add a note regarding fees for batch transactions. (#176)
+       1	Joshy Orndorff                	typo -is -> in (also some commas) (#28)
+       1	Kingsley                      	Fix syntax error in extension cookbook (#194)
+       1	Malte Kliemann                	Add info on how to create types (#224)
+       1	Michał Mirończuk              	Update blocks.md (#64)
+       1	Spaceforce                    	Change order of params to match example (#90)
+       1	yaohsin                       	Update verify-signature.md (#198)
+       1	Zoheb Salam                   	Update Readme with `keysAt()` and `entriesAt()` (#218)
