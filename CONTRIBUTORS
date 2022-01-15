@@ -25,6 +25,7 @@
        1	Kingsley                      	Fix syntax error in extension cookbook (#194)
        1	Malte Kliemann                	Add info on how to create types (#224)
        1	Michał Mirończuk              	Update blocks.md (#64)
+       1	MOZGIII                       	Fix the metadata at custom RPC docs (#242)
        1	Spaceforce                    	Change order of params to match example (#90)
        1	yaohsin                       	Update verify-signature.md (#198)
        1	Zoheb Salam                   	Update Readme with `keysAt()` and `entriesAt()` (#218)
