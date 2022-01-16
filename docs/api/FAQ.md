@@ -107,3 +107,29 @@ There is no such API. Substrate does not expose a "query-by-tx-hash" RPC, nor ar
 For more information around this, refer to the Polkadot wiki [on unique extrinsic identifiers](https://wiki.polkadot.network/docs/en/build-protocol-info#unique-identifiers-for-extrinsics).
 
 
+## Since upgrading to the 7.x series, TypeScript augmentation is not avilable
+
+This could manifest in various ways,
+
+- query results may just be `Codec` instead of the actual expected type
+- dependent packages, e.g. `api-derive` or `api-contract` may yield TS errors
+
+For TS users, since the 7.x release, type augmentation is not applied automatically anymore. Historically Substrate-specific types and endpoints were typed, which worked in 95% of cases, until any module was changed from default Substrate behavior or types were extended or adjustsed from what Substrate exposes. This resulted in any type overrides working in some cases and returning type errors in other critical areas.
+
+In the 7.x series, overrides are to be explicitly applied anymore. For a basic example to restore Substrate-only types like in erealier versions, an `import '@polkadot/api-augment'` is to be applied to your codebase entry point before any imports from the API itself. The various shipped aliases available are
+
+- `import '@polkadot/api-augment/substrate'` - same as the `@polkadot/api-augment` form, the default (and what was applied before the 7.x release)
+- `import '@polkadot/api-augment/kusama'` - applies Kusama types and endpoint augmentation
+- `import '@polkadot/api-augment/polkadot'` - applies Polkadot types and endpoint augmentation
+
+For non-Kusama/Polkadot chains, the above should be skipped completely and only the augmentation for the specific chain, as published by the teams themselves and generated via the `typegen` package, should be imported.
+
+Internally the `api-augment` when included applies 3 augmentations based on the option requested -
+
+- applies all tx, query, const, event endpoints for the specific chain
+- `import '@polkadot/rpc-augment'` - to decorate all RPC endpoints with defaults for Substrate
+- `import '@polkadot/types-augment'` - applying all generic Substrate types, this follds up and includes
+  - `import '@polkadot/types-augment/lookup'` for Substrate/Kusama/Polkadot lookup types
+  - `import '@polkadot/types-augment/registry'` for Substrate-specific registry types
+
+The above breakdown could be useful to tweak and include _some_ types, while excluding others.
