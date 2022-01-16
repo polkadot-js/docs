@@ -1,4 +1,4 @@
-     165	Jaco                          	s/not available/missing/ (with typo fix)
+     166	Jaco                          	Fix typos in augmentation description (#245)
        7	Kevin Veros Hamonangan        	Update ss58.md (#81)
        5	brettkolodny                  	Contract query subscriptions workaround in Contract FAQ (#60)
        5	Jhon                          	Update types.basics.md (#165)
