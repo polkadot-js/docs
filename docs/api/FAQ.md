@@ -107,7 +107,7 @@ There is no such API. Substrate does not expose a "query-by-tx-hash" RPC, nor ar
 For more information around this, refer to the Polkadot wiki [on unique extrinsic identifiers](https://wiki.polkadot.network/docs/en/build-protocol-info#unique-identifiers-for-extrinsics).
 
 
-## Since upgrading to the 7.x series, TypeScript augmentation is not avilable
+## Since upgrading to the 7.x series, TypeScript augmentation is missing
 
 This could manifest in various ways,
 
