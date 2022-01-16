@@ -114,9 +114,9 @@ This could manifest in various ways,
 - query results may just be `Codec` instead of the actual expected type
 - dependent packages, e.g. `api-derive` or `api-contract` may yield TS errors
 
-For TS users, since the 7.x release, type augmentation is not applied automatically anymore. Historically Substrate-specific types and endpoints were typed, which worked in 95% of cases, until any module was changed from default Substrate behavior or types were extended or adjustsed from what Substrate exposes. This resulted in any type overrides working in some cases and returning type errors in other critical areas.
+For TS users, since the 7.x release, type augmentation is not applied automatically anymore. Historically Substrate-specific types and endpoints were augmented, which worked in 95% of cases, until any module was changed from default Substrate behavior or types were extended or adjusted from what Substrate exposes. This resulted in any type overrides working in some cases and returning type errors in other critical areas, without a way of adjusting.
 
-In the 7.x series, overrides are to be explicitly applied anymore. For a basic example to restore Substrate-only types like in erealier versions, an `import '@polkadot/api-augment'` is to be applied to your codebase entry point before any imports from the API itself. The various shipped aliases available are
+Since the start of the 7.x series, overrides are to be explicitly applied anymore. For a basic example to restore Substrate-only types like in earlier versions, an `import '@polkadot/api-augment'` is to be added to your codebase entry point _before_ any imports from the API itself. The various shipped aliases available are
 
 - `import '@polkadot/api-augment/substrate'` - same as the `@polkadot/api-augment` form, the default (and what was applied before the 7.x release)
 - `import '@polkadot/api-augment/kusama'` - applies Kusama types and endpoint augmentation
