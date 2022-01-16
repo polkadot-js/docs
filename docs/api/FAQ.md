@@ -130,4 +130,6 @@ Internally the `api-augment` when included applies 3 augmentations based on the 
 - `import '@polkadot/rpc-augment'` - to decorate all RPC endpoints with defaults for Substrate
 - `import '@polkadot/types-augment'` - applying all generic Substrate types, this follds up and includes
   - `import '@polkadot/types-augment/lookup'` for Substrate/Kusama/Polkadot lookup types
-	- `import '@polkadot/types-augment/registry'` for Substrate-specific registry types
+  - `import '@polkadot/types-augment/registry'` for Substrate-specific registry types
+
+The above breakdown could be useful to tweak and include _some_ types, while excluding others.
