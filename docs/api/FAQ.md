@@ -118,7 +118,7 @@ For TS users, since the 7.x release, type augmentation is not applied automatica
 
 In the 7.x series, overrides are to be explicitly applied anymore. For a basic example to restore Substrate-only types like in erealier versions, an `import '@polkadot/api-augment'` is to be applied to your codebase entry point before any imports from the API itself. The various shipped aliases available are
 
-- `import '@polkadot/api-augment/substrate'` - same as the `@polkadot/api-augment` form, the default
+- `import '@polkadot/api-augment/substrate'` - same as the `@polkadot/api-augment` form, the default (and what was applied before the 7.x release)
 - `import '@polkadot/api-augment/kusama'` - applies Kusama types and endpoint augmentation
 - `import '@polkadot/api-augment/polkadot'` - applies Polkadot types and endpoint augmentation
 
