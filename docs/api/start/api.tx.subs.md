@@ -30,7 +30,7 @@ const unsub = await api.tx.balances
   });
 ```
 
-As per all previous subscriptions, the transaction subscription returns in `unsub()` and the actual method has a subscription callback. The `result` object has 2 parts, `events` (to to covered in the next section) and the `status` enum.
+As per all previous subscriptions, the transaction subscription returns in `unsub()` and the actual method has a subscription callback. The `result` object has 2 parts, `events` (to be covered in the next section) and the `status` enum.
 
 When the `status` enum is in `Finalized` state (checked via `isFinalized`), the underlying value contains the block hash of the block where the transaction has been finalized. `Finalized` will follow `InBlock`, which is the block where the transaction has been included. `InBlock` does not mean the block is finalized, but rather applies to the transaction state, where `Finalized` means that the transaction cannot be forked off the chain.
 
