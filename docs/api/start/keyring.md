@@ -100,7 +100,7 @@ import { stringToU8a, u8aToHex } from '@polkadot/util';
 // Convert message, sign and then verify
 const message = stringToU8a('this is our message');
 const signature = alice.sign(message);
-const isValid = alice.verify(message, signature);
+const isValid = alice.verify(message, signature, alice.publicKey);
 
 // Log info
 console.log(`The signature ${u8aToHex(signature)}, is ${isValid ? '' : 'in'}valid`);
