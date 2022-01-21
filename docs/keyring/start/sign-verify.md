@@ -20,7 +20,7 @@ const alice = keyring.addFromUri('//Alice');
 // create the message, actual signature and verify
 const message = stringToU8a('this is our message');
 const signature = alice.sign(message);
-const isValid = alice.verify(message, signature);
+const isValid = alice.verify(message, signature, alice.publicKey);
 
 // output the result
 console.log(`${u8aToHex(signature)} is ${isValid ? 'valid' : 'invalid'}`);
