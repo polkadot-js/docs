@@ -129,7 +129,7 @@ signedBlock.block.extrinsics.forEach(({ method: { method, section } }, index) =>
         // (In TS, because of the guard above, these will be typed)
         const [dispatchInfo] = event.data;
 
-        console.log(`${section}.${method}:: ExtrinsicSuccess:: ${dispatchInfo.toHuman()}`);
+        console.log(`${section}.${method}:: ExtrinsicSuccess:: ${JSON.stringify(dispatchInfo.toHuman())}`);
       } else if (api.events.system.ExtrinsicFailed.is(event)) {
         // extract the data for this event
         const [dispatchError, dispatchInfo] = event.data;
