@@ -4,7 +4,7 @@ title: Initialization
 
 To understand the initialization process, some background on the underlying libraries are required. For the [Schnorrkel sr25519](https://github.com/w3f/schnorrkel) a WASM library is used. This means that before `sr25519` can be used, the WASM libraries needs to be loaded and initialized. This is not an issue when the keyring only uses `ed25519`.
 
-If you have been through the [base keyring documentation](../../keyring/start), you should be familiar with this process.
+If you have been through the [base keyring documentation](../../keyring/start/intro.md), you should be familiar with this process.
 
 
 ## Create
