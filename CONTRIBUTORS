@@ -15,6 +15,7 @@
        1	Andrzej                       	Fix typo in api.query.multi.md (#126)
        1	angdiam                       	Update api.query.other.md (#181)
        1	Antonio Savage                	Adding specifics to the Intro API (#140)
+       1	Daniel Bastos                 	Fix broken keyring intro link (#253)
        1	Daniel Savu                   	Detail types generation from metadata (#211)
        1	Evgeny                        	* Fixed typo for signature schema (#88)
        1	Fei Liu                       	Update tx.md (#104)
