@@ -323,6 +323,10 @@ ___
 - **interface**: `api.errors.contracts.CodeNotFound.is`
 - **summary**:    No code could be found at the supplied code hash. 
  
+### CodeRejected
+- **interface**: `api.errors.contracts.CodeRejected.is`
+- **summary**:    The contract's code was found to be invalid during validation or instrumentation.  A more detailed error can be found on the node console if debug messages are enabled  or in the debug buffer which is returned to RPC clients. 
+ 
 ### CodeTooLarge
 - **interface**: `api.errors.contracts.CodeTooLarge.is`
 - **summary**:    The code supplied to `instantiate_with_code` exceeds the limit specified in the  current schedule. 
