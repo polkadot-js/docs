@@ -205,6 +205,11 @@ ___
 - **interface**: `api.rpc.contracts.rentProjection`
 - **jsonrpc**: `contracts_rentProjection`
 - **summary**: Returns the projected time a given contract will be able to sustain paying its rent
+ 
+### uploadCode(uploadRequest: `CodeUploadRequest`, at?: `BlockHash`): `CodeUploadResult`
+- **interface**: `api.rpc.contracts.uploadCode`
+- **jsonrpc**: `contracts_upload_code`
+- **summary**: Upload new code without instantiating a contract from it
 
 ___
 

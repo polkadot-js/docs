@@ -830,6 +830,10 @@ ___
 - **interface**: `api.consts.treasury.proposalBond`
 - **summary**:    Fraction of a proposal's value that should be bonded in order to place the proposal.  An accepted proposal gets these back. A rejected proposal does not. 
  
+### proposalBondMaximum: `Option<u128>`
+- **interface**: `api.consts.treasury.proposalBondMaximum`
+- **summary**:    Maximum amount of funds that should be placed in a deposit for making a proposal. 
+ 
 ### proposalBondMinimum: `u128`
 - **interface**: `api.consts.treasury.proposalBondMinimum`
 - **summary**:    Minimum amount of funds that should be placed in a deposit for making a proposal. 
