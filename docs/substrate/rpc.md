@@ -101,6 +101,11 @@ ___
 
 ## beefy
  
+### getFinalizedHead(): `H256`
+- **interface**: `api.rpc.beefy.getFinalizedHead`
+- **jsonrpc**: `beefy_getFinalizedHead`
+- **summary**: Returns hash of the latest BEEFY finalized block as seen by this client.
+ 
 ### subscribeJustifications(): `BeefySignedCommitment`
 - **interface**: `api.rpc.beefy.subscribeJustifications`
 - **jsonrpc**: `beefy_subscribeJustifications`

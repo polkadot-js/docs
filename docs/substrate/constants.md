@@ -698,9 +698,6 @@ ___
 - **interface**: `api.consts.staking.bondingDuration`
 - **summary**:    Number of eras that staked funds must remain bonded for. 
  
-### maxNominations: `u32`
-- **interface**: `api.consts.staking.maxNominations`
- 
 ### maxNominatorRewardedPerValidator: `u32`
 - **interface**: `api.consts.staking.maxNominatorRewardedPerValidator`
 - **summary**:    The maximum number of nominators rewarded for each validator. 

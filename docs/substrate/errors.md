@@ -602,6 +602,10 @@ ___
 - **interface**: `api.errors.electionProviderMultiPhase.CallNotAllowed.is`
 - **summary**:    The call is not allowed at this point. 
  
+### FallbackFailed
+- **interface**: `api.errors.electionProviderMultiPhase.FallbackFailed.is`
+- **summary**:    The fallback failed 
+ 
 ### InvalidSubmissionIndex
 - **interface**: `api.errors.electionProviderMultiPhase.InvalidSubmissionIndex.is`
 - **summary**:    `Self::insert_submission` returned an invalid index. 

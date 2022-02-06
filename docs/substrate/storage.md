@@ -835,12 +835,6 @@ ___
 ### lookup(`Bytes`): `Option<(u32,u32)>`
 - **interface**: `api.query.scheduler.lookup`
 - **summary**:    Lookup from identity to the block number and index of the task. 
- 
-### storageVersion(): `PalletSchedulerReleases`
-- **interface**: `api.query.scheduler.storageVersion`
-- **summary**:    Storage version of the pallet. 
-
-   New networks start with last version. 
 
 ___
 
@@ -1097,7 +1091,13 @@ ___
  
 ### nominators(`AccountId32`): `Option<PalletStakingNominations>`
 - **interface**: `api.query.staking.nominators`
-- **summary**:    The map from nominator stash key to the set of stash keys of all validators to nominate. 
+- **summary**:    The map from nominator stash key to their nomination preferences, namely the validators that  they wish to support. 
+
+   Note that the keys of this storage map might become non-decodable in case the  [`Config::MaxNominations`] configuration is decreased. In this rare case, these nominators  are still existent in storage, their key is correct and retrievable (i.e. `contains_key`  indicates that they exist), but their value cannot be decoded. Therefore, the non-decodable  nominators will effectively not-exist, until they re-submit their preferences such that it  is within the bounds of the newly set `Config::MaxNominations`. 
+
+   This implies that `::iter_keys().count()` and `::iter().count()` might return different  values for this map. Moreover, the main `::count()` is aligned with the former, namely the  number of keys that exist. 
+
+   Lastly, if any of the nominators become non-decodable, they can be chilled immediately via  [`Call::chill_other`] dispatchable by anyone. 
  
 ### nominatorSlashInEra(`u32, AccountId32`): `Option<u128>`
 - **interface**: `api.query.staking.nominatorSlashInEra`

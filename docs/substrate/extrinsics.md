@@ -1326,6 +1326,12 @@ ___
 
 ## electionProviderMultiPhase
  
+### governanceFallback(maybe_max_voters: `Option<u32>`, maybe_max_targets: `Option<u32>`)
+- **interface**: `api.tx.electionProviderMultiPhase.governanceFallback`
+- **summary**:    Trigger the governance fallback. 
+
+   This can only be called when [`Phase::Emergency`] is enabled, as an alternative to  calling [`Call::set_emergency_election_result`]. 
+ 
 ### setEmergencyElectionResult(supports: `Vec<(AccountId32,SpNposElectionsSupport)>`)
 - **interface**: `api.tx.electionProviderMultiPhase.setEmergencyElectionResult`
 - **summary**:    Set a solution in the queue, to be handed out to the client of this pallet in the next  call to `ElectionProvider::elect`. 
@@ -2508,8 +2514,6 @@ ___
    Can be called by the `T::SlashCancelOrigin`. 
 
    Parameters: era and indices of the slashes for that era to kill. 
-
-    
  
 ### chill()
 - **interface**: `api.tx.staking.chill`
@@ -2533,7 +2537,11 @@ ___
 
    If the caller is different than the controller being targeted, the following conditions  must be met: 
 
-  * A `ChillThreshold` must be set and checked which defines how close to the max nominators or validators we must reach before users can start chilling one-another. 
+   * `controller` must belong to a nominator who has become non-decodable, 
+
+   Or: 
+
+   * A `ChillThreshold` must be set and checked which defines how close to the max  nominators or validators we must reach before users can start chilling one-another. 
 
   * A `MaxNominatorCount` and `MaxValidatorCount` must be set which is used to determine how close we are to the threshold. 
 
@@ -2562,8 +2570,6 @@ ___
    #### Warning 
 
    The election process starts multiple blocks before the end of the era.  If this is called just before a new era is triggered, the election process may not  have enough blocks to get a result. 
-
-    
  
 ### forceNoEras()
 - **interface**: `api.tx.staking.forceNoEras`
@@ -2582,8 +2588,6 @@ ___
 - **summary**:    Force a current staker to become completely unstaked, immediately. 
 
    The dispatch origin must be Root. 
-
-    
  
 ### increaseValidatorCount(additional: `Compact<u32>`)
 - **interface**: `api.tx.staking.increaseValidatorCount`
@@ -2684,8 +2688,6 @@ ___
 - **summary**:    Set the validators who cannot be slashed (if any). 
 
    The dispatch origin must be Root. 
-
-    
  
 ### setPayee(payee: `PalletStakingRewardDestination`)
 - **interface**: `api.tx.staking.setPayee`
@@ -2828,8 +2830,6 @@ ___
 ### remarkWithEvent(remark: `Bytes`)
 - **interface**: `api.tx.system.remarkWithEvent`
 - **summary**:    Make some on-chain remark and emit event. 
-
-    
  
 ### setCode(code: `Bytes`)
 - **interface**: `api.tx.system.setCode`
