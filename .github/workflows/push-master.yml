@@ -12,15 +12,16 @@ jobs:
         step: ['build:release']
     name: ${{ matrix.step }}
     runs-on: ubuntu-latest
+    env:
+      YARN_ENABLE_SCRIPTS: false
+      GH_PAGES_SRC: build
+      GH_PAT: ${{ secrets.GH_PAT }}
     steps:
     - uses: actions/checkout@v2
       with:
         fetch-depth: 0
         token: ${{ secrets.GH_PAT }}
     - name: build
-      env:
-        GH_PAGES_SRC: build
-        GH_PAT: ${{ secrets.GH_PAT }}
       run: |
         yarn install --immutable | grep -v 'YN0013'
         yarn ${{ matrix.step }}
