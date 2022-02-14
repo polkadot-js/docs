@@ -18,6 +18,8 @@ Events are emitted for certain operations on the runtime. The following sections
 
 - **[contracts](#contracts)**
 
+- **[convictionVoting](#convictionvoting)**
+
 - **[council](#council)**
 
 - **[democracy](#democracy)**
@@ -47,6 +49,8 @@ Events are emitted for certain operations on the runtime. The following sections
 - **[proxy](#proxy)**
 
 - **[recovery](#recovery)**
+
+- **[referenda](#referenda)**
 
 - **[scheduler](#scheduler)**
 
@@ -290,6 +294,19 @@ ___
    #### Note 
 
    The only way for a contract to be removed and emitting this event is by calling  `seal_terminate`. 
+
+___
+
+
+## convictionVoting
+ 
+### Delegated(`AccountId32`, `AccountId32`)
+- **interface**: `api.events.convictionVoting.Delegated.is`
+- **summary**:    An account has delegated their vote to another account. \[who, target\] 
+ 
+### Undelegated(`AccountId32`)
+- **interface**: `api.events.convictionVoting.Undelegated.is`
+- **summary**:    An \[account\] has cancelled a previous delegation operation. 
 
 ___
 
@@ -707,6 +724,61 @@ ___
 ### RecoveryVouched(`AccountId32`, `AccountId32`, `AccountId32`)
 - **interface**: `api.events.recovery.RecoveryVouched.is`
 - **summary**:    A recovery process for lost account by rescuer account has been vouched for by sender. 
+
+___
+
+
+## referenda
+ 
+### Approved(`u32`)
+- **interface**: `api.events.referenda.Approved.is`
+- **summary**:    A referendum has been approved and its proposal has been scheduled. 
+ 
+### Cancelled(`u32`, `PalletConvictionVotingTally`)
+- **interface**: `api.events.referenda.Cancelled.is`
+- **summary**:    A referendum has been cancelled. 
+ 
+### ConfirmAborted(`u32`)
+- **interface**: `api.events.referenda.ConfirmAborted.is`
+ 
+### Confirmed(`u32`, `PalletConvictionVotingTally`)
+- **interface**: `api.events.referenda.Confirmed.is`
+- **summary**:    A referendum has ended its confirmation phase and is ready for approval. 
+ 
+### ConfirmStarted(`u32`)
+- **interface**: `api.events.referenda.ConfirmStarted.is`
+ 
+### DecisionDepositPlaced(`u32`, `AccountId32`, `u128`)
+- **interface**: `api.events.referenda.DecisionDepositPlaced.is`
+- **summary**:    The decision deposit has been placed. 
+ 
+### DecisionDepositRefunded(`u32`, `AccountId32`, `u128`)
+- **interface**: `api.events.referenda.DecisionDepositRefunded.is`
+- **summary**:    The decision deposit has been refunded. 
+ 
+### DecisionStarted(`u32`, `u8`, `H256`, `PalletConvictionVotingTally`)
+- **interface**: `api.events.referenda.DecisionStarted.is`
+- **summary**:    A referendum has moved into the deciding phase. 
+ 
+### DepositSlashed(`AccountId32`, `u128`)
+- **interface**: `api.events.referenda.DepositSlashed.is`
+- **summary**:    A deposit has been slashaed. 
+ 
+### Killed(`u32`, `PalletConvictionVotingTally`)
+- **interface**: `api.events.referenda.Killed.is`
+- **summary**:    A referendum has been killed. 
+ 
+### Rejected(`u32`, `PalletConvictionVotingTally`)
+- **interface**: `api.events.referenda.Rejected.is`
+- **summary**:    A proposal has been rejected by referendum. 
+ 
+### Submitted(`u32`, `u8`, `H256`)
+- **interface**: `api.events.referenda.Submitted.is`
+- **summary**:    A referendum has being submitted. 
+ 
+### TimedOut(`u32`, `PalletConvictionVotingTally`)
+- **interface**: `api.events.referenda.TimedOut.is`
+- **summary**:    A referendum has been timed out without being decided. 
 
 ___
 

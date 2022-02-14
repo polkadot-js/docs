@@ -22,6 +22,8 @@ This page lists the errors that can be encountered in the different modules.
 
 - **[contracts](#contracts)**
 
+- **[convictionVoting](#convictionvoting)**
+
 - **[council](#council)**
 
 - **[democracy](#democracy)**
@@ -49,6 +51,8 @@ This page lists the errors that can be encountered in the different modules.
 - **[proxy](#proxy)**
 
 - **[recovery](#recovery)**
+
+- **[referenda](#referenda)**
 
 - **[scheduler](#scheduler)**
 
@@ -289,6 +293,10 @@ ___
 - **interface**: `api.errors.bounties.RequireCurator.is`
 - **summary**:    Require bounty curator. 
  
+### TooManyQueued
+- **interface**: `api.errors.bounties.TooManyQueued.is`
+- **summary**:    Too many approvals are already queued. 
+ 
 ### UnexpectedStatus
 - **interface**: `api.errors.bounties.UnexpectedStatus.is`
 - **summary**:    The bounty status is unexpected. 
@@ -369,6 +377,10 @@ ___
 - **interface**: `api.errors.contracts.InputForwarded.is`
 - **summary**:    `seal_call` forwarded this contracts input. It therefore is no longer available. 
  
+### InvalidCallFlags
+- **interface**: `api.errors.contracts.InvalidCallFlags.is`
+- **summary**:    Invalid combination of flags supplied to `seal_call` or `seal_delegate_call`. 
+ 
 ### InvalidScheduleVersion
 - **interface**: `api.errors.contracts.InvalidScheduleVersion.is`
 - **summary**:    A new schedule must have a greater version than the current one. 
@@ -430,6 +442,59 @@ ___
 ### ValueTooLarge
 - **interface**: `api.errors.contracts.ValueTooLarge.is`
 - **summary**:    The size defined in `T::MaxValueSize` was exceeded. 
+
+___
+
+
+## convictionVoting
+ 
+### AlreadyDelegating
+- **interface**: `api.errors.convictionVoting.AlreadyDelegating.is`
+- **summary**:    The account is already delegating. 
+ 
+### AlreadyVoting
+- **interface**: `api.errors.convictionVoting.AlreadyVoting.is`
+- **summary**:    The account currently has votes attached to it and the operation cannot succeed until  these are removed, either through `unvote` or `reap_vote`. 
+ 
+### BadClass
+- **interface**: `api.errors.convictionVoting.BadClass.is`
+- **summary**:    The class ID supplied is invalid. 
+ 
+### ClassNeeded
+- **interface**: `api.errors.convictionVoting.ClassNeeded.is`
+- **summary**:    The class must be supplied since it is not easily determinable from the state. 
+ 
+### InsufficientFunds
+- **interface**: `api.errors.convictionVoting.InsufficientFunds.is`
+- **summary**:    Too high a balance was provided that the account cannot afford. 
+ 
+### MaxVotesReached
+- **interface**: `api.errors.convictionVoting.MaxVotesReached.is`
+- **summary**:    Maximum number of votes reached. 
+ 
+### Nonsense
+- **interface**: `api.errors.convictionVoting.Nonsense.is`
+- **summary**:    Delegation to oneself makes no sense. 
+ 
+### NoPermission
+- **interface**: `api.errors.convictionVoting.NoPermission.is`
+- **summary**:    The actor has no permission to conduct the action. 
+ 
+### NoPermissionYet
+- **interface**: `api.errors.convictionVoting.NoPermissionYet.is`
+- **summary**:    The actor has no permission to conduct the action right now but will do in the future. 
+ 
+### NotDelegating
+- **interface**: `api.errors.convictionVoting.NotDelegating.is`
+- **summary**:    The account is not currently delegating. 
+ 
+### NotOngoing
+- **interface**: `api.errors.convictionVoting.NotOngoing.is`
+- **summary**:    Poll is not ongoing. 
+ 
+### NotVoter
+- **interface**: `api.errors.convictionVoting.NotVoter.is`
+- **summary**:    The given account did not vote on the poll. 
 
 ___
 
@@ -1124,6 +1189,55 @@ ___
 ### ZeroThreshold
 - **interface**: `api.errors.recovery.ZeroThreshold.is`
 - **summary**:    Threshold must be greater than zero 
+
+___
+
+
+## referenda
+ 
+### BadReferendum
+- **interface**: `api.errors.referenda.BadReferendum.is`
+- **summary**:    The referendum index provided is invalid in this context. 
+ 
+### BadTrack
+- **interface**: `api.errors.referenda.BadTrack.is`
+- **summary**:    The track identifier given was invalid. 
+ 
+### Full
+- **interface**: `api.errors.referenda.Full.is`
+- **summary**:    There are already a full complement of referendums in progress for this track. 
+ 
+### HaveDeposit
+- **interface**: `api.errors.referenda.HaveDeposit.is`
+- **summary**:    Referendum's decision deposit is already paid. 
+ 
+### NoDeposit
+- **interface**: `api.errors.referenda.NoDeposit.is`
+- **summary**:    The deposit cannot be refunded since none was made. 
+ 
+### NoPermission
+- **interface**: `api.errors.referenda.NoPermission.is`
+- **summary**:    The deposit refunder is not the depositor. 
+ 
+### NothingToDo
+- **interface**: `api.errors.referenda.NothingToDo.is`
+- **summary**:    There was nothing to do in the advancement. 
+ 
+### NotOngoing
+- **interface**: `api.errors.referenda.NotOngoing.is`
+- **summary**:    Referendum is not ongoing. 
+ 
+### NoTrack
+- **interface**: `api.errors.referenda.NoTrack.is`
+- **summary**:    No track exists for the proposal origin. 
+ 
+### QueueEmpty
+- **interface**: `api.errors.referenda.QueueEmpty.is`
+- **summary**:    The queue of the track is empty. 
+ 
+### Unfinished
+- **interface**: `api.errors.referenda.Unfinished.is`
+- **summary**:    Any deposit cannot be refunded until after the decision is over. 
 
 ___
 

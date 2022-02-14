@@ -22,6 +22,8 @@ The following sections contain the module constants, also known as parameter typ
 
 - **[contracts](#contracts)**
 
+- **[convictionVoting](#convictionvoting)**
+
 - **[democracy](#democracy)**
 
 - **[electionProviderMultiPhase](#electionprovidermultiphase)**
@@ -45,6 +47,8 @@ The following sections contain the module constants, also known as parameter typ
 - **[proxy](#proxy)**
 
 - **[recovery](#recovery)**
+
+- **[referenda](#referenda)**
 
 - **[scheduler](#scheduler)**
 
@@ -272,6 +276,23 @@ ___
 ### schedule: `PalletContractsSchedule`
 - **interface**: `api.consts.contracts.schedule`
 - **summary**:    Cost schedule and limits. 
+
+___
+
+
+## convictionVoting
+ 
+### maxVotes: `u32`
+- **interface**: `api.consts.convictionVoting.maxVotes`
+- **summary**:    The maximum number of concurrent votes an account may have. 
+
+   Also used to compute weight, an overly large value can  lead to extrinsic with large weight estimation: see `delegate` for instance. 
+ 
+### voteLockingPeriod: `u32`
+- **interface**: `api.consts.convictionVoting.voteLockingPeriod`
+- **summary**:    The minimum period of vote locking. 
+
+   It should be no shorter than enactment period to ensure that in the case of an approval,  those successful voters are locked into the consequences that their votes entail. 
 
 ___
 
@@ -625,15 +646,38 @@ ___
 
    This is held for adding `sizeof(AccountId)` bytes more into a pre-existing storage  value. 
  
-### maxFriends: `u16`
+### maxFriends: `u32`
 - **interface**: `api.consts.recovery.maxFriends`
 - **summary**:    The maximum amount of friends allowed in a recovery configuration. 
+
+   NOTE: The threshold programmed in this Pallet uses u16, so it does  not really make sense to have a limit here greater than u16::MAX.  But also, that is a lot more than you should probably set this value  to anyway... 
  
 ### recoveryDeposit: `u128`
 - **interface**: `api.consts.recovery.recoveryDeposit`
 - **summary**:    The base amount of currency needed to reserve for starting a recovery. 
 
    This is primarily held for deterring malicious recovery attempts, and should  have a value large enough that a bad actor would choose not to place this  deposit. It also acts to fund additional storage item whose value size is  `sizeof(BlockNumber, Balance + T * AccountId)` bytes. Where T is a configurable  threshold. 
+
+___
+
+
+## referenda
+ 
+### alarmInterval: `u32`
+- **interface**: `api.consts.referenda.alarmInterval`
+- **summary**:    Quantization level for the referendum wakeup scheduler. A higher number will result in  fewer storage reads/writes needed for smaller voters, but also result in delays to the  automatic referendum status changes. Explicit servicing instructions are unaffected. 
+ 
+### maxQueued: `u32`
+- **interface**: `api.consts.referenda.maxQueued`
+- **summary**:    Maximum size of the referendum queue for a single track. 
+ 
+### submissionDeposit: `u128`
+- **interface**: `api.consts.referenda.submissionDeposit`
+- **summary**:    The minimum amount to be used as a deposit for a public referendum proposal. 
+ 
+### undecidingTimeout: `u32`
+- **interface**: `api.consts.referenda.undecidingTimeout`
+- **summary**:    The number of blocks after submission that a referendum must begin being decided by.  Once this passes, then anyone may cancel the referendum. 
 
 ___
 
@@ -818,6 +862,8 @@ ___
 ### maxApprovals: `u32`
 - **interface**: `api.consts.treasury.maxApprovals`
 - **summary**:    The maximum number of approvals that can wait in the spending queue. 
+
+   NOTE: This parameter is also used within the Bounties Pallet extension if enabled. 
  
 ### palletId: `FrameSupportPalletId`
 - **interface**: `api.consts.treasury.palletId`

@@ -24,6 +24,8 @@ The following sections contain Storage methods are part of the default Substrate
 
 - **[contracts](#contracts)**
 
+- **[convictionVoting](#convictionvoting)**
+
 - **[council](#council)**
 
 - **[democracy](#democracy)**
@@ -57,6 +59,8 @@ The following sections contain Storage methods are part of the default Substrate
 - **[randomnessCollectiveFlip](#randomnesscollectiveflip)**
 
 - **[recovery](#recovery)**
+
+- **[referenda](#referenda)**
 
 - **[scheduler](#scheduler)**
 
@@ -365,6 +369,19 @@ ___
 ___
 
 
+## convictionVoting
+ 
+### classLocksFor(`AccountId32`): `Vec<(u8,u128)>`
+- **interface**: `api.query.convictionVoting.classLocksFor`
+- **summary**:    The voting classes which have a non-zero lock requirement and the lock amounts which they  require. The actual amount locked on behalf of this pallet should always be the maximum of  this list. 
+ 
+### votingFor(`AccountId32, u8`): `PalletConvictionVotingVoteVoting`
+- **interface**: `api.query.convictionVoting.votingFor`
+- **summary**:    All voting for a particular voter in a particular voting class. We store the balance for the  number of votes that we have recorded. 
+
+___
+
+
 ## council
  
 ### members(): `Vec<AccountId32>`
@@ -413,12 +430,6 @@ ___
 ### lastTabledWasExternal(): `bool`
 - **interface**: `api.query.democracy.lastTabledWasExternal`
 - **summary**:    True if the last referendum tabled was submitted externally. False if it was a public  proposal. 
- 
-### locks(`AccountId32`): `Option<u32>`
-- **interface**: `api.query.democracy.locks`
-- **summary**:    Accounts for which there are locks in action which may be removed at some point in the  future. The value is the block number at which the lock expires and may be removed. 
-
-   TWOX-NOTE: OK ― `AccountId` is a secure hash. 
  
 ### lowestUnbaked(): `u32`
 - **interface**: `api.query.democracy.lowestUnbaked`
@@ -822,6 +833,31 @@ ___
 ### recoverable(`AccountId32`): `Option<PalletRecoveryRecoveryConfig>`
 - **interface**: `api.query.recovery.recoverable`
 - **summary**:    The set of recoverable accounts and their recovery configuration. 
+
+___
+
+
+## referenda
+ 
+### decidingCount(`u8`): `u32`
+- **interface**: `api.query.referenda.decidingCount`
+- **summary**:    The number of referenda being decided currently. 
+ 
+### referendumCount(): `u32`
+- **interface**: `api.query.referenda.referendumCount`
+- **summary**:    The next free referendum index, aka the number of referenda started so far. 
+ 
+### referendumInfoFor(`u32`): `Option<PalletReferendaReferendumInfo>`
+- **interface**: `api.query.referenda.referendumInfoFor`
+- **summary**:    Information concerning any given referendum. 
+
+   TWOX-NOTE: SAFE as indexes are not under an attacker’s control. 
+ 
+### trackQueue(`u8`): `Vec<(u32,u128)>`
+- **interface**: `api.query.referenda.trackQueue`
+- **summary**:    The sorted list of referenda ready to be decided but not yet being decided, ordered by  conviction-weighted approvals. 
+
+   This should be empty if `DecidingCount` is less than `TrackInfo::max_deciding`. 
 
 ___
 

@@ -22,6 +22,8 @@ The following sections contain Extrinsics methods are part of the default Substr
 
 - **[contracts](#contracts)**
 
+- **[convictionVoting](#convictionvoting)**
+
 - **[council](#council)**
 
 - **[democracy](#democracy)**
@@ -49,6 +51,8 @@ The following sections contain Extrinsics methods are part of the default Substr
 - **[proxy](#proxy)**
 
 - **[recovery](#recovery)**
+
+- **[referenda](#referenda)**
 
 - **[scheduler](#scheduler)**
 
@@ -930,6 +934,125 @@ ___
    #### Note 
 
    Anyone can instantiate a contract from any uploaded code and thus prevent its removal.  To avoid this situation a constructor could employ access control so that it can  only be instantiated by permissioned entities. The same is true when uploading  through [`Self::instantiate_with_code`]. 
+
+___
+
+
+## convictionVoting
+ 
+### delegate(class: `u8`, to: `AccountId32`, conviction: `PalletConvictionVotingConviction`, balance: `u128`)
+- **interface**: `api.tx.convictionVoting.delegate`
+- **summary**:    Delegate the voting power (with some given conviction) of the sending account for a  particular class of polls. 
+
+   The balance delegated is locked for as long as it's delegated, and thereafter for the  time appropriate for the conviction's lock period. 
+
+   The dispatch origin of this call must be _Signed_, and the signing account must either: 
+
+  - be delegating already; or
+
+  - have no voting activity (if there is, then it will need to be removed/consolidated through `reap_vote` or `unvote`). 
+
+   - `to`: The account whose voting the `target` account's voting power will follow. 
+
+  - `class`: The class of polls to delegate. To delegate multiple classes, multiple calls to this function are required. 
+
+  - `conviction`: The conviction that will be attached to the delegated votes. When the account is undelegated, the funds will be locked for the corresponding period. 
+
+  - `balance`: The amount of the account's balance to be used in delegating. This must not be more than the account's current balance. 
+
+   Emits `Delegated`. 
+
+   Weight: `O(R)` where R is the number of polls the voter delegating to has  voted on. Weight is initially charged as if maximum votes, but is refunded later. 
+ 
+### removeOtherVote(target: `AccountId32`, class: `u8`, index: `u32`)
+- **interface**: `api.tx.convictionVoting.removeOtherVote`
+- **summary**:    Remove a vote for a poll. 
+
+   If the `target` is equal to the signer, then this function is exactly equivalent to  `remove_vote`. If not equal to the signer, then the vote must have expired,  either because the poll was cancelled, because the voter lost the poll or  because the conviction period is over. 
+
+   The dispatch origin of this call must be _Signed_. 
+
+   - `target`: The account of the vote to be removed; this account must have voted for poll  `index`. 
+
+  - `index`: The index of poll of the vote to be removed.
+
+  - `class`: The class of the poll.
+
+   Weight: `O(R + log R)` where R is the number of polls that `target` has voted on.  Weight is calculated for the maximum number of vote. 
+ 
+### removeVote(class: `Option<u8>`, index: `u32`)
+- **interface**: `api.tx.convictionVoting.removeVote`
+- **summary**:    Remove a vote for a poll. 
+
+   If: 
+
+  - the poll was cancelled, or
+
+  - the poll is ongoing, or
+
+  - the poll has ended such that
+
+  - the vote of the account was in opposition to the result; or
+
+  - there was no conviction to the account's vote; or
+
+  - the account made a split vote ...then the vote is removed cleanly and a following call to `unlock` may result in more  funds being available. 
+
+   If, however, the poll has ended and: 
+
+  - it finished corresponding to the vote of the account, and
+
+  - the account made a standard vote with conviction, and
+
+  - the lock period of the conviction is not over ...then the lock will be aggregated into the overall account's lock, which may involve 
+
+  *overlocking* (where the two locks are combined into a single lock that is the maximum of both the amount locked and the time is it locked for). 
+
+   The dispatch origin of this call must be _Signed_, and the signer must have a vote  registered for poll `index`. 
+
+   - `index`: The index of poll of the vote to be removed. 
+
+  - `class`: Optional parameter, if given it indicates the class of the poll. For polls which have finished or are cancelled, this must be `Some`. 
+
+   Weight: `O(R + log R)` where R is the number of polls that `target` has voted on.  Weight is calculated for the maximum number of vote. 
+ 
+### undelegate(class: `u8`)
+- **interface**: `api.tx.convictionVoting.undelegate`
+- **summary**:    Undelegate the voting power of the sending account for a particular class of polls. 
+
+   Tokens may be unlocked following once an amount of time consistent with the lock period  of the conviction with which the delegation was issued. 
+
+   The dispatch origin of this call must be _Signed_ and the signing account must be  currently delegating. 
+
+   - `class`: The class of polls to remove the delegation from. 
+
+   Emits `Undelegated`. 
+
+   Weight: `O(R)` where R is the number of polls the voter delegating to has  voted on. Weight is initially charged as if maximum votes, but is refunded later. 
+ 
+### unlock(class: `u8`, target: `AccountId32`)
+- **interface**: `api.tx.convictionVoting.unlock`
+- **summary**:    Remove the lock caused prior voting/delegating which has expired within a particluar  class. 
+
+   The dispatch origin of this call must be _Signed_. 
+
+   - `class`: The class of polls to unlock. 
+
+  - `target`: The account to remove the lock on.
+
+   Weight: `O(R)` with R number of vote of target. 
+ 
+### vote(poll_index: `Compact<u32>`, vote: `PalletConvictionVotingVoteAccountVote`)
+- **interface**: `api.tx.convictionVoting.vote`
+- **summary**:    Vote in a poll. If `vote.is_aye()`, the vote is to enact the proposal;  otherwise it is a vote to keep the status quo. 
+
+   The dispatch origin of this call must be _Signed_. 
+
+   - `poll_index`: The index of the poll to vote for. 
+
+  - `vote`: The vote configuration.
+
+   Weight: `O(R)` where R is the number of polls the voter has voted on. 
 
 ___
 
@@ -2248,6 +2371,87 @@ ___
 ___
 
 
+## referenda
+ 
+### cancel(index: `u32`)
+- **interface**: `api.tx.referenda.cancel`
+- **summary**:    Cancel an ongoing referendum. 
+
+   - `origin`: must be the `CancelOrigin`. 
+
+  - `index`: The index of the referendum to be cancelled.
+
+   Emits `Cancelled`. 
+ 
+### kill(index: `u32`)
+- **interface**: `api.tx.referenda.kill`
+- **summary**:    Cancel an ongoing referendum and slash the deposits. 
+
+   - `origin`: must be the `KillOrigin`. 
+
+  - `index`: The index of the referendum to be cancelled.
+
+   Emits `Killed` and `DepositSlashed`. 
+ 
+### nudgeReferendum(index: `u32`)
+- **interface**: `api.tx.referenda.nudgeReferendum`
+- **summary**:    Advance a referendum onto its next logical state. Only used internally. 
+
+   - `origin`: must be `Root`. 
+
+  - `index`: the referendum to be advanced.
+ 
+### oneFewerDeciding(track: `u8`)
+- **interface**: `api.tx.referenda.oneFewerDeciding`
+- **summary**:    Advance a track onto its next logical state. Only used internally. 
+
+   - `origin`: must be `Root`. 
+
+  - `track`: the track to be advanced.
+
+   Action item for when there is now one fewer referendum in the deciding phase and the  `DecidingCount` is not yet updated. This means that we should either: 
+
+  - begin deciding another referendum (and leave `DecidingCount` alone); or
+
+  - decrement `DecidingCount`.
+ 
+### placeDecisionDeposit(index: `u32`)
+- **interface**: `api.tx.referenda.placeDecisionDeposit`
+- **summary**:    Post the Decision Deposit for a referendum. 
+
+   - `origin`: must be `Signed` and the account must have funds available for the  referendum's track's Decision Deposit. 
+
+  - `index`: The index of the submitted referendum whose Decision Deposit is yet to be posted. 
+
+   Emits `DecisionDepositPlaced`. 
+ 
+### refundDecisionDeposit(index: `u32`)
+- **interface**: `api.tx.referenda.refundDecisionDeposit`
+- **summary**:    Refund the Decision Deposit for a closed referendum back to the depositor. 
+
+   - `origin`: must be `Signed` or `Root`. 
+
+  - `index`: The index of a closed referendum whose Decision Deposit has not yet been refunded. 
+
+   Emits `DecisionDepositRefunded`. 
+ 
+### submit(proposal_origin: `NodeRuntimeOriginCaller`, proposal_hash: `H256`, enactment_moment: `PalletReferendaAtOrAfter`)
+- **interface**: `api.tx.referenda.submit`
+- **summary**:    Propose a referendum on a privileged action. 
+
+   - `origin`: must be `Signed` and the account must have `SubmissionDeposit` funds  available. 
+
+  - `proposal_origin`: The origin from which the proposal should be executed.
+
+  - `proposal_hash`: The hash of the proposal preimage.
+
+  - `enactment_moment`: The moment that the proposal should be enacted.
+
+   Emits `Submitted`. 
+
+___
+
+
 ## scheduler
  
 ### cancel(when: `u32`, index: `u32`)
@@ -2548,6 +2752,10 @@ ___
   * A `MinNominatorBond` and `MinValidatorBond` must be set and checked, which determines if this is a person that should be chilled because they have not met the threshold  bond required. 
 
    This can be helpful if bond requirements are updated, and we need to remove old users  who do not satisfy these requirements. 
+ 
+### forceApplyMinCommission(validator_stash: `AccountId32`)
+- **interface**: `api.tx.staking.forceApplyMinCommission`
+- **summary**:    Force a validator to have at least the minimum commission. This will not affect a  validator who already has a commission greater than or equal to the minimum. Any account  can call this. 
  
 ### forceNewEra()
 - **interface**: `api.tx.staking.forceNewEra`
@@ -3194,21 +3402,19 @@ ___
  
 ### clearAttribute(class: `Compact<u32>`, maybe_instance: `Option<u32>`, key: `Bytes`)
 - **interface**: `api.tx.uniques.clearAttribute`
-- **summary**:    Set an attribute for an asset class or instance. 
+- **summary**:    Clear an attribute for an asset class or instance. 
 
    Origin must be either `ForceOrigin` or Signed and the sender should be the Owner of the  asset `class`. 
 
-   If the origin is Signed, then funds of signer are reserved according to the formula:  `MetadataDepositBase + DepositPerByte * (key.len + value.len)` taking into  account any already reserved funds. 
+   Any deposit is freed for the asset class owner. 
 
-   - `class`: The identifier of the asset class whose instance's metadata to set. 
+   - `class`: The identifier of the asset class whose instance's metadata to clear. 
 
-  - `instance`: The identifier of the asset instance whose metadata to set.
+  - `maybe_instance`: The identifier of the asset instance whose metadata to clear.
 
   - `key`: The key of the attribute.
 
-  - `value`: The value to which to set the attribute.
-
-   Emits `AttributeSet`. 
+   Emits `AttributeCleared`. 
 
    Weight: `O(1)` 
  
