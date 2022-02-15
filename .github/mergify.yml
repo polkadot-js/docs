@@ -1,6 +1,7 @@
 queue_rules:
   - name: default
     conditions:
+      - check-success=build
       - label=automerge
       - base=master
       - "#changes-requested-reviews-by=0"
@@ -9,6 +10,7 @@ queue_rules:
 pull_request_rules:
   - name: auto merge
     conditions:
+      - check-success=build
       - label=automerge
       - base=master
       - "#changes-requested-reviews-by=0"
