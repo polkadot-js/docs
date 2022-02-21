@@ -492,7 +492,7 @@ ___
 
    Only exists when [`Snapshot`] is present. 
  
-### minimumUntrustedScore(): `Option<[u128;3]>`
+### minimumUntrustedScore(): `Option<SpNposElectionsElectionScore>`
 - **interface**: `api.query.electionProviderMultiPhase.minimumUntrustedScore`
 - **summary**:    The minimum score that each 'untrusted' solution must attain in order to be considered  feasible. 
 
@@ -510,7 +510,7 @@ ___
 
    This is merely incremented once per every time that an upstream `elect` is called. 
  
-### signedSubmissionIndices(): `BTreeMap<[u128;3], u32>`
+### signedSubmissionIndices(): `BTreeMap<SpNposElectionsElectionScore, u32>`
 - **interface**: `api.query.electionProviderMultiPhase.signedSubmissionIndices`
 - **summary**:    A sorted, bounded set of `(score, index)`, where each `index` points to a value in  `SignedSubmissions`. 
 

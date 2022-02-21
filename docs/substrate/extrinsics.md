@@ -1463,7 +1463,7 @@ ___
 
    The solution is not checked for any feasibility and is assumed to be trustworthy, as any  feasibility check itself can in principle cause the election process to fail (due to  memory/weight constrains). 
  
-### setMinimumUntrustedScore(maybe_next_score: `Option<[u128;3]>`)
+### setMinimumUntrustedScore(maybe_next_score: `Option<SpNposElectionsElectionScore>`)
 - **interface**: `api.tx.electionProviderMultiPhase.setMinimumUntrustedScore`
 - **summary**:    Set a new value for `MinimumUntrustedScore`. 
 

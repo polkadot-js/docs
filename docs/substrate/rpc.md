@@ -481,10 +481,10 @@ ___
 
 ## grandpa
  
-### proveFinality(begin: `BlockHash`, end: `BlockHash`, authoritiesSetId?: `u64`): `Option<EncodedFinalityProofs>`
+### proveFinality(blockNumber: `BlockNumber`): `Option<EncodedFinalityProofs>`
 - **interface**: `api.rpc.grandpa.proveFinality`
 - **jsonrpc**: `grandpa_proveFinality`
-- **summary**: Prove finality for the range (begin; end] hash.
+- **summary**: Prove finality for the given block number, returning the Justification for the last block in the set.
  
 ### roundState(): `ReportedRoundStates`
 - **interface**: `api.rpc.grandpa.roundState`

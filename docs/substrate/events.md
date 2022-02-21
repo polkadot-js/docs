@@ -279,6 +279,10 @@ ___
 - **interface**: `api.events.contracts.CodeStored.is`
 - **summary**:    Code with the specified hash has been stored. 
  
+### ContractCodeUpdated(`AccountId32`, `H256`, `H256`)
+- **interface**: `api.events.contracts.ContractCodeUpdated.is`
+- **summary**:    A contract's code was updated. 
+ 
 ### ContractEmitted(`AccountId32`, `Bytes`)
 - **interface**: `api.events.contracts.ContractEmitted.is`
 - **summary**:    A custom event emitted by the contract. 
