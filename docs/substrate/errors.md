@@ -1697,8 +1697,8 @@ ___
 - **interface**: `api.errors.uniques.Unapproved.is`
 - **summary**:    No approval exists that would allow the transfer. 
  
-### Unknown
-- **interface**: `api.errors.uniques.Unknown.is`
+### UnknownClass
+- **interface**: `api.errors.uniques.UnknownClass.is`
 - **summary**:    The given asset ID is unknown. 
  
 ### WrongDelegate
