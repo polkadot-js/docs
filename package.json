@@ -1,6 +1,6 @@
 {
   "name": "polkadot-js",
-  "version": "0.0.142",
+  "version": "0.0.143",
   "private": true,
   "scripts": {
     "docusaurus": "docusaurus",
