@@ -56,6 +56,8 @@ The following sections contain the module constants, also known as parameter typ
 
 - **[staking](#staking)**
 
+- **[stateTrieMigration](#statetriemigration)**
+
 - **[system](#system)**
 
 - **[timestamp](#timestamp)**
@@ -742,11 +744,19 @@ ___
 - **interface**: `api.consts.staking.bondingDuration`
 - **summary**:    Number of eras that staked funds must remain bonded for. 
  
+### maxNominations: `u32`
+- **interface**: `api.consts.staking.maxNominations`
+- **summary**:    Maximum number of nominations per nominator. 
+ 
 ### maxNominatorRewardedPerValidator: `u32`
 - **interface**: `api.consts.staking.maxNominatorRewardedPerValidator`
 - **summary**:    The maximum number of nominators rewarded for each validator. 
 
    For each validator only the `$MaxNominatorRewardedPerValidator` biggest stakers can  claim their reward. This used to limit the i/o cost for the nominator payout. 
+ 
+### maxUnlockingChunks: `u32`
+- **interface**: `api.consts.staking.maxUnlockingChunks`
+- **summary**:    The maximum number of `unlocking` chunks a [`StakingLedger`] can have. Effectively  determines how many unique eras a staker may be unbonding in. 
  
 ### sessionsPerEra: `u32`
 - **interface**: `api.consts.staking.sessionsPerEra`
@@ -757,6 +767,15 @@ ___
 - **summary**:    Number of eras that slashes are deferred by, after computation. 
 
    This should be less than the bonding duration. Set to 0 if slashes  should be applied immediately, without opportunity for intervention. 
+
+___
+
+
+## stateTrieMigration
+ 
+### signedMigrationMaxLimits: `PalletStateTrieMigrationMigrationLimits`
+- **interface**: `api.consts.stateTrieMigration.signedMigrationMaxLimits`
+- **summary**:    The maximum limits that the signed migration could use. 
 
 ___
 

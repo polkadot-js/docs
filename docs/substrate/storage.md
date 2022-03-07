@@ -70,6 +70,8 @@ The following sections contain Storage methods are part of the default Substrate
 
 - **[staking](#staking)**
 
+- **[stateTrieMigration](#statetriemigration)**
+
 - **[substrate](#substrate)**
 
 - **[sudo](#sudo)**
@@ -93,6 +95,8 @@ The following sections contain Storage methods are part of the default Substrate
 - **[uniques](#uniques)**
 
 - **[vesting](#vesting)**
+
+- **[whitelist](#whitelist)**
 
 
 ___
@@ -1188,6 +1192,23 @@ ___
 ___
 
 
+## stateTrieMigration
+ 
+### autoLimits(): `Option<PalletStateTrieMigrationMigrationLimits>`
+- **interface**: `api.query.stateTrieMigration.autoLimits`
+- **summary**:    The limits that are imposed on automatic migrations. 
+
+   If set to None, then no automatic migration happens. 
+ 
+### migrationProcess(): `PalletStateTrieMigrationMigrationTask`
+- **interface**: `api.query.stateTrieMigration.migrationProcess`
+- **summary**:    Migration progress. 
+
+   This stores the snapshot of the last migrated keys. It can be set into motion and move  forward by any of the means provided by this pallet. 
+
+___
+
+
 ## substrate
 
 _These are well-known keys that are always available to the runtime implementation of any Substrate-based network._
@@ -1479,3 +1500,11 @@ ___
 ### vesting(`AccountId32`): `Option<Vec<PalletVestingVestingInfo>>`
 - **interface**: `api.query.vesting.vesting`
 - **summary**:    Information regarding the vesting of a given account. 
+
+___
+
+
+## whitelist
+ 
+### whitelistedCall(`H256`): `Option<Null>`
+- **interface**: `api.query.whitelist.whitelistedCall`

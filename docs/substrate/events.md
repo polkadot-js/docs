@@ -60,6 +60,8 @@ Events are emitted for certain operations on the runtime. The following sections
 
 - **[staking](#staking)**
 
+- **[stateTrieMigration](#statetriemigration)**
+
 - **[sudo](#sudo)**
 
 - **[system](#system)**
@@ -79,6 +81,8 @@ Events are emitted for certain operations on the runtime. The following sections
 - **[utility](#utility)**
 
 - **[vesting](#vesting)**
+
+- **[whitelist](#whitelist)**
 
 
 ___
@@ -941,6 +945,27 @@ ___
 ___
 
 
+## stateTrieMigration
+ 
+### AutoMigrationFinished()
+- **interface**: `api.events.stateTrieMigration.AutoMigrationFinished.is`
+- **summary**:    The auto migration task finished. 
+ 
+### Halted()
+- **interface**: `api.events.stateTrieMigration.Halted.is`
+- **summary**:    Migration got halted. 
+ 
+### Migrated(`u32`, `u32`, `PalletStateTrieMigrationMigrationCompute`)
+- **interface**: `api.events.stateTrieMigration.Migrated.is`
+- **summary**:    Given number of `(top, child)` keys were migrated respectively, with the given  `compute`. 
+ 
+### Slashed(`AccountId32`, `u128`)
+- **interface**: `api.events.stateTrieMigration.Slashed.is`
+- **summary**:    Some account got slashed by the given amount. 
+
+___
+
+
 ## sudo
  
 ### KeyChanged(`Option<AccountId32>`)
@@ -1247,3 +1272,17 @@ ___
 ### VestingUpdated(`AccountId32`, `u128`)
 - **interface**: `api.events.vesting.VestingUpdated.is`
 - **summary**:    The amount vested has been updated. This could indicate a change in funds available.  The balance given is the amount which is left unvested (and thus locked). 
+
+___
+
+
+## whitelist
+ 
+### CallWhitelisted(`H256`)
+- **interface**: `api.events.whitelist.CallWhitelisted.is`
+ 
+### WhitelistedCallDispatched(`H256`, `Result<FrameSupportWeightsPostDispatchInfo, SpRuntimeDispatchErrorWithPostInfo>`)
+- **interface**: `api.events.whitelist.WhitelistedCallDispatched.is`
+ 
+### WhitelistedCallRemoved(`H256`)
+- **interface**: `api.events.whitelist.WhitelistedCallRemoved.is`

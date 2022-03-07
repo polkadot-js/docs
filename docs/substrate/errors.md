@@ -62,6 +62,8 @@ This page lists the errors that can be encountered in the different modules.
 
 - **[staking](#staking)**
 
+- **[stateTrieMigration](#statetriemigration)**
+
 - **[sudo](#sudo)**
 
 - **[system](#system)**
@@ -81,6 +83,8 @@ This page lists the errors that can be encountered in the different modules.
 - **[utility](#utility)**
 
 - **[vesting](#vesting)**
+
+- **[whitelist](#whitelist)**
 
 
 ___
@@ -1466,6 +1470,27 @@ ___
 ___
 
 
+## stateTrieMigration
+ 
+### BadWitness
+- **interface**: `api.errors.stateTrieMigration.BadWitness.is`
+- **summary**:    bad witness data provided. 
+ 
+### MaxSignedLimits
+- **interface**: `api.errors.stateTrieMigration.MaxSignedLimits.is`
+- **summary**:    max signed limits not respected. 
+ 
+### NotEnoughFunds
+- **interface**: `api.errors.stateTrieMigration.NotEnoughFunds.is`
+- **summary**:    submitter does not have enough funds. 
+ 
+### SizeUpperBoundExceeded
+- **interface**: `api.errors.stateTrieMigration.SizeUpperBoundExceeded.is`
+- **summary**:    upper bound of size is exceeded, 
+
+___
+
+
 ## sudo
  
 ### RequireSudo
@@ -1742,3 +1767,28 @@ ___
 ### ScheduleIndexOutOfBounds
 - **interface**: `api.errors.vesting.ScheduleIndexOutOfBounds.is`
 - **summary**:    An index was out of bounds of the vesting schedules. 
+
+___
+
+
+## whitelist
+ 
+### CallAlreadyWhitelisted
+- **interface**: `api.errors.whitelist.CallAlreadyWhitelisted.is`
+- **summary**:    The call was already whitelisted; No-Op. 
+ 
+### CallIsNotWhitelisted
+- **interface**: `api.errors.whitelist.CallIsNotWhitelisted.is`
+- **summary**:    The call was not whitelisted. 
+ 
+### InvalidCallWeightWitness
+- **interface**: `api.errors.whitelist.InvalidCallWeightWitness.is`
+- **summary**:    The weight of the decoded call was higher than the witness. 
+ 
+### UnavailablePreImage
+- **interface**: `api.errors.whitelist.UnavailablePreImage.is`
+- **summary**:    The preimage of the call hash could not be loaded. 
+ 
+### UndecodableCall
+- **interface**: `api.errors.whitelist.UndecodableCall.is`
+- **summary**:    The call could not be decoded. 

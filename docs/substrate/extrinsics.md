@@ -62,6 +62,8 @@ The following sections contain Extrinsics methods are part of the default Substr
 
 - **[staking](#staking)**
 
+- **[stateTrieMigration](#statetriemigration)**
+
 - **[sudo](#sudo)**
 
 - **[system](#system)**
@@ -83,6 +85,8 @@ The following sections contain Extrinsics methods are part of the default Substr
 - **[utility](#utility)**
 
 - **[vesting](#vesting)**
+
+- **[whitelist](#whitelist)**
 
 
 ___
@@ -1471,7 +1475,7 @@ ___
 
    This check can be turned off by setting the value to `None`. 
  
-### submit(raw_solution: `PalletElectionProviderMultiPhaseRawSolution`, num_signed_submissions: `u32`)
+### submit(raw_solution: `PalletElectionProviderMultiPhaseRawSolution`)
 - **interface**: `api.tx.electionProviderMultiPhase.submit`
 - **summary**:    Submit a solution for the signed phase. 
 
@@ -1480,8 +1484,6 @@ ___
    The solution is potentially queued, based on the claimed score and processed at the end  of the signed phase. 
 
    A deposit is reserved and recorded for the solution. Based on the outcome, the solution  might be rewarded, slashed, or get all or a part of the deposit back. 
-
-    
  
 ### submitUnsigned(raw_solution: `PalletElectionProviderMultiPhaseRawSolution`, witness: `PalletElectionProviderMultiPhaseSolutionOrSnapshotSize`)
 - **interface**: `api.tx.electionProviderMultiPhase.submitUnsigned`
@@ -2907,7 +2909,7 @@ ___
 
     
  
-### setStakingConfigs(min_nominator_bond: `u128`, min_validator_bond: `u128`, max_nominator_count: `Option<u32>`, max_validator_count: `Option<u32>`, chill_threshold: `Option<Percent>`, min_commission: `Perbill`)
+### setStakingConfigs(min_nominator_bond: `PalletStakingPalletConfigOpU128`, min_validator_bond: `PalletStakingPalletConfigOpU128`, max_nominator_count: `PalletStakingPalletConfigOpU32`, max_validator_count: `PalletStakingPalletConfigOpU32`, chill_threshold: `PalletStakingPalletConfigOpPercent`, min_commission: `PalletStakingPalletConfigOpPerbill`)
 - **interface**: `api.tx.staking.setStakingConfigs`
 - **summary**:    Update the various staking configurations . 
 
@@ -2943,7 +2945,7 @@ ___
 
    Once the unlock period is done, you can call `withdraw_unbonded` to actually move  the funds out of management ready for transfer. 
 
-   No more than a limited number of unlocking chunks (see `MAX_UNLOCKING_CHUNKS`)  can co-exists at the same time. In that case, [`Call::withdraw_unbonded`] need  to be called first to remove some of the chunks (if possible). 
+   No more than a limited number of unlocking chunks (see `MaxUnlockingChunks`)  can co-exists at the same time. In that case, [`Call::withdraw_unbonded`] need  to be called first to remove some of the chunks (if possible). 
 
    If a user encounters the `InsufficientBond` error when calling this extrinsic,  they should call `chill` first in order to free up their bonded funds. 
 
@@ -2972,6 +2974,45 @@ ___
    See also [`Call::unbond`]. 
 
     
+
+___
+
+
+## stateTrieMigration
+ 
+### continueMigrate(limits: `PalletStateTrieMigrationMigrationLimits`, real_size_upper: `u32`, witness_task: `PalletStateTrieMigrationMigrationTask`)
+- **interface**: `api.tx.stateTrieMigration.continueMigrate`
+- **summary**:    Continue the migration for the given `limits`. 
+
+   The dispatch origin of this call can be any signed account. 
+
+   This transaction has NO MONETARY INCENTIVES. calling it will not reward anyone. Albeit,  Upon successful execution, the transaction fee is returned. 
+
+   The (potentially over-estimated) of the byte length of all the data read must be  provided for up-front fee-payment and weighing. In essence, the caller is guaranteeing  that executing the current `MigrationTask` with the given `limits` will not exceed  `real_size_upper` bytes of read data. 
+
+   The `witness_task` is merely a helper to prevent the caller from being slashed or  generally trigger a migration that they do not intend. This parameter is just a message  from caller, saying that they believed `witness_task` was the last state of the  migration, and they only wish for their transaction to do anything, if this assumption  holds. In case `witness_task` does not match, the transaction fails. 
+
+   Based on the documentation of [`MigrationTask::migrate_until_exhaustion`], the  recommended way of doing this is to pass a `limit` that only bounds `count`, as the  `size` limit can always be overwritten. 
+ 
+### controlAutoMigration(maybe_config: `Option<PalletStateTrieMigrationMigrationLimits>`)
+- **interface**: `api.tx.stateTrieMigration.controlAutoMigration`
+- **summary**:    Control the automatic migration. 
+
+   The dispatch origin of this call must be [`Config::ControlOrigin`]. 
+ 
+### migrateCustomChild(root: `Bytes`, child_keys: `Vec<Bytes>`, total_size: `u32`)
+- **interface**: `api.tx.stateTrieMigration.migrateCustomChild`
+- **summary**:    Migrate the list of child keys by iterating each of them one by one. 
+
+   All of the given child keys must be present under one `child_root`. 
+
+   This does not affect the global migration process tracker ([`MigrationProcess`]), and  should only be used in case any keys are leftover due to a bug. 
+ 
+### migrateCustomTop(keys: `Vec<Bytes>`, witness_size: `u32`)
+- **interface**: `api.tx.stateTrieMigration.migrateCustomTop`
+- **summary**:    Migrate the list of top keys by iterating each of them one by one. 
+
+   This does not affect the global migration process tracker ([`MigrationProcess`]), and  should only be used in case any keys are leftover due to a bug. 
 
 ___
 
@@ -3859,3 +3900,20 @@ ___
    NOTE: This will unlock all schedules through the current block. 
 
     
+
+___
+
+
+## whitelist
+ 
+### dispatchWhitelistedCall(call_hash: `H256`, call_weight_witness: `u64`)
+- **interface**: `api.tx.whitelist.dispatchWhitelistedCall`
+ 
+### dispatchWhitelistedCallWithPreimage(call: `Call`)
+- **interface**: `api.tx.whitelist.dispatchWhitelistedCallWithPreimage`
+ 
+### removeWhitelistedCall(call_hash: `H256`)
+- **interface**: `api.tx.whitelist.removeWhitelistedCall`
+ 
+### whitelistCall(call_hash: `H256`)
+- **interface**: `api.tx.whitelist.whitelistCall`
