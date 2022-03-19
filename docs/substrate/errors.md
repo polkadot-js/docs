@@ -213,7 +213,7 @@ ___
  
 ### NotHeavier
 - **interface**: `api.errors.bagsList.NotHeavier.is`
-- **summary**:    An Id does not have a greater vote weight than another Id. 
+- **summary**:    An Id does not have a greater score than another Id. 
  
 ### NotInSameBag
 - **interface**: `api.errors.bagsList.NotInSameBag.is`
@@ -1211,8 +1211,8 @@ ___
 - **interface**: `api.errors.referenda.Full.is`
 - **summary**:    There are already a full complement of referendums in progress for this track. 
  
-### HaveDeposit
-- **interface**: `api.errors.referenda.HaveDeposit.is`
+### HasDeposit
+- **interface**: `api.errors.referenda.HasDeposit.is`
 - **summary**:    Referendum's decision deposit is already paid. 
  
 ### NoDeposit
@@ -1717,6 +1717,10 @@ ___
 ### NoPermission
 - **interface**: `api.errors.uniques.NoPermission.is`
 - **summary**:    The signing account has no permission to do the operation. 
+ 
+### Unaccepted
+- **interface**: `api.errors.uniques.Unaccepted.is`
+- **summary**:    The named owner has not signed ownership of the class is acceptable. 
  
 ### Unapproved
 - **interface**: `api.errors.uniques.Unapproved.is`

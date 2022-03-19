@@ -1223,6 +1223,10 @@ ___
 - **interface**: `api.events.uniques.OwnerChanged.is`
 - **summary**:    The owner changed. 
  
+### OwnershipAcceptanceChanged(`AccountId32`, `Option<u32>`)
+- **interface**: `api.events.uniques.OwnershipAcceptanceChanged.is`
+- **summary**:    Ownership acceptance has changed for an account. 
+ 
 ### Redeposited(`u32`, `Vec<u32>`)
 - **interface**: `api.events.uniques.Redeposited.is`
 - **summary**:    Metadata has been cleared for an asset instance. 

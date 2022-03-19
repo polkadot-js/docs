@@ -555,11 +555,11 @@ ___
 
   - both nodes are within the same bag,
 
-  - and `origin` has a greater `VoteWeight` than `lighter`.
+  - and `origin` has a greater `Score` than `lighter`.
  
 ### rebag(dislocated: `AccountId32`)
 - **interface**: `api.tx.bagsList.rebag`
-- **summary**:    Declare that some `dislocated` account has, through rewards or penalties, sufficiently  changed its weight that it should properly fall into a different bag than its current  one. 
+- **summary**:    Declare that some `dislocated` account has, through rewards or penalties, sufficiently  changed its score that it should properly fall into a different bag than its current  one. 
 
    Anyone can call this function about any potentially dislocated account. 
 
@@ -2437,7 +2437,7 @@ ___
 
    Emits `DecisionDepositRefunded`. 
  
-### submit(proposal_origin: `NodeRuntimeOriginCaller`, proposal_hash: `H256`, enactment_moment: `PalletReferendaAtOrAfter`)
+### submit(proposal_origin: `NodeRuntimeOriginCaller`, proposal_hash: `H256`, enactment_moment: `FrameSupportScheduleDispatchTime`)
 - **interface**: `api.tx.referenda.submit`
 - **summary**:    Propose a referendum on a privileged action. 
 
@@ -3385,7 +3385,7 @@ ___
 
 ## uniques
  
-### approveTransfer(class: `Compact<u32>`, instance: `Compact<u32>`, delegate: `MultiAddress`)
+### approveTransfer(class: `u32`, instance: `u32`, delegate: `MultiAddress`)
 - **interface**: `api.tx.uniques.approveTransfer`
 - **summary**:    Approve an instance to be transferred by a delegated third-party account. 
 
@@ -3401,7 +3401,7 @@ ___
 
    Weight: `O(1)` 
  
-### burn(class: `Compact<u32>`, instance: `Compact<u32>`, check_owner: `Option<MultiAddress>`)
+### burn(class: `u32`, instance: `u32`, check_owner: `Option<MultiAddress>`)
 - **interface**: `api.tx.uniques.burn`
 - **summary**:    Destroy a single asset instance. 
 
@@ -3417,7 +3417,7 @@ ___
 
    Weight: `O(1)`  Modes: `check_owner.is_some()`. 
  
-### cancelApproval(class: `Compact<u32>`, instance: `Compact<u32>`, maybe_check_delegate: `Option<MultiAddress>`)
+### cancelApproval(class: `u32`, instance: `u32`, maybe_check_delegate: `Option<MultiAddress>`)
 - **interface**: `api.tx.uniques.cancelApproval`
 - **summary**:    Cancel the prior approval for the transfer of an asset by a delegate. 
 
@@ -3441,7 +3441,7 @@ ___
 
    Weight: `O(1)` 
  
-### clearAttribute(class: `Compact<u32>`, maybe_instance: `Option<u32>`, key: `Bytes`)
+### clearAttribute(class: `u32`, maybe_instance: `Option<u32>`, key: `Bytes`)
 - **interface**: `api.tx.uniques.clearAttribute`
 - **summary**:    Clear an attribute for an asset class or instance. 
 
@@ -3459,7 +3459,7 @@ ___
 
    Weight: `O(1)` 
  
-### clearClassMetadata(class: `Compact<u32>`)
+### clearClassMetadata(class: `u32`)
 - **interface**: `api.tx.uniques.clearClassMetadata`
 - **summary**:    Clear the metadata for an asset class. 
 
@@ -3473,7 +3473,7 @@ ___
 
    Weight: `O(1)` 
  
-### clearMetadata(class: `Compact<u32>`, instance: `Compact<u32>`)
+### clearMetadata(class: `u32`, instance: `u32`)
 - **interface**: `api.tx.uniques.clearMetadata`
 - **summary**:    Clear the metadata for an asset instance. 
 
@@ -3489,7 +3489,7 @@ ___
 
    Weight: `O(1)` 
  
-### create(class: `Compact<u32>`, admin: `MultiAddress`)
+### create(class: `u32`, admin: `MultiAddress`)
 - **interface**: `api.tx.uniques.create`
 - **summary**:    Issue a new class of non-fungible assets from a public origin. 
 
@@ -3509,7 +3509,7 @@ ___
 
    Weight: `O(1)` 
  
-### destroy(class: `Compact<u32>`, witness: `PalletUniquesDestroyWitness`)
+### destroy(class: `u32`, witness: `PalletUniquesDestroyWitness`)
 - **interface**: `api.tx.uniques.destroy`
 - **summary**:    Destroy a class of fungible assets. 
 
@@ -3529,7 +3529,7 @@ ___
 
   - `a = witness.attributes`
  
-### forceAssetStatus(class: `Compact<u32>`, owner: `MultiAddress`, issuer: `MultiAddress`, admin: `MultiAddress`, freezer: `MultiAddress`, free_holding: `bool`, is_frozen: `bool`)
+### forceAssetStatus(class: `u32`, owner: `MultiAddress`, issuer: `MultiAddress`, admin: `MultiAddress`, freezer: `MultiAddress`, free_holding: `bool`, is_frozen: `bool`)
 - **interface**: `api.tx.uniques.forceAssetStatus`
 - **summary**:    Alter the attributes of a given asset. 
 
@@ -3553,7 +3553,7 @@ ___
 
    Weight: `O(1)` 
  
-### forceCreate(class: `Compact<u32>`, owner: `MultiAddress`, free_holding: `bool`)
+### forceCreate(class: `u32`, owner: `MultiAddress`, free_holding: `bool`)
 - **interface**: `api.tx.uniques.forceCreate`
 - **summary**:    Issue a new class of non-fungible assets from a privileged origin. 
 
@@ -3571,7 +3571,7 @@ ___
 
    Weight: `O(1)` 
  
-### freeze(class: `Compact<u32>`, instance: `Compact<u32>`)
+### freeze(class: `u32`, instance: `u32`)
 - **interface**: `api.tx.uniques.freeze`
 - **summary**:    Disallow further unprivileged transfer of an asset instance. 
 
@@ -3585,7 +3585,7 @@ ___
 
    Weight: `O(1)` 
  
-### freezeClass(class: `Compact<u32>`)
+### freezeClass(class: `u32`)
 - **interface**: `api.tx.uniques.freezeClass`
 - **summary**:    Disallow further unprivileged transfers for a whole asset class. 
 
@@ -3597,7 +3597,7 @@ ___
 
    Weight: `O(1)` 
  
-### mint(class: `Compact<u32>`, instance: `Compact<u32>`, owner: `MultiAddress`)
+### mint(class: `u32`, instance: `u32`, owner: `MultiAddress`)
 - **interface**: `api.tx.uniques.mint`
 - **summary**:    Mint an asset instance of a particular class. 
 
@@ -3613,7 +3613,7 @@ ___
 
    Weight: `O(1)` 
  
-### redeposit(class: `Compact<u32>`, instances: `Vec<u32>`)
+### redeposit(class: `u32`, instances: `Vec<u32>`)
 - **interface**: `api.tx.uniques.redeposit`
 - **summary**:    Reevaluate the deposits on some assets. 
 
@@ -3629,7 +3629,17 @@ ___
 
    Weight: `O(instances.len())` 
  
-### setAttribute(class: `Compact<u32>`, maybe_instance: `Option<u32>`, key: `Bytes`, value: `Bytes`)
+### setAcceptOwnership(maybe_class: `Option<u32>`)
+- **interface**: `api.tx.uniques.setAcceptOwnership`
+- **summary**:    Set (or reset) the acceptance of ownership for a particular account. 
+
+   Origin must be `Signed` and if `maybe_class` is `Some`, then the signer must have a  provider reference. 
+
+   - `maybe_class`: The identifier of the asset class whose ownership the signer is willing  to accept, or if `None`, an indication that the signer is willing to accept no  ownership transferal. 
+
+   Emits `OwnershipAcceptanceChanged`. 
+ 
+### setAttribute(class: `u32`, maybe_instance: `Option<u32>`, key: `Bytes`, value: `Bytes`)
 - **interface**: `api.tx.uniques.setAttribute`
 - **summary**:    Set an attribute for an asset class or instance. 
 
@@ -3649,7 +3659,7 @@ ___
 
    Weight: `O(1)` 
  
-### setClassMetadata(class: `Compact<u32>`, data: `Bytes`, is_frozen: `bool`)
+### setClassMetadata(class: `u32`, data: `Bytes`, is_frozen: `bool`)
 - **interface**: `api.tx.uniques.setClassMetadata`
 - **summary**:    Set the metadata for an asset class. 
 
@@ -3667,7 +3677,7 @@ ___
 
    Weight: `O(1)` 
  
-### setMetadata(class: `Compact<u32>`, instance: `Compact<u32>`, data: `Bytes`, is_frozen: `bool`)
+### setMetadata(class: `u32`, instance: `u32`, data: `Bytes`, is_frozen: `bool`)
 - **interface**: `api.tx.uniques.setMetadata`
 - **summary**:    Set the metadata for an asset instance. 
 
@@ -3687,7 +3697,7 @@ ___
 
    Weight: `O(1)` 
  
-### setTeam(class: `Compact<u32>`, issuer: `MultiAddress`, admin: `MultiAddress`, freezer: `MultiAddress`)
+### setTeam(class: `u32`, issuer: `MultiAddress`, admin: `MultiAddress`, freezer: `MultiAddress`)
 - **interface**: `api.tx.uniques.setTeam`
 - **summary**:    Change the Issuer, Admin and Freezer of an asset class. 
 
@@ -3705,7 +3715,7 @@ ___
 
    Weight: `O(1)` 
  
-### thaw(class: `Compact<u32>`, instance: `Compact<u32>`)
+### thaw(class: `u32`, instance: `u32`)
 - **interface**: `api.tx.uniques.thaw`
 - **summary**:    Re-allow unprivileged transfer of an asset instance. 
 
@@ -3719,7 +3729,7 @@ ___
 
    Weight: `O(1)` 
  
-### thawClass(class: `Compact<u32>`)
+### thawClass(class: `u32`)
 - **interface**: `api.tx.uniques.thawClass`
 - **summary**:    Re-allow unprivileged transfers for a whole asset class. 
 
@@ -3731,7 +3741,7 @@ ___
 
    Weight: `O(1)` 
  
-### transfer(class: `Compact<u32>`, instance: `Compact<u32>`, dest: `MultiAddress`)
+### transfer(class: `u32`, instance: `u32`, dest: `MultiAddress`)
 - **interface**: `api.tx.uniques.transfer`
 - **summary**:    Move an asset from the sender account to another. 
 
@@ -3755,7 +3765,7 @@ ___
 
    Weight: `O(1)` 
  
-### transferOwnership(class: `Compact<u32>`, owner: `MultiAddress`)
+### transferOwnership(class: `u32`, owner: `MultiAddress`)
 - **interface**: `api.tx.uniques.transferOwnership`
 - **summary**:    Change the Owner of an asset class. 
 
@@ -3763,7 +3773,7 @@ ___
 
    - `class`: The asset class whose owner should be changed. 
 
-  - `owner`: The new Owner of this asset class.
+  - `owner`: The new Owner of this asset class. They must have called `set_accept_ownership` with `class` in order for this operation to succeed. 
 
    Emits `OwnerChanged`. 
 

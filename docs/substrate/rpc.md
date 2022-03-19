@@ -650,6 +650,11 @@ ___
 - **interface**: `api.rpc.state.traceBlock`
 - **jsonrpc**: `state_traceBlock`
 - **summary**: Provides a way to trace the re-execution of a single block
+ 
+### trieMigrationStatus(at?: `BlockHash`): `MigrationStatusResult`
+- **interface**: `api.rpc.state.trieMigrationStatus`
+- **jsonrpc**: `state_trieMigrationStatus`
+- **summary**: Check current migration state
 
 ___
 
