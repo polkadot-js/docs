@@ -6,11 +6,13 @@ This example shows how to connect to the api and retrieve the chain information 
 
 ```javascript
 // Import the API
-const { ApiPromise } = require('@polkadot/api');
+import { ApiPromise, WsProvider } from '@polkadot/api';
 
 async function main () {
+  // Create connection to websocket
+  const wsProvider = new WsProvider('wss://rpc.polkadot.io');
   // Create a new instance of the api
-  const api = await ApiPromise.create();
+  const api = await ApiPromise.create({ provider: wsProvider });
   // get the chain information
   const chainInfo = await api.registry.getChainProperties()
 
