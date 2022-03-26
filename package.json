@@ -15,8 +15,8 @@
     "test": "echo \"Skipping test\""
   },
   "devDependencies": {
-    "@docusaurus/core": "2.0.0-beta.17",
-    "@docusaurus/preset-classic": "2.0.0-beta.17",
+    "@docusaurus/core": "2.0.0-beta.18",
+    "@docusaurus/preset-classic": "2.0.0-beta.18",
     "@mdx-js/react": "^1.6.22",
     "@polkadot/dev": "^0.65.100",
     "@polkadot/typegen": "^7.13.1",
