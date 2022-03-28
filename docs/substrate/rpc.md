@@ -16,6 +16,8 @@ The following sections contain RPC methods that are Remote Calls available by de
 
 - **[contracts](#contracts)**
 
+- **[dev](#dev)**
+
 - **[engine](#engine)**
 
 - **[eth](#eth)**
@@ -215,6 +217,16 @@ ___
 - **interface**: `api.rpc.contracts.uploadCode`
 - **jsonrpc**: `contracts_upload_code`
 - **summary**: Upload new code without instantiating a contract from it
+
+___
+
+
+## dev
+ 
+### getBlockStats(at: `Hash`): `Option<BlockStats>`
+- **interface**: `api.rpc.dev.getBlockStats`
+- **jsonrpc**: `dev_getBlockStats`
+- **summary**: Reexecute the specified `block_hash` and gather statistics while doing so
 
 ___
 
