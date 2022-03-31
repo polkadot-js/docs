@@ -4,7 +4,7 @@ title: Installation
 
 Yes, it really is as simple as [installing from npm](https://www.npmjs.com/package/@polkadot/api), so we are not going to waste too much time with the bare basics, just install the API via
 
-`yarn add @polkadot/api`
+`@polkadot/api`
 
 And it will be added and ready for use. The above will always install the latest stable release, which should allow you to connect to test networks and local nodes that are tracking versioned releases for [Polkadot](https://github.com/paritytech/polkadot) and [Substrate](https://github.com/paritytech/substrate).
 
@@ -15,7 +15,7 @@ For users who have a slightly higher appetite for risk, or are using bleeding-ed
 
 To install a beta version, either to test or for support of a feature that is available in Substrate master (and has not yet made it to a stable api release), you can install it via the `@beta` tag, i.e.
 
-`yarn add @polkadot/api@beta`
+`@polkadot/api@beta`
 
 
 ## Other dependencies
