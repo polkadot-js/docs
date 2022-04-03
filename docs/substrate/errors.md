@@ -1484,6 +1484,10 @@ ___
 - **interface**: `api.errors.stateTrieMigration.NotEnoughFunds.is`
 - **summary**:    submitter does not have enough funds. 
  
+### SignedMigrationNotAllowed
+- **interface**: `api.errors.stateTrieMigration.SignedMigrationNotAllowed.is`
+- **summary**:    Signed migration is not allowed because the maximum limit is not set yet. 
+ 
 ### SizeUpperBoundExceeded
 - **interface**: `api.errors.stateTrieMigration.SizeUpperBoundExceeded.is`
 - **summary**:    upper bound of size is exceeded, 

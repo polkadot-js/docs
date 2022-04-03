@@ -1213,6 +1213,12 @@ ___
 - **summary**:    Migration progress. 
 
    This stores the snapshot of the last migrated keys. It can be set into motion and move  forward by any of the means provided by this pallet. 
+ 
+### signedMigrationMaxLimits(): `Option<PalletStateTrieMigrationMigrationLimits>`
+- **interface**: `api.query.stateTrieMigration.signedMigrationMaxLimits`
+- **summary**:    The maximum limits that the signed migration could use. 
+
+   If not set, no signed submission is allowed. 
 
 ___
 

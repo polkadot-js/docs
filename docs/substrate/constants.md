@@ -56,8 +56,6 @@ The following sections contain the module constants, also known as parameter typ
 
 - **[staking](#staking)**
 
-- **[stateTrieMigration](#statetriemigration)**
-
 - **[system](#system)**
 
 - **[timestamp](#timestamp)**
@@ -191,10 +189,6 @@ ___
 
 ## bounties
  
-### bountyCuratorDeposit: `Permill`
-- **interface**: `api.consts.bounties.bountyCuratorDeposit`
-- **summary**:    Percentage of the curator fee that will be reserved upfront as deposit for bounty  curator. 
- 
 ### bountyDepositBase: `u128`
 - **interface**: `api.consts.bounties.bountyDepositBase`
 - **summary**:    The amount held on deposit for placing a bounty proposal. 
@@ -211,6 +205,20 @@ ___
 - **interface**: `api.consts.bounties.bountyValueMinimum`
 - **summary**:    Minimum value for a bounty. 
  
+### curatorDepositMax: `Option<u128>`
+- **interface**: `api.consts.bounties.curatorDepositMax`
+- **summary**:    Maximum amount of funds that should be placed in a deposit for making a proposal. 
+ 
+### curatorDepositMin: `Option<u128>`
+- **interface**: `api.consts.bounties.curatorDepositMin`
+- **summary**:    Minimum amount of funds that should be placed in a deposit for making a proposal. 
+ 
+### curatorDepositMultiplier: `Permill`
+- **interface**: `api.consts.bounties.curatorDepositMultiplier`
+- **summary**:    The curator deposit is calculated as a percentage of the curator fee. 
+
+   This deposit has optional upper and lower bounds with `CuratorDepositMax` and  `CuratorDepositMin`. 
+ 
 ### dataDepositPerByte: `u128`
 - **interface**: `api.consts.bounties.dataDepositPerByte`
 - **summary**:    The amount held on deposit per byte within the tip report reason or bounty description. 
@@ -225,10 +233,6 @@ ___
 
 
 ## childBounties
- 
-### childBountyCuratorDepositBase: `Permill`
-- **interface**: `api.consts.childBounties.childBountyCuratorDepositBase`
-- **summary**:    Percentage of child-bounty value to be reserved as curator deposit  when curator fee is zero. 
  
 ### childBountyValueMinimum: `u128`
 - **interface**: `api.consts.childBounties.childBountyValueMinimum`
@@ -356,6 +360,14 @@ ___
 
 ## electionProviderMultiPhase
  
+### maxElectableTargets: `u16`
+- **interface**: `api.consts.electionProviderMultiPhase.maxElectableTargets`
+- **summary**:    The maximum number of electable targets to put in the snapshot. 
+ 
+### maxElectingVoters: `u32`
+- **interface**: `api.consts.electionProviderMultiPhase.maxElectingVoters`
+- **summary**:    The maximum number of electing voters to put in the snapshot. At the moment, snapshots  are only over a single block, but once multi-block elections are introduced they will  take place over multiple blocks. 
+ 
 ### minerMaxLength: `u32`
 - **interface**: `api.consts.electionProviderMultiPhase.minerMaxLength`
 - **summary**:    Maximum length (bytes) that the mined solution should consume. 
@@ -417,12 +429,6 @@ ___
 ### unsignedPhase: `u32`
 - **interface**: `api.consts.electionProviderMultiPhase.unsignedPhase`
 - **summary**:    Duration of the unsigned phase. 
- 
-### voterSnapshotPerBlock: `u32`
-- **interface**: `api.consts.electionProviderMultiPhase.voterSnapshotPerBlock`
-- **summary**:    The maximum number of voters to put in the snapshot. At the moment, snapshots are only  over a single block, but once multi-block elections are introduced they will take place  over multiple blocks. 
-
-   Also, note the data type: If the voters are represented by a `u32` in `type  CompactSolution`, the same `u32` is used here to ensure bounds are respected. 
 
 ___
 
@@ -767,15 +773,6 @@ ___
 - **summary**:    Number of eras that slashes are deferred by, after computation. 
 
    This should be less than the bonding duration. Set to 0 if slashes  should be applied immediately, without opportunity for intervention. 
-
-___
-
-
-## stateTrieMigration
- 
-### signedMigrationMaxLimits: `PalletStateTrieMigrationMigrationLimits`
-- **interface**: `api.consts.stateTrieMigration.signedMigrationMaxLimits`
-- **summary**:    The maximum limits that the signed migration could use. 
 
 ___
 

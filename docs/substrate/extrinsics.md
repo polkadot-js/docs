@@ -3000,6 +3000,14 @@ ___
 
    The dispatch origin of this call must be [`Config::ControlOrigin`]. 
  
+### forceSetProgress(progress_top: `PalletStateTrieMigrationProgress`, progress_child: `PalletStateTrieMigrationProgress`)
+- **interface**: `api.tx.stateTrieMigration.forceSetProgress`
+- **summary**:    Forcefully set the progress the running migration. 
+
+   This is only useful in one case: the next key to migrate is too big to be migrated with  a signed account, in a parachain context, and we simply want to skip it. A reasonable  example of this would be `:code:`, which is both very expensive to migrate, and commonly  used, so probably it is already migrated. 
+
+   In case you mess things up, you can also, in principle, use this to reset the migration  process. 
+ 
 ### migrateCustomChild(root: `Bytes`, child_keys: `Vec<Bytes>`, total_size: `u32`)
 - **interface**: `api.tx.stateTrieMigration.migrateCustomChild`
 - **summary**:    Migrate the list of child keys by iterating each of them one by one. 
@@ -3013,6 +3021,10 @@ ___
 - **summary**:    Migrate the list of top keys by iterating each of them one by one. 
 
    This does not affect the global migration process tracker ([`MigrationProcess`]), and  should only be used in case any keys are leftover due to a bug. 
+ 
+### setSignedMaxLimits(limits: `PalletStateTrieMigrationMigrationLimits`)
+- **interface**: `api.tx.stateTrieMigration.setSignedMaxLimits`
+- **summary**:    Set the maximum limit of the signed migration. 
 
 ___
 

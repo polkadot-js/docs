@@ -703,6 +703,10 @@ ___
 ### ProxyExecuted(`Result<Null, SpRuntimeDispatchError>`)
 - **interface**: `api.events.proxy.ProxyExecuted.is`
 - **summary**:    A proxy was executed correctly, with the given. 
+ 
+### ProxyRemoved(`AccountId32`, `AccountId32`, `NodeRuntimeProxyType`, `u32`)
+- **interface**: `api.events.proxy.ProxyRemoved.is`
+- **summary**:    A proxy was removed. 
 
 ___
 
