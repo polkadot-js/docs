@@ -263,7 +263,7 @@ ___
  
 ### HasActiveChildBounty
 - **interface**: `api.errors.bounties.HasActiveChildBounty.is`
-- **summary**:    The bounty cannot be closed because it has active child-bounties. 
+- **summary**:    The bounty cannot be closed because it has active child bounties. 
  
 ### InsufficientProposersBalance
 - **interface**: `api.errors.bounties.InsufficientProposersBalance.is`
@@ -320,7 +320,7 @@ ___
  
 ### TooManyChildBounties
 - **interface**: `api.errors.childBounties.TooManyChildBounties.is`
-- **summary**:    Number of child-bounties exceeds limit `MaxActiveChildBountyCount`. 
+- **summary**:    Number of child bounties exceeds limit `MaxActiveChildBountyCount`. 
 
 ___
 

@@ -752,7 +752,7 @@ ___
 
    Child-bounty gets added successfully & fund gets transferred from  parent bounty to child-bounty account, if parent bounty has enough  funds, else the call fails. 
 
-   Upper bound to maximum number of active  child-bounties that can be  added are managed via runtime trait config  [`Config::MaxActiveChildBountyCount`]. 
+   Upper bound to maximum number of active  child bounties that can be  added are managed via runtime trait config  [`Config::MaxActiveChildBountyCount`]. 
 
    If the call is success, the status of child-bounty is updated to  "Added". 
 
@@ -768,7 +768,7 @@ ___
 
    The beneficiary will be able to claim the funds after a delay. 
 
-   The dispatch origin for this call must be the master curator or  curator of this child-bounty. 
+   The dispatch origin for this call must be the parent curator or  curator of this child-bounty. 
 
    Parent bounty must be in active state, for this child-bounty call to  work. 
 
@@ -838,9 +838,9 @@ ___
 
    The dispatch origin for this call can be either `RejectOrigin`, or  the curator of the parent bounty, or any signed origin. 
 
-   For the origin other than T::RejectOrigin and the child-bounty  curator, parent-bounty must be in active state, for this call to  work. We allow child-bounty curator and T::RejectOrigin to execute  this call irrespective of the parent-bounty state. 
+   For the origin other than T::RejectOrigin and the child-bounty  curator, parent bounty must be in active state, for this call to  work. We allow child-bounty curator and T::RejectOrigin to execute  this call irrespective of the parent bounty state. 
 
-   If this function is called by the `RejectOrigin` or the  parent-bounty curator, we assume that the child-bounty curator is  malicious or inactive. As a result, child-bounty curator deposit is  slashed. 
+   If this function is called by the `RejectOrigin` or the  parent bounty curator, we assume that the child-bounty curator is  malicious or inactive. As a result, child-bounty curator deposit is  slashed. 
 
    If the origin is the child-bounty curator, we take this as a sign  that they are unable to do their job, and are willingly giving up.  We could slash the deposit, but for now we allow them to unreserve  their deposit and exit without issue. (We may want to change this if  it is abused.) 
 
@@ -2873,7 +2873,7 @@ ___
 - **interface**: `api.tx.staking.setController`
 - **summary**:    (Re-)set the controller of a stash. 
 
-   Effects will be felt at the beginning of the next era. 
+   Effects will be felt instantly (as soon as this function is completed successfully). 
 
    The dispatch origin for this call must be _Signed_ by the stash, not the controller. 
 
@@ -2903,7 +2903,7 @@ ___
 - **interface**: `api.tx.staking.setPayee`
 - **summary**:    (Re-)set the payment target for a controller. 
 
-   Effects will be felt at the beginning of the next era. 
+   Effects will be felt instantly (as soon as this function is completed successfully). 
 
    The dispatch origin for this call must be _Signed_ by the controller, not the stash. 
 

@@ -240,7 +240,7 @@ ___
  
 ### maxActiveChildBountyCount: `u32`
 - **interface**: `api.consts.childBounties.maxActiveChildBountyCount`
-- **summary**:    Maximum number of child-bounties that can be added to a parent bounty. 
+- **summary**:    Maximum number of child bounties that can be added to a parent bounty. 
 
 ___
 

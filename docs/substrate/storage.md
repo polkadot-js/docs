@@ -319,7 +319,7 @@ ___
  
 ### childBounties(`u32, u32`): `Option<PalletChildBountiesChildBounty>`
 - **interface**: `api.query.childBounties.childBounties`
-- **summary**:    Child-bounties that have been added. 
+- **summary**:    Child bounties that have been added. 
  
 ### childBountyCount(): `u32`
 - **interface**: `api.query.childBounties.childBountyCount`
@@ -335,7 +335,7 @@ ___
  
 ### parentChildBounties(`u32`): `u32`
 - **interface**: `api.query.childBounties.parentChildBounties`
-- **summary**:    Number of child-bounties per parent bounty.  Map of parent bounty index to number of child bounties. 
+- **summary**:    Number of child bounties per parent bounty.  Map of parent bounty index to number of child bounties. 
 
 ___
 
@@ -1289,7 +1289,9 @@ ___
 - **interface**: `api.query.system.events`
 - **summary**:    Events deposited for the current block. 
 
-   NOTE: This storage item is explicitly unbounded since it is never intended to be read  from within the runtime. 
+   NOTE: The item is unbound and should therefore never be read on chain.  It could otherwise inflate the PoV size of a block. 
+
+   Events have a large in-memory size. Box the events to not go out-of-memory  just in case someone still reads them from within the runtime. 
  
 ### eventTopics(`H256`): `Vec<(u32,u32)>`
 - **interface**: `api.query.system.eventTopics`

@@ -942,6 +942,10 @@ ___
 - **interface**: `api.events.staking.Unbonded.is`
 - **summary**:    An account has unbonded this amount. \[stash, amount\] 
  
+### ValidatorPrefsSet(`AccountId32`, `PalletStakingValidatorPrefs`)
+- **interface**: `api.events.staking.ValidatorPrefsSet.is`
+- **summary**:    A validator has set their preferences. 
+ 
 ### Withdrawn(`AccountId32`, `u128`)
 - **interface**: `api.events.staking.Withdrawn.is`
 - **summary**:    An account has called `withdraw_unbonded` and removed unbonding chunks worth `Balance`  from the unlocking queue. \[stash, amount\] 
