@@ -54,6 +54,8 @@ This page lists the errors that can be encountered in the different modules.
 
 - **[referenda](#referenda)**
 
+- **[remark](#remark)**
+
 - **[scheduler](#scheduler)**
 
 - **[session](#session)**
@@ -1242,6 +1244,19 @@ ___
 ### Unfinished
 - **interface**: `api.errors.referenda.Unfinished.is`
 - **summary**:    Any deposit cannot be refunded until after the decision is over. 
+
+___
+
+
+## remark
+ 
+### BadContext
+- **interface**: `api.errors.remark.BadContext.is`
+- **summary**:    Attempted to call `store` outside of block execution. 
+ 
+### Empty
+- **interface**: `api.errors.remark.Empty.is`
+- **summary**:    Attempting to store empty data. 
 
 ___
 

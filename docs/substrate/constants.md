@@ -360,6 +360,14 @@ ___
 
 ## electionProviderMultiPhase
  
+### betterSignedThreshold: `Perbill`
+- **interface**: `api.consts.electionProviderMultiPhase.betterSignedThreshold`
+- **summary**:    The minimum amount of improvement to the solution score that defines a solution as  "better" in the Signed phase. 
+ 
+### betterUnsignedThreshold: `Perbill`
+- **interface**: `api.consts.electionProviderMultiPhase.betterUnsignedThreshold`
+- **summary**:    The minimum amount of improvement to the solution score that defines a solution as  "better" in the Unsigned phase. 
+ 
 ### maxElectableTargets: `u16`
 - **interface**: `api.consts.electionProviderMultiPhase.maxElectableTargets`
 - **summary**:    The maximum number of electable targets to put in the snapshot. 
@@ -402,6 +410,10 @@ ___
 - **interface**: `api.consts.electionProviderMultiPhase.signedDepositWeight`
 - **summary**:    Per-weight deposit for a signed solution. 
  
+### signedMaxRefunds: `u32`
+- **interface**: `api.consts.electionProviderMultiPhase.signedMaxRefunds`
+- **summary**:    The maximum amount of unchecked solutions to refund the call fee for. 
+ 
 ### signedMaxSubmissions: `u32`
 - **interface**: `api.consts.electionProviderMultiPhase.signedMaxSubmissions`
 - **summary**:    Maximum number of signed submissions that can be queued. 
@@ -421,10 +433,6 @@ ___
 ### signedRewardBase: `u128`
 - **interface**: `api.consts.electionProviderMultiPhase.signedRewardBase`
 - **summary**:    Base reward for a signed solution 
- 
-### solutionImprovementThreshold: `Perbill`
-- **interface**: `api.consts.electionProviderMultiPhase.solutionImprovementThreshold`
-- **summary**:    The minimum amount of improvement to the solution score that defines a solution as  "better" (in any phase). 
  
 ### unsignedPhase: `u32`
 - **interface**: `api.consts.electionProviderMultiPhase.unsignedPhase`

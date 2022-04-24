@@ -54,6 +54,8 @@ The following sections contain Extrinsics methods are part of the default Substr
 
 - **[referenda](#referenda)**
 
+- **[remark](#remark)**
+
 - **[scheduler](#scheduler)**
 
 - **[session](#session)**
@@ -2454,6 +2456,15 @@ ___
 ___
 
 
+## remark
+ 
+### store(remark: `Bytes`)
+- **interface**: `api.tx.remark.store`
+- **summary**:    Index and store data off chain. 
+
+___
+
+
 ## scheduler
  
 ### cancel(when: `u32`, index: `u32`)
@@ -3363,7 +3374,7 @@ ___
  
 ### store(data: `Bytes`)
 - **interface**: `api.tx.transactionStorage.store`
-- **summary**:    Index and store data on chain. Minimum data size is 1 bytes, maximum is  `MaxTransactionSize`. Data will be removed after `STORAGE_PERIOD` blocks, unless `renew`  is called. #  
+- **summary**:    Index and store data off chain. Minimum data size is 1 bytes, maximum is  `MaxTransactionSize`. Data will be removed after `STORAGE_PERIOD` blocks, unless `renew`  is called. #  
 
 ___
 

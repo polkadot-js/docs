@@ -52,6 +52,8 @@ Events are emitted for certain operations on the runtime. The following sections
 
 - **[referenda](#referenda)**
 
+- **[remark](#remark)**
+
 - **[scheduler](#scheduler)**
 
 - **[session](#session)**
@@ -791,6 +793,15 @@ ___
 ### TimedOut(`u32`, `PalletConvictionVotingTally`)
 - **interface**: `api.events.referenda.TimedOut.is`
 - **summary**:    A referendum has been timed out without being decided. 
+
+___
+
+
+## remark
+ 
+### Stored(`AccountId32`, `H256`)
+- **interface**: `api.events.remark.Stored.is`
+- **summary**:    Stored data off chain. 
 
 ___
 
