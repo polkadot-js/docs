@@ -35,7 +35,7 @@ The API creation is done via the `ApiPromise.create` interface which is a shortc
 
 ```js
 ApiPromise
-  .create({ provider: wsProvider }).isReady
+  .create({ provider: wsProvider })
   .then((api) =>
     console.log(api.genesisHash.toHex())
   );
