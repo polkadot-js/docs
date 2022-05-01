@@ -44,6 +44,8 @@ The following sections contain the module constants, also known as parameter typ
 
 - **[multisig](#multisig)**
 
+- **[nominationPools](#nominationpools)**
+
 - **[proxy](#proxy)**
 
 - **[recovery](#recovery)**
@@ -607,6 +609,15 @@ ___
 ### maxSignatories: `u16`
 - **interface**: `api.consts.multisig.maxSignatories`
 - **summary**:    The maximum amount of signatories allowed in the multisig. 
+
+___
+
+
+## nominationPools
+ 
+### palletId: `FrameSupportPalletId`
+- **interface**: `api.consts.nominationPools.palletId`
+- **summary**:    The nomination pool's pallet id. 
 
 ___
 

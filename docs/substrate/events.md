@@ -42,6 +42,8 @@ Events are emitted for certain operations on the runtime. The following sections
 
 - **[multisig](#multisig)**
 
+- **[nominationPools](#nominationpools)**
+
 - **[offences](#offences)**
 
 - **[preimage](#preimage)**
@@ -658,6 +660,39 @@ ___
 ### NewMultisig(`AccountId32`, `AccountId32`, `[u8;32]`)
 - **interface**: `api.events.multisig.NewMultisig.is`
 - **summary**:    A new multisig operation has begun. 
+
+___
+
+
+## nominationPools
+ 
+### Bonded(`AccountId32`, `u32`, `u128`, `bool`)
+- **interface**: `api.events.nominationPools.Bonded.is`
+- **summary**:    A member has became bonded in a pool. 
+ 
+### Created(`AccountId32`, `u32`)
+- **interface**: `api.events.nominationPools.Created.is`
+- **summary**:    A pool has been created. 
+ 
+### Destroyed(`u32`)
+- **interface**: `api.events.nominationPools.Destroyed.is`
+- **summary**:    A pool has been destroyed. 
+ 
+### PaidOut(`AccountId32`, `u32`, `u128`)
+- **interface**: `api.events.nominationPools.PaidOut.is`
+- **summary**:    A payout has been made to a member. 
+ 
+### StateChanged(`u32`, `PalletNominationPoolsPoolState`)
+- **interface**: `api.events.nominationPools.StateChanged.is`
+- **summary**:    The state of a pool has changed 
+ 
+### Unbonded(`AccountId32`, `u32`, `u128`)
+- **interface**: `api.events.nominationPools.Unbonded.is`
+- **summary**:    A member has unbonded from their pool. 
+ 
+### Withdrawn(`AccountId32`, `u32`, `u128`)
+- **interface**: `api.events.nominationPools.Withdrawn.is`
+- **summary**:    A member has withdrawn from their pool. 
 
 ___
 

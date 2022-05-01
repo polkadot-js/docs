@@ -50,6 +50,8 @@ The following sections contain Storage methods are part of the default Substrate
 
 - **[multisig](#multisig)**
 
+- **[nominationPools](#nominationpools)**
+
 - **[offences](#offences)**
 
 - **[preimage](#preimage)**
@@ -770,6 +772,83 @@ ___
 ### multisigs(`AccountId32, [u8;32]`): `Option<PalletMultisigMultisig>`
 - **interface**: `api.query.multisig.multisigs`
 - **summary**:    The set of open multisig operations. 
+
+___
+
+
+## nominationPools
+ 
+### bondedPools(`u32`): `Option<PalletNominationPoolsBondedPoolInner>`
+- **interface**: `api.query.nominationPools.bondedPools`
+- **summary**:    Storage for bonded pools. 
+ 
+### counterForBondedPools(): `u32`
+- **interface**: `api.query.nominationPools.counterForBondedPools`
+- **summary**:    Counter for the related counted storage map 
+ 
+### counterForMetadata(): `u32`
+- **interface**: `api.query.nominationPools.counterForMetadata`
+- **summary**:    Counter for the related counted storage map 
+ 
+### counterForPoolMembers(): `u32`
+- **interface**: `api.query.nominationPools.counterForPoolMembers`
+- **summary**:    Counter for the related counted storage map 
+ 
+### counterForReversePoolIdLookup(): `u32`
+- **interface**: `api.query.nominationPools.counterForReversePoolIdLookup`
+- **summary**:    Counter for the related counted storage map 
+ 
+### counterForRewardPools(): `u32`
+- **interface**: `api.query.nominationPools.counterForRewardPools`
+- **summary**:    Counter for the related counted storage map 
+ 
+### counterForSubPoolsStorage(): `u32`
+- **interface**: `api.query.nominationPools.counterForSubPoolsStorage`
+- **summary**:    Counter for the related counted storage map 
+ 
+### lastPoolId(): `u32`
+- **interface**: `api.query.nominationPools.lastPoolId`
+ 
+### maxPoolMembers(): `Option<u32>`
+- **interface**: `api.query.nominationPools.maxPoolMembers`
+- **summary**:    Maximum number of members that can exist in the system. If `None`, then the count  members are not bound on a system wide basis. 
+ 
+### maxPoolMembersPerPool(): `Option<u32>`
+- **interface**: `api.query.nominationPools.maxPoolMembersPerPool`
+- **summary**:    Maximum number of members that may belong to pool. If `None`, then the count of  members is not bound on a per pool basis. 
+ 
+### maxPools(): `Option<u32>`
+- **interface**: `api.query.nominationPools.maxPools`
+- **summary**:    Maximum number of nomination pools that can exist. If `None`, then an unbounded number of  pools can exist. 
+ 
+### metadata(`u32`): `Bytes`
+- **interface**: `api.query.nominationPools.metadata`
+- **summary**:    Metadata for the pool. 
+ 
+### minCreateBond(): `u128`
+- **interface**: `api.query.nominationPools.minCreateBond`
+- **summary**:    Minimum bond required to create a pool. 
+
+   This is the amount that the depositor must put as their initial stake in the pool, as an  indication of "skin in the game". 
+ 
+### minJoinBond(): `u128`
+- **interface**: `api.query.nominationPools.minJoinBond`
+- **summary**:    Minimum amount to bond to join a pool. 
+ 
+### poolMembers(`AccountId32`): `Option<PalletNominationPoolsPoolMember>`
+- **interface**: `api.query.nominationPools.poolMembers`
+- **summary**:    Active members. 
+ 
+### reversePoolIdLookup(`AccountId32`): `Option<u32>`
+- **interface**: `api.query.nominationPools.reversePoolIdLookup`
+ 
+### rewardPools(`u32`): `Option<PalletNominationPoolsRewardPool>`
+- **interface**: `api.query.nominationPools.rewardPools`
+- **summary**:    Reward pools. This is where there rewards for each pool accumulate. When a members payout  is claimed, the balance comes out fo the reward pool. Keyed by the bonded pools account. 
+ 
+### subPoolsStorage(`u32`): `Option<PalletNominationPoolsSubPools>`
+- **interface**: `api.query.nominationPools.subPoolsStorage`
+- **summary**:    Groups of unbonding pools. Each group of unbonding pools belongs to a bonded pool,  hence the name sub-pools. Keyed by the bonded pools account. 
 
 ___
 

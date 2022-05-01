@@ -46,6 +46,8 @@ The following sections contain Extrinsics methods are part of the default Substr
 
 - **[multisig](#multisig)**
 
+- **[nominationPools](#nominationpools)**
+
 - **[preimage](#preimage)**
 
 - **[proxy](#proxy)**
@@ -2044,6 +2046,134 @@ ___
 ___
 
 
+## nominationPools
+ 
+### bondExtra(extra: `PalletNominationPoolsBondExtra`)
+- **interface**: `api.tx.nominationPools.bondExtra`
+- **summary**:    Bond `extra` more funds from `origin` into the pool to which they already belong. 
+
+   Additional funds can come from either the free balance of the account, of from the  accumulated rewards, see [`BondExtra`]. 
+ 
+### claimPayout()
+- **interface**: `api.tx.nominationPools.claimPayout`
+- **summary**:    A bonded member can use this to claim their payout based on the rewards that the pool  has accumulated since their last claimed payout (OR since joining if this is there first  time claiming rewards). The payout will be transferred to the member's account. 
+
+   The member will earn rewards pro rata based on the members stake vs the sum of the  members in the pools stake. Rewards do not "expire". 
+ 
+### create(amount: `Compact<u128>`, root: `AccountId32`, nominator: `AccountId32`, state_toggler: `AccountId32`)
+- **interface**: `api.tx.nominationPools.create`
+- **summary**:    Create a new delegation pool. 
+
+   #### Arguments 
+
+   * `amount` - The amount of funds to delegate to the pool. This also acts of a sort of  deposit since the pools creator cannot fully unbond funds until the pool is being  destroyed. 
+
+  * `index` - A disambiguation index for creating the account. Likely only useful when creating multiple pools in the same extrinsic. 
+
+  * `root` - The account to set as [`PoolRoles::root`].
+
+  * `nominator` - The account to set as the [`PoolRoles::nominator`].
+
+  * `state_toggler` - The account to set as the [`PoolRoles::state_toggler`].
+
+   #### Note 
+
+   In addition to `amount`, the caller will transfer the existential deposit; so the caller  needs at have at least `amount + existential_deposit` transferrable. 
+ 
+### join(amount: `Compact<u128>`, pool_id: `u32`)
+- **interface**: `api.tx.nominationPools.join`
+- **summary**:    Stake funds with a pool. The amount to bond is transferred from the member to the  pools account and immediately increases the pools bond. 
+
+   #### Note 
+
+   * An account can only be a member of a single pool. 
+
+  * An account cannot join the same pool multiple times.
+
+  * This call will *not* dust the member account, so the member must have at least `existential deposit + amount` in their account. 
+
+  * Only a pool with [`PoolState::Open`] can be joined
+ 
+### nominate(pool_id: `u32`, validators: `Vec<AccountId32>`)
+- **interface**: `api.tx.nominationPools.nominate`
+ 
+### poolWithdrawUnbonded(pool_id: `u32`, num_slashing_spans: `u32`)
+- **interface**: `api.tx.nominationPools.poolWithdrawUnbonded`
+- **summary**:    Call `withdraw_unbonded` for the pools account. This call can be made by any account. 
+
+   This is useful if their are too many unlocking chunks to call `unbond`, and some  can be cleared by withdrawing. In the case there are too many unlocking chunks, the user  would probably see an error like `NoMoreChunks` emitted from the staking system when  they attempt to unbond. 
+ 
+### setConfigs(min_join_bond: `PalletNominationPoolsConfigOpU128`, min_create_bond: `PalletNominationPoolsConfigOpU128`, max_pools: `PalletNominationPoolsConfigOpU32`, max_members: `PalletNominationPoolsConfigOpU32`, max_members_per_pool: `PalletNominationPoolsConfigOpU32`)
+- **interface**: `api.tx.nominationPools.setConfigs`
+- **summary**:    Update configurations for the nomination pools. The origin must for this call must be  Root. 
+
+   #### Arguments 
+
+   * `min_join_bond` - Set [`MinJoinBond`]. 
+
+  * `min_create_bond` - Set [`MinCreateBond`].
+
+  * `max_pools` - Set [`MaxPools`].
+
+  * `max_members` - Set [`MaxPoolMembers`].
+
+  * `max_members_per_pool` - Set [`MaxPoolMembersPerPool`].
+ 
+### setMetadata(pool_id: `u32`, metadata: `Bytes`)
+- **interface**: `api.tx.nominationPools.setMetadata`
+ 
+### setState(pool_id: `u32`, state: `PalletNominationPoolsPoolState`)
+- **interface**: `api.tx.nominationPools.setState`
+ 
+### unbond(member_account: `AccountId32`, unbonding_points: `Compact<u128>`)
+- **interface**: `api.tx.nominationPools.unbond`
+- **summary**:    Unbond up to `unbonding_points` of the `member_account`'s funds from the pool. It  implicitly collects the rewards one last time, since not doing so would mean some  rewards would go forfeited. 
+
+   Under certain conditions, this call can be dispatched permissionlessly (i.e. by any  account). 
+
+   #### Conditions for a permissionless dispatch. 
+
+   * The pool is blocked and the caller is either the root or state-toggler. This is  refereed to as a kick. 
+
+  * The pool is destroying and the member is not the depositor.
+
+  * The pool is destroying, the member is the depositor and no other members are in the pool. 
+
+   #### Conditions for permissioned dispatch (i.e. the caller is also the  `member_account`): 
+
+   * The caller is not the depositor. 
+
+  * The caller is the depositor, the pool is destroying and no other members are in the pool. 
+
+   #### Note 
+
+   If there are too many unlocking chunks to unbond with the pool account,  [`Call::pool_withdraw_unbonded`] can be called to try and minimize unlocking chunks. If  there are too many unlocking chunks, the result of this call will likely be the  `NoMoreChunks` error from the staking system. 
+ 
+### withdrawUnbonded(member_account: `AccountId32`, num_slashing_spans: `u32`)
+- **interface**: `api.tx.nominationPools.withdrawUnbonded`
+- **summary**:    Withdraw unbonded funds from `member_account`. If no bonded funds can be unbonded, an  error is returned. 
+
+   Under certain conditions, this call can be dispatched permissionlessly (i.e. by any  account). 
+
+   #### Conditions for a permissionless dispatch 
+
+   * The pool is in destroy mode and the target is not the depositor. 
+
+  * The target is the depositor and they are the only member in the sub pools.
+
+  * The pool is blocked and the caller is either the root or state-toggler.
+
+   #### Conditions for permissioned dispatch 
+
+   * The caller is the target and they are not the depositor. 
+
+   #### Note 
+
+   If the target is the depositor, the pool will be destroyed. 
+
+___
+
+
 ## preimage
  
 ### notePreimage(bytes: `Bytes`)
@@ -2257,8 +2387,6 @@ ___
   - `account`: The recovered account you want to make a call on-behalf-of.
 
   - `call`: The call you want to make with the recovered account.
-
-    
  
 ### cancelRecovered(account: `AccountId32`)
 - **interface**: `api.tx.recovery.cancelRecovered`
@@ -2269,8 +2397,6 @@ ___
    Parameters: 
 
   - `account`: The recovered account you are able to call on-behalf-of.
-
-    
  
 ### claimRecovery(account: `AccountId32`)
 - **interface**: `api.tx.recovery.claimRecovery`
@@ -2281,8 +2407,6 @@ ___
    Parameters: 
 
   - `account`: The lost account that you want to claim has been successfully recovered by you. 
-
-    
  
 ### closeRecovery(rescuer: `AccountId32`)
 - **interface**: `api.tx.recovery.closeRecovery`
@@ -2295,8 +2419,6 @@ ___
    Parameters: 
 
   - `rescuer`: The account trying to rescue this recoverable account.
-
-    
  
 ### createRecovery(friends: `Vec<AccountId32>`, threshold: `u16`, delay_period: `u32`)
 - **interface**: `api.tx.recovery.createRecovery`
@@ -2313,8 +2435,6 @@ ___
   - `threshold`: The number of friends that must vouch for a recovery attempt before the account can be recovered. Should be less than or equal to the length of the list of  friends. 
 
   - `delay_period`: The number of blocks after a recovery attempt is initialized that needs to pass before the account can be recovered. 
-
-    
  
 ### initiateRecovery(account: `AccountId32`)
 - **interface**: `api.tx.recovery.initiateRecovery`
@@ -2327,8 +2447,6 @@ ___
    Parameters: 
 
   - `account`: The lost account that you want to recover. This account needs to be recoverable (i.e. have a recovery configuration). 
-
-    
  
 ### removeRecovery()
 - **interface**: `api.tx.recovery.removeRecovery`
@@ -2339,8 +2457,6 @@ ___
    Payment: By calling this function the recoverable account will unreserve  their recovery configuration deposit.  (`ConfigDepositBase` + `FriendDepositFactor` * #_of_friends) 
 
    The dispatch origin for this call must be _Signed_ and must be a  recoverable account (i.e. has a recovery configuration). 
-
-    
  
 ### setRecovered(lost: `AccountId32`, rescuer: `AccountId32`)
 - **interface**: `api.tx.recovery.setRecovered`
@@ -2353,8 +2469,6 @@ ___
   - `lost`: The "lost account" to be recovered.
 
   - `rescuer`: The "rescuer account" which can call as the lost account.
-
-    
  
 ### vouchRecovery(lost: `AccountId32`, rescuer: `AccountId32`)
 - **interface**: `api.tx.recovery.vouchRecovery`
@@ -2369,8 +2483,6 @@ ___
   - `rescuer`: The account trying to rescue the lost account that you want to vouch for.
 
    The combination of these two parameters must point to an active recovery  process. 
-
-    
 
 ___
 
@@ -3402,6 +3514,20 @@ ___
    May only be called from `T::RejectOrigin`. 
 
     
+ 
+### removeApproval(proposal_id: `Compact<u32>`)
+- **interface**: `api.tx.treasury.removeApproval`
+- **summary**:    Force a previously approved proposal to be removed from the approval queue.  The original deposit will no longer be returned. 
+
+   May only be called from `T::RejectOrigin`. 
+
+  - `proposal_id`: The index of a proposal
+
+    
+
+   Errors: 
+
+  - `ProposalNotApproved`: The `proposal_id` supplied was not found in the approval queue, i.e., the proposal has not been approved. This could also mean the proposal does not  exist altogether, thus there is no way it would have been approved in the first place. 
 
 ___
 

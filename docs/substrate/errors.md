@@ -46,6 +46,8 @@ This page lists the errors that can be encountered in the different modules.
 
 - **[multisig](#multisig)**
 
+- **[nominationPools](#nominationpools)**
+
 - **[preimage](#preimage)**
 
 - **[proxy](#proxy)**
@@ -1064,6 +1066,107 @@ ___
 ___
 
 
+## nominationPools
+ 
+### AccountBelongsToOtherPool
+- **interface**: `api.errors.nominationPools.AccountBelongsToOtherPool.is`
+- **summary**:    An account is already delegating in another pool. An account may only belong to one  pool at a time. 
+ 
+### AlreadyUnbonding
+- **interface**: `api.errors.nominationPools.AlreadyUnbonding.is`
+- **summary**:    The member is already unbonding in this era. 
+ 
+### CanNotChangeState
+- **interface**: `api.errors.nominationPools.CanNotChangeState.is`
+- **summary**:    The pools state cannot be changed. 
+ 
+### CannotWithdrawAny
+- **interface**: `api.errors.nominationPools.CannotWithdrawAny.is`
+- **summary**:    None of the funds can be withdrawn yet because the bonding duration has not passed. 
+ 
+### DefensiveError
+- **interface**: `api.errors.nominationPools.DefensiveError.is`
+- **summary**:    Some error occurred that should never happen. This should be reported to the  maintainers. 
+ 
+### DoesNotHavePermission
+- **interface**: `api.errors.nominationPools.DoesNotHavePermission.is`
+- **summary**:    The caller does not have adequate permissions. 
+ 
+### FullyUnbonding
+- **interface**: `api.errors.nominationPools.FullyUnbonding.is`
+- **summary**:    The member is fully unbonded (and thus cannot access the bonded and reward pool  anymore to, for example, collect rewards). 
+ 
+### InsufficientBond
+- **interface**: `api.errors.nominationPools.InsufficientBond.is`
+- **summary**:    The pool has insufficient balance to bond as a nominator. 
+ 
+### MaxPoolMembers
+- **interface**: `api.errors.nominationPools.MaxPoolMembers.is`
+- **summary**:    Too many members in the pool or system. 
+ 
+### MaxPools
+- **interface**: `api.errors.nominationPools.MaxPools.is`
+- **summary**:    The system is maxed out on pools. 
+ 
+### MaxUnbondingLimit
+- **interface**: `api.errors.nominationPools.MaxUnbondingLimit.is`
+- **summary**:    The member cannot unbond further chunks due to reaching the limit. 
+ 
+### MetadataExceedsMaxLen
+- **interface**: `api.errors.nominationPools.MetadataExceedsMaxLen.is`
+- **summary**:    Metadata exceeds [`Config::MaxMetadataLen`] 
+ 
+### MinimumBondNotMet
+- **interface**: `api.errors.nominationPools.MinimumBondNotMet.is`
+- **summary**:    The amount does not meet the minimum bond to either join or create a pool. 
+ 
+### NotDestroying
+- **interface**: `api.errors.nominationPools.NotDestroying.is`
+- **summary**:    A pool must be in [`PoolState::Destroying`] in order for the depositor to unbond or for  other members to be permissionlessly unbonded. 
+ 
+### NotEnoughPointsToUnbond
+- **interface**: `api.errors.nominationPools.NotEnoughPointsToUnbond.is`
+- **summary**:    Not enough points. Ty unbonding less. 
+ 
+### NotKickerOrDestroying
+- **interface**: `api.errors.nominationPools.NotKickerOrDestroying.is`
+- **summary**:    Either a) the caller cannot make a valid kick or b) the pool is not destroying. 
+ 
+### NotNominator
+- **interface**: `api.errors.nominationPools.NotNominator.is`
+- **summary**:    The caller does not have nominating permissions for the pool. 
+ 
+### NotOnlyPoolMember
+- **interface**: `api.errors.nominationPools.NotOnlyPoolMember.is`
+- **summary**:    The depositor must be the only member in the bonded pool in order to unbond. And the  depositor must be the only member in the sub pools in order to withdraw unbonded. 
+ 
+### NotOpen
+- **interface**: `api.errors.nominationPools.NotOpen.is`
+- **summary**:    The pool is not open to join 
+ 
+### OverflowRisk
+- **interface**: `api.errors.nominationPools.OverflowRisk.is`
+- **summary**:    The transaction could not be executed due to overflow risk for the pool. 
+ 
+### PoolMemberNotFound
+- **interface**: `api.errors.nominationPools.PoolMemberNotFound.is`
+- **summary**:    An account is not a member. 
+ 
+### PoolNotFound
+- **interface**: `api.errors.nominationPools.PoolNotFound.is`
+- **summary**:    A (bonded) pool id does not exist. 
+ 
+### RewardPoolNotFound
+- **interface**: `api.errors.nominationPools.RewardPoolNotFound.is`
+- **summary**:    A reward pool does not exist. In all cases this is a system logic error. 
+ 
+### SubPoolsNotFound
+- **interface**: `api.errors.nominationPools.SubPoolsNotFound.is`
+- **summary**:    A sub pool does not exist. 
+
+___
+
+
 ## preimage
  
 ### AlreadyNoted
@@ -1704,6 +1807,10 @@ ___
 - **interface**: `api.errors.treasury.InvalidIndex.is`
 - **summary**:    No proposal or bounty at that index. 
  
+### ProposalNotApproved
+- **interface**: `api.errors.treasury.ProposalNotApproved.is`
+- **summary**:    Proposal has not been approved. 
+ 
 ### TooManyApprovals
 - **interface**: `api.errors.treasury.TooManyApprovals.is`
 - **summary**:    Too many approvals in the queue. 
@@ -1728,6 +1835,10 @@ ___
 ### InUse
 - **interface**: `api.errors.uniques.InUse.is`
 - **summary**:    The asset ID is already taken. 
+ 
+### Locked
+- **interface**: `api.errors.uniques.Locked.is`
+- **summary**:    The asset instance is locked. 
  
 ### NoDelegate
 - **interface**: `api.errors.uniques.NoDelegate.is`
