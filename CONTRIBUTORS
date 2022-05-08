@@ -33,5 +33,6 @@
        1	MOZGIII                       	Fix the metadata at custom RPC docs (#242)
        1	Sacha Lansky                  	Fix URL typo (#256)
        1	Spaceforce                    	Change order of params to match example (#90)
+       1	Stéphane P                    	Fix doc typo (#300)
        1	yaohsin                       	Update verify-signature.md (#198)
        1	Zoheb Salam                   	Update Readme with `keysAt()` and `entriesAt()` (#218)
