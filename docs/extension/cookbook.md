@@ -11,7 +11,7 @@ A dapp will not be aware whether or not the user has the extension installed on 
 Calling this function returns the amount of extensions installed and for which the user has accepted to share their accounts. Using `web3Accounts`, you can then retrieve the visible accounts. See [below for `web3AccountsSubscribe`](#subscription-to-extensions-accounts) usage.
 
 ```javascript
-import { web3Accounts, web3Enable } from '@polkadot/extension-dapp';
+import { web3Accounts, web3Enable, web3FromSource } from '@polkadot/extension-dapp';
 
 // this call fires up the authorization popup
 const extensions = await web3Enable('my cool dapp');
