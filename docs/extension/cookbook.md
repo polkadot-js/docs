@@ -32,8 +32,8 @@ const allAccounts = await web3Accounts();
 Here is an example on how to sign a message with an account that was injected by the extension.
 
 ```javascript
-// We arbitraily select the first account returned from the above snippet
 // `account` is of type InjectedAccountWithMeta 
+// We arbitrarily select the first account returned from the above snippet
 const account = allAccounts[0];
 
 // to be able to retrieve the signer interface from this account
@@ -63,8 +63,8 @@ Head to the relevant [util-crypto](/util-crypto/examples/verify-signature) examp
 The api is able to retrieve the signer when `signAndSend` is called with the address from an account retrieved from the extension.
 
 ```javascript
-// We arbitraily select the first account returned from the above snippet
 // `account` is of type InjectedAccountWithMeta 
+// We arbitrarily select the first account returned from the above snippet
 const account = allAccounts[0];
 
 // here we use the api to create a balance transfer to some account of a value of 12344
