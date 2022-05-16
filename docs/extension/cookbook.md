@@ -32,6 +32,8 @@ const allAccounts = await web3Accounts();
 Here is an example on how to sign a message with an account that was injected by the extension.
 
 ```javascript
+import { stringToHex } from "@polkadot/util";
+
 // `account` is of type InjectedAccountWithMeta 
 // We arbitrarily select the first account returned from the above snippet
 const account = allAccounts[0];
