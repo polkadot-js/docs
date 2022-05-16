@@ -165,7 +165,7 @@ ___
 - **interface**: `api.query.babe.authorVrfRandomness`
 - **summary**:    This field should always be populated during block processing unless  secondary plain slots are enabled (which don't contain a VRF output). 
 
-   It is set in `on_initialize`, before it will contain the value from the last block. 
+   It is set in `on_finalize`, before it will contain the value from the last block. 
  
 ### currentSlot(): `u64`
 - **interface**: `api.query.babe.currentSlot`
@@ -187,7 +187,7 @@ ___
 - **interface**: `api.query.babe.genesisSlot`
 - **summary**:    The slot at which the first epoch actually started. This is 0  until the first block of the chain. 
  
-### initialized(): `Option<Option<[u8;32]>>`
+### initialized(): `Option<Option<SpConsensusBabeDigestsPreDigest>>`
 - **interface**: `api.query.babe.initialized`
 - **summary**:    Temporary value (cleared at block finalization) which is `Some`  if per-block initialization has already been called for current block. 
  

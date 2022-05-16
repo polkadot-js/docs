@@ -678,6 +678,12 @@ ___
 - **interface**: `api.events.nominationPools.Destroyed.is`
 - **summary**:    A pool has been destroyed. 
  
+### MemberRemoved(`u32`, `AccountId32`)
+- **interface**: `api.events.nominationPools.MemberRemoved.is`
+- **summary**:    A member has been removed from a pool. 
+
+   The removal can be voluntary (withdrawn all unbonded funds) or involuntary (kicked). 
+ 
 ### PaidOut(`AccountId32`, `u32`, `u128`)
 - **interface**: `api.events.nominationPools.PaidOut.is`
 - **summary**:    A payout has been made to a member. 
@@ -1306,6 +1312,10 @@ ___
 - **interface**: `api.events.utility.BatchCompleted.is`
 - **summary**:    Batch of dispatches completed fully with no error. 
  
+### BatchCompletedWithErrors()
+- **interface**: `api.events.utility.BatchCompletedWithErrors.is`
+- **summary**:    Batch of dispatches completed but has errors. 
+ 
 ### BatchInterrupted(`u32`, `SpRuntimeDispatchError`)
 - **interface**: `api.events.utility.BatchInterrupted.is`
 - **summary**:    Batch of dispatches did not complete fully. Index of first failing dispatch given, as  well as the error. 
@@ -1317,6 +1327,10 @@ ___
 ### ItemCompleted()
 - **interface**: `api.events.utility.ItemCompleted.is`
 - **summary**:    A single item within a Batch of dispatches has completed with no error. 
+ 
+### ItemFailed(`SpRuntimeDispatchError`)
+- **interface**: `api.events.utility.ItemFailed.is`
+- **summary**:    A single item within a Batch of dispatches has completed with error. 
 
 ___
 

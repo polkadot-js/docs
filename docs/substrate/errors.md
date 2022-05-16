@@ -211,17 +211,9 @@ ___
 
 ## bagsList
  
-### IdNotFound
-- **interface**: `api.errors.bagsList.IdNotFound.is`
-- **summary**:    Id not found in list. 
- 
-### NotHeavier
-- **interface**: `api.errors.bagsList.NotHeavier.is`
-- **summary**:    An Id does not have a greater score than another Id. 
- 
-### NotInSameBag
-- **interface**: `api.errors.bagsList.NotInSameBag.is`
-- **summary**:    Attempted to place node in front of a node in another bag. 
+### List
+- **interface**: `api.errors.bagsList.List.is`
+- **summary**:    A error in the list interface implementation. 
 
 ___
 
@@ -1147,6 +1139,10 @@ ___
 ### OverflowRisk
 - **interface**: `api.errors.nominationPools.OverflowRisk.is`
 - **summary**:    The transaction could not be executed due to overflow risk for the pool. 
+ 
+### PartialUnbondNotAllowedPermissionlessly
+- **interface**: `api.errors.nominationPools.PartialUnbondNotAllowedPermissionlessly.is`
+- **summary**:    Partial unbonding now allowed permissionlessly. 
  
 ### PoolMemberNotFound
 - **interface**: `api.errors.nominationPools.PoolMemberNotFound.is`

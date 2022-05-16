@@ -3978,6 +3978,18 @@ ___
    The dispatch origin for this call must be _Root_. 
 
     
+ 
+### forceBatch(calls: `Vec<Call>`)
+- **interface**: `api.tx.utility.forceBatch`
+- **summary**:    Send a batch of dispatch calls.  Unlike `batch`, it allows errors and won't interrupt. 
+
+   May be called from any origin. 
+
+   - `calls`: The calls to be dispatched from the same origin. The number of call must not  exceed the constant: `batched_calls_limit` (available in constant metadata). 
+
+   If origin is root then call are dispatch without checking origin filter. (This includes  bypassing `frame_system::Config::BaseCallFilter`). 
+
+    
 
 ___
 
