@@ -34,7 +34,7 @@ Here is an example on how to sign a message with an account that was injected by
 ```javascript
 // We arbitraily select the first account returned from the above snippet
 // `account` is of type InjectedAccountWithMeta 
-const account = allAccount[0];
+const account = allAccounts[0];
 
 // to be able to retrieve the signer interface from this account
 // we can use web3FromSource which will return an InjectedExtension type
@@ -65,7 +65,7 @@ The api is able to retrieve the signer when `signAndSend` is called with the add
 ```javascript
 // We arbitraily select the first account returned from the above snippet
 // `account` is of type InjectedAccountWithMeta 
-const account = allAccount[0];
+const account = allAccounts[0];
 
 // here we use the api to create a balance transfer to some account of a value of 12344
 const transferExtrinsic = api.tx.balances.transfer('5C5555yEXUcmEJ5kkcCMvdZjUo7NGJiQJMS7vZXEeoMhj3VQ', 123456)
