@@ -30,7 +30,28 @@ module.exports = {
         },
       ],
     },
-    footer: {}
+    footer: {},
+    algolia: {
+      // The application ID provided by Algolia
+      appId: 'EG36R1VJVD',
+
+      // Public API key: it is safe to commit it
+      apiKey: '1a00419786d0da322d4273c13d5373b9',
+
+      indexName: 'polkadot-js',
+
+      // Optional: see doc section below
+      contextualSearch: true,
+
+      // Optional: Specify domains where the navigation should occur through window.location instead on history.push. Useful when our Algolia config crawls multiple documentation sites and we want to navigate with window.location.href to them.
+      // externalUrlRegex: 'external\\.com|domain\\.com',
+
+      // Optional: Algolia search parameters
+      searchParameters: {},
+
+      // Optional: path for search page that enabled by default (`false` to disable it)
+      searchPagePath: 'search',
+    },
   },
   presets: [
     ['@docusaurus/preset-classic', {

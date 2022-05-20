@@ -15,14 +15,16 @@
     "test": "echo \"Skipping test\""
   },
   "devDependencies": {
-    "@docusaurus/core": "2.0.0-beta.19",
-    "@docusaurus/preset-classic": "2.0.0-beta.19",
+    "@docusaurus/core": "2.0.0-beta.20",
+    "@docusaurus/module-type-aliases": "2.0.0-beta.20",
+    "@docusaurus/preset-classic": "2.0.0-beta.20",
+    "@docusaurus/theme-search-algolia": "^2.0.0-beta.20",
     "@mdx-js/react": "^1.6.22",
     "@polkadot/dev": "^0.66.26",
     "@polkadot/typegen": "^8.4.2",
     "clsx": "^1.1.1",
-    "react": "^18.1.0",
-    "react-dom": "^18.1.0"
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
   },
   "browserslist": {
     "production": [
