@@ -2,37 +2,23 @@
 title: Contract Tx
 ---
 
-In addition to using the `.query.<messageName>` on a contract, the `.tx.<messageName>` method is provides to send an actual encoded transaction to the contract, allow for execution and have this applied in a block. Expanding on our previous examples, we can now execute and then retrieve the subsequent value -
+In addition to using the `.query.<messageName>` on a contract, the `.tx.<messageName>` method provides a way to send an actual encoded transaction to the contract, allow for execution and have this applied in a block. Expanding on our previous examples, we can now execute and then retrieve the subsequent value -
 
 ```javascript
 // We will use these values for the execution
 const value = 0; // only useful on isPayable messages
 const gasLimit = 3000n * 1000000n;
-const incValue = 1;
 
 // Send the transaction, like elsewhere this is a normal extrinsic
 // with the same rules as applied in the API (As with the read example,
 // additional params, if required can follow - here only one is needed)
-await contract.tx
-  .inc({ value, gasLimit }, incValue)
+await contract.tx[messageName]({ value, gasLimit }, ...params)
   .signAndSend(alicePair, (result) => {
     if (result.status.isInBlock) {
       console.log('in a block');
     } else if (result.status.isFinalized) {
       console.log('finalized');
     }
-  });
-```
-
-If we perform the same `query.get` read on the value now, it would be `124`. For lower-level access, like we have in the `Blueprint` via `.createContract` you can also perform the execution via the `.exec` function, which would yield equivalent results -
-
-```javascript
-// Send the transaction, like elsewhere this is a normal submittable
-// extrinsic with the same rules as applied in the API
-await contract
-  .exec('inc', { value, gasLimit }, incValue)
-  .signAndSend(alicePair, (result) => {
-    ...
   });
 ```
 

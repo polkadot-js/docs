@@ -12,16 +12,6 @@ Before we jump into the guide, be aware that in all cases we are using ES2015, i
 
 While we are using the `await` naked in all examples (this removes boilerplate and allows us to focus on the actual libraries), and unless your environment supports top-level await, it will need to be wrapped in an `async` block. So basically to make in run-able we should wrap all samples inside a `async function main () { ... }` and then just call `main().then(() => console.log('completed'))`.
 
-In the case of Node.js you would change the `import` into `require`, i.e.
-
-```js
-// Import
-const { BlueprintPromise } = require('@polkadot/api-contract');
-...
-```
-
-While Node.js as of later versions supports the `import` syntax, we are only exporting CommonJS modules, hence the need for require.
-
 
 ## What this is not
 

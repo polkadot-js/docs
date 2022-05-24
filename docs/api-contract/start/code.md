@@ -1,8 +1,13 @@
 ---
-title: Code
+title: Upload and instantiate
 ---
 
-The `CodePromise` class allows the developer to manage calls to code deployment. In itself, it is easy to use for code deployment and it generally the first step, especially in cases where an existing `codeHash` is not available -
+The `CodePromise` class allows the developer to manage calls to the `instantiate_with_code` dispatchable in the contracts pallet. 
+Useful in cases where an existing `codeHash` is not available, meaning the code has never been deployed to the blockchain in its current form. This dispatchable uploads the wasm code the blockchain and creates a new instance in one go. Read more about how it works in the [Substrate Metadata](../../substrate/extrinsics.md#instantiatewithcodevalue-compactu128-gas_limit-compactu64-storage_deposit_limit-optioncompactu128-code-bytes-data-bytes-salt-bytes) section 
+
+It is important to understand that the interfaces provided here are higher-level helpers, so some assumptions are made to make subsequent use easier. In the case of the `CodePromise` class this is quite visible. While `instantiate_with_code` is independent of any ABIs, for out helpers we always assume that the developer does have access to the ABI right at the start. This means that when the code is instantiated there will be an association between that contract instance and it's abi.
+
+The helpers are there to help and make development easier by integrating the parts, nothing would stop a developer from making `instantiate_with_code` or `instantiate` calls themselves.
 
 ```javascript
 import { ApiPromise } from '@polkadot/api';
@@ -13,44 +18,46 @@ import { CodePromise } from '@polkadot/api-contracts';
 // (as in all examples, this connects to a local chain)
 const api = await ApiPromise.create();
 
-// Construct our Code helper. The abi is an Abi object, an unparsed JSON string
-// or the raw JSON data (after doing a JSON.parse). The wasm is either a hex
-// string (0x prefixed), an Uint8Array or a Node.js Buffer object
+// Construct our Code helper. As per the code example
+// the abi is an Abi object (created with the Abi interface in this package), an unparsed JSON string (the metadata generated at build time)
+// or the raw JSON data (after doing a JSON.parse).
+//  The wasm is either a hex string (0x prefixed), an Uint8Array or a Node.js Buffer object
 const code = new CodePromise(api, abi, wasm);
 
-// Deploy the WASM, retrieve a Blueprint
+// Upload and instantiate the WASM through the Code helper
 ...
-```
+// Store a reference to a constructor method name
+const constructorName = abi.constructors[0].method;
 
-It is important to understand that the interfaces provided here are higher-level helpers, so some assumptions are made to make subsequent use easier. In the case of the `CodePromise` class this is quite visible. While a `contracts.putCode` is independent of any ABIs, for out helpers we always assume that the developer does have access to the ABI right at the start. This means that when code is deployed a Blueprint can be created with the correct ABI (and subsequent deployments can, once again, create a Contract with an attached ABI).
+// Create and object to pass as instantiation options
+const options = {
+  // maximum gas to be consumed for the instantiation. if limit is too small the instantiation will fail.
+  // use the instantiate RPC to dry run the call and get back gas predictions
+  gasLimit,
+  // a limit to how much Balance to be used to pay for the storage created by the instantiation
+  // if null is passed, unlimited balance can be used
+  storageDepositLimit,
+  // used to create contract address, will fail with DuplicateContract error when not provided
+  salt,
+  // Balance to send - use only for payable constructors
+  value,
+};
 
-The helpers are there to help and make development easier by integrating the parts, nothing would stop a developer from making `putCode` or `instantiate` calls themselves.
+let contract;
 
-
-## Create a blueprint
-
-After we have the initial structure above, the next step would be to actually deploy the code and retrieve a `BlueprintPromise` from the result. Building on the above example -
-
-```javascript
-// Deploy the WASM, retrieve a Blueprint
-let blueprint;
-
-// createBlueprint is a normal submittable, so use signAndSend
-// with an known Alice keypair (as per the API samples)
-const unsub = await code
-  .createBlueprint()
-  .signAndSend(alicePair, (result) => {
+const unsub = await code.tx[constructorName](options, ...params).signAndSend(
+  alicePair,
+  (result) => {
     if (result.status.isInBlock || result.status.isFinalized) {
-      // here we have an additional field in the result, containing the blueprint
-      blueprint = result.blueprint;
+      // retrieve the ContractPromise from the sumbittable result
+      contract = result.contract;
       unsub();
     }
-  })
+  }
+);
 ```
 
-As noted above the `createBlueprint` helper on the `Code` interface is a normal submittable, although it is enhanced to return an actual `Blueprint` based on the `codeHash` retrieved. Internally it sends a `putCode` and will listen for the correct emitted events. Based on the results and events (and the input ABI) it will subsequently create a helper object that can be used to deploy contracts.
 
+## Reinstantiate
 
-## Use the blueprint
-
-After we have deployed the WASM on-chain, next we can use the [Blueprint result to deploy](blueprint.md) a contract on-chain.
+After we have uploaded the WASM on-chain, next we'll use the [Blueprint to (re)instantiate on-chain code](blueprint.md).
