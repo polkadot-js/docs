@@ -174,6 +174,10 @@ ___
 ### Rebagged(`AccountId32`, `u64`, `u64`)
 - **interface**: `api.events.bagsList.Rebagged.is`
 - **summary**:    Moved an account from one bag to another. 
+ 
+### ScoreUpdated(`AccountId32`, `u64`)
+- **interface**: `api.events.bagsList.ScoreUpdated.is`
+- **summary**:    Updated the score of some account to the given amount. 
 
 ___
 
@@ -687,6 +691,10 @@ ___
 ### PaidOut(`AccountId32`, `u32`, `u128`)
 - **interface**: `api.events.nominationPools.PaidOut.is`
 - **summary**:    A payout has been made to a member. 
+ 
+### RolesUpdated(`Option<AccountId32>`, `Option<AccountId32>`, `Option<AccountId32>`)
+- **interface**: `api.events.nominationPools.RolesUpdated.is`
+- **summary**:    The roles of a pool have been updated to the given new roles. Note that the depositor  can never change. 
  
 ### StateChanged(`u32`, `PalletNominationPoolsPoolState`)
 - **interface**: `api.events.nominationPools.StateChanged.is`
@@ -1213,71 +1221,75 @@ ___
  
 ### ApprovalCancelled(`u32`, `u32`, `AccountId32`, `AccountId32`)
 - **interface**: `api.events.uniques.ApprovalCancelled.is`
-- **summary**:    An approval for a `delegate` account to transfer the `instance` of an asset `class` was  cancelled by its `owner`. 
+- **summary**:    An approval for a `delegate` account to transfer the `item` of an item  `collection` was cancelled by its `owner`. 
  
 ### ApprovedTransfer(`u32`, `u32`, `AccountId32`, `AccountId32`)
 - **interface**: `api.events.uniques.ApprovedTransfer.is`
-- **summary**:    An `instance` of an asset `class` has been approved by the `owner` for transfer by a  `delegate`. 
- 
-### AssetStatusChanged(`u32`)
-- **interface**: `api.events.uniques.AssetStatusChanged.is`
-- **summary**:    An asset `class` has had its attributes changed by the `Force` origin. 
+- **summary**:    An `item` of a `collection` has been approved by the `owner` for transfer by  a `delegate`. 
  
 ### AttributeCleared(`u32`, `Option<u32>`, `Bytes`)
 - **interface**: `api.events.uniques.AttributeCleared.is`
-- **summary**:    Attribute metadata has been cleared for an asset class or instance. 
+- **summary**:    Attribute metadata has been cleared for a `collection` or `item`. 
  
 ### AttributeSet(`u32`, `Option<u32>`, `Bytes`, `Bytes`)
 - **interface**: `api.events.uniques.AttributeSet.is`
-- **summary**:    New attribute metadata has been set for an asset class or instance. 
+- **summary**:    New attribute metadata has been set for a `collection` or `item`. 
  
 ### Burned(`u32`, `u32`, `AccountId32`)
 - **interface**: `api.events.uniques.Burned.is`
-- **summary**:    An asset `instance` was destroyed. 
+- **summary**:    An `item` was destroyed. 
  
-### ClassFrozen(`u32`)
-- **interface**: `api.events.uniques.ClassFrozen.is`
-- **summary**:    Some asset `class` was frozen. 
+### CollectionFrozen(`u32`)
+- **interface**: `api.events.uniques.CollectionFrozen.is`
+- **summary**:    Some `collection` was frozen. 
  
-### ClassMetadataCleared(`u32`)
-- **interface**: `api.events.uniques.ClassMetadataCleared.is`
-- **summary**:    Metadata has been cleared for an asset class. 
+### CollectionMaxSupplySet(`u32`, `u32`)
+- **interface**: `api.events.uniques.CollectionMaxSupplySet.is`
+- **summary**:    Max supply has been set for a collection. 
  
-### ClassMetadataSet(`u32`, `Bytes`, `bool`)
-- **interface**: `api.events.uniques.ClassMetadataSet.is`
-- **summary**:    New metadata has been set for an asset class. 
+### CollectionMetadataCleared(`u32`)
+- **interface**: `api.events.uniques.CollectionMetadataCleared.is`
+- **summary**:    Metadata has been cleared for a `collection`. 
  
-### ClassThawed(`u32`)
-- **interface**: `api.events.uniques.ClassThawed.is`
-- **summary**:    Some asset `class` was thawed. 
+### CollectionMetadataSet(`u32`, `Bytes`, `bool`)
+- **interface**: `api.events.uniques.CollectionMetadataSet.is`
+- **summary**:    New metadata has been set for a `collection`. 
+ 
+### CollectionThawed(`u32`)
+- **interface**: `api.events.uniques.CollectionThawed.is`
+- **summary**:    Some `collection` was thawed. 
  
 ### Created(`u32`, `AccountId32`, `AccountId32`)
 - **interface**: `api.events.uniques.Created.is`
-- **summary**:    An asset class was created. 
+- **summary**:    A `collection` was created. 
  
 ### Destroyed(`u32`)
 - **interface**: `api.events.uniques.Destroyed.is`
-- **summary**:    An asset `class` was destroyed. 
+- **summary**:    A `collection` was destroyed. 
  
 ### ForceCreated(`u32`, `AccountId32`)
 - **interface**: `api.events.uniques.ForceCreated.is`
-- **summary**:    An asset class was force-created. 
+- **summary**:    A `collection` was force-created. 
  
 ### Frozen(`u32`, `u32`)
 - **interface**: `api.events.uniques.Frozen.is`
-- **summary**:    Some asset `instance` was frozen. 
+- **summary**:    Some `item` was frozen. 
  
 ### Issued(`u32`, `u32`, `AccountId32`)
 - **interface**: `api.events.uniques.Issued.is`
-- **summary**:    An asset `instance` was issued. 
+- **summary**:    An `item` was issued. 
+ 
+### ItemStatusChanged(`u32`)
+- **interface**: `api.events.uniques.ItemStatusChanged.is`
+- **summary**:    A `collection` has had its attributes changed by the `Force` origin. 
  
 ### MetadataCleared(`u32`, `u32`)
 - **interface**: `api.events.uniques.MetadataCleared.is`
-- **summary**:    Metadata has been cleared for an asset instance. 
+- **summary**:    Metadata has been cleared for an item. 
  
 ### MetadataSet(`u32`, `u32`, `Bytes`, `bool`)
 - **interface**: `api.events.uniques.MetadataSet.is`
-- **summary**:    New metadata has been set for an asset instance. 
+- **summary**:    New metadata has been set for an item. 
  
 ### OwnerChanged(`u32`, `AccountId32`)
 - **interface**: `api.events.uniques.OwnerChanged.is`
@@ -1289,7 +1301,7 @@ ___
  
 ### Redeposited(`u32`, `Vec<u32>`)
 - **interface**: `api.events.uniques.Redeposited.is`
-- **summary**:    Metadata has been cleared for an asset instance. 
+- **summary**:    Metadata has been cleared for an item. 
  
 ### TeamChanged(`u32`, `AccountId32`, `AccountId32`, `AccountId32`)
 - **interface**: `api.events.uniques.TeamChanged.is`
@@ -1297,11 +1309,11 @@ ___
  
 ### Thawed(`u32`, `u32`)
 - **interface**: `api.events.uniques.Thawed.is`
-- **summary**:    Some asset `instance` was thawed. 
+- **summary**:    Some `item` was thawed. 
  
 ### Transferred(`u32`, `u32`, `AccountId32`, `AccountId32`)
 - **interface**: `api.events.uniques.Transferred.is`
-- **summary**:    An asset `instance` was transferred. 
+- **summary**:    An `item` was transferred. 
 
 ___
 

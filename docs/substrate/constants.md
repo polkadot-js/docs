@@ -249,6 +249,20 @@ ___
 
 ## contracts
  
+### contractAccessWeight: `u64`
+- **interface**: `api.consts.contracts.contractAccessWeight`
+- **summary**:    The weight per byte of code that is charged when loading a contract from storage. 
+
+   Currently, FRAME only charges fees for computation incurred but not for PoV  consumption caused for storage access. This is usually not exploitable because  accessing storage carries some substantial weight costs, too. However in case  of contract code very much PoV consumption can be caused while consuming very little  computation. This could be used to keep the chain busy without paying the  proper fee for it. Until this is resolved we charge from the weight meter for  contract access. 
+
+   For more information check out: <https://github.com/paritytech/substrate/issues/10301> 
+
+   [`DefaultContractAccessWeight`] is a safe default to be used for polkadot or kusama  parachains. 
+
+   #### Note 
+
+   This is only relevant for parachains. Set to zero in case of a standalone chain. 
+ 
 ### deletionQueueDepth: `u32`
 - **interface**: `api.consts.contracts.deletionQueueDepth`
 - **summary**:    The maximum number of contracts that can be pending for deletion. 
@@ -378,18 +392,6 @@ ___
 - **interface**: `api.consts.electionProviderMultiPhase.maxElectingVoters`
 - **summary**:    The maximum number of electing voters to put in the snapshot. At the moment, snapshots  are only over a single block, but once multi-block elections are introduced they will  take place over multiple blocks. 
  
-### minerMaxLength: `u32`
-- **interface**: `api.consts.electionProviderMultiPhase.minerMaxLength`
-- **summary**:    Maximum length (bytes) that the mined solution should consume. 
-
-   The miner will ensure that the total length of the unsigned solution will not exceed  this value. 
- 
-### minerMaxWeight: `u64`
-- **interface**: `api.consts.electionProviderMultiPhase.minerMaxWeight`
-- **summary**:    Maximum weight that the miner should consume. 
-
-   The miner will ensure that the total weight of the unsigned solution will not exceed  this value, based on [`WeightInfo::submit_unsigned`]. 
- 
 ### minerTxPriority: `u64`
 - **interface**: `api.consts.electionProviderMultiPhase.minerTxPriority`
 - **summary**:    The priority of the unsigned transaction submitted in the unsigned-phase 
@@ -426,7 +428,7 @@ ___
 - **interface**: `api.consts.electionProviderMultiPhase.signedMaxWeight`
 - **summary**:    Maximum weight of a signed solution. 
 
-   This should probably be similar to [`Config::MinerMaxWeight`]. 
+   If [`Config::MinerConfig`] is being implemented to submit signed solutions (outside of  this pallet), then [`MinerConfig::solution_weight`] is used to compare against  this value. 
  
 ### signedPhase: `u32`
 - **interface**: `api.consts.electionProviderMultiPhase.signedPhase`
@@ -614,6 +616,10 @@ ___
 
 
 ## nominationPools
+ 
+### minPointsToBalance: `u32`
+- **interface**: `api.consts.nominationPools.minPointsToBalance`
+- **summary**:    The minimum pool points-to-balance ratio that must be maintained for it to be `open`.  This is important in the event slashing takes place and the pool's points-to-balance  ratio becomes disproportional.  For a value of 10, the threshold would be a pool points-to-balance ratio of 10:1.  Such a scenario would also be the equivalent of the pool being 90% slashed. 
  
 ### palletId: `FrameSupportPalletId`
 - **interface**: `api.consts.nominationPools.palletId`
@@ -865,10 +871,6 @@ ___
 
 ## transactionPayment
  
-### lengthToFee: `Vec<FrameSupportWeightsWeightToFeeCoefficient>`
-- **interface**: `api.consts.transactionPayment.lengthToFee`
-- **summary**:    The polynomial that is applied in order to derive fee from length. 
- 
 ### operationalFeeMultiplier: `u8`
 - **interface**: `api.consts.transactionPayment.operationalFeeMultiplier`
 - **summary**:    A fee mulitplier for `Operational` extrinsics to compute "virtual tip" to boost their  `priority` 
@@ -880,10 +882,6 @@ ___
    // For `Operational`  let virtual_tip = (inclusion_fee + tip) * OperationalFeeMultiplier;  let priority = priority_calc(tip + virtual_tip);  ``` 
 
    Note that since we use `final_fee` the multiplier applies also to the regular `tip`  sent with the transaction. So, not only does the transaction get a priority bump based  on the `inclusion_fee`, but we also amplify the impact of tips applied to `Operational`  transactions. 
- 
-### weightToFee: `Vec<FrameSupportWeightsWeightToFeeCoefficient>`
-- **interface**: `api.consts.transactionPayment.weightToFee`
-- **summary**:    The polynomial that is applied in order to derive fee from weight. 
 
 ___
 
@@ -927,19 +925,19 @@ ___
  
 ### attributeDepositBase: `u128`
 - **interface**: `api.consts.uniques.attributeDepositBase`
-- **summary**:    The basic amount of funds that must be reserved when adding an attribute to an asset. 
+- **summary**:    The basic amount of funds that must be reserved when adding an attribute to an item. 
  
-### classDeposit: `u128`
-- **interface**: `api.consts.uniques.classDeposit`
-- **summary**:    The basic amount of funds that must be reserved for an asset class. 
+### collectionDeposit: `u128`
+- **interface**: `api.consts.uniques.collectionDeposit`
+- **summary**:    The basic amount of funds that must be reserved for collection. 
  
 ### depositPerByte: `u128`
 - **interface**: `api.consts.uniques.depositPerByte`
 - **summary**:    The additional funds that must be reserved for the number of bytes store in metadata,  either "normal" metadata or attribute metadata. 
  
-### instanceDeposit: `u128`
-- **interface**: `api.consts.uniques.instanceDeposit`
-- **summary**:    The basic amount of funds that must be reserved for an asset instance. 
+### itemDeposit: `u128`
+- **interface**: `api.consts.uniques.itemDeposit`
+- **summary**:    The basic amount of funds that must be reserved for an item. 
  
 ### keyLimit: `u32`
 - **interface**: `api.consts.uniques.keyLimit`
@@ -947,7 +945,7 @@ ___
  
 ### metadataDepositBase: `u128`
 - **interface**: `api.consts.uniques.metadataDepositBase`
-- **summary**:    The basic amount of funds that must be reserved when adding metadata to your asset. 
+- **summary**:    The basic amount of funds that must be reserved when adding metadata to your item. 
  
 ### stringLimit: `u32`
 - **interface**: `api.consts.uniques.stringLimit`

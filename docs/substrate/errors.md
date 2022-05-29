@@ -198,6 +198,10 @@ ___
 - **interface**: `api.errors.babe.DuplicateOffenceReport.is`
 - **summary**:    A given equivocation report is valid but already previously reported. 
  
+### InvalidConfiguration
+- **interface**: `api.errors.babe.InvalidConfiguration.is`
+- **summary**:    Submitted configuration is invalid. 
+ 
 ### InvalidEquivocationProof
 - **interface**: `api.errors.babe.InvalidEquivocationProof.is`
 - **summary**:    An equivocation proof provided as part of an equivocation report is invalid. 
@@ -1818,7 +1822,7 @@ ___
  
 ### AlreadyExists
 - **interface**: `api.errors.uniques.AlreadyExists.is`
-- **summary**:    The asset instance ID has already been used for an asset. 
+- **summary**:    The item ID has already been used for an item. 
  
 ### BadWitness
 - **interface**: `api.errors.uniques.BadWitness.is`
@@ -1826,15 +1830,27 @@ ___
  
 ### Frozen
 - **interface**: `api.errors.uniques.Frozen.is`
-- **summary**:    The asset instance or class is frozen. 
+- **summary**:    The item or collection is frozen. 
  
 ### InUse
 - **interface**: `api.errors.uniques.InUse.is`
-- **summary**:    The asset ID is already taken. 
+- **summary**:    The item ID is already taken. 
  
 ### Locked
 - **interface**: `api.errors.uniques.Locked.is`
-- **summary**:    The asset instance is locked. 
+- **summary**:    The item is locked. 
+ 
+### MaxSupplyAlreadySet
+- **interface**: `api.errors.uniques.MaxSupplyAlreadySet.is`
+- **summary**:    The max supply has already been set. 
+ 
+### MaxSupplyReached
+- **interface**: `api.errors.uniques.MaxSupplyReached.is`
+- **summary**:    All items have been minted. 
+ 
+### MaxSupplyTooSmall
+- **interface**: `api.errors.uniques.MaxSupplyTooSmall.is`
+- **summary**:    The provided max supply is less to the amount of items a collection already has. 
  
 ### NoDelegate
 - **interface**: `api.errors.uniques.NoDelegate.is`
@@ -1846,15 +1862,15 @@ ___
  
 ### Unaccepted
 - **interface**: `api.errors.uniques.Unaccepted.is`
-- **summary**:    The named owner has not signed ownership of the class is acceptable. 
+- **summary**:    The named owner has not signed ownership of the collection is acceptable. 
  
 ### Unapproved
 - **interface**: `api.errors.uniques.Unapproved.is`
 - **summary**:    No approval exists that would allow the transfer. 
  
-### UnknownClass
-- **interface**: `api.errors.uniques.UnknownClass.is`
-- **summary**:    The given asset ID is unknown. 
+### UnknownCollection
+- **interface**: `api.errors.uniques.UnknownCollection.is`
+- **summary**:    The given item ID is unknown. 
  
 ### WrongDelegate
 - **interface**: `api.errors.uniques.WrongDelegate.is`

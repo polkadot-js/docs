@@ -808,6 +808,7 @@ ___
  
 ### lastPoolId(): `u32`
 - **interface**: `api.query.nominationPools.lastPoolId`
+- **summary**:    Ever increasing number of all pools created so far. 
  
 ### maxPoolMembers(): `Option<u32>`
 - **interface**: `api.query.nominationPools.maxPoolMembers`
@@ -841,6 +842,9 @@ ___
  
 ### reversePoolIdLookup(`AccountId32`): `Option<u32>`
 - **interface**: `api.query.nominationPools.reversePoolIdLookup`
+- **summary**:    A reverse lookup from the pool's account id to its id. 
+
+   This is only used for slashing. In all other instances, the pool id is used, and the  accounts are deterministically derived from it. 
  
 ### rewardPools(`u32`): `Option<PalletNominationPoolsRewardPool>`
 - **interface**: `api.query.nominationPools.rewardPools`
@@ -1555,35 +1559,39 @@ ___
  
 ### account(`AccountId32, u32, u32`): `Option<Null>`
 - **interface**: `api.query.uniques.account`
-- **summary**:    The assets held by any given account; set out this way so that assets owned by a single  account can be enumerated. 
+- **summary**:    The items held by any given account; set out this way so that items owned by a single  account can be enumerated. 
  
-### asset(`u32, u32`): `Option<PalletUniquesInstanceDetails>`
+### asset(`u32, u32`): `Option<PalletUniquesItemDetails>`
 - **interface**: `api.query.uniques.asset`
-- **summary**:    The assets in existence and their ownership details. 
+- **summary**:    The items in existence and their ownership details. 
  
 ### attribute(`u32, Option<u32>, Bytes`): `Option<(Bytes,u128)>`
 - **interface**: `api.query.uniques.attribute`
-- **summary**:    Metadata of an asset class. 
+- **summary**:    Attributes of a collection. 
  
-### class(`u32`): `Option<PalletUniquesClassDetails>`
+### class(`u32`): `Option<PalletUniquesCollectionDetails>`
 - **interface**: `api.query.uniques.class`
-- **summary**:    Details of an asset class. 
+- **summary**:    Details of a collection. 
  
 ### classAccount(`AccountId32, u32`): `Option<Null>`
 - **interface**: `api.query.uniques.classAccount`
-- **summary**:    The classes owned by any given account; set out this way so that classes owned by a single  account can be enumerated. 
+- **summary**:    The collections owned by any given account; set out this way so that collections owned by  a single account can be enumerated. 
  
-### classMetadataOf(`u32`): `Option<PalletUniquesClassMetadata>`
+### classMetadataOf(`u32`): `Option<PalletUniquesCollectionMetadata>`
 - **interface**: `api.query.uniques.classMetadataOf`
-- **summary**:    Metadata of an asset class. 
+- **summary**:    Metadata of a collection. 
  
-### instanceMetadataOf(`u32, u32`): `Option<PalletUniquesInstanceMetadata>`
+### collectionMaxSupply(`u32`): `Option<u32>`
+- **interface**: `api.query.uniques.collectionMaxSupply`
+- **summary**:    Keeps track of the number of items a collection might have. 
+ 
+### instanceMetadataOf(`u32, u32`): `Option<PalletUniquesItemMetadata>`
 - **interface**: `api.query.uniques.instanceMetadataOf`
-- **summary**:    Metadata of an asset instance. 
+- **summary**:    Metadata of an item. 
  
 ### ownershipAcceptance(`AccountId32`): `Option<u32>`
 - **interface**: `api.query.uniques.ownershipAcceptance`
-- **summary**:    The class, if any, of which an account is willing to take ownership. 
+- **summary**:    The collection, if any, of which an account is willing to take ownership. 
 
 ___
 

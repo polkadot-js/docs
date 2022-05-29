@@ -567,7 +567,9 @@ ___
 
    Anyone can call this function about any potentially dislocated account. 
 
-   Will never return an error; if `dislocated` does not exist or doesn't need a rebag, then  it is a noop and fees are still collected from `origin`. 
+   Will always update the stored score of `dislocated` to the correct score, based on  `ScoreProvider`. 
+
+   If `dislocated` does not exists, it returns an error. 
 
 ___
 
@@ -930,6 +932,16 @@ ___
 - **summary**:    Remove the code stored under `code_hash` and refund the deposit to its owner. 
 
    A code can only be removed by its original uploader (its owner) and only if it is  not used by any contract. 
+ 
+### setCode(dest: `MultiAddress`, code_hash: `H256`)
+- **interface**: `api.tx.contracts.setCode`
+- **summary**:    Privileged function that changes the code of an existing contract. 
+
+   This takes care of updating refcounts and all other necessary operations. Returns  an error if either the `code_hash` or `dest` do not exist. 
+
+   #### Note 
+
+   This does **not** change the address of the contract in question. This means  that the contract address is no longer derived from its code hash after calling  this dispatchable. 
  
 ### uploadCode(code: `Bytes`, storage_deposit_limit: `Option<Compact<u128>>`)
 - **interface**: `api.tx.contracts.uploadCode`
@@ -2105,7 +2117,7 @@ ___
  
 ### setConfigs(min_join_bond: `PalletNominationPoolsConfigOpU128`, min_create_bond: `PalletNominationPoolsConfigOpU128`, max_pools: `PalletNominationPoolsConfigOpU32`, max_members: `PalletNominationPoolsConfigOpU32`, max_members_per_pool: `PalletNominationPoolsConfigOpU32`)
 - **interface**: `api.tx.nominationPools.setConfigs`
-- **summary**:    Update configurations for the nomination pools. The origin must for this call must be  Root. 
+- **summary**:    Update configurations for the nomination pools. The origin for this call must be  Root. 
 
    #### Arguments 
 
@@ -2148,6 +2160,14 @@ ___
    #### Note 
 
    If there are too many unlocking chunks to unbond with the pool account,  [`Call::pool_withdraw_unbonded`] can be called to try and minimize unlocking chunks. If  there are too many unlocking chunks, the result of this call will likely be the  `NoMoreChunks` error from the staking system. 
+ 
+### updateRoles(pool_id: `u32`, new_root: `PalletNominationPoolsConfigOpAccountId32`, new_nominator: `PalletNominationPoolsConfigOpAccountId32`, new_state_toggler: `PalletNominationPoolsConfigOpAccountId32`)
+- **interface**: `api.tx.nominationPools.updateRoles`
+- **summary**:    Update the roles of the pool. 
+
+   The root is the only entity that can change any of the roles, including itself,  excluding the depositor, who can never change. 
+
+   It emits an event, notifying UIs of the role change. This event is quite relevant to  most pool members and they should be informed of changes to pool roles. 
  
 ### withdrawUnbonded(member_account: `AccountId32`, num_slashing_spans: `u32`)
 - **interface**: `api.tx.nominationPools.withdrawUnbonded`
@@ -3534,55 +3554,55 @@ ___
 
 ## uniques
  
-### approveTransfer(class: `u32`, instance: `u32`, delegate: `MultiAddress`)
+### approveTransfer(collection: `u32`, item: `u32`, delegate: `MultiAddress`)
 - **interface**: `api.tx.uniques.approveTransfer`
-- **summary**:    Approve an instance to be transferred by a delegated third-party account. 
+- **summary**:    Approve an item to be transferred by a delegated third-party account. 
 
-   Origin must be Signed and must be the owner of the asset `instance`. 
+   Origin must be Signed and must be the owner of the `item`. 
 
-   - `class`: The class of the asset to be approved for delegated transfer. 
+   - `collection`: The collection of the item to be approved for delegated transfer. 
 
-  - `instance`: The instance of the asset to be approved for delegated transfer.
+  - `item`: The item of the item to be approved for delegated transfer.
 
-  - `delegate`: The account to delegate permission to transfer the asset.
+  - `delegate`: The account to delegate permission to transfer the item.
 
    Emits `ApprovedTransfer` on success. 
 
    Weight: `O(1)` 
  
-### burn(class: `u32`, instance: `u32`, check_owner: `Option<MultiAddress>`)
+### burn(collection: `u32`, item: `u32`, check_owner: `Option<MultiAddress>`)
 - **interface**: `api.tx.uniques.burn`
-- **summary**:    Destroy a single asset instance. 
+- **summary**:    Destroy a single item. 
 
-   Origin must be Signed and the sender should be the Admin of the asset `class`. 
+   Origin must be Signed and the sender should be the Admin of the `collection`. 
 
-   - `class`: The class of the asset to be burned. 
+   - `collection`: The collection of the item to be burned. 
 
-  - `instance`: The instance of the asset to be burned.
+  - `item`: The item of the item to be burned.
 
-  - `check_owner`: If `Some` then the operation will fail with `WrongOwner` unless the asset is owned by this value. 
+  - `check_owner`: If `Some` then the operation will fail with `WrongOwner` unless the item is owned by this value. 
 
    Emits `Burned` with the actual amount burned. 
 
    Weight: `O(1)`  Modes: `check_owner.is_some()`. 
  
-### cancelApproval(class: `u32`, instance: `u32`, maybe_check_delegate: `Option<MultiAddress>`)
+### cancelApproval(collection: `u32`, item: `u32`, maybe_check_delegate: `Option<MultiAddress>`)
 - **interface**: `api.tx.uniques.cancelApproval`
-- **summary**:    Cancel the prior approval for the transfer of an asset by a delegate. 
+- **summary**:    Cancel the prior approval for the transfer of an item by a delegate. 
 
    Origin must be either: 
 
   - the `Force` origin;
 
-  - `Signed` with the signer being the Admin of the asset `class`;
+  - `Signed` with the signer being the Admin of the `collection`;
 
-  - `Signed` with the signer being the Owner of the asset `instance`;
+  - `Signed` with the signer being the Owner of the `item`;
 
    Arguments: 
 
-  - `class`: The class of the asset of whose approval will be cancelled.
+  - `collection`: The collection of the item of whose approval will be cancelled.
 
-  - `instance`: The instance of the asset of whose approval will be cancelled.
+  - `item`: The item of the item of whose approval will be cancelled.
 
   - `maybe_check_delegate`: If `Some` will ensure that the given account is the one to which permission of transfer is delegated. 
 
@@ -3590,17 +3610,17 @@ ___
 
    Weight: `O(1)` 
  
-### clearAttribute(class: `u32`, maybe_instance: `Option<u32>`, key: `Bytes`)
+### clearAttribute(collection: `u32`, maybe_item: `Option<u32>`, key: `Bytes`)
 - **interface**: `api.tx.uniques.clearAttribute`
-- **summary**:    Clear an attribute for an asset class or instance. 
+- **summary**:    Clear an attribute for a collection or item. 
 
-   Origin must be either `ForceOrigin` or Signed and the sender should be the Owner of the  asset `class`. 
+   Origin must be either `ForceOrigin` or Signed and the sender should be the Owner of the  `collection`. 
 
-   Any deposit is freed for the asset class owner. 
+   Any deposit is freed for the collection's owner. 
 
-   - `class`: The identifier of the asset class whose instance's metadata to clear. 
+   - `collection`: The identifier of the collection whose item's metadata to clear. 
 
-  - `maybe_instance`: The identifier of the asset instance whose metadata to clear.
+  - `maybe_item`: The identifier of the item whose metadata to clear.
 
   - `key`: The key of the attribute.
 
@@ -3608,197 +3628,197 @@ ___
 
    Weight: `O(1)` 
  
-### clearClassMetadata(class: `u32`)
-- **interface**: `api.tx.uniques.clearClassMetadata`
-- **summary**:    Clear the metadata for an asset class. 
+### clearCollectionMetadata(collection: `u32`)
+- **interface**: `api.tx.uniques.clearCollectionMetadata`
+- **summary**:    Clear the metadata for a collection. 
 
-   Origin must be either `ForceOrigin` or `Signed` and the sender should be the Owner of  the asset `class`. 
+   Origin must be either `ForceOrigin` or `Signed` and the sender should be the Owner of  the `collection`. 
 
-   Any deposit is freed for the asset class owner. 
+   Any deposit is freed for the collection's owner. 
 
-   - `class`: The identifier of the asset class whose metadata to clear. 
+   - `collection`: The identifier of the collection whose metadata to clear. 
 
-   Emits `ClassMetadataCleared`. 
+   Emits `CollectionMetadataCleared`. 
 
    Weight: `O(1)` 
  
-### clearMetadata(class: `u32`, instance: `u32`)
+### clearMetadata(collection: `u32`, item: `u32`)
 - **interface**: `api.tx.uniques.clearMetadata`
-- **summary**:    Clear the metadata for an asset instance. 
+- **summary**:    Clear the metadata for an item. 
 
-   Origin must be either `ForceOrigin` or Signed and the sender should be the Owner of the  asset `instance`. 
+   Origin must be either `ForceOrigin` or Signed and the sender should be the Owner of the  `item`. 
 
-   Any deposit is freed for the asset class owner. 
+   Any deposit is freed for the collection's owner. 
 
-   - `class`: The identifier of the asset class whose instance's metadata to clear. 
+   - `collection`: The identifier of the collection whose item's metadata to clear. 
 
-  - `instance`: The identifier of the asset instance whose metadata to clear.
+  - `item`: The identifier of the item whose metadata to clear.
 
    Emits `MetadataCleared`. 
 
    Weight: `O(1)` 
  
-### create(class: `u32`, admin: `MultiAddress`)
+### create(collection: `u32`, admin: `MultiAddress`)
 - **interface**: `api.tx.uniques.create`
-- **summary**:    Issue a new class of non-fungible assets from a public origin. 
+- **summary**:    Issue a new collection of non-fungible items from a public origin. 
 
-   This new asset class has no assets initially and its owner is the origin. 
+   This new collection has no items initially and its owner is the origin. 
 
    The origin must be Signed and the sender must have sufficient funds free. 
 
-   `AssetDeposit` funds of sender are reserved. 
+   `ItemDeposit` funds of sender are reserved. 
 
    Parameters: 
 
-  - `class`: The identifier of the new asset class. This must not be currently in use.
+  - `collection`: The identifier of the new collection. This must not be currently in use.
 
-  - `admin`: The admin of this class of assets. The admin is the initial address of each member of the asset class's admin team. 
+  - `admin`: The admin of this collection. The admin is the initial address of each member of the collection's admin team. 
 
    Emits `Created` event when successful. 
 
    Weight: `O(1)` 
  
-### destroy(class: `u32`, witness: `PalletUniquesDestroyWitness`)
+### destroy(collection: `u32`, witness: `PalletUniquesDestroyWitness`)
 - **interface**: `api.tx.uniques.destroy`
-- **summary**:    Destroy a class of fungible assets. 
+- **summary**:    Destroy a collection of fungible items. 
 
-   The origin must conform to `ForceOrigin` or must be `Signed` and the sender must be the  owner of the asset `class`. 
+   The origin must conform to `ForceOrigin` or must be `Signed` and the sender must be the  owner of the `collection`. 
 
-   - `class`: The identifier of the asset class to be destroyed. 
+   - `collection`: The identifier of the collection to be destroyed. 
 
-  - `witness`: Information on the instances minted in the asset class. This must be correct. 
+  - `witness`: Information on the items minted in the collection. This must be correct. 
 
    Emits `Destroyed` event when successful. 
 
    Weight: `O(n + m)` where: 
 
-  - `n = witness.instances`
+  - `n = witness.items`
 
-  - `m = witness.instance_metadatas`
+  - `m = witness.item_metadatas`
 
   - `a = witness.attributes`
  
-### forceAssetStatus(class: `u32`, owner: `MultiAddress`, issuer: `MultiAddress`, admin: `MultiAddress`, freezer: `MultiAddress`, free_holding: `bool`, is_frozen: `bool`)
-- **interface**: `api.tx.uniques.forceAssetStatus`
-- **summary**:    Alter the attributes of a given asset. 
-
-   Origin must be `ForceOrigin`. 
-
-   - `class`: The identifier of the asset. 
-
-  - `owner`: The new Owner of this asset.
-
-  - `issuer`: The new Issuer of this asset.
-
-  - `admin`: The new Admin of this asset.
-
-  - `freezer`: The new Freezer of this asset.
-
-  - `free_holding`: Whether a deposit is taken for holding an instance of this asset class. 
-
-  - `is_frozen`: Whether this asset class is frozen except for permissioned/admin instructions. 
-
-   Emits `AssetStatusChanged` with the identity of the asset. 
-
-   Weight: `O(1)` 
- 
-### forceCreate(class: `u32`, owner: `MultiAddress`, free_holding: `bool`)
+### forceCreate(collection: `u32`, owner: `MultiAddress`, free_holding: `bool`)
 - **interface**: `api.tx.uniques.forceCreate`
-- **summary**:    Issue a new class of non-fungible assets from a privileged origin. 
+- **summary**:    Issue a new collection of non-fungible items from a privileged origin. 
 
-   This new asset class has no assets initially. 
+   This new collection has no items initially. 
 
    The origin must conform to `ForceOrigin`. 
 
    Unlike `create`, no funds are reserved. 
 
-   - `class`: The identifier of the new asset. This must not be currently in use. 
+   - `collection`: The identifier of the new item. This must not be currently in use. 
 
-  - `owner`: The owner of this class of assets. The owner has full superuser permissions over this asset, but may later change and configure the permissions using  `transfer_ownership` and `set_team`. 
+  - `owner`: The owner of this collection of items. The owner has full superuser permissions  over this item, but may later change and configure the permissions using  `transfer_ownership` and `set_team`. 
 
    Emits `ForceCreated` event when successful. 
 
    Weight: `O(1)` 
  
-### freeze(class: `u32`, instance: `u32`)
+### forceItemStatus(collection: `u32`, owner: `MultiAddress`, issuer: `MultiAddress`, admin: `MultiAddress`, freezer: `MultiAddress`, free_holding: `bool`, is_frozen: `bool`)
+- **interface**: `api.tx.uniques.forceItemStatus`
+- **summary**:    Alter the attributes of a given item. 
+
+   Origin must be `ForceOrigin`. 
+
+   - `collection`: The identifier of the item. 
+
+  - `owner`: The new Owner of this item.
+
+  - `issuer`: The new Issuer of this item.
+
+  - `admin`: The new Admin of this item.
+
+  - `freezer`: The new Freezer of this item.
+
+  - `free_holding`: Whether a deposit is taken for holding an item of this collection.
+
+  - `is_frozen`: Whether this collection is frozen except for permissioned/admin instructions. 
+
+   Emits `ItemStatusChanged` with the identity of the item. 
+
+   Weight: `O(1)` 
+ 
+### freeze(collection: `u32`, item: `u32`)
 - **interface**: `api.tx.uniques.freeze`
-- **summary**:    Disallow further unprivileged transfer of an asset instance. 
+- **summary**:    Disallow further unprivileged transfer of an item. 
 
-   Origin must be Signed and the sender should be the Freezer of the asset `class`. 
+   Origin must be Signed and the sender should be the Freezer of the `collection`. 
 
-   - `class`: The class of the asset to be frozen. 
+   - `collection`: The collection of the item to be frozen. 
 
-  - `instance`: The instance of the asset to be frozen.
+  - `item`: The item of the item to be frozen.
 
    Emits `Frozen`. 
 
    Weight: `O(1)` 
  
-### freezeClass(class: `u32`)
-- **interface**: `api.tx.uniques.freezeClass`
-- **summary**:    Disallow further unprivileged transfers for a whole asset class. 
+### freezeCollection(collection: `u32`)
+- **interface**: `api.tx.uniques.freezeCollection`
+- **summary**:    Disallow further unprivileged transfers for a whole collection. 
 
-   Origin must be Signed and the sender should be the Freezer of the asset `class`. 
+   Origin must be Signed and the sender should be the Freezer of the `collection`. 
 
-   - `class`: The asset class to be frozen. 
+   - `collection`: The collection to be frozen. 
 
-   Emits `ClassFrozen`. 
+   Emits `CollectionFrozen`. 
 
    Weight: `O(1)` 
  
-### mint(class: `u32`, instance: `u32`, owner: `MultiAddress`)
+### mint(collection: `u32`, item: `u32`, owner: `MultiAddress`)
 - **interface**: `api.tx.uniques.mint`
-- **summary**:    Mint an asset instance of a particular class. 
+- **summary**:    Mint an item of a particular collection. 
 
-   The origin must be Signed and the sender must be the Issuer of the asset `class`. 
+   The origin must be Signed and the sender must be the Issuer of the `collection`. 
 
-   - `class`: The class of the asset to be minted. 
+   - `collection`: The collection of the item to be minted. 
 
-  - `instance`: The instance value of the asset to be minted.
+  - `item`: The item value of the item to be minted.
 
-  - `beneficiary`: The initial owner of the minted asset.
+  - `beneficiary`: The initial owner of the minted item.
 
    Emits `Issued` event when successful. 
 
    Weight: `O(1)` 
  
-### redeposit(class: `u32`, instances: `Vec<u32>`)
+### redeposit(collection: `u32`, items: `Vec<u32>`)
 - **interface**: `api.tx.uniques.redeposit`
-- **summary**:    Reevaluate the deposits on some assets. 
+- **summary**:    Reevaluate the deposits on some items. 
 
-   Origin must be Signed and the sender should be the Owner of the asset `class`. 
+   Origin must be Signed and the sender should be the Owner of the `collection`. 
 
-   - `class`: The class of the asset to be frozen. 
+   - `collection`: The collection to be frozen. 
 
-  - `instances`: The instances of the asset class whose deposits will be reevaluated.
+  - `items`: The items of the collection whose deposits will be reevaluated.
 
-   NOTE: This exists as a best-effort function. Any asset instances which are unknown or  in the case that the owner account does not have reservable funds to pay for a  deposit increase are ignored. Generally the owner isn't going to call this on instances  whose existing deposit is less than the refreshed deposit as it would only cost them,  so it's of little consequence. 
+   NOTE: This exists as a best-effort function. Any items which are unknown or  in the case that the owner account does not have reservable funds to pay for a  deposit increase are ignored. Generally the owner isn't going to call this on items  whose existing deposit is less than the refreshed deposit as it would only cost them,  so it's of little consequence. 
 
-   It will still return an error in the case that the class is unknown of the signer is  not permitted to call it. 
+   It will still return an error in the case that the collection is unknown of the signer  is not permitted to call it. 
 
-   Weight: `O(instances.len())` 
+   Weight: `O(items.len())` 
  
-### setAcceptOwnership(maybe_class: `Option<u32>`)
+### setAcceptOwnership(maybe_collection: `Option<u32>`)
 - **interface**: `api.tx.uniques.setAcceptOwnership`
 - **summary**:    Set (or reset) the acceptance of ownership for a particular account. 
 
-   Origin must be `Signed` and if `maybe_class` is `Some`, then the signer must have a  provider reference. 
+   Origin must be `Signed` and if `maybe_collection` is `Some`, then the signer must have a  provider reference. 
 
-   - `maybe_class`: The identifier of the asset class whose ownership the signer is willing  to accept, or if `None`, an indication that the signer is willing to accept no  ownership transferal. 
+   - `maybe_collection`: The identifier of the collection whose ownership the signer is  willing to accept, or if `None`, an indication that the signer is willing to accept no  ownership transferal. 
 
    Emits `OwnershipAcceptanceChanged`. 
  
-### setAttribute(class: `u32`, maybe_instance: `Option<u32>`, key: `Bytes`, value: `Bytes`)
+### setAttribute(collection: `u32`, maybe_item: `Option<u32>`, key: `Bytes`, value: `Bytes`)
 - **interface**: `api.tx.uniques.setAttribute`
-- **summary**:    Set an attribute for an asset class or instance. 
+- **summary**:    Set an attribute for a collection or item. 
 
-   Origin must be either `ForceOrigin` or Signed and the sender should be the Owner of the  asset `class`. 
+   Origin must be either `ForceOrigin` or Signed and the sender should be the Owner of the  `collection`. 
 
    If the origin is Signed, then funds of signer are reserved according to the formula:  `MetadataDepositBase + DepositPerByte * (key.len + value.len)` taking into  account any already reserved funds. 
 
-   - `class`: The identifier of the asset class whose instance's metadata to set. 
+   - `collection`: The identifier of the collection whose item's metadata to set. 
 
-  - `maybe_instance`: The identifier of the asset instance whose metadata to set.
+  - `maybe_item`: The identifier of the item whose metadata to set.
 
   - `key`: The key of the attribute.
 
@@ -3808,37 +3828,51 @@ ___
 
    Weight: `O(1)` 
  
-### setClassMetadata(class: `u32`, data: `Bytes`, is_frozen: `bool`)
-- **interface**: `api.tx.uniques.setClassMetadata`
-- **summary**:    Set the metadata for an asset class. 
+### setCollectionMaxSupply(collection: `u32`, max_supply: `u32`)
+- **interface**: `api.tx.uniques.setCollectionMaxSupply`
+- **summary**:    Set the maximum amount of items a collection could have. 
 
-   Origin must be either `ForceOrigin` or `Signed` and the sender should be the Owner of  the asset `class`. 
+   Origin must be either `ForceOrigin` or `Signed` and the sender should be the Owner of  the `collection`. 
+
+   Note: This function can only succeed once per collection. 
+
+   - `collection`: The identifier of the collection to change. 
+
+  - `max_supply`: The maximum amount of items a collection could have.
+
+   Emits `CollectionMaxSupplySet` event when successful. 
+ 
+### setCollectionMetadata(collection: `u32`, data: `Bytes`, is_frozen: `bool`)
+- **interface**: `api.tx.uniques.setCollectionMetadata`
+- **summary**:    Set the metadata for a collection. 
+
+   Origin must be either `ForceOrigin` or `Signed` and the sender should be the Owner of  the `collection`. 
 
    If the origin is `Signed`, then funds of signer are reserved according to the formula:  `MetadataDepositBase + DepositPerByte * data.len` taking into  account any already reserved funds. 
 
-   - `class`: The identifier of the asset whose metadata to update. 
+   - `collection`: The identifier of the item whose metadata to update. 
 
-  - `data`: The general information of this asset. Limited in length by `StringLimit`.
+  - `data`: The general information of this item. Limited in length by `StringLimit`.
 
   - `is_frozen`: Whether the metadata should be frozen against further changes.
 
-   Emits `ClassMetadataSet`. 
+   Emits `CollectionMetadataSet`. 
 
    Weight: `O(1)` 
  
-### setMetadata(class: `u32`, instance: `u32`, data: `Bytes`, is_frozen: `bool`)
+### setMetadata(collection: `u32`, item: `u32`, data: `Bytes`, is_frozen: `bool`)
 - **interface**: `api.tx.uniques.setMetadata`
-- **summary**:    Set the metadata for an asset instance. 
+- **summary**:    Set the metadata for an item. 
 
-   Origin must be either `ForceOrigin` or Signed and the sender should be the Owner of the  asset `class`. 
+   Origin must be either `ForceOrigin` or Signed and the sender should be the Owner of the  `collection`. 
 
    If the origin is Signed, then funds of signer are reserved according to the formula:  `MetadataDepositBase + DepositPerByte * data.len` taking into  account any already reserved funds. 
 
-   - `class`: The identifier of the asset class whose instance's metadata to set. 
+   - `collection`: The identifier of the collection whose item's metadata to set. 
 
-  - `instance`: The identifier of the asset instance whose metadata to set.
+  - `item`: The identifier of the item whose metadata to set.
 
-  - `data`: The general information of this asset. Limited in length by `StringLimit`.
+  - `data`: The general information of this item. Limited in length by `StringLimit`.
 
   - `is_frozen`: Whether the metadata should be frozen against further changes.
 
@@ -3846,83 +3880,83 @@ ___
 
    Weight: `O(1)` 
  
-### setTeam(class: `u32`, issuer: `MultiAddress`, admin: `MultiAddress`, freezer: `MultiAddress`)
+### setTeam(collection: `u32`, issuer: `MultiAddress`, admin: `MultiAddress`, freezer: `MultiAddress`)
 - **interface**: `api.tx.uniques.setTeam`
-- **summary**:    Change the Issuer, Admin and Freezer of an asset class. 
+- **summary**:    Change the Issuer, Admin and Freezer of a collection. 
 
-   Origin must be Signed and the sender should be the Owner of the asset `class`. 
+   Origin must be Signed and the sender should be the Owner of the `collection`. 
 
-   - `class`: The asset class whose team should be changed. 
+   - `collection`: The collection whose team should be changed. 
 
-  - `issuer`: The new Issuer of this asset class.
+  - `issuer`: The new Issuer of this collection.
 
-  - `admin`: The new Admin of this asset class.
+  - `admin`: The new Admin of this collection.
 
-  - `freezer`: The new Freezer of this asset class.
+  - `freezer`: The new Freezer of this collection.
 
    Emits `TeamChanged`. 
 
    Weight: `O(1)` 
  
-### thaw(class: `u32`, instance: `u32`)
+### thaw(collection: `u32`, item: `u32`)
 - **interface**: `api.tx.uniques.thaw`
-- **summary**:    Re-allow unprivileged transfer of an asset instance. 
+- **summary**:    Re-allow unprivileged transfer of an item. 
 
-   Origin must be Signed and the sender should be the Freezer of the asset `class`. 
+   Origin must be Signed and the sender should be the Freezer of the `collection`. 
 
-   - `class`: The class of the asset to be thawed. 
+   - `collection`: The collection of the item to be thawed. 
 
-  - `instance`: The instance of the asset to be thawed.
+  - `item`: The item of the item to be thawed.
 
    Emits `Thawed`. 
 
    Weight: `O(1)` 
  
-### thawClass(class: `u32`)
-- **interface**: `api.tx.uniques.thawClass`
-- **summary**:    Re-allow unprivileged transfers for a whole asset class. 
+### thawCollection(collection: `u32`)
+- **interface**: `api.tx.uniques.thawCollection`
+- **summary**:    Re-allow unprivileged transfers for a whole collection. 
 
-   Origin must be Signed and the sender should be the Admin of the asset `class`. 
+   Origin must be Signed and the sender should be the Admin of the `collection`. 
 
-   - `class`: The class to be thawed. 
+   - `collection`: The collection to be thawed. 
 
-   Emits `ClassThawed`. 
+   Emits `CollectionThawed`. 
 
    Weight: `O(1)` 
  
-### transfer(class: `u32`, instance: `u32`, dest: `MultiAddress`)
+### transfer(collection: `u32`, item: `u32`, dest: `MultiAddress`)
 - **interface**: `api.tx.uniques.transfer`
-- **summary**:    Move an asset from the sender account to another. 
+- **summary**:    Move an item from the sender account to another. 
 
    Origin must be Signed and the signing account must be either: 
 
-  - the Admin of the asset `class`;
+  - the Admin of the `collection`;
 
-  - the Owner of the asset `instance`;
+  - the Owner of the `item`;
 
-  - the approved delegate for the asset `instance` (in this case, the approval is reset).
+  - the approved delegate for the `item` (in this case, the approval is reset).
 
    Arguments: 
 
-  - `class`: The class of the asset to be transferred.
+  - `collection`: The collection of the item to be transferred.
 
-  - `instance`: The instance of the asset to be transferred.
+  - `item`: The item of the item to be transferred.
 
-  - `dest`: The account to receive ownership of the asset.
+  - `dest`: The account to receive ownership of the item.
 
    Emits `Transferred`. 
 
    Weight: `O(1)` 
  
-### transferOwnership(class: `u32`, owner: `MultiAddress`)
+### transferOwnership(collection: `u32`, owner: `MultiAddress`)
 - **interface**: `api.tx.uniques.transferOwnership`
-- **summary**:    Change the Owner of an asset class. 
+- **summary**:    Change the Owner of a collection. 
 
-   Origin must be Signed and the sender should be the Owner of the asset `class`. 
+   Origin must be Signed and the sender should be the Owner of the `collection`. 
 
-   - `class`: The asset class whose owner should be changed. 
+   - `collection`: The collection whose owner should be changed. 
 
-  - `owner`: The new Owner of this asset class. They must have called `set_accept_ownership` with `class` in order for this operation to succeed. 
+  - `owner`: The new Owner of this collection. They must have called `set_accept_ownership` with `collection` in order for this operation to succeed. 
 
    Emits `OwnerChanged`. 
 

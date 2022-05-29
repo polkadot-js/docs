@@ -513,7 +513,12 @@ ___
 
 ## mmr
  
-### generateProof(leafIndex: `u64`, at?: `BlockHash`): `MmrLeafProof`
+### generateBatchProof(leafIndices: `Vec<u64>`, at?: `BlockHash`): `MmrLeafProof`
+- **interface**: `api.rpc.mmr.generateBatchProof`
+- **jsonrpc**: `mmr_generateBatchProof`
+- **summary**: Generate MMR proof for the given leaf indices.
+ 
+### generateProof(leafIndex: `u64`, at?: `BlockHash`): `MmrLeafBatchProof`
 - **interface**: `api.rpc.mmr.generateProof`
 - **jsonrpc**: `mmr_generateProof`
 - **summary**: Generate MMR proof for given leaf index.
