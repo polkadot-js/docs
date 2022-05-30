@@ -2995,7 +2995,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@polkadot/typegen@npm:^8.6.0":
+"@polkadot/typegen@npm:^8.6.1":
   version: 8.6.1
   resolution: "@polkadot/typegen@npm:8.6.1"
   dependencies:
@@ -12563,7 +12563,7 @@ __metadata:
     "@docusaurus/preset-classic": 2.0.0-beta.19
     "@mdx-js/react": ^1.6.22
     "@polkadot/dev": ^0.66.30
-    "@polkadot/typegen": ^8.6.0
+    "@polkadot/typegen": ^8.6.1
     clsx: ^1.1.1
     react: ^18.1.0
     react-dom: ^18.1.0
