@@ -48,11 +48,12 @@ To display or act on these events, we can do the following -
 // Make a transfer from Alice to BOB, waiting for inclusion
 const unsub = await api.tx.balances
   .transfer(BOB, 12345)
-  .signAndSend(alice, ({ events = [], status }) => {
+  .signAndSend(alice, ({ events = [], status, txHash }) => {
     console.log(`Current status is ${status.type}`);
 
     if (status.isFinalized) {
       console.log(`Transaction included at blockHash ${status.asFinalized}`);
+      console.log(`Transaction hash ${txHash.toHex()}`);
 
       // Loop through Vec<EventRecord> to display all events
       events.forEach(({ phase, event: { data, method, section } }) => {
