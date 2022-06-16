@@ -6,6 +6,8 @@ The following sections contain the module constants, also known as parameter typ
 
 (NOTE: These were generated from a static/snapshot view of a recent Substrate master node. Some items may not be available in older nodes, or in any customized implementations.)
 
+- **[alliance](#alliance)**
+
 - **[assets](#assets)**
 
 - **[authorship](#authorship)**
@@ -48,6 +50,8 @@ The following sections contain the module constants, also known as parameter typ
 
 - **[proxy](#proxy)**
 
+- **[rankedPolls](#rankedpolls)**
+
 - **[recovery](#recovery)**
 
 - **[referenda](#referenda)**
@@ -57,6 +61,8 @@ The following sections contain the module constants, also known as parameter typ
 - **[society](#society)**
 
 - **[staking](#staking)**
+
+- **[stateTrieMigration](#statetriemigration)**
 
 - **[system](#system)**
 
@@ -74,6 +80,31 @@ The following sections contain the module constants, also known as parameter typ
 
 - **[vesting](#vesting)**
 
+
+___
+
+
+## alliance
+ 
+### allyDeposit: `u128`
+- **interface**: `api.consts.alliance.allyDeposit`
+- **summary**:    The deposit required for submitting candidacy. 
+ 
+### maxAnnouncementsCount: `u32`
+- **interface**: `api.consts.alliance.maxAnnouncementsCount`
+- **summary**:    The maximum number of announcements. 
+ 
+### maxMembersCount: `u32`
+- **interface**: `api.consts.alliance.maxMembersCount`
+- **summary**:    The maximum number of members per member role. Should not exceed the sum of  `MaxFounders` and `MaxFellows`. 
+ 
+### maxUnscrupulousItems: `u32`
+- **interface**: `api.consts.alliance.maxUnscrupulousItems`
+- **summary**:    The maximum number of the unscrupulous items supported by the pallet. 
+ 
+### maxWebsiteUrlLength: `u32`
+- **interface**: `api.consts.alliance.maxWebsiteUrlLength`
+- **summary**:    The maximum length of a website URL. 
 
 ___
 
@@ -257,7 +288,7 @@ ___
 
    For more information check out: <https://github.com/paritytech/substrate/issues/10301> 
 
-   [`DefaultContractAccessWeight`] is a safe default to be used for polkadot or kusama  parachains. 
+   [`DefaultContractAccessWeight`] is a safe default to be used for Polkadot or Kusama  parachains. 
 
    #### Note 
 
@@ -665,6 +696,27 @@ ___
 ___
 
 
+## rankedPolls
+ 
+### alarmInterval: `u32`
+- **interface**: `api.consts.rankedPolls.alarmInterval`
+- **summary**:    Quantization level for the referendum wakeup scheduler. A higher number will result in  fewer storage reads/writes needed for smaller voters, but also result in delays to the  automatic referendum status changes. Explicit servicing instructions are unaffected. 
+ 
+### maxQueued: `u32`
+- **interface**: `api.consts.rankedPolls.maxQueued`
+- **summary**:    Maximum size of the referendum queue for a single track. 
+ 
+### submissionDeposit: `u128`
+- **interface**: `api.consts.rankedPolls.submissionDeposit`
+- **summary**:    The minimum amount to be used as a deposit for a public referendum proposal. 
+ 
+### undecidingTimeout: `u32`
+- **interface**: `api.consts.rankedPolls.undecidingTimeout`
+- **summary**:    The number of blocks after submission that a referendum must begin being decided by.  Once this passes, then anyone may cancel the referendum. 
+
+___
+
+
 ## recovery
  
 ### configDepositBase: `u128`
@@ -798,6 +850,31 @@ ___
 - **summary**:    Number of eras that slashes are deferred by, after computation. 
 
    This should be less than the bonding duration. Set to 0 if slashes  should be applied immediately, without opportunity for intervention. 
+
+___
+
+
+## stateTrieMigration
+ 
+### maxKeyLen: `u32`
+- **interface**: `api.consts.stateTrieMigration.maxKeyLen`
+- **summary**:    Maximal number of bytes that a key can have. 
+
+   FRAME itself does not limit the key length.  The concrete value must therefore depend on your storage usage.  A [`frame_support::storage::StorageNMap`] for example can have an arbitrary number of  keys which are then hashed and concatenated, resulting in arbitrarily long keys. 
+
+   Use the *state migration RPC* to retrieve the length of the longest key in your  storage: <https://github.com/paritytech/substrate/issues/11642> 
+
+   The migration will halt with a `Halted` event if this value is too small.  Since there is no real penalty from over-estimating, it is advised to use a large  value. The default is 512 byte. 
+
+   Some key lengths for reference: 
+
+  - [`frame_support::storage::StorageValue`]: 32 byte
+
+  - [`frame_support::storage::StorageMap`]: 64 byte
+
+  - [`frame_support::storage::StorageDoubleMap`]: 96 byte
+
+   For more info see  <https://www.shawntabrizi.com/substrate/querying-substrate-storage-via-rpc/> 
 
 ___
 

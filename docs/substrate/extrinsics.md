@@ -6,6 +6,10 @@ The following sections contain Extrinsics methods are part of the default Substr
 
 (NOTE: These were generated from a static/snapshot view of a recent Substrate master node. Some items may not be available in older nodes, or in any customized implementations.)
 
+- **[alliance](#alliance)**
+
+- **[allianceMotion](#alliancemotion)**
+
 - **[assets](#assets)**
 
 - **[authorship](#authorship)**
@@ -52,6 +56,10 @@ The following sections contain Extrinsics methods are part of the default Substr
 
 - **[proxy](#proxy)**
 
+- **[rankedCollective](#rankedcollective)**
+
+- **[rankedPolls](#rankedpolls)**
+
 - **[recovery](#recovery)**
 
 - **[referenda](#referenda)**
@@ -92,6 +100,160 @@ The following sections contain Extrinsics methods are part of the default Substr
 
 - **[whitelist](#whitelist)**
 
+
+___
+
+
+## alliance
+ 
+### addUnscrupulousItems(items: `Vec<PalletAllianceUnscrupulousItem>`)
+- **interface**: `api.tx.alliance.addUnscrupulousItems`
+- **summary**:    Add accounts or websites to the list of unscrupulous items. 
+ 
+### announce(announcement: `PalletAllianceCid`)
+- **interface**: `api.tx.alliance.announce`
+- **summary**:    Make an announcement of a new IPFS CID about alliance issues. 
+ 
+### close(proposal_hash: `H256`, index: `Compact<u32>`, proposal_weight_bound: `Compact<u64>`, length_bound: `Compact<u32>`)
+- **interface**: `api.tx.alliance.close`
+- **summary**:    Close a vote that is either approved, disapproved, or whose voting period has ended. 
+
+   Requires the sender to be a founder or fellow. 
+ 
+### elevateAlly(ally: `MultiAddress`)
+- **interface**: `api.tx.alliance.elevateAlly`
+- **summary**:    Elevate an ally to fellow. 
+ 
+### initMembers(founders: `Vec<AccountId32>`, fellows: `Vec<AccountId32>`, allies: `Vec<AccountId32>`)
+- **interface**: `api.tx.alliance.initMembers`
+- **summary**:    Initialize the founders, fellows, and allies. 
+
+   This should only be called once, and must be called by the Root origin. 
+ 
+### joinAlliance()
+- **interface**: `api.tx.alliance.joinAlliance`
+- **summary**:    Submit oneself for candidacy. A fixed deposit is reserved. 
+ 
+### kickMember(who: `MultiAddress`)
+- **interface**: `api.tx.alliance.kickMember`
+- **summary**:    Kick a member from the alliance and slash its deposit. 
+ 
+### nominateAlly(who: `MultiAddress`)
+- **interface**: `api.tx.alliance.nominateAlly`
+- **summary**:    A founder or fellow can nominate someone to join the alliance as an Ally.  There is no deposit required to the nominator or nominee. 
+ 
+### propose(threshold: `Compact<u32>`, proposal: `Call`, length_bound: `Compact<u32>`)
+- **interface**: `api.tx.alliance.propose`
+- **summary**:    Add a new proposal to be voted on. 
+
+   Requires the sender to be a founder or fellow. 
+ 
+### removeAnnouncement(announcement: `PalletAllianceCid`)
+- **interface**: `api.tx.alliance.removeAnnouncement`
+- **summary**:    Remove an announcement. 
+ 
+### removeUnscrupulousItems(items: `Vec<PalletAllianceUnscrupulousItem>`)
+- **interface**: `api.tx.alliance.removeUnscrupulousItems`
+- **summary**:    Deem an item no longer unscrupulous. 
+ 
+### retire()
+- **interface**: `api.tx.alliance.retire`
+- **summary**:    As a member, retire from the alliance and unreserve the deposit. 
+ 
+### setRule(rule: `PalletAllianceCid`)
+- **interface**: `api.tx.alliance.setRule`
+- **summary**:    Set a new IPFS CID to the alliance rule. 
+ 
+### veto(proposal_hash: `H256`)
+- **interface**: `api.tx.alliance.veto`
+- **summary**:    Veto a proposal about `set_rule` and `elevate_ally`, close, and remove it from the  system, regardless of its current state. 
+
+   Must be called by a founder. 
+ 
+### vote(proposal: `H256`, index: `Compact<u32>`, approve: `bool`)
+- **interface**: `api.tx.alliance.vote`
+- **summary**:    Add an aye or nay vote for the sender to the given proposal. 
+
+   Requires the sender to be a founder or fellow. 
+
+___
+
+
+## allianceMotion
+ 
+### close(proposal_hash: `H256`, index: `Compact<u32>`, proposal_weight_bound: `Compact<u64>`, length_bound: `Compact<u32>`)
+- **interface**: `api.tx.allianceMotion.close`
+- **summary**:    Close a vote that is either approved, disapproved or whose voting period has ended. 
+
+   May be called by any signed account in order to finish voting and close the proposal. 
+
+   If called before the end of the voting period it will only close the vote if it is  has enough votes to be approved or disapproved. 
+
+   If called after the end of the voting period abstentions are counted as rejections  unless there is a prime member set and the prime member cast an approval. 
+
+   If the close operation completes successfully with disapproval, the transaction fee will  be waived. Otherwise execution of the approved operation will be charged to the caller. 
+
+   + `proposal_weight_bound`: The maximum amount of weight consumed by executing the closed  proposal.  + `length_bound`: The upper bound for the length of the proposal in storage. Checked via  `storage::read` so it is `size_of::<u32>() == 4` larger than the pure length. 
+
+    
+ 
+### disapproveProposal(proposal_hash: `H256`)
+- **interface**: `api.tx.allianceMotion.disapproveProposal`
+- **summary**:    Disapprove a proposal, close, and remove it from the system, regardless of its current  state. 
+
+   Must be called by the Root origin. 
+
+   Parameters: 
+
+  * `proposal_hash`: The hash of the proposal that should be disapproved.
+
+    
+ 
+### execute(proposal: `Call`, length_bound: `Compact<u32>`)
+- **interface**: `api.tx.allianceMotion.execute`
+- **summary**:    Dispatch a proposal from a member using the `Member` origin. 
+
+   Origin must be a member of the collective. 
+
+    
+ 
+### propose(threshold: `Compact<u32>`, proposal: `Call`, length_bound: `Compact<u32>`)
+- **interface**: `api.tx.allianceMotion.propose`
+- **summary**:    Add a new proposal to either be voted on or executed directly. 
+
+   Requires the sender to be member. 
+
+   `threshold` determines whether `proposal` is executed directly (`threshold < 2`)  or put up for voting. 
+
+    
+ 
+### setMembers(new_members: `Vec<AccountId32>`, prime: `Option<AccountId32>`, old_count: `u32`)
+- **interface**: `api.tx.allianceMotion.setMembers`
+- **summary**:    Set the collective's membership. 
+
+   - `new_members`: The new member list. Be nice to the chain and provide it sorted. 
+
+  - `prime`: The prime member whose vote sets the default.
+
+  - `old_count`: The upper bound for the previous number of members in storage. Used for weight estimation. 
+
+   Requires root origin. 
+
+   NOTE: Does not enforce the expected `MaxMembers` limit on the amount of members, but  the weight estimations rely on it to estimate dispatchable weight. 
+
+   #### WARNING: 
+
+   The `pallet-collective` can also be managed by logic outside of the pallet through the  implementation of the trait [`ChangeMembers`].  Any call to `set_members` must be careful that the member set doesn't get out of sync  with other logic managing the member set. 
+
+    
+ 
+### vote(proposal: `H256`, index: `Compact<u32>`, approve: `bool`)
+- **interface**: `api.tx.allianceMotion.vote`
+- **summary**:    Add an aye or nay vote for the sender to the given proposal. 
+
+   Requires the sender to be a member. 
+
+   Transaction fees will be waived if the member is voting on any particular proposal  for the first time and the call is successful. Subsequent vote changes will charge a  fee.   
 
 ___
 
@@ -960,7 +1122,7 @@ ___
 
 ## convictionVoting
  
-### delegate(class: `u8`, to: `AccountId32`, conviction: `PalletConvictionVotingConviction`, balance: `u128`)
+### delegate(class: `u16`, to: `AccountId32`, conviction: `PalletConvictionVotingConviction`, balance: `u128`)
 - **interface**: `api.tx.convictionVoting.delegate`
 - **summary**:    Delegate the voting power (with some given conviction) of the sending account for a  particular class of polls. 
 
@@ -984,7 +1146,7 @@ ___
 
    Weight: `O(R)` where R is the number of polls the voter delegating to has  voted on. Weight is initially charged as if maximum votes, but is refunded later. 
  
-### removeOtherVote(target: `AccountId32`, class: `u8`, index: `u32`)
+### removeOtherVote(target: `AccountId32`, class: `u16`, index: `u32`)
 - **interface**: `api.tx.convictionVoting.removeOtherVote`
 - **summary**:    Remove a vote for a poll. 
 
@@ -1000,7 +1162,7 @@ ___
 
    Weight: `O(R + log R)` where R is the number of polls that `target` has voted on.  Weight is calculated for the maximum number of vote. 
  
-### removeVote(class: `Option<u8>`, index: `u32`)
+### removeVote(class: `Option<u16>`, index: `u32`)
 - **interface**: `api.tx.convictionVoting.removeVote`
 - **summary**:    Remove a vote for a poll. 
 
@@ -1036,7 +1198,7 @@ ___
 
    Weight: `O(R + log R)` where R is the number of polls that `target` has voted on.  Weight is calculated for the maximum number of vote. 
  
-### undelegate(class: `u8`)
+### undelegate(class: `u16`)
 - **interface**: `api.tx.convictionVoting.undelegate`
 - **summary**:    Undelegate the voting power of the sending account for a particular class of polls. 
 
@@ -1050,7 +1212,7 @@ ___
 
    Weight: `O(R)` where R is the number of polls the voter delegating to has  voted on. Weight is initially charged as if maximum votes, but is refunded later. 
  
-### unlock(class: `u8`, target: `AccountId32`)
+### unlock(class: `u16`, target: `AccountId32`)
 - **interface**: `api.tx.convictionVoting.unlock`
 - **summary**:    Remove the lock caused prior voting/delegating which has expired within a particluar  class. 
 
@@ -1650,7 +1812,11 @@ ___
  
 ### noteStalled(delay: `u32`, best_finalized_block_number: `u32`)
 - **interface**: `api.tx.grandpa.noteStalled`
-- **summary**:    Note that the current authority set of the GRANDPA finality gadget has  stalled. This will trigger a forced authority set change at the beginning  of the next session, to be enacted `delay` blocks after that. The delay  should be high enough to safely assume that the block signalling the  forced change will not be re-orged (e.g. 1000 blocks). The GRANDPA voters  will start the new authority set using the given finalized block as base.  Only callable by root. 
+- **summary**:    Note that the current authority set of the GRANDPA finality gadget has stalled. 
+
+   This will trigger a forced authority set change at the beginning of the next session, to  be enacted `delay` blocks after that. The `delay` should be high enough to safely assume  that the block signalling the forced change will not be re-orged e.g. 1000 blocks.  The block production rate (which may be slowed down because of finality lagging) should  be taken into account when choosing the `delay`. The GRANDPA voters based on the new  authority will start voting on top of `best_finalized_block_number` for new finalized  blocks. `best_finalized_block_number` should be the highest of the latest finalized  block of all validators of the new authority set. 
+
+   Only callable by root. 
  
 ### reportEquivocation(equivocation_proof: `SpFinalityGrandpaEquivocationProof`, key_owner_proof: `SpSessionMembershipProof`)
 - **interface**: `api.tx.grandpa.reportEquivocation`
@@ -2066,6 +2232,14 @@ ___
 
    Additional funds can come from either the free balance of the account, of from the  accumulated rewards, see [`BondExtra`]. 
  
+### chill(pool_id: `u32`)
+- **interface**: `api.tx.nominationPools.chill`
+- **summary**:    Chill on behalf of the pool. 
+
+   The dispatch origin of this call must be signed by the pool nominator or the pool  root role, same as [`Pallet::nominate`]. 
+
+   This directly forward the call to the staking pallet, on behalf of the pool bonded  account. 
+ 
 ### claimPayout()
 - **interface**: `api.tx.nominationPools.claimPayout`
 - **summary**:    A bonded member can use this to claim their payout based on the rewards that the pool  has accumulated since their last claimed payout (OR since joining if this is there first  time claiming rewards). The payout will be transferred to the member's account. 
@@ -2108,6 +2282,11 @@ ___
  
 ### nominate(pool_id: `u32`, validators: `Vec<AccountId32>`)
 - **interface**: `api.tx.nominationPools.nominate`
+- **summary**:    Nominate on behalf of the pool. 
+
+   The dispatch origin of this call must be signed by the pool nominator or the pool  root role. 
+
+   This directly forward the call to the staking pallet, on behalf of the pool bonded  account. 
  
 ### poolWithdrawUnbonded(pool_id: `u32`, num_slashing_spans: `u32`)
 - **interface**: `api.tx.nominationPools.poolWithdrawUnbonded`
@@ -2133,13 +2312,19 @@ ___
  
 ### setMetadata(pool_id: `u32`, metadata: `Bytes`)
 - **interface**: `api.tx.nominationPools.setMetadata`
+- **summary**:    Set a new metadata for the pool. 
+
+   The dispatch origin of this call must be signed by the state toggler, or the root role  of the pool. 
  
 ### setState(pool_id: `u32`, state: `PalletNominationPoolsPoolState`)
 - **interface**: `api.tx.nominationPools.setState`
+- **summary**:    Set a new state for the pool. 
+
+   The dispatch origin of this call must be signed by the state toggler, or the root role  of the pool. 
  
 ### unbond(member_account: `AccountId32`, unbonding_points: `Compact<u128>`)
 - **interface**: `api.tx.nominationPools.unbond`
-- **summary**:    Unbond up to `unbonding_points` of the `member_account`'s funds from the pool. It  implicitly collects the rewards one last time, since not doing so would mean some  rewards would go forfeited. 
+- **summary**:    Unbond up to `unbonding_points` of the `member_account`'s funds from the pool. It  implicitly collects the rewards one last time, since not doing so would mean some  rewards would be forfeited. 
 
    Under certain conditions, this call can be dispatched permissionlessly (i.e. by any  account). 
 
@@ -2394,6 +2579,164 @@ ___
 ___
 
 
+## rankedCollective
+ 
+### addMember(who: `AccountId32`)
+- **interface**: `api.tx.rankedCollective.addMember`
+- **summary**:    Introduce a new member. 
+
+   - `origin`: Must be the `AdminOrigin`. 
+
+  - `who`: Account of non-member which will become a member.
+
+  - `rank`: The rank to give the new member.
+
+   Weight: `O(1)` 
+ 
+### cleanupPoll(poll_index: `u32`, max: `u32`)
+- **interface**: `api.tx.rankedCollective.cleanupPoll`
+- **summary**:    Remove votes from the given poll. It must have ended. 
+
+   - `origin`: Must be `Signed` by any account. 
+
+  - `poll_index`: Index of a poll which is completed and for which votes continue to exist. 
+
+  - `max`: Maximum number of vote items from remove in this call.
+
+   Transaction fees are waived if the operation is successful. 
+
+   Weight `O(max)` (less if there are fewer items to remove than `max`). 
+ 
+### demoteMember(who: `AccountId32`)
+- **interface**: `api.tx.rankedCollective.demoteMember`
+- **summary**:    Decrement the rank of an existing member by one. If the member is already at rank zero,  then they are removed entirely. 
+
+   - `origin`: Must be the `AdminOrigin`. 
+
+  - `who`: Account of existing member of rank greater than zero.
+
+   Weight: `O(1)`, less if the member's index is highest in its rank. 
+ 
+### promoteMember(who: `AccountId32`)
+- **interface**: `api.tx.rankedCollective.promoteMember`
+- **summary**:    Increment the rank of an existing member by one. 
+
+   - `origin`: Must be the `AdminOrigin`. 
+
+  - `who`: Account of existing member.
+
+   Weight: `O(1)` 
+ 
+### removeMember(who: `AccountId32`, min_rank: `u16`)
+- **interface**: `api.tx.rankedCollective.removeMember`
+- **summary**:    Remove the member entirely. 
+
+   - `origin`: Must be the `AdminOrigin`. 
+
+  - `who`: Account of existing member of rank greater than zero.
+
+  - `min_rank`: The rank of the member or greater.
+
+   Weight: `O(min_rank)`. 
+ 
+### vote(poll: `u32`, aye: `bool`)
+- **interface**: `api.tx.rankedCollective.vote`
+- **summary**:    Add an aye or nay vote for the sender to the given proposal. 
+
+   - `origin`: Must be `Signed` by a member account. 
+
+  - `poll`: Index of a poll which is ongoing.
+
+  - `aye`: `true` if the vote is to approve the proposal, `false` otherwise.
+
+   Transaction fees are be waived if the member is voting on any particular proposal  for the first time and the call is successful. Subsequent vote changes will charge a  fee. 
+
+   Weight: `O(1)`, less if there was no previous vote on the poll by the member. 
+
+___
+
+
+## rankedPolls
+ 
+### cancel(index: `u32`)
+- **interface**: `api.tx.rankedPolls.cancel`
+- **summary**:    Cancel an ongoing referendum. 
+
+   - `origin`: must be the `CancelOrigin`. 
+
+  - `index`: The index of the referendum to be cancelled.
+
+   Emits `Cancelled`. 
+ 
+### kill(index: `u32`)
+- **interface**: `api.tx.rankedPolls.kill`
+- **summary**:    Cancel an ongoing referendum and slash the deposits. 
+
+   - `origin`: must be the `KillOrigin`. 
+
+  - `index`: The index of the referendum to be cancelled.
+
+   Emits `Killed` and `DepositSlashed`. 
+ 
+### nudgeReferendum(index: `u32`)
+- **interface**: `api.tx.rankedPolls.nudgeReferendum`
+- **summary**:    Advance a referendum onto its next logical state. Only used internally. 
+
+   - `origin`: must be `Root`. 
+
+  - `index`: the referendum to be advanced.
+ 
+### oneFewerDeciding(track: `u16`)
+- **interface**: `api.tx.rankedPolls.oneFewerDeciding`
+- **summary**:    Advance a track onto its next logical state. Only used internally. 
+
+   - `origin`: must be `Root`. 
+
+  - `track`: the track to be advanced.
+
+   Action item for when there is now one fewer referendum in the deciding phase and the  `DecidingCount` is not yet updated. This means that we should either: 
+
+  - begin deciding another referendum (and leave `DecidingCount` alone); or
+
+  - decrement `DecidingCount`.
+ 
+### placeDecisionDeposit(index: `u32`)
+- **interface**: `api.tx.rankedPolls.placeDecisionDeposit`
+- **summary**:    Post the Decision Deposit for a referendum. 
+
+   - `origin`: must be `Signed` and the account must have funds available for the  referendum's track's Decision Deposit. 
+
+  - `index`: The index of the submitted referendum whose Decision Deposit is yet to be posted. 
+
+   Emits `DecisionDepositPlaced`. 
+ 
+### refundDecisionDeposit(index: `u32`)
+- **interface**: `api.tx.rankedPolls.refundDecisionDeposit`
+- **summary**:    Refund the Decision Deposit for a closed referendum back to the depositor. 
+
+   - `origin`: must be `Signed` or `Root`. 
+
+  - `index`: The index of a closed referendum whose Decision Deposit has not yet been refunded. 
+
+   Emits `DecisionDepositRefunded`. 
+ 
+### submit(proposal_origin: `NodeRuntimeOriginCaller`, proposal_hash: `H256`, enactment_moment: `FrameSupportScheduleDispatchTime`)
+- **interface**: `api.tx.rankedPolls.submit`
+- **summary**:    Propose a referendum on a privileged action. 
+
+   - `origin`: must be `SubmitOrigin` and the account must have `SubmissionDeposit` funds  available. 
+
+  - `proposal_origin`: The origin from which the proposal should be executed.
+
+  - `proposal_hash`: The hash of the proposal preimage.
+
+  - `enactment_moment`: The moment that the proposal should be enacted.
+
+   Emits `Submitted`. 
+
+___
+
+
 ## recovery
  
 ### asRecovered(account: `AccountId32`, call: `Call`)
@@ -2537,7 +2880,7 @@ ___
 
   - `index`: the referendum to be advanced.
  
-### oneFewerDeciding(track: `u8`)
+### oneFewerDeciding(track: `u16`)
 - **interface**: `api.tx.referenda.oneFewerDeciding`
 - **summary**:    Advance a track onto its next logical state. Only used internally. 
 
@@ -2575,7 +2918,7 @@ ___
 - **interface**: `api.tx.referenda.submit`
 - **summary**:    Propose a referendum on a privileged action. 
 
-   - `origin`: must be `Signed` and the account must have `SubmissionDeposit` funds  available. 
+   - `origin`: must be `SubmitOrigin` and the account must have `SubmissionDeposit` funds  available. 
 
   - `proposal_origin`: The origin from which the proposal should be executed.
 
@@ -3548,6 +3891,18 @@ ___
    Errors: 
 
   - `ProposalNotApproved`: The `proposal_id` supplied was not found in the approval queue, i.e., the proposal has not been approved. This could also mean the proposal does not  exist altogether, thus there is no way it would have been approved in the first place. 
+ 
+### spend(amount: `Compact<u128>`, beneficiary: `MultiAddress`)
+- **interface**: `api.tx.treasury.spend`
+- **summary**:    Propose and approve a spend of treasury funds. 
+
+   - `origin`: Must be `SpendOrigin` with the `Success` value being at least `amount`. 
+
+  - `amount`: The amount to be transferred from the treasury to the `beneficiary`.
+
+  - `beneficiary`: The destination account for the transfer.
+
+   NOTE: For record-keeping purposes, the proposer is deemed to be equivalent to the  beneficiary. 
 
 ___
 
