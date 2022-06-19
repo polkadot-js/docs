@@ -84,6 +84,8 @@ Events are emitted for certain operations on the runtime. The following sections
 
 - **[tips](#tips)**
 
+- **[transactionPayment](#transactionpayment)**
+
 - **[transactionStorage](#transactionstorage)**
 
 - **[treasury](#treasury)**
@@ -1347,6 +1349,15 @@ ___
 ### TipSlashed(`H256`, `AccountId32`, `u128`)
 - **interface**: `api.events.tips.TipSlashed.is`
 - **summary**:    A tip suggestion has been slashed. 
+
+___
+
+
+## transactionPayment
+ 
+### TransactionFeePaid(`AccountId32`, `u128`, `u128`)
+- **interface**: `api.events.transactionPayment.TransactionFeePaid.is`
+- **summary**:    A transaction fee `actual_fee`, of which `tip` was added to the minimum inclusion fee,  has been paid by `who`. 
 
 ___
 

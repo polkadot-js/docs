@@ -1640,14 +1640,6 @@ ___
 - **interface**: `api.query.transactionStorage.entryFee`
 - **summary**:    Storage fee per transaction. 
  
-### maxBlockTransactions(): `u32`
-- **interface**: `api.query.transactionStorage.maxBlockTransactions`
-- **summary**:    Maximum number of indexed transactions in the block. 
- 
-### maxTransactionSize(): `u32`
-- **interface**: `api.query.transactionStorage.maxTransactionSize`
-- **summary**:    Maximum data set in a single transaction in bytes. 
- 
 ### proofChecked(): `bool`
 - **interface**: `api.query.transactionStorage.proofChecked`
 - **summary**:    Was the proof checked in this block? 
