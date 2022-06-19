@@ -6,6 +6,10 @@ This page lists the errors that can be encountered in the different modules.
 
 (NOTE: These were generated from a static/snapshot view of a recent Substrate master node. Some items may not be available in older nodes, or in any customized implementations.)
 
+- **[alliance](#alliance)**
+
+- **[allianceMotion](#alliancemotion)**
+
 - **[assets](#assets)**
 
 - **[authorship](#authorship)**
@@ -52,6 +56,10 @@ This page lists the errors that can be encountered in the different modules.
 
 - **[proxy](#proxy)**
 
+- **[rankedCollective](#rankedcollective)**
+
+- **[rankedPolls](#rankedpolls)**
+
 - **[recovery](#recovery)**
 
 - **[referenda](#referenda)**
@@ -90,6 +98,140 @@ This page lists the errors that can be encountered in the different modules.
 
 - **[whitelist](#whitelist)**
 
+
+___
+
+
+## alliance
+ 
+### AccountNonGrata
+- **interface**: `api.errors.alliance.AccountNonGrata.is`
+- **summary**:    Account has been deemed unscrupulous by the Alliance and is not welcome to join or be  nominated. 
+ 
+### AlreadyElevated
+- **interface**: `api.errors.alliance.AlreadyElevated.is`
+- **summary**:    Account is already an elevated (fellow) member. 
+ 
+### AlreadyMember
+- **interface**: `api.errors.alliance.AlreadyMember.is`
+- **summary**:    Account is already a member. 
+ 
+### AlreadyUnscrupulous
+- **interface**: `api.errors.alliance.AlreadyUnscrupulous.is`
+- **summary**:    Item is already listed as unscrupulous. 
+ 
+### InsufficientFunds
+- **interface**: `api.errors.alliance.InsufficientFunds.is`
+- **summary**:    Balance is insufficient for the required deposit. 
+ 
+### MembersAlreadyInitialized
+- **interface**: `api.errors.alliance.MembersAlreadyInitialized.is`
+- **summary**:    The founders/fellows/allies have already been initialized. 
+ 
+### MissingAnnouncement
+- **interface**: `api.errors.alliance.MissingAnnouncement.is`
+- **summary**:    The announcement is not found. 
+ 
+### MissingProposalHash
+- **interface**: `api.errors.alliance.MissingProposalHash.is`
+- **summary**:    The proposal hash is not found. 
+ 
+### NotAlly
+- **interface**: `api.errors.alliance.NotAlly.is`
+- **summary**:    Account is not an ally. 
+ 
+### NotFounder
+- **interface**: `api.errors.alliance.NotFounder.is`
+- **summary**:    Account is not a founder. 
+ 
+### NotListedAsUnscrupulous
+- **interface**: `api.errors.alliance.NotListedAsUnscrupulous.is`
+- **summary**:    Item has not been deemed unscrupulous. 
+ 
+### NotMember
+- **interface**: `api.errors.alliance.NotMember.is`
+- **summary**:    Account is not a member. 
+ 
+### NotVetoableProposal
+- **interface**: `api.errors.alliance.NotVetoableProposal.is`
+- **summary**:    The proposal is not vetoable. 
+ 
+### NoVotingRights
+- **interface**: `api.errors.alliance.NoVotingRights.is`
+- **summary**:    Account does not have voting rights. 
+ 
+### TooLongWebsiteUrl
+- **interface**: `api.errors.alliance.TooLongWebsiteUrl.is`
+- **summary**:    Length of website URL exceeds `MaxWebsiteUrlLength`. 
+ 
+### TooManyAnnouncements
+- **interface**: `api.errors.alliance.TooManyAnnouncements.is`
+- **summary**:    Number of announcements exceeds `MaxAnnouncementsCount`. 
+ 
+### TooManyMembers
+- **interface**: `api.errors.alliance.TooManyMembers.is`
+- **summary**:    Number of members exceeds `MaxMembersCount`. 
+ 
+### TooManyUnscrupulousItems
+- **interface**: `api.errors.alliance.TooManyUnscrupulousItems.is`
+- **summary**:    The number of unscrupulous items exceeds `MaxUnscrupulousItems`. 
+ 
+### UpForKicking
+- **interface**: `api.errors.alliance.UpForKicking.is`
+- **summary**:    This member is up for being kicked from the Alliance and cannot perform this operation. 
+ 
+### WithoutGoodIdentityJudgement
+- **interface**: `api.errors.alliance.WithoutGoodIdentityJudgement.is`
+- **summary**:    The account's identity has no good judgement. 
+ 
+### WithoutIdentityDisplayAndWebsite
+- **interface**: `api.errors.alliance.WithoutIdentityDisplayAndWebsite.is`
+- **summary**:    The account's identity does not have display field and website field. 
+
+___
+
+
+## allianceMotion
+ 
+### AlreadyInitialized
+- **interface**: `api.errors.allianceMotion.AlreadyInitialized.is`
+- **summary**:    Members are already initialized! 
+ 
+### DuplicateProposal
+- **interface**: `api.errors.allianceMotion.DuplicateProposal.is`
+- **summary**:    Duplicate proposals not allowed 
+ 
+### DuplicateVote
+- **interface**: `api.errors.allianceMotion.DuplicateVote.is`
+- **summary**:    Duplicate vote ignored 
+ 
+### NotMember
+- **interface**: `api.errors.allianceMotion.NotMember.is`
+- **summary**:    Account is not a member 
+ 
+### ProposalMissing
+- **interface**: `api.errors.allianceMotion.ProposalMissing.is`
+- **summary**:    Proposal must exist 
+ 
+### TooEarly
+- **interface**: `api.errors.allianceMotion.TooEarly.is`
+- **summary**:    The close call was made too early, before the end of the voting. 
+ 
+### TooManyProposals
+- **interface**: `api.errors.allianceMotion.TooManyProposals.is`
+- **summary**:    There can only be a maximum of `MaxProposals` active proposals. 
+ 
+### WrongIndex
+- **interface**: `api.errors.allianceMotion.WrongIndex.is`
+- **summary**:    Mismatched index 
+ 
+### WrongProposalLength
+- **interface**: `api.errors.allianceMotion.WrongProposalLength.is`
+- **summary**:    The given length bound for the proposal was too low. 
+ 
+### WrongProposalWeight
+- **interface**: `api.errors.allianceMotion.WrongProposalWeight.is`
+- **summary**:    The given weight bound for the proposal was too low. 
 
 ___
 
@@ -1068,10 +1210,6 @@ ___
 - **interface**: `api.errors.nominationPools.AccountBelongsToOtherPool.is`
 - **summary**:    An account is already delegating in another pool. An account may only belong to one  pool at a time. 
  
-### AlreadyUnbonding
-- **interface**: `api.errors.nominationPools.AlreadyUnbonding.is`
-- **summary**:    The member is already unbonding in this era. 
- 
 ### CanNotChangeState
 - **interface**: `api.errors.nominationPools.CanNotChangeState.is`
 - **summary**:    The pools state cannot be changed. 
@@ -1080,8 +1218,8 @@ ___
 - **interface**: `api.errors.nominationPools.CannotWithdrawAny.is`
 - **summary**:    None of the funds can be withdrawn yet because the bonding duration has not passed. 
  
-### DefensiveError
-- **interface**: `api.errors.nominationPools.DefensiveError.is`
+### Defensive
+- **interface**: `api.errors.nominationPools.Defensive.is`
 - **summary**:    Some error occurred that should never happen. This should be reported to the  maintainers. 
  
 ### DoesNotHavePermission
@@ -1091,10 +1229,6 @@ ___
 ### FullyUnbonding
 - **interface**: `api.errors.nominationPools.FullyUnbonding.is`
 - **summary**:    The member is fully unbonded (and thus cannot access the bonded and reward pool  anymore to, for example, collect rewards). 
- 
-### InsufficientBond
-- **interface**: `api.errors.nominationPools.InsufficientBond.is`
-- **summary**:    The pool has insufficient balance to bond as a nominator. 
  
 ### MaxPoolMembers
 - **interface**: `api.errors.nominationPools.MaxPoolMembers.is`
@@ -1229,6 +1363,96 @@ ___
 ### Unproxyable
 - **interface**: `api.errors.proxy.Unproxyable.is`
 - **summary**:    A call which is incompatible with the proxy type's filter was attempted. 
+
+___
+
+
+## rankedCollective
+ 
+### AlreadyMember
+- **interface**: `api.errors.rankedCollective.AlreadyMember.is`
+- **summary**:    Account is already a member. 
+ 
+### Corruption
+- **interface**: `api.errors.rankedCollective.Corruption.is`
+- **summary**:    Unexpected error in state. 
+ 
+### InvalidWitness
+- **interface**: `api.errors.rankedCollective.InvalidWitness.is`
+- **summary**:    The information provided is incorrect. 
+ 
+### NoneRemaining
+- **interface**: `api.errors.rankedCollective.NoneRemaining.is`
+- **summary**:    There are no further records to be removed. 
+ 
+### NoPermission
+- **interface**: `api.errors.rankedCollective.NoPermission.is`
+- **summary**:    The origin is not sufficiently privileged to do the operation. 
+ 
+### NotMember
+- **interface**: `api.errors.rankedCollective.NotMember.is`
+- **summary**:    Account is not a member. 
+ 
+### NotPolling
+- **interface**: `api.errors.rankedCollective.NotPolling.is`
+- **summary**:    The given poll index is unknown or has closed. 
+ 
+### Ongoing
+- **interface**: `api.errors.rankedCollective.Ongoing.is`
+- **summary**:    The given poll is still ongoing. 
+ 
+### RankTooLow
+- **interface**: `api.errors.rankedCollective.RankTooLow.is`
+- **summary**:    The member's rank is too low to vote. 
+
+___
+
+
+## rankedPolls
+ 
+### BadReferendum
+- **interface**: `api.errors.rankedPolls.BadReferendum.is`
+- **summary**:    The referendum index provided is invalid in this context. 
+ 
+### BadTrack
+- **interface**: `api.errors.rankedPolls.BadTrack.is`
+- **summary**:    The track identifier given was invalid. 
+ 
+### Full
+- **interface**: `api.errors.rankedPolls.Full.is`
+- **summary**:    There are already a full complement of referendums in progress for this track. 
+ 
+### HasDeposit
+- **interface**: `api.errors.rankedPolls.HasDeposit.is`
+- **summary**:    Referendum's decision deposit is already paid. 
+ 
+### NoDeposit
+- **interface**: `api.errors.rankedPolls.NoDeposit.is`
+- **summary**:    The deposit cannot be refunded since none was made. 
+ 
+### NoPermission
+- **interface**: `api.errors.rankedPolls.NoPermission.is`
+- **summary**:    The deposit refunder is not the depositor. 
+ 
+### NothingToDo
+- **interface**: `api.errors.rankedPolls.NothingToDo.is`
+- **summary**:    There was nothing to do in the advancement. 
+ 
+### NotOngoing
+- **interface**: `api.errors.rankedPolls.NotOngoing.is`
+- **summary**:    Referendum is not ongoing. 
+ 
+### NoTrack
+- **interface**: `api.errors.rankedPolls.NoTrack.is`
+- **summary**:    No track exists for the proposal origin. 
+ 
+### QueueEmpty
+- **interface**: `api.errors.rankedPolls.QueueEmpty.is`
+- **summary**:    The queue of the track is empty. 
+ 
+### Unfinished
+- **interface**: `api.errors.rankedPolls.Unfinished.is`
+- **summary**:    Any deposit cannot be refunded until after the decision is over. 
 
 ___
 
@@ -1594,6 +1818,12 @@ ___
 - **interface**: `api.errors.stateTrieMigration.BadWitness.is`
 - **summary**:    bad witness data provided. 
  
+### KeyTooLong
+- **interface**: `api.errors.stateTrieMigration.KeyTooLong.is`
+- **summary**:    A key was longer than the configured maximum. 
+
+   This means that the migration halted at the current [`Progress`] and  can be resumed with a larger [`crate::Config::MaxKeyLen`] value.  Retrying with the same [`crate::Config::MaxKeyLen`] value will not work.  The value should only be increased to avoid a storage migration for the currently  stored [`crate::Progress::LastKey`]. 
+ 
 ### MaxSignedLimits
 - **interface**: `api.errors.stateTrieMigration.MaxSignedLimits.is`
 - **summary**:    max signed limits not respected. 
@@ -1707,6 +1937,10 @@ ___
 ### NotMember
 - **interface**: `api.errors.technicalMembership.NotMember.is`
 - **summary**:    Not a member. 
+ 
+### TooManyMembers
+- **interface**: `api.errors.technicalMembership.TooManyMembers.is`
+- **summary**:    Too many members. 
 
 ___
 
@@ -1798,6 +2032,10 @@ ___
 
 
 ## treasury
+ 
+### InsufficientPermission
+- **interface**: `api.errors.treasury.InsufficientPermission.is`
+- **summary**:    The spend origin is valid but the amount it is allowed to spend is lower than the  amount to be spent. 
  
 ### InsufficientProposersBalance
 - **interface**: `api.errors.treasury.InsufficientProposersBalance.is`

@@ -6,6 +6,10 @@ Events are emitted for certain operations on the runtime. The following sections
 
 (NOTE: These were generated from a static/snapshot view of a recent Substrate master node. Some items may not be available in older nodes, or in any customized implementations.)
 
+- **[alliance](#alliance)**
+
+- **[allianceMotion](#alliancemotion)**
+
 - **[assets](#assets)**
 
 - **[bagsList](#bagslist)**
@@ -50,6 +54,10 @@ Events are emitted for certain operations on the runtime. The following sections
 
 - **[proxy](#proxy)**
 
+- **[rankedCollective](#rankedcollective)**
+
+- **[rankedPolls](#rankedpolls)**
+
 - **[recovery](#recovery)**
 
 - **[referenda](#referenda)**
@@ -76,6 +84,8 @@ Events are emitted for certain operations on the runtime. The following sections
 
 - **[tips](#tips)**
 
+- **[transactionPayment](#transactionpayment)**
+
 - **[transactionStorage](#transactionstorage)**
 
 - **[treasury](#treasury)**
@@ -88,6 +98,84 @@ Events are emitted for certain operations on the runtime. The following sections
 
 - **[whitelist](#whitelist)**
 
+
+___
+
+
+## alliance
+ 
+### AllyElevated(`AccountId32`)
+- **interface**: `api.events.alliance.AllyElevated.is`
+- **summary**:    An ally has been elevated to Fellow. 
+ 
+### Announced(`PalletAllianceCid`)
+- **interface**: `api.events.alliance.Announced.is`
+- **summary**:    A new announcement has been proposed. 
+ 
+### AnnouncementRemoved(`PalletAllianceCid`)
+- **interface**: `api.events.alliance.AnnouncementRemoved.is`
+- **summary**:    An on-chain announcement has been removed. 
+ 
+### MemberKicked(`AccountId32`, `Option<u128>`)
+- **interface**: `api.events.alliance.MemberKicked.is`
+- **summary**:    A member has been kicked out with its deposit slashed. 
+ 
+### MemberRetired(`AccountId32`, `Option<u128>`)
+- **interface**: `api.events.alliance.MemberRetired.is`
+- **summary**:    A member has retired with its deposit unreserved. 
+ 
+### MembersInitialized(`Vec<AccountId32>`, `Vec<AccountId32>`, `Vec<AccountId32>`)
+- **interface**: `api.events.alliance.MembersInitialized.is`
+- **summary**:    Some accounts have been initialized as members (founders/fellows/allies). 
+ 
+### NewAllyJoined(`AccountId32`, `Option<AccountId32>`, `Option<u128>`)
+- **interface**: `api.events.alliance.NewAllyJoined.is`
+- **summary**:    An account has been added as an Ally and reserved its deposit. 
+ 
+### NewRuleSet(`PalletAllianceCid`)
+- **interface**: `api.events.alliance.NewRuleSet.is`
+- **summary**:    A new rule has been set. 
+ 
+### UnscrupulousItemAdded(`Vec<PalletAllianceUnscrupulousItem>`)
+- **interface**: `api.events.alliance.UnscrupulousItemAdded.is`
+- **summary**:    Accounts or websites have been added into the list of unscrupulous items. 
+ 
+### UnscrupulousItemRemoved(`Vec<PalletAllianceUnscrupulousItem>`)
+- **interface**: `api.events.alliance.UnscrupulousItemRemoved.is`
+- **summary**:    Accounts or websites have been removed from the list of unscrupulous items. 
+
+___
+
+
+## allianceMotion
+ 
+### Approved(`H256`)
+- **interface**: `api.events.allianceMotion.Approved.is`
+- **summary**:    A motion was approved by the required threshold. 
+ 
+### Closed(`H256`, `u32`, `u32`)
+- **interface**: `api.events.allianceMotion.Closed.is`
+- **summary**:    A proposal was closed because its threshold was reached or after its duration was up. 
+ 
+### Disapproved(`H256`)
+- **interface**: `api.events.allianceMotion.Disapproved.is`
+- **summary**:    A motion was not approved by the required threshold. 
+ 
+### Executed(`H256`, `Result<Null, SpRuntimeDispatchError>`)
+- **interface**: `api.events.allianceMotion.Executed.is`
+- **summary**:    A motion was executed; result will be `Ok` if it returned without error. 
+ 
+### MemberExecuted(`H256`, `Result<Null, SpRuntimeDispatchError>`)
+- **interface**: `api.events.allianceMotion.MemberExecuted.is`
+- **summary**:    A single member did some action; result will be `Ok` if it returned without error. 
+ 
+### Proposed(`AccountId32`, `u32`, `H256`, `u32`)
+- **interface**: `api.events.allianceMotion.Proposed.is`
+- **summary**:    A motion (given hash) has been proposed (by given account) with a threshold (given  `MemberCount`). 
+ 
+### Voted(`AccountId32`, `H256`, `bool`, `u32`, `u32`)
+- **interface**: `api.events.allianceMotion.Voted.is`
+- **summary**:    A motion (given hash) has been voted on by given account, leaving  a tally (yes votes and no votes given respectively as `MemberCount`). 
 
 ___
 
@@ -410,6 +498,10 @@ ___
 - **interface**: `api.events.democracy.PreimageUsed.is`
 - **summary**:    A proposal preimage was removed and used (the deposit was returned). 
  
+### ProposalCanceled(`u32`)
+- **interface**: `api.events.democracy.ProposalCanceled.is`
+- **summary**:    A proposal got canceled. 
+ 
 ### Proposed(`u32`, `u128`)
 - **interface**: `api.events.democracy.Proposed.is`
 - **summary**:    A motion has been proposed by a public account. 
@@ -692,6 +784,10 @@ ___
 - **interface**: `api.events.nominationPools.PaidOut.is`
 - **summary**:    A payout has been made to a member. 
  
+### PoolSlashed(`u32`, `u128`)
+- **interface**: `api.events.nominationPools.PoolSlashed.is`
+- **summary**:    The active balance of pool `pool_id` has been slashed to `balance`. 
+ 
 ### RolesUpdated(`Option<AccountId32>`, `Option<AccountId32>`, `Option<AccountId32>`)
 - **interface**: `api.events.nominationPools.RolesUpdated.is`
 - **summary**:    The roles of a pool have been updated to the given new roles. Note that the depositor  can never change. 
@@ -700,13 +796,27 @@ ___
 - **interface**: `api.events.nominationPools.StateChanged.is`
 - **summary**:    The state of a pool has changed 
  
-### Unbonded(`AccountId32`, `u32`, `u128`)
+### Unbonded(`AccountId32`, `u32`, `u128`, `u128`)
 - **interface**: `api.events.nominationPools.Unbonded.is`
 - **summary**:    A member has unbonded from their pool. 
+
+   - `balance` is the corresponding balance of the number of points that has been  requested to be unbonded (the argument of the `unbond` transaction) from the bonded  pool. 
+
+  - `points` is the number of points that are issued as a result of `balance` being dissolved into the corresponding unbonding pool. 
+
+   In the absence of slashing, these values will match. In the presence of slashing, the  number of points that are issued in the unbonding pool will be less than the amount  requested to be unbonded. 
  
-### Withdrawn(`AccountId32`, `u32`, `u128`)
+### UnbondingPoolSlashed(`u32`, `u32`, `u128`)
+- **interface**: `api.events.nominationPools.UnbondingPoolSlashed.is`
+- **summary**:    The unbond pool at `era` of pool `pool_id` has been slashed to `balance`. 
+ 
+### Withdrawn(`AccountId32`, `u32`, `u128`, `u128`)
 - **interface**: `api.events.nominationPools.Withdrawn.is`
 - **summary**:    A member has withdrawn from their pool. 
+
+   The given number of `points` have been dissolved in return of `balance`. 
+
+   Similar to `Unbonded` event, in the absence of slashing, the ratio of point to balance  will be 1. 
 
 ___
 
@@ -758,6 +868,82 @@ ___
 ### ProxyRemoved(`AccountId32`, `AccountId32`, `NodeRuntimeProxyType`, `u32`)
 - **interface**: `api.events.proxy.ProxyRemoved.is`
 - **summary**:    A proxy was removed. 
+
+___
+
+
+## rankedCollective
+ 
+### MemberAdded(`AccountId32`)
+- **interface**: `api.events.rankedCollective.MemberAdded.is`
+- **summary**:    A member `who` has been added. 
+ 
+### MemberRemoved(`AccountId32`, `u16`)
+- **interface**: `api.events.rankedCollective.MemberRemoved.is`
+- **summary**:    The member `who` of given `rank` has been removed from the collective. 
+ 
+### RankChanged(`AccountId32`, `u16`)
+- **interface**: `api.events.rankedCollective.RankChanged.is`
+- **summary**:    The member `who`'s rank has been changed to the given `rank`. 
+ 
+### Voted(`AccountId32`, `u32`, `PalletRankedCollectiveVoteRecord`, `PalletRankedCollectiveTally`)
+- **interface**: `api.events.rankedCollective.Voted.is`
+- **summary**:    The member `who` has voted for the `poll` with the given `vote` leading to an updated  `tally`. 
+
+___
+
+
+## rankedPolls
+ 
+### Approved(`u32`)
+- **interface**: `api.events.rankedPolls.Approved.is`
+- **summary**:    A referendum has been approved and its proposal has been scheduled. 
+ 
+### Cancelled(`u32`, `PalletRankedCollectiveTally`)
+- **interface**: `api.events.rankedPolls.Cancelled.is`
+- **summary**:    A referendum has been cancelled. 
+ 
+### ConfirmAborted(`u32`)
+- **interface**: `api.events.rankedPolls.ConfirmAborted.is`
+ 
+### Confirmed(`u32`, `PalletRankedCollectiveTally`)
+- **interface**: `api.events.rankedPolls.Confirmed.is`
+- **summary**:    A referendum has ended its confirmation phase and is ready for approval. 
+ 
+### ConfirmStarted(`u32`)
+- **interface**: `api.events.rankedPolls.ConfirmStarted.is`
+ 
+### DecisionDepositPlaced(`u32`, `AccountId32`, `u128`)
+- **interface**: `api.events.rankedPolls.DecisionDepositPlaced.is`
+- **summary**:    The decision deposit has been placed. 
+ 
+### DecisionDepositRefunded(`u32`, `AccountId32`, `u128`)
+- **interface**: `api.events.rankedPolls.DecisionDepositRefunded.is`
+- **summary**:    The decision deposit has been refunded. 
+ 
+### DecisionStarted(`u32`, `u16`, `H256`, `PalletRankedCollectiveTally`)
+- **interface**: `api.events.rankedPolls.DecisionStarted.is`
+- **summary**:    A referendum has moved into the deciding phase. 
+ 
+### DepositSlashed(`AccountId32`, `u128`)
+- **interface**: `api.events.rankedPolls.DepositSlashed.is`
+- **summary**:    A deposit has been slashaed. 
+ 
+### Killed(`u32`, `PalletRankedCollectiveTally`)
+- **interface**: `api.events.rankedPolls.Killed.is`
+- **summary**:    A referendum has been killed. 
+ 
+### Rejected(`u32`, `PalletRankedCollectiveTally`)
+- **interface**: `api.events.rankedPolls.Rejected.is`
+- **summary**:    A proposal has been rejected by referendum. 
+ 
+### Submitted(`u32`, `u16`, `H256`)
+- **interface**: `api.events.rankedPolls.Submitted.is`
+- **summary**:    A referendum has being submitted. 
+ 
+### TimedOut(`u32`, `PalletRankedCollectiveTally`)
+- **interface**: `api.events.rankedPolls.TimedOut.is`
+- **summary**:    A referendum has been timed out without being decided. 
 
 ___
 
@@ -819,7 +1005,7 @@ ___
 - **interface**: `api.events.referenda.DecisionDepositRefunded.is`
 - **summary**:    The decision deposit has been refunded. 
  
-### DecisionStarted(`u32`, `u8`, `H256`, `PalletConvictionVotingTally`)
+### DecisionStarted(`u32`, `u16`, `H256`, `PalletConvictionVotingTally`)
 - **interface**: `api.events.referenda.DecisionStarted.is`
 - **summary**:    A referendum has moved into the deciding phase. 
  
@@ -835,7 +1021,7 @@ ___
 - **interface**: `api.events.referenda.Rejected.is`
 - **summary**:    A proposal has been rejected by referendum. 
  
-### Submitted(`u32`, `u8`, `H256`)
+### Submitted(`u32`, `u16`, `H256`)
 - **interface**: `api.events.referenda.Submitted.is`
 - **summary**:    A referendum has being submitted. 
  
@@ -1021,7 +1207,7 @@ ___
  
 ### Halted()
 - **interface**: `api.events.stateTrieMigration.Halted.is`
-- **summary**:    Migration got halted. 
+- **summary**:    Migration got halted due to an error or miss-configuration. 
  
 ### Migrated(`u32`, `u32`, `PalletStateTrieMigrationMigrationCompute`)
 - **interface**: `api.events.stateTrieMigration.Migrated.is`
@@ -1167,6 +1353,15 @@ ___
 ___
 
 
+## transactionPayment
+ 
+### TransactionFeePaid(`AccountId32`, `u128`, `u128`)
+- **interface**: `api.events.transactionPayment.TransactionFeePaid.is`
+- **summary**:    A transaction fee `actual_fee`, of which `tip` was added to the minimum inclusion fee,  has been paid by `who`. 
+
+___
+
+
 ## transactionStorage
  
 ### ProofChecked()
@@ -1209,6 +1404,10 @@ ___
 ### Rollover(`u128`)
 - **interface**: `api.events.treasury.Rollover.is`
 - **summary**:    Spending has finished; this is the amount that rolls over until next spend. 
+ 
+### SpendApproved(`u32`, `u128`, `AccountId32`)
+- **interface**: `api.events.treasury.SpendApproved.is`
+- **summary**:    A new spend proposal has been approved. 
  
 ### Spending(`u128`)
 - **interface**: `api.events.treasury.Spending.is`

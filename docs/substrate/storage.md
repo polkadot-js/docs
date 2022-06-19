@@ -6,6 +6,10 @@ The following sections contain Storage methods are part of the default Substrate
 
 (NOTE: These were generated from a static/snapshot view of a recent Substrate master node. Some items may not be available in older nodes, or in any customized implementations.)
 
+- **[alliance](#alliance)**
+
+- **[allianceMotion](#alliancemotion)**
+
 - **[assets](#assets)**
 
 - **[authorityDiscovery](#authoritydiscovery)**
@@ -60,6 +64,10 @@ The following sections contain Storage methods are part of the default Substrate
 
 - **[randomnessCollectiveFlip](#randomnesscollectiveflip)**
 
+- **[rankedCollective](#rankedcollective)**
+
+- **[rankedPolls](#rankedpolls)**
+
 - **[recovery](#recovery)**
 
 - **[referenda](#referenda)**
@@ -100,6 +108,70 @@ The following sections contain Storage methods are part of the default Substrate
 
 - **[whitelist](#whitelist)**
 
+
+___
+
+
+## alliance
+ 
+### announcements(): `Vec<PalletAllianceCid>`
+- **interface**: `api.query.alliance.announcements`
+- **summary**:    The current IPFS CIDs of any announcements. 
+ 
+### depositOf(`AccountId32`): `Option<u128>`
+- **interface**: `api.query.alliance.depositOf`
+- **summary**:    Maps members to their candidacy deposit. 
+ 
+### members(`PalletAllianceMemberRole`): `Vec<AccountId32>`
+- **interface**: `api.query.alliance.members`
+- **summary**:    Maps member type to members of each type. 
+ 
+### rule(): `Option<PalletAllianceCid>`
+- **interface**: `api.query.alliance.rule`
+- **summary**:    The IPFS CID of the alliance rule.  Founders and fellows can propose a new rule with a super-majority. 
+
+   Any founder has a special one-vote veto right to the rule setting. 
+ 
+### unscrupulousAccounts(): `Vec<AccountId32>`
+- **interface**: `api.query.alliance.unscrupulousAccounts`
+- **summary**:    The current list of accounts deemed unscrupulous. These accounts non grata cannot submit  candidacy. 
+ 
+### unscrupulousWebsites(): `Vec<Bytes>`
+- **interface**: `api.query.alliance.unscrupulousWebsites`
+- **summary**:    The current list of websites deemed unscrupulous. 
+ 
+### upForKicking(`AccountId32`): `bool`
+- **interface**: `api.query.alliance.upForKicking`
+- **summary**:    A set of members that are (potentially) being kicked out. They cannot retire until the  motion is settled. 
+
+___
+
+
+## allianceMotion
+ 
+### members(): `Vec<AccountId32>`
+- **interface**: `api.query.allianceMotion.members`
+- **summary**:    The current members of the collective. This is stored sorted (just by value). 
+ 
+### prime(): `Option<AccountId32>`
+- **interface**: `api.query.allianceMotion.prime`
+- **summary**:    The prime member that helps determine the default vote behavior in case of absentations. 
+ 
+### proposalCount(): `u32`
+- **interface**: `api.query.allianceMotion.proposalCount`
+- **summary**:    Proposals so far. 
+ 
+### proposalOf(`H256`): `Option<Call>`
+- **interface**: `api.query.allianceMotion.proposalOf`
+- **summary**:    Actual proposal for a given hash, if it's current. 
+ 
+### proposals(): `Vec<H256>`
+- **interface**: `api.query.allianceMotion.proposals`
+- **summary**:    The hashes of the active proposals. 
+ 
+### voting(`H256`): `Option<PalletCollectiveVotes>`
+- **interface**: `api.query.allianceMotion.voting`
+- **summary**:    Votes on a given proposal, if it is ongoing. 
 
 ___
 
@@ -387,11 +459,11 @@ ___
 
 ## convictionVoting
  
-### classLocksFor(`AccountId32`): `Vec<(u8,u128)>`
+### classLocksFor(`AccountId32`): `Vec<(u16,u128)>`
 - **interface**: `api.query.convictionVoting.classLocksFor`
 - **summary**:    The voting classes which have a non-zero lock requirement and the lock amounts which they  require. The actual amount locked on behalf of this pallet should always be the maximum of  this list. 
  
-### votingFor(`AccountId32, u8`): `PalletConvictionVotingVoteVoting`
+### votingFor(`AccountId32, u16`): `PalletConvictionVotingVoteVoting`
 - **interface**: `api.query.convictionVoting.votingFor`
 - **summary**:    All voting for a particular voter in a particular voting class. We store the balance for the  number of votes that we have recorded. 
 
@@ -831,6 +903,8 @@ ___
 - **summary**:    Minimum bond required to create a pool. 
 
    This is the amount that the depositor must put as their initial stake in the pool, as an  indication of "skin in the game". 
+
+   This is the value that will always exist in the staking ledger of the pool bonded account  while all other accounts leave. 
  
 ### minJoinBond(): `u128`
 - **interface**: `api.query.nominationPools.minJoinBond`
@@ -913,6 +987,57 @@ ___
 ___
 
 
+## rankedCollective
+ 
+### idToIndex(`u16, AccountId32`): `Option<u32>`
+- **interface**: `api.query.rankedCollective.idToIndex`
+- **summary**:    The index of each ranks's member into the group of members who have at least that rank. 
+ 
+### indexToId(`u16, u32`): `Option<AccountId32>`
+- **interface**: `api.query.rankedCollective.indexToId`
+- **summary**:    The members in the collective by index. All indices in the range `0..MemberCount` will  return `Some`, however a member's index is not guaranteed to remain unchanged over time. 
+ 
+### memberCount(`u16`): `u32`
+- **interface**: `api.query.rankedCollective.memberCount`
+- **summary**:    The number of members in the collective who have at least the rank according to the index  of the vec. 
+ 
+### members(`AccountId32`): `Option<PalletRankedCollectiveMemberRecord>`
+- **interface**: `api.query.rankedCollective.members`
+- **summary**:    The current members of the collective. 
+ 
+### voting(`u32, AccountId32`): `Option<PalletRankedCollectiveVoteRecord>`
+- **interface**: `api.query.rankedCollective.voting`
+- **summary**:    Votes on a given proposal, if it is ongoing. 
+ 
+### votingCleanup(`u32`): `Option<Bytes>`
+- **interface**: `api.query.rankedCollective.votingCleanup`
+
+___
+
+
+## rankedPolls
+ 
+### decidingCount(`u16`): `u32`
+- **interface**: `api.query.rankedPolls.decidingCount`
+- **summary**:    The number of referenda being decided currently. 
+ 
+### referendumCount(): `u32`
+- **interface**: `api.query.rankedPolls.referendumCount`
+- **summary**:    The next free referendum index, aka the number of referenda started so far. 
+ 
+### referendumInfoFor(`u32`): `Option<PalletReferendaReferendumInfoRankedCollectiveTally>`
+- **interface**: `api.query.rankedPolls.referendumInfoFor`
+- **summary**:    Information concerning any given referendum. 
+ 
+### trackQueue(`u16`): `Vec<(u32,u32)>`
+- **interface**: `api.query.rankedPolls.trackQueue`
+- **summary**:    The sorted list of referenda ready to be decided but not yet being decided, ordered by  conviction-weighted approvals. 
+
+   This should be empty if `DecidingCount` is less than `TrackInfo::max_deciding`. 
+
+___
+
+
 ## recovery
  
 ### activeRecoveries(`AccountId32, AccountId32`): `Option<PalletRecoveryActiveRecovery>`
@@ -936,7 +1061,7 @@ ___
 
 ## referenda
  
-### decidingCount(`u8`): `u32`
+### decidingCount(`u16`): `u32`
 - **interface**: `api.query.referenda.decidingCount`
 - **summary**:    The number of referenda being decided currently. 
  
@@ -944,11 +1069,11 @@ ___
 - **interface**: `api.query.referenda.referendumCount`
 - **summary**:    The next free referendum index, aka the number of referenda started so far. 
  
-### referendumInfoFor(`u32`): `Option<PalletReferendaReferendumInfo>`
+### referendumInfoFor(`u32`): `Option<PalletReferendaReferendumInfoConvictionVotingTally>`
 - **interface**: `api.query.referenda.referendumInfoFor`
 - **summary**:    Information concerning any given referendum. 
  
-### trackQueue(`u8`): `Vec<(u32,u128)>`
+### trackQueue(`u16`): `Vec<(u32,u128)>`
 - **interface**: `api.query.referenda.trackQueue`
 - **summary**:    The sorted list of referenda ready to be decided but not yet being decided, ordered by  conviction-weighted approvals. 
 
@@ -1514,14 +1639,6 @@ ___
 ### entryFee(): `Option<u128>`
 - **interface**: `api.query.transactionStorage.entryFee`
 - **summary**:    Storage fee per transaction. 
- 
-### maxBlockTransactions(): `u32`
-- **interface**: `api.query.transactionStorage.maxBlockTransactions`
-- **summary**:    Maximum number of indexed transactions in the block. 
- 
-### maxTransactionSize(): `u32`
-- **interface**: `api.query.transactionStorage.maxTransactionSize`
-- **summary**:    Maximum data set in a single transaction in bytes. 
  
 ### proofChecked(): `bool`
 - **interface**: `api.query.transactionStorage.proofChecked`
