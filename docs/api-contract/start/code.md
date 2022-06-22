@@ -35,7 +35,7 @@ Here is how you would retrieve the contract address after instantiation for an [
 
 ```javascript
 const initValue = 1;
-const tx = code.tx["new"]({ gasLimit, storageDepositLimit }, initValue)
+const tx = code.tx.new({ gasLimit, storageDepositLimit }, initValue)
 let address;
 
 const unsub = await tx.signAndSend(

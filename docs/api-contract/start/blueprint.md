@@ -13,7 +13,7 @@ import { BlueprintPromise } from '@polkadot/api-contract';
 
 const blueprint = new BlueprintPromise(api, metadata, codeHash);
 
-const tx = blueprint.tx["default"]({ gasLimit, storageDepositLimit, salt });
+const tx = blueprint.tx.default({ gasLimit, storageDepositLimit, salt });
 
 let address;
 

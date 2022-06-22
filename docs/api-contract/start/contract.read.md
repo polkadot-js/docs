@@ -35,7 +35,7 @@ const {
   storageDeposit, 
   result, 
   output 
-  } = await contract.query["get"](alicePair.address, { gasLimit, storageDepositLimit });
+  } = await contract.query.get(alicePair.address, { gasLimit, storageDepositLimit });
 
 // The actual result from RPC as `ContractExecResult`
 console.log(result.toHuman());

@@ -13,7 +13,7 @@ const incValue = 1;
 // Send the transaction, like elsewhere this is a normal extrinsic
 // with the same rules as applied in the API (As with the read example,
 // additional params, if required can follow - here only one is needed)
-await contract.tx["inc"]({ storageDepositLimit, gasLimit }, incValue)
+await contract.tx.inc({ storageDepositLimit, gasLimit }, incValue)
   .signAndSend(alicePair, (result) => {
     if (result.status.isInBlock) {
       console.log('in a block');
@@ -40,7 +40,7 @@ const {
   gasRequired, 
   storageDeposit, 
   result 
-  } = await contract.query.["inc"](alicePair, options, incValue)
+  } = await contract.query.inc(alicePair, options, incValue)
 
 console.log(`outcome: ${result.isOk ? 'Ok' : 'Error'}`);
 console.log(`gasRequired ${gasRequired.toString()}`);
