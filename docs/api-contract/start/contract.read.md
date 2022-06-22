@@ -1,50 +1,47 @@
 ---
-title: Contract
+title: Read values
 ---
 
-The `ContractPromise` interface allows you to interact with a deployed contract. It provides a wrapper around the `Abi` and allows you to call either `query` or `tx` on a contract to interact with it.
+The `ContractPromise` interface allows you to interact with a deployed contract. It provides a wrapper around the `Abi` or metadata JSON and allows you to read contract values and send encoded transactions to the contract.
 
 ```javascript
 import { ContractPromise } from '@polkadot/api-contract';
 
-// Attach to an existing contract with a known ABI and address. As per the
-// code and blueprint examples the abi is an Abi object, an unparsed JSON
-// string or the raw JSON data (after doing a JSON.parse). The address is
-// the actual on-chain address as ss58 or AccountId object.
-const contract = new ContractPromise(api, abi, address);
+// The address is the actual on-chain address as ss58 or AccountId object.
+const contract = new ContractPromise(api, metadata, address);
 ```
 
 ## Reading contract values
 
-Under the hood `.query.<messageName>` is using the `api.rpc.contracts.call` API on the contracts pallet to retrieve a result. For this interface, the format is always of the form `messageName(<account address to use>, <value>, <gasLimit>, <...additional params>)`.
+Contract queries are executed on any contract message as a dry run, therefore not consuming any real value from the account.
+Under the hood `.query.<messageName>` is using the `api.rpc.contracts.call` API on the contracts pallet to retrieve a result. 
+It is useful because it encodes the message using the selector and the input values to allow execution in the contract environment.
+
 
 ```javascript
 
-// Contract query options
-const options = { 
-  // maximum gas to be consumed for the contract execution dry run. if limit is too small the dry run will fail. 
-  // you can use -1 use the maximum gas limit available to transactions
-  gasLimit,
-  // a limit to how much Balance to be used to pay for the storage created by the execution
-  // if null is passed, all available balance can be used
-  storageDepositLimit = null,
-  // Balance to send - use only for payable constructors.  
-  value
-  }
+// maximum gas to be consumed for the call. if limit is too small the call will fail.
+const gasLimit = 3000n * 1000000n;
+// a limit to how much Balance to be used to pay for the storage created by the contract call
+// if null is passed, unlimited balance can be used
+const storageDepositLimit = null
+// balance to transfer to the contract account. use only with payable messages, will fail otherwise. 
+// formerly know as "endowment"
+const value: api.registry.createType('Balance', 1000)
 
 // (We perform the send from an account, here using Alice's address)
 const { 
-  gasConsumed, 
+  gasRequired, 
   storageDeposit, 
   result, 
   output 
-  } = await contract.query[messageName](alicePair.address, options, ...params);
+  } = await contract.query["get"](alicePair.address, { gasLimit, storageDepositLimit }, ...params);
 
 // The actual result from RPC as `ContractExecResult`
 console.log(result.toHuman());
 
-// gas consumed
-console.log(gasConsumed.toHuman());
+// the gas consumed for contract execution
+console.log(gasRequired.toHuman());
 
 // check if the call was successful
 if (result.isOk) {
@@ -70,8 +67,6 @@ const callValue = await contract.query.balanceOf(from, { gasLimit: -1 }, target)
 ```
 
 In this example we have specified a `gasLimit` of `-1`, in a subsequent section we will expand on this. for now, just remember that is indicated to use max available, i.e. we don't explicitly want to specify a value.
-
-When executing it encodes the message using the selector and the input values to allow execution in the contract environment. This can be executed on any contract message, unlike the examples that will follow below it will only read state, not actually execute and therefore not consume any real value from the account.
 
 
 ## Sending a transaction
