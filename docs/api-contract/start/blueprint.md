@@ -28,6 +28,4 @@ const unsub = await tx.signAndSend(
 );
 ```
 
-## Interact with contracts
-
 We have made it this far. At this point you should be familiar with code deployments as well as contract instantiation, next up [we will read a contract value](contract.read.md).

@@ -2,6 +2,8 @@
 title: Send transactions
 ---
 
+## Interface
+
 In addition to using the `.query.<messageName>` on a contract, the `.tx.<messageName>` method provides a way to send an actual encoded transaction to the contract, allow for execution and have this applied in a block. Expanding on our previous [ink! incrementer](https://github.com/paritytech/ink/blob/master/examples/incrementer/lib.rs) example, we can now execute and then retrieve the subsequent value.
 
 ```javascript
