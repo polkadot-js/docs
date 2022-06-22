@@ -16,7 +16,7 @@ const contract = new ContractPromise(api, metadata, address);
 Contract queries are executed on any contract message as a dry run, therefore not consuming any real value from the account.
 Under the hood `.query.<messageName>` is using the `api.rpc.contracts.call` API on the contracts pallet to retrieve a result. 
 It is useful because it encodes the message using the selector and the input values to allow execution in the contract environment.
-
+We would get the value of an [incrementer contract](https://github.com/paritytech/ink/blob/master/examples/incrementer/lib.rs) like so: 
 
 ```javascript
 
@@ -35,7 +35,7 @@ const {
   storageDeposit, 
   result, 
   output 
-  } = await contract.query["get"](alicePair.address, { gasLimit, storageDepositLimit }, ...params);
+  } = await contract.query["get"](alicePair.address, { gasLimit, storageDepositLimit });
 
 // The actual result from RPC as `ContractExecResult`
 console.log(result.toHuman());

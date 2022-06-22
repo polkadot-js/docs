@@ -19,19 +19,22 @@ The newly generated `code` object lets you call the contract constructor(s) with
 You will need to provide values for the instantiation options. Getting accurate gas and storage deposit costs is possible by calling the [instantiate](http://localhost:8080/substrate/rpc#instantiaterequest-instantiaterequest-at-blockhash-contractinstantiateresult) RPC, which dry runs the instantiation and returns the outcome. For the scope of this tutorial we will use some hardcoded values.
 
 ```javascript
-  // maximum gas to be consumed for the instantiation. if limit is too small the instantiation will fail.
-  const gasLimit = 100000n * 1000000n
-  // a limit to how much Balance to be used to pay for the storage created by the instantiation
-  // if null is passed, unlimited balance can be used
-  const storageDepositLimit = null
-  // used to create contract address, when not provided instantiation will fail with DuplicateContract error in case the origin account is the same
-  const salt: new Uint8Array()
-  // balance to transfer to the contract account. use only with payable constructors, will fail otherwise. formerly know as "endowment"
-  const value: api.registry.createType('Balance', 1000)
+// maximum gas to be consumed for the instantiation. if limit is too small the instantiation will fail.
+const gasLimit = 100000n * 1000000n
+// a limit to how much Balance to be used to pay for the storage created by the instantiation
+// if null is passed, unlimited balance can be used
+const storageDepositLimit = null
+// used to derive contract address, 
+// use null to prevent duplicate contracts
+const salt: new Uint8Array()
+// balance to transfer to the contract account, formerly know as "endowment". 
+// use only with payable constructors, will fail otherwise. 
+const value: api.registry.createType('Balance', 1000)
 ```
-Here is how you would retrieve the contract address after instantiation for an ink! incrementer contract, whose constructor signature looks like this `new (initValue: i32)` 
+Here is how you would retrieve the contract address after instantiation for an [ink! incrementer contract](https://github.com/paritytech/ink/blob/master/examples/incrementer/lib.rs), whose constructor signature looks like this: `new (initValue: i32)` 
 
 ```javascript
+const initValue = 1;
 const tx = code.tx["new"]({ gasLimit, storageDepositLimit }, initValue)
 let address;
 
