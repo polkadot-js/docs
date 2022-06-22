@@ -8,6 +8,14 @@ The `@polkadot/api-contract` packages is to be used alongside the `@polkadot/api
 
 Generally you would want to keep the versions of the 2 in lock-step, which mean that if you upgrade one or the other, ensure that the versions continue to match.
 
+## Interfaces
+The `@polkadot/api-contract` comes with 4 general helpers and has `*Rx`-based versions for the users of the `ApiRx` version of the API. However here we will focus only on the `ApiPromise`-based version of the helpers, in much the same way as the [API documentation](../../api/intro.md). 
+The four main interfaces provided are:
+
+- [CodePromise](code.md) - upload and instantiate a WASM blob
+- [BlueprintPromise](blueprint.md) - instantiate a contract from on-chain code
+- [ContractPromise](contract.read.md) -  interact with on-chain contract instances, making read calls and executing transactions 
+- Abi - encode / decode contract messages and arguments
 
 ## Notes on use
 
