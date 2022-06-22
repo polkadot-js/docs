@@ -17,4 +17,4 @@ Additionally the contracts pallet and [ink!](https://github.com/paritytech/ink) 
 
 ## Basic interfaces
 
-So we have it installed, let's take a brief tour through the [base classes and interfaces](basics.md) before we get into using them.
+So once we have it installed, let's take a brief tour through the [base classes and interfaces](basics.md) before we get into using them.

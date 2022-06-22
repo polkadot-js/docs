@@ -3,7 +3,8 @@ title: Basics
 ---
 
 ## Intro
-The `@polkadot/api-contract` comes with 4 general helpers and has `*Rx`-based versions for the users of the `ApiRx` version of the API. However here we will focus only on the `ApiPromise`-based version of the helpers, in much the same way as the [API documentation](../../api/intro.md). The 3 main interfaces provided are -
+The `@polkadot/api-contract` comes with 4 general helpers and has `*Rx`-based versions for the users of the `ApiRx` version of the API. However here we will focus only on the `ApiPromise`-based version of the helpers, in much the same way as the [API documentation](../../api/intro.md). 
+The four main interfaces provided are:
 
 - [CodePromise](code.md) - upload and instantiate a WASM blob
 - [BlueprintPromise](blueprint.md) - instantiate a contract from on-chain code
