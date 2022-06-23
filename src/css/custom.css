@@ -19,6 +19,13 @@
   --ifm-heading-font-weight: 400;
   --ifm-global-shadow-lw: transparent;
   --ifm-toc-border-color: transparent;
+  --aa-primary-color-rgb: 255, 140, 0 !important;
+  --aa-muted-color-rgb: 255, 140, 0 !important;
+}
+
+[data-theme='dark'] {
+  --aa-primary-color-rgb: 255, 140, 0 !important;
+  --aa-muted-color-rgb: 255, 140, 0 !important;
 }
 
 h1 {
