@@ -13,6 +13,7 @@
        2	Ronny Roeller                 	Fix typos (#156)
        2	Vadim                         	add search plugin; update docs; (#310)
        2	Viki Val                      	Updated documentation to docs in RegistryError (#188)
+       1	Andreea Eftene                	Update api-contract docs (#313)
        1	Andrzej                       	Fix typo in api.query.multi.md (#126)
        1	angdiam                       	Update api.query.other.md (#181)
        1	Antonio Savage                	Adding specifics to the Intro API (#140)
