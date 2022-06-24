@@ -2,87 +2,73 @@
 title: Contract
 ---
 
-The `ContractPromise` interface allows you to interact with a deployed contract. In the previous [Blueprint example](blueprint.md) this instance was created via `createContract`. In general use, you can also create an instance via `new`, i.e. when you are attaching to an existing contract on-chain -
+The `ContractPromise` interface allows you to interact with a deployed contract. It provides a wrapper around the `Abi` or metadata JSON and allows you to read contract values and send encoded transactions to the contract.
 
 ```javascript
 import { ContractPromise } from '@polkadot/api-contract';
 
-// Attach to an existing contract with a known ABI and address. As per the
-// code and blueprint examples the abi is an Abi object, an unparsed JSON
-// string or the raw JSON data (after doing a JSON.parse). The address is
-// the actual on-chain address as ss58 or AccountId object.
-const contract = new ContractPromise(api, abi, address);
-
-// Read from the contract
-...
+// The address is the actual on-chain address as ss58 or AccountId object.
+const contract = new ContractPromise(api, metadata, address);
 ```
-
-Either via a create above or via a call to `createContract` both instances are the same. The `Contract` provides a wrapper around the `Abi` and allows you to call either `read` or `exec` on a contract to interact with it.
-
 
 ## Reading contract values
 
-In the `Blueprint` example we have instantiated an incrementer contract. In the following examples we will continue using it to read from and execute transactions into, since it is a well-known entity. To read a value from the contract, we can do the following -
+Contract queries are executed on any contract message as a dry run, therefore not consuming any real value from the account.
+Under the hood `.query.<messageName>` is using the `api.rpc.contracts.call` API on the contracts pallet to retrieve a result. 
+It is useful because it encodes the message using the selector and the input values to allow execution in the contract environment.
+We would get the value of an [incrementer contract](https://github.com/paritytech/ink/blob/master/examples/incrementer/lib.rs) like so: 
 
 ```javascript
-// Read from the contract via an RPC call
-const value = 0; // only useful on isPayable messages
 
-// NOTE the apps UI specified these in mega units
+// maximum gas to be consumed for the call. if limit is too small the call will fail.
 const gasLimit = 3000n * 1000000n;
+// a limit to how much Balance to be used to pay for the storage created by the contract call
+// if null is passed, unlimited balance can be used
+const storageDepositLimit = null
+// balance to transfer to the contract account. use only with payable messages, will fail otherwise. 
+// formerly know as "endowment"
+const value: api.registry.createType('Balance', 1000)
 
-// Perform the actual read (no params at the end, for the `get` message)
 // (We perform the send from an account, here using Alice's address)
-const { gasConsumed, result, output } = await contract.query.get(alicePair.address, { value, gasLimit });
+const { gasRequired, storageDeposit, result, output } = await contract.query.get(
+  alicePair.address,
+  {
+    gasLimit,
+    storageDepositLimit,
+  }
+);
 
 // The actual result from RPC as `ContractExecResult`
 console.log(result.toHuman());
 
-// gas consumed
-console.log(gasConsumed.toHuman());
+// the gas consumed for contract execution
+console.log(gasRequired.toHuman());
 
 // check if the call was successful
 if (result.isOk) {
-  // should output 123 as per our initial set (output here is an i32)
+  // output the return value
   console.log('Success', output.toHuman());
 } else {
   console.error('Error', result.asErr);
 }
 ```
 
-Underlying the above `.query.<messageName>` is using the `api.rpc.contracts.call` API on the contracts palette to retrieve the value. For this interface, the format is always of the form `messageName(<account address to use>, <value>, <gasLimit>, <...additional params>)`. An example of querying a balance of a specific account on an erc20 contract will therefore be -
+
+ An example of querying a balance of a specific account on an erc20 contract will therefore be :
 
 ```js
 // the address we are going to query
 const target = '5GNJqTPyNqANBkUVMN1LPPrxXnFouWXoe2wNSmmEoLctxiZY';
+// the address to subtract the fees from
 const from = '5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY';
 
 // only 1 param needed, the actual address we are querying for (more
 // params can follow at the end, separated by , if needed by the message)
-const callValue = await contract.query.balanceOf(from, { value: 0, gasLimit: -1 }, target);
+const callValue = await contract.query.balanceOf(from, { gasLimit: -1 }, target);
 ```
 
 In this example we have specified a `gasLimit` of `-1`, in a subsequent section we will expand on this. for now, just remember that is indicated to use max available, i.e. we don't explicitly want to specify a value.
 
-When executing it encodes the message using the selector and the input values to allow execution in the contract environment. This can be executed on any contract message, unlike the examples that will follow below it will only read state, not actually execute and therefore not consume any real value from the account.
-
-An alternative for reading would be via the lower-level `.read` method, in this case
-
-```javascript
-// Perform the actual read (no params at the end, for the `get` message)
-// (We perform the send from an account address, it doesn't get executed)
-const callValue = await contract
-  .read('get', { value, gasLimit })
-  .send(alicePair.address);
-
-// The actual result from RPC as `ContractExecResult`
-...
-```
-
-In cases where the ABI messages have conflicting names, instead of the `'get'` string the actual message index (or message from the Abi itself) can be passed-through.
-
-
-## Sending a transaction
 
 Now that we understand the underlying call/read interfaces where a message is executed, but not part of a block, we will loo into [sending transaction messages](contract.tx.md) in our next section.
 

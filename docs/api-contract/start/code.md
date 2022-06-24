@@ -2,55 +2,48 @@
 title: Code
 ---
 
-The `CodePromise` class allows the developer to manage calls to code deployment. In itself, it is easy to use for code deployment and it generally the first step, especially in cases where an existing `codeHash` is not available -
+The `CodePromise` class allows the developer to manage calls to the `instantiate_with_code` dispatchable in the contracts pallet. 
+It is useful in cases where an existing `codeHash` is not available, meaning that the code has never been deployed to the blockchain in its current form. 
+
+The `instantiate_with_code` dispatchable uploads the wasm code the blockchain and creates a new instance in one go. Learn how it works under the hood in the [Substrate Metadata](../../substrate/extrinsics.md#instantiatewithcodevalue-compactu128-gas_limit-compactu64-storage_deposit_limit-optioncompactu128-code-bytes-data-bytes-salt-bytes) section 
+
+The `CodePromise` constructor takes 3 arguments: an API instance, the contract metadata, and the contract code. Only the wasm code will end up on-chain; the metadata is only used in the JavaScript world. See [Prerequisites](./basics.md) to find out how to obtain them.
 
 ```javascript
-import { ApiPromise } from '@polkadot/api';
 import { CodePromise } from '@polkadot/api-contracts';
 
-...
-// Construct the API as per the API sections
-// (as in all examples, this connects to a local chain)
-const api = await ApiPromise.create();
-
-// Construct our Code helper. The abi is an Abi object, an unparsed JSON string
-// or the raw JSON data (after doing a JSON.parse). The wasm is either a hex
-// string (0x prefixed), an Uint8Array or a Node.js Buffer object
-const code = new CodePromise(api, abi, wasm);
-
-// Deploy the WASM, retrieve a Blueprint
-...
+const code = new CodePromise(api, metadata, wasm);
 ```
 
-It is important to understand that the interfaces provided here are higher-level helpers, so some assumptions are made to make subsequent use easier. In the case of the `CodePromise` class this is quite visible. While a `contracts.putCode` is independent of any ABIs, for out helpers we always assume that the developer does have access to the ABI right at the start. This means that when code is deployed a Blueprint can be created with the correct ABI (and subsequent deployments can, once again, create a Contract with an attached ABI).
+The newly generated `code` object lets you call `instantiate_with_code` without having to encode the data yourself.
+You will need to provide values for the instantiation options. Getting accurate gas and storage deposit costs is possible by calling the [instantiate](http://localhost:8080/substrate/rpc#instantiaterequest-instantiaterequest-at-blockhash-contractinstantiateresult) RPC, which dry runs the instantiation and returns the outcome. For the scope of this tutorial we will use hardcoded values.
 
-The helpers are there to help and make development easier by integrating the parts, nothing would stop a developer from making `putCode` or `instantiate` calls themselves.
-
-
-## Create a blueprint
-
-After we have the initial structure above, the next step would be to actually deploy the code and retrieve a `BlueprintPromise` from the result. Building on the above example -
+Here is how you would retrieve the contract address after instantiation for an [ink! incrementer contract](https://github.com/paritytech/ink/blob/master/examples/incrementer/lib.rs), whose constructor signature looks like this: `new (initValue: i32)` 
 
 ```javascript
-// Deploy the WASM, retrieve a Blueprint
-let blueprint;
+// maximum gas to be consumed for the instantiation. if limit is too small the instantiation will fail.
+const gasLimit = 100000n * 1000000n
+// a limit to how much Balance to be used to pay for the storage created by the instantiation
+// if null is passed, unlimited balance can be used
+const storageDepositLimit = null
+// used to derive contract address, 
+// use null to prevent duplicate contracts
+const salt = new Uint8Array()
+// balance to transfer to the contract account, formerly know as "endowment". 
+// use only with payable constructors, will fail otherwise. 
+const value = api.registry.createType('Balance', 1000)
+const initValue = 1;
 
-// createBlueprint is a normal submittable, so use signAndSend
-// with an known Alice keypair (as per the API samples)
-const unsub = await code
-  .createBlueprint()
-  .signAndSend(alicePair, (result) => {
-    if (result.status.isInBlock || result.status.isFinalized) {
-      // here we have an additional field in the result, containing the blueprint
-      blueprint = result.blueprint;
-      unsub();
-    }
-  })
+const tx = code.tx.new({ gasLimit, storageDepositLimit }, initValue)
+
+let address;
+
+const unsub = await tx.signAndSend(alicePair, ({ contract, status }) => {
+  if (status.isInBlock || status.isFinalized) {
+    address = contract.address.toString();
+    unsub();
+  }
+});
 ```
 
-As noted above the `createBlueprint` helper on the `Code` interface is a normal submittable, although it is enhanced to return an actual `Blueprint` based on the `codeHash` retrieved. Internally it sends a `putCode` and will listen for the correct emitted events. Based on the results and events (and the input ABI) it will subsequently create a helper object that can be used to deploy contracts.
-
-
-## Use the blueprint
-
-After we have deployed the WASM on-chain, next we can use the [Blueprint result to deploy](blueprint.md) a contract on-chain.
+After we have uploaded the WASM on-chain, next we'll use the [Blueprint to (re)instantiate on-chain code](blueprint.md).

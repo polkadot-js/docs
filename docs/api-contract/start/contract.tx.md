@@ -1,21 +1,23 @@
 ---
-title: Contract Tx
+title: Contract tx
 ---
 
-In addition to using the `.query.<messageName>` on a contract, the `.tx.<messageName>` method is provides to send an actual encoded transaction to the contract, allow for execution and have this applied in a block. Expanding on our previous examples, we can now execute and then retrieve the subsequent value -
+## Interface
+
+In addition to using the `.query.<messageName>` on a contract, the `.tx.<messageName>` method provides a way to send an actual encoded transaction to the contract, allow for execution and have this applied in a block. Expanding on our previous [ink! incrementer](https://github.com/paritytech/ink/blob/master/examples/incrementer/lib.rs) example, we can now execute and then retrieve the subsequent value.
 
 ```javascript
-// We will use these values for the execution
-const value = 0; // only useful on isPayable messages
+const value = 10000; // only for payable messages, call will fail otherwise
 const gasLimit = 3000n * 1000000n;
+const storageDepositLimit = null;
 const incValue = 1;
 
 // Send the transaction, like elsewhere this is a normal extrinsic
 // with the same rules as applied in the API (As with the read example,
 // additional params, if required can follow - here only one is needed)
 await contract.tx
-  .inc({ value, gasLimit }, incValue)
-  .signAndSend(alicePair, (result) => {
+  .inc({ storageDepositLimit, gasLimit }, incValue)
+  .signAndSend(alicePair, result => {
     if (result.status.isInBlock) {
       console.log('in a block');
     } else if (result.status.isFinalized) {
@@ -24,41 +26,30 @@ await contract.tx
   });
 ```
 
-If we perform the same `query.get` read on the value now, it would be `124`. For lower-level access, like we have in the `Blueprint` via `.createContract` you can also perform the execution via the `.exec` function, which would yield equivalent results -
-
-```javascript
-// Send the transaction, like elsewhere this is a normal submittable
-// extrinsic with the same rules as applied in the API
-await contract
-  .exec('inc', { value, gasLimit }, incValue)
-  .signAndSend(alicePair, (result) => {
-    ...
-  });
-```
-
 For the above interface we can specify the message as the string name, the index of the actual message as retrieved via the Abi.
 
 
-## Weight estimation
+## Cost estimation
 
-To estimate the gasLimit (which in the Substrate context refers to the weight used), we can use the `.query` (read) interfaces with a sufficiently large value to retrieve the actual gas consumed. The API makes this easy - with a `gasLimit` or `-1` passed to the query it will use the maximum gas limit available to transactions and the return value will have the actual gas used.
+To estimate values for `gasLimit` and `storageDepositLimit`, we can dry run the contract call using the `.query` (read) interfaces with a sufficiently large value to retrieve the actual gas and storage deposit consumed. The API makes this easy by passing `gasLimit: -1` and `storageDepositLimit: null` to the query. The query will use the maximum tx weight for `gasLimit` and available free balance for `storageDepositLimit`.
 
-To see this in practice -
+See this in practice for the `inc` message on the ink! incrementer contract
 
 ```js
-// We will use these values for the execution
-const value = 0;
 const incValue = 1;
+const options = { storageDepositLimit: null, gasLimit: -1 }
 
-// Instead of sending we use the `call` interface via `.query` that will return
-// the gas consumed (the API aut-fill the max block tx weight when -1 is the gasLimit)
-const { gasConsumed, result } = await contract.query.inc(slicePair, { value, gasLimit: -1 }, incValue)
+const { gasRequired, storageDeposit, result } = await contract.query.inc(
+  alicePair,
+  options,
+  incValue
+);
 
 console.log(`outcome: ${result.isOk ? 'Ok' : 'Error'}`);
-console.log(`gasConsumed ${gasConsumed.toString()}`);
+console.log(`gasRequired ${gasRequired.toString()}`);
 ```
 
-We can use the `gasConsumed` input (potentially with a buffer for various execution paths) in any calls to `contract.tx.inc(...)` with the same input parameters specified on the `query` where the estimation was done.
+We can use the `gasRequired` input (potentially with a buffer for various execution paths) in any calls to `contract.tx.inc(...)` with the same input parameters specified on the `query` where the estimation was done.
 
 
 ## Events
