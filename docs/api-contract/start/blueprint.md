@@ -17,15 +17,12 @@ const tx = blueprint.tx.default({ gasLimit, storageDepositLimit, salt });
 
 let address;
 
-const unsub = await tx.signAndSend(
-  alicePair,
-  ({ contract, status }) => {
-    if (status.isInBlock || status.isFinalized) {
-      address = contract.address.toString()
-      unsub();
-    }
+const unsub = await tx.signAndSend(alicePair, ({ contract, status }) => {
+  if (status.isInBlock || status.isFinalized) {
+    address = contract.address.toString();
+    unsub();
   }
-);
+});
 ```
 
 We have made it this far. At this point you should be familiar with code deployments as well as contract instantiation, next up [we will read a contract value](contract.read.md).

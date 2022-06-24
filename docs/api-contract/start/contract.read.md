@@ -30,12 +30,13 @@ const storageDepositLimit = null
 const value: api.registry.createType('Balance', 1000)
 
 // (We perform the send from an account, here using Alice's address)
-const { 
-  gasRequired, 
-  storageDeposit, 
-  result, 
-  output 
-  } = await contract.query.get(alicePair.address, { gasLimit, storageDepositLimit });
+const { gasRequired, storageDeposit, result, output } = await contract.query.get(
+  alicePair.address,
+  {
+    gasLimit,
+    storageDepositLimit,
+  }
+);
 
 // The actual result from RPC as `ContractExecResult`
 console.log(result.toHuman());

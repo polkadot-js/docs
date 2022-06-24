@@ -15,14 +15,15 @@ const incValue = 1;
 // Send the transaction, like elsewhere this is a normal extrinsic
 // with the same rules as applied in the API (As with the read example,
 // additional params, if required can follow - here only one is needed)
-await contract.tx.inc({ storageDepositLimit, gasLimit }, incValue)
-  .signAndSend(alicePair, (result) => {
+await contract.tx
+  .inc({ storageDepositLimit, gasLimit }, incValue)
+  .signAndSend(alicePair, result => {
     if (result.status.isInBlock) {
       console.log('in a block');
     } else if (result.status.isFinalized) {
       console.log('finalized');
     }
-});
+  });
 ```
 
 For the above interface we can specify the message as the string name, the index of the actual message as retrieved via the Abi.
@@ -38,11 +39,11 @@ See this in practice for the `inc` message on the ink! incrementer contract
 const incValue = 1;
 const options = { storageDepositLimit: null, gasLimit: -1 }
 
-const { 
-  gasRequired, 
-  storageDeposit, 
-  result 
-  } = await contract.query.inc(alicePair, options, incValue)
+const { gasRequired, storageDeposit, result } = await contract.query.inc(
+  alicePair,
+  options,
+  incValue
+);
 
 console.log(`outcome: ${result.isOk ? 'Ok' : 'Error'}`);
 console.log(`gasRequired ${gasRequired.toString()}`);

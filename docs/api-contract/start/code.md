@@ -38,15 +38,12 @@ const tx = code.tx.new({ gasLimit, storageDepositLimit }, initValue)
 
 let address;
 
-const unsub = await tx.signAndSend(
-  alicePair,
-  ({ contract, status }) => {
-    if (status.isInBlock || status.isFinalized) {
-      address = contract.address.toString();
-      unsub();
-    }
+const unsub = await tx.signAndSend(alicePair, ({ contract, status }) => {
+  if (status.isInBlock || status.isFinalized) {
+    address = contract.address.toString();
+    unsub();
   }
-);
+});
 ```
 
 After we have uploaded the WASM on-chain, next we'll use the [Blueprint to (re)instantiate on-chain code](blueprint.md).
