@@ -101,6 +101,7 @@ module.exports = {
           'api-contract/start/intro',
           'api-contract/start/install',
           'api-contract/start/basics',
+          'api-contract/start/prerequisites',
           'api-contract/start/code',
           'api-contract/start/blueprint',
           'api-contract/start/contract.read',

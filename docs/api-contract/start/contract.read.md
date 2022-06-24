@@ -1,5 +1,5 @@
 ---
-title: Read values
+title: Contract
 ---
 
 The `ContractPromise` interface allows you to interact with a deployed contract. It provides a wrapper around the `Abi` or metadata JSON and allows you to read contract values and send encoded transactions to the contract.

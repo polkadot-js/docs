@@ -1,5 +1,5 @@
 ---
-title: Instantiate
+title: Blueprint
 ---
 
 A `BlueprintPromise` works similarly to a `CodePromise`. It manages calls to the `instantiate` dispatchable in the contracts pallet and uses a code hash to retrieve previously uploaded contract code from chain storage.

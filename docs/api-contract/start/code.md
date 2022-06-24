@@ -1,5 +1,5 @@
 ---
-title: Upload and instantiate
+title: Code
 ---
 
 The `CodePromise` class allows the developer to manage calls to the `instantiate_with_code` dispatchable in the contracts pallet. 
@@ -28,10 +28,10 @@ const gasLimit = 100000n * 1000000n
 const storageDepositLimit = null
 // used to derive contract address, 
 // use null to prevent duplicate contracts
-const salt: new Uint8Array()
+const salt = new Uint8Array()
 // balance to transfer to the contract account, formerly know as "endowment". 
 // use only with payable constructors, will fail otherwise. 
-const value: api.registry.createType('Balance', 1000)
+const value = api.registry.createType('Balance', 1000)
 const initValue = 1;
 
 const tx = code.tx.new({ gasLimit, storageDepositLimit }, initValue)

@@ -1,5 +1,5 @@
 ---
-title: Send transactions
+title: Contract tx
 ---
 
 ## Interface
@@ -22,7 +22,7 @@ await contract.tx.inc({ storageDepositLimit, gasLimit }, incValue)
     } else if (result.status.isFinalized) {
       console.log('finalized');
     }
-  });
+});
 ```
 
 For the above interface we can specify the message as the string name, the index of the actual message as retrieved via the Abi.
