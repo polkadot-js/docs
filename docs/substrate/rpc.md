@@ -278,6 +278,11 @@ ___
 - **jsonrpc**: `eth_estimateGas`
 - **summary**: Estimate gas needed for execution of given contract.
  
+### feeHistory(blockCount: `U256`, newestBlock: `BlockNumber`, rewardPercentiles: `Option<Vec<f64>>`): `EthFeeHistory`
+- **interface**: `api.rpc.eth.feeHistory`
+- **jsonrpc**: `eth_feeHistory`
+- **summary**: Returns fee history for given block count & reward percentiles
+ 
 ### gasPrice(): `U256`
 - **interface**: `api.rpc.eth.gasPrice`
 - **jsonrpc**: `eth_gasPrice`
@@ -392,6 +397,11 @@ ___
 - **interface**: `api.rpc.eth.hashrate`
 - **jsonrpc**: `eth_hashrate`
 - **summary**: Returns the number of hashes per second that the node is mining with.
+ 
+### maxPriorityFeePerGas(): `U256`
+- **interface**: `api.rpc.eth.maxPriorityFeePerGas`
+- **jsonrpc**: `eth_maxPriorityFeePerGas`
+- **summary**: Returns max priority fee per gas
  
 ### mining(): `bool`
 - **interface**: `api.rpc.eth.mining`
