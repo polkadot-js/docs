@@ -18,11 +18,11 @@
     "@docusaurus/core": "2.0.0-beta.19",
     "@docusaurus/preset-classic": "2.0.0-beta.19",
     "@mdx-js/react": "^1.6.22",
-    "@polkadot/dev": "^0.67.43",
-    "@polkadot/typegen": "^8.10.1",
-    "clsx": "^1.1.1",
-    "react": "^18.1.0",
-    "react-dom": "^18.1.0"
+    "@polkadot/dev": "^0.67.50",
+    "@polkadot/typegen": "^8.11.2",
+    "clsx": "^1.2.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
   },
   "browserslist": {
     "production": [
