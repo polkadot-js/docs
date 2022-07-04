@@ -800,6 +800,10 @@ ___
 - **interface**: `api.errors.democracy.VotesExist.is`
 - **summary**:    The account currently has votes attached to it and the operation cannot succeed until  these are removed, either through `unvote` or `reap_vote`. 
  
+### VotingPeriodLow
+- **interface**: `api.errors.democracy.VotingPeriodLow.is`
+- **summary**:    Voting period too low 
+ 
 ### WrongUpperBound
 - **interface**: `api.errors.democracy.WrongUpperBound.is`
 - **summary**:    Invalid upper bound. 
