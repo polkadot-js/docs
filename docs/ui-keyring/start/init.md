@@ -82,7 +82,7 @@ In addition to the `ss58Format` and `type` options (both optional), the followin
 
 - `isDevelopment?: boolean` - This flag, when set to `true` loads the keyring in development mode. This means that the default development accounts such as "Alice", "Bob", ..., "Ferdie" are included in the keyring. Generally you would only specify this when  actually connected to a development chain.
 
-- `store?: KeyringStore` - An optional store to be used. By default the `ui-keyring` will user browser localStorage, but with a specific store this behavior can be adjusted. For instance, for an extension we would default to the extension store (although localStorage is available) and for Electron apps, we may want to default to file storage.
+- `store?: KeyringStore` - An optional store to be used. By default the `ui-keyring` will use browser localStorage, but with a specific store this behavior can be adjusted. For instance, for an extension we would default to the extension store (although localStorage is available) and for Electron apps, we may want to default to file storage.
 
 ```js
 // For file storage where available, e.g. in Electron environments.
