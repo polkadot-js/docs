@@ -28,6 +28,7 @@
        1	h4x3rotab                     	Fix typo (#16)
        1	hamidra                       	Add a note regarding fees for batch transactions. (#176)
        1	Joshy Orndorff                	typo -is -> in (also some commas) (#28)
+       1	Kami                          	Update init.md (#319)
        1	Keith Alfaro                  	spelling and abbreviation clarification (#311)
        1	Kingsley                      	Fix syntax error in extension cookbook (#194)
        1	Kyle                          	isReady field no longer present or necessary (#296)
