@@ -1,8 +1,8 @@
 {
   "name": "polkadot-js",
-  "version": "0.0.187",
-  "versionGit": "0.0.187",
-  "versionNpm": "0.0.187",
+  "version": "0.0.188",
+  "versionGit": "0.0.188",
+  "versionNpm": "0.0.188",
   "private": true,
   "scripts": {
     "docusaurus": "docusaurus",
