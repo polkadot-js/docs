@@ -17,12 +17,12 @@
     "test": "echo \"Skipping test\""
   },
   "devDependencies": {
-    "@docusaurus/core": "2.0.0-beta.22",
-    "@docusaurus/preset-classic": "2.0.0-beta.22",
+    "@docusaurus/core": "2.0.0-rc.1",
+    "@docusaurus/preset-classic": "2.0.0-rc.1",
     "@mdx-js/react": "^1.6.22",
-    "@polkadot/dev": "^0.67.70",
+    "@polkadot/dev": "^0.67.77",
     "@polkadot/typegen": "^8.12.2",
-    "clsx": "^1.2.0",
+    "clsx": "^1.2.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
