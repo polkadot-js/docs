@@ -1,8 +1,6 @@
 {
   "name": "polkadot-js",
-  "version": "0.0.188",
-  "versionGit": "0.0.188",
-  "versionNpm": "0.0.188",
+  "version": "0.0.189",
   "private": true,
   "scripts": {
     "docusaurus": "docusaurus",
@@ -41,5 +39,9 @@
   "packageManager": "yarn@3.2.0",
   "dependencies": {
     "@cmfcmf/docusaurus-search-local": "^0.11.0"
+  },
+  "versions": {
+    "git": "0.0.189",
+    "npm": "0.0.189"
   }
 }
