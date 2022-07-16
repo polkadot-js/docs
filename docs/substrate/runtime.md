@@ -8,6 +8,8 @@ The following section contains known runtime calls that may be available on spec
 
 - **[auraApi](#auraapi)**
 
+- **[authorFilterAPI](#authorfilterapi)**
+
 - **[authorityDiscoveryApi](#authoritydiscoveryapi)**
 
 - **[babeApi](#babeapi)**
@@ -28,6 +30,8 @@ The following section contains known runtime calls that may be available on spec
 
 - **[core](#core)**
 
+- **[debugRuntimeApi](#debugruntimeapi)**
+
 - **[difficultyApi](#difficultyapi)**
 
 - **[ethereumRuntimeRPCApi](#ethereumruntimerpcapi)**
@@ -39,6 +43,10 @@ The following section contains known runtime calls that may be available on spec
 - **[metadata](#metadata)**
 
 - **[mmrApi](#mmrapi)**
+
+- **[nimbusApi](#nimbusapi)**
+
+- **[nominationPoolsApi](#nominationpoolsapi)**
 
 - **[offchainWorkerApi](#offchainworkerapi)**
 
@@ -89,6 +97,16 @@ ___
 - **interface**: `api.call.auraApi.slotDuration`
 - **runtime**: `AuraApi_slot_duration`
 - **summary**: Returns the slot duration for Aura.
+
+___
+
+
+## AuthorFilterAPI
+ 
+### canAuthor(author: `AccountId`, relayParent: `u32`, parentHeader: `Header`): `bool`
+- **interface**: `api.call.authorFilterAPI.canAuthor`
+- **runtime**: `AuthorFilterAPI_can_author`
+- **summary**: The runtime api used to predict whether an author will be eligible in the given slot
 
 ___
 
@@ -268,6 +286,21 @@ ___
 ___
 
 
+## DebugRuntimeApi
+ 
+### traceBlock(extrinsics: `Vec<Extrinsic>`, knownTransactions: `Vec<H256>`): `Result<(), DispatchError>`
+- **interface**: `api.call.debugRuntimeApi.traceBlock`
+- **runtime**: `DebugRuntimeApi_trace_block`
+- **summary**: Trace all block extrinsics
+ 
+### traceTransaction(extrinsics: `Vec<Extrinsic>`, transaction: `EthTransaction`): `Result<(), DispatchError>`
+- **interface**: `api.call.debugRuntimeApi.traceTransaction`
+- **runtime**: `DebugRuntimeApi_trace_transaction`
+- **summary**: Trace transaction extrinsics
+
+___
+
+
 ## DifficultyApi
  
 ### difficulty(): `Raw`
@@ -434,6 +467,26 @@ ___
 - **interface**: `api.call.mmrApi.verifyProofStateless`
 - **runtime**: `MmrApi_verify_proof_stateless`
 - **summary**: Verify MMR proof against given root hash.
+
+___
+
+
+## NimbusApi
+ 
+### canAuthor(author: `AccountId`, relayParent: `u32`, parentHeader: `Header`): `bool`
+- **interface**: `api.call.nimbusApi.canAuthor`
+- **runtime**: `NimbusApi_can_author`
+- **summary**: The runtime api used to predict whether a Nimbus author will be eligible in the given slot
+
+___
+
+
+## NominationPoolsApi
+ 
+### pendingRewards(member: `AccountId`): `Result<Balance, NpApiError>`
+- **interface**: `api.call.nominationPoolsApi.pendingRewards`
+- **runtime**: `NominationPoolsApi_pending_rewards`
+- **summary**: Returns the pending rewards for the given member.
 
 ___
 

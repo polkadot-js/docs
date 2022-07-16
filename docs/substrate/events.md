@@ -1478,6 +1478,18 @@ ___
 - **interface**: `api.events.uniques.Issued.is`
 - **summary**:    An `item` was issued. 
  
+### ItemBought(`u32`, `u32`, `u128`, `AccountId32`, `AccountId32`)
+- **interface**: `api.events.uniques.ItemBought.is`
+- **summary**:    An item was bought. 
+ 
+### ItemPriceRemoved(`u32`, `u32`)
+- **interface**: `api.events.uniques.ItemPriceRemoved.is`
+- **summary**:    The price for the instance was removed. 
+ 
+### ItemPriceSet(`u32`, `u32`, `u128`, `Option<AccountId32>`)
+- **interface**: `api.events.uniques.ItemPriceSet.is`
+- **summary**:    The price was set for the instance. 
+ 
 ### ItemStatusChanged(`u32`)
 - **interface**: `api.events.uniques.ItemStatusChanged.is`
 - **summary**:    A `collection` has had its attributes changed by the `Force` origin. 

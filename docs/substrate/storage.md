@@ -1706,6 +1706,10 @@ ___
 - **interface**: `api.query.uniques.instanceMetadataOf`
 - **summary**:    Metadata of an item. 
  
+### itemPriceOf(`u32, u32`): `Option<(u128,Option<AccountId32>)>`
+- **interface**: `api.query.uniques.itemPriceOf`
+- **summary**:    Price of an asset instance. 
+ 
 ### ownershipAcceptance(`AccountId32`): `Option<u32>`
 - **interface**: `api.query.uniques.ownershipAcceptance`
 - **summary**:    The collection, if any, of which an account is willing to take ownership. 

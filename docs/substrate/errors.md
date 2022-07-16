@@ -914,13 +914,13 @@ ___
 - **interface**: `api.errors.elections.NoVotes.is`
 - **summary**:    Must vote for at least one candidate. 
  
-### ReportSelf
-- **interface**: `api.errors.elections.ReportSelf.is`
-- **summary**:    Cannot report self. 
- 
 ### RunnerUpSubmit
 - **interface**: `api.errors.elections.RunnerUpSubmit.is`
 - **summary**:    Runner cannot re-submit candidacy. 
+ 
+### TooManyCandidates
+- **interface**: `api.errors.elections.TooManyCandidates.is`
+- **summary**:    Too many candidates have been created. 
  
 ### TooManyVotes
 - **interface**: `api.errors.elections.TooManyVotes.is`
@@ -1253,14 +1253,12 @@ ___
 ### MinimumBondNotMet
 - **interface**: `api.errors.nominationPools.MinimumBondNotMet.is`
 - **summary**:    The amount does not meet the minimum bond to either join or create a pool. 
+
+   The depositor can never unbond to a value less than  `Pallet::depositor_min_bond`. The caller does not have nominating  permissions for the pool. Members can never unbond to a value below `MinJoinBond`. 
  
 ### NotDestroying
 - **interface**: `api.errors.nominationPools.NotDestroying.is`
 - **summary**:    A pool must be in [`PoolState::Destroying`] in order for the depositor to unbond or for  other members to be permissionlessly unbonded. 
- 
-### NotEnoughPointsToUnbond
-- **interface**: `api.errors.nominationPools.NotEnoughPointsToUnbond.is`
-- **summary**:    Not enough points. Ty unbonding less. 
  
 ### NotKickerOrDestroying
 - **interface**: `api.errors.nominationPools.NotKickerOrDestroying.is`
@@ -1269,10 +1267,6 @@ ___
 ### NotNominator
 - **interface**: `api.errors.nominationPools.NotNominator.is`
 - **summary**:    The caller does not have nominating permissions for the pool. 
- 
-### NotOnlyPoolMember
-- **interface**: `api.errors.nominationPools.NotOnlyPoolMember.is`
-- **summary**:    The depositor must be the only member in the bonded pool in order to unbond. And the  depositor must be the only member in the sub pools in order to withdraw unbonded. 
  
 ### NotOpen
 - **interface**: `api.errors.nominationPools.NotOpen.is`
@@ -2070,6 +2064,10 @@ ___
 - **interface**: `api.errors.uniques.BadWitness.is`
 - **summary**:    Invalid witness data given. 
  
+### BidTooLow
+- **interface**: `api.errors.uniques.BidTooLow.is`
+- **summary**:    The provided bid is too low. 
+ 
 ### Frozen
 - **interface**: `api.errors.uniques.Frozen.is`
 - **summary**:    The item or collection is frozen. 
@@ -2102,6 +2100,10 @@ ___
 - **interface**: `api.errors.uniques.NoPermission.is`
 - **summary**:    The signing account has no permission to do the operation. 
  
+### NotForSale
+- **interface**: `api.errors.uniques.NotForSale.is`
+- **summary**:    Item is not for sale. 
+ 
 ### Unaccepted
 - **interface**: `api.errors.uniques.Unaccepted.is`
 - **summary**:    The named owner has not signed ownership of the collection is acceptable. 
@@ -2112,6 +2114,10 @@ ___
  
 ### UnknownCollection
 - **interface**: `api.errors.uniques.UnknownCollection.is`
+- **summary**:    The given item ID is unknown. 
+ 
+### UnknownItem
+- **interface**: `api.errors.uniques.UnknownItem.is`
 - **summary**:    The given item ID is unknown. 
  
 ### WrongDelegate

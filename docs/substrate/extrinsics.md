@@ -1690,11 +1690,13 @@ ___
 
     
  
-### removeMember(who: `MultiAddress`, has_replacement: `bool`)
+### removeMember(who: `MultiAddress`, slash_bond: `bool`, rerun_election: `bool`)
 - **interface**: `api.tx.elections.removeMember`
 - **summary**:    Remove a particular member from the set. This is effective immediately and the bond of  the outgoing member is slashed. 
 
-   If a runner-up is available, then the best runner-up will be removed and replaces the  outgoing member. Otherwise, a new phragmen election is started. 
+   If a runner-up is available, then the best runner-up will be removed and replaces the  outgoing member. Otherwise, if `rerun_election` is `true`, a new phragmen election is  started, else, nothing happens. 
+
+   If `slash_bond` is set to true, the bond of the member being removed is slashed. Else,  it is returned. 
 
    The dispatch origin of this call must be root. 
 
@@ -2231,6 +2233,8 @@ ___
 - **summary**:    Bond `extra` more funds from `origin` into the pool to which they already belong. 
 
    Additional funds can come from either the free balance of the account, of from the  accumulated rewards, see [`BondExtra`]. 
+
+   Bonding extra funds implies an automatic payout of all pending rewards as well. 
  
 ### chill(pool_id: `u32`)
 - **interface**: `api.tx.nominationPools.chill`
@@ -2320,7 +2324,11 @@ ___
 - **interface**: `api.tx.nominationPools.setState`
 - **summary**:    Set a new state for the pool. 
 
-   The dispatch origin of this call must be signed by the state toggler, or the root role  of the pool. 
+   If a pool is already in the `Destroying` state, then under no condition can its state  change again. 
+
+   The dispatch origin of this call must be either: 
+
+   1. signed by the state toggler, or the root role of the pool,  2. if the pool conditions to be open are NOT met (as described by `ok_to_be_open`), and  then the state of the pool can be permissionlessly changed to `Destroying`. 
  
 ### unbond(member_account: `AccountId32`, unbonding_points: `Compact<u128>`)
 - **interface**: `api.tx.nominationPools.unbond`
@@ -3941,6 +3949,20 @@ ___
 
    Weight: `O(1)`  Modes: `check_owner.is_some()`. 
  
+### buyItem(collection: `u32`, item: `u32`, bid_price: `u128`)
+- **interface**: `api.tx.uniques.buyItem`
+- **summary**:    Allows to buy an item if it's up for sale. 
+
+   Origin must be Signed and must not be the owner of the `item`. 
+
+   - `collection`: The collection of the item. 
+
+  - `item`: The item the sender wants to buy.
+
+  - `bid_price`: The price the sender is willing to pay.
+
+   Emits `ItemBought` on success. 
+ 
 ### cancelApproval(collection: `u32`, item: `u32`, maybe_check_delegate: `Option<MultiAddress>`)
 - **interface**: `api.tx.uniques.cancelApproval`
 - **summary**:    Cancel the prior approval for the transfer of an item by a delegate. 
@@ -4234,6 +4256,22 @@ ___
    Emits `MetadataSet`. 
 
    Weight: `O(1)` 
+ 
+### setPrice(collection: `u32`, item: `u32`, price: `Option<u128>`, whitelisted_buyer: `Option<MultiAddress>`)
+- **interface**: `api.tx.uniques.setPrice`
+- **summary**:    Set (or reset) the price for an item. 
+
+   Origin must be Signed and must be the owner of the asset `item`. 
+
+   - `collection`: The collection of the item. 
+
+  - `item`: The item to set the price for.
+
+  - `price`: The price for the item. Pass `None`, to reset the price.
+
+  - `buyer`: Restricts the buy operation to a specific account.
+
+   Emits `ItemPriceSet` on success if the price is not `None`.  Emits `ItemPriceRemoved` on success if the price is `None`. 
  
 ### setTeam(collection: `u32`, issuer: `MultiAddress`, admin: `MultiAddress`, freezer: `MultiAddress`)
 - **interface**: `api.tx.uniques.setTeam`
