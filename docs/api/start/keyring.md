@@ -54,7 +54,7 @@ const newDeri = keyring.addFromUri(`${PHRASE}//hard-derived/soft-derived`);
 const alice = keyring.addFromUri('//Alice', { name: 'Alice default' });
 ```
 
-The above additions cater for most of the use cases and aligns with the you would find in the Substrate `subkey`. Be very wary of the last "dev-seed" option, it is explicitly added for `subkey` compatibility and implies using the "known-everywhere" dev seed. It is however useful when running Polkadot/Substrate with a `--dev` flag.
+The above additions cater for most of the use cases and aligns with what you would find in the Substrate `subkey`. Be very wary of the last "dev-seed" option, it is explicitly added for `subkey` compatibility and implies using the "known-everywhere" dev seed. It is however useful when running Polkadot/Substrate with a `--dev` flag.
 
 
 ## Adding accounts with raw seeds
