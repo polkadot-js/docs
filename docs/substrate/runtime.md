@@ -68,6 +68,8 @@ The following section contains known runtime calls that may be available on spec
 
 - **[transactionPaymentApi](#transactionpaymentapi)**
 
+- **[transactionPaymentCallApi](#transactionpaymentcallapi)**
+
 - **[tryRuntime](#tryruntime)**
 
 - **[westendFinalityApi](#westendfinalityapi)**
@@ -687,6 +689,21 @@ ___
 - **interface**: `api.call.transactionPaymentApi.queryInfo`
 - **runtime**: `TransactionPaymentApi_query_info`
 - **summary**: The transaction info
+
+___
+
+
+## TransactionPaymentCallApi
+ 
+### queryCallFeeDetails(call: `Call`, len: `u32`): `FeeDetails`
+- **interface**: `api.call.transactionPaymentCallApi.queryCallFeeDetails`
+- **runtime**: `TransactionPaymentCallApi_query_call_fee_details`
+- **summary**: The call fee details
+ 
+### queryCallInfo(call: `Call`, len: `u32`): `RuntimeDispatchInfo`
+- **interface**: `api.call.transactionPaymentCallApi.queryCallInfo`
+- **runtime**: `TransactionPaymentCallApi_query_call_info`
+- **summary**: The call info
 
 ___
 
