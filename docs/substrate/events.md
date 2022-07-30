@@ -796,7 +796,7 @@ ___
 - **interface**: `api.events.nominationPools.StateChanged.is`
 - **summary**:    The state of a pool has changed 
  
-### Unbonded(`AccountId32`, `u32`, `u128`, `u128`)
+### Unbonded(`AccountId32`, `u32`, `u128`, `u128`, `u32`)
 - **interface**: `api.events.nominationPools.Unbonded.is`
 - **summary**:    A member has unbonded from their pool. 
 
@@ -804,7 +804,7 @@ ___
 
   - `points` is the number of points that are issued as a result of `balance` being dissolved into the corresponding unbonding pool. 
 
-   In the absence of slashing, these values will match. In the presence of slashing, the  number of points that are issued in the unbonding pool will be less than the amount  requested to be unbonded. 
+  - `era` is the era in which the balance will be unbonded. In the absence of slashing, these values will match. In the presence of slashing, the  number of points that are issued in the unbonding pool will be less than the amount  requested to be unbonded. 
  
 ### UnbondingPoolSlashed(`u32`, `u32`, `u128`)
 - **interface**: `api.events.nominationPools.UnbondingPoolSlashed.is`

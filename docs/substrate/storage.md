@@ -1245,10 +1245,6 @@ ___
 
    This is basically in sync with the call to [`pallet_session::SessionManager::new_session`]. 
  
-### earliestUnappliedSlash(): `Option<u32>`
-- **interface**: `api.query.staking.earliestUnappliedSlash`
-- **summary**:    The earliest era for which we have a pending, unapplied slash. 
- 
 ### erasRewardPoints(`u32`): `PalletStakingEraRewardPoints`
 - **interface**: `api.query.staking.erasRewardPoints`
 - **summary**:    Rewards for the last `HISTORY_DEPTH` eras.  If reward hasn't been set or has been removed then 0 reward is returned. 

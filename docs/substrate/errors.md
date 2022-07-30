@@ -108,6 +108,14 @@ ___
 - **interface**: `api.errors.alliance.AccountNonGrata.is`
 - **summary**:    Account has been deemed unscrupulous by the Alliance and is not welcome to join or be  nominated. 
  
+### AllianceAlreadyInitialized
+- **interface**: `api.errors.alliance.AllianceAlreadyInitialized.is`
+- **summary**:    The founders/fellows/allies have already been initialized. 
+ 
+### AllianceNotYetInitialized
+- **interface**: `api.errors.alliance.AllianceNotYetInitialized.is`
+- **summary**:    The Alliance has not been initialized yet, therefore accounts cannot join it. 
+ 
 ### AlreadyElevated
 - **interface**: `api.errors.alliance.AlreadyElevated.is`
 - **summary**:    Account is already an elevated (fellow) member. 
@@ -123,10 +131,6 @@ ___
 ### InsufficientFunds
 - **interface**: `api.errors.alliance.InsufficientFunds.is`
 - **summary**:    Balance is insufficient for the required deposit. 
- 
-### MembersAlreadyInitialized
-- **interface**: `api.errors.alliance.MembersAlreadyInitialized.is`
-- **summary**:    The founders/fellows/allies have already been initialized. 
  
 ### MissingAnnouncement
 - **interface**: `api.errors.alliance.MissingAnnouncement.is`
