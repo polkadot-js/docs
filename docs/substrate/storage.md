@@ -1111,7 +1111,7 @@ ___
 - **interface**: `api.query.session.keyOwner`
 - **summary**:    The owner of a key. The key is the `KeyTypeId` + the encoded key. 
  
-### nextKeys(`AccountId32`): `Option<NodeRuntimeSessionKeys>`
+### nextKeys(`AccountId32`): `Option<KitchensinkRuntimeSessionKeys>`
 - **interface**: `api.query.session.nextKeys`
 - **summary**:    The next session keys for a validator. 
  
@@ -1119,7 +1119,7 @@ ___
 - **interface**: `api.query.session.queuedChanged`
 - **summary**:    True if the underlying economic identities or weighting behind the validators  has changed in the queued validator set. 
  
-### queuedKeys(): `Vec<(AccountId32,NodeRuntimeSessionKeys)>`
+### queuedKeys(): `Vec<(AccountId32,KitchensinkRuntimeSessionKeys)>`
 - **interface**: `api.query.session.queuedKeys`
 - **summary**:    The queued keys for the next session. When the next session begins, these keys  will be used to determine the validator's session keys. 
  
@@ -1705,6 +1705,10 @@ ___
 ### itemPriceOf(`u32, u32`): `Option<(u128,Option<AccountId32>)>`
 - **interface**: `api.query.uniques.itemPriceOf`
 - **summary**:    Price of an asset instance. 
+ 
+### nextCollectionId(): `u32`
+- **interface**: `api.query.uniques.nextCollectionId`
+- **summary**:    Stores the `CollectionId` that is going to be used for the next collection.  This gets incremented by 1 whenever a new collection is created. 
  
 ### ownershipAcceptance(`AccountId32`): `Option<u32>`
 - **interface**: `api.query.uniques.ownershipAcceptance`

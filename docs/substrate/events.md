@@ -12,6 +12,8 @@ Events are emitted for certain operations on the runtime. The following sections
 
 - **[assets](#assets)**
 
+- **[assetTxPayment](#assettxpayment)**
+
 - **[bagsList](#bagslist)**
 
 - **[balances](#balances)**
@@ -253,6 +255,15 @@ ___
 ### TransferredApproved(`u32`, `AccountId32`, `AccountId32`, `AccountId32`, `u128`)
 - **interface**: `api.events.assets.TransferredApproved.is`
 - **summary**:    An `amount` was transferred in its entirety from `owner` to `destination` by  the approved `delegate`. 
+
+___
+
+
+## assetTxPayment
+ 
+### AssetTxFeePaid(`AccountId32`, `u128`, `u128`, `Option<u32>`)
+- **interface**: `api.events.assetTxPayment.AssetTxFeePaid.is`
+- **summary**:    A transaction fee `actual_fee`, of which `tip` was added to the minimum inclusion fee,  has been paid by `who` in an asset `asset_id`. 
 
 ___
 
@@ -853,11 +864,11 @@ ___
 - **interface**: `api.events.proxy.Announced.is`
 - **summary**:    An announcement was placed to make a call in the future. 
  
-### AnonymousCreated(`AccountId32`, `AccountId32`, `NodeRuntimeProxyType`, `u16`)
+### AnonymousCreated(`AccountId32`, `AccountId32`, `KitchensinkRuntimeProxyType`, `u16`)
 - **interface**: `api.events.proxy.AnonymousCreated.is`
 - **summary**:    Anonymous account has been created by new proxy with given  disambiguation index and proxy type. 
  
-### ProxyAdded(`AccountId32`, `AccountId32`, `NodeRuntimeProxyType`, `u32`)
+### ProxyAdded(`AccountId32`, `AccountId32`, `KitchensinkRuntimeProxyType`, `u32`)
 - **interface**: `api.events.proxy.ProxyAdded.is`
 - **summary**:    A proxy was added. 
  
@@ -865,7 +876,7 @@ ___
 - **interface**: `api.events.proxy.ProxyExecuted.is`
 - **summary**:    A proxy was executed correctly, with the given. 
  
-### ProxyRemoved(`AccountId32`, `AccountId32`, `NodeRuntimeProxyType`, `u32`)
+### ProxyRemoved(`AccountId32`, `AccountId32`, `KitchensinkRuntimeProxyType`, `u32`)
 - **interface**: `api.events.proxy.ProxyRemoved.is`
 - **summary**:    A proxy was removed. 
 
@@ -1501,6 +1512,10 @@ ___
 ### MetadataSet(`u32`, `u32`, `Bytes`, `bool`)
 - **interface**: `api.events.uniques.MetadataSet.is`
 - **summary**:    New metadata has been set for an item. 
+ 
+### NextCollectionIdIncremented(`u32`)
+- **interface**: `api.events.uniques.NextCollectionIdIncremented.is`
+- **summary**:    Event gets emmited when the `NextCollectionId` gets incremented. 
  
 ### OwnerChanged(`u32`, `AccountId32`)
 - **interface**: `api.events.uniques.OwnerChanged.is`

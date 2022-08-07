@@ -2416,7 +2416,7 @@ ___
 
 ## proxy
  
-### addProxy(delegate: `AccountId32`, proxy_type: `NodeRuntimeProxyType`, delay: `u32`)
+### addProxy(delegate: `AccountId32`, proxy_type: `KitchensinkRuntimeProxyType`, delay: `u32`)
 - **interface**: `api.tx.proxy.addProxy`
 - **summary**:    Register a proxy account for the sender that is able to make calls on its behalf. 
 
@@ -2452,7 +2452,7 @@ ___
 
     
  
-### anonymous(proxy_type: `NodeRuntimeProxyType`, delay: `u32`, index: `u16`)
+### anonymous(proxy_type: `KitchensinkRuntimeProxyType`, delay: `u32`, index: `u16`)
 - **interface**: `api.tx.proxy.anonymous`
 - **summary**:    Spawn a fresh new account that is guaranteed to be otherwise inaccessible, and  initialize it with a proxy of `proxy_type` for `origin` sender. 
 
@@ -2470,7 +2470,7 @@ ___
 
      TODO: Might be over counting 1 read 
  
-### killAnonymous(spawner: `AccountId32`, proxy_type: `NodeRuntimeProxyType`, index: `u16`, height: `Compact<u32>`, ext_index: `Compact<u32>`)
+### killAnonymous(spawner: `AccountId32`, proxy_type: `KitchensinkRuntimeProxyType`, index: `u16`, height: `Compact<u32>`, ext_index: `Compact<u32>`)
 - **interface**: `api.tx.proxy.killAnonymous`
 - **summary**:    Removes a previously spawned anonymous proxy. 
 
@@ -2492,7 +2492,7 @@ ___
 
     
  
-### proxy(real: `AccountId32`, force_proxy_type: `Option<NodeRuntimeProxyType>`, call: `Call`)
+### proxy(real: `AccountId32`, force_proxy_type: `Option<KitchensinkRuntimeProxyType>`, call: `Call`)
 - **interface**: `api.tx.proxy.proxy`
 - **summary**:    Dispatch the given `call` from an account that the sender is authorised for through  `add_proxy`. 
 
@@ -2510,7 +2510,7 @@ ___
 
     
  
-### proxyAnnounced(delegate: `AccountId32`, real: `AccountId32`, force_proxy_type: `Option<NodeRuntimeProxyType>`, call: `Call`)
+### proxyAnnounced(delegate: `AccountId32`, real: `AccountId32`, force_proxy_type: `Option<KitchensinkRuntimeProxyType>`, call: `Call`)
 - **interface**: `api.tx.proxy.proxyAnnounced`
 - **summary**:    Dispatch the given `call` from an account that the sender is authorized for through  `add_proxy`. 
 
@@ -2570,7 +2570,7 @@ ___
 
     
  
-### removeProxy(delegate: `AccountId32`, proxy_type: `NodeRuntimeProxyType`, delay: `u32`)
+### removeProxy(delegate: `AccountId32`, proxy_type: `KitchensinkRuntimeProxyType`, delay: `u32`)
 - **interface**: `api.tx.proxy.removeProxy`
 - **summary**:    Unregister a proxy account for the sender. 
 
@@ -2728,7 +2728,7 @@ ___
 
    Emits `DecisionDepositRefunded`. 
  
-### submit(proposal_origin: `NodeRuntimeOriginCaller`, proposal_hash: `H256`, enactment_moment: `FrameSupportScheduleDispatchTime`)
+### submit(proposal_origin: `KitchensinkRuntimeOriginCaller`, proposal_hash: `H256`, enactment_moment: `FrameSupportScheduleDispatchTime`)
 - **interface**: `api.tx.rankedPolls.submit`
 - **summary**:    Propose a referendum on a privileged action. 
 
@@ -2922,7 +2922,7 @@ ___
 
    Emits `DecisionDepositRefunded`. 
  
-### submit(proposal_origin: `NodeRuntimeOriginCaller`, proposal_hash: `H256`, enactment_moment: `FrameSupportScheduleDispatchTime`)
+### submit(proposal_origin: `KitchensinkRuntimeOriginCaller`, proposal_hash: `H256`, enactment_moment: `FrameSupportScheduleDispatchTime`)
 - **interface**: `api.tx.referenda.submit`
 - **summary**:    Propose a referendum on a privileged action. 
 
@@ -2993,7 +2993,7 @@ ___
 
     
  
-### setKeys(keys: `NodeRuntimeSessionKeys`, proof: `Bytes`)
+### setKeys(keys: `KitchensinkRuntimeSessionKeys`, proof: `Bytes`)
 - **interface**: `api.tx.session.setKeys`
 - **summary**:    Sets the session key(s) of the function caller to `keys`.  Allows an account to set its session key prior to becoming a validator.  This doesn't take effect until the next session. 
 
@@ -4035,7 +4035,7 @@ ___
 
    Weight: `O(1)` 
  
-### create(collection: `u32`, admin: `MultiAddress`)
+### create(admin: `MultiAddress`)
 - **interface**: `api.tx.uniques.create`
 - **summary**:    Issue a new collection of non-fungible items from a public origin. 
 
@@ -4046,8 +4046,6 @@ ___
    `ItemDeposit` funds of sender are reserved. 
 
    Parameters: 
-
-  - `collection`: The identifier of the new collection. This must not be currently in use.
 
   - `admin`: The admin of this collection. The admin is the initial address of each member of the collection's admin team. 
 
@@ -4075,7 +4073,7 @@ ___
 
   - `a = witness.attributes`
  
-### forceCreate(collection: `u32`, owner: `MultiAddress`, free_holding: `bool`)
+### forceCreate(owner: `MultiAddress`, free_holding: `bool`)
 - **interface**: `api.tx.uniques.forceCreate`
 - **summary**:    Issue a new collection of non-fungible items from a privileged origin. 
 
@@ -4085,9 +4083,7 @@ ___
 
    Unlike `create`, no funds are reserved. 
 
-   - `collection`: The identifier of the new item. This must not be currently in use. 
-
-  - `owner`: The owner of this collection of items. The owner has full superuser permissions  over this item, but may later change and configure the permissions using  `transfer_ownership` and `set_team`. 
+   - `owner`: The owner of this collection of items. The owner has full superuser  permissions  over this item, but may later change and configure the permissions using  `transfer_ownership` and `set_team`. 
 
    Emits `ForceCreated` event when successful. 
 
@@ -4354,6 +4350,18 @@ ___
    Emits `OwnerChanged`. 
 
    Weight: `O(1)` 
+ 
+### tryIncrementId()
+- **interface**: `api.tx.uniques.tryIncrementId`
+- **summary**:    Increments the `CollectionId` stored in `NextCollectionId`. 
+
+   This is only callable when the next `CollectionId` is already being  used for some other collection. 
+
+   The origin must be Signed and the sender must have sufficient funds  free. 
+
+   Emits `NextCollectionIdIncremented` event when successful. 
+
+   Weight: `O(1)` 
 
 ___
 
@@ -4398,7 +4406,7 @@ ___
 
     
  
-### dispatchAs(as_origin: `NodeRuntimeOriginCaller`, call: `Call`)
+### dispatchAs(as_origin: `KitchensinkRuntimeOriginCaller`, call: `Call`)
 - **interface**: `api.tx.utility.dispatchAs`
 - **summary**:    Dispatches a function call with a provided origin. 
 
