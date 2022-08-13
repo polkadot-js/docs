@@ -345,7 +345,7 @@ ___
 - **runtime**: `EthereumRuntimeRPCApi_create`
 - **summary**: Returns a frame_ethereum::call response. If `estimate` is true,
  
-### currentAll(): `(Option<BlockV2>, Option<Vec<ReceiptV0>>, Option<Vec<TransactionStatus>>)`
+### currentAll(): `(Option<BlockV2>, Option<Vec<EthReceiptV3>>, Option<Vec<EthTransactionStatus>>)`
 - **interface**: `api.call.ethereumRuntimeRPCApi.currentAll`
 - **runtime**: `EthereumRuntimeRPCApi_current_all`
 - **summary**: Return all the current data for a block in a single runtime call.

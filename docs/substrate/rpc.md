@@ -473,12 +473,12 @@ ___
 - **jsonrpc**: `net_listening`
 - **summary**: Returns true if client is actively listening for network connections. Otherwise false.
  
-### peerCount(): `String`
+### peerCount(): `Text`
 - **interface**: `api.rpc.net.peerCount`
 - **jsonrpc**: `net_peerCount`
 - **summary**: Returns number of peers connected to node.
  
-### version(): `String`
+### version(): `Text`
 - **interface**: `api.rpc.net.version`
 - **jsonrpc**: `net_version`
 - **summary**: Returns protocol version.
@@ -488,7 +488,7 @@ ___
 
 ## eth/web3
  
-### clientVersion(): `String`
+### clientVersion(): `Text`
 - **interface**: `api.rpc.web3.clientVersion`
 - **jsonrpc**: `web3_clientVersion`
 - **summary**: Returns current client version.

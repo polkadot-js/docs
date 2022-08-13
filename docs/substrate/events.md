@@ -1216,7 +1216,7 @@ ___
 - **interface**: `api.events.stateTrieMigration.AutoMigrationFinished.is`
 - **summary**:    The auto migration task finished. 
  
-### Halted()
+### Halted(`PalletStateTrieMigrationError`)
 - **interface**: `api.events.stateTrieMigration.Halted.is`
 - **summary**:    Migration got halted due to an error or miss-configuration. 
  

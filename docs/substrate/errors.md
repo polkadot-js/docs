@@ -1816,9 +1816,13 @@ ___
 
 ## stateTrieMigration
  
+### BadChildRoot
+- **interface**: `api.errors.stateTrieMigration.BadChildRoot.is`
+- **summary**:    Bad child root provided. 
+ 
 ### BadWitness
 - **interface**: `api.errors.stateTrieMigration.BadWitness.is`
-- **summary**:    bad witness data provided. 
+- **summary**:    Bad witness data provided. 
  
 ### KeyTooLong
 - **interface**: `api.errors.stateTrieMigration.KeyTooLong.is`
@@ -1828,7 +1832,7 @@ ___
  
 ### MaxSignedLimits
 - **interface**: `api.errors.stateTrieMigration.MaxSignedLimits.is`
-- **summary**:    max signed limits not respected. 
+- **summary**:    Max signed limits not respected. 
  
 ### NotEnoughFunds
 - **interface**: `api.errors.stateTrieMigration.NotEnoughFunds.is`
@@ -1837,10 +1841,6 @@ ___
 ### SignedMigrationNotAllowed
 - **interface**: `api.errors.stateTrieMigration.SignedMigrationNotAllowed.is`
 - **summary**:    Signed migration is not allowed because the maximum limit is not set yet. 
- 
-### SizeUpperBoundExceeded
-- **interface**: `api.errors.stateTrieMigration.SizeUpperBoundExceeded.is`
-- **summary**:    upper bound of size is exceeded, 
 
 ___
 
