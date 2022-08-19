@@ -7,13 +7,7 @@ To install the component, do `yarn add @polkadot/extension-dapp`
 Here is a brief walk through how to use the different utilities from @polkadot/extension-dapp.
 
 ```javascript
-import {
-  web3Accounts,
-  web3Enable,
-  web3FromAddress,
-  web3ListRpcProviders,
-  web3UseRpcProvider
-} from '@polkadot/extension-dapp';
+import { web3Accounts, web3Enable, web3FromAddress } from '@polkadot/extension-dapp';
 
 // returns an array of all the injected sources
 // (this needs to be called first, before other requests)
