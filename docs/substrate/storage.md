@@ -1706,10 +1706,6 @@ ___
 - **interface**: `api.query.uniques.itemPriceOf`
 - **summary**:    Price of an asset instance. 
  
-### nextCollectionId(): `u32`
-- **interface**: `api.query.uniques.nextCollectionId`
-- **summary**:    Stores the `CollectionId` that is going to be used for the next collection.  This gets incremented by 1 whenever a new collection is created. 
- 
 ### ownershipAcceptance(`AccountId32`): `Option<u32>`
 - **interface**: `api.query.uniques.ownershipAcceptance`
 - **summary**:    The collection, if any, of which an account is willing to take ownership. 

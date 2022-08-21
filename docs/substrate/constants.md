@@ -490,6 +490,18 @@ ___
 - **interface**: `api.consts.elections.desiredRunnersUp`
 - **summary**:    Number of runners_up to keep. 
  
+### maxCandidates: `u32`
+- **interface**: `api.consts.elections.maxCandidates`
+- **summary**:    The maximum number of candidates in a phragmen election. 
+
+   Warning: The election happens onchain, and this value will determine  the size of the election. When this limit is reached no more  candidates are accepted in the election. 
+ 
+### maxVoters: `u32`
+- **interface**: `api.consts.elections.maxVoters`
+- **summary**:    The maximum number of voters to allow in a phragmen election. 
+
+   Warning: This impacts the size of the election which is run onchain.  When the limit is reached the new voters are ignored. 
+ 
 ### palletId: `[u8;8]`
 - **interface**: `api.consts.elections.palletId`
 - **summary**:    Identifier for the elections-phragmen pallet's lock 

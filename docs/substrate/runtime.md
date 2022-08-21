@@ -70,8 +70,6 @@ The following section contains known runtime calls that may be available on spec
 
 - **[transactionPaymentCallApi](#transactionpaymentcallapi)**
 
-- **[tryRuntime](#tryruntime)**
-
 - **[westendFinalityApi](#westendfinalityapi)**
 
 
@@ -704,21 +702,6 @@ ___
 - **interface**: `api.call.transactionPaymentCallApi.queryCallInfo`
 - **runtime**: `TransactionPaymentCallApi_query_call_info`
 - **summary**: The call info
-
-___
-
-
-## TryRuntime
- 
-### executeBlockNoCheck(block: `Block`): `Weight`
-- **interface**: `api.call.tryRuntime.executeBlockNoCheck`
-- **runtime**: `TryRuntime_execute_block_no_check`
-- **summary**: Execute the given block, but don't check that its state root matches that of yours.
- 
-### onRuntimeUpgrade(): `(Weight, Weight)`
-- **interface**: `api.call.tryRuntime.onRuntimeUpgrade`
-- **runtime**: `TryRuntime_on_runtime_upgrade`
-- **summary**: dry-run runtime upgrades, returning the total weight consumed.
 
 ___
 

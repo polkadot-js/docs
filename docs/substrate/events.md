@@ -1513,10 +1513,6 @@ ___
 - **interface**: `api.events.uniques.MetadataSet.is`
 - **summary**:    New metadata has been set for an item. 
  
-### NextCollectionIdIncremented(`u32`)
-- **interface**: `api.events.uniques.NextCollectionIdIncremented.is`
-- **summary**:    Event gets emmited when the `NextCollectionId` gets incremented. 
- 
 ### OwnerChanged(`u32`, `AccountId32`)
 - **interface**: `api.events.uniques.OwnerChanged.is`
 - **summary**:    The owner changed. 

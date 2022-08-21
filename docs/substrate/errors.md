@@ -2096,12 +2096,6 @@ ___
 - **interface**: `api.errors.uniques.MaxSupplyTooSmall.is`
 - **summary**:    The provided max supply is less to the amount of items a collection already has. 
  
-### NextIdNotUsed
-- **interface**: `api.errors.uniques.NextIdNotUsed.is`
-- **summary**:    The `CollectionId` in `NextCollectionId` is not being used. 
-
-   This means that you can directly proceed to call `create`. 
- 
 ### NoDelegate
 - **interface**: `api.errors.uniques.NoDelegate.is`
 - **summary**:    There is no delegate approved. 

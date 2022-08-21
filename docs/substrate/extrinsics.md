@@ -711,7 +711,7 @@ ___
 
 ## bagsList
  
-### putInFrontOf(lighter: `AccountId32`)
+### putInFrontOf(lighter: `MultiAddress`)
 - **interface**: `api.tx.bagsList.putInFrontOf`
 - **summary**:    Move the caller's Id directly in front of `lighter`. 
 
@@ -723,7 +723,7 @@ ___
 
   - and `origin` has a greater `Score` than `lighter`.
  
-### rebag(dislocated: `AccountId32`)
+### rebag(dislocated: `MultiAddress`)
 - **interface**: `api.tx.bagsList.rebag`
 - **summary**:    Declare that some `dislocated` account has, through rewards or penalties, sufficiently  changed its score that it should properly fall into a different bag than its current  one. 
 
@@ -1122,7 +1122,7 @@ ___
 
 ## convictionVoting
  
-### delegate(class: `u16`, to: `AccountId32`, conviction: `PalletConvictionVotingConviction`, balance: `u128`)
+### delegate(class: `u16`, to: `MultiAddress`, conviction: `PalletConvictionVotingConviction`, balance: `u128`)
 - **interface**: `api.tx.convictionVoting.delegate`
 - **summary**:    Delegate the voting power (with some given conviction) of the sending account for a  particular class of polls. 
 
@@ -1146,7 +1146,7 @@ ___
 
    Weight: `O(R)` where R is the number of polls the voter delegating to has  voted on. Weight is initially charged as if maximum votes, but is refunded later. 
  
-### removeOtherVote(target: `AccountId32`, class: `u16`, index: `u32`)
+### removeOtherVote(target: `MultiAddress`, class: `u16`, index: `u32`)
 - **interface**: `api.tx.convictionVoting.removeOtherVote`
 - **summary**:    Remove a vote for a poll. 
 
@@ -1212,7 +1212,7 @@ ___
 
    Weight: `O(R)` where R is the number of polls the voter delegating to has  voted on. Weight is initially charged as if maximum votes, but is refunded later. 
  
-### unlock(class: `u16`, target: `AccountId32`)
+### unlock(class: `u16`, target: `MultiAddress`)
 - **interface**: `api.tx.convictionVoting.unlock`
 - **summary**:    Remove the lock caused prior voting/delegating which has expired within a particluar  class. 
 
@@ -1372,7 +1372,7 @@ ___
 
    Weight: `O(1)`. 
  
-### delegate(to: `AccountId32`, conviction: `PalletDemocracyConviction`, balance: `u128`)
+### delegate(to: `MultiAddress`, conviction: `PalletDemocracyConviction`, balance: `u128`)
 - **interface**: `api.tx.democracy.delegate`
 - **summary**:    Delegate the voting power (with some given conviction) of the sending account. 
 
@@ -1520,7 +1520,7 @@ ___
 
    Weight: `O(D)` where D is length of proposal. 
  
-### removeOtherVote(target: `AccountId32`, index: `u32`)
+### removeOtherVote(target: `MultiAddress`, index: `u32`)
 - **interface**: `api.tx.democracy.removeOtherVote`
 - **summary**:    Remove a vote for a referendum. 
 
@@ -1592,7 +1592,7 @@ ___
 
    Weight: `O(R)` where R is the number of referendums the voter delegating to has  voted on. Weight is charged as if maximum votes. 
  
-### unlock(target: `AccountId32`)
+### unlock(target: `MultiAddress`)
 - **interface**: `api.tx.democracy.unlock`
 - **summary**:    Unlock tokens that have an expired lock. 
 
@@ -1835,7 +1835,7 @@ ___
 
 ## identity
  
-### addRegistrar(account: `AccountId32`)
+### addRegistrar(account: `MultiAddress`)
 - **interface**: `api.tx.identity.addRegistrar`
 - **summary**:    Add a registrar to the system. 
 
@@ -1953,7 +1953,7 @@ ___
 
     
  
-### setAccountId(index: `Compact<u32>`, new: `AccountId32`)
+### setAccountId(index: `Compact<u32>`, new: `MultiAddress`)
 - **interface**: `api.tx.identity.setAccountId`
 - **summary**:    Change the account associated with a registrar. 
 
@@ -2043,7 +2043,7 @@ ___
 
     
  
-### forceTransfer(new: `AccountId32`, index: `u32`, freeze: `bool`)
+### forceTransfer(new: `MultiAddress`, index: `u32`, freeze: `bool`)
 - **interface**: `api.tx.indices.forceTransfer`
 - **summary**:    Force an index to an account. This doesn't require a deposit. If the index is already  held, then any deposit is reimbursed to its current owner. 
 
@@ -2085,7 +2085,7 @@ ___
 
     
  
-### transfer(new: `AccountId32`, index: `u32`)
+### transfer(new: `MultiAddress`, index: `u32`)
 - **interface**: `api.tx.indices.transfer`
 - **summary**:    Assign an index already owned by the sender to another account. The balance reservation  is effectively transferred to the new account. 
 
@@ -2250,7 +2250,7 @@ ___
 
    The member will earn rewards pro rata based on the members stake vs the sum of the  members in the pools stake. Rewards do not "expire". 
  
-### create(amount: `Compact<u128>`, root: `AccountId32`, nominator: `AccountId32`, state_toggler: `AccountId32`)
+### create(amount: `Compact<u128>`, root: `MultiAddress`, nominator: `MultiAddress`, state_toggler: `MultiAddress`)
 - **interface**: `api.tx.nominationPools.create`
 - **summary**:    Create a new delegation pool. 
 
@@ -2330,7 +2330,7 @@ ___
 
    1. signed by the state toggler, or the root role of the pool,  2. if the pool conditions to be open are NOT met (as described by `ok_to_be_open`), and  then the state of the pool can be permissionlessly changed to `Destroying`. 
  
-### unbond(member_account: `AccountId32`, unbonding_points: `Compact<u128>`)
+### unbond(member_account: `MultiAddress`, unbonding_points: `Compact<u128>`)
 - **interface**: `api.tx.nominationPools.unbond`
 - **summary**:    Unbond up to `unbonding_points` of the `member_account`'s funds from the pool. It  implicitly collects the rewards one last time, since not doing so would mean some  rewards would be forfeited. 
 
@@ -2362,7 +2362,7 @@ ___
 
    It emits an event, notifying UIs of the role change. This event is quite relevant to  most pool members and they should be informed of changes to pool roles. 
  
-### withdrawUnbonded(member_account: `AccountId32`, num_slashing_spans: `u32`)
+### withdrawUnbonded(member_account: `MultiAddress`, num_slashing_spans: `u32`)
 - **interface**: `api.tx.nominationPools.withdrawUnbonded`
 - **summary**:    Withdraw unbonded funds from `member_account`. If no bonded funds can be unbonded, an  error is returned. 
 
@@ -2416,7 +2416,7 @@ ___
 
 ## proxy
  
-### addProxy(delegate: `AccountId32`, proxy_type: `KitchensinkRuntimeProxyType`, delay: `u32`)
+### addProxy(delegate: `MultiAddress`, proxy_type: `KitchensinkRuntimeProxyType`, delay: `u32`)
 - **interface**: `api.tx.proxy.addProxy`
 - **summary**:    Register a proxy account for the sender that is able to make calls on its behalf. 
 
@@ -2432,7 +2432,7 @@ ___
 
     
  
-### announce(real: `AccountId32`, call_hash: `H256`)
+### announce(real: `MultiAddress`, call_hash: `H256`)
 - **interface**: `api.tx.proxy.announce`
 - **summary**:    Publish the hash of a proxy-call that will be made in the future. 
 
@@ -2470,7 +2470,7 @@ ___
 
      TODO: Might be over counting 1 read 
  
-### killAnonymous(spawner: `AccountId32`, proxy_type: `KitchensinkRuntimeProxyType`, index: `u16`, height: `Compact<u32>`, ext_index: `Compact<u32>`)
+### killAnonymous(spawner: `MultiAddress`, proxy_type: `KitchensinkRuntimeProxyType`, index: `u16`, height: `Compact<u32>`, ext_index: `Compact<u32>`)
 - **interface**: `api.tx.proxy.killAnonymous`
 - **summary**:    Removes a previously spawned anonymous proxy. 
 
@@ -2492,7 +2492,7 @@ ___
 
     
  
-### proxy(real: `AccountId32`, force_proxy_type: `Option<KitchensinkRuntimeProxyType>`, call: `Call`)
+### proxy(real: `MultiAddress`, force_proxy_type: `Option<KitchensinkRuntimeProxyType>`, call: `Call`)
 - **interface**: `api.tx.proxy.proxy`
 - **summary**:    Dispatch the given `call` from an account that the sender is authorised for through  `add_proxy`. 
 
@@ -2510,7 +2510,7 @@ ___
 
     
  
-### proxyAnnounced(delegate: `AccountId32`, real: `AccountId32`, force_proxy_type: `Option<KitchensinkRuntimeProxyType>`, call: `Call`)
+### proxyAnnounced(delegate: `MultiAddress`, real: `MultiAddress`, force_proxy_type: `Option<KitchensinkRuntimeProxyType>`, call: `Call`)
 - **interface**: `api.tx.proxy.proxyAnnounced`
 - **summary**:    Dispatch the given `call` from an account that the sender is authorized for through  `add_proxy`. 
 
@@ -2528,7 +2528,7 @@ ___
 
     
  
-### rejectAnnouncement(delegate: `AccountId32`, call_hash: `H256`)
+### rejectAnnouncement(delegate: `MultiAddress`, call_hash: `H256`)
 - **interface**: `api.tx.proxy.rejectAnnouncement`
 - **summary**:    Remove the given announcement of a delegate. 
 
@@ -2544,7 +2544,7 @@ ___
 
     
  
-### removeAnnouncement(real: `AccountId32`, call_hash: `H256`)
+### removeAnnouncement(real: `MultiAddress`, call_hash: `H256`)
 - **interface**: `api.tx.proxy.removeAnnouncement`
 - **summary**:    Remove a given announcement. 
 
@@ -2570,7 +2570,7 @@ ___
 
     
  
-### removeProxy(delegate: `AccountId32`, proxy_type: `KitchensinkRuntimeProxyType`, delay: `u32`)
+### removeProxy(delegate: `MultiAddress`, proxy_type: `KitchensinkRuntimeProxyType`, delay: `u32`)
 - **interface**: `api.tx.proxy.removeProxy`
 - **summary**:    Unregister a proxy account for the sender. 
 
@@ -2589,7 +2589,7 @@ ___
 
 ## rankedCollective
  
-### addMember(who: `AccountId32`)
+### addMember(who: `MultiAddress`)
 - **interface**: `api.tx.rankedCollective.addMember`
 - **summary**:    Introduce a new member. 
 
@@ -2615,7 +2615,7 @@ ___
 
    Weight `O(max)` (less if there are fewer items to remove than `max`). 
  
-### demoteMember(who: `AccountId32`)
+### demoteMember(who: `MultiAddress`)
 - **interface**: `api.tx.rankedCollective.demoteMember`
 - **summary**:    Decrement the rank of an existing member by one. If the member is already at rank zero,  then they are removed entirely. 
 
@@ -2625,7 +2625,7 @@ ___
 
    Weight: `O(1)`, less if the member's index is highest in its rank. 
  
-### promoteMember(who: `AccountId32`)
+### promoteMember(who: `MultiAddress`)
 - **interface**: `api.tx.rankedCollective.promoteMember`
 - **summary**:    Increment the rank of an existing member by one. 
 
@@ -2635,7 +2635,7 @@ ___
 
    Weight: `O(1)` 
  
-### removeMember(who: `AccountId32`, min_rank: `u16`)
+### removeMember(who: `MultiAddress`, min_rank: `u16`)
 - **interface**: `api.tx.rankedCollective.removeMember`
 - **summary**:    Remove the member entirely. 
 
@@ -2747,7 +2747,7 @@ ___
 
 ## recovery
  
-### asRecovered(account: `AccountId32`, call: `Call`)
+### asRecovered(account: `MultiAddress`, call: `Call`)
 - **interface**: `api.tx.recovery.asRecovered`
 - **summary**:    Send a call through a recovered account. 
 
@@ -2759,7 +2759,7 @@ ___
 
   - `call`: The call you want to make with the recovered account.
  
-### cancelRecovered(account: `AccountId32`)
+### cancelRecovered(account: `MultiAddress`)
 - **interface**: `api.tx.recovery.cancelRecovered`
 - **summary**:    Cancel the ability to use `as_recovered` for `account`. 
 
@@ -2769,7 +2769,7 @@ ___
 
   - `account`: The recovered account you are able to call on-behalf-of.
  
-### claimRecovery(account: `AccountId32`)
+### claimRecovery(account: `MultiAddress`)
 - **interface**: `api.tx.recovery.claimRecovery`
 - **summary**:    Allow a successful rescuer to claim their recovered account. 
 
@@ -2779,7 +2779,7 @@ ___
 
   - `account`: The lost account that you want to claim has been successfully recovered by you. 
  
-### closeRecovery(rescuer: `AccountId32`)
+### closeRecovery(rescuer: `MultiAddress`)
 - **interface**: `api.tx.recovery.closeRecovery`
 - **summary**:    As the controller of a recoverable account, close an active recovery  process for your account. 
 
@@ -2807,7 +2807,7 @@ ___
 
   - `delay_period`: The number of blocks after a recovery attempt is initialized that needs to pass before the account can be recovered. 
  
-### initiateRecovery(account: `AccountId32`)
+### initiateRecovery(account: `MultiAddress`)
 - **interface**: `api.tx.recovery.initiateRecovery`
 - **summary**:    Initiate the process for recovering a recoverable account. 
 
@@ -2829,7 +2829,7 @@ ___
 
    The dispatch origin for this call must be _Signed_ and must be a  recoverable account (i.e. has a recovery configuration). 
  
-### setRecovered(lost: `AccountId32`, rescuer: `AccountId32`)
+### setRecovered(lost: `MultiAddress`, rescuer: `MultiAddress`)
 - **interface**: `api.tx.recovery.setRecovered`
 - **summary**:    Allow ROOT to bypass the recovery process and set an a rescuer account  for a lost account directly. 
 
@@ -2841,7 +2841,7 @@ ___
 
   - `rescuer`: The "rescuer account" which can call as the lost account.
  
-### vouchRecovery(lost: `AccountId32`, rescuer: `AccountId32`)
+### vouchRecovery(lost: `MultiAddress`, rescuer: `MultiAddress`)
 - **interface**: `api.tx.recovery.vouchRecovery`
 - **summary**:    Allow a "friend" of a recoverable account to vouch for an active recovery  process for that account. 
 
@@ -3032,7 +3032,7 @@ ___
 
     
  
-### found(founder: `AccountId32`, max_members: `u32`, rules: `Bytes`)
+### found(founder: `MultiAddress`, max_members: `u32`, rules: `Bytes`)
 - **interface**: `api.tx.society.found`
 - **summary**:    Found the society. 
 
@@ -3050,7 +3050,7 @@ ___
 
     
  
-### judgeSuspendedCandidate(who: `AccountId32`, judgement: `PalletSocietyJudgement`)
+### judgeSuspendedCandidate(who: `MultiAddress`, judgement: `PalletSocietyJudgement`)
 - **interface**: `api.tx.society.judgeSuspendedCandidate`
 - **summary**:    Allow suspended judgement origin to make judgement on a suspended candidate. 
 
@@ -3070,7 +3070,7 @@ ___
 
     
  
-### judgeSuspendedMember(who: `AccountId32`, forgive: `bool`)
+### judgeSuspendedMember(who: `MultiAddress`, forgive: `bool`)
 - **interface**: `api.tx.society.judgeSuspendedMember`
 - **summary**:    Allow suspension judgement origin to make judgement on a suspended member. 
 
@@ -3160,7 +3160,7 @@ ___
 
     
  
-### vouch(who: `AccountId32`, value: `u128`, tip: `u128`)
+### vouch(who: `MultiAddress`, value: `u128`, tip: `u128`)
 - **interface**: `api.tx.society.vouch`
 - **summary**:    As a member, vouch for someone to join society by placing a bid on their behalf. 
 
@@ -3690,13 +3690,13 @@ ___
 
 ## technicalMembership
  
-### addMember(who: `AccountId32`)
+### addMember(who: `MultiAddress`)
 - **interface**: `api.tx.technicalMembership.addMember`
 - **summary**:    Add a member `who` to the set. 
 
    May only be called from `T::AddOrigin`. 
  
-### changeKey(new: `AccountId32`)
+### changeKey(new: `MultiAddress`)
 - **interface**: `api.tx.technicalMembership.changeKey`
 - **summary**:    Swap out the sending member for some other key `new`. 
 
@@ -3710,7 +3710,7 @@ ___
 
    May only be called from `T::PrimeOrigin`. 
  
-### removeMember(who: `AccountId32`)
+### removeMember(who: `MultiAddress`)
 - **interface**: `api.tx.technicalMembership.removeMember`
 - **summary**:    Remove a member `who` from the set. 
 
@@ -3722,13 +3722,13 @@ ___
 
    May only be called from `T::ResetOrigin`. 
  
-### setPrime(who: `AccountId32`)
+### setPrime(who: `MultiAddress`)
 - **interface**: `api.tx.technicalMembership.setPrime`
 - **summary**:    Set the prime member. Must be a current member. 
 
    May only be called from `T::PrimeOrigin`. 
  
-### swapMember(remove: `AccountId32`, add: `AccountId32`)
+### swapMember(remove: `MultiAddress`, add: `MultiAddress`)
 - **interface**: `api.tx.technicalMembership.swapMember`
 - **summary**:    Swap out one member `remove` for another `add`. 
 
@@ -3770,7 +3770,7 @@ ___
 
     
  
-### reportAwesome(reason: `Bytes`, who: `AccountId32`)
+### reportAwesome(reason: `Bytes`, who: `MultiAddress`)
 - **interface**: `api.tx.tips.reportAwesome`
 - **summary**:    Report something `reason` that deserves a tip and claim any eventual the finder's fee. 
 
@@ -3826,7 +3826,7 @@ ___
 
     
  
-### tipNew(reason: `Bytes`, who: `AccountId32`, tip_value: `Compact<u128>`)
+### tipNew(reason: `Bytes`, who: `MultiAddress`, tip_value: `Compact<u128>`)
 - **interface**: `api.tx.tips.tipNew`
 - **summary**:    Give a tip for something new; no finder's fee will be taken. 
 
@@ -4035,7 +4035,7 @@ ___
 
    Weight: `O(1)` 
  
-### create(admin: `MultiAddress`)
+### create(collection: `u32`, admin: `MultiAddress`)
 - **interface**: `api.tx.uniques.create`
 - **summary**:    Issue a new collection of non-fungible items from a public origin. 
 
@@ -4046,6 +4046,8 @@ ___
    `ItemDeposit` funds of sender are reserved. 
 
    Parameters: 
+
+  - `collection`: The identifier of the new collection. This must not be currently in use.
 
   - `admin`: The admin of this collection. The admin is the initial address of each member of the collection's admin team. 
 
@@ -4073,7 +4075,7 @@ ___
 
   - `a = witness.attributes`
  
-### forceCreate(owner: `MultiAddress`, free_holding: `bool`)
+### forceCreate(collection: `u32`, owner: `MultiAddress`, free_holding: `bool`)
 - **interface**: `api.tx.uniques.forceCreate`
 - **summary**:    Issue a new collection of non-fungible items from a privileged origin. 
 
@@ -4083,7 +4085,9 @@ ___
 
    Unlike `create`, no funds are reserved. 
 
-   - `owner`: The owner of this collection of items. The owner has full superuser  permissions  over this item, but may later change and configure the permissions using  `transfer_ownership` and `set_team`. 
+   - `collection`: The identifier of the new item. This must not be currently in use. 
+
+  - `owner`: The owner of this collection of items. The owner has full superuser permissions  over this item, but may later change and configure the permissions using  `transfer_ownership` and `set_team`. 
 
    Emits `ForceCreated` event when successful. 
 
@@ -4348,18 +4352,6 @@ ___
   - `owner`: The new Owner of this collection. They must have called `set_accept_ownership` with `collection` in order for this operation to succeed. 
 
    Emits `OwnerChanged`. 
-
-   Weight: `O(1)` 
- 
-### tryIncrementId()
-- **interface**: `api.tx.uniques.tryIncrementId`
-- **summary**:    Increments the `CollectionId` stored in `NextCollectionId`. 
-
-   This is only callable when the next `CollectionId` is already being  used for some other collection. 
-
-   The origin must be Signed and the sender must have sufficient funds  free. 
-
-   Emits `NextCollectionIdIncremented` event when successful. 
 
    Weight: `O(1)` 
 
