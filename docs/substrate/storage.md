@@ -126,6 +126,10 @@ ___
 - **interface**: `api.query.alliance.members`
 - **summary**:    Maps member type to members of each type. 
  
+### retiringMembers(`AccountId32`): `Option<u32>`
+- **interface**: `api.query.alliance.retiringMembers`
+- **summary**:    A set of members who gave a retirement notice. They can retire after the end of retirement  period stored as a future block number. 
+ 
 ### rule(): `Option<PalletAllianceCid>`
 - **interface**: `api.query.alliance.rule`
 - **summary**:    The IPFS CID of the alliance rule.  Founders and fellows can propose a new rule with a super-majority. 
@@ -139,10 +143,6 @@ ___
 ### unscrupulousWebsites(): `Vec<Bytes>`
 - **interface**: `api.query.alliance.unscrupulousWebsites`
 - **summary**:    The current list of websites deemed unscrupulous. 
- 
-### upForKicking(`AccountId32`): `bool`
-- **interface**: `api.query.alliance.upForKicking`
-- **summary**:    A set of members that are (potentially) being kicked out. They cannot retire until the  motion is settled. 
 
 ___
 

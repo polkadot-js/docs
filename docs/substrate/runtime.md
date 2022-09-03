@@ -483,7 +483,7 @@ ___
 
 ## NominationPoolsApi
  
-### pendingRewards(member: `AccountId`): `Result<Balance, NpApiError>`
+### pendingRewards(member: `AccountId`): `Balance`
 - **interface**: `api.call.nominationPoolsApi.pendingRewards`
 - **runtime**: `NominationPoolsApi_pending_rewards`
 - **summary**: Returns the pending rewards for the given member.

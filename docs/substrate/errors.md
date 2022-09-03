@@ -124,6 +124,10 @@ ___
 - **interface**: `api.errors.alliance.AlreadyMember.is`
 - **summary**:    Account is already a member. 
  
+### AlreadyRetiring
+- **interface**: `api.errors.alliance.AlreadyRetiring.is`
+- **summary**:    Account already gave retirement notice 
+ 
 ### AlreadyUnscrupulous
 - **interface**: `api.errors.alliance.AlreadyUnscrupulous.is`
 - **summary**:    Item is already listed as unscrupulous. 
@@ -164,6 +168,14 @@ ___
 - **interface**: `api.errors.alliance.NoVotingRights.is`
 - **summary**:    Account does not have voting rights. 
  
+### RetirementNoticeNotGiven
+- **interface**: `api.errors.alliance.RetirementNoticeNotGiven.is`
+- **summary**:    Account did not give a retirement notice required to retire. 
+ 
+### RetirementPeriodNotPassed
+- **interface**: `api.errors.alliance.RetirementPeriodNotPassed.is`
+- **summary**:    Retirement period has not passed. 
+ 
 ### TooLongWebsiteUrl
 - **interface**: `api.errors.alliance.TooLongWebsiteUrl.is`
 - **summary**:    Length of website URL exceeds `MaxWebsiteUrlLength`. 
@@ -179,10 +191,6 @@ ___
 ### TooManyUnscrupulousItems
 - **interface**: `api.errors.alliance.TooManyUnscrupulousItems.is`
 - **summary**:    The number of unscrupulous items exceeds `MaxUnscrupulousItems`. 
- 
-### UpForKicking
-- **interface**: `api.errors.alliance.UpForKicking.is`
-- **summary**:    This member is up for being kicked from the Alliance and cannot perform this operation. 
  
 ### WithoutGoodIdentityJudgement
 - **interface**: `api.errors.alliance.WithoutGoodIdentityJudgement.is`

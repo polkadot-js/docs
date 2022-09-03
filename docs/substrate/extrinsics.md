@@ -124,6 +124,10 @@ ___
 - **interface**: `api.tx.alliance.elevateAlly`
 - **summary**:    Elevate an ally to fellow. 
  
+### giveRetirementNotice()
+- **interface**: `api.tx.alliance.giveRetirementNotice`
+- **summary**:    As a member, give a retirement notice and start a retirement period required to pass in  order to retire. 
+ 
 ### initMembers(founders: `Vec<AccountId32>`, fellows: `Vec<AccountId32>`, allies: `Vec<AccountId32>`)
 - **interface**: `api.tx.alliance.initMembers`
 - **summary**:    Initialize the founders, fellows, and allies. 
@@ -158,7 +162,7 @@ ___
  
 ### retire()
 - **interface**: `api.tx.alliance.retire`
-- **summary**:    As a member, retire from the alliance and unreserve the deposit. 
+- **summary**:    As a member, retire from the alliance and unreserve the deposit.  This can only be done once you have `give_retirement_notice` and it has expired. 
  
 ### setRule(rule: `PalletAllianceCid`)
 - **interface**: `api.tx.alliance.setRule`

@@ -126,6 +126,10 @@ ___
 - **interface**: `api.events.alliance.MemberRetired.is`
 - **summary**:    A member has retired with its deposit unreserved. 
  
+### MemberRetirementPeriodStarted(`AccountId32`)
+- **interface**: `api.events.alliance.MemberRetirementPeriodStarted.is`
+- **summary**:    A member gave retirement notice and their retirement period started. 
+ 
 ### MembersInitialized(`Vec<AccountId32>`, `Vec<AccountId32>`, `Vec<AccountId32>`)
 - **interface**: `api.events.alliance.MembersInitialized.is`
 - **summary**:    Some accounts have been initialized as members (founders/fellows/allies). 
