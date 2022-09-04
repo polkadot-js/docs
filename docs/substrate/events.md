@@ -106,6 +106,10 @@ ___
 
 ## alliance
  
+### AllianceDisbanded(`Vec<AccountId32>`, `Vec<H256>`)
+- **interface**: `api.events.alliance.AllianceDisbanded.is`
+- **summary**:    Alliance disbanded. 
+ 
 ### AllyElevated(`AccountId32`)
 - **interface**: `api.events.alliance.AllyElevated.is`
 - **summary**:    An ally has been elevated to Fellow. 
@@ -550,9 +554,15 @@ ___
 
 ## electionProviderMultiPhase
  
-### ElectionFinalized(`Option<PalletElectionProviderMultiPhaseElectionCompute>`)
+### ElectionFailed()
+- **interface**: `api.events.electionProviderMultiPhase.ElectionFailed.is`
+- **summary**:    An election failed. 
+
+   Not much can be said about which computes failed in the process. 
+ 
+### ElectionFinalized(`PalletElectionProviderMultiPhaseElectionCompute`, `SpNposElectionsElectionScore`)
 - **interface**: `api.events.electionProviderMultiPhase.ElectionFinalized.is`
-- **summary**:    The election has been finalized, with `Some` of the given computation, or else if the  election failed, `None`. 
+- **summary**:    The election has been finalized, with the given computation and score. 
  
 ### Rewarded(`AccountId32`, `u128`)
 - **interface**: `api.events.electionProviderMultiPhase.Rewarded.is`

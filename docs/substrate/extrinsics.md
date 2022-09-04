@@ -114,7 +114,7 @@ ___
 - **interface**: `api.tx.alliance.announce`
 - **summary**:    Make an announcement of a new IPFS CID about alliance issues. 
  
-### close(proposal_hash: `H256`, index: `Compact<u32>`, proposal_weight_bound: `Compact<u64>`, length_bound: `Compact<u32>`)
+### close(proposal_hash: `H256`, index: `Compact<u32>`, proposal_weight_bound: `Compact<Weight>`, length_bound: `Compact<u32>`)
 - **interface**: `api.tx.alliance.close`
 - **summary**:    Close a vote that is either approved, disapproved, or whose voting period has ended. 
 
@@ -124,15 +124,19 @@ ___
 - **interface**: `api.tx.alliance.elevateAlly`
 - **summary**:    Elevate an ally to fellow. 
  
+### forceSetMembers(founders: `Vec<AccountId32>`, fellows: `Vec<AccountId32>`, allies: `Vec<AccountId32>`, witness: `PalletAllianceForceSetWitness`)
+- **interface**: `api.tx.alliance.forceSetMembers`
+- **summary**:    Initialize the founders, fellows, and allies.  Founders must be provided to initialize the Alliance. 
+
+   Provide witness data to disband current Alliance before initializing new.  Alliance must be empty or disband first to initialize new. 
+
+   Alliance is only disbanded if new member set is not provided. 
+
+   Must be called by the Root origin. 
+ 
 ### giveRetirementNotice()
 - **interface**: `api.tx.alliance.giveRetirementNotice`
 - **summary**:    As a member, give a retirement notice and start a retirement period required to pass in  order to retire. 
- 
-### initMembers(founders: `Vec<AccountId32>`, fellows: `Vec<AccountId32>`, allies: `Vec<AccountId32>`)
-- **interface**: `api.tx.alliance.initMembers`
-- **summary**:    Initialize the founders, fellows, and allies. 
-
-   This should only be called once, and must be called by the Root origin. 
  
 ### joinAlliance()
 - **interface**: `api.tx.alliance.joinAlliance`
@@ -185,7 +189,7 @@ ___
 
 ## allianceMotion
  
-### close(proposal_hash: `H256`, index: `Compact<u32>`, proposal_weight_bound: `Compact<u64>`, length_bound: `Compact<u32>`)
+### close(proposal_hash: `H256`, index: `Compact<u32>`, proposal_weight_bound: `Compact<Weight>`, length_bound: `Compact<u32>`)
 - **interface**: `api.tx.allianceMotion.close`
 - **summary**:    Close a vote that is either approved, disapproved or whose voting period has ended. 
 
@@ -1031,7 +1035,7 @@ ___
 
 ## contracts
  
-### call(dest: `MultiAddress`, value: `Compact<u128>`, gas_limit: `Compact<u64>`, storage_deposit_limit: `Option<Compact<u128>>`, data: `Bytes`)
+### call(dest: `MultiAddress`, value: `Compact<u128>`, gas_limit: `Compact<Weight>`, storage_deposit_limit: `Option<Compact<u128>>`, data: `Bytes`)
 - **interface**: `api.tx.contracts.call`
 - **summary**:    Makes a call to an account, optionally transferring some balance. 
 
@@ -1053,13 +1057,13 @@ ___
 
   * If no account exists and the call value is not less than `existential_deposit`, a regular account will be created and any value will be transferred. 
  
-### instantiate(value: `Compact<u128>`, gas_limit: `Compact<u64>`, storage_deposit_limit: `Option<Compact<u128>>`, code_hash: `H256`, data: `Bytes`, salt: `Bytes`)
+### instantiate(value: `Compact<u128>`, gas_limit: `Compact<Weight>`, storage_deposit_limit: `Option<Compact<u128>>`, code_hash: `H256`, data: `Bytes`, salt: `Bytes`)
 - **interface**: `api.tx.contracts.instantiate`
 - **summary**:    Instantiates a contract from a previously deployed wasm binary. 
 
    This function is identical to [`Self::instantiate_with_code`] but without the  code deployment step. Instead, the `code_hash` of an on-chain deployed wasm binary  must be supplied. 
  
-### instantiateWithCode(value: `Compact<u128>`, gas_limit: `Compact<u64>`, storage_deposit_limit: `Option<Compact<u128>>`, code: `Bytes`, data: `Bytes`, salt: `Bytes`)
+### instantiateWithCode(value: `Compact<u128>`, gas_limit: `Compact<Weight>`, storage_deposit_limit: `Option<Compact<u128>>`, code: `Bytes`, data: `Bytes`, salt: `Bytes`)
 - **interface**: `api.tx.contracts.instantiateWithCode`
 - **summary**:    Instantiates a new contract from the supplied `code` optionally transferring  some balance. 
 
@@ -1245,7 +1249,7 @@ ___
 
 ## council
  
-### close(proposal_hash: `H256`, index: `Compact<u32>`, proposal_weight_bound: `Compact<u64>`, length_bound: `Compact<u32>`)
+### close(proposal_hash: `H256`, index: `Compact<u32>`, proposal_weight_bound: `Compact<Weight>`, length_bound: `Compact<u32>`)
 - **interface**: `api.tx.council.close`
 - **summary**:    Close a vote that is either approved, disapproved or whose voting period has ended. 
 
@@ -2153,7 +2157,7 @@ ___
 
 ## multisig
  
-### approveAsMulti(threshold: `u16`, other_signatories: `Vec<AccountId32>`, maybe_timepoint: `Option<PalletMultisigTimepoint>`, call_hash: `[u8;32]`, max_weight: `u64`)
+### approveAsMulti(threshold: `u16`, other_signatories: `Vec<AccountId32>`, maybe_timepoint: `Option<PalletMultisigTimepoint>`, call_hash: `[u8;32]`, max_weight: `Weight`)
 - **interface**: `api.tx.multisig.approveAsMulti`
 - **summary**:    Register approval for a dispatch to be made from a deterministic composite account if  approved by a total of `threshold - 1` of `other_signatories`. 
 
@@ -2173,7 +2177,7 @@ ___
 
     
  
-### asMulti(threshold: `u16`, other_signatories: `Vec<AccountId32>`, maybe_timepoint: `Option<PalletMultisigTimepoint>`, call: `WrapperKeepOpaque<Call>`, store_call: `bool`, max_weight: `u64`)
+### asMulti(threshold: `u16`, other_signatories: `Vec<AccountId32>`, maybe_timepoint: `Option<PalletMultisigTimepoint>`, call: `WrapperKeepOpaque<Call>`, store_call: `bool`, max_weight: `Weight`)
 - **interface**: `api.tx.multisig.asMulti`
 - **summary**:    Register approval for a dispatch to be made from a deterministic composite account if  approved by a total of `threshold - 1` of `other_signatories`. 
 
@@ -3553,7 +3557,7 @@ ___
 
     
  
-### sudoUncheckedWeight(call: `Call`, weight: `u64`)
+### sudoUncheckedWeight(call: `Call`, weight: `Weight`)
 - **interface**: `api.tx.sudo.sudoUncheckedWeight`
 - **summary**:    Authenticates the sudo key and dispatches a function call with `Root` origin.  This function does not check the weight of the call, and instead allows the  Sudo user to specify the weight of the call. 
 
@@ -3615,7 +3619,7 @@ ___
 
 ## technicalCommittee
  
-### close(proposal_hash: `H256`, index: `Compact<u32>`, proposal_weight_bound: `Compact<u64>`, length_bound: `Compact<u32>`)
+### close(proposal_hash: `H256`, index: `Compact<u32>`, proposal_weight_bound: `Compact<Weight>`, length_bound: `Compact<u32>`)
 - **interface**: `api.tx.technicalCommittee.close`
 - **summary**:    Close a vote that is either approved, disapproved or whose voting period has ended. 
 
@@ -3932,6 +3936,8 @@ ___
   - `item`: The item of the item to be approved for delegated transfer.
 
   - `delegate`: The account to delegate permission to transfer the item.
+
+   Important NOTE: The `approved` account gets reset after each transfer. 
 
    Emits `ApprovedTransfer` on success. 
 
@@ -4325,6 +4331,8 @@ ___
 - **interface**: `api.tx.uniques.transfer`
 - **summary**:    Move an item from the sender account to another. 
 
+   This resets the approved account of the item. 
+
    Origin must be Signed and the signing account must be either: 
 
   - the Admin of the `collection`;
@@ -4508,7 +4516,7 @@ ___
 
 ## whitelist
  
-### dispatchWhitelistedCall(call_hash: `H256`, call_weight_witness: `u64`)
+### dispatchWhitelistedCall(call_hash: `H256`, call_weight_witness: `Weight`)
 - **interface**: `api.tx.whitelist.dispatchWhitelistedCall`
  
 ### dispatchWhitelistedCallWithPreimage(call: `Call`)

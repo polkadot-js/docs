@@ -1477,7 +1477,7 @@ ___
 - **interface**: `api.query.system.blockHash`
 - **summary**:    Map of block numbers to block hashes. 
  
-### blockWeight(): `FrameSupportWeightsPerDispatchClassU64`
+### blockWeight(): `FrameSupportWeightsPerDispatchClassWeight`
 - **interface**: `api.query.system.blockWeight`
 - **summary**:    The current weight for the block. 
  

@@ -280,7 +280,7 @@ ___
 
 ## contracts
  
-### contractAccessWeight: `u64`
+### contractAccessWeight: `Weight`
 - **interface**: `api.consts.contracts.contractAccessWeight`
 - **summary**:    The weight per byte of code that is charged when loading a contract from storage. 
 
@@ -304,7 +304,7 @@ ___
 
    1. The queue is in storage in order to be persistent between blocks. We want to limit  the amount of storage that can be consumed.  2. The queue is stored in a vector and needs to be decoded as a whole when reading  it at the end of each block. Longer queues take more weight to decode and hence  limit the amount of items that can be deleted per block. 
  
-### deletionWeightLimit: `u64`
+### deletionWeightLimit: `Weight`
 - **interface**: `api.consts.contracts.deletionWeightLimit`
 - **summary**:    The maximum amount of weight that can be consumed per block for lazy trie removal. 
 
@@ -455,7 +455,7 @@ ___
 
    It is best to avoid adjusting this during an election, as it impacts downstream data  structures. In particular, `SignedSubmissionIndices<T>` is bounded on this value. If you  update this value during an election, you _must_ ensure that  `SignedSubmissionIndices.len()` is less than or equal to the new value. Otherwise,  attempts to submit new solutions may cause a runtime panic. 
  
-### signedMaxWeight: `u64`
+### signedMaxWeight: `Weight`
 - **interface**: `api.consts.electionProviderMultiPhase.signedMaxWeight`
 - **summary**:    Maximum weight of a signed solution. 
 
@@ -787,7 +787,7 @@ ___
 
 ## scheduler
  
-### maximumWeight: `u64`
+### maximumWeight: `Weight`
 - **interface**: `api.consts.scheduler.maximumWeight`
 - **summary**:    The maximum weight that may be scheduled per block for any dispatchables of less  priority than `schedule::HARD_DEADLINE`. 
  

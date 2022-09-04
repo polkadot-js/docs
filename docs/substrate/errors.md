@@ -110,7 +110,7 @@ ___
  
 ### AllianceAlreadyInitialized
 - **interface**: `api.errors.alliance.AllianceAlreadyInitialized.is`
-- **summary**:    The founders/fellows/allies have already been initialized. 
+- **summary**:    The Alliance has been initialized, therefore cannot be initialized again. 
  
 ### AllianceNotYetInitialized
 - **interface**: `api.errors.alliance.AllianceNotYetInitialized.is`
@@ -131,6 +131,14 @@ ___
 ### AlreadyUnscrupulous
 - **interface**: `api.errors.alliance.AlreadyUnscrupulous.is`
 - **summary**:    Item is already listed as unscrupulous. 
+ 
+### BadWitness
+- **interface**: `api.errors.alliance.BadWitness.is`
+- **summary**:    Invalid witness data given. 
+ 
+### FoundersMissing
+- **interface**: `api.errors.alliance.FoundersMissing.is`
+- **summary**:    Founders must be provided to initialize the Alliance. 
  
 ### InsufficientFunds
 - **interface**: `api.errors.alliance.InsufficientFunds.is`
