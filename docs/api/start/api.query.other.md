@@ -39,7 +39,7 @@ When working maps and double-maps, it is possible to retrieve a list of all the 
 const activeEra = await api.query.staking.activeEra();
 
 // retrieve all exposures for the active era
-const exposures = await api.query.staking.erasStakers.entries(activeEra.index);
+const exposures = await api.query.staking.erasStakers.entries(activeEra.unwrap().index);
 
 exposures.forEach(([key, exposure]) => {
   console.log('key arguments:', key.args.map((k) => k.toHuman()));
@@ -54,7 +54,7 @@ To understand the usage of the `key.args`, you need to understand that map/doubl
 
 the same applies to `.keys()` - here the list of keys also have the decoded args, as specified. You can think of `.args` as a tuple with the same types as the types required to retrieve a single entry in the map.
 
-In the first example we are querying a double-map, so we supply 1 argument. No arguments on double-maps will be very costly, retrieving all the eras and associated entries. In the same way as above we can simply do `.keys(activeEra.index): StorageKey[]` to retrieve all the keys here, including the individual keys args (available on maps with decodable hashing functions) -
+In the first example we are querying a double-map, so we supply 1 argument. No arguments on double-maps will be very costly, retrieving all the eras and associated entries. In the same way as above we can simply do `.keys(activeEra.unwrap().index): StorageKey[]` to retrieve all the keys here, including the individual keys args (available on maps with decodable hashing functions) -
 
 ```js
 // retrieve all the nominator keys
