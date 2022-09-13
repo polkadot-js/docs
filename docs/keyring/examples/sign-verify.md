@@ -11,9 +11,9 @@ const {
 } = require('@polkadot/util');
 const {
   naclEncrypt,
-  naclKeypairFromSeed,
-  naclSign,
-  naclVerify,
+  ed25519PairFromSeed,
+  ed25519Sign,
+  ed25519Verify,
   randomAsU8a
 } = require('@polkadot/util-crypto');
 
@@ -22,7 +22,7 @@ async function main () {
   const seedAlice = 'Alice'.padEnd(32, ' ');
 
   // Generate new public/secret keypair for Alice from the supplied seed
-  const { publicKey, secretKey } = naclKeypairFromSeed(stringToU8a(seedAlice));
+  const { publicKey, secretKey } = ed25519PairFromSeed(stringToU8a(seedAlice));
 
   // Encrypt message. Create Uint8Array's filled with random bytes of specified length
   const secret = randomAsU8a(32);
@@ -32,12 +32,12 @@ async function main () {
   const { encrypted } = naclEncrypt(messagePreEncryption, secret, noncePreEncryption);
 
   // Sign the message with a valid signature
-  const messageSignature = naclSign(encrypted, secretKey);
+  const messageSignature = ed25519Sign(encrypted, secretKey);
 
   console.log(`Message signature: ${u8aToHex(messageSignature)}`);
 
   // Validate that the message was correctly signed
-  const isValidSignature = naclVerify(encrypted, messageSignature, publicKey);
+  const isValidSignature = ed25519Verify(encrypted, messageSignature, publicKey);
 
   console.log(`Was the message correctly signed? ${isValidSignature}`);
 }
