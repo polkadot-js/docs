@@ -18,8 +18,8 @@
     "@docusaurus/core": "2.1.0",
     "@docusaurus/preset-classic": "2.1.0",
     "@mdx-js/react": "^1.6.22",
-    "@polkadot/dev": "^0.67.125",
-    "@polkadot/typegen": "^9.3.3",
+    "@polkadot/dev": "^0.67.130",
+    "@polkadot/typegen": "^9.4.1",
     "clsx": "^1.2.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
