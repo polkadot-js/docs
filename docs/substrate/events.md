@@ -106,9 +106,9 @@ ___
 
 ## alliance
  
-### AllianceDisbanded(`Vec<AccountId32>`, `Vec<H256>`)
+### AllianceDisbanded(`u32`, `u32`, `u32`)
 - **interface**: `api.events.alliance.AllianceDisbanded.is`
-- **summary**:    Alliance disbanded. 
+- **summary**:    Alliance disbanded. Includes number deleted members and unreserved deposits. 
  
 ### AllyElevated(`AccountId32`)
 - **interface**: `api.events.alliance.AllyElevated.is`
@@ -390,6 +390,14 @@ ___
 
 ## contracts
  
+### Called(`AccountId32`, `AccountId32`)
+- **interface**: `api.events.contracts.Called.is`
+- **summary**:    A contract was called either by a plain account or another contract. 
+
+   #### Note 
+
+   Please keep in mind that like all events this is only emitted for successful  calls. This is because on failure all storage changes including events are  rolled back. 
+ 
 ### CodeRemoved(`H256`)
 - **interface**: `api.events.contracts.CodeRemoved.is`
 - **summary**:    A code with the specified hash was removed. 
@@ -405,6 +413,14 @@ ___
 ### ContractEmitted(`AccountId32`, `Bytes`)
 - **interface**: `api.events.contracts.ContractEmitted.is`
 - **summary**:    A custom event emitted by the contract. 
+ 
+### DelegateCalled(`AccountId32`, `H256`)
+- **interface**: `api.events.contracts.DelegateCalled.is`
+- **summary**:    A contract delegate called a code hash. 
+
+   #### Note 
+
+   Please keep in mind that like all events this is only emitted for successful  calls. This is because on failure all storage changes including events are  rolled back. 
  
 ### Instantiated(`AccountId32`, `AccountId32`)
 - **interface**: `api.events.contracts.Instantiated.is`
@@ -1268,11 +1284,11 @@ ___
 - **interface**: `api.events.system.CodeUpdated.is`
 - **summary**:    `:code` was updated. 
  
-### ExtrinsicFailed(`SpRuntimeDispatchError`, `FrameSupportWeightsDispatchInfo`)
+### ExtrinsicFailed(`SpRuntimeDispatchError`, `FrameSupportDispatchDispatchInfo`)
 - **interface**: `api.events.system.ExtrinsicFailed.is`
 - **summary**:    An extrinsic failed. 
  
-### ExtrinsicSuccess(`FrameSupportWeightsDispatchInfo`)
+### ExtrinsicSuccess(`FrameSupportDispatchDispatchInfo`)
 - **interface**: `api.events.system.ExtrinsicSuccess.is`
 - **summary**:    An extrinsic completed successfully. 
  
@@ -1601,7 +1617,7 @@ ___
 ### CallWhitelisted(`H256`)
 - **interface**: `api.events.whitelist.CallWhitelisted.is`
  
-### WhitelistedCallDispatched(`H256`, `Result<FrameSupportWeightsPostDispatchInfo, SpRuntimeDispatchErrorWithPostInfo>`)
+### WhitelistedCallDispatched(`H256`, `Result<FrameSupportDispatchPostDispatchInfo, SpRuntimeDispatchErrorWithPostInfo>`)
 - **interface**: `api.events.whitelist.WhitelistedCallDispatched.is`
  
 ### WhitelistedCallRemoved(`H256`)

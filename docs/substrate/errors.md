@@ -1053,6 +1053,10 @@ ___
 - **interface**: `api.errors.identity.InvalidTarget.is`
 - **summary**:    The target is invalid. 
  
+### JudgementForDifferentIdentity
+- **interface**: `api.errors.identity.JudgementForDifferentIdentity.is`
+- **summary**:    The provided judgement was for a different identity. 
+ 
 ### JudgementGiven
 - **interface**: `api.errors.identity.JudgementGiven.is`
 - **summary**:    Judgement given. 

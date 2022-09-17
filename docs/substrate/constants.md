@@ -423,6 +423,15 @@ ___
 - **interface**: `api.consts.electionProviderMultiPhase.maxElectingVoters`
 - **summary**:    The maximum number of electing voters to put in the snapshot. At the moment, snapshots  are only over a single block, but once multi-block elections are introduced they will  take place over multiple blocks. 
  
+### minerMaxLength: `u32`
+- **interface**: `api.consts.electionProviderMultiPhase.minerMaxLength`
+ 
+### minerMaxVotesPerVoter: `u32`
+- **interface**: `api.consts.electionProviderMultiPhase.minerMaxVotesPerVoter`
+ 
+### minerMaxWeight: `Weight`
+- **interface**: `api.consts.electionProviderMultiPhase.minerMaxWeight`
+ 
 ### minerTxPriority: `u64`
 - **interface**: `api.consts.electionProviderMultiPhase.minerTxPriority`
 - **summary**:    The priority of the unsigned transaction submitted in the unsigned-phase 
@@ -728,6 +737,10 @@ ___
 - **interface**: `api.consts.rankedPolls.submissionDeposit`
 - **summary**:    The minimum amount to be used as a deposit for a public referendum proposal. 
  
+### tracks: `Vec<(u16,PalletReferendaTrackInfo)>`
+- **interface**: `api.consts.rankedPolls.tracks`
+- **summary**:    Information concerning the different referendum tracks. 
+ 
 ### undecidingTimeout: `u32`
 - **interface**: `api.consts.rankedPolls.undecidingTimeout`
 - **summary**:    The number of blocks after submission that a referendum must begin being decided by.  Once this passes, then anyone may cancel the referendum. 
@@ -777,6 +790,10 @@ ___
 ### submissionDeposit: `u128`
 - **interface**: `api.consts.referenda.submissionDeposit`
 - **summary**:    The minimum amount to be used as a deposit for a public referendum proposal. 
+ 
+### tracks: `Vec<(u16,PalletReferendaTrackInfo)>`
+- **interface**: `api.consts.referenda.tracks`
+- **summary**:    Information concerning the different referendum tracks. 
  
 ### undecidingTimeout: `u32`
 - **interface**: `api.consts.referenda.undecidingTimeout`
@@ -911,7 +928,7 @@ ___
 - **interface**: `api.consts.system.blockWeights`
 - **summary**:    Block & extrinsics weights: base values and limits. 
  
-### dbWeight: `FrameSupportWeightsRuntimeDbWeight`
+### dbWeight: `SpWeightsRuntimeDbWeight`
 - **interface**: `api.consts.system.dbWeight`
 - **summary**:    The weight of runtime database operations the runtime can invoke. 
  

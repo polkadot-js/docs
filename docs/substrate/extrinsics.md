@@ -120,23 +120,25 @@ ___
 
    Requires the sender to be a founder or fellow. 
  
+### disband(witness: `PalletAllianceDisbandWitness`)
+- **interface**: `api.tx.alliance.disband`
+- **summary**:    Disband the Alliance, remove all active members and unreserve deposits. 
+
+   Witness data must be set. 
+ 
 ### elevateAlly(ally: `MultiAddress`)
 - **interface**: `api.tx.alliance.elevateAlly`
 - **summary**:    Elevate an ally to fellow. 
  
-### forceSetMembers(founders: `Vec<AccountId32>`, fellows: `Vec<AccountId32>`, allies: `Vec<AccountId32>`, witness: `PalletAllianceForceSetWitness`)
-- **interface**: `api.tx.alliance.forceSetMembers`
-- **summary**:    Initialize the founders, fellows, and allies.  Founders must be provided to initialize the Alliance. 
-
-   Provide witness data to disband current Alliance before initializing new.  Alliance must be empty or disband first to initialize new. 
-
-   Alliance is only disbanded if new member set is not provided. 
-
-   Must be called by the Root origin. 
- 
 ### giveRetirementNotice()
 - **interface**: `api.tx.alliance.giveRetirementNotice`
 - **summary**:    As a member, give a retirement notice and start a retirement period required to pass in  order to retire. 
+ 
+### initMembers(founders: `Vec<AccountId32>`, fellows: `Vec<AccountId32>`, allies: `Vec<AccountId32>`)
+- **interface**: `api.tx.alliance.initMembers`
+- **summary**:    Initialize the Alliance, onboard founders, fellows, and allies. 
+
+   Founders must be not empty.  The Alliance must be empty.  Must be called by the Root origin. 
  
 ### joinAlliance()
 - **interface**: `api.tx.alliance.joinAlliance`
@@ -1903,7 +1905,7 @@ ___
 
     
  
-### provideJudgement(reg_index: `Compact<u32>`, target: `MultiAddress`, judgement: `PalletIdentityJudgement`)
+### provideJudgement(reg_index: `Compact<u32>`, target: `MultiAddress`, judgement: `PalletIdentityJudgement`, identity: `H256`)
 - **interface**: `api.tx.identity.provideJudgement`
 - **summary**:    Provide a judgement for an account's identity. 
 
@@ -1914,6 +1916,8 @@ ___
   - `target`: the account whose identity the judgement is upon. This must be an account with a registered identity. 
 
   - `judgement`: the judgement of the registrar of index `reg_index` about `target`.
+
+  - `identity`: The hash of the [`IdentityInfo`] for that the judgement is provided.
 
    Emits `JudgementGiven` if successful. 
 
@@ -3929,7 +3933,7 @@ ___
 - **interface**: `api.tx.uniques.approveTransfer`
 - **summary**:    Approve an item to be transferred by a delegated third-party account. 
 
-   Origin must be Signed and must be the owner of the `item`. 
+   The origin must conform to `ForceOrigin` or must be `Signed` and the sender must be  either the owner of the `item` or the admin of the collection. 
 
    - `collection`: The collection of the item to be approved for delegated transfer. 
 
