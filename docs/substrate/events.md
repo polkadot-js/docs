@@ -14,8 +14,6 @@ Events are emitted for certain operations on the runtime. The following sections
 
 - **[assetTxPayment](#assettxpayment)**
 
-- **[bagsList](#bagslist)**
-
 - **[balances](#balances)**
 
 - **[bounties](#bounties)**
@@ -33,6 +31,8 @@ Events are emitted for certain operations on the runtime. The following sections
 - **[electionProviderMultiPhase](#electionprovidermultiphase)**
 
 - **[elections](#elections)**
+
+- **[fastUnstake](#fastunstake)**
 
 - **[gilt](#gilt)**
 
@@ -97,6 +97,8 @@ Events are emitted for certain operations on the runtime. The following sections
 - **[utility](#utility)**
 
 - **[vesting](#vesting)**
+
+- **[voterBagsList](#voterbagslist)**
 
 - **[whitelist](#whitelist)**
 
@@ -272,19 +274,6 @@ ___
 ### AssetTxFeePaid(`AccountId32`, `u128`, `u128`, `Option<u32>`)
 - **interface**: `api.events.assetTxPayment.AssetTxFeePaid.is`
 - **summary**:    A transaction fee `actual_fee`, of which `tip` was added to the minimum inclusion fee,  has been paid by `who` in an asset `asset_id`. 
-
-___
-
-
-## bagsList
- 
-### Rebagged(`AccountId32`, `u64`, `u64`)
-- **interface**: `api.events.bagsList.Rebagged.is`
-- **summary**:    Moved an account from one bag to another. 
- 
-### ScoreUpdated(`AccountId32`, `u64`)
-- **interface**: `api.events.bagsList.ScoreUpdated.is`
-- **summary**:    Updated the score of some account to the given amount. 
 
 ___
 
@@ -642,6 +631,31 @@ ___
 ___
 
 
+## fastUnstake
+ 
+### Checking(`AccountId32`, `Vec<u32>`)
+- **interface**: `api.events.fastUnstake.Checking.is`
+- **summary**:    A staker was partially checked for the given eras, but the process did not finish. 
+ 
+### Errored(`AccountId32`)
+- **interface**: `api.events.fastUnstake.Errored.is`
+- **summary**:    Some internal error happened while migrating stash. They are removed as head as a  consequence. 
+ 
+### InternalError()
+- **interface**: `api.events.fastUnstake.InternalError.is`
+- **summary**:    An internal error happened. Operations will be paused now. 
+ 
+### Slashed(`AccountId32`, `u128`)
+- **interface**: `api.events.fastUnstake.Slashed.is`
+- **summary**:    A staker was slashed for requesting fast-unstake whilst being exposed. 
+ 
+### Unstaked(`AccountId32`, `Option<u32>`, `Result<Null, SpRuntimeDispatchError>`)
+- **interface**: `api.events.fastUnstake.Unstaked.is`
+- **summary**:    A staker was unstaked. 
+
+___
+
+
 ## gilt
  
 ### BidPlaced(`AccountId32`, `u128`, `u32`)
@@ -894,10 +908,6 @@ ___
 - **interface**: `api.events.proxy.Announced.is`
 - **summary**:    An announcement was placed to make a call in the future. 
  
-### AnonymousCreated(`AccountId32`, `AccountId32`, `KitchensinkRuntimeProxyType`, `u16`)
-- **interface**: `api.events.proxy.AnonymousCreated.is`
-- **summary**:    Anonymous account has been created by new proxy with given  disambiguation index and proxy type. 
- 
 ### ProxyAdded(`AccountId32`, `AccountId32`, `KitchensinkRuntimeProxyType`, `u32`)
 - **interface**: `api.events.proxy.ProxyAdded.is`
 - **summary**:    A proxy was added. 
@@ -909,6 +919,10 @@ ___
 ### ProxyRemoved(`AccountId32`, `AccountId32`, `KitchensinkRuntimeProxyType`, `u32`)
 - **interface**: `api.events.proxy.ProxyRemoved.is`
 - **summary**:    A proxy was removed. 
+ 
+### PureCreated(`AccountId32`, `AccountId32`, `KitchensinkRuntimeProxyType`, `u16`)
+- **interface**: `api.events.proxy.PureCreated.is`
+- **summary**:    A pure account has been created by new proxy with given  disambiguation index and proxy type. 
 
 ___
 
@@ -1215,7 +1229,7 @@ ___
  
 ### Slashed(`AccountId32`, `u128`)
 - **interface**: `api.events.staking.Slashed.is`
-- **summary**:    One validator (and its nominators) has been slashed by the given amount.  \[validator, amount\] 
+- **summary**:    One staker (and potentially its nominators) has been slashed by the given amount.  \[staker, amount\] 
  
 ### StakersElected()
 - **interface**: `api.events.staking.StakersElected.is`
@@ -1608,6 +1622,19 @@ ___
 ### VestingUpdated(`AccountId32`, `u128`)
 - **interface**: `api.events.vesting.VestingUpdated.is`
 - **summary**:    The amount vested has been updated. This could indicate a change in funds available.  The balance given is the amount which is left unvested (and thus locked). 
+
+___
+
+
+## voterBagsList
+ 
+### Rebagged(`AccountId32`, `u64`, `u64`)
+- **interface**: `api.events.voterBagsList.Rebagged.is`
+- **summary**:    Moved an account from one bag to another. 
+ 
+### ScoreUpdated(`AccountId32`, `u64`)
+- **interface**: `api.events.voterBagsList.ScoreUpdated.is`
+- **summary**:    Updated the score of some account to the given amount. 
 
 ___
 

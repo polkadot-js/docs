@@ -16,8 +16,6 @@ This page lists the errors that can be encountered in the different modules.
 
 - **[babe](#babe)**
 
-- **[bagsList](#bagslist)**
-
 - **[balances](#balances)**
 
 - **[bounties](#bounties)**
@@ -35,6 +33,8 @@ This page lists the errors that can be encountered in the different modules.
 - **[electionProviderMultiPhase](#electionprovidermultiphase)**
 
 - **[elections](#elections)**
+
+- **[fastUnstake](#fastunstake)**
 
 - **[gilt](#gilt)**
 
@@ -95,6 +95,8 @@ This page lists the errors that can be encountered in the different modules.
 - **[utility](#utility)**
 
 - **[vesting](#vesting)**
+
+- **[voterBagsList](#voterbagslist)**
 
 - **[whitelist](#whitelist)**
 
@@ -371,15 +373,6 @@ ___
 ### InvalidKeyOwnershipProof
 - **interface**: `api.errors.babe.InvalidKeyOwnershipProof.is`
 - **summary**:    A key ownership proof provided as part of an equivocation report is invalid. 
-
-___
-
-
-## bagsList
- 
-### List
-- **interface**: `api.errors.bagsList.List.is`
-- **summary**:    A error in the list interface implementation. 
 
 ___
 
@@ -953,6 +946,33 @@ ___
 ### UnableToVote
 - **interface**: `api.errors.elections.UnableToVote.is`
 - **summary**:    Cannot vote when no candidates or members exist. 
+
+___
+
+
+## fastUnstake
+ 
+### AlreadyHead
+- **interface**: `api.errors.fastUnstake.AlreadyHead.is`
+- **summary**:    The provided un-staker is already in Head, and cannot deregister. 
+ 
+### AlreadyQueued
+- **interface**: `api.errors.fastUnstake.AlreadyQueued.is`
+- **summary**:    The bonded account has already been queued. 
+ 
+### NotController
+- **interface**: `api.errors.fastUnstake.NotController.is`
+- **summary**:    The provided Controller account was not found. 
+
+   This means that the given account is not bonded. 
+ 
+### NotFullyBonded
+- **interface**: `api.errors.fastUnstake.NotFullyBonded.is`
+- **summary**:    The bonded account has active unlocking chunks. 
+ 
+### NotQueued
+- **interface**: `api.errors.fastUnstake.NotQueued.is`
+- **summary**:    The provided un-staker is not in the `Queue`. 
 
 ___
 
@@ -1755,6 +1775,10 @@ ___
 - **interface**: `api.errors.staking.BadTarget.is`
 - **summary**:    A nomination target was supplied that was blocked or otherwise not a validator. 
  
+### BoundNotMet
+- **interface**: `api.errors.staking.BoundNotMet.is`
+- **summary**:    Some bound is not met. 
+ 
 ### CannotChillOther
 - **interface**: `api.errors.staking.CannotChillOther.is`
 - **summary**:    The user has enough bond and thus cannot be chilled forcefully by an external person. 
@@ -2185,6 +2209,15 @@ ___
 ### ScheduleIndexOutOfBounds
 - **interface**: `api.errors.vesting.ScheduleIndexOutOfBounds.is`
 - **summary**:    An index was out of bounds of the vesting schedules. 
+
+___
+
+
+## voterBagsList
+ 
+### List
+- **interface**: `api.errors.voterBagsList.List.is`
+- **summary**:    A error in the list interface implementation. 
 
 ___
 

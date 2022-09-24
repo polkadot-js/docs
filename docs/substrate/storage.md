@@ -18,8 +18,6 @@ The following sections contain Storage methods are part of the default Substrate
 
 - **[babe](#babe)**
 
-- **[bagsList](#bagslist)**
-
 - **[balances](#balances)**
 
 - **[bounties](#bounties)**
@@ -37,6 +35,8 @@ The following sections contain Storage methods are part of the default Substrate
 - **[electionProviderMultiPhase](#electionprovidermultiphase)**
 
 - **[elections](#elections)**
+
+- **[fastUnstake](#fastunstake)**
 
 - **[gilt](#gilt)**
 
@@ -105,6 +105,8 @@ The following sections contain Storage methods are part of the default Substrate
 - **[uniques](#uniques)**
 
 - **[vesting](#vesting)**
+
+- **[voterBagsList](#voterbagslist)**
 
 - **[whitelist](#whitelist)**
 
@@ -308,27 +310,6 @@ ___
 ___
 
 
-## bagsList
- 
-### counterForListNodes(): `u32`
-- **interface**: `api.query.bagsList.counterForListNodes`
-- **summary**:    Counter for the related counted storage map 
- 
-### listBags(`u64`): `Option<PalletBagsListListBag>`
-- **interface**: `api.query.bagsList.listBags`
-- **summary**:    A bag stored in storage. 
-
-   Stores a `Bag` struct, which stores head and tail pointers to itself. 
- 
-### listNodes(`AccountId32`): `Option<PalletBagsListListNode>`
-- **interface**: `api.query.bagsList.listNodes`
-- **summary**:    A single node, within some bag. 
-
-   Nodes store links forward and back within their respective bags. 
-
-___
-
-
 ## balances
  
 ### account(`AccountId32`): `PalletBalancesAccountData`
@@ -420,7 +401,7 @@ ___
 - **interface**: `api.query.contracts.codeStorage`
 - **summary**:    A mapping between an original code hash and instrumented wasm code, ready for execution. 
  
-### contractInfoOf(`AccountId32`): `Option<PalletContractsStorageRawContractInfo>`
+### contractInfoOf(`AccountId32`): `Option<PalletContractsStorageContractInfo>`
 - **interface**: `api.query.contracts.contractInfoOf`
 - **summary**:    The code associated with a given account. 
 
@@ -666,6 +647,33 @@ ___
 - **summary**:    Votes and locked stake of a particular voter. 
 
    TWOX-NOTE: SAFE as `AccountId` is a crypto hash. 
+
+___
+
+
+## fastUnstake
+ 
+### counterForQueue(): `u32`
+- **interface**: `api.query.fastUnstake.counterForQueue`
+- **summary**:    Counter for the related counted storage map 
+ 
+### erasToCheckPerBlock(): `u32`
+- **interface**: `api.query.fastUnstake.erasToCheckPerBlock`
+- **summary**:    Number of eras to check per block. 
+
+   If set to 0, this pallet does absolutely nothing. 
+
+   Based on the amount of weight available at `on_idle`, up to this many eras of a single  nominator might be checked. 
+ 
+### head(): `Option<PalletFastUnstakeUnstakeRequest>`
+- **interface**: `api.query.fastUnstake.head`
+- **summary**:    The current "head of the queue" being unstaked. 
+ 
+### queue(`AccountId32`): `Option<Option<u32>>`
+- **interface**: `api.query.fastUnstake.queue`
+- **summary**:    The map of all accounts wishing to be unstaked. 
+
+   Points the `AccountId` wishing to unstake to the optional `PoolId` they wish to join  thereafter. 
 
 ___
 
@@ -1295,14 +1303,6 @@ ___
 - **interface**: `api.query.staking.forceEra`
 - **summary**:    Mode of era forcing. 
  
-### historyDepth(): `u32`
-- **interface**: `api.query.staking.historyDepth`
-- **summary**:    Number of eras to keep in history. 
-
-   Information is kept for eras in `[current_era - history_depth; current_era]`. 
-
-   Must be more than the number of eras delayed by session otherwise. I.e. active era must  always be in history. I.e. `active_era > current_era - history_depth` must be  guaranteed. 
- 
 ### invulnerables(): `Vec<AccountId32>`
 - **interface**: `api.query.staking.invulnerables`
 - **summary**:    Any validators that may never be slashed or forcibly kicked. It's a Vec since they're  easy to initialize and the performance hit is minimal (we expect no more than four  invulnerables) and restricted to testnets. 
@@ -1724,6 +1724,27 @@ ___
 ### vesting(`AccountId32`): `Option<Vec<PalletVestingVestingInfo>>`
 - **interface**: `api.query.vesting.vesting`
 - **summary**:    Information regarding the vesting of a given account. 
+
+___
+
+
+## voterBagsList
+ 
+### counterForListNodes(): `u32`
+- **interface**: `api.query.voterBagsList.counterForListNodes`
+- **summary**:    Counter for the related counted storage map 
+ 
+### listBags(`u64`): `Option<PalletBagsListListBag>`
+- **interface**: `api.query.voterBagsList.listBags`
+- **summary**:    A bag stored in storage. 
+
+   Stores a `Bag` struct, which stores head and tail pointers to itself. 
+ 
+### listNodes(`AccountId32`): `Option<PalletBagsListListNode>`
+- **interface**: `api.query.voterBagsList.listNodes`
+- **summary**:    A single node, within some bag. 
+
+   Nodes store links forward and back within their respective bags. 
 
 ___
 
