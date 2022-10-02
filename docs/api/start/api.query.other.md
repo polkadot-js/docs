@@ -18,7 +18,7 @@ const lastHdr = await api.rpc.chain.getHeader();
 const apiAt = await api.at(lastHdr.hash);
 
 // query the balance at this point of the chain
-const { data: { free } } = await api.query.system.account(ADDR);
+const { data: { free } } = await apiAt.query.system.account(ADDR);
 
 // Display the free balance
 console.log(`The current free is ${free.toString()}`);
