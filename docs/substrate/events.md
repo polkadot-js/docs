@@ -649,7 +649,7 @@ ___
 - **interface**: `api.events.fastUnstake.Slashed.is`
 - **summary**:    A staker was slashed for requesting fast-unstake whilst being exposed. 
  
-### Unstaked(`AccountId32`, `Option<u32>`, `Result<Null, SpRuntimeDispatchError>`)
+### Unstaked(`AccountId32`, `Result<Null, SpRuntimeDispatchError>`)
 - **interface**: `api.events.fastUnstake.Unstaked.is`
 - **summary**:    A staker was unstaked. 
 
@@ -1205,31 +1205,31 @@ ___
  
 ### Chilled(`AccountId32`)
 - **interface**: `api.events.staking.Chilled.is`
-- **summary**:    An account has stopped participating as either a validator or nominator.  \[stash\] 
+- **summary**:    An account has stopped participating as either a validator or nominator. 
  
 ### EraPaid(`u32`, `u128`, `u128`)
 - **interface**: `api.events.staking.EraPaid.is`
-- **summary**:    The era payout has been set; the first balance is the validator-payout; the second is  the remainder from the maximum amount of reward.  \[era_index, validator_payout, remainder\] 
+- **summary**:    The era payout has been set; the first balance is the validator-payout; the second is  the remainder from the maximum amount of reward. 
  
 ### Kicked(`AccountId32`, `AccountId32`)
 - **interface**: `api.events.staking.Kicked.is`
-- **summary**:    A nominator has been kicked from a validator. \[nominator, stash\] 
+- **summary**:    A nominator has been kicked from a validator. 
  
 ### OldSlashingReportDiscarded(`u32`)
 - **interface**: `api.events.staking.OldSlashingReportDiscarded.is`
-- **summary**:    An old slashing report from a prior era was discarded because it could  not be processed. \[session_index\] 
+- **summary**:    An old slashing report from a prior era was discarded because it could  not be processed. 
  
 ### PayoutStarted(`u32`, `AccountId32`)
 - **interface**: `api.events.staking.PayoutStarted.is`
-- **summary**:    The stakers' rewards are getting paid. \[era_index, validator_stash\] 
+- **summary**:    The stakers' rewards are getting paid. 
  
 ### Rewarded(`AccountId32`, `u128`)
 - **interface**: `api.events.staking.Rewarded.is`
-- **summary**:    The nominator has been rewarded by this amount. \[stash, amount\] 
+- **summary**:    The nominator has been rewarded by this amount. 
  
 ### Slashed(`AccountId32`, `u128`)
 - **interface**: `api.events.staking.Slashed.is`
-- **summary**:    One staker (and potentially its nominators) has been slashed by the given amount.  \[staker, amount\] 
+- **summary**:    One staker (and potentially its nominators) has been slashed by the given amount. 
  
 ### StakersElected()
 - **interface**: `api.events.staking.StakersElected.is`
@@ -1241,7 +1241,7 @@ ___
  
 ### Unbonded(`AccountId32`, `u128`)
 - **interface**: `api.events.staking.Unbonded.is`
-- **summary**:    An account has unbonded this amount. \[stash, amount\] 
+- **summary**:    An account has unbonded this amount. 
  
 ### ValidatorPrefsSet(`AccountId32`, `PalletStakingValidatorPrefs`)
 - **interface**: `api.events.staking.ValidatorPrefsSet.is`
@@ -1249,7 +1249,7 @@ ___
  
 ### Withdrawn(`AccountId32`, `u128`)
 - **interface**: `api.events.staking.Withdrawn.is`
-- **summary**:    An account has called `withdraw_unbonded` and removed unbonding chunks worth `Balance`  from the unlocking queue. \[stash, amount\] 
+- **summary**:    An account has called `withdraw_unbonded` and removed unbonding chunks worth `Balance`  from the unlocking queue. 
 
 ___
 

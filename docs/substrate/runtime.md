@@ -243,7 +243,7 @@ ___
 - **runtime**: `ContractsApi_get_storage`
 - **summary**: Query a given storage key in a given contract.
  
-### instantiate(origin: `AccountId`, value: `Balance`, gasLimit: `u64`, storageDepositLimit: `Option<Balance>`, code: `Bytes`, data: `Bytes`, salt: `Bytes`): `ContractInstantiateResult`
+### instantiate(origin: `AccountId`, value: `Balance`, gasLimit: `u64`, storageDepositLimit: `Option<Balance>`, code: `CodeSource`, data: `Bytes`, salt: `Bytes`): `ContractInstantiateResult`
 - **interface**: `api.call.contractsApi.instantiate`
 - **runtime**: `ContractsApi_instantiate`
 - **summary**: Instantiate a new contract.

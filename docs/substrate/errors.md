@@ -960,6 +960,10 @@ ___
 - **interface**: `api.errors.fastUnstake.AlreadyQueued.is`
 - **summary**:    The bonded account has already been queued. 
  
+### CallNotAllowed
+- **interface**: `api.errors.fastUnstake.CallNotAllowed.is`
+- **summary**:    The call is not allowed at this point because the pallet is not active. 
+ 
 ### NotController
 - **interface**: `api.errors.fastUnstake.NotController.is`
 - **summary**:    The provided Controller account was not found. 

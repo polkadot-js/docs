@@ -669,11 +669,11 @@ ___
 - **interface**: `api.query.fastUnstake.head`
 - **summary**:    The current "head of the queue" being unstaked. 
  
-### queue(`AccountId32`): `Option<Option<u32>>`
+### queue(`AccountId32`): `Option<u128>`
 - **interface**: `api.query.fastUnstake.queue`
 - **summary**:    The map of all accounts wishing to be unstaked. 
 
-   Points the `AccountId` wishing to unstake to the optional `PoolId` they wish to join  thereafter. 
+   Keeps track of `AccountId` wishing to unstake and it's corresponding deposit. 
 
 ___
 

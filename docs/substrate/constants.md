@@ -241,7 +241,7 @@ ___
 
 ## contracts
  
-### contractAccessWeight: `Weight`
+### contractAccessWeight: `SpWeightsWeightV2Weight`
 - **interface**: `api.consts.contracts.contractAccessWeight`
 - **summary**:    The weight per byte of code that is charged when loading a contract from storage. 
 
@@ -265,7 +265,7 @@ ___
 
    1. The queue is in storage in order to be persistent between blocks. We want to limit  the amount of storage that can be consumed.  2. The queue is stored in a vector and needs to be decoded as a whole when reading  it at the end of each block. Longer queues take more weight to decode and hence  limit the amount of items that can be deleted per block. 
  
-### deletionWeightLimit: `Weight`
+### deletionWeightLimit: `SpWeightsWeightV2Weight`
 - **interface**: `api.consts.contracts.deletionWeightLimit`
 - **summary**:    The maximum amount of weight that can be consumed per block for lazy trie removal. 
 
@@ -390,7 +390,7 @@ ___
 ### minerMaxVotesPerVoter: `u32`
 - **interface**: `api.consts.electionProviderMultiPhase.minerMaxVotesPerVoter`
  
-### minerMaxWeight: `Weight`
+### minerMaxWeight: `SpWeightsWeightV2Weight`
 - **interface**: `api.consts.electionProviderMultiPhase.minerMaxWeight`
  
 ### minerTxPriority: `u64`
@@ -425,7 +425,7 @@ ___
 
    It is best to avoid adjusting this during an election, as it impacts downstream data  structures. In particular, `SignedSubmissionIndices<T>` is bounded on this value. If you  update this value during an election, you _must_ ensure that  `SignedSubmissionIndices.len()` is less than or equal to the new value. Otherwise,  attempts to submit new solutions may cause a runtime panic. 
  
-### signedMaxWeight: `Weight`
+### signedMaxWeight: `SpWeightsWeightV2Weight`
 - **interface**: `api.consts.electionProviderMultiPhase.signedMaxWeight`
 - **summary**:    Maximum weight of a signed solution. 
 
@@ -765,7 +765,7 @@ ___
 
 ## scheduler
  
-### maximumWeight: `Weight`
+### maximumWeight: `SpWeightsWeightV2Weight`
 - **interface**: `api.consts.scheduler.maximumWeight`
 - **summary**:    The maximum weight that may be scheduled per block for any dispatchables of less  priority than `schedule::HARD_DEADLINE`. 
  
@@ -833,7 +833,7 @@ ___
 
    If migrating an existing pallet from storage value to config value,  this should be set to same value or greater as in storage. 
 
-   Note: `HistoryDepth` is used as the upper bound for the `BoundedVec`  item `StakingLedger.claimed_rewards`. Setting this value lower than  the existing value can lead to inconsistencies and will need to be  handled properly in a migration. 
+   Note: `HistoryDepth` is used as the upper bound for the `BoundedVec`  item `StakingLedger.claimed_rewards`. Setting this value lower than  the existing value can lead to inconsistencies in the  `StakingLedger` and will need to be handled properly in a migration.  The test `reducing_history_depth_abrupt` shows this effect. 
  
 ### maxNominations: `u32`
 - **interface**: `api.consts.staking.maxNominations`
@@ -847,7 +847,9 @@ ___
  
 ### maxUnlockingChunks: `u32`
 - **interface**: `api.consts.staking.maxUnlockingChunks`
-- **summary**:    The maximum number of `unlocking` chunks a [`StakingLedger`] can have. Effectively  determines how many unique eras a staker may be unbonding in. 
+- **summary**:    The maximum number of `unlocking` chunks a [`StakingLedger`] can  have. Effectively determines how many unique eras a staker may be  unbonding in. 
+
+   Note: `MaxUnlockingChunks` is used as the upper bound for the  `BoundedVec` item `StakingLedger.unlocking`. Setting this value  lower than the existing value can lead to inconsistencies in the  `StakingLedger` and will need to be handled properly in a runtime  migration. The test `reducing_max_unlocking_chunks_abrupt` shows  this effect. 
  
 ### sessionsPerEra: `u32`
 - **interface**: `api.consts.staking.sessionsPerEra`
