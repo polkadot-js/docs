@@ -543,6 +543,11 @@ ___
 - **runtime**: `ParachainHost_check_validation_outputs`
 - **summary**: Checks if the given validation outputs pass the acceptance criteria.
  
+### disputes(): `Vec<(SessionIndex, CandidateHash, DisputeState)>`
+- **interface**: `api.call.parachainHost.disputes`
+- **runtime**: `ParachainHost_disputes`
+- **summary**: Returns all onchain disputes.
+ 
 ### dmqContents(paraId: `ParaId`): `Vec<InboundDownwardMessage>`
 - **interface**: `api.call.parachainHost.dmqContents`
 - **runtime**: `ParachainHost_dmq_contents`
