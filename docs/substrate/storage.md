@@ -106,7 +106,7 @@ The following sections contain Storage methods are part of the default Substrate
 
 - **[vesting](#vesting)**
 
-- **[voterBagsList](#voterbagslist)**
+- **[voterList](#voterlist)**
 
 - **[whitelist](#whitelist)**
 
@@ -504,7 +504,7 @@ ___
 - **interface**: `api.query.democracy.lowestUnbaked`
 - **summary**:    The lowest referendum index representing an unbaked referendum. Equal to  `ReferendumCount` if there isn't a unbaked referendum. 
  
-### nextExternal(): `Option<(H256,PalletDemocracyVoteThreshold)>`
+### nextExternal(): `Option<(FrameSupportPreimagesBounded,PalletDemocracyVoteThreshold)>`
 - **interface**: `api.query.democracy.nextExternal`
 - **summary**:    The referendum to be tabled whenever it would be valid to table an external proposal.  This happens when a referendum needs to be tabled and one of two conditions are met: 
 
@@ -512,17 +512,13 @@ ___
 
   - `PublicProps` is empty.
  
-### preimages(`H256`): `Option<PalletDemocracyPreimageStatus>`
-- **interface**: `api.query.democracy.preimages`
-- **summary**:    Map of hashes to the proposal preimage, along with who registered it and their deposit.  The block number is the block at which it was deposited. 
- 
 ### publicPropCount(): `u32`
 - **interface**: `api.query.democracy.publicPropCount`
 - **summary**:    The number of (public) proposals that have been made so far. 
  
-### publicProps(): `Vec<(u32,H256,AccountId32)>`
+### publicProps(): `Vec<(u32,FrameSupportPreimagesBounded,AccountId32)>`
 - **interface**: `api.query.democracy.publicProps`
-- **summary**:    The public proposals. Unsorted. The second item is the proposal's hash. 
+- **summary**:    The public proposals. Unsorted. The second item is the proposal. 
  
 ### referendumCount(): `u32`
 - **interface**: `api.query.democracy.referendumCount`
@@ -533,12 +529,6 @@ ___
 - **summary**:    Information concerning any given referendum. 
 
    TWOX-NOTE: SAFE as indexes are not under an attacker’s control. 
- 
-### storageVersion(): `Option<PalletDemocracyReleases>`
-- **interface**: `api.query.democracy.storageVersion`
-- **summary**:    Storage version of the pallet. 
-
-   New networks start with last version. 
  
 ### votingOf(`AccountId32`): `PalletDemocracyVoteVoting`
 - **interface**: `api.query.democracy.votingOf`
@@ -846,9 +836,6 @@ ___
 
 ## multisig
  
-### calls(`[u8;32]`): `Option<(WrapperKeepOpaque<Call>,AccountId32,u128)>`
-- **interface**: `api.query.multisig.calls`
- 
 ### multisigs(`AccountId32, [u8;32]`): `Option<PalletMultisigMultisig>`
 - **interface**: `api.query.multisig.multisigs`
 - **summary**:    The set of open multisig operations. 
@@ -962,9 +949,8 @@ ___
 
 ## preimage
  
-### preimageFor(`H256`): `Option<Bytes>`
+### preimageFor(`(H256,u32)`): `Option<Bytes>`
 - **interface**: `api.query.preimage.preimageFor`
-- **summary**:    The preimages stored by this pallet. 
  
 ### statusFor(`H256`): `Option<PalletPreimageRequestStatus>`
 - **interface**: `api.query.preimage.statusFor`
@@ -1092,13 +1078,18 @@ ___
 
 ## scheduler
  
-### agenda(`u32`): `Vec<Option<PalletSchedulerScheduledV3>>`
+### agenda(`u32`): `Vec<Option<PalletSchedulerScheduled>>`
 - **interface**: `api.query.scheduler.agenda`
 - **summary**:    Items to be executed, indexed by the block number that they should be executed on. 
  
-### lookup(`Bytes`): `Option<(u32,u32)>`
+### incompleteSince(): `Option<u32>`
+- **interface**: `api.query.scheduler.incompleteSince`
+ 
+### lookup(`[u8;32]`): `Option<(u32,u32)>`
 - **interface**: `api.query.scheduler.lookup`
-- **summary**:    Lookup from identity to the block number and index of the task. 
+- **summary**:    Lookup from a name to the block number and index of the task. 
+
+   For v3 -> v4 the previously unbounded identities are Blake2-256 hashed to form the v4  identities. 
 
 ___
 
@@ -1728,20 +1719,20 @@ ___
 ___
 
 
-## voterBagsList
+## voterList
  
 ### counterForListNodes(): `u32`
-- **interface**: `api.query.voterBagsList.counterForListNodes`
+- **interface**: `api.query.voterList.counterForListNodes`
 - **summary**:    Counter for the related counted storage map 
  
 ### listBags(`u64`): `Option<PalletBagsListListBag>`
-- **interface**: `api.query.voterBagsList.listBags`
+- **interface**: `api.query.voterList.listBags`
 - **summary**:    A bag stored in storage. 
 
    Stores a `Bag` struct, which stores head and tail pointers to itself. 
  
 ### listNodes(`AccountId32`): `Option<PalletBagsListListNode>`
-- **interface**: `api.query.voterBagsList.listNodes`
+- **interface**: `api.query.voterList.listNodes`
 - **summary**:    A single node, within some bag. 
 
    Nodes store links forward and back within their respective bags. 

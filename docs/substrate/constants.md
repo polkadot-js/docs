@@ -78,7 +78,7 @@ The following sections contain the module constants, also known as parameter typ
 
 - **[vesting](#vesting)**
 
-- **[voterBagsList](#voterbagslist)**
+- **[voterList](#voterlist)**
 
 
 ___
@@ -241,20 +241,6 @@ ___
 
 ## contracts
  
-### contractAccessWeight: `SpWeightsWeightV2Weight`
-- **interface**: `api.consts.contracts.contractAccessWeight`
-- **summary**:    The weight per byte of code that is charged when loading a contract from storage. 
-
-   Currently, FRAME only charges fees for computation incurred but not for PoV  consumption caused for storage access. This is usually not exploitable because  accessing storage carries some substantial weight costs, too. However in case  of contract code very much PoV consumption can be caused while consuming very little  computation. This could be used to keep the chain busy without paying the  proper fee for it. Until this is resolved we charge from the weight meter for  contract access. 
-
-   For more information check out: <https://github.com/paritytech/substrate/issues/10301> 
-
-   [`DefaultContractAccessWeight`] is a safe default to be used for Polkadot or Kusama  parachains. 
-
-   #### Note 
-
-   This is only relevant for parachains. Set to zero in case of a standalone chain. 
- 
 ### deletionQueueDepth: `u32`
 - **interface**: `api.consts.contracts.deletionQueueDepth`
 - **summary**:    The maximum number of contracts that can be pending for deletion. 
@@ -335,6 +321,14 @@ ___
 - **interface**: `api.consts.democracy.launchPeriod`
 - **summary**:    How often (in blocks) new public referenda are launched. 
  
+### maxBlacklisted: `u32`
+- **interface**: `api.consts.democracy.maxBlacklisted`
+- **summary**:    The maximum number of items which can be blacklisted. 
+ 
+### maxDeposits: `u32`
+- **interface**: `api.consts.democracy.maxDeposits`
+- **summary**:    The maximum number of deposits a public proposal may have at any time. 
+ 
 ### maxProposals: `u32`
 - **interface**: `api.consts.democracy.maxProposals`
 - **summary**:    The maximum number of public proposals that can exist at any time. 
@@ -348,10 +342,6 @@ ___
 ### minimumDeposit: `u128`
 - **interface**: `api.consts.democracy.minimumDeposit`
 - **summary**:    The minimum amount to be used as a deposit for a public referendum proposal. 
- 
-### preimageByteDeposit: `u128`
-- **interface**: `api.consts.democracy.preimageByteDeposit`
-- **summary**:    The amount of balance that must be deposited per byte of preimage stored. 
  
 ### voteLockingPeriod: `u32`
 - **interface**: `api.consts.democracy.voteLockingPeriod`
@@ -767,11 +757,11 @@ ___
  
 ### maximumWeight: `SpWeightsWeightV2Weight`
 - **interface**: `api.consts.scheduler.maximumWeight`
-- **summary**:    The maximum weight that may be scheduled per block for any dispatchables of less  priority than `schedule::HARD_DEADLINE`. 
+- **summary**:    The maximum weight that may be scheduled per block for any dispatchables. 
  
 ### maxScheduledPerBlock: `u32`
 - **interface**: `api.consts.scheduler.maxScheduledPerBlock`
-- **summary**:    The maximum number of scheduled calls in the queue for a single block.  Not strictly enforced, but used for weight estimation. 
+- **summary**:    The maximum number of scheduled calls in the queue for a single block. 
 
 ___
 
@@ -1066,10 +1056,10 @@ ___
 ___
 
 
-## voterBagsList
+## voterList
  
 ### bagThresholds: `Vec<u64>`
-- **interface**: `api.consts.voterBagsList.bagThresholds`
+- **interface**: `api.consts.voterList.bagThresholds`
 - **summary**:    The list of thresholds separating the various bags. 
 
    Ids are separated into unsorted bags according to their score. This specifies the  thresholds separating the bags. An id's bag is the largest bag for which the id's score  is less than or equal to its upper threshold. 

@@ -98,7 +98,7 @@ Events are emitted for certain operations on the runtime. The following sections
 
 - **[vesting](#vesting)**
 
-- **[voterBagsList](#voterbagslist)**
+- **[voterList](#voterlist)**
 
 - **[whitelist](#whitelist)**
 
@@ -486,10 +486,6 @@ ___
 - **interface**: `api.events.democracy.Delegated.is`
 - **summary**:    An account has delegated their vote to another account. 
  
-### Executed(`u32`, `Result<Null, SpRuntimeDispatchError>`)
-- **interface**: `api.events.democracy.Executed.is`
-- **summary**:    A proposal has been enacted. 
- 
 ### ExternalTabled()
 - **interface**: `api.events.democracy.ExternalTabled.is`
 - **summary**:    An external proposal has been tabled. 
@@ -501,26 +497,6 @@ ___
 ### Passed(`u32`)
 - **interface**: `api.events.democracy.Passed.is`
 - **summary**:    A proposal has been approved by referendum. 
- 
-### PreimageInvalid(`H256`, `u32`)
-- **interface**: `api.events.democracy.PreimageInvalid.is`
-- **summary**:    A proposal could not be executed because its preimage was invalid. 
- 
-### PreimageMissing(`H256`, `u32`)
-- **interface**: `api.events.democracy.PreimageMissing.is`
-- **summary**:    A proposal could not be executed because its preimage was missing. 
- 
-### PreimageNoted(`H256`, `AccountId32`, `u128`)
-- **interface**: `api.events.democracy.PreimageNoted.is`
-- **summary**:    A proposal's preimage was noted, and the deposit taken. 
- 
-### PreimageReaped(`H256`, `AccountId32`, `u128`, `AccountId32`)
-- **interface**: `api.events.democracy.PreimageReaped.is`
-- **summary**:    A registered preimage was removed and the deposit collected by the reaper. 
- 
-### PreimageUsed(`H256`, `AccountId32`, `u128`)
-- **interface**: `api.events.democracy.PreimageUsed.is`
-- **summary**:    A proposal preimage was removed and used (the deposit was returned). 
  
 ### ProposalCanceled(`u32`)
 - **interface**: `api.events.democracy.ProposalCanceled.is`
@@ -538,7 +514,7 @@ ___
 - **interface**: `api.events.democracy.Started.is`
 - **summary**:    A referendum has begun. 
  
-### Tabled(`u32`, `u128`, `Vec<AccountId32>`)
+### Tabled(`u32`, `u128`)
 - **interface**: `api.events.democracy.Tabled.is`
 - **summary**:    A public proposal has been tabled for referendum vote. 
  
@@ -976,7 +952,7 @@ ___
 - **interface**: `api.events.rankedPolls.DecisionDepositRefunded.is`
 - **summary**:    The decision deposit has been refunded. 
  
-### DecisionStarted(`u32`, `u16`, `H256`, `PalletRankedCollectiveTally`)
+### DecisionStarted(`u32`, `u16`, `FrameSupportPreimagesBounded`, `PalletRankedCollectiveTally`)
 - **interface**: `api.events.rankedPolls.DecisionStarted.is`
 - **summary**:    A referendum has moved into the deciding phase. 
  
@@ -992,7 +968,7 @@ ___
 - **interface**: `api.events.rankedPolls.Rejected.is`
 - **summary**:    A proposal has been rejected by referendum. 
  
-### Submitted(`u32`, `u16`, `H256`)
+### Submitted(`u32`, `u16`, `FrameSupportPreimagesBounded`)
 - **interface**: `api.events.rankedPolls.Submitted.is`
 - **summary**:    A referendum has being submitted. 
  
@@ -1060,7 +1036,7 @@ ___
 - **interface**: `api.events.referenda.DecisionDepositRefunded.is`
 - **summary**:    The decision deposit has been refunded. 
  
-### DecisionStarted(`u32`, `u16`, `H256`, `PalletConvictionVotingTally`)
+### DecisionStarted(`u32`, `u16`, `FrameSupportPreimagesBounded`, `PalletConvictionVotingTally`)
 - **interface**: `api.events.referenda.DecisionStarted.is`
 - **summary**:    A referendum has moved into the deciding phase. 
  
@@ -1076,7 +1052,7 @@ ___
 - **interface**: `api.events.referenda.Rejected.is`
 - **summary**:    A proposal has been rejected by referendum. 
  
-### Submitted(`u32`, `u16`, `H256`)
+### Submitted(`u32`, `u16`, `FrameSupportPreimagesBounded`)
 - **interface**: `api.events.referenda.Submitted.is`
 - **summary**:    A referendum has being submitted. 
  
@@ -1098,17 +1074,25 @@ ___
 
 ## scheduler
  
-### CallLookupFailed(`(u32,u32)`, `Option<Bytes>`, `FrameSupportScheduleLookupError`)
-- **interface**: `api.events.scheduler.CallLookupFailed.is`
+### CallUnavailable(`(u32,u32)`, `Option<[u8;32]>`)
+- **interface**: `api.events.scheduler.CallUnavailable.is`
 - **summary**:    The call for the provided hash was not found so the task has been aborted. 
  
 ### Canceled(`u32`, `u32`)
 - **interface**: `api.events.scheduler.Canceled.is`
 - **summary**:    Canceled some task. 
  
-### Dispatched(`(u32,u32)`, `Option<Bytes>`, `Result<Null, SpRuntimeDispatchError>`)
+### Dispatched(`(u32,u32)`, `Option<[u8;32]>`, `Result<Null, SpRuntimeDispatchError>`)
 - **interface**: `api.events.scheduler.Dispatched.is`
 - **summary**:    Dispatched some task. 
+ 
+### PeriodicFailed(`(u32,u32)`, `Option<[u8;32]>`)
+- **interface**: `api.events.scheduler.PeriodicFailed.is`
+- **summary**:    The given task was unable to be renewed since the agenda is full at that block. 
+ 
+### PermanentlyOverweight(`(u32,u32)`, `Option<[u8;32]>`)
+- **interface**: `api.events.scheduler.PermanentlyOverweight.is`
+- **summary**:    The given task can never be executed since it is overweight. 
  
 ### Scheduled(`u32`, `u32`)
 - **interface**: `api.events.scheduler.Scheduled.is`
@@ -1626,14 +1610,14 @@ ___
 ___
 
 
-## voterBagsList
+## voterList
  
 ### Rebagged(`AccountId32`, `u64`, `u64`)
-- **interface**: `api.events.voterBagsList.Rebagged.is`
+- **interface**: `api.events.voterList.Rebagged.is`
 - **summary**:    Moved an account from one bag to another. 
  
 ### ScoreUpdated(`AccountId32`, `u64`)
-- **interface**: `api.events.voterBagsList.ScoreUpdated.is`
+- **interface**: `api.events.voterList.ScoreUpdated.is`
 - **summary**:    Updated the score of some account to the given amount. 
 
 ___

@@ -98,7 +98,7 @@ The following sections contain Extrinsics methods are part of the default Substr
 
 - **[vesting](#vesting)**
 
-- **[voterBagsList](#voterbagslist)**
+- **[voterList](#voterlist)**
 
 - **[whitelist](#whitelist)**
 
@@ -1058,25 +1058,7 @@ ___
  
 ### callOldWeight(dest: `MultiAddress`, value: `Compact<u128>`, gas_limit: `Compact<u64>`, storage_deposit_limit: `Option<Compact<u128>>`, data: `Bytes`)
 - **interface**: `api.tx.contracts.callOldWeight`
-- **summary**:    Makes a call to an account, optionally transferring some balance. 
-
-   #### Parameters 
-
-   * `dest`: Address of the contract to call. 
-
-  * `value`: The balance to transfer from the `origin` to `dest`.
-
-  * `gas_limit`: The gas limit enforced when executing the constructor.
-
-  * `storage_deposit_limit`: The maximum amount of balance that can be charged from the caller to pay for the storage consumed. 
-
-  * `data`: The input data to pass to the contract.
-
-   * If the account is a smart-contract account, the associated code will be  executed and any value will be transferred. 
-
-  * If the account is a regular account, any value will be transferred.
-
-  * If no account exists and the call value is not less than `existential_deposit`, a regular account will be created and any value will be transferred. 
+- **summary**:    Deprecated version if [`Self::call`] for use in an in-storage `Call`. 
  
 ### instantiate(value: `Compact<u128>`, gas_limit: `SpWeightsWeightV2Weight`, storage_deposit_limit: `Option<Compact<u128>>`, code_hash: `H256`, data: `Bytes`, salt: `Bytes`)
 - **interface**: `api.tx.contracts.instantiate`
@@ -1086,9 +1068,7 @@ ___
  
 ### instantiateOldWeight(value: `Compact<u128>`, gas_limit: `Compact<u64>`, storage_deposit_limit: `Option<Compact<u128>>`, code_hash: `H256`, data: `Bytes`, salt: `Bytes`)
 - **interface**: `api.tx.contracts.instantiateOldWeight`
-- **summary**:    Instantiates a contract from a previously deployed wasm binary. 
-
-   This function is identical to [`Self::instantiate_with_code`] but without the  code deployment step. Instead, the `code_hash` of an on-chain deployed wasm binary  must be supplied. 
+- **summary**:    Deprecated version if [`Self::instantiate`] for use in an in-storage `Call`. 
  
 ### instantiateWithCode(value: `Compact<u128>`, gas_limit: `SpWeightsWeightV2Weight`, storage_deposit_limit: `Option<Compact<u128>>`, code: `Bytes`, data: `Bytes`, salt: `Bytes`)
 - **interface**: `api.tx.contracts.instantiateWithCode`
@@ -1126,37 +1106,7 @@ ___
  
 ### instantiateWithCodeOldWeight(value: `Compact<u128>`, gas_limit: `Compact<u64>`, storage_deposit_limit: `Option<Compact<u128>>`, code: `Bytes`, data: `Bytes`, salt: `Bytes`)
 - **interface**: `api.tx.contracts.instantiateWithCodeOldWeight`
-- **summary**:    Instantiates a new contract from the supplied `code` optionally transferring  some balance. 
-
-   This dispatchable has the same effect as calling [`Self::upload_code`] +  [`Self::instantiate`]. Bundling them together provides efficiency gains. Please  also check the documentation of [`Self::upload_code`]. 
-
-   #### Parameters 
-
-   * `value`: The balance to transfer from the `origin` to the newly created contract. 
-
-  * `gas_limit`: The gas limit enforced when executing the constructor.
-
-  * `storage_deposit_limit`: The maximum amount of balance that can be charged/reserved from the caller to pay for the storage consumed. 
-
-  * `code`: The contract code to deploy in raw bytes.
-
-  * `data`: The input data to pass to the contract constructor.
-
-  * `salt`: Used for the address derivation. See [`Pallet::contract_address`].
-
-   Instantiation is executed as follows: 
-
-   - The supplied `code` is instrumented, deployed, and a `code_hash` is created for that  code. 
-
-  - If the `code_hash` already exists on the chain the underlying `code` will be shared.
-
-  - The destination address is computed based on the sender, code_hash and the salt.
-
-  - The smart-contract account is created at the computed address.
-
-  - The `value` is transferred to the new account.
-
-  - The `deploy` function is executed in the context of the newly-created account.
+- **summary**:    Deprecated version if [`Self::instantiate_with_code`] for use in an in-storage `Call`. 
  
 ### removeCode(code_hash: `H256`)
 - **interface**: `api.tx.contracts.removeCode`
@@ -1429,16 +1379,6 @@ ___
 
    Weight: `O(p)` where `p = PublicProps::<T>::decode_len()` 
  
-### cancelQueued(which: `u32`)
-- **interface**: `api.tx.democracy.cancelQueued`
-- **summary**:    Cancel a proposal queued for enactment. 
-
-   The dispatch origin of this call must be _Root_. 
-
-   - `which`: The index of the referendum to cancel. 
-
-   Weight: `O(D)` where `D` is the items in the dispatch queue. Weighted as `D = 10`. 
- 
 ### cancelReferendum(ref_index: `Compact<u32>`)
 - **interface**: `api.tx.democracy.cancelReferendum`
 - **summary**:    Remove a referendum. 
@@ -1489,21 +1429,15 @@ ___
 
    Weight: `O(1)`. 
  
-### enactProposal(proposal_hash: `H256`, index: `u32`)
-- **interface**: `api.tx.democracy.enactProposal`
-- **summary**:    Enact a proposal from a referendum. For now we just make the weight be the maximum. 
- 
-### externalPropose(proposal_hash: `H256`)
+### externalPropose(proposal: `FrameSupportPreimagesBounded`)
 - **interface**: `api.tx.democracy.externalPropose`
 - **summary**:    Schedule a referendum to be tabled once it is legal to schedule an external  referendum. 
 
    The dispatch origin of this call must be `ExternalOrigin`. 
 
    - `proposal_hash`: The preimage hash of the proposal. 
-
-   Weight: `O(V)` with V number of vetoers in the blacklist of proposal.  Decoding vec of length V. Charged as maximum 
  
-### externalProposeDefault(proposal_hash: `H256`)
+### externalProposeDefault(proposal: `FrameSupportPreimagesBounded`)
 - **interface**: `api.tx.democracy.externalProposeDefault`
 - **summary**:    Schedule a negative-turnout-bias referendum to be tabled next once it is legal to  schedule an external referendum. 
 
@@ -1515,7 +1449,7 @@ ___
 
    Weight: `O(1)` 
  
-### externalProposeMajority(proposal_hash: `H256`)
+### externalProposeMajority(proposal: `FrameSupportPreimagesBounded`)
 - **interface**: `api.tx.democracy.externalProposeMajority`
 - **summary**:    Schedule a majority-carries referendum to be tabled next once it is legal to schedule  an external referendum. 
 
@@ -1535,7 +1469,7 @@ ___
 
    - `proposal_hash`: The hash of the current external proposal. 
 
-  - `voting_period`: The period that is allowed for voting on this proposal. Must be always greater than zero.  For `FastTrackOrigin` must be equal or greater than `FastTrackVotingPeriod`. 
+  - `voting_period`: The period that is allowed for voting on this proposal. Increased to Must be always greater than zero.  For `FastTrackOrigin` must be equal or greater than `FastTrackVotingPeriod`. 
 
   - `delay`: The number of block after voting has ended in approval and this should be enacted. This doesn't have a minimum amount. 
 
@@ -1543,39 +1477,7 @@ ___
 
    Weight: `O(1)` 
  
-### noteImminentPreimage(encoded_proposal: `Bytes`)
-- **interface**: `api.tx.democracy.noteImminentPreimage`
-- **summary**:    Register the preimage for an upcoming proposal. This requires the proposal to be  in the dispatch queue. No deposit is needed. When this call is successful, i.e.  the preimage has not been uploaded before and matches some imminent proposal,  no fee is paid. 
-
-   The dispatch origin of this call must be _Signed_. 
-
-   - `encoded_proposal`: The preimage of a proposal. 
-
-   Emits `PreimageNoted`. 
-
-   Weight: `O(E)` with E size of `encoded_proposal` (protected by a required deposit). 
- 
-### noteImminentPreimageOperational(encoded_proposal: `Bytes`)
-- **interface**: `api.tx.democracy.noteImminentPreimageOperational`
-- **summary**:    Same as `note_imminent_preimage` but origin is `OperationalPreimageOrigin`. 
- 
-### notePreimage(encoded_proposal: `Bytes`)
-- **interface**: `api.tx.democracy.notePreimage`
-- **summary**:    Register the preimage for an upcoming proposal. This doesn't require the proposal to be  in the dispatch queue but does require a deposit, returned once enacted. 
-
-   The dispatch origin of this call must be _Signed_. 
-
-   - `encoded_proposal`: The preimage of a proposal. 
-
-   Emits `PreimageNoted`. 
-
-   Weight: `O(E)` with E size of `encoded_proposal` (protected by a required deposit). 
- 
-### notePreimageOperational(encoded_proposal: `Bytes`)
-- **interface**: `api.tx.democracy.notePreimageOperational`
-- **summary**:    Same as `note_preimage` but origin is `OperationalPreimageOrigin`. 
- 
-### propose(proposal_hash: `H256`, value: `Compact<u128>`)
+### propose(proposal: `FrameSupportPreimagesBounded`, value: `Compact<u128>`)
 - **interface**: `api.tx.democracy.propose`
 - **summary**:    Propose a sensitive action to be taken. 
 
@@ -1586,24 +1488,6 @@ ___
   - `value`: The amount of deposit (must be at least `MinimumDeposit`).
 
    Emits `Proposed`. 
-
-   Weight: `O(p)` 
- 
-### reapPreimage(proposal_hash: `H256`, proposal_len_upper_bound: `Compact<u32>`)
-- **interface**: `api.tx.democracy.reapPreimage`
-- **summary**:    Remove an expired proposal preimage and collect the deposit. 
-
-   The dispatch origin of this call must be _Signed_. 
-
-   - `proposal_hash`: The preimage hash of a proposal. 
-
-  - `proposal_length_upper_bound`: an upper bound on length of the proposal. Extrinsic is weighted according to this value with no refund. 
-
-   This will only work after `VotingPeriod` blocks from the time that the preimage was  noted, if it's the same account doing it. If it's a different account, then it'll only  work an additional `EnactmentPeriod` later. 
-
-   Emits `PreimageReaped`. 
-
-   Weight: `O(D)` where D is length of proposal. 
  
 ### removeOtherVote(target: `MultiAddress`, index: `u32`)
 - **interface**: `api.tx.democracy.removeOtherVote`
@@ -1653,17 +1537,13 @@ ___
 
    Weight: `O(R + log R)` where R is the number of referenda that `target` has voted on.  Weight is calculated for the maximum number of vote. 
  
-### second(proposal: `Compact<u32>`, seconds_upper_bound: `Compact<u32>`)
+### second(proposal: `Compact<u32>`)
 - **interface**: `api.tx.democracy.second`
 - **summary**:    Signals agreement with a particular proposal. 
 
    The dispatch origin of this call must be _Signed_ and the sender  must have funds to cover the deposit, equal to the original deposit. 
 
    - `proposal`: The index of the proposal to second. 
-
-  - `seconds_upper_bound`: an upper bound on the current number of seconds on this proposal. Extrinsic is weighted according to this value with no refund. 
-
-   Weight: `O(S)` where S is the number of seconds a proposal already has. 
  
 ### undelegate()
 - **interface**: `api.tx.democracy.undelegate`
@@ -1708,8 +1588,6 @@ ___
    - `ref_index`: The index of the referendum to vote for. 
 
   - `vote`: The vote configuration.
-
-   Weight: `O(R)` where R is the number of referendums the voter has voted on. 
 
 ___
 
@@ -2289,7 +2167,7 @@ ___
 
     
  
-### asMulti(threshold: `u16`, other_signatories: `Vec<AccountId32>`, maybe_timepoint: `Option<PalletMultisigTimepoint>`, call: `WrapperKeepOpaque<Call>`, store_call: `bool`, max_weight: `SpWeightsWeightV2Weight`)
+### asMulti(threshold: `u16`, other_signatories: `Vec<AccountId32>`, maybe_timepoint: `Option<PalletMultisigTimepoint>`, call: `Call`, max_weight: `SpWeightsWeightV2Weight`)
 - **interface**: `api.tx.multisig.asMulti`
 - **summary**:    Register approval for a dispatch to be made from a deterministic composite account if  approved by a total of `threshold - 1` of `other_signatories`. 
 
@@ -2524,6 +2402,12 @@ ___
 ### unnotePreimage(hash: `H256`)
 - **interface**: `api.tx.preimage.unnotePreimage`
 - **summary**:    Clear an unrequested preimage from the runtime storage. 
+
+   If `len` is provided, then it will be a much cheaper operation. 
+
+   - `hash`: The hash of the preimage to be removed from the store. 
+
+  - `len`: The length of the preimage of `hash`.
  
 ### unrequestPreimage(hash: `H256`)
 - **interface**: `api.tx.preimage.unrequestPreimage`
@@ -2828,7 +2712,7 @@ ___
 
    Emits `DecisionDepositRefunded`. 
  
-### submit(proposal_origin: `KitchensinkRuntimeOriginCaller`, proposal_hash: `H256`, enactment_moment: `FrameSupportScheduleDispatchTime`)
+### submit(proposal_origin: `KitchensinkRuntimeOriginCaller`, proposal: `FrameSupportPreimagesBounded`, enactment_moment: `FrameSupportScheduleDispatchTime`)
 - **interface**: `api.tx.rankedPolls.submit`
 - **summary**:    Propose a referendum on a privileged action. 
 
@@ -2836,7 +2720,7 @@ ___
 
   - `proposal_origin`: The origin from which the proposal should be executed.
 
-  - `proposal_hash`: The hash of the proposal preimage.
+  - `proposal`: The proposal.
 
   - `enactment_moment`: The moment that the proposal should be enacted.
 
@@ -3022,7 +2906,7 @@ ___
 
    Emits `DecisionDepositRefunded`. 
  
-### submit(proposal_origin: `KitchensinkRuntimeOriginCaller`, proposal_hash: `H256`, enactment_moment: `FrameSupportScheduleDispatchTime`)
+### submit(proposal_origin: `KitchensinkRuntimeOriginCaller`, proposal: `FrameSupportPreimagesBounded`, enactment_moment: `FrameSupportScheduleDispatchTime`)
 - **interface**: `api.tx.referenda.submit`
 - **summary**:    Propose a referendum on a privileged action. 
 
@@ -3030,7 +2914,7 @@ ___
 
   - `proposal_origin`: The origin from which the proposal should be executed.
 
-  - `proposal_hash`: The hash of the proposal preimage.
+  - `proposal`: The proposal.
 
   - `enactment_moment`: The moment that the proposal should be enacted.
 
@@ -3054,25 +2938,25 @@ ___
 - **interface**: `api.tx.scheduler.cancel`
 - **summary**:    Cancel an anonymously scheduled task. 
  
-### cancelNamed(id: `Bytes`)
+### cancelNamed(id: `[u8;32]`)
 - **interface**: `api.tx.scheduler.cancelNamed`
 - **summary**:    Cancel a named scheduled task. 
  
-### schedule(when: `u32`, maybe_periodic: `Option<(u32,u32)>`, priority: `u8`, call: `FrameSupportScheduleMaybeHashed`)
+### schedule(when: `u32`, maybe_periodic: `Option<(u32,u32)>`, priority: `u8`, call: `Call`)
 - **interface**: `api.tx.scheduler.schedule`
 - **summary**:    Anonymously schedule a task. 
  
-### scheduleAfter(after: `u32`, maybe_periodic: `Option<(u32,u32)>`, priority: `u8`, call: `FrameSupportScheduleMaybeHashed`)
+### scheduleAfter(after: `u32`, maybe_periodic: `Option<(u32,u32)>`, priority: `u8`, call: `Call`)
 - **interface**: `api.tx.scheduler.scheduleAfter`
 - **summary**:    Anonymously schedule a task after a delay. 
 
     
  
-### scheduleNamed(id: `Bytes`, when: `u32`, maybe_periodic: `Option<(u32,u32)>`, priority: `u8`, call: `FrameSupportScheduleMaybeHashed`)
+### scheduleNamed(id: `[u8;32]`, when: `u32`, maybe_periodic: `Option<(u32,u32)>`, priority: `u8`, call: `Call`)
 - **interface**: `api.tx.scheduler.scheduleNamed`
 - **summary**:    Schedule a named task. 
  
-### scheduleNamedAfter(id: `Bytes`, after: `u32`, maybe_periodic: `Option<(u32,u32)>`, priority: `u8`, call: `FrameSupportScheduleMaybeHashed`)
+### scheduleNamedAfter(id: `[u8;32]`, after: `u32`, maybe_periodic: `Option<(u32,u32)>`, priority: `u8`, call: `Call`)
 - **interface**: `api.tx.scheduler.scheduleNamedAfter`
 - **summary**:    Schedule a named task after a delay. 
 
@@ -4608,10 +4492,10 @@ ___
 ___
 
 
-## voterBagsList
+## voterList
  
 ### putInFrontOf(lighter: `MultiAddress`)
-- **interface**: `api.tx.voterBagsList.putInFrontOf`
+- **interface**: `api.tx.voterList.putInFrontOf`
 - **summary**:    Move the caller's Id directly in front of `lighter`. 
 
    The dispatch origin for this call must be _Signed_ and can only be called by the Id of  the account going in front of `lighter`. 
@@ -4623,7 +4507,7 @@ ___
   - and `origin` has a greater `Score` than `lighter`.
  
 ### rebag(dislocated: `MultiAddress`)
-- **interface**: `api.tx.voterBagsList.rebag`
+- **interface**: `api.tx.voterList.rebag`
 - **summary**:    Declare that some `dislocated` account has, through rewards or penalties, sufficiently  changed its score that it should properly fall into a different bag than its current  one. 
 
    Anyone can call this function about any potentially dislocated account. 

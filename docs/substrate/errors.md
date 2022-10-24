@@ -96,7 +96,7 @@ This page lists the errors that can be encountered in the different modules.
 
 - **[vesting](#vesting)**
 
-- **[voterBagsList](#voterbagslist)**
+- **[voterList](#voterlist)**
 
 - **[whitelist](#whitelist)**
 
@@ -717,17 +717,9 @@ ___
 - **interface**: `api.errors.democracy.AlreadyVetoed.is`
 - **summary**:    Identity may not veto a proposal twice 
  
-### DuplicatePreimage
-- **interface**: `api.errors.democracy.DuplicatePreimage.is`
-- **summary**:    Preimage already noted 
- 
 ### DuplicateProposal
 - **interface**: `api.errors.democracy.DuplicateProposal.is`
 - **summary**:    Proposal already made 
- 
-### Imminent
-- **interface**: `api.errors.democracy.Imminent.is`
-- **summary**:    Imminent 
  
 ### InstantNotAllowed
 - **interface**: `api.errors.democracy.InstantNotAllowed.is`
@@ -765,10 +757,6 @@ ___
 - **interface**: `api.errors.democracy.NotDelegating.is`
 - **summary**:    The account is not currently delegating. 
  
-### NotImminent
-- **interface**: `api.errors.democracy.NotImminent.is`
-- **summary**:    Not imminent 
- 
 ### NotSimpleMajority
 - **interface**: `api.errors.democracy.NotSimpleMajority.is`
 - **summary**:    Next external proposal not simple majority 
@@ -776,14 +764,6 @@ ___
 ### NotVoter
 - **interface**: `api.errors.democracy.NotVoter.is`
 - **summary**:    The given account did not vote on the referendum. 
- 
-### PreimageInvalid
-- **interface**: `api.errors.democracy.PreimageInvalid.is`
-- **summary**:    Invalid preimage 
- 
-### PreimageMissing
-- **interface**: `api.errors.democracy.PreimageMissing.is`
-- **summary**:    Preimage not found 
  
 ### ProposalBlacklisted
 - **interface**: `api.errors.democracy.ProposalBlacklisted.is`
@@ -797,13 +777,9 @@ ___
 - **interface**: `api.errors.democracy.ReferendumInvalid.is`
 - **summary**:    Vote given for invalid referendum 
  
-### TooEarly
-- **interface**: `api.errors.democracy.TooEarly.is`
-- **summary**:    Too early 
- 
-### TooManyProposals
-- **interface**: `api.errors.democracy.TooManyProposals.is`
-- **summary**:    Maximum number of proposals reached. 
+### TooMany
+- **interface**: `api.errors.democracy.TooMany.is`
+- **summary**:    Maximum number of items reached. 
  
 ### ValueLow
 - **interface**: `api.errors.democracy.ValueLow.is`
@@ -1369,8 +1345,8 @@ ___
 - **interface**: `api.errors.preimage.Requested.is`
 - **summary**:    A preimage may not be removed when there are outstanding requests. 
  
-### TooLarge
-- **interface**: `api.errors.preimage.TooLarge.is`
+### TooBig
+- **interface**: `api.errors.preimage.TooBig.is`
 - **summary**:    Preimage is too large to store on-chain. 
 
 ___
@@ -1639,6 +1615,10 @@ ___
 ### FailedToSchedule
 - **interface**: `api.errors.scheduler.FailedToSchedule.is`
 - **summary**:    Failed to schedule a call 
+ 
+### Named
+- **interface**: `api.errors.scheduler.Named.is`
+- **summary**:    Attempt to use a non-named function on a named task. 
  
 ### NotFound
 - **interface**: `api.errors.scheduler.NotFound.is`
@@ -2217,10 +2197,10 @@ ___
 ___
 
 
-## voterBagsList
+## voterList
  
 ### List
-- **interface**: `api.errors.voterBagsList.List.is`
+- **interface**: `api.errors.voterList.List.is`
 - **summary**:    A error in the list interface implementation. 
 
 ___
