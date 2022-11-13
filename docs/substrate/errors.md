@@ -393,7 +393,7 @@ ___
  
 ### InsufficientBalance
 - **interface**: `api.errors.balances.InsufficientBalance.is`
-- **summary**:    Balance too low to send value 
+- **summary**:    Balance too low to send value. 
  
 ### KeepAlive
 - **interface**: `api.errors.balances.KeepAlive.is`
@@ -531,6 +531,10 @@ ___
 ### DuplicateTopics
 - **interface**: `api.errors.contracts.DuplicateTopics.is`
 - **summary**:    The topics passed to `seal_deposit_events` contains at least one duplicate. 
+ 
+### Indeterministic
+- **interface**: `api.errors.contracts.Indeterministic.is`
+- **summary**:    An indetermistic code was used in a context where this is not permitted. 
  
 ### InputForwarded
 - **interface**: `api.errors.contracts.InputForwarded.is`
@@ -802,6 +806,10 @@ ___
 
 ## electionProviderMultiPhase
  
+### BoundNotMet
+- **interface**: `api.errors.electionProviderMultiPhase.BoundNotMet.is`
+- **summary**:    Some bound not met 
+ 
 ### CallNotAllowed
 - **interface**: `api.errors.electionProviderMultiPhase.CallNotAllowed.is`
 - **summary**:    The call is not allowed at this point. 
@@ -849,6 +857,10 @@ ___
 ### SignedTooMuchWeight
 - **interface**: `api.errors.electionProviderMultiPhase.SignedTooMuchWeight.is`
 - **summary**:    The signed submission consumes too much weight 
+ 
+### TooManyWinners
+- **interface**: `api.errors.electionProviderMultiPhase.TooManyWinners.is`
+- **summary**:    Submitted solution has too many winners 
 
 ___
 
@@ -1061,6 +1073,10 @@ ___
 - **interface**: `api.errors.identity.JudgementGiven.is`
 - **summary**:    Judgement given. 
  
+### JudgementPaymentFailed
+- **interface**: `api.errors.identity.JudgementPaymentFailed.is`
+- **summary**:    Error that occurs when there is an issue paying for judgement. 
+ 
 ### NoIdentity
 - **interface**: `api.errors.identity.NoIdentity.is`
 - **summary**:    No identity found. 
@@ -1258,6 +1274,10 @@ ___
 - **interface**: `api.errors.nominationPools.FullyUnbonding.is`
 - **summary**:    The member is fully unbonded (and thus cannot access the bonded and reward pool  anymore to, for example, collect rewards). 
  
+### InvalidPoolId
+- **interface**: `api.errors.nominationPools.InvalidPoolId.is`
+- **summary**:    Pool id provided is not correct/usable. 
+ 
 ### MaxPoolMembers
 - **interface**: `api.errors.nominationPools.MaxPoolMembers.is`
 - **summary**:    Too many members in the pool or system. 
@@ -1303,6 +1323,10 @@ ___
 ### PartialUnbondNotAllowedPermissionlessly
 - **interface**: `api.errors.nominationPools.PartialUnbondNotAllowedPermissionlessly.is`
 - **summary**:    Partial unbonding now allowed permissionlessly. 
+ 
+### PoolIdInUse
+- **interface**: `api.errors.nominationPools.PoolIdInUse.is`
+- **summary**:    Pool id currently in use. 
  
 ### PoolMemberNotFound
 - **interface**: `api.errors.nominationPools.PoolMemberNotFound.is`
@@ -1442,7 +1466,7 @@ ___
  
 ### Full
 - **interface**: `api.errors.rankedPolls.Full.is`
-- **summary**:    There are already a full complement of referendums in progress for this track. 
+- **summary**:    There are already a full complement of referenda in progress for this track. 
  
 ### HasDeposit
 - **interface**: `api.errors.rankedPolls.HasDeposit.is`
@@ -1560,7 +1584,7 @@ ___
  
 ### Full
 - **interface**: `api.errors.referenda.Full.is`
-- **summary**:    There are already a full complement of referendums in progress for this track. 
+- **summary**:    There are already a full complement of referenda in progress for this track. 
  
 ### HasDeposit
 - **interface**: `api.errors.referenda.HasDeposit.is`
@@ -1837,7 +1861,7 @@ ___
  
 ### TooManyValidators
 - **interface**: `api.errors.staking.TooManyValidators.is`
-- **summary**:    There are too many validators in the system. Governance needs to adjust the staking  settings to keep things safe for the runtime. 
+- **summary**:    There are too many validator candidates in the system. Governance needs to adjust the  staking settings to keep things safe for the runtime. 
 
 ___
 

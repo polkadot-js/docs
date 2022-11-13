@@ -609,9 +609,15 @@ ___
 
 ## fastUnstake
  
-### Checking(`AccountId32`, `Vec<u32>`)
-- **interface**: `api.events.fastUnstake.Checking.is`
-- **summary**:    A staker was partially checked for the given eras, but the process did not finish. 
+### BatchChecked(`Vec<u32>`)
+- **interface**: `api.events.fastUnstake.BatchChecked.is`
+- **summary**:    A batch was partially checked for the given eras, but the process did not finish. 
+ 
+### BatchFinished()
+- **interface**: `api.events.fastUnstake.BatchFinished.is`
+- **summary**:    A batch was terminated. 
+
+   This is always follows by a number of `Unstaked` or `Slashed` events, marking the end  of the batch. A new batch will be created upon next block. 
  
 ### Errored(`AccountId32`)
 - **interface**: `api.events.fastUnstake.Errored.is`
@@ -915,7 +921,7 @@ ___
  
 ### RankChanged(`AccountId32`, `u16`)
 - **interface**: `api.events.rankedCollective.RankChanged.is`
-- **summary**:    The member `who`'s rank has been changed to the given `rank`. 
+- **summary**:    The member `who`se rank has been changed to the given `rank`. 
  
 ### Voted(`AccountId32`, `u32`, `PalletRankedCollectiveVoteRecord`, `PalletRankedCollectiveTally`)
 - **interface**: `api.events.rankedCollective.Voted.is`
@@ -970,7 +976,7 @@ ___
  
 ### Submitted(`u32`, `u16`, `FrameSupportPreimagesBounded`)
 - **interface**: `api.events.rankedPolls.Submitted.is`
-- **summary**:    A referendum has being submitted. 
+- **summary**:    A referendum has been submitted. 
  
 ### TimedOut(`u32`, `PalletRankedCollectiveTally`)
 - **interface**: `api.events.rankedPolls.TimedOut.is`
@@ -1054,7 +1060,7 @@ ___
  
 ### Submitted(`u32`, `u16`, `FrameSupportPreimagesBounded`)
 - **interface**: `api.events.referenda.Submitted.is`
-- **summary**:    A referendum has being submitted. 
+- **summary**:    A referendum has been submitted. 
  
 ### TimedOut(`u32`, `PalletConvictionVotingTally`)
 - **interface**: `api.events.referenda.TimedOut.is`

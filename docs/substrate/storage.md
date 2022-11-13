@@ -569,9 +569,9 @@ ___
 
    This is merely incremented once per every time that an upstream `elect` is called. 
  
-### signedSubmissionIndices(): `BTreeMap<SpNposElectionsElectionScore, u32>`
+### signedSubmissionIndices(): `Vec<(SpNposElectionsElectionScore,u32,u32)>`
 - **interface**: `api.query.electionProviderMultiPhase.signedSubmissionIndices`
-- **summary**:    A sorted, bounded set of `(score, index)`, where each `index` points to a value in  `SignedSubmissions`. 
+- **summary**:    A sorted, bounded vector of `(score, block_number, index)`, where each `index` points to a  value in `SignedSubmissions`. 
 
    We never need to process more than a single signed submission at a time. Signed submissions  can be quite large, so we're willing to pay the cost of multiple database accesses to access  them one at a time instead of reading and decoding all of them at once. 
  
@@ -1382,7 +1382,7 @@ ___
  
 ### validatorCount(): `u32`
 - **interface**: `api.query.staking.validatorCount`
-- **summary**:    The ideal number of staking participants. 
+- **summary**:    The ideal number of active validators. 
  
 ### validators(`AccountId32`): `PalletStakingValidatorPrefs`
 - **interface**: `api.query.staking.validators`

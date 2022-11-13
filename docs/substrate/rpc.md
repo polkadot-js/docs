@@ -205,7 +205,7 @@ ___
 - **summary**: Returns the value under a specified storage key in a contract
 - **deprecated**: Use the runtime interface `api.call.contractsApi.getStorage` instead
  
-### instantiate(request: `InstantiateRequest`, at?: `BlockHash`): `ContractInstantiateResult`
+### instantiate(request: `InstantiateRequestV1`, at?: `BlockHash`): `ContractInstantiateResult`
 - **interface**: `api.rpc.contracts.instantiate`
 - **jsonrpc**: `contracts_instantiate`
 - **summary**: Instantiate a new contract

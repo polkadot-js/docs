@@ -368,7 +368,7 @@ ___
 
    This new asset class has no assets initially and its owner is the origin. 
 
-   The origin must be Signed and the sender must have sufficient funds free. 
+   The origin must conform to the configured `CreateOrigin` and have sufficient funds free. 
 
    Funds of sender are reserved by `AssetDeposit`. 
 
@@ -1124,13 +1124,15 @@ ___
 
    This does **not** change the address of the contract in question. This means  that the contract address is no longer derived from its code hash after calling  this dispatchable. 
  
-### uploadCode(code: `Bytes`, storage_deposit_limit: `Option<Compact<u128>>`)
+### uploadCode(code: `Bytes`, storage_deposit_limit: `Option<Compact<u128>>`, determinism: `PalletContractsWasmDeterminism`)
 - **interface**: `api.tx.contracts.uploadCode`
 - **summary**:    Upload new `code` without instantiating a contract from it. 
 
    If the code does not already exist a deposit is reserved from the caller  and unreserved only when [`Self::remove_code`] is called. The size of the reserve  depends on the instrumented size of the the supplied `code`. 
 
    If the code already exists in storage it will still return `Ok` and upgrades  the in storage version to the current  [`InstructionWeights::version`](InstructionWeights). 
+
+   - `determinism`: If this is set to any other value but [`Determinism::Deterministic`]  then the only way to use this code is to delegate call into it from an offchain  execution. Set to [`Determinism::Deterministic`] if in doubt. 
 
    #### Note 
 
@@ -1221,7 +1223,7 @@ ___
 - **interface**: `api.tx.convictionVoting.undelegate`
 - **summary**:    Undelegate the voting power of the sending account for a particular class of polls. 
 
-   Tokens may be unlocked following once an amount of time consistent with the lock period  of the conviction with which the delegation was issued. 
+   Tokens may be unlocked following once an amount of time consistent with the lock period  of the conviction with which the delegation was issued has passed. 
 
    The dispatch origin of this call must be _Signed_ and the signing account must be  currently delegating. 
 
@@ -1233,7 +1235,7 @@ ___
  
 ### unlock(class: `u16`, target: `MultiAddress`)
 - **interface**: `api.tx.convictionVoting.unlock`
-- **summary**:    Remove the lock caused prior voting/delegating which has expired within a particluar  class. 
+- **summary**:    Remove the lock caused by prior voting/delegating which has expired within a particular  class. 
 
    The dispatch origin of this call must be _Signed_. 
 
@@ -2268,6 +2270,16 @@ ___
 
    In addition to `amount`, the caller will transfer the existential deposit; so the caller  needs at have at least `amount + existential_deposit` transferrable. 
  
+### createWithPoolId(amount: `Compact<u128>`, root: `MultiAddress`, nominator: `MultiAddress`, state_toggler: `MultiAddress`, pool_id: `u32`)
+- **interface**: `api.tx.nominationPools.createWithPoolId`
+- **summary**:    Create a new delegation pool with a previously used pool id 
+
+   #### Arguments 
+
+   same as `create` with the inclusion of 
+
+  * `pool_id` - `A valid PoolId.
+ 
 ### join(amount: `Compact<u128>`, pool_id: `u32`)
 - **interface**: `api.tx.nominationPools.join`
 - **summary**:    Stake funds with a pool. The amount to bond is transferred from the member to the  pools account and immediately increases the pools bond. 
@@ -3279,7 +3291,7 @@ ___
  
 ### increaseValidatorCount(additional: `Compact<u32>`)
 - **interface**: `api.tx.staking.increaseValidatorCount`
-- **summary**:    Increments the ideal number of validators. 
+- **summary**:    Increments the ideal number of validators upto maximum of  `ElectionProviderBase::MaxWinners`. 
 
    The dispatch origin must be Root. 
 
@@ -3341,7 +3353,7 @@ ___
  
 ### scaleValidatorCount(factor: `Percent`)
 - **interface**: `api.tx.staking.scaleValidatorCount`
-- **summary**:    Scale up the ideal number of validators by a factor. 
+- **summary**:    Scale up the ideal number of validators by a factor upto maximum of  `ElectionProviderBase::MaxWinners`. 
 
    The dispatch origin must be Root. 
 
@@ -4029,7 +4041,7 @@ ___
 
    This new collection has no items initially and its owner is the origin. 
 
-   The origin must be Signed and the sender must have sufficient funds free. 
+   The origin must conform to the configured `CreateOrigin` and have sufficient funds free. 
 
    `ItemDeposit` funds of sender are reserved. 
 
@@ -4366,11 +4378,11 @@ ___
 - **interface**: `api.tx.utility.batch`
 - **summary**:    Send a batch of dispatch calls. 
 
-   May be called from any origin. 
+   May be called from any origin except `None`. 
 
    - `calls`: The calls to be dispatched from the same origin. The number of call must not  exceed the constant: `batched_calls_limit` (available in constant metadata). 
 
-   If origin is root then call are dispatch without checking origin filter. (This includes  bypassing `frame_system::Config::BaseCallFilter`). 
+   If origin is root then the calls are dispatched without checking origin filter. (This  includes bypassing `frame_system::Config::BaseCallFilter`). 
 
     
 
@@ -4380,11 +4392,11 @@ ___
 - **interface**: `api.tx.utility.batchAll`
 - **summary**:    Send a batch of dispatch calls and atomically execute them.  The whole transaction will rollback and fail if any of the calls failed. 
 
-   May be called from any origin. 
+   May be called from any origin except `None`. 
 
    - `calls`: The calls to be dispatched from the same origin. The number of call must not  exceed the constant: `batched_calls_limit` (available in constant metadata). 
 
-   If origin is root then call are dispatch without checking origin filter. (This includes  bypassing `frame_system::Config::BaseCallFilter`). 
+   If origin is root then the calls are dispatched without checking origin filter. (This  includes bypassing `frame_system::Config::BaseCallFilter`). 
 
     
  
@@ -4400,11 +4412,11 @@ ___
 - **interface**: `api.tx.utility.forceBatch`
 - **summary**:    Send a batch of dispatch calls.  Unlike `batch`, it allows errors and won't interrupt. 
 
-   May be called from any origin. 
+   May be called from any origin except `None`. 
 
    - `calls`: The calls to be dispatched from the same origin. The number of call must not  exceed the constant: `batched_calls_limit` (available in constant metadata). 
 
-   If origin is root then call are dispatch without checking origin filter. (This includes  bypassing `frame_system::Config::BaseCallFilter`). 
+   If origin is root then the calls are dispatch without checking origin filter. (This  includes bypassing `frame_system::Config::BaseCallFilter`). 
 
     
 

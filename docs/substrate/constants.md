@@ -286,7 +286,7 @@ ___
 - **interface**: `api.consts.convictionVoting.maxVotes`
 - **summary**:    The maximum number of concurrent votes an account may have. 
 
-   Also used to compute weight, an overly large value can  lead to extrinsic with large weight estimation: see `delegate` for instance. 
+   Also used to compute weight, an overly large value can lead to extrinsics with large  weight estimation: see `delegate` for instance. 
  
 ### voteLockingPeriod: `u32`
 - **interface**: `api.consts.convictionVoting.voteLockingPeriod`
@@ -373,6 +373,12 @@ ___
 ### maxElectingVoters: `u32`
 - **interface**: `api.consts.electionProviderMultiPhase.maxElectingVoters`
 - **summary**:    The maximum number of electing voters to put in the snapshot. At the moment, snapshots  are only over a single block, but once multi-block elections are introduced they will  take place over multiple blocks. 
+ 
+### maxWinners: `u32`
+- **interface**: `api.consts.electionProviderMultiPhase.maxWinners`
+- **summary**:    The maximum number of winners that can be elected by this `ElectionProvider`  implementation. 
+
+   Note: This must always be greater or equal to `T::DataProvider::desired_targets()`. 
  
 ### minerMaxLength: `u32`
 - **interface**: `api.consts.electionProviderMultiPhase.minerMaxLength`
@@ -611,7 +617,7 @@ ___
 
    This is held for adding 32 bytes more into a pre-existing storage value. 
  
-### maxSignatories: `u16`
+### maxSignatories: `u32`
 - **interface**: `api.consts.multisig.maxSignatories`
 - **summary**:    The maximum amount of signatories allowed in the multisig. 
 
