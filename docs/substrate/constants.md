@@ -30,6 +30,8 @@ The following sections contain the module constants, also known as parameter typ
 
 - **[elections](#elections)**
 
+- **[fastUnstake](#fastunstake)**
+
 - **[gilt](#gilt)**
 
 - **[grandpa](#grandpa)**
@@ -96,7 +98,7 @@ ___
  
 ### maxMembersCount: `u32`
 - **interface**: `api.consts.alliance.maxMembersCount`
-- **summary**:    The maximum number of members per member role. Should not exceed the sum of  `MaxFounders` and `MaxFellows`. 
+- **summary**:    The maximum number of members per member role. 
  
 ### maxUnscrupulousItems: `u32`
 - **interface**: `api.consts.alliance.maxUnscrupulousItems`
@@ -130,6 +132,12 @@ ___
 ### metadataDepositPerByte: `u128`
 - **interface**: `api.consts.assets.metadataDepositPerByte`
 - **summary**:    The additional funds that must be reserved for the number of bytes you store in your  metadata. 
+ 
+### removeItemsLimit: `u32`
+- **interface**: `api.consts.assets.removeItemsLimit`
+- **summary**:    Max number of items to destroy per `destroy_accounts` and `destroy_approvals` call. 
+
+   Must be configured to result in a weight that makes each call fit in a block. 
  
 ### stringLimit: `u32`
 - **interface**: `api.consts.assets.stringLimit`
@@ -485,6 +493,15 @@ ___
 ### votingBondFactor: `u128`
 - **interface**: `api.consts.elections.votingBondFactor`
 - **summary**:    The amount of bond that need to be locked for each vote (32 bytes). 
+
+___
+
+
+## fastUnstake
+ 
+### deposit: `u128`
+- **interface**: `api.consts.fastUnstake.deposit`
+- **summary**:    Deposit to take for unstaking, to make sure we're able to slash the it in order to cover  the costs of resources on unsuccessful unstake. 
 
 ___
 

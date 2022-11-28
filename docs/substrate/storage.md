@@ -134,9 +134,7 @@ ___
  
 ### rule(): `Option<PalletAllianceCid>`
 - **interface**: `api.query.alliance.rule`
-- **summary**:    The IPFS CID of the alliance rule.  Founders and fellows can propose a new rule with a super-majority. 
-
-   Any founder has a special one-vote veto right to the rule setting. 
+- **summary**:    The IPFS CID of the alliance rule.  Fellows can propose a new rule with a super-majority. 
  
 ### unscrupulousAccounts(): `Vec<AccountId32>`
 - **interface**: `api.query.alliance.unscrupulousAccounts`

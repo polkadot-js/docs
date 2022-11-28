@@ -138,9 +138,9 @@ ___
 - **interface**: `api.errors.alliance.BadWitness.is`
 - **summary**:    Invalid witness data given. 
  
-### FoundersMissing
-- **interface**: `api.errors.alliance.FoundersMissing.is`
-- **summary**:    Founders must be provided to initialize the Alliance. 
+### FellowsMissing
+- **interface**: `api.errors.alliance.FellowsMissing.is`
+- **summary**:    Fellows must be provided to initialize the Alliance. 
  
 ### InsufficientFunds
 - **interface**: `api.errors.alliance.InsufficientFunds.is`
@@ -158,10 +158,6 @@ ___
 - **interface**: `api.errors.alliance.NotAlly.is`
 - **summary**:    Account is not an ally. 
  
-### NotFounder
-- **interface**: `api.errors.alliance.NotFounder.is`
-- **summary**:    Account is not a founder. 
- 
 ### NotListedAsUnscrupulous
 - **interface**: `api.errors.alliance.NotListedAsUnscrupulous.is`
 - **summary**:    Item has not been deemed unscrupulous. 
@@ -169,10 +165,6 @@ ___
 ### NotMember
 - **interface**: `api.errors.alliance.NotMember.is`
 - **summary**:    Account is not a member. 
- 
-### NotVetoableProposal
-- **interface**: `api.errors.alliance.NotVetoableProposal.is`
-- **summary**:    The proposal is not vetoable. 
  
 ### NoVotingRights
 - **interface**: `api.errors.alliance.NoVotingRights.is`
@@ -264,6 +256,10 @@ ___
 - **interface**: `api.errors.assets.AlreadyExists.is`
 - **summary**:    The asset-account already exists. 
  
+### AssetNotLive
+- **interface**: `api.errors.assets.AssetNotLive.is`
+- **summary**:    The asset is not live, and likely being destroyed. 
+ 
 ### BadMetadata
 - **interface**: `api.errors.assets.BadMetadata.is`
 - **summary**:    Invalid metadata given. 
@@ -280,9 +276,17 @@ ___
 - **interface**: `api.errors.assets.Frozen.is`
 - **summary**:    The origin account is frozen. 
  
+### IncorrectStatus
+- **interface**: `api.errors.assets.IncorrectStatus.is`
+- **summary**:    The asset status is not the expected status. 
+ 
 ### InUse
 - **interface**: `api.errors.assets.InUse.is`
 - **summary**:    The asset ID is already taken. 
+ 
+### LiveAsset
+- **interface**: `api.errors.assets.LiveAsset.is`
+- **summary**:    The asset is a live asset and is actively being used. Usually emit for operations such  as `start_destroy` which require the asset to be in a destroying state. 
  
 ### MinBalanceZero
 - **interface**: `api.errors.assets.MinBalanceZero.is`
@@ -303,6 +307,10 @@ ___
 ### NoProvider
 - **interface**: `api.errors.assets.NoProvider.is`
 - **summary**:    Unable to increment the consumer reference counters on the account. Either no provider  reference exists to allow a non-zero balance of a non-self-sufficient asset, or the  maximum number of consumers has been reached. 
+ 
+### NotFrozen
+- **interface**: `api.errors.assets.NotFrozen.is`
+- **summary**:    The asset should be frozen before the given operation. 
  
 ### Unapproved
 - **interface**: `api.errors.assets.Unapproved.is`
@@ -492,7 +500,11 @@ ___
  
 ### CodeRejected
 - **interface**: `api.errors.contracts.CodeRejected.is`
-- **summary**:    The contract's code was found to be invalid during validation or instrumentation.  A more detailed error can be found on the node console if debug messages are enabled  or in the debug buffer which is returned to RPC clients. 
+- **summary**:    The contract's code was found to be invalid during validation or instrumentation. 
+
+   The most likely cause of this is that an API was used which is not supported by the  node. This hapens if an older node is used with a new version of ink!. Try updating  your node to the newest available version. 
+
+   A more detailed error can be found on the node console if debug messages are enabled  by supplying `-lruntime::contracts=debug`. 
  
 ### CodeTooLarge
 - **interface**: `api.errors.contracts.CodeTooLarge.is`

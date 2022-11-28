@@ -66,6 +66,8 @@ The following sections contain Extrinsics methods are part of the default Substr
 
 - **[remark](#remark)**
 
+- **[rootTesting](#roottesting)**
+
 - **[scheduler](#scheduler)**
 
 - **[session](#session)**
@@ -108,6 +110,10 @@ ___
 
 ## alliance
  
+### abdicateFellowStatus()
+- **interface**: `api.tx.alliance.abdicateFellowStatus`
+- **summary**:    Abdicate one's position as a voting member and just be an Ally. May be used by Fellows  who do not want to leave the Alliance but do not have the capacity to participate  operationally for some time. 
+ 
 ### addUnscrupulousItems(items: `Vec<PalletAllianceUnscrupulousItem>`)
 - **interface**: `api.tx.alliance.addUnscrupulousItems`
 - **summary**:    Add accounts or websites to the list of unscrupulous items. 
@@ -120,13 +126,13 @@ ___
 - **interface**: `api.tx.alliance.close`
 - **summary**:    Close a vote that is either approved, disapproved, or whose voting period has ended. 
 
-   Requires the sender to be a founder or fellow. 
+   Must be called by a Fellow. 
  
 ### closeOldWeight(proposal_hash: `H256`, index: `Compact<u32>`, proposal_weight_bound: `Compact<u64>`, length_bound: `Compact<u32>`)
 - **interface**: `api.tx.alliance.closeOldWeight`
 - **summary**:    Close a vote that is either approved, disapproved, or whose voting period has ended. 
 
-   Requires the sender to be a founder or fellow. 
+   Must be called by a Fellow. 
  
 ### disband(witness: `PalletAllianceDisbandWitness`)
 - **interface**: `api.tx.alliance.disband`
@@ -136,17 +142,19 @@ ___
  
 ### elevateAlly(ally: `MultiAddress`)
 - **interface**: `api.tx.alliance.elevateAlly`
-- **summary**:    Elevate an ally to fellow. 
+- **summary**:    Elevate an Ally to Fellow. 
  
 ### giveRetirementNotice()
 - **interface**: `api.tx.alliance.giveRetirementNotice`
 - **summary**:    As a member, give a retirement notice and start a retirement period required to pass in  order to retire. 
  
-### initMembers(founders: `Vec<AccountId32>`, fellows: `Vec<AccountId32>`, allies: `Vec<AccountId32>`)
+### initMembers(fellows: `Vec<AccountId32>`, allies: `Vec<AccountId32>`)
 - **interface**: `api.tx.alliance.initMembers`
-- **summary**:    Initialize the Alliance, onboard founders, fellows, and allies. 
+- **summary**:    Initialize the Alliance, onboard fellows and allies. 
 
-   Founders must be not empty.  The Alliance must be empty.  Must be called by the Root origin. 
+   The Alliance must be empty, and the call must provide some founding members. 
+
+   Must be called by the Root origin. 
  
 ### joinAlliance()
 - **interface**: `api.tx.alliance.joinAlliance`
@@ -154,17 +162,17 @@ ___
  
 ### kickMember(who: `MultiAddress`)
 - **interface**: `api.tx.alliance.kickMember`
-- **summary**:    Kick a member from the alliance and slash its deposit. 
+- **summary**:    Kick a member from the Alliance and slash its deposit. 
  
 ### nominateAlly(who: `MultiAddress`)
 - **interface**: `api.tx.alliance.nominateAlly`
-- **summary**:    A founder or fellow can nominate someone to join the alliance as an Ally.  There is no deposit required to the nominator or nominee. 
+- **summary**:    A Fellow can nominate someone to join the alliance as an Ally. There is no deposit  required from the nominator or nominee. 
  
 ### propose(threshold: `Compact<u32>`, proposal: `Call`, length_bound: `Compact<u32>`)
 - **interface**: `api.tx.alliance.propose`
 - **summary**:    Add a new proposal to be voted on. 
 
-   Requires the sender to be a founder or fellow. 
+   Must be called by a Fellow. 
  
 ### removeAnnouncement(announcement: `PalletAllianceCid`)
 - **interface**: `api.tx.alliance.removeAnnouncement`
@@ -172,27 +180,23 @@ ___
  
 ### removeUnscrupulousItems(items: `Vec<PalletAllianceUnscrupulousItem>`)
 - **interface**: `api.tx.alliance.removeUnscrupulousItems`
-- **summary**:    Deem an item no longer unscrupulous. 
+- **summary**:    Deem some items no longer unscrupulous. 
  
 ### retire()
 - **interface**: `api.tx.alliance.retire`
-- **summary**:    As a member, retire from the alliance and unreserve the deposit.  This can only be done once you have `give_retirement_notice` and it has expired. 
+- **summary**:    As a member, retire from the Alliance and unreserve the deposit. 
+
+   This can only be done once you have called `give_retirement_notice` and the  `RetirementPeriod` has passed. 
  
 ### setRule(rule: `PalletAllianceCid`)
 - **interface**: `api.tx.alliance.setRule`
 - **summary**:    Set a new IPFS CID to the alliance rule. 
  
-### veto(proposal_hash: `H256`)
-- **interface**: `api.tx.alliance.veto`
-- **summary**:    Veto a proposal about `set_rule` and `elevate_ally`, close, and remove it from the  system, regardless of its current state. 
-
-   Must be called by a founder. 
- 
 ### vote(proposal: `H256`, index: `Compact<u32>`, approve: `bool`)
 - **interface**: `api.tx.alliance.vote`
 - **summary**:    Add an aye or nay vote for the sender to the given proposal. 
 
-   Requires the sender to be a founder or fellow. 
+   Must be called by a Fellow. 
 
 ___
 
@@ -384,25 +388,33 @@ ___
 
    Weight: `O(1)` 
  
-### destroy(id: `Compact<u32>`, witness: `PalletAssetsDestroyWitness`)
-- **interface**: `api.tx.assets.destroy`
-- **summary**:    Destroy a class of fungible assets. 
+### destroyAccounts(id: `Compact<u32>`)
+- **interface**: `api.tx.assets.destroyAccounts`
+- **summary**:    Destroy all accounts associated with a given asset.  `destroy_accounts` should only be called after `start_destroy` has been called, and the  asset is in a `Destroying` state 
 
-   The origin must conform to `ForceOrigin` or must be Signed and the sender must be the  owner of the asset `id`. 
+   Due to weight restrictions, this function may need to be called multiple  times to fully destroy all accounts. It will destroy `RemoveItemsLimit` accounts at a  time. 
 
    - `id`: The identifier of the asset to be destroyed. This must identify an existing  asset. 
 
-   Emits `Destroyed` event when successful. 
+   Each call Emits the `Event::DestroyedAccounts` event. 
+ 
+### destroyApprovals(id: `Compact<u32>`)
+- **interface**: `api.tx.assets.destroyApprovals`
+- **summary**:    Destroy all approvals associated with a given asset up to the max (T::RemoveItemsLimit),  `destroy_approvals` should only be called after `start_destroy` has been called, and the  asset is in a `Destroying` state 
 
-   NOTE: It can be helpful to first freeze an asset before destroying it so that you  can provide accurate witness information and prevent users from manipulating state  in a way that can make it harder to destroy. 
+   Due to weight restrictions, this function may need to be called multiple  times to fully destroy all approvals. It will destroy `RemoveItemsLimit` approvals at a  time. 
 
-   Weight: `O(c + p + a)` where: 
+   - `id`: The identifier of the asset to be destroyed. This must identify an existing  asset. 
 
-  - `c = (witness.accounts - witness.sufficients)`
+   Each call Emits the `Event::DestroyedApprovals` event. 
+ 
+### finishDestroy(id: `Compact<u32>`)
+- **interface**: `api.tx.assets.finishDestroy`
+- **summary**:    Complete destroying asset and unreserve currency.  `finish_destroy` should only be called after `start_destroy` has been called, and the  asset is in a `Destroying` state. All accounts or approvals should be destroyed before  hand. 
 
-  - `s = witness.sufficients`
+   - `id`: The identifier of the asset to be destroyed. This must identify an existing  asset. 
 
-  - `a = witness.approvals`
+   Each successful call Emits the `Event::Destroyed` event. 
  
 ### forceAssetStatus(id: `Compact<u32>`, owner: `MultiAddress`, issuer: `MultiAddress`, admin: `MultiAddress`, freezer: `MultiAddress`, min_balance: `Compact<u128>`, is_sufficient: `bool`, is_frozen: `bool`)
 - **interface**: `api.tx.assets.forceAssetStatus`
@@ -609,6 +621,16 @@ ___
    Emits `TeamChanged`. 
 
    Weight: `O(1)` 
+ 
+### startDestroy(id: `Compact<u32>`)
+- **interface**: `api.tx.assets.startDestroy`
+- **summary**:    Start the process of destroying a class of fungible asset  start_destroy is the first in a series of extrinsics that should be called, to allow  destroying an asset. 
+
+   The origin must conform to `ForceOrigin` or must be Signed and the sender must be the  owner of the asset `id`. 
+
+   - `id`: The identifier of the asset to be destroyed. This must identify an existing  asset. 
+
+   Assets must be freezed before calling start_destroy. 
  
 ### thaw(id: `Compact<u32>`, who: `MultiAddress`)
 - **interface**: `api.tx.assets.thaw`
@@ -2944,6 +2966,15 @@ ___
 ___
 
 
+## rootTesting
+ 
+### fillBlock(ratio: `Perbill`)
+- **interface**: `api.tx.rootTesting.fillBlock`
+- **summary**:    A dispatch that will fill the block weight up to the given ratio. 
+
+___
+
+
 ## scheduler
  
 ### cancel(when: `u32`, index: `u32`)
@@ -3543,10 +3574,6 @@ ___
 
 
 ## system
- 
-### fillBlock(ratio: `Perbill`)
-- **interface**: `api.tx.system.fillBlock`
-- **summary**:    A dispatch that will fill the block weight up to the given ratio. 
  
 ### killPrefix(prefix: `Bytes`, subkeys: `u32`)
 - **interface**: `api.tx.system.killPrefix`

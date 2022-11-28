@@ -124,6 +124,10 @@ ___
 - **interface**: `api.events.alliance.AnnouncementRemoved.is`
 - **summary**:    An on-chain announcement has been removed. 
  
+### FellowAbdicated(`AccountId32`)
+- **interface**: `api.events.alliance.FellowAbdicated.is`
+- **summary**:    A Fellow abdicated their voting rights. They are now an Ally. 
+ 
 ### MemberKicked(`AccountId32`, `Option<u128>`)
 - **interface**: `api.events.alliance.MemberKicked.is`
 - **summary**:    A member has been kicked out with its deposit slashed. 
@@ -136,9 +140,9 @@ ___
 - **interface**: `api.events.alliance.MemberRetirementPeriodStarted.is`
 - **summary**:    A member gave retirement notice and their retirement period started. 
  
-### MembersInitialized(`Vec<AccountId32>`, `Vec<AccountId32>`, `Vec<AccountId32>`)
+### MembersInitialized(`Vec<AccountId32>`, `Vec<AccountId32>`)
 - **interface**: `api.events.alliance.MembersInitialized.is`
-- **summary**:    Some accounts have been initialized as members (founders/fellows/allies). 
+- **summary**:    Some accounts have been initialized as members (fellows/allies). 
  
 ### NewAllyJoined(`AccountId32`, `Option<AccountId32>`, `Option<u128>`)
 - **interface**: `api.events.alliance.NewAllyJoined.is`
@@ -194,9 +198,17 @@ ___
 
 ## assets
  
+### AccountsDestroyed(`u32`, `u32`, `u32`)
+- **interface**: `api.events.assets.AccountsDestroyed.is`
+- **summary**:    Accounts were destroyed for given asset. 
+ 
 ### ApprovalCancelled(`u32`, `AccountId32`, `AccountId32`)
 - **interface**: `api.events.assets.ApprovalCancelled.is`
 - **summary**:    An approval for account `delegate` was cancelled by `owner`. 
+ 
+### ApprovalsDestroyed(`u32`, `u32`, `u32`)
+- **interface**: `api.events.assets.ApprovalsDestroyed.is`
+- **summary**:    Approvals were destroyed for given asset. 
  
 ### ApprovedTransfer(`u32`, `AccountId32`, `AccountId32`, `u128`)
 - **interface**: `api.events.assets.ApprovedTransfer.is`
@@ -225,6 +237,10 @@ ___
 ### Destroyed(`u32`)
 - **interface**: `api.events.assets.Destroyed.is`
 - **summary**:    An asset class was destroyed. 
+ 
+### DestructionStarted(`u32`)
+- **interface**: `api.events.assets.DestructionStarted.is`
+- **summary**:    An asset class is in the process of being destroyed. 
  
 ### ForceCreated(`u32`, `AccountId32`)
 - **interface**: `api.events.assets.ForceCreated.is`
@@ -618,10 +634,6 @@ ___
 - **summary**:    A batch was terminated. 
 
    This is always follows by a number of `Unstaked` or `Slashed` events, marking the end  of the batch. A new batch will be created upon next block. 
- 
-### Errored(`AccountId32`)
-- **interface**: `api.events.fastUnstake.Errored.is`
-- **summary**:    Some internal error happened while migrating stash. They are removed as head as a  consequence. 
  
 ### InternalError()
 - **interface**: `api.events.fastUnstake.InternalError.is`
