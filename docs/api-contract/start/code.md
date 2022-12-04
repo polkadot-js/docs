@@ -10,7 +10,7 @@ The `instantiate_with_code` dispatchable uploads the wasm code the blockchain an
 The `CodePromise` constructor takes 3 arguments: an API instance, the contract metadata, and the contract code. Only the wasm code will end up on-chain; the metadata is only used in the JavaScript world. See [Prerequisites](./basics.md) to find out how to obtain them.
 
 ```javascript
-import { CodePromise } from '@polkadot/api-contracts';
+import { CodePromise } from '@polkadot/api-contract';
 
 const code = new CodePromise(api, metadata, wasm);
 ```
