@@ -326,6 +326,10 @@ ___
 
    But this comes with tradeoffs, storing account balances in the system pallet stores  `frame_system` data alongside the account data contrary to storing account balances in the  `Balances` pallet, which uses a `StorageMap` to store balances data only.  NOTE: This is only used in the case that this pallet is used to store balances. 
  
+### inactiveIssuance(): `u128`
+- **interface**: `api.query.balances.inactiveIssuance`
+- **summary**:    The total units of outstanding deactivated balance in the system. 
+ 
 ### locks(`AccountId32`): `Vec<PalletBalancesBalanceLock>`
 - **interface**: `api.query.balances.locks`
 - **summary**:    Any liquidity locks on some account balances.  NOTE: Should only be accessed when setting, changing and freeing a lock. 
@@ -1645,6 +1649,10 @@ ___
 ### approvals(): `Vec<u32>`
 - **interface**: `api.query.treasury.approvals`
 - **summary**:    Proposal indices that have been approved but not yet awarded. 
+ 
+### inactive(): `u128`
+- **interface**: `api.query.treasury.inactive`
+- **summary**:    The amount which has been reported as inactive to Currency. 
  
 ### proposalCount(): `u32`
 - **interface**: `api.query.treasury.proposalCount`
