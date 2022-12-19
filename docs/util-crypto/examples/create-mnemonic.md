@@ -9,7 +9,7 @@ const {
   mnemonicGenerate,
   mnemonicToMiniSecret,
   mnemonicValidate,
-  ed25519PairFromSecret
+  ed25519PairFromSeed
 } = require('@polkadot/util-crypto');
 
 async function main () {
@@ -27,7 +27,7 @@ async function main () {
   const seedAlice = mnemonicToMiniSecret(mnemonicAlice);
 
   // Generate new public/secret keypair for Alice from the supplied seed
-  const { publicKey, secretKey } = ed25519PairFromSecret(seedAlice);
+  const { publicKey, secretKey } = ed25519PairFromSeed(seedAlice);
 }
 
 main().catch(console.error).finally(() => process.exit());
