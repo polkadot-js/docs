@@ -38,8 +38,6 @@ The following sections contain Storage methods are part of the default Substrate
 
 - **[fastUnstake](#fastunstake)**
 
-- **[gilt](#gilt)**
-
 - **[grandpa](#grandpa)**
 
 - **[identity](#identity)**
@@ -50,9 +48,13 @@ The following sections contain Storage methods are part of the default Substrate
 
 - **[lottery](#lottery)**
 
+- **[messageQueue](#messagequeue)**
+
 - **[mmr](#mmr)**
 
 - **[multisig](#multisig)**
+
+- **[nis](#nis)**
 
 - **[nominationPools](#nominationpools)**
 
@@ -337,12 +339,6 @@ ___
 ### reserves(`AccountId32`): `Vec<PalletBalancesReserveData>`
 - **interface**: `api.query.balances.reserves`
 - **summary**:    Named reserves on some account balances. 
- 
-### storageVersion(): `PalletBalancesReleases`
-- **interface**: `api.query.balances.storageVersion`
-- **summary**:    Storage version of the pallet. 
-
-   This is set to v2.0.0 for new networks. 
  
 ### totalIssuance(): `u128`
 - **interface**: `api.query.balances.totalIssuance`
@@ -670,29 +666,6 @@ ___
 ___
 
 
-## gilt
- 
-### active(`u32`): `Option<PalletGiltActiveGilt>`
-- **interface**: `api.query.gilt.active`
-- **summary**:    The currently active gilts, indexed according to the order of creation. 
- 
-### activeTotal(): `PalletGiltActiveGiltsTotal`
-- **interface**: `api.query.gilt.activeTotal`
-- **summary**:    Information relating to the gilts currently active. 
- 
-### queues(`u32`): `Vec<PalletGiltGiltBid>`
-- **interface**: `api.query.gilt.queues`
-- **summary**:    The queues of bids ready to become gilts. Indexed by duration (in `Period`s). 
- 
-### queueTotals(): `Vec<(u32,u128)>`
-- **interface**: `api.query.gilt.queueTotals`
-- **summary**:    The totals of items and balances within each queue. Saves a lot of storage reads in the  case of sparsely packed queues. 
-
-   The vector is indexed by duration in `Period`s, offset by one, so information on the queue  whose duration is one `Period` would be storage `0`. 
-
-___
-
-
 ## grandpa
  
 ### currentSetId(): `u64`
@@ -817,6 +790,23 @@ ___
 ___
 
 
+## messageQueue
+ 
+### bookStateFor(`PalletMessageQueueMockHelpersMessageOrigin`): `PalletMessageQueueBookState`
+- **interface**: `api.query.messageQueue.bookStateFor`
+- **summary**:    The index of the first and last (non-empty) pages. 
+ 
+### pages(`PalletMessageQueueMockHelpersMessageOrigin, u32`): `Option<PalletMessageQueuePage>`
+- **interface**: `api.query.messageQueue.pages`
+- **summary**:    The map of page indices to pages. 
+ 
+### serviceHead(): `Option<PalletMessageQueueMockHelpersMessageOrigin>`
+- **interface**: `api.query.messageQueue.serviceHead`
+- **summary**:    The origin at which we should begin servicing. 
+
+___
+
+
 ## mmr
  
 ### nodes(`u64`): `Option<H256>`
@@ -841,6 +831,29 @@ ___
 ### multisigs(`AccountId32, [u8;32]`): `Option<PalletMultisigMultisig>`
 - **interface**: `api.query.multisig.multisigs`
 - **summary**:    The set of open multisig operations. 
+
+___
+
+
+## nis
+ 
+### queues(`u32`): `Vec<PalletNisBid>`
+- **interface**: `api.query.nis.queues`
+- **summary**:    The queues of bids. Indexed by duration (in `Period`s). 
+ 
+### queueTotals(): `Vec<(u32,u128)>`
+- **interface**: `api.query.nis.queueTotals`
+- **summary**:    The totals of items and balances within each queue. Saves a lot of storage reads in the  case of sparsely packed queues. 
+
+   The vector is indexed by duration in `Period`s, offset by one, so information on the queue  whose duration is one `Period` would be storage `0`. 
+ 
+### receipts(`u32`): `Option<PalletNisReceiptRecord>`
+- **interface**: `api.query.nis.receipts`
+- **summary**:    The currently outstanding receipts, indexed according to the order of creation. 
+ 
+### summary(): `PalletNisSummaryRecord`
+- **interface**: `api.query.nis.summary`
+- **summary**:    Summary information over the general state. 
 
 ___
 
@@ -1321,6 +1334,10 @@ ___
 - **summary**:    The minimum amount of commission that validators can set. 
 
    If set to `0`, no limit exists. 
+ 
+### minimumActiveStake(): `u128`
+- **interface**: `api.query.staking.minimumActiveStake`
+- **summary**:    The minimum active nominator stake of the last successful election. 
  
 ### minimumValidatorCount(): `u32`
 - **interface**: `api.query.staking.minimumValidatorCount`

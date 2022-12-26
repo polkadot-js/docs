@@ -36,8 +36,6 @@ The following sections contain Extrinsics methods are part of the default Substr
 
 - **[fastUnstake](#fastunstake)**
 
-- **[gilt](#gilt)**
-
 - **[grandpa](#grandpa)**
 
 - **[identity](#identity)**
@@ -48,7 +46,11 @@ The following sections contain Extrinsics methods are part of the default Substr
 
 - **[lottery](#lottery)**
 
+- **[messageQueue](#messagequeue)**
+
 - **[multisig](#multisig)**
+
+- **[nis](#nis)**
 
 - **[nominationPools](#nominationpools)**
 
@@ -840,7 +842,7 @@ ___
 - **interface**: `api.tx.bounties.approveBounty`
 - **summary**:    Approve a bounty proposal. At a later time, the bounty will be funded and become active  and the original deposit will be returned. 
 
-   May only be called from `T::ApproveOrigin`. 
+   May only be called from `T::SpendOrigin`. 
 
     
  
@@ -908,7 +910,7 @@ ___
 - **interface**: `api.tx.bounties.proposeCurator`
 - **summary**:    Assign a curator to a funded bounty. 
 
-   May only be called from `T::ApproveOrigin`. 
+   May only be called from `T::SpendOrigin`. 
 
     
  
@@ -1793,51 +1795,6 @@ ___
 ___
 
 
-## gilt
- 
-### placeBid(amount: `Compact<u128>`, duration: `u32`)
-- **interface**: `api.tx.gilt.placeBid`
-- **summary**:    Place a bid for a gilt to be issued. 
-
-   Origin must be Signed, and account must have at least `amount` in free balance. 
-
-   - `amount`: The amount of the bid; these funds will be reserved. If the bid is  successfully elevated into an issued gilt, then these funds will continue to be  reserved until the gilt expires. Must be at least `MinFreeze`. 
-
-  - `duration`: The number of periods for which the funds will be locked if the gilt is issued. It will expire only after this period has elapsed after the point of issuance.  Must be greater than 1 and no more than `QueueCount`. 
-
-   Complexities: 
-
-  - `Queues[duration].len()` (just take max).
- 
-### retractBid(amount: `Compact<u128>`, duration: `u32`)
-- **interface**: `api.tx.gilt.retractBid`
-- **summary**:    Retract a previously placed bid. 
-
-   Origin must be Signed, and the account should have previously issued a still-active bid  of `amount` for `duration`. 
-
-   - `amount`: The amount of the previous bid. 
-
-  - `duration`: The duration of the previous bid.
- 
-### setTarget(target: `Compact<Perquintill>`)
-- **interface**: `api.tx.gilt.setTarget`
-- **summary**:    Set target proportion of gilt-funds. 
-
-   Origin must be `AdminOrigin`. 
-
-   - `target`: The target proportion of effective issued funds that should be under gilts  at any one time. 
- 
-### thaw(index: `Compact<u32>`)
-- **interface**: `api.tx.gilt.thaw`
-- **summary**:    Remove an active but expired gilt. Reserved funds under gilt are freed and balance is  adjusted to ensure that the funds grow or shrink to maintain the equivalent proportion  of effective total issued funds. 
-
-   Origin must be Signed and the account must be the owner of the gilt of the given index. 
-
-   - `index`: The index of the gilt to be thawed. 
-
-___
-
-
 ## grandpa
  
 ### noteStalled(delay: `u32`, best_finalized_block_number: `u32`)
@@ -2177,6 +2134,31 @@ ___
 ___
 
 
+## messageQueue
+ 
+### executeOverweight(message_origin: `PalletMessageQueueMockHelpersMessageOrigin`, page: `u32`, index: `u32`, weight_limit: `SpWeightsWeightV2Weight`)
+- **interface**: `api.tx.messageQueue.executeOverweight`
+- **summary**:    Execute an overweight message. 
+
+   - `origin`: Must be `Signed`. 
+
+  - `message_origin`: The origin from which the message to be executed arrived.
+
+  - `page`: The page in the queue in which the message to be executed is sitting.
+
+  - `index`: The index into the queue of the message to be executed.
+
+  - `weight_limit`: The maximum amount of weight allowed to be consumed in the execution of the message. 
+
+   Benchmark complexity considerations: O(index + weight_limit). 
+ 
+### reapPage(message_origin: `PalletMessageQueueMockHelpersMessageOrigin`, page_index: `u32`)
+- **interface**: `api.tx.messageQueue.reapPage`
+- **summary**:    Remove a page which has no more messages remaining to be processed or is stale. 
+
+___
+
+
 ## multisig
  
 ### approveAsMulti(threshold: `u16`, other_signatories: `Vec<AccountId32>`, maybe_timepoint: `Option<PalletMultisigTimepoint>`, call_hash: `[u8;32]`, max_weight: `SpWeightsWeightV2Weight`)
@@ -2252,6 +2234,51 @@ ___
   - `call_hash`: The hash of the call to be executed.
 
     
+
+___
+
+
+## nis
+ 
+### fundDeficit()
+- **interface**: `api.tx.nis.fundDeficit`
+- **summary**:    Ensure we have sufficient funding for all potential payouts. 
+
+   - `origin`: Must be accepted by `FundOrigin`. 
+ 
+### placeBid(amount: `Compact<u128>`, duration: `u32`)
+- **interface**: `api.tx.nis.placeBid`
+- **summary**:    Place a bid. 
+
+   Origin must be Signed, and account must have at least `amount` in free balance. 
+
+   - `amount`: The amount of the bid; these funds will be reserved, and if/when  consolidated, removed. Must be at least `MinBid`. 
+
+  - `duration`: The number of periods before which the newly consolidated bid may be thawed. Must be greater than 1 and no more than `QueueCount`. 
+
+   Complexities: 
+
+  - `Queues[duration].len()` (just take max).
+ 
+### retractBid(amount: `Compact<u128>`, duration: `u32`)
+- **interface**: `api.tx.nis.retractBid`
+- **summary**:    Retract a previously placed bid. 
+
+   Origin must be Signed, and the account should have previously issued a still-active bid  of `amount` for `duration`. 
+
+   - `amount`: The amount of the previous bid. 
+
+  - `duration`: The duration of the previous bid.
+ 
+### thaw(index: `Compact<u32>`, portion: `Option<u128>`)
+- **interface**: `api.tx.nis.thaw`
+- **summary**:    Reduce or remove an outstanding receipt, placing the according proportion of funds into  the account of the owner. 
+
+   - `origin`: Must be Signed and the account must be the owner of the receipt `index` as  well as any fungible counterpart. 
+
+  - `index`: The index of the receipt.
+
+  - `portion`: If `Some`, then only the given portion of the receipt should be thawed. If `None`, then all of it should be. 
 
 ___
 
@@ -2392,7 +2419,7 @@ ___
 
    #### Note 
 
-   If there are too many unlocking chunks to unbond with the pool account,  [`Call::pool_withdraw_unbonded`] can be called to try and minimize unlocking chunks. If  there are too many unlocking chunks, the result of this call will likely be the  `NoMoreChunks` error from the staking system. 
+   If there are too many unlocking chunks to unbond with the pool account,  [`Call::pool_withdraw_unbonded`] can be called to try and minimize unlocking chunks.  The [`StakingInterface::unbond`] will implicitly call [`Call::pool_withdraw_unbonded`]  to try to free chunks if necessary (ie. if unbound was called and no unlocking chunks  are available). However, it may not be possible to release the current unlocking chunks,  in which case, the result of this call will likely be the `NoMoreChunks` error from the  staking system. 
  
 ### updateRoles(pool_id: `u32`, new_root: `PalletNominationPoolsConfigOpAccountId32`, new_nominator: `PalletNominationPoolsConfigOpAccountId32`, new_state_toggler: `PalletNominationPoolsConfigOpAccountId32`)
 - **interface**: `api.tx.nominationPools.updateRoles`
@@ -2754,6 +2781,16 @@ ___
 
    Emits `DecisionDepositRefunded`. 
  
+### refundSubmissionDeposit(index: `u32`)
+- **interface**: `api.tx.rankedPolls.refundSubmissionDeposit`
+- **summary**:    Refund the Submission Deposit for a closed referendum back to the depositor. 
+
+   - `origin`: must be `Signed` or `Root`. 
+
+  - `index`: The index of a closed referendum whose Submission Deposit has not yet been refunded. 
+
+   Emits `SubmissionDepositRefunded`. 
+ 
 ### submit(proposal_origin: `KitchensinkRuntimeOriginCaller`, proposal: `FrameSupportPreimagesBounded`, enactment_moment: `FrameSupportScheduleDispatchTime`)
 - **interface**: `api.tx.rankedPolls.submit`
 - **summary**:    Propose a referendum on a privileged action. 
@@ -2947,6 +2984,16 @@ ___
   - `index`: The index of a closed referendum whose Decision Deposit has not yet been refunded. 
 
    Emits `DecisionDepositRefunded`. 
+ 
+### refundSubmissionDeposit(index: `u32`)
+- **interface**: `api.tx.referenda.refundSubmissionDeposit`
+- **summary**:    Refund the Submission Deposit for a closed referendum back to the depositor. 
+
+   - `origin`: must be `Signed` or `Root`. 
+
+  - `index`: The index of a closed referendum whose Submission Deposit has not yet been refunded. 
+
+   Emits `SubmissionDepositRefunded`. 
  
 ### submit(proposal_origin: `KitchensinkRuntimeOriginCaller`, proposal: `FrameSupportPreimagesBounded`, enactment_moment: `FrameSupportScheduleDispatchTime`)
 - **interface**: `api.tx.referenda.submit`
@@ -3460,7 +3507,7 @@ ___
 
    Once the unlock period is done, you can call `withdraw_unbonded` to actually move  the funds out of management ready for transfer. 
 
-   No more than a limited number of unlocking chunks (see `MaxUnlockingChunks`)  can co-exists at the same time. In that case, [`Call::withdraw_unbonded`] need  to be called first to remove some of the chunks (if possible). 
+   No more than a limited number of unlocking chunks (see `MaxUnlockingChunks`)  can co-exists at the same time. If there are no unlocking chunks slots available  [`Call::withdraw_unbonded`] is called to remove some of the chunks (if possible). 
 
    If a user encounters the `InsufficientBond` error when calling this extrinsic,  they should call `chill` first in order to free up their bonded funds. 
 
@@ -4454,6 +4501,14 @@ ___
    If origin is root then the calls are dispatch without checking origin filter. (This  includes bypassing `frame_system::Config::BaseCallFilter`). 
 
     
+ 
+### withWeight(call: `Call`, weight: `SpWeightsWeightV2Weight`)
+- **interface**: `api.tx.utility.withWeight`
+- **summary**:    Dispatch a function call with a specified weight. 
+
+   This function does not check the weight of the call, and instead allows the  Root origin to specify the weight of the call. 
+
+   The dispatch origin for this call must be _Root_. 
 
 ___
 
@@ -4568,7 +4623,7 @@ ___
 
 ## whitelist
  
-### dispatchWhitelistedCall(call_hash: `H256`, call_weight_witness: `SpWeightsWeightV2Weight`)
+### dispatchWhitelistedCall(call_hash: `H256`, call_encoded_len: `u32`, call_weight_witness: `SpWeightsWeightV2Weight`)
 - **interface**: `api.tx.whitelist.dispatchWhitelistedCall`
  
 ### dispatchWhitelistedCallWithPreimage(call: `Call`)

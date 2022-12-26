@@ -36,8 +36,6 @@ This page lists the errors that can be encountered in the different modules.
 
 - **[fastUnstake](#fastunstake)**
 
-- **[gilt](#gilt)**
-
 - **[grandpa](#grandpa)**
 
 - **[identity](#identity)**
@@ -48,7 +46,11 @@ This page lists the errors that can be encountered in the different modules.
 
 - **[lottery](#lottery)**
 
+- **[messageQueue](#messagequeue)**
+
 - **[multisig](#multisig)**
+
+- **[nis](#nis)**
 
 - **[nominationPools](#nominationpools)**
 
@@ -522,6 +524,10 @@ ___
 - **interface**: `api.errors.contracts.ContractTrapped.is`
 - **summary**:    Contract trapped during execution. 
  
+### DebugBufferExhausted
+- **interface**: `api.errors.contracts.DebugBufferExhausted.is`
+- **summary**:    The debug buffer size used during contract execution exceeded the limit determined by  the `MaxDebugBufferLen` pallet config parameter. 
+ 
 ### DebugMessageInvalidUTF8
 - **interface**: `api.errors.contracts.DebugMessageInvalidUTF8.is`
 - **summary**:    The debug message specified to `seal_debug_message` does contain invalid UTF-8. 
@@ -981,43 +987,6 @@ ___
 ___
 
 
-## gilt
- 
-### AmountTooSmall
-- **interface**: `api.errors.gilt.AmountTooSmall.is`
-- **summary**:    The amount of the bid is less than the minimum allowed. 
- 
-### BidTooLow
-- **interface**: `api.errors.gilt.BidTooLow.is`
-- **summary**:    The queue for the bid's duration is full and the amount bid is too low to get in  through replacing an existing bid. 
- 
-### DurationTooBig
-- **interface**: `api.errors.gilt.DurationTooBig.is`
-- **summary**:    The duration is the bid is greater than the number of queues. 
- 
-### DurationTooSmall
-- **interface**: `api.errors.gilt.DurationTooSmall.is`
-- **summary**:    The duration of the bid is less than one. 
- 
-### NotExpired
-- **interface**: `api.errors.gilt.NotExpired.is`
-- **summary**:    Gilt not yet at expiry date. 
- 
-### NotFound
-- **interface**: `api.errors.gilt.NotFound.is`
-- **summary**:    The given bid for retraction is not found. 
- 
-### NotOwner
-- **interface**: `api.errors.gilt.NotOwner.is`
-- **summary**:    Not the owner of the gilt. 
- 
-### Unknown
-- **interface**: `api.errors.gilt.Unknown.is`
-- **summary**:    Gilt index is unknown. 
-
-___
-
-
 ## grandpa
  
 ### ChangePending
@@ -1199,6 +1168,35 @@ ___
 ___
 
 
+## messageQueue
+ 
+### AlreadyProcessed
+- **interface**: `api.errors.messageQueue.AlreadyProcessed.is`
+- **summary**:    The message was already processed and cannot be processed again. 
+ 
+### InsufficientWeight
+- **interface**: `api.errors.messageQueue.InsufficientWeight.is`
+- **summary**:    There is temporarily not enough weight to continue servicing messages. 
+ 
+### NoMessage
+- **interface**: `api.errors.messageQueue.NoMessage.is`
+- **summary**:    The referenced message could not be found. 
+ 
+### NoPage
+- **interface**: `api.errors.messageQueue.NoPage.is`
+- **summary**:    Page to be reaped does not exist. 
+ 
+### NotReapable
+- **interface**: `api.errors.messageQueue.NotReapable.is`
+- **summary**:    Page is not reapable because it has items remaining to be processed and is not old  enough. 
+ 
+### Queued
+- **interface**: `api.errors.messageQueue.Queued.is`
+- **summary**:    The message is queued for future execution. 
+
+___
+
+
 ## multisig
  
 ### AlreadyApproved
@@ -1256,6 +1254,63 @@ ___
 ### WrongTimepoint
 - **interface**: `api.errors.multisig.WrongTimepoint.is`
 - **summary**:    A different timepoint was given to the multisig operation that is underway. 
+
+___
+
+
+## nis
+ 
+### AmountTooSmall
+- **interface**: `api.errors.nis.AmountTooSmall.is`
+- **summary**:    The amount of the bid is less than the minimum allowed. 
+ 
+### BidTooLow
+- **interface**: `api.errors.nis.BidTooLow.is`
+- **summary**:    The queue for the bid's duration is full and the amount bid is too low to get in  through replacing an existing bid. 
+ 
+### DurationTooBig
+- **interface**: `api.errors.nis.DurationTooBig.is`
+- **summary**:    The duration is the bid is greater than the number of queues. 
+ 
+### DurationTooSmall
+- **interface**: `api.errors.nis.DurationTooSmall.is`
+- **summary**:    The duration of the bid is less than one. 
+ 
+### Funded
+- **interface**: `api.errors.nis.Funded.is`
+- **summary**:    There are enough funds for what is required. 
+ 
+### MakesDust
+- **interface**: `api.errors.nis.MakesDust.is`
+- **summary**:    The operation would result in a receipt worth an insignficant value. 
+ 
+### NotExpired
+- **interface**: `api.errors.nis.NotExpired.is`
+- **summary**:    Bond not yet at expiry date. 
+ 
+### NotFound
+- **interface**: `api.errors.nis.NotFound.is`
+- **summary**:    The given bid for retraction is not found. 
+ 
+### NotOwner
+- **interface**: `api.errors.nis.NotOwner.is`
+- **summary**:    Not the owner of the receipt. 
+ 
+### Throttled
+- **interface**: `api.errors.nis.Throttled.is`
+- **summary**:    The thaw throttle has been reached for this period. 
+ 
+### TooMuch
+- **interface**: `api.errors.nis.TooMuch.is`
+- **summary**:    The portion supplied is beyond the value of the receipt. 
+ 
+### Unfunded
+- **interface**: `api.errors.nis.Unfunded.is`
+- **summary**:    Not enough funds are held to pay out. 
+ 
+### Unknown
+- **interface**: `api.errors.nis.Unknown.is`
+- **summary**:    Bond index is unknown. 
 
 ___
 
@@ -1472,6 +1527,10 @@ ___
 - **interface**: `api.errors.rankedPolls.BadReferendum.is`
 - **summary**:    The referendum index provided is invalid in this context. 
  
+### BadStatus
+- **interface**: `api.errors.rankedPolls.BadStatus.is`
+- **summary**:    The referendum status is invalid for this operation. 
+ 
 ### BadTrack
 - **interface**: `api.errors.rankedPolls.BadTrack.is`
 - **summary**:    The track identifier given was invalid. 
@@ -1589,6 +1648,10 @@ ___
 ### BadReferendum
 - **interface**: `api.errors.referenda.BadReferendum.is`
 - **summary**:    The referendum index provided is invalid in this context. 
+ 
+### BadStatus
+- **interface**: `api.errors.referenda.BadStatus.is`
+- **summary**:    The referendum status is invalid for this operation. 
  
 ### BadTrack
 - **interface**: `api.errors.referenda.BadTrack.is`

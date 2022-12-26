@@ -34,8 +34,6 @@ Events are emitted for certain operations on the runtime. The following sections
 
 - **[fastUnstake](#fastunstake)**
 
-- **[gilt](#gilt)**
-
 - **[grandpa](#grandpa)**
 
 - **[identity](#identity)**
@@ -46,7 +44,11 @@ Events are emitted for certain operations on the runtime. The following sections
 
 - **[lottery](#lottery)**
 
+- **[messageQueue](#messagequeue)**
+
 - **[multisig](#multisig)**
+
+- **[nis](#nis)**
 
 - **[nominationPools](#nominationpools)**
 
@@ -650,27 +652,6 @@ ___
 ___
 
 
-## gilt
- 
-### BidPlaced(`AccountId32`, `u128`, `u32`)
-- **interface**: `api.events.gilt.BidPlaced.is`
-- **summary**:    A bid was successfully placed. 
- 
-### BidRetracted(`AccountId32`, `u128`, `u32`)
-- **interface**: `api.events.gilt.BidRetracted.is`
-- **summary**:    A bid was successfully removed (before being accepted as a gilt). 
- 
-### GiltIssued(`u32`, `u32`, `AccountId32`, `u128`)
-- **interface**: `api.events.gilt.GiltIssued.is`
-- **summary**:    A bid was accepted as a gilt. The balance may not be released until expiry. 
- 
-### GiltThawed(`u32`, `AccountId32`, `u128`, `u128`)
-- **interface**: `api.events.gilt.GiltThawed.is`
-- **summary**:    An expired gilt has been thawed. 
-
-___
-
-
 ## grandpa
  
 ### NewAuthorities(`Vec<(SpFinalityGrandpaAppPublic,u64)>`)
@@ -788,6 +769,31 @@ ___
 ___
 
 
+## messageQueue
+ 
+### Discarded(`H256`)
+- **interface**: `api.events.messageQueue.Discarded.is`
+- **summary**:    Message discarded due to an inability to decode the item. Usually caused by state  corruption. 
+ 
+### OverweightEnqueued(`H256`, `PalletMessageQueueMockHelpersMessageOrigin`, `u32`, `u32`)
+- **interface**: `api.events.messageQueue.OverweightEnqueued.is`
+- **summary**:    Message placed in overweight queue. 
+ 
+### PageReaped(`PalletMessageQueueMockHelpersMessageOrigin`, `u32`)
+- **interface**: `api.events.messageQueue.PageReaped.is`
+- **summary**:    This page was reaped. 
+ 
+### Processed(`H256`, `PalletMessageQueueMockHelpersMessageOrigin`, `SpWeightsWeightV2Weight`, `bool`)
+- **interface**: `api.events.messageQueue.Processed.is`
+- **summary**:    Message is processed. 
+ 
+### ProcessingFailed(`H256`, `PalletMessageQueueMockHelpersMessageOrigin`, `FrameSupportMessagesProcessMessageError`)
+- **interface**: `api.events.messageQueue.ProcessingFailed.is`
+- **summary**:    Message discarded due to an error in the `MessageProcessor` (usually a format error). 
+
+___
+
+
 ## multisig
  
 ### MultisigApproval(`AccountId32`, `PalletMultisigTimepoint`, `AccountId32`, `[u8;32]`)
@@ -805,6 +811,39 @@ ___
 ### NewMultisig(`AccountId32`, `AccountId32`, `[u8;32]`)
 - **interface**: `api.events.multisig.NewMultisig.is`
 - **summary**:    A new multisig operation has begun. 
+
+___
+
+
+## nis
+ 
+### BidDropped(`AccountId32`, `u128`, `u32`)
+- **interface**: `api.events.nis.BidDropped.is`
+- **summary**:    A bid was dropped from a queue because of another, more substantial, bid was present. 
+ 
+### BidPlaced(`AccountId32`, `u128`, `u32`)
+- **interface**: `api.events.nis.BidPlaced.is`
+- **summary**:    A bid was successfully placed. 
+ 
+### BidRetracted(`AccountId32`, `u128`, `u32`)
+- **interface**: `api.events.nis.BidRetracted.is`
+- **summary**:    A bid was successfully removed (before being accepted). 
+ 
+### Funded(`u128`)
+- **interface**: `api.events.nis.Funded.is`
+- **summary**:    An automatic funding of the deficit was made. 
+ 
+### Issued(`u32`, `u32`, `AccountId32`, `Perquintill`, `u128`)
+- **interface**: `api.events.nis.Issued.is`
+- **summary**:    A bid was accepted. The balance may not be released until expiry. 
+ 
+### Thawed(`u32`, `AccountId32`, `Perquintill`, `u128`, `bool`)
+- **interface**: `api.events.nis.Thawed.is`
+- **summary**:    An receipt has been (at least partially) thawed. 
+ 
+### Transferred(`AccountId32`, `AccountId32`, `u32`)
+- **interface**: `api.events.nis.Transferred.is`
+- **summary**:    A receipt was transfered. 
 
 ___
 
@@ -986,6 +1025,10 @@ ___
 - **interface**: `api.events.rankedPolls.Rejected.is`
 - **summary**:    A proposal has been rejected by referendum. 
  
+### SubmissionDepositRefunded(`u32`, `AccountId32`, `u128`)
+- **interface**: `api.events.rankedPolls.SubmissionDepositRefunded.is`
+- **summary**:    The submission deposit has been refunded. 
+ 
 ### Submitted(`u32`, `u16`, `FrameSupportPreimagesBounded`)
 - **interface**: `api.events.rankedPolls.Submitted.is`
 - **summary**:    A referendum has been submitted. 
@@ -1069,6 +1112,10 @@ ___
 ### Rejected(`u32`, `PalletConvictionVotingTally`)
 - **interface**: `api.events.referenda.Rejected.is`
 - **summary**:    A proposal has been rejected by referendum. 
+ 
+### SubmissionDepositRefunded(`u32`, `AccountId32`, `u128`)
+- **interface**: `api.events.referenda.SubmissionDepositRefunded.is`
+- **summary**:    The submission deposit has been refunded. 
  
 ### Submitted(`u32`, `u16`, `FrameSupportPreimagesBounded`)
 - **interface**: `api.events.referenda.Submitted.is`
@@ -1231,7 +1278,11 @@ ___
  
 ### Slashed(`AccountId32`, `u128`)
 - **interface**: `api.events.staking.Slashed.is`
-- **summary**:    One staker (and potentially its nominators) has been slashed by the given amount. 
+- **summary**:    A staker (validator or nominator) has been slashed by the given amount. 
+ 
+### SlashReported(`AccountId32`, `Perbill`, `u32`)
+- **interface**: `api.events.staking.SlashReported.is`
+- **summary**:    A slash for the given validator, for the given percentage of their stake, at the given  era as been reported. 
  
 ### StakersElected()
 - **interface**: `api.events.staking.StakersElected.is`

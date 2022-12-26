@@ -32,8 +32,6 @@ The following sections contain the module constants, also known as parameter typ
 
 - **[fastUnstake](#fastunstake)**
 
-- **[gilt](#gilt)**
-
 - **[grandpa](#grandpa)**
 
 - **[identity](#identity)**
@@ -44,7 +42,11 @@ The following sections contain the module constants, also known as parameter typ
 
 - **[lottery](#lottery)**
 
+- **[messageQueue](#messagequeue)**
+
 - **[multisig](#multisig)**
+
+- **[nis](#nis)**
 
 - **[nominationPools](#nominationpools)**
 
@@ -285,6 +287,10 @@ ___
 - **interface**: `api.consts.contracts.maxCodeLen`
 - **summary**:    The maximum length of a contract code in bytes. This limit applies to the instrumented  version of the code. Therefore `instantiate_with_code` can fail even when supplying  a wasm binary below this maximum size. 
  
+### maxDebugBufferLen: `u32`
+- **interface**: `api.consts.contracts.maxDebugBufferLen`
+- **summary**:    The maximum length of the debug buffer in bytes. 
+ 
 ### maxStorageKeyLen: `u32`
 - **interface**: `api.consts.contracts.maxStorageKeyLen`
 - **summary**:    The maximum allowable length in bytes for storage keys. 
@@ -524,45 +530,6 @@ ___
 ___
 
 
-## gilt
- 
-### fifoQueueLen: `u32`
-- **interface**: `api.consts.gilt.fifoQueueLen`
-- **summary**:    Portion of the queue which is free from ordering and just a FIFO. 
-
-   Must be no greater than `MaxQueueLen`. 
- 
-### intakePeriod: `u32`
-- **interface**: `api.consts.gilt.intakePeriod`
-- **summary**:    The number of blocks between consecutive attempts to issue more gilts in an effort to  get to the target amount to be frozen. 
-
-   A larger value results in fewer storage hits each block, but a slower period to get to  the target. 
- 
-### maxIntakeBids: `u32`
-- **interface**: `api.consts.gilt.maxIntakeBids`
-- **summary**:    The maximum amount of bids that can be turned into issued gilts each block. A larger  value here means less of the block available for transactions should there be a glut of  bids to make into gilts to reach the target. 
- 
-### maxQueueLen: `u32`
-- **interface**: `api.consts.gilt.maxQueueLen`
-- **summary**:    Maximum number of items that may be in each duration queue. 
- 
-### minFreeze: `u128`
-- **interface**: `api.consts.gilt.minFreeze`
-- **summary**:    The minimum amount of funds that may be offered to freeze for a gilt. Note that this  does not actually limit the amount which may be frozen in a gilt since gilts may be  split up in order to satisfy the desired amount of funds under gilts. 
-
-   It should be at least big enough to ensure that there is no possible storage spam attack  or queue-filling attack. 
- 
-### period: `u32`
-- **interface**: `api.consts.gilt.period`
-- **summary**:    The base period for the duration queues. This is the common multiple across all  supported freezing durations that can be bid upon. 
- 
-### queueCount: `u32`
-- **interface**: `api.consts.gilt.queueCount`
-- **summary**:    Number of duration queues in total. This sets the maximum duration supported, which is  this value multiplied by `Period`. 
-
-___
-
-
 ## grandpa
  
 ### maxAuthorities: `u32`
@@ -638,6 +605,27 @@ ___
 ___
 
 
+## messageQueue
+ 
+### heapSize: `u32`
+- **interface**: `api.consts.messageQueue.heapSize`
+- **summary**:    The size of the page; this implies the maximum message size which can be sent. 
+
+   A good value depends on the expected message sizes, their weights, the weight that is  available for processing them and the maximal needed message size. The maximal message  size is slightly lower than this as defined by [`MaxMessageLenOf`]. 
+ 
+### maxStale: `u32`
+- **interface**: `api.consts.messageQueue.maxStale`
+- **summary**:    The maximum number of stale pages (i.e. of overweight messages) allowed before culling  can happen. Once there are more stale pages than this, then historical pages may be  dropped, even if they contain unprocessed overweight messages. 
+ 
+### serviceWeight: `Option<SpWeightsWeightV2Weight>`
+- **interface**: `api.consts.messageQueue.serviceWeight`
+- **summary**:    The amount of weight (if any) which should be provided to the message queue for  servicing enqueued items. 
+
+   This may be legitimately `None` in the case that you will call  `ServiceQueues::service_queues` manually. 
+
+___
+
+
 ## multisig
  
 ### depositBase: `u128`
@@ -655,6 +643,59 @@ ___
 ### maxSignatories: `u32`
 - **interface**: `api.consts.multisig.maxSignatories`
 - **summary**:    The maximum amount of signatories allowed in the multisig. 
+
+___
+
+
+## nis
+ 
+### basePeriod: `u32`
+- **interface**: `api.consts.nis.basePeriod`
+- **summary**:    The base period for the duration queues. This is the common multiple across all  supported freezing durations that can be bid upon. 
+ 
+### fifoQueueLen: `u32`
+- **interface**: `api.consts.nis.fifoQueueLen`
+- **summary**:    Portion of the queue which is free from ordering and just a FIFO. 
+
+   Must be no greater than `MaxQueueLen`. 
+ 
+### intakePeriod: `u32`
+- **interface**: `api.consts.nis.intakePeriod`
+- **summary**:    The number of blocks between consecutive attempts to dequeue bids and create receipts. 
+
+   A larger value results in fewer storage hits each block, but a slower period to get to  the target. 
+ 
+### maxIntakeWeight: `SpWeightsWeightV2Weight`
+- **interface**: `api.consts.nis.maxIntakeWeight`
+- **summary**:    The maximum amount of bids that can consolidated into receipts in a single intake. A  larger value here means less of the block available for transactions should there be a  glut of bids. 
+ 
+### maxQueueLen: `u32`
+- **interface**: `api.consts.nis.maxQueueLen`
+- **summary**:    Maximum number of items that may be in each duration queue. 
+
+   Must be larger than zero. 
+ 
+### minBid: `u128`
+- **interface**: `api.consts.nis.minBid`
+- **summary**:    The minimum amount of funds that may be placed in a bid. Note that this  does not actually limit the amount which may be represented in a receipt since bids may  be split up by the system. 
+
+   It should be at least big enough to ensure that there is no possible storage spam attack  or queue-filling attack. 
+ 
+### minReceipt: `Perquintill`
+- **interface**: `api.consts.nis.minReceipt`
+- **summary**:    The minimum amount of funds which may intentionally be left remaining under a single  receipt. 
+ 
+### palletId: `FrameSupportPalletId`
+- **interface**: `api.consts.nis.palletId`
+- **summary**:    The treasury's pallet id, used for deriving its sovereign account ID. 
+ 
+### queueCount: `u32`
+- **interface**: `api.consts.nis.queueCount`
+- **summary**:    Number of duration queues in total. This sets the maximum duration supported, which is  this value multiplied by `Period`. 
+ 
+### thawThrottle: `(Perquintill,u32)`
+- **interface**: `api.consts.nis.thawThrottle`
+- **summary**:    The maximum proportion which may be thawed and the period over which it is reset. 
 
 ___
 
