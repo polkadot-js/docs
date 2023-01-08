@@ -46,9 +46,13 @@ The following sections contain the module constants, also known as parameter typ
 
 - **[multisig](#multisig)**
 
+- **[nfts](#nfts)**
+
 - **[nis](#nis)**
 
 - **[nominationPools](#nominationpools)**
+
+- **[preimage](#preimage)**
 
 - **[proxy](#proxy)**
 
@@ -647,6 +651,63 @@ ___
 ___
 
 
+## nfts
+ 
+### approvalsLimit: `u32`
+- **interface**: `api.consts.nfts.approvalsLimit`
+- **summary**:    The maximum approvals an item could have. 
+ 
+### attributeDepositBase: `u128`
+- **interface**: `api.consts.nfts.attributeDepositBase`
+- **summary**:    The basic amount of funds that must be reserved when adding an attribute to an item. 
+ 
+### collectionDeposit: `u128`
+- **interface**: `api.consts.nfts.collectionDeposit`
+- **summary**:    The basic amount of funds that must be reserved for collection. 
+ 
+### depositPerByte: `u128`
+- **interface**: `api.consts.nfts.depositPerByte`
+- **summary**:    The additional funds that must be reserved for the number of bytes store in metadata,  either "normal" metadata or attribute metadata. 
+ 
+### features: `u64`
+- **interface**: `api.consts.nfts.features`
+- **summary**:    Disables some of pallet's features. 
+ 
+### itemAttributesApprovalsLimit: `u32`
+- **interface**: `api.consts.nfts.itemAttributesApprovalsLimit`
+- **summary**:    The maximum attributes approvals an item could have. 
+ 
+### itemDeposit: `u128`
+- **interface**: `api.consts.nfts.itemDeposit`
+- **summary**:    The basic amount of funds that must be reserved for an item. 
+ 
+### keyLimit: `u32`
+- **interface**: `api.consts.nfts.keyLimit`
+- **summary**:    The maximum length of an attribute key. 
+ 
+### maxDeadlineDuration: `u32`
+- **interface**: `api.consts.nfts.maxDeadlineDuration`
+- **summary**:    The max duration in blocks for deadlines. 
+ 
+### maxTips: `u32`
+- **interface**: `api.consts.nfts.maxTips`
+- **summary**:    The max number of tips a user could send. 
+ 
+### metadataDepositBase: `u128`
+- **interface**: `api.consts.nfts.metadataDepositBase`
+- **summary**:    The basic amount of funds that must be reserved when adding metadata to your item. 
+ 
+### stringLimit: `u32`
+- **interface**: `api.consts.nfts.stringLimit`
+- **summary**:    The maximum length of data stored on-chain. 
+ 
+### valueLimit: `u32`
+- **interface**: `api.consts.nfts.valueLimit`
+- **summary**:    The maximum length of an attribute value. 
+
+___
+
+
 ## nis
  
 ### basePeriod: `u32`
@@ -715,6 +776,19 @@ ___
 ### palletId: `FrameSupportPalletId`
 - **interface**: `api.consts.nominationPools.palletId`
 - **summary**:    The nomination pool's pallet id. 
+
+___
+
+
+## preimage
+ 
+### baseDeposit: `u128`
+- **interface**: `api.consts.preimage.baseDeposit`
+- **summary**:    The base deposit for placing a preimage on chain. 
+ 
+### byteDeposit: `u128`
+- **interface**: `api.consts.preimage.byteDeposit`
+- **summary**:    The per-byte deposit for placing a preimage on chain. 
 
 ___
 

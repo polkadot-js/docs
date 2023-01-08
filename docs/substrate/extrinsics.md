@@ -50,6 +50,8 @@ The following sections contain Extrinsics methods are part of the default Substr
 
 - **[multisig](#multisig)**
 
+- **[nfts](#nfts)**
+
 - **[nis](#nis)**
 
 - **[nominationPools](#nominationpools)**
@@ -2238,6 +2240,637 @@ ___
 ___
 
 
+## nfts
+ 
+### approveItemAttributes(collection: `u32`, item: `u32`, delegate: `MultiAddress`)
+- **interface**: `api.tx.nfts.approveItemAttributes`
+- **summary**:    Approve item's attributes to be changed by a delegated third-party account. 
+
+   Origin must be Signed and must be an owner of the `item`. 
+
+   - `collection`: A collection of the item. 
+
+  - `item`: The item that holds attributes.
+
+  - `delegate`: The account to delegate permission to change attributes of the item.
+
+   Emits `ItemAttributesApprovalAdded` on success. 
+ 
+### approveTransfer(collection: `u32`, item: `u32`, delegate: `MultiAddress`, maybe_deadline: `Option<u32>`)
+- **interface**: `api.tx.nfts.approveTransfer`
+- **summary**:    Approve an item to be transferred by a delegated third-party account. 
+
+   Origin must be either `ForceOrigin` or Signed and the sender should be the Owner of the  `item`. 
+
+   - `collection`: The collection of the item to be approved for delegated transfer. 
+
+  - `item`: The item to be approved for delegated transfer.
+
+  - `delegate`: The account to delegate permission to transfer the item.
+
+  - `maybe_deadline`: Optional deadline for the approval. Specified by providing the number of blocks after which the approval will expire 
+
+   Emits `TransferApproved` on success. 
+
+   Weight: `O(1)` 
+ 
+### burn(collection: `u32`, item: `u32`, check_owner: `Option<MultiAddress>`)
+- **interface**: `api.tx.nfts.burn`
+- **summary**:    Destroy a single item. 
+
+   Origin must be Signed and the signing account must be either: 
+
+  - the Admin of the `collection`;
+
+  - the Owner of the `item`;
+
+   - `collection`: The collection of the item to be burned. 
+
+  - `item`: The item to be burned.
+
+  - `check_owner`: If `Some` then the operation will fail with `WrongOwner` unless the item is owned by this value. 
+
+   Emits `Burned` with the actual amount burned. 
+
+   Weight: `O(1)`  Modes: `check_owner.is_some()`. 
+ 
+### buyItem(collection: `u32`, item: `u32`, bid_price: `u128`)
+- **interface**: `api.tx.nfts.buyItem`
+- **summary**:    Allows to buy an item if it's up for sale. 
+
+   Origin must be Signed and must not be the owner of the `item`. 
+
+   - `collection`: The collection of the item. 
+
+  - `item`: The item the sender wants to buy.
+
+  - `bid_price`: The price the sender is willing to pay.
+
+   Emits `ItemBought` on success. 
+ 
+### cancelApproval(collection: `u32`, item: `u32`, delegate: `MultiAddress`)
+- **interface**: `api.tx.nfts.cancelApproval`
+- **summary**:    Cancel one of the transfer approvals for a specific item. 
+
+   Origin must be either: 
+
+  - the `Force` origin;
+
+  - `Signed` with the signer being the Admin of the `collection`;
+
+  - `Signed` with the signer being the Owner of the `item`;
+
+   Arguments: 
+
+  - `collection`: The collection of the item of whose approval will be cancelled.
+
+  - `item`: The item of the collection of whose approval will be cancelled.
+
+  - `delegate`: The account that is going to loose their approval.
+
+   Emits `ApprovalCancelled` on success. 
+
+   Weight: `O(1)` 
+ 
+### cancelItemAttributesApproval(collection: `u32`, item: `u32`, delegate: `MultiAddress`, witness: `PalletNftsCancelAttributesApprovalWitness`)
+- **interface**: `api.tx.nfts.cancelItemAttributesApproval`
+- **summary**:    Cancel the previously provided approval to change item's attributes.  All the previously set attributes by the `delegate` will be removed. 
+
+   Origin must be Signed and must be an owner of the `item`. 
+
+   - `collection`: Collection that the item is contained within. 
+
+  - `item`: The item that holds attributes.
+
+  - `delegate`: The previously approved account to remove.
+
+   Emits `ItemAttributesApprovalRemoved` on success. 
+ 
+### cancelSwap(offered_collection: `u32`, offered_item: `u32`)
+- **interface**: `api.tx.nfts.cancelSwap`
+- **summary**:    Cancel an atomic swap. 
+
+   Origin must be Signed.  Origin must be an owner of the `item` if the deadline hasn't expired. 
+
+   - `collection`: The collection of the item. 
+
+  - `item`: The item an owner wants to give.
+
+   Emits `SwapCancelled` on success. 
+ 
+### claimSwap(send_collection: `u32`, send_item: `u32`, receive_collection: `u32`, receive_item: `u32`, witness_price: `Option<PalletNftsPriceWithDirection>`)
+- **interface**: `api.tx.nfts.claimSwap`
+- **summary**:    Claim an atomic swap.  This method executes a pending swap, that was created by a counterpart before. 
+
+   Origin must be Signed and must be an owner of the `item`. 
+
+   - `send_collection`: The collection of the item to be sent. 
+
+  - `send_item`: The item to be sent.
+
+  - `receive_collection`: The collection of the item to be received.
+
+  - `receive_item`: The item to be received.
+
+  - `witness_price`: A price that was previously agreed on.
+
+   Emits `SwapClaimed` on success. 
+ 
+### clearAllTransferApprovals(collection: `u32`, item: `u32`)
+- **interface**: `api.tx.nfts.clearAllTransferApprovals`
+- **summary**:    Cancel all the approvals of a specific item. 
+
+   Origin must be either: 
+
+  - the `Force` origin;
+
+  - `Signed` with the signer being the Admin of the `collection`;
+
+  - `Signed` with the signer being the Owner of the `item`;
+
+   Arguments: 
+
+  - `collection`: The collection of the item of whose approvals will be cleared.
+
+  - `item`: The item of the collection of whose approvals will be cleared.
+
+   Emits `AllApprovalsCancelled` on success. 
+
+   Weight: `O(1)` 
+ 
+### clearAttribute(collection: `u32`, maybe_item: `Option<u32>`, namespace: `FrameSupportTokensMiscAttributeNamespace`, key: `Bytes`)
+- **interface**: `api.tx.nfts.clearAttribute`
+- **summary**:    Clear an attribute for a collection or item. 
+
+   Origin must be either `ForceOrigin` or Signed and the sender should be the Owner of the  `collection`. 
+
+   Any deposit is freed for the collection's owner. 
+
+   - `collection`: The identifier of the collection whose item's metadata to clear. 
+
+  - `maybe_item`: The identifier of the item whose metadata to clear.
+
+  - `namespace`: Attribute's namespace.
+
+  - `key`: The key of the attribute.
+
+   Emits `AttributeCleared`. 
+
+   Weight: `O(1)` 
+ 
+### clearCollectionMetadata(collection: `u32`)
+- **interface**: `api.tx.nfts.clearCollectionMetadata`
+- **summary**:    Clear the metadata for a collection. 
+
+   Origin must be either `ForceOrigin` or `Signed` and the sender should be the Owner of  the `collection`. 
+
+   Any deposit is freed for the collection's owner. 
+
+   - `collection`: The identifier of the collection whose metadata to clear. 
+
+   Emits `CollectionMetadataCleared`. 
+
+   Weight: `O(1)` 
+ 
+### clearMetadata(collection: `u32`, item: `u32`)
+- **interface**: `api.tx.nfts.clearMetadata`
+- **summary**:    Clear the metadata for an item. 
+
+   Origin must be either `ForceOrigin` or Signed and the sender should be the Owner of the  `collection`. 
+
+   Any deposit is freed for the collection's owner. 
+
+   - `collection`: The identifier of the collection whose item's metadata to clear. 
+
+  - `item`: The identifier of the item whose metadata to clear.
+
+   Emits `ItemMetadataCleared`. 
+
+   Weight: `O(1)` 
+ 
+### create(admin: `MultiAddress`, config: `PalletNftsCollectionConfig`)
+- **interface**: `api.tx.nfts.create`
+- **summary**:    Issue a new collection of non-fungible items from a public origin. 
+
+   This new collection has no items initially and its owner is the origin. 
+
+   The origin must be Signed and the sender must have sufficient funds free. 
+
+   `ItemDeposit` funds of sender are reserved. 
+
+   Parameters: 
+
+  - `admin`: The admin of this collection. The admin is the initial address of each member of the collection's admin team. 
+
+   Emits `Created` event when successful. 
+
+   Weight: `O(1)` 
+ 
+### createSwap(offered_collection: `u32`, offered_item: `u32`, desired_collection: `u32`, maybe_desired_item: `Option<u32>`, maybe_price: `Option<PalletNftsPriceWithDirection>`, duration: `u32`)
+- **interface**: `api.tx.nfts.createSwap`
+- **summary**:    Register a new atomic swap, declaring an intention to send an `item` in exchange for  `desired_item` from origin to target on the current blockchain.  The target can execute the swap during the specified `duration` of blocks (if set).  Additionally, the price could be set for the desired `item`. 
+
+   Origin must be Signed and must be an owner of the `item`. 
+
+   - `collection`: The collection of the item. 
+
+  - `item`: The item an owner wants to give.
+
+  - `desired_collection`: The collection of the desired item.
+
+  - `desired_item`: The desired item an owner wants to receive.
+
+  - `maybe_price`: The price an owner is willing to pay or receive for the desired `item`.
+
+  - `duration`: A deadline for the swap. Specified by providing the number of blocks after which the swap will expire. 
+
+   Emits `SwapCreated` on success. 
+ 
+### destroy(collection: `u32`, witness: `PalletNftsDestroyWitness`)
+- **interface**: `api.tx.nfts.destroy`
+- **summary**:    Destroy a collection of fungible items. 
+
+   The origin must conform to `ForceOrigin` or must be `Signed` and the sender must be the  owner of the `collection`. 
+
+   - `collection`: The identifier of the collection to be destroyed. 
+
+  - `witness`: Information on the items minted in the collection. This must be correct. 
+
+   Emits `Destroyed` event when successful. 
+
+   Weight: `O(n + m)` where: 
+
+  - `n = witness.items`
+
+  - `m = witness.item_metadatas`
+
+  - `a = witness.attributes`
+ 
+### forceCollectionConfig(collection: `u32`, config: `PalletNftsCollectionConfig`)
+- **interface**: `api.tx.nfts.forceCollectionConfig`
+- **summary**:    Change the config of a collection. 
+
+   Origin must be `ForceOrigin`. 
+
+   - `collection`: The identifier of the collection. 
+
+  - `config`: The new config of this collection.
+
+   Emits `CollectionConfigChanged`. 
+
+   Weight: `O(1)` 
+ 
+### forceCollectionOwner(collection: `u32`, owner: `MultiAddress`)
+- **interface**: `api.tx.nfts.forceCollectionOwner`
+- **summary**:    Change the Owner of a collection. 
+
+   Origin must be `ForceOrigin`. 
+
+   - `collection`: The identifier of the collection. 
+
+  - `owner`: The new Owner of this collection.
+
+   Emits `OwnerChanged`. 
+
+   Weight: `O(1)` 
+ 
+### forceCreate(owner: `MultiAddress`, config: `PalletNftsCollectionConfig`)
+- **interface**: `api.tx.nfts.forceCreate`
+- **summary**:    Issue a new collection of non-fungible items from a privileged origin. 
+
+   This new collection has no items initially. 
+
+   The origin must conform to `ForceOrigin`. 
+
+   Unlike `create`, no funds are reserved. 
+
+   - `owner`: The owner of this collection of items. The owner has full superuser  permissions over this item, but may later change and configure the permissions using  `transfer_ownership` and `set_team`. 
+
+   Emits `ForceCreated` event when successful. 
+
+   Weight: `O(1)` 
+ 
+### forceMint(collection: `u32`, item: `u32`, mint_to: `MultiAddress`, item_config: `PalletNftsItemConfig`)
+- **interface**: `api.tx.nfts.forceMint`
+- **summary**:    Mint an item of a particular collection from a privileged origin. 
+
+   The origin must conform to `ForceOrigin` or must be `Signed` and the sender must be the  Issuer of the `collection`. 
+
+   - `collection`: The collection of the item to be minted. 
+
+  - `item`: An identifier of the new item.
+
+  - `mint_to`: Account into which the item will be minted.
+
+  - `item_config`: A config of the new item.
+
+   Emits `Issued` event when successful. 
+
+   Weight: `O(1)` 
+ 
+### forceSetAttribute(set_as: `Option<AccountId32>`, collection: `u32`, maybe_item: `Option<u32>`, namespace: `FrameSupportTokensMiscAttributeNamespace`, key: `Bytes`, value: `Bytes`)
+- **interface**: `api.tx.nfts.forceSetAttribute`
+- **summary**:    Force-set an attribute for a collection or item. 
+
+   Origin must be `ForceOrigin`. 
+
+   If the attribute already exists and it was set by another account, the deposit  will be returned to the previous owner. 
+
+   - `set_as`: An optional owner of the attribute. 
+
+  - `collection`: The identifier of the collection whose item's metadata to set.
+
+  - `maybe_item`: The identifier of the item whose metadata to set.
+
+  - `namespace`: Attribute's namespace.
+
+  - `key`: The key of the attribute.
+
+  - `value`: The value to which to set the attribute.
+
+   Emits `AttributeSet`. 
+
+   Weight: `O(1)` 
+ 
+### lockCollection(collection: `u32`, lock_settings: `u64`)
+- **interface**: `api.tx.nfts.lockCollection`
+- **summary**:    Disallows specified settings for the whole collection. 
+
+   Origin must be Signed and the sender should be the Freezer of the `collection`. 
+
+   - `collection`: The collection to be locked. 
+
+  - `lock_settings`: The settings to be locked.
+
+   Note: it's possible to only lock(set) the setting, but not to unset it.  Emits `CollectionLocked`. 
+
+   Weight: `O(1)` 
+ 
+### lockItemProperties(collection: `u32`, item: `u32`, lock_metadata: `bool`, lock_attributes: `bool`)
+- **interface**: `api.tx.nfts.lockItemProperties`
+- **summary**:    Disallows changing the metadata or attributes of the item. 
+
+   Origin must be either `ForceOrigin` or Signed and the sender should be the Owner of the  `collection`. 
+
+   - `collection`: The collection if the `item`. 
+
+  - `item`: An item to be locked.
+
+  - `lock_metadata`: Specifies whether the metadata should be locked.
+
+  - `lock_attributes`: Specifies whether the attributes in the `CollectionOwner` namespace should be locked. 
+
+   Note: `lock_attributes` affects the attributes in the `CollectionOwner` namespace  only. When the metadata or attributes are locked, it won't be possible the unlock them. 
+
+   Emits `ItemPropertiesLocked`. 
+
+   Weight: `O(1)` 
+ 
+### lockItemTransfer(collection: `u32`, item: `u32`)
+- **interface**: `api.tx.nfts.lockItemTransfer`
+- **summary**:    Disallow further unprivileged transfer of an item. 
+
+   Origin must be Signed and the sender should be the Freezer of the `collection`. 
+
+   - `collection`: The collection of the item to be changed. 
+
+  - `item`: The item to become non-transferable.
+
+   Emits `ItemTransferLocked`. 
+
+   Weight: `O(1)` 
+ 
+### mint(collection: `u32`, item: `u32`, mint_to: `MultiAddress`, witness_data: `Option<PalletNftsMintWitness>`)
+- **interface**: `api.tx.nfts.mint`
+- **summary**:    Mint an item of a particular collection. 
+
+   The origin must be Signed and the sender must be the Issuer of the `collection`. 
+
+   - `collection`: The collection of the item to be minted. 
+
+  - `item`: An identifier of the new item.
+
+  - `mint_to`: Account into which the item will be minted.
+
+  - `witness_data`: When the mint type is `HolderOf(collection_id)`, then the owned item_id from that collection needs to be provided within the witness data object. 
+
+   Note: the deposit will be taken from the `origin` and not the `owner` of the `item`. 
+
+   Emits `Issued` event when successful. 
+
+   Weight: `O(1)` 
+ 
+### payTips(tips: `Vec<PalletNftsItemTip>`)
+- **interface**: `api.tx.nfts.payTips`
+- **summary**:    Allows to pay the tips. 
+
+   Origin must be Signed. 
+
+   - `tips`: Tips array. 
+
+   Emits `TipSent` on every tip transfer. 
+ 
+### redeposit(collection: `u32`, items: `Vec<u32>`)
+- **interface**: `api.tx.nfts.redeposit`
+- **summary**:    Re-evaluate the deposits on some items. 
+
+   Origin must be Signed and the sender should be the Owner of the `collection`. 
+
+   - `collection`: The collection of the items to be reevaluated. 
+
+  - `items`: The items of the collection whose deposits will be reevaluated.
+
+   NOTE: This exists as a best-effort function. Any items which are unknown or  in the case that the owner account does not have reservable funds to pay for a  deposit increase are ignored. Generally the owner isn't going to call this on items  whose existing deposit is less than the refreshed deposit as it would only cost them,  so it's of little consequence. 
+
+   It will still return an error in the case that the collection is unknown or the signer  is not permitted to call it. 
+
+   Weight: `O(items.len())` 
+ 
+### setAcceptOwnership(maybe_collection: `Option<u32>`)
+- **interface**: `api.tx.nfts.setAcceptOwnership`
+- **summary**:    Set (or reset) the acceptance of ownership for a particular account. 
+
+   Origin must be `Signed` and if `maybe_collection` is `Some`, then the signer must have a  provider reference. 
+
+   - `maybe_collection`: The identifier of the collection whose ownership the signer is  willing to accept, or if `None`, an indication that the signer is willing to accept no  ownership transferal. 
+
+   Emits `OwnershipAcceptanceChanged`. 
+ 
+### setAttribute(collection: `u32`, maybe_item: `Option<u32>`, namespace: `FrameSupportTokensMiscAttributeNamespace`, key: `Bytes`, value: `Bytes`)
+- **interface**: `api.tx.nfts.setAttribute`
+- **summary**:    Set an attribute for a collection or item. 
+
+   Origin must be Signed and must conform to the namespace ruleset: 
+
+  - `CollectionOwner` namespace could be modified by the `collection` owner only;
+
+  - `ItemOwner` namespace could be modified by the `maybe_item` owner only. `maybe_item` should be set in that case; 
+
+  - `Account(AccountId)` namespace could be modified only when the `origin` was given a permission to do so; 
+
+   The funds of `origin` are reserved according to the formula:  `AttributeDepositBase + DepositPerByte * (key.len + value.len)` taking into  account any already reserved funds. 
+
+   - `collection`: The identifier of the collection whose item's metadata to set. 
+
+  - `maybe_item`: The identifier of the item whose metadata to set.
+
+  - `namespace`: Attribute's namespace.
+
+  - `key`: The key of the attribute.
+
+  - `value`: The value to which to set the attribute.
+
+   Emits `AttributeSet`. 
+
+   Weight: `O(1)` 
+ 
+### setCollectionMaxSupply(collection: `u32`, max_supply: `u32`)
+- **interface**: `api.tx.nfts.setCollectionMaxSupply`
+- **summary**:    Set the maximum number of items a collection could have. 
+
+   Origin must be either `ForceOrigin` or `Signed` and the sender should be the Owner of  the `collection`. 
+
+   - `collection`: The identifier of the collection to change. 
+
+  - `max_supply`: The maximum number of items a collection could have.
+
+   Emits `CollectionMaxSupplySet` event when successful. 
+ 
+### setCollectionMetadata(collection: `u32`, data: `Bytes`)
+- **interface**: `api.tx.nfts.setCollectionMetadata`
+- **summary**:    Set the metadata for a collection. 
+
+   Origin must be either `ForceOrigin` or `Signed` and the sender should be the Owner of  the `collection`. 
+
+   If the origin is `Signed`, then funds of signer are reserved according to the formula:  `MetadataDepositBase + DepositPerByte * data.len` taking into  account any already reserved funds. 
+
+   - `collection`: The identifier of the item whose metadata to update. 
+
+  - `data`: The general information of this item. Limited in length by `StringLimit`.
+
+   Emits `CollectionMetadataSet`. 
+
+   Weight: `O(1)` 
+ 
+### setMetadata(collection: `u32`, item: `u32`, data: `Bytes`)
+- **interface**: `api.tx.nfts.setMetadata`
+- **summary**:    Set the metadata for an item. 
+
+   Origin must be either `ForceOrigin` or Signed and the sender should be the Owner of the  `collection`. 
+
+   If the origin is Signed, then funds of signer are reserved according to the formula:  `MetadataDepositBase + DepositPerByte * data.len` taking into  account any already reserved funds. 
+
+   - `collection`: The identifier of the collection whose item's metadata to set. 
+
+  - `item`: The identifier of the item whose metadata to set.
+
+  - `data`: The general information of this item. Limited in length by `StringLimit`.
+
+   Emits `ItemMetadataSet`. 
+
+   Weight: `O(1)` 
+ 
+### setPrice(collection: `u32`, item: `u32`, price: `Option<u128>`, whitelisted_buyer: `Option<MultiAddress>`)
+- **interface**: `api.tx.nfts.setPrice`
+- **summary**:    Set (or reset) the price for an item. 
+
+   Origin must be Signed and must be the owner of the asset `item`. 
+
+   - `collection`: The collection of the item. 
+
+  - `item`: The item to set the price for.
+
+  - `price`: The price for the item. Pass `None`, to reset the price.
+
+  - `buyer`: Restricts the buy operation to a specific account.
+
+   Emits `ItemPriceSet` on success if the price is not `None`.  Emits `ItemPriceRemoved` on success if the price is `None`. 
+ 
+### setTeam(collection: `u32`, issuer: `MultiAddress`, admin: `MultiAddress`, freezer: `MultiAddress`)
+- **interface**: `api.tx.nfts.setTeam`
+- **summary**:    Change the Issuer, Admin and Freezer of a collection. 
+
+   Origin must be either `ForceOrigin` or Signed and the sender should be the Owner of the  `collection`. 
+
+   - `collection`: The collection whose team should be changed. 
+
+  - `issuer`: The new Issuer of this collection.
+
+  - `admin`: The new Admin of this collection.
+
+  - `freezer`: The new Freezer of this collection.
+
+   Emits `TeamChanged`. 
+
+   Weight: `O(1)` 
+ 
+### transfer(collection: `u32`, item: `u32`, dest: `MultiAddress`)
+- **interface**: `api.tx.nfts.transfer`
+- **summary**:    Move an item from the sender account to another. 
+
+   Origin must be Signed and the signing account must be either: 
+
+  - the Admin of the `collection`;
+
+  - the Owner of the `item`;
+
+  - the approved delegate for the `item` (in this case, the approval is reset).
+
+   Arguments: 
+
+  - `collection`: The collection of the item to be transferred.
+
+  - `item`: The item to be transferred.
+
+  - `dest`: The account to receive ownership of the item.
+
+   Emits `Transferred`. 
+
+   Weight: `O(1)` 
+ 
+### transferOwnership(collection: `u32`, owner: `MultiAddress`)
+- **interface**: `api.tx.nfts.transferOwnership`
+- **summary**:    Change the Owner of a collection. 
+
+   Origin must be Signed and the sender should be the Owner of the `collection`. 
+
+   - `collection`: The collection whose owner should be changed. 
+
+  - `owner`: The new Owner of this collection. They must have called `set_accept_ownership` with `collection` in order for this operation to succeed. 
+
+   Emits `OwnerChanged`. 
+
+   Weight: `O(1)` 
+ 
+### unlockItemTransfer(collection: `u32`, item: `u32`)
+- **interface**: `api.tx.nfts.unlockItemTransfer`
+- **summary**:    Re-allow unprivileged transfer of an item. 
+
+   Origin must be Signed and the sender should be the Freezer of the `collection`. 
+
+   - `collection`: The collection of the item to be changed. 
+
+  - `item`: The item to become transferable.
+
+   Emits `ItemTransferUnlocked`. 
+
+   Weight: `O(1)` 
+ 
+### updateMintSettings(collection: `u32`, mint_settings: `PalletNftsMintSettings`)
+- **interface**: `api.tx.nfts.updateMintSettings`
+- **summary**:    Update mint settings. 
+
+   Origin must be either `ForceOrigin` or `Signed` and the sender should be the Owner of  the `collection`. 
+
+   - `collection`: The identifier of the collection to change. 
+
+  - `mint_settings`: The new mint settings.
+
+   Emits `CollectionMintSettingsUpdated` event when successful. 
+
+___
+
+
 ## nis
  
 ### fundDeficit()
@@ -3293,7 +3926,7 @@ ___
 - **interface**: `api.tx.staking.cancelDeferredSlash`
 - **summary**:    Cancel enactment of a deferred slash. 
 
-   Can be called by the `T::SlashCancelOrigin`. 
+   Can be called by the `T::AdminOrigin`. 
 
    Parameters: era and indices of the slashes for that era to kill. 
  
@@ -3460,6 +4093,12 @@ ___
 - **summary**:    Set the validators who cannot be slashed (if any). 
 
    The dispatch origin must be Root. 
+ 
+### setMinCommission(new: `Perbill`)
+- **interface**: `api.tx.staking.setMinCommission`
+- **summary**:    Sets the minimum amount of commission that each validators must maintain. 
+
+   This call has lower privilege requirements than `set_staking_config` and can be called  by the `T::AdminOrigin`. Root can always call this. 
  
 ### setPayee(payee: `PalletStakingRewardDestination`)
 - **interface**: `api.tx.staking.setPayee`
@@ -4019,7 +4658,11 @@ ___
 - **interface**: `api.tx.uniques.burn`
 - **summary**:    Destroy a single item. 
 
-   Origin must be Signed and the sender should be the Admin of the `collection`. 
+   Origin must be Signed and the signing account must be either: 
+
+  - the Admin of the `collection`;
+
+  - the Owner of the `item`;
 
    - `collection`: The collection of the item to be burned. 
 

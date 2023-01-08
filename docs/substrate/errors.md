@@ -50,6 +50,8 @@ This page lists the errors that can be encountered in the different modules.
 
 - **[multisig](#multisig)**
 
+- **[nfts](#nfts)**
+
 - **[nis](#nis)**
 
 - **[nominationPools](#nominationpools)**
@@ -523,10 +525,6 @@ ___
 ### ContractTrapped
 - **interface**: `api.errors.contracts.ContractTrapped.is`
 - **summary**:    Contract trapped during execution. 
- 
-### DebugBufferExhausted
-- **interface**: `api.errors.contracts.DebugBufferExhausted.is`
-- **summary**:    The debug buffer size used during contract execution exceeded the limit determined by  the `MaxDebugBufferLen` pallet config parameter. 
  
 ### DebugMessageInvalidUTF8
 - **interface**: `api.errors.contracts.DebugMessageInvalidUTF8.is`
@@ -1254,6 +1252,155 @@ ___
 ### WrongTimepoint
 - **interface**: `api.errors.multisig.WrongTimepoint.is`
 - **summary**:    A different timepoint was given to the multisig operation that is underway. 
+
+___
+
+
+## nfts
+ 
+### AlreadyClaimed
+- **interface**: `api.errors.nfts.AlreadyClaimed.is`
+- **summary**:    The provided Item was already used for claiming. 
+ 
+### AlreadyExists
+- **interface**: `api.errors.nfts.AlreadyExists.is`
+- **summary**:    The item ID has already been used for an item. 
+ 
+### ApprovalExpired
+- **interface**: `api.errors.nfts.ApprovalExpired.is`
+- **summary**:    The approval had a deadline that expired, so the approval isn't valid anymore. 
+ 
+### BadWitness
+- **interface**: `api.errors.nfts.BadWitness.is`
+- **summary**:    The witness data given does not match the current state of the chain. 
+ 
+### BidTooLow
+- **interface**: `api.errors.nfts.BidTooLow.is`
+- **summary**:    The provided bid is too low. 
+ 
+### CollectionIdInUse
+- **interface**: `api.errors.nfts.CollectionIdInUse.is`
+- **summary**:    Collection ID is already taken. 
+ 
+### DeadlineExpired
+- **interface**: `api.errors.nfts.DeadlineExpired.is`
+- **summary**:    The deadline has already expired. 
+ 
+### InconsistentItemConfig
+- **interface**: `api.errors.nfts.InconsistentItemConfig.is`
+- **summary**:    Item's config already exists and should be equal to the provided one. 
+ 
+### IncorrectData
+- **interface**: `api.errors.nfts.IncorrectData.is`
+- **summary**:    The provided data is incorrect. 
+ 
+### ItemLocked
+- **interface**: `api.errors.nfts.ItemLocked.is`
+- **summary**:    The item is locked (non-transferable). 
+ 
+### ItemsNonTransferable
+- **interface**: `api.errors.nfts.ItemsNonTransferable.is`
+- **summary**:    Items within that collection are non-transferable. 
+ 
+### LockedCollectionAttributes
+- **interface**: `api.errors.nfts.LockedCollectionAttributes.is`
+- **summary**:    Collection's attributes are locked. 
+ 
+### LockedCollectionMetadata
+- **interface**: `api.errors.nfts.LockedCollectionMetadata.is`
+- **summary**:    Collection's metadata is locked. 
+ 
+### LockedItemAttributes
+- **interface**: `api.errors.nfts.LockedItemAttributes.is`
+- **summary**:    Item's attributes are locked. 
+ 
+### LockedItemMetadata
+- **interface**: `api.errors.nfts.LockedItemMetadata.is`
+- **summary**:    Item's metadata is locked. 
+ 
+### MaxSupplyLocked
+- **interface**: `api.errors.nfts.MaxSupplyLocked.is`
+- **summary**:    The max supply is locked and can't be changed. 
+ 
+### MaxSupplyReached
+- **interface**: `api.errors.nfts.MaxSupplyReached.is`
+- **summary**:    All items have been minted. 
+ 
+### MaxSupplyTooSmall
+- **interface**: `api.errors.nfts.MaxSupplyTooSmall.is`
+- **summary**:    The provided max supply is less than the number of items a collection already has. 
+ 
+### MethodDisabled
+- **interface**: `api.errors.nfts.MethodDisabled.is`
+- **summary**:    The method is disabled by system settings. 
+ 
+### MintEnded
+- **interface**: `api.errors.nfts.MintEnded.is`
+- **summary**:    Mint has already ended. 
+ 
+### MintNotStarted
+- **interface**: `api.errors.nfts.MintNotStarted.is`
+- **summary**:    Mint has not started yet. 
+ 
+### NoConfig
+- **interface**: `api.errors.nfts.NoConfig.is`
+- **summary**:    Config for a collection or an item can't be found. 
+ 
+### NoPermission
+- **interface**: `api.errors.nfts.NoPermission.is`
+- **summary**:    The signing account has no permission to do the operation. 
+ 
+### NotDelegate
+- **interface**: `api.errors.nfts.NotDelegate.is`
+- **summary**:    The provided account is not a delegate. 
+ 
+### NotForSale
+- **interface**: `api.errors.nfts.NotForSale.is`
+- **summary**:    Item is not for sale. 
+ 
+### ReachedApprovalLimit
+- **interface**: `api.errors.nfts.ReachedApprovalLimit.is`
+- **summary**:    The item has reached its approval limit. 
+ 
+### RolesNotCleared
+- **interface**: `api.errors.nfts.RolesNotCleared.is`
+- **summary**:    Some roles were not cleared. 
+ 
+### Unaccepted
+- **interface**: `api.errors.nfts.Unaccepted.is`
+- **summary**:    The named owner has not signed ownership acceptance of the collection. 
+ 
+### Unapproved
+- **interface**: `api.errors.nfts.Unapproved.is`
+- **summary**:    No approval exists that would allow the transfer. 
+ 
+### UnknownCollection
+- **interface**: `api.errors.nfts.UnknownCollection.is`
+- **summary**:    The given item ID is unknown. 
+ 
+### UnknownItem
+- **interface**: `api.errors.nfts.UnknownItem.is`
+- **summary**:    The given item ID is unknown. 
+ 
+### UnknownSwap
+- **interface**: `api.errors.nfts.UnknownSwap.is`
+- **summary**:    Swap doesn't exist. 
+ 
+### WrongDelegate
+- **interface**: `api.errors.nfts.WrongDelegate.is`
+- **summary**:    The delegate turned out to be different to what was expected. 
+ 
+### WrongDuration
+- **interface**: `api.errors.nfts.WrongDuration.is`
+- **summary**:    The duration provided should be less than or equal to `MaxDeadlineDuration`. 
+ 
+### WrongOwner
+- **interface**: `api.errors.nfts.WrongOwner.is`
+- **summary**:    The owner turned out to be different to what was expected. 
+ 
+### WrongSetting
+- **interface**: `api.errors.nfts.WrongSetting.is`
+- **summary**:    The provided setting can't be set. 
 
 ___
 

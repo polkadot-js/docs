@@ -48,6 +48,8 @@ Events are emitted for certain operations on the runtime. The following sections
 
 - **[multisig](#multisig)**
 
+- **[nfts](#nfts)**
+
 - **[nis](#nis)**
 
 - **[nominationPools](#nominationpools)**
@@ -815,6 +817,155 @@ ___
 ___
 
 
+## nfts
+ 
+### AllApprovalsCancelled(`u32`, `u32`, `AccountId32`)
+- **interface**: `api.events.nfts.AllApprovalsCancelled.is`
+- **summary**:    All approvals of an item got cancelled. 
+ 
+### ApprovalCancelled(`u32`, `u32`, `AccountId32`, `AccountId32`)
+- **interface**: `api.events.nfts.ApprovalCancelled.is`
+- **summary**:    An approval for a `delegate` account to transfer the `item` of an item  `collection` was cancelled by its `owner`. 
+ 
+### AttributeCleared(`u32`, `Option<u32>`, `Bytes`, `FrameSupportTokensMiscAttributeNamespace`)
+- **interface**: `api.events.nfts.AttributeCleared.is`
+- **summary**:    Attribute metadata has been cleared for a `collection` or `item`. 
+ 
+### AttributeSet(`u32`, `Option<u32>`, `Bytes`, `Bytes`, `FrameSupportTokensMiscAttributeNamespace`)
+- **interface**: `api.events.nfts.AttributeSet.is`
+- **summary**:    New attribute metadata has been set for a `collection` or `item`. 
+ 
+### Burned(`u32`, `u32`, `AccountId32`)
+- **interface**: `api.events.nfts.Burned.is`
+- **summary**:    An `item` was destroyed. 
+ 
+### CollectionConfigChanged(`u32`)
+- **interface**: `api.events.nfts.CollectionConfigChanged.is`
+- **summary**:    A `collection` has had its config changed by the `Force` origin. 
+ 
+### CollectionLocked(`u32`)
+- **interface**: `api.events.nfts.CollectionLocked.is`
+- **summary**:    Some `collection` was locked. 
+ 
+### CollectionMaxSupplySet(`u32`, `u32`)
+- **interface**: `api.events.nfts.CollectionMaxSupplySet.is`
+- **summary**:    Max supply has been set for a collection. 
+ 
+### CollectionMetadataCleared(`u32`)
+- **interface**: `api.events.nfts.CollectionMetadataCleared.is`
+- **summary**:    Metadata has been cleared for a `collection`. 
+ 
+### CollectionMetadataSet(`u32`, `Bytes`)
+- **interface**: `api.events.nfts.CollectionMetadataSet.is`
+- **summary**:    New metadata has been set for a `collection`. 
+ 
+### CollectionMintSettingsUpdated(`u32`)
+- **interface**: `api.events.nfts.CollectionMintSettingsUpdated.is`
+- **summary**:    Mint settings for a collection had changed. 
+ 
+### Created(`u32`, `AccountId32`, `AccountId32`)
+- **interface**: `api.events.nfts.Created.is`
+- **summary**:    A `collection` was created. 
+ 
+### Destroyed(`u32`)
+- **interface**: `api.events.nfts.Destroyed.is`
+- **summary**:    A `collection` was destroyed. 
+ 
+### ForceCreated(`u32`, `AccountId32`)
+- **interface**: `api.events.nfts.ForceCreated.is`
+- **summary**:    A `collection` was force-created. 
+ 
+### Issued(`u32`, `u32`, `AccountId32`)
+- **interface**: `api.events.nfts.Issued.is`
+- **summary**:    An `item` was issued. 
+ 
+### ItemAttributesApprovalAdded(`u32`, `u32`, `AccountId32`)
+- **interface**: `api.events.nfts.ItemAttributesApprovalAdded.is`
+- **summary**:    A new approval to modify item attributes was added. 
+ 
+### ItemAttributesApprovalRemoved(`u32`, `u32`, `AccountId32`)
+- **interface**: `api.events.nfts.ItemAttributesApprovalRemoved.is`
+- **summary**:    A new approval to modify item attributes was removed. 
+ 
+### ItemBought(`u32`, `u32`, `u128`, `AccountId32`, `AccountId32`)
+- **interface**: `api.events.nfts.ItemBought.is`
+- **summary**:    An item was bought. 
+ 
+### ItemMetadataCleared(`u32`, `u32`)
+- **interface**: `api.events.nfts.ItemMetadataCleared.is`
+- **summary**:    Metadata has been cleared for an item. 
+ 
+### ItemMetadataSet(`u32`, `u32`, `Bytes`)
+- **interface**: `api.events.nfts.ItemMetadataSet.is`
+- **summary**:    New metadata has been set for an item. 
+ 
+### ItemPriceRemoved(`u32`, `u32`)
+- **interface**: `api.events.nfts.ItemPriceRemoved.is`
+- **summary**:    The price for the item was removed. 
+ 
+### ItemPriceSet(`u32`, `u32`, `u128`, `Option<AccountId32>`)
+- **interface**: `api.events.nfts.ItemPriceSet.is`
+- **summary**:    The price was set for the item. 
+ 
+### ItemPropertiesLocked(`u32`, `u32`, `bool`, `bool`)
+- **interface**: `api.events.nfts.ItemPropertiesLocked.is`
+- **summary**:    `item` metadata or attributes were locked. 
+ 
+### ItemTransferLocked(`u32`, `u32`)
+- **interface**: `api.events.nfts.ItemTransferLocked.is`
+- **summary**:    An `item` became non-transferable. 
+ 
+### ItemTransferUnlocked(`u32`, `u32`)
+- **interface**: `api.events.nfts.ItemTransferUnlocked.is`
+- **summary**:    An `item` became transferable. 
+ 
+### NextCollectionIdIncremented(`u32`)
+- **interface**: `api.events.nfts.NextCollectionIdIncremented.is`
+- **summary**:    Event gets emitted when the `NextCollectionId` gets incremented. 
+ 
+### OwnerChanged(`u32`, `AccountId32`)
+- **interface**: `api.events.nfts.OwnerChanged.is`
+- **summary**:    The owner changed. 
+ 
+### OwnershipAcceptanceChanged(`AccountId32`, `Option<u32>`)
+- **interface**: `api.events.nfts.OwnershipAcceptanceChanged.is`
+- **summary**:    Ownership acceptance has changed for an account. 
+ 
+### Redeposited(`u32`, `Vec<u32>`)
+- **interface**: `api.events.nfts.Redeposited.is`
+- **summary**:    The deposit for a set of `item`s within a `collection` has been updated. 
+ 
+### SwapCancelled(`u32`, `u32`, `u32`, `Option<u32>`, `Option<PalletNftsPriceWithDirection>`, `u32`)
+- **interface**: `api.events.nfts.SwapCancelled.is`
+- **summary**:    The swap was cancelled. 
+ 
+### SwapClaimed(`u32`, `u32`, `AccountId32`, `u32`, `u32`, `AccountId32`, `Option<PalletNftsPriceWithDirection>`, `u32`)
+- **interface**: `api.events.nfts.SwapClaimed.is`
+- **summary**:    The swap has been claimed. 
+ 
+### SwapCreated(`u32`, `u32`, `u32`, `Option<u32>`, `Option<PalletNftsPriceWithDirection>`, `u32`)
+- **interface**: `api.events.nfts.SwapCreated.is`
+- **summary**:    An `item` swap intent was created. 
+ 
+### TeamChanged(`u32`, `AccountId32`, `AccountId32`, `AccountId32`)
+- **interface**: `api.events.nfts.TeamChanged.is`
+- **summary**:    The management team changed. 
+ 
+### TipSent(`u32`, `u32`, `AccountId32`, `AccountId32`, `u128`)
+- **interface**: `api.events.nfts.TipSent.is`
+- **summary**:    A tip was sent. 
+ 
+### TransferApproved(`u32`, `u32`, `AccountId32`, `AccountId32`, `Option<u32>`)
+- **interface**: `api.events.nfts.TransferApproved.is`
+- **summary**:    An `item` of a `collection` has been approved by the `owner` for transfer by  a `delegate`. 
+ 
+### Transferred(`u32`, `u32`, `AccountId32`, `AccountId32`)
+- **interface**: `api.events.nfts.Transferred.is`
+- **summary**:    An `item` was transferred. 
+
+___
+
+
 ## nis
  
 ### BidDropped(`AccountId32`, `u128`, `u32`)
@@ -1520,6 +1671,10 @@ ___
 ### Spending(`u128`)
 - **interface**: `api.events.treasury.Spending.is`
 - **summary**:    We have ended a spend period and will now allocate funds. 
+ 
+### UpdatedInactive(`u128`, `u128`)
+- **interface**: `api.events.treasury.UpdatedInactive.is`
+- **summary**:    The inactive funds of the pallet have been updated. 
 
 ___
 

@@ -54,6 +54,8 @@ The following sections contain Storage methods are part of the default Substrate
 
 - **[multisig](#multisig)**
 
+- **[nfts](#nfts)**
+
 - **[nis](#nis)**
 
 - **[nominationPools](#nominationpools)**
@@ -835,6 +837,71 @@ ___
 ___
 
 
+## nfts
+ 
+### account(`AccountId32, u32, u32`): `Option<Null>`
+- **interface**: `api.query.nfts.account`
+- **summary**:    The items held by any given account; set out this way so that items owned by a single  account can be enumerated. 
+ 
+### attribute(`u32, Option<u32>, FrameSupportTokensMiscAttributeNamespace, Bytes`): `Option<(Bytes,PalletNftsAttributeDeposit)>`
+- **interface**: `api.query.nfts.attribute`
+- **summary**:    Attributes of a collection. 
+ 
+### collection(`u32`): `Option<PalletNftsCollectionDetails>`
+- **interface**: `api.query.nfts.collection`
+- **summary**:    Details of a collection. 
+ 
+### collectionAccount(`AccountId32, u32`): `Option<Null>`
+- **interface**: `api.query.nfts.collectionAccount`
+- **summary**:    The collections owned by any given account; set out this way so that collections owned by  a single account can be enumerated. 
+ 
+### collectionConfigOf(`u32`): `Option<PalletNftsCollectionConfig>`
+- **interface**: `api.query.nfts.collectionConfigOf`
+- **summary**:    Config of a collection. 
+ 
+### collectionMetadataOf(`u32`): `Option<PalletNftsCollectionMetadata>`
+- **interface**: `api.query.nfts.collectionMetadataOf`
+- **summary**:    Metadata of a collection. 
+ 
+### collectionRoleOf(`u32, AccountId32`): `Option<u8>`
+- **interface**: `api.query.nfts.collectionRoleOf`
+- **summary**:    The items in existence and their ownership details.  Stores collection roles as per account. 
+ 
+### item(`u32, u32`): `Option<PalletNftsItemDetails>`
+- **interface**: `api.query.nfts.item`
+- **summary**:    The items in existence and their ownership details. 
+ 
+### itemAttributesApprovalsOf(`u32, u32`): `BTreeSet<AccountId32>`
+- **interface**: `api.query.nfts.itemAttributesApprovalsOf`
+- **summary**:    Item attribute approvals. 
+ 
+### itemConfigOf(`u32, u32`): `Option<PalletNftsItemConfig>`
+- **interface**: `api.query.nfts.itemConfigOf`
+- **summary**:    Config of an item. 
+ 
+### itemMetadataOf(`u32, u32`): `Option<PalletNftsItemMetadata>`
+- **interface**: `api.query.nfts.itemMetadataOf`
+- **summary**:    Metadata of an item. 
+ 
+### itemPriceOf(`u32, u32`): `Option<(u128,Option<AccountId32>)>`
+- **interface**: `api.query.nfts.itemPriceOf`
+- **summary**:    A price of an item. 
+ 
+### nextCollectionId(): `Option<u32>`
+- **interface**: `api.query.nfts.nextCollectionId`
+- **summary**:    Stores the `CollectionId` that is going to be used for the next collection.  This gets incremented whenever a new collection is created. 
+ 
+### ownershipAcceptance(`AccountId32`): `Option<u32>`
+- **interface**: `api.query.nfts.ownershipAcceptance`
+- **summary**:    The collection, if any, of which an account is willing to take ownership. 
+ 
+### pendingSwapOf(`u32, u32`): `Option<PalletNftsPendingSwap>`
+- **interface**: `api.query.nfts.pendingSwapOf`
+- **summary**:    Handles all the pending swaps. 
+
+___
+
+
 ## nis
  
 ### queues(`u32`): `Vec<PalletNisBid>`
@@ -1389,12 +1456,6 @@ ___
 - **interface**: `api.query.staking.spanSlash`
 - **summary**:    Records information about the maximum slash of a stash within a slashing span,  as well as how much reward has been paid out. 
  
-### storageVersion(): `PalletStakingReleases`
-- **interface**: `api.query.staking.storageVersion`
-- **summary**:    True if network has been upgraded to this version.  Storage version of the pallet. 
-
-   This is set to v7.0.0 for new networks. 
- 
 ### unappliedSlashes(`u32`): `Vec<PalletStakingUnappliedSlash>`
 - **interface**: `api.query.staking.unappliedSlashes`
 - **summary**:    All unapplied slashes that are queued for later. 
@@ -1667,8 +1728,8 @@ ___
 - **interface**: `api.query.treasury.approvals`
 - **summary**:    Proposal indices that have been approved but not yet awarded. 
  
-### inactive(): `u128`
-- **interface**: `api.query.treasury.inactive`
+### deactivated(): `u128`
+- **interface**: `api.query.treasury.deactivated`
 - **summary**:    The amount which has been reported as inactive to Currency. 
  
 ### proposalCount(): `u32`
