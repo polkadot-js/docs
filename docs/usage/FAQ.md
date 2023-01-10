@@ -7,7 +7,7 @@ The list will be updated/expanded as questions come up, dealing with some common
 
 ## Under TypeScript I have TS compilation errors
 
-When running into TypeScript errors, ensure that you are on a recent version. The API (and common utilities), rely extensively on [template literals](https://www.typescriptlang.org/docs/handbook/2/template-literal-types.html) which were introduced in the [Typescript 4.1 version](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-4-1.html).
+When running into TypeScript errors, ensure that you are on a recent version. The API (and common utilities) rely extensively on [template literals](https://www.typescriptlang.org/docs/handbook/2/template-literal-types.html) which were introduced in [Typescript version 4.1](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-4-1.html).
 
 Additionally the [rxjs library](https://github.com/ReactiveX/rxjs/) (used internally by the API), requires at least a [TypeScript 4.2 version](https://github.com/ReactiveX/rxjs/blob/6bd1c5f3cf0e387973b44698c48bc933e8c528aa/package.json#L9), without it the Observable types are not correctly resolved.
 
