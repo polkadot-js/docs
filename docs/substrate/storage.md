@@ -665,6 +665,8 @@ ___
 
    Keeps track of `AccountId` wishing to unstake and it's corresponding deposit. 
 
+   TWOX-NOTE: SAFE since `AccountId` is a secure hash. 
+
 ___
 
 
@@ -990,6 +992,8 @@ ___
 ### poolMembers(`AccountId32`): `Option<PalletNominationPoolsPoolMember>`
 - **interface**: `api.query.nominationPools.poolMembers`
 - **summary**:    Active members. 
+
+   TWOX-NOTE: SAFE since `AccountId` is a secure hash. 
  
 ### reversePoolIdLookup(`AccountId32`): `Option<u32>`
 - **interface**: `api.query.nominationPools.reversePoolIdLookup`
@@ -1291,6 +1295,8 @@ ___
 ### bonded(`AccountId32`): `Option<AccountId32>`
 - **interface**: `api.query.staking.bonded`
 - **summary**:    Map from all locked "stash" accounts to the controller account. 
+
+   TWOX-NOTE: SAFE since `AccountId` is a secure hash. 
  
 ### bondedEras(): `Vec<(u32,u32)>`
 - **interface**: `api.query.staking.bondedEras`
@@ -1427,6 +1433,8 @@ ___
    This implies that `::iter_keys().count()` and `::iter().count()` might return different  values for this map. Moreover, the main `::count()` is aligned with the former, namely the  number of keys that exist. 
 
    Lastly, if any of the nominators become non-decodable, they can be chilled immediately via  [`Call::chill_other`] dispatchable by anyone. 
+
+   TWOX-NOTE: SAFE since `AccountId` is a secure hash. 
  
 ### nominatorSlashInEra(`u32, AccountId32`): `Option<u128>`
 - **interface**: `api.query.staking.nominatorSlashInEra`
@@ -1441,6 +1449,8 @@ ___
 ### payee(`AccountId32`): `PalletStakingRewardDestination`
 - **interface**: `api.query.staking.payee`
 - **summary**:    Where the reward payment should be made. Keyed by stash. 
+
+   TWOX-NOTE: SAFE since `AccountId` is a secure hash. 
  
 ### slashingSpans(`AccountId32`): `Option<PalletStakingSlashingSlashingSpans>`
 - **interface**: `api.query.staking.slashingSpans`
@@ -1467,6 +1477,8 @@ ___
 ### validators(`AccountId32`): `PalletStakingValidatorPrefs`
 - **interface**: `api.query.staking.validators`
 - **summary**:    The map from (wannabe) validator stash key to the preferences of that validator. 
+
+   TWOX-NOTE: SAFE since `AccountId` is a secure hash. 
  
 ### validatorSlashInEra(`u32, AccountId32`): `Option<(Perbill,u128)>`
 - **interface**: `api.query.staking.validatorSlashInEra`

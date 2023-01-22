@@ -2402,7 +2402,7 @@ ___
 - **interface**: `api.tx.nfts.clearAttribute`
 - **summary**:    Clear an attribute for a collection or item. 
 
-   Origin must be either `ForceOrigin` or Signed and the sender should be the Owner of the  `collection`. 
+   Origin must be either `ForceOrigin` or Signed and the sender should be the Owner of the  attribute. 
 
    Any deposit is freed for the collection's owner. 
 
@@ -2873,6 +2873,10 @@ ___
 
 ## nis
  
+### communify(index: `Compact<u32>`)
+- **interface**: `api.tx.nis.communify`
+- **summary**:    Make a private receipt communal and create fungible counterparts for its owner. 
+ 
 ### fundDeficit()
 - **interface**: `api.tx.nis.fundDeficit`
 - **summary**:    Ensure we have sufficient funding for all potential payouts. 
@@ -2893,6 +2897,10 @@ ___
 
   - `Queues[duration].len()` (just take max).
  
+### privatize(index: `Compact<u32>`)
+- **interface**: `api.tx.nis.privatize`
+- **summary**:    Make a communal receipt private and burn fungible counterparts from its owner. 
+ 
 ### retractBid(amount: `Compact<u128>`, duration: `u32`)
 - **interface**: `api.tx.nis.retractBid`
 - **summary**:    Retract a previously placed bid. 
@@ -2903,8 +2911,16 @@ ___
 
   - `duration`: The duration of the previous bid.
  
-### thaw(index: `Compact<u32>`, portion: `Option<u128>`)
-- **interface**: `api.tx.nis.thaw`
+### thawCommunal(index: `Compact<u32>`)
+- **interface**: `api.tx.nis.thawCommunal`
+- **summary**:    Reduce or remove an outstanding receipt, placing the according proportion of funds into  the account of the owner. 
+
+   - `origin`: Must be Signed and the account must be the owner of the fungible counterpart  for receipt `index`. 
+
+  - `index`: The index of the receipt.
+ 
+### thawPrivate(index: `Compact<u32>`, maybe_proportion: `Option<Perquintill>`)
+- **interface**: `api.tx.nis.thawPrivate`
 - **summary**:    Reduce or remove an outstanding receipt, placing the according proportion of funds into  the account of the owner. 
 
    - `origin`: Must be Signed and the account must be the owner of the receipt `index` as  well as any fungible counterpart. 

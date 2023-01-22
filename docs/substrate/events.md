@@ -565,29 +565,23 @@ ___
 - **interface**: `api.events.electionProviderMultiPhase.ElectionFinalized.is`
 - **summary**:    The election has been finalized, with the given computation and score. 
  
+### PhaseTransitioned(`PalletElectionProviderMultiPhasePhase`, `PalletElectionProviderMultiPhasePhase`, `u32`)
+- **interface**: `api.events.electionProviderMultiPhase.PhaseTransitioned.is`
+- **summary**:    There was a phase transition in a given round. 
+ 
 ### Rewarded(`AccountId32`, `u128`)
 - **interface**: `api.events.electionProviderMultiPhase.Rewarded.is`
 - **summary**:    An account has been rewarded for their signed submission being finalized. 
- 
-### SignedPhaseStarted(`u32`)
-- **interface**: `api.events.electionProviderMultiPhase.SignedPhaseStarted.is`
-- **summary**:    The signed phase of the given round has started. 
  
 ### Slashed(`AccountId32`, `u128`)
 - **interface**: `api.events.electionProviderMultiPhase.Slashed.is`
 - **summary**:    An account has been slashed for submitting an invalid signed submission. 
  
-### SolutionStored(`PalletElectionProviderMultiPhaseElectionCompute`, `bool`)
+### SolutionStored(`PalletElectionProviderMultiPhaseElectionCompute`, `Option<AccountId32>`, `bool`)
 - **interface**: `api.events.electionProviderMultiPhase.SolutionStored.is`
 - **summary**:    A solution was stored with the given compute. 
 
-   If the solution is signed, this means that it hasn't yet been processed. If the  solution is unsigned, this means that it has also been processed. 
-
-   The `bool` is `true` when a previous solution was ejected to make room for this one. 
- 
-### UnsignedPhaseStarted(`u32`)
-- **interface**: `api.events.electionProviderMultiPhase.UnsignedPhaseStarted.is`
-- **summary**:    The unsigned phase of the given round has started. 
+   The `origin` indicates the origin of the solution. If `origin` is `Some(AccountId)`,  the stored solution was submited in the signed phase by a miner with the `AccountId`.  Otherwise, the solution was stored either during the unsigned phase or by  `T::ForceOrigin`. The `bool` is `true` when a previous solution was ejected to make  room for this one. 
 
 ___
 
@@ -1410,6 +1404,10 @@ ___
 ### EraPaid(`u32`, `u128`, `u128`)
 - **interface**: `api.events.staking.EraPaid.is`
 - **summary**:    The era payout has been set; the first balance is the validator-payout; the second is  the remainder from the maximum amount of reward. 
+ 
+### ForceEra(`PalletStakingForcing`)
+- **interface**: `api.events.staking.ForceEra.is`
+- **summary**:    A new force era mode was set. 
  
 ### Kicked(`AccountId32`, `AccountId32`)
 - **interface**: `api.events.staking.Kicked.is`

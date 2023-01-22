@@ -544,10 +544,6 @@ ___
 - **interface**: `api.errors.contracts.DuplicateContract.is`
 - **summary**:    A contract with the same AccountId already exists. 
  
-### DuplicateTopics
-- **interface**: `api.errors.contracts.DuplicateTopics.is`
-- **summary**:    The topics passed to `seal_deposit_events` contains at least one duplicate. 
- 
 ### Indeterministic
 - **interface**: `api.errors.contracts.Indeterministic.is`
 - **summary**:    An indetermistic code was used in a context where this is not permitted. 
@@ -1270,6 +1266,10 @@ ___
 - **interface**: `api.errors.nfts.ApprovalExpired.is`
 - **summary**:    The approval had a deadline that expired, so the approval isn't valid anymore. 
  
+### AttributeNotFound
+- **interface**: `api.errors.nfts.AttributeNotFound.is`
+- **summary**:    The provided attribute can't be found. 
+ 
 ### BadWitness
 - **interface**: `api.errors.nfts.BadWitness.is`
 - **summary**:    The witness data given does not match the current state of the chain. 
@@ -1329,6 +1329,10 @@ ___
 ### MaxSupplyTooSmall
 - **interface**: `api.errors.nfts.MaxSupplyTooSmall.is`
 - **summary**:    The provided max supply is less than the number of items a collection already has. 
+ 
+### MetadataNotFound
+- **interface**: `api.errors.nfts.MetadataNotFound.is`
+- **summary**:    The given item has no metadata set. 
  
 ### MethodDisabled
 - **interface**: `api.errors.nfts.MethodDisabled.is`
@@ -1407,6 +1411,18 @@ ___
 
 ## nis
  
+### AlreadyCommunal
+- **interface**: `api.errors.nis.AlreadyCommunal.is`
+- **summary**:    The receipt is already communal. 
+ 
+### AlreadyFunded
+- **interface**: `api.errors.nis.AlreadyFunded.is`
+- **summary**:    There are enough funds for what is required. 
+ 
+### AlreadyPrivate
+- **interface**: `api.errors.nis.AlreadyPrivate.is`
+- **summary**:    The receipt is already private. 
+ 
 ### AmountTooSmall
 - **interface**: `api.errors.nis.AmountTooSmall.is`
 - **summary**:    The amount of the bid is less than the minimum allowed. 
@@ -1423,10 +1439,6 @@ ___
 - **interface**: `api.errors.nis.DurationTooSmall.is`
 - **summary**:    The duration of the bid is less than one. 
  
-### Funded
-- **interface**: `api.errors.nis.Funded.is`
-- **summary**:    There are enough funds for what is required. 
- 
 ### MakesDust
 - **interface**: `api.errors.nis.MakesDust.is`
 - **summary**:    The operation would result in a receipt worth an insignficant value. 
@@ -1435,29 +1447,29 @@ ___
 - **interface**: `api.errors.nis.NotExpired.is`
 - **summary**:    Bond not yet at expiry date. 
  
-### NotFound
-- **interface**: `api.errors.nis.NotFound.is`
-- **summary**:    The given bid for retraction is not found. 
- 
 ### NotOwner
 - **interface**: `api.errors.nis.NotOwner.is`
 - **summary**:    Not the owner of the receipt. 
+ 
+### PortionTooBig
+- **interface**: `api.errors.nis.PortionTooBig.is`
+- **summary**:    The portion supplied is beyond the value of the receipt. 
  
 ### Throttled
 - **interface**: `api.errors.nis.Throttled.is`
 - **summary**:    The thaw throttle has been reached for this period. 
  
-### TooMuch
-- **interface**: `api.errors.nis.TooMuch.is`
-- **summary**:    The portion supplied is beyond the value of the receipt. 
- 
 ### Unfunded
 - **interface**: `api.errors.nis.Unfunded.is`
 - **summary**:    Not enough funds are held to pay out. 
  
-### Unknown
-- **interface**: `api.errors.nis.Unknown.is`
-- **summary**:    Bond index is unknown. 
+### UnknownBid
+- **interface**: `api.errors.nis.UnknownBid.is`
+- **summary**:    The given bid for retraction is not found. 
+ 
+### UnknownReceipt
+- **interface**: `api.errors.nis.UnknownReceipt.is`
+- **summary**:    Receipt index is unknown. 
 
 ___
 

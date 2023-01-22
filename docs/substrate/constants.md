@@ -52,8 +52,6 @@ The following sections contain the module constants, also known as parameter typ
 
 - **[nominationPools](#nominationpools)**
 
-- **[preimage](#preimage)**
-
 - **[proxy](#proxy)**
 
 - **[rankedPolls](#rankedpolls)**
@@ -290,6 +288,8 @@ ___
 ### maxCodeLen: `u32`
 - **interface**: `api.consts.contracts.maxCodeLen`
 - **summary**:    The maximum length of a contract code in bytes. This limit applies to the instrumented  version of the code. Therefore `instantiate_with_code` can fail even when supplying  a wasm binary below this maximum size. 
+
+   The value should be chosen carefully taking into the account the overall memory limit  your runtime has, as well as the [maximum allowed callstack  depth](#associatedtype.CallStack). Look into the `integrity_test()` for some insights. 
  
 ### maxDebugBufferLen: `u32`
 - **interface**: `api.consts.contracts.maxDebugBufferLen`
@@ -754,6 +754,10 @@ ___
 - **interface**: `api.consts.nis.queueCount`
 - **summary**:    Number of duration queues in total. This sets the maximum duration supported, which is  this value multiplied by `Period`. 
  
+### reserveId: `[u8;8]`
+- **interface**: `api.consts.nis.reserveId`
+- **summary**:    The name for the reserve ID. 
+ 
 ### thawThrottle: `(Perquintill,u32)`
 - **interface**: `api.consts.nis.thawThrottle`
 - **summary**:    The maximum proportion which may be thawed and the period over which it is reset. 
@@ -776,19 +780,6 @@ ___
 ### palletId: `FrameSupportPalletId`
 - **interface**: `api.consts.nominationPools.palletId`
 - **summary**:    The nomination pool's pallet id. 
-
-___
-
-
-## preimage
- 
-### baseDeposit: `u128`
-- **interface**: `api.consts.preimage.baseDeposit`
-- **summary**:    The base deposit for placing a preimage on chain. 
- 
-### byteDeposit: `u128`
-- **interface**: `api.consts.preimage.byteDeposit`
-- **summary**:    The per-byte deposit for placing a preimage on chain. 
 
 ___
 
