@@ -4,7 +4,7 @@ title: Errors
 
 This page lists the errors that can be encountered in the different modules. 
 
-(NOTE: These were generated from a static/snapshot view of a recent Substrate master node. Some items may not be available in older nodes, or in any customized implementations.)
+(NOTE: These were generated from a static/snapshot view of a recent default Substrate runtime. Some items may not be available in older nodes, or in any customized implementations.)
 
 - **[alliance](#alliance)**
 

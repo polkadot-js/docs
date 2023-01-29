@@ -4,7 +4,7 @@ title: Storage
 
 The following sections contain Storage methods are part of the default Substrate runtime. On the api, these are exposed via `api.query.<module>.<method>`. 
 
-(NOTE: These were generated from a static/snapshot view of a recent Substrate master node. Some items may not be available in older nodes, or in any customized implementations.)
+(NOTE: These were generated from a static/snapshot view of a recent default Substrate runtime. Some items may not be available in older nodes, or in any customized implementations.)
 
 - **[alliance](#alliance)**
 
@@ -61,6 +61,8 @@ The following sections contain Storage methods are part of the default Substrate
 - **[nominationPools](#nominationpools)**
 
 - **[offences](#offences)**
+
+- **[pov](#pov)**
 
 - **[preimage](#preimage)**
 
@@ -1029,6 +1031,49 @@ ___
    All reports are sorted by the time of offence. 
 
    Note that the actual type of this mapping is `Vec<u8>`, this is because values of  different types are not supported at the moment so we are doing the manual serialization. 
+
+___
+
+
+## pov
+ 
+### boundedValue(): `Option<Bytes>`
+- **interface**: `api.query.pov.boundedValue`
+- **summary**:    A value with a MEL bound of 32 byte. 
+ 
+### doubleMap1M(`u32, u32`): `Option<u32>`
+- **interface**: `api.query.pov.doubleMap1M`
+ 
+### largeValue(): `Option<Bytes>`
+- **interface**: `api.query.pov.largeValue`
+- **summary**:    4MiB value. 
+ 
+### largeValue2(): `Option<Bytes>`
+- **interface**: `api.query.pov.largeValue2`
+ 
+### map16M(`u32`): `Option<u32>`
+- **interface**: `api.query.pov.map16M`
+- **summary**:    A map with a maximum of 16M entries. 
+ 
+### map1M(`u32`): `Option<u32>`
+- **interface**: `api.query.pov.map1M`
+- **summary**:    A map with a maximum of 1M entries. 
+ 
+### unboundedMap(`u32`): `Option<Vec<u32>>`
+- **interface**: `api.query.pov.unboundedMap`
+ 
+### unboundedMap2(`u32`): `Option<Vec<u32>>`
+- **interface**: `api.query.pov.unboundedMap2`
+ 
+### unboundedValue(): `Option<Bytes>`
+- **interface**: `api.query.pov.unboundedValue`
+- **summary**:    A value without a MEL bound. 
+ 
+### value(): `Option<u32>`
+- **interface**: `api.query.pov.value`
+ 
+### value2(): `Option<u32>`
+- **interface**: `api.query.pov.value2`
 
 ___
 
