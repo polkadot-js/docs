@@ -692,6 +692,16 @@ ___
 - **interface**: `api.call.transactionPaymentApi.queryInfo`
 - **runtime**: `TransactionPaymentApi_query_info`
 - **summary**: The transaction info
+ 
+### queryLengthToFee(length: `u32`): `Balance`
+- **interface**: `api.call.transactionPaymentApi.queryLengthToFee`
+- **runtime**: `TransactionPaymentApi_query_length_to_fee`
+- **summary**: Query the output of the current LengthToFee given some input
+ 
+### queryWeightToFee(weight: `Weight`): `Balance`
+- **interface**: `api.call.transactionPaymentApi.queryWeightToFee`
+- **runtime**: `TransactionPaymentApi_query_weight_to_fee`
+- **summary**: Query the output of the current WeightToFee given some input
 
 ___
 
@@ -707,6 +717,16 @@ ___
 - **interface**: `api.call.transactionPaymentCallApi.queryCallInfo`
 - **runtime**: `TransactionPaymentCallApi_query_call_info`
 - **summary**: The call info
+ 
+### queryLengthToFee(length: `u32`): `Balance`
+- **interface**: `api.call.transactionPaymentCallApi.queryLengthToFee`
+- **runtime**: `TransactionPaymentCallApi_query_length_to_fee`
+- **summary**: Query the output of the current LengthToFee given some input
+ 
+### queryWeightToFee(weight: `Weight`): `Balance`
+- **interface**: `api.call.transactionPaymentCallApi.queryWeightToFee`
+- **runtime**: `TransactionPaymentCallApi_query_weight_to_fee`
+- **summary**: Query the output of the current WeightToFee given some input
 
 ___
 

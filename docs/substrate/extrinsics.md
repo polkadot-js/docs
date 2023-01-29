@@ -4,7 +4,7 @@ title: Extrinsics
 
 The following sections contain Extrinsics methods are part of the default Substrate runtime. On the api, these are exposed via `api.tx.<module>.<method>`. 
 
-(NOTE: These were generated from a static/snapshot view of a recent Substrate master node. Some items may not be available in older nodes, or in any customized implementations.)
+(NOTE: These were generated from a static/snapshot view of a recent default Substrate runtime. Some items may not be available in older nodes, or in any customized implementations.)
 
 - **[alliance](#alliance)**
 
@@ -55,6 +55,8 @@ The following sections contain Extrinsics methods are part of the default Substr
 - **[nis](#nis)**
 
 - **[nominationPools](#nominationpools)**
+
+- **[pov](#pov)**
 
 - **[preimage](#preimage)**
 
@@ -1766,7 +1768,7 @@ ___
 
 ## fastUnstake
  
-### control(unchecked_eras_to_check: `u32`)
+### control(eras_to_check: `u32`)
 - **interface**: `api.tx.fastUnstake.control`
 - **summary**:    Control the operation of this pallet. 
 
@@ -3099,6 +3101,17 @@ ___
    #### Note 
 
    If the target is the depositor, the pool will be destroyed. 
+
+___
+
+
+## pov
+ 
+### emitEvent()
+- **interface**: `api.tx.pov.emitEvent`
+ 
+### noop()
+- **interface**: `api.tx.pov.noop`
 
 ___
 

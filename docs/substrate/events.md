@@ -4,7 +4,7 @@ title: Events
 
 Events are emitted for certain operations on the runtime. The following sections describe the events that are part of the default Substrate runtime. 
 
-(NOTE: These were generated from a static/snapshot view of a recent Substrate master node. Some items may not be available in older nodes, or in any customized implementations.)
+(NOTE: These were generated from a static/snapshot view of a recent default Substrate runtime. Some items may not be available in older nodes, or in any customized implementations.)
 
 - **[alliance](#alliance)**
 
@@ -55,6 +55,8 @@ Events are emitted for certain operations on the runtime. The following sections
 - **[nominationPools](#nominationpools)**
 
 - **[offences](#offences)**
+
+- **[pov](#pov)**
 
 - **[preimage](#preimage)**
 
@@ -627,9 +629,9 @@ ___
 - **interface**: `api.events.fastUnstake.BatchChecked.is`
 - **summary**:    A batch was partially checked for the given eras, but the process did not finish. 
  
-### BatchFinished()
+### BatchFinished(`u32`)
 - **interface**: `api.events.fastUnstake.BatchFinished.is`
-- **summary**:    A batch was terminated. 
+- **summary**:    A batch of a given size was terminated. 
 
    This is always follows by a number of `Unstaked` or `Slashed` events, marking the end  of the batch. A new batch will be created upon next block. 
  
@@ -1059,6 +1061,14 @@ ___
 ### Offence(`[u8;16]`, `Bytes`)
 - **interface**: `api.events.offences.Offence.is`
 - **summary**:    There is an offence reported of the given `kind` happened at the `session_index` and  (kind-specific) time slot. This event is not deposited for duplicate slashes.  \[kind, timeslot\]. 
+
+___
+
+
+## pov
+ 
+### TestEvent()
+- **interface**: `api.events.pov.TestEvent.is`
 
 ___
 
