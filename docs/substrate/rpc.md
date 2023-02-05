@@ -363,7 +363,7 @@ ___
 - **jsonrpc**: `eth_getTransactionByHash`
 - **summary**: Get transaction by its hash.
  
-### getTransactionCount(hash: `H256`, number?: `BlockNumber`): `U256`
+### getTransactionCount(address: `H160`, number?: `BlockNumber`): `U256`
 - **interface**: `api.rpc.eth.getTransactionCount`
 - **jsonrpc**: `eth_getTransactionCount`
 - **summary**: Returns the number of transactions sent from given address at given time (block number).
