@@ -221,14 +221,6 @@ ___
 ### author(): `Option<AccountId32>`
 - **interface**: `api.query.authorship.author`
 - **summary**:    Author of current block. 
- 
-### didSetUncles(): `bool`
-- **interface**: `api.query.authorship.didSetUncles`
-- **summary**:    Whether uncles were already set in this block. 
- 
-### uncles(): `Vec<PalletAuthorshipUncleEntryItem>`
-- **interface**: `api.query.authorship.uncles`
-- **summary**:    Uncles 
 
 ___
 
@@ -506,6 +498,12 @@ ___
 - **interface**: `api.query.democracy.lowestUnbaked`
 - **summary**:    The lowest referendum index representing an unbaked referendum. Equal to  `ReferendumCount` if there isn't a unbaked referendum. 
  
+### metadataOf(`PalletDemocracyMetadataOwner`): `Option<H256>`
+- **interface**: `api.query.democracy.metadataOf`
+- **summary**:    General information concerning any proposal or referendum.  The `PreimageHash` refers to the preimage of the `Preimages` provider which can be a JSON  dump or IPFS hash of a JSON file. 
+
+   Consider a garbage collection for a metadata of finished referendums to `unrequest` (remove)  large preimages. 
+ 
 ### nextExternal(): `Option<(FrameSupportPreimagesBounded,PalletDemocracyVoteThreshold)>`
 - **interface**: `api.query.democracy.nextExternal`
 - **summary**:    The referendum to be tabled whenever it would be valid to table an external proposal.  This happens when a referendum needs to be tabled and one of two conditions are met: 
@@ -689,6 +687,8 @@ ___
 ### setIdSession(`u64`): `Option<u32>`
 - **interface**: `api.query.grandpa.setIdSession`
 - **summary**:    A mapping from grandpa set ID to the index of the *most recent* session for which its  members were responsible. 
+
+   This is only used for validating equivocation proofs. An equivocation proof must  contains a key-ownership proof for a given session, therefore we need a way to tie  together sessions and GRANDPA set ids, i.e. we need to validate that a validator  was the owner of a given key on a given session, and what the active set ID was  during that session. 
 
    TWOX-NOTE: `SetId` is not under user control. 
  
@@ -1146,6 +1146,12 @@ ___
 - **interface**: `api.query.rankedPolls.decidingCount`
 - **summary**:    The number of referenda being decided currently. 
  
+### metadataOf(`u32`): `Option<H256>`
+- **interface**: `api.query.rankedPolls.metadataOf`
+- **summary**:    The metadata is a general information concerning the referendum.  The `PreimageHash` refers to the preimage of the `Preimages` provider which can be a JSON  dump or IPFS hash of a JSON file. 
+
+   Consider a garbage collection for a metadata of finished referendums to `unrequest` (remove)  large preimages. 
+ 
 ### referendumCount(): `u32`
 - **interface**: `api.query.rankedPolls.referendumCount`
 - **summary**:    The next free referendum index, aka the number of referenda started so far. 
@@ -1189,6 +1195,12 @@ ___
 ### decidingCount(`u16`): `u32`
 - **interface**: `api.query.referenda.decidingCount`
 - **summary**:    The number of referenda being decided currently. 
+ 
+### metadataOf(`u32`): `Option<H256>`
+- **interface**: `api.query.referenda.metadataOf`
+- **summary**:    The metadata is a general information concerning the referendum.  The `PreimageHash` refers to the preimage of the `Preimages` provider which can be a JSON  dump or IPFS hash of a JSON file. 
+
+   Consider a garbage collection for a metadata of finished referendums to `unrequest` (remove)  large preimages. 
  
 ### referendumCount(): `u32`
 - **interface**: `api.query.referenda.referendumCount`

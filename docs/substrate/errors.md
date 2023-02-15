@@ -12,8 +12,6 @@ This page lists the errors that can be encountered in the different modules.
 
 - **[assets](#assets)**
 
-- **[authorship](#authorship)**
-
 - **[babe](#babe)**
 
 - **[balances](#balances)**
@@ -331,39 +329,6 @@ ___
 ### WouldDie
 - **interface**: `api.errors.assets.WouldDie.is`
 - **summary**:    The source account would not survive the transfer and it needs to stay alive. 
-
-___
-
-
-## authorship
- 
-### GenesisUncle
-- **interface**: `api.errors.authorship.GenesisUncle.is`
-- **summary**:    The uncle is genesis. 
- 
-### InvalidUncleParent
-- **interface**: `api.errors.authorship.InvalidUncleParent.is`
-- **summary**:    The uncle parent not in the chain. 
- 
-### OldUncle
-- **interface**: `api.errors.authorship.OldUncle.is`
-- **summary**:    The uncle isn't recent enough to be included. 
- 
-### TooHighUncle
-- **interface**: `api.errors.authorship.TooHighUncle.is`
-- **summary**:    The uncle is too high in chain. 
- 
-### TooManyUncles
-- **interface**: `api.errors.authorship.TooManyUncles.is`
-- **summary**:    Too many uncles. 
- 
-### UncleAlreadyIncluded
-- **interface**: `api.errors.authorship.UncleAlreadyIncluded.is`
-- **summary**:    The uncle is already included. 
- 
-### UnclesAlreadySet
-- **interface**: `api.errors.authorship.UnclesAlreadySet.is`
-- **summary**:    Uncles already set in the block. 
 
 ___
 
@@ -780,6 +745,10 @@ ___
 ### NotVoter
 - **interface**: `api.errors.democracy.NotVoter.is`
 - **summary**:    The given account did not vote on the referendum. 
+ 
+### PreimageNotExist
+- **interface**: `api.errors.democracy.PreimageNotExist.is`
+- **summary**:    The preimage does not exist. 
  
 ### ProposalBlacklisted
 - **interface**: `api.errors.democracy.ProposalBlacklisted.is`
@@ -1722,6 +1691,10 @@ ___
 - **interface**: `api.errors.rankedPolls.NoTrack.is`
 - **summary**:    No track exists for the proposal origin. 
  
+### PreimageNotExist
+- **interface**: `api.errors.rankedPolls.PreimageNotExist.is`
+- **summary**:    The preimage does not exist. 
+ 
 ### QueueEmpty
 - **interface**: `api.errors.rankedPolls.QueueEmpty.is`
 - **summary**:    The queue of the track is empty. 
@@ -1843,6 +1816,10 @@ ___
 ### NoTrack
 - **interface**: `api.errors.referenda.NoTrack.is`
 - **summary**:    No track exists for the proposal origin. 
+ 
+### PreimageNotExist
+- **interface**: `api.errors.referenda.PreimageNotExist.is`
+- **summary**:    The preimage does not exist. 
  
 ### QueueEmpty
 - **interface**: `api.errors.referenda.QueueEmpty.is`

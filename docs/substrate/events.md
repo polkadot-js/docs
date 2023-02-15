@@ -512,6 +512,18 @@ ___
 - **interface**: `api.events.democracy.ExternalTabled.is`
 - **summary**:    An external proposal has been tabled. 
  
+### MetadataCleared(`PalletDemocracyMetadataOwner`, `H256`)
+- **interface**: `api.events.democracy.MetadataCleared.is`
+- **summary**:    Metadata for a proposal or a referendum has been cleared. 
+ 
+### MetadataSet(`PalletDemocracyMetadataOwner`, `H256`)
+- **interface**: `api.events.democracy.MetadataSet.is`
+- **summary**:    Metadata for a proposal or a referendum has been set. 
+ 
+### MetadataTransferred(`PalletDemocracyMetadataOwner`, `PalletDemocracyMetadataOwner`, `H256`)
+- **interface**: `api.events.democracy.MetadataTransferred.is`
+- **summary**:    Metadata has been transferred to new owner. 
+ 
 ### NotPassed(`u32`)
 - **interface**: `api.events.democracy.NotPassed.is`
 - **summary**:    A proposal has been rejected by referendum. 
@@ -1176,6 +1188,14 @@ ___
 - **interface**: `api.events.rankedPolls.Killed.is`
 - **summary**:    A referendum has been killed. 
  
+### MetadataCleared(`u32`, `H256`)
+- **interface**: `api.events.rankedPolls.MetadataCleared.is`
+- **summary**:    Metadata for a referendum has been cleared. 
+ 
+### MetadataSet(`u32`, `H256`)
+- **interface**: `api.events.rankedPolls.MetadataSet.is`
+- **summary**:    Metadata for a referendum has been set. 
+ 
 ### Rejected(`u32`, `PalletRankedCollectiveTally`)
 - **interface**: `api.events.rankedPolls.Rejected.is`
 - **summary**:    A proposal has been rejected by referendum. 
@@ -1263,6 +1283,14 @@ ___
 ### Killed(`u32`, `PalletConvictionVotingTally`)
 - **interface**: `api.events.referenda.Killed.is`
 - **summary**:    A referendum has been killed. 
+ 
+### MetadataCleared(`u32`, `H256`)
+- **interface**: `api.events.referenda.MetadataCleared.is`
+- **summary**:    Metadata for a referendum has been cleared. 
+ 
+### MetadataSet(`u32`, `H256`)
+- **interface**: `api.events.referenda.MetadataSet.is`
+- **summary**:    Metadata for a referendum has been set. 
  
 ### Rejected(`u32`, `PalletConvictionVotingTally`)
 - **interface**: `api.events.referenda.Rejected.is`
@@ -1371,6 +1399,10 @@ ___
 ### NewMaxMembers(`u32`)
 - **interface**: `api.events.society.NewMaxMembers.is`
 - **summary**:    A new \[max\] member count has been set 
+ 
+### SkepticsChosen(`Vec<AccountId32>`)
+- **interface**: `api.events.society.SkepticsChosen.is`
+- **summary**:    A group of members has been choosen as Skeptics 
  
 ### SuspendedMemberJudgement(`AccountId32`, `bool`)
 - **interface**: `api.events.society.SuspendedMemberJudgement.is`

@@ -12,8 +12,6 @@ The following sections contain Extrinsics methods are part of the default Substr
 
 - **[assets](#assets)**
 
-- **[authorship](#authorship)**
-
 - **[babe](#babe)**
 
 - **[balances](#balances)**
@@ -281,7 +279,7 @@ ___
 
   - `old_count`: The upper bound for the previous number of members in storage. Used for weight estimation. 
 
-   Requires root origin. 
+   The dispatch of this call must be `SetMembersOrigin`. 
 
    NOTE: Does not enforce the expected `MaxMembers` limit on the amount of members, but  the weight estimations rely on it to estimate dispatchable weight. 
 
@@ -749,15 +747,6 @@ ___
    Emits `OwnerChanged`. 
 
    Weight: `O(1)` 
-
-___
-
-
-## authorship
- 
-### setUncles(new_uncles: `Vec<SpRuntimeHeader>`)
-- **interface**: `api.tx.authorship.setUncles`
-- **summary**:    Provide a set of uncles. 
 
 ___
 
@@ -1370,7 +1359,7 @@ ___
 
   - `old_count`: The upper bound for the previous number of members in storage. Used for weight estimation. 
 
-   Requires root origin. 
+   The dispatch of this call must be `SetMembersOrigin`. 
 
    NOTE: Does not enforce the expected `MaxMembers` limit on the amount of members, but  the weight estimations rely on it to estimate dispatchable weight. 
 
@@ -1583,6 +1572,30 @@ ___
 
    - `proposal`: The index of the proposal to second. 
  
+### setMetadata(owner: `PalletDemocracyMetadataOwner`, maybe_hash: `Option<H256>`)
+- **interface**: `api.tx.democracy.setMetadata`
+- **summary**:    Set or clear a metadata of a proposal or a referendum. 
+
+   Parameters: 
+
+  - `origin`: Must correspond to the `MetadataOwner`.
+
+  - `ExternalOrigin` for an external proposal with the `SuperMajorityApprove` threshold. 
+
+  - `ExternalDefaultOrigin` for an external proposal with the `SuperMajorityAgainst` threshold. 
+
+  - `ExternalMajorityOrigin` for an external proposal with the `SimpleMajority` threshold. 
+
+  - `Signed` by a creator for a public proposal.
+
+  - `Signed` to clear a metadata for a finished referendum.
+
+  - `Root` to set a metadata for an ongoing referendum.
+
+  - `owner`: an identifier of a metadata owner.
+
+  - `maybe_hash`: The hash of an on-chain stored preimage. `None` to clear a metadata.
+ 
 ### undelegate()
 - **interface**: `api.tx.democracy.undelegate`
 - **summary**:    Undelegate the voting power of the sending account. 
@@ -1760,8 +1773,6 @@ ___
    #### Warning 
 
    It is the responsibility of the caller to **NOT** place all of their balance into the  lock and keep some for further operations. 
-
-    
 
 ___
 
@@ -3223,8 +3234,6 @@ ___
 - **interface**: `api.tx.proxy.proxy`
 - **summary**:    Dispatch the given `call` from an account that the sender is authorised for through  `add_proxy`. 
 
-   Removes any corresponding announcement(s). 
-
    The dispatch origin for this call must be _Signed_. 
 
    Parameters: 
@@ -3453,6 +3462,18 @@ ___
 
    Emits `SubmissionDepositRefunded`. 
  
+### setMetadata(index: `u32`, maybe_hash: `Option<H256>`)
+- **interface**: `api.tx.rankedPolls.setMetadata`
+- **summary**:    Set or clear metadata of a referendum. 
+
+   Parameters: 
+
+  - `origin`: Must be `Signed` by a creator of a referendum or by anyone to clear a metadata of a finished referendum. 
+
+  - `index`:  The index of a referendum to set or clear metadata for.
+
+  - `maybe_hash`: The hash of an on-chain stored preimage. `None` to clear a metadata.
+ 
 ### submit(proposal_origin: `KitchensinkRuntimeOriginCaller`, proposal: `FrameSupportPreimagesBounded`, enactment_moment: `FrameSupportScheduleDispatchTime`)
 - **interface**: `api.tx.rankedPolls.submit`
 - **summary**:    Propose a referendum on a privileged action. 
@@ -3656,6 +3677,18 @@ ___
   - `index`: The index of a closed referendum whose Submission Deposit has not yet been refunded. 
 
    Emits `SubmissionDepositRefunded`. 
+ 
+### setMetadata(index: `u32`, maybe_hash: `Option<H256>`)
+- **interface**: `api.tx.referenda.setMetadata`
+- **summary**:    Set or clear metadata of a referendum. 
+
+   Parameters: 
+
+  - `origin`: Must be `Signed` by a creator of a referendum or by anyone to clear a metadata of a finished referendum. 
+
+  - `index`:  The index of a referendum to set or clear metadata for.
+
+  - `maybe_hash`: The hash of an on-chain stored preimage. `None` to clear a metadata.
  
 ### submit(proposal_origin: `KitchensinkRuntimeOriginCaller`, proposal: `FrameSupportPreimagesBounded`, enactment_moment: `FrameSupportScheduleDispatchTime`)
 - **interface**: `api.tx.referenda.submit`
@@ -4415,7 +4448,7 @@ ___
 
   - `old_count`: The upper bound for the previous number of members in storage. Used for weight estimation. 
 
-   Requires root origin. 
+   The dispatch of this call must be `SetMembersOrigin`. 
 
    NOTE: Does not enforce the expected `MaxMembers` limit on the amount of members, but  the weight estimations rely on it to estimate dispatchable weight. 
 

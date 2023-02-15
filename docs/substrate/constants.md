@@ -10,8 +10,6 @@ The following sections contain the module constants, also known as parameter typ
 
 - **[assets](#assets)**
 
-- **[authorship](#authorship)**
-
 - **[babe](#babe)**
 
 - **[balances](#balances)**
@@ -146,15 +144,6 @@ ___
 ### stringLimit: `u32`
 - **interface**: `api.consts.assets.stringLimit`
 - **summary**:    The maximum length of a name or symbol stored on-chain. 
-
-___
-
-
-## authorship
- 
-### uncleGenerations: `u32`
-- **interface**: `api.consts.authorship.uncleGenerations`
-- **summary**:    The number of blocks back we should accept uncles.  This means that we will deal with uncle-parents that are  `UncleGenerations + 1` before `now`. 
 
 ___
 
@@ -496,13 +485,23 @@ ___
 - **interface**: `api.consts.elections.maxCandidates`
 - **summary**:    The maximum number of candidates in a phragmen election. 
 
-   Warning: The election happens onchain, and this value will determine  the size of the election. When this limit is reached no more  candidates are accepted in the election. 
+   Warning: This impacts the size of the election which is run onchain. Chose wisely, and  consider how it will impact `T::WeightInfo::election_phragmen`. 
+
+   When this limit is reached no more candidates are accepted in the election. 
  
 ### maxVoters: `u32`
 - **interface**: `api.consts.elections.maxVoters`
 - **summary**:    The maximum number of voters to allow in a phragmen election. 
 
-   Warning: This impacts the size of the election which is run onchain.  When the limit is reached the new voters are ignored. 
+   Warning: This impacts the size of the election which is run onchain. Chose wisely, and  consider how it will impact `T::WeightInfo::election_phragmen`. 
+
+   When the limit is reached the new voters are ignored. 
+ 
+### maxVotesPerVoter: `u32`
+- **interface**: `api.consts.elections.maxVotesPerVoter`
+- **summary**:    Maximum numbers of votes per voter. 
+
+   Warning: This impacts the size of the election which is run onchain. Chose wisely, and  consider how it will impact `T::WeightInfo::election_phragmen`. 
  
 ### palletId: `[u8;8]`
 - **interface**: `api.consts.elections.palletId`
@@ -539,6 +538,12 @@ ___
 ### maxAuthorities: `u32`
 - **interface**: `api.consts.grandpa.maxAuthorities`
 - **summary**:    Max Authorities in use 
+ 
+### maxSetIdSessionEntries: `u64`
+- **interface**: `api.consts.grandpa.maxSetIdSessionEntries`
+- **summary**:    The maximum number of entries to keep in the set id to session index mapping. 
+
+   Since the `SetIdSession` map is only used for validating equivocations this  value should relate to the bonding duration of whatever staking system is  being used (if any). If equivocation handling is not enabled then this value  can be zero. 
 
 ___
 
