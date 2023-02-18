@@ -507,7 +507,7 @@ ___
  
 ### DuplicateContract
 - **interface**: `api.errors.contracts.DuplicateContract.is`
-- **summary**:    A contract with the same AccountId already exists. 
+- **summary**:    A contract with the same CodeHash already exists. 
  
 ### Indeterministic
 - **interface**: `api.errors.contracts.Indeterministic.is`
