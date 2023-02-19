@@ -221,7 +221,17 @@ ___
 
    + `proposal_weight_bound`: The maximum amount of weight consumed by executing the closed  proposal.  + `length_bound`: The upper bound for the length of the proposal in storage. Checked via  `storage::read` so it is `size_of::<u32>() == 4` larger than the pure length. 
 
-    
+   #### Complexity 
+
+  - `O(B + M + P1 + P2)` where:
+
+  - `B` is `proposal` size in bytes (length-fee-bounded)
+
+  - `M` is members-count (code- and governance-bounded)
+
+  - `P1` is the complexity of `proposal` preimage.
+
+  - `P2` is proposal-count (code-bounded)
  
 ### closeOldWeight(proposal_hash: `H256`, index: `Compact<u32>`, proposal_weight_bound: `Compact<u64>`, length_bound: `Compact<u32>`)
 - **interface**: `api.tx.allianceMotion.closeOldWeight`
@@ -237,7 +247,17 @@ ___
 
    + `proposal_weight_bound`: The maximum amount of weight consumed by executing the closed  proposal.  + `length_bound`: The upper bound for the length of the proposal in storage. Checked via  `storage::read` so it is `size_of::<u32>() == 4` larger than the pure length. 
 
-    
+   #### Complexity 
+
+  - `O(B + M + P1 + P2)` where:
+
+  - `B` is `proposal` size in bytes (length-fee-bounded)
+
+  - `M` is members-count (code- and governance-bounded)
+
+  - `P1` is the complexity of `proposal` preimage.
+
+  - `P2` is proposal-count (code-bounded)
  
 ### disapproveProposal(proposal_hash: `H256`)
 - **interface**: `api.tx.allianceMotion.disapproveProposal`
@@ -249,7 +269,7 @@ ___
 
   * `proposal_hash`: The hash of the proposal that should be disapproved.
 
-    
+   #### Complexity  O(P) where P is the number of max proposals 
  
 ### execute(proposal: `Call`, length_bound: `Compact<u32>`)
 - **interface**: `api.tx.allianceMotion.execute`
@@ -257,7 +277,15 @@ ___
 
    Origin must be a member of the collective. 
 
-    
+   #### Complexity: 
+
+  - `O(B + M + P)` where:
+
+  - `B` is `proposal` size in bytes (length-fee-bounded)
+
+  - `M` members-count (code-bounded)
+
+  - `P` complexity of dispatching `proposal`
  
 ### propose(threshold: `Compact<u32>`, proposal: `Call`, length_bound: `Compact<u32>`)
 - **interface**: `api.tx.allianceMotion.propose`
@@ -267,7 +295,19 @@ ___
 
    `threshold` determines whether `proposal` is executed directly (`threshold < 2`)  or put up for voting. 
 
-    
+   #### Complexity 
+
+  - `O(B + M + P1)` or `O(B + M + P2)` where:
+
+  - `B` is `proposal` size in bytes (length-fee-bounded)
+
+  - `M` is members-count (code- and governance-bounded)
+
+  - branching is influenced by `threshold` where:
+
+  - `P1` is proposal execution complexity (`threshold < 2`)
+
+  - `P2` is proposals-count (code-bounded) (`threshold >= 2`)
  
 ### setMembers(new_members: `Vec<AccountId32>`, prime: `Option<AccountId32>`, old_count: `u32`)
 - **interface**: `api.tx.allianceMotion.setMembers`
@@ -287,7 +327,15 @@ ___
 
    The `pallet-collective` can also be managed by logic outside of the pallet through the  implementation of the trait [`ChangeMembers`].  Any call to `set_members` must be careful that the member set doesn't get out of sync  with other logic managing the member set. 
 
-    
+   #### Complexity: 
+
+  - `O(MP + N)` where:
+
+  - `M` old-members-count (code- and governance-bounded)
+
+  - `N` new-members-count (code- and governance-bounded)
+
+  - `P` proposals-count (code-bounded)
  
 ### vote(proposal: `H256`, index: `Compact<u32>`, approve: `bool`)
 - **interface**: `api.tx.allianceMotion.vote`
@@ -295,7 +343,9 @@ ___
 
    Requires the sender to be a member. 
 
-   Transaction fees will be waived if the member is voting on any particular proposal  for the first time and the call is successful. Subsequent vote changes will charge a  fee.   
+   Transaction fees will be waived if the member is voting on any particular proposal  for the first time and the call is successful. Subsequent vote changes will charge a  fee.  #### Complexity 
+
+  - `O(M)` where `M` is members-count (code- and governance-bounded)
 
 ___
 
@@ -772,7 +822,9 @@ ___
  
 ### forceTransfer(source: `MultiAddress`, dest: `MultiAddress`, value: `Compact<u128>`)
 - **interface**: `api.tx.balances.forceTransfer`
-- **summary**:    Exactly as `transfer`, except the origin must be root and the source account may be  specified.   
+- **summary**:    Exactly as `transfer`, except the origin must be root and the source account may be  specified.  #### Complexity 
+
+  - Same as transfer, but additional read and write because the source account is not assumed to be in the overlay. 
  
 ### forceUnreserve(who: `MultiAddress`, amount: `u128`)
 - **interface**: `api.tx.balances.forceUnreserve`
@@ -796,7 +848,21 @@ ___
 
    The dispatch origin for this call must be `Signed` by the transactor. 
 
-    
+   #### Complexity 
+
+  - Dependent on arguments but not critical, given proper implementations for input config types. See related functions below. 
+
+  - It contains a limited number of reads and writes internally and no complex computation. 
+
+   Related functions: 
+
+   - `ensure_can_withdraw` is always called internally but has a bounded complexity. 
+
+  - Transferring balances to accounts that did not exist before will cause `T::OnNewAccount::on_new_account` to be called. 
+
+  - Removing enough funds from an account will trigger `T::DustRemoval::on_unbalanced`.
+
+  - `transfer_keep_alive` works the same way as `transfer`, but has an additional check that the transfer will not kill the origin account. 
  
 ### transferAll(dest: `MultiAddress`, keep_alive: `bool`)
 - **interface**: `api.tx.balances.transferAll`
@@ -808,7 +874,9 @@ ___
 
    - `dest`: The recipient of the transfer. 
 
-  - `keep_alive`: A boolean to determine if the `transfer_all` operation should send all of the funds the account has, causing the sender account to be killed (false), or  transfer everything except at least the existential deposit, which will guarantee to  keep the sender account alive (true). #  
+  - `keep_alive`: A boolean to determine if the `transfer_all` operation should send all of the funds the account has, causing the sender account to be killed (false), or  transfer everything except at least the existential deposit, which will guarantee to  keep the sender account alive (true). ## Complexity 
+
+  - O(1). Just like transfer, but reading the user's transferable balance first.
  
 ### transferKeepAlive(dest: `MultiAddress`, value: `Compact<u128>`)
 - **interface**: `api.tx.balances.transferKeepAlive`
@@ -829,7 +897,9 @@ ___
 
    May only be called from the curator. 
 
-    
+   #### Complexity 
+
+  - O(1).
  
 ### approveBounty(bounty_id: `Compact<u32>`)
 - **interface**: `api.tx.bounties.approveBounty`
@@ -837,7 +907,9 @@ ___
 
    May only be called from `T::SpendOrigin`. 
 
-    
+   #### Complexity 
+
+  - O(1).
  
 ### awardBounty(bounty_id: `Compact<u32>`, beneficiary: `MultiAddress`)
 - **interface**: `api.tx.bounties.awardBounty`
@@ -849,7 +921,9 @@ ___
 
   - `beneficiary`: The beneficiary account whom will receive the payout.
 
-    
+   #### Complexity 
+
+  - O(1).
  
 ### claimBounty(bounty_id: `Compact<u32>`)
 - **interface**: `api.tx.bounties.claimBounty`
@@ -859,7 +933,9 @@ ___
 
    - `bounty_id`: Bounty ID to claim. 
 
-    
+   #### Complexity 
+
+  - O(1).
  
 ### closeBounty(bounty_id: `Compact<u32>`)
 - **interface**: `api.tx.bounties.closeBounty`
@@ -869,7 +945,9 @@ ___
 
    - `bounty_id`: Bounty ID to cancel. 
 
-    
+   #### Complexity 
+
+  - O(1).
  
 ### extendBountyExpiry(bounty_id: `Compact<u32>`, remark: `Bytes`)
 - **interface**: `api.tx.bounties.extendBountyExpiry`
@@ -881,7 +959,9 @@ ___
 
   - `remark`: additional information.
 
-    
+   #### Complexity 
+
+  - O(1).
  
 ### proposeBounty(value: `Compact<u128>`, description: `Bytes`)
 - **interface**: `api.tx.bounties.proposeBounty`
@@ -905,7 +985,9 @@ ___
 
    May only be called from `T::SpendOrigin`. 
 
-    
+   #### Complexity 
+
+  - O(1).
  
 ### unassignCurator(bounty_id: `Compact<u32>`)
 - **interface**: `api.tx.bounties.unassignCurator`
@@ -919,7 +1001,9 @@ ___
 
    Finally, the origin can be anyone if and only if the curator is "inactive". This allows  anyone in the community to call out that a curator is not doing their due diligence, and  we should pick a new curator. In this case the curator should also be slashed. 
 
-    
+   #### Complexity 
+
+  - O(1).
 
 ___
 
@@ -1301,7 +1385,17 @@ ___
 
    + `proposal_weight_bound`: The maximum amount of weight consumed by executing the closed  proposal.  + `length_bound`: The upper bound for the length of the proposal in storage. Checked via  `storage::read` so it is `size_of::<u32>() == 4` larger than the pure length. 
 
-    
+   #### Complexity 
+
+  - `O(B + M + P1 + P2)` where:
+
+  - `B` is `proposal` size in bytes (length-fee-bounded)
+
+  - `M` is members-count (code- and governance-bounded)
+
+  - `P1` is the complexity of `proposal` preimage.
+
+  - `P2` is proposal-count (code-bounded)
  
 ### closeOldWeight(proposal_hash: `H256`, index: `Compact<u32>`, proposal_weight_bound: `Compact<u64>`, length_bound: `Compact<u32>`)
 - **interface**: `api.tx.council.closeOldWeight`
@@ -1317,7 +1411,17 @@ ___
 
    + `proposal_weight_bound`: The maximum amount of weight consumed by executing the closed  proposal.  + `length_bound`: The upper bound for the length of the proposal in storage. Checked via  `storage::read` so it is `size_of::<u32>() == 4` larger than the pure length. 
 
-    
+   #### Complexity 
+
+  - `O(B + M + P1 + P2)` where:
+
+  - `B` is `proposal` size in bytes (length-fee-bounded)
+
+  - `M` is members-count (code- and governance-bounded)
+
+  - `P1` is the complexity of `proposal` preimage.
+
+  - `P2` is proposal-count (code-bounded)
  
 ### disapproveProposal(proposal_hash: `H256`)
 - **interface**: `api.tx.council.disapproveProposal`
@@ -1329,7 +1433,7 @@ ___
 
   * `proposal_hash`: The hash of the proposal that should be disapproved.
 
-    
+   #### Complexity  O(P) where P is the number of max proposals 
  
 ### execute(proposal: `Call`, length_bound: `Compact<u32>`)
 - **interface**: `api.tx.council.execute`
@@ -1337,7 +1441,15 @@ ___
 
    Origin must be a member of the collective. 
 
-    
+   #### Complexity: 
+
+  - `O(B + M + P)` where:
+
+  - `B` is `proposal` size in bytes (length-fee-bounded)
+
+  - `M` members-count (code-bounded)
+
+  - `P` complexity of dispatching `proposal`
  
 ### propose(threshold: `Compact<u32>`, proposal: `Call`, length_bound: `Compact<u32>`)
 - **interface**: `api.tx.council.propose`
@@ -1347,7 +1459,19 @@ ___
 
    `threshold` determines whether `proposal` is executed directly (`threshold < 2`)  or put up for voting. 
 
-    
+   #### Complexity 
+
+  - `O(B + M + P1)` or `O(B + M + P2)` where:
+
+  - `B` is `proposal` size in bytes (length-fee-bounded)
+
+  - `M` is members-count (code- and governance-bounded)
+
+  - branching is influenced by `threshold` where:
+
+  - `P1` is proposal execution complexity (`threshold < 2`)
+
+  - `P2` is proposals-count (code-bounded) (`threshold >= 2`)
  
 ### setMembers(new_members: `Vec<AccountId32>`, prime: `Option<AccountId32>`, old_count: `u32`)
 - **interface**: `api.tx.council.setMembers`
@@ -1367,7 +1491,15 @@ ___
 
    The `pallet-collective` can also be managed by logic outside of the pallet through the  implementation of the trait [`ChangeMembers`].  Any call to `set_members` must be careful that the member set doesn't get out of sync  with other logic managing the member set. 
 
-    
+   #### Complexity: 
+
+  - `O(MP + N)` where:
+
+  - `M` old-members-count (code- and governance-bounded)
+
+  - `N` new-members-count (code- and governance-bounded)
+
+  - `P` proposals-count (code-bounded)
  
 ### vote(proposal: `H256`, index: `Compact<u32>`, approve: `bool`)
 - **interface**: `api.tx.council.vote`
@@ -1375,7 +1507,9 @@ ___
 
    Requires the sender to be a member. 
 
-   Transaction fees will be waived if the member is voting on any particular proposal  for the first time and the call is successful. Subsequent vote changes will charge a  fee.   
+   Transaction fees will be waived if the member is voting on any particular proposal  for the first time and the call is successful. Subsequent vote changes will charge a  fee.  #### Complexity 
+
+  - `O(M)` where `M` is members-count (code- and governance-bounded)
 
 ___
 
@@ -1702,7 +1836,9 @@ ___
 
    The dispatch origin of this call must be root. 
 
-    
+   #### Complexity 
+
+  - Check is_defunct_voter() details.
  
 ### removeMember(who: `MultiAddress`, slash_bond: `bool`, rerun_election: `bool`)
 - **interface**: `api.tx.elections.removeMember`
@@ -1716,7 +1852,9 @@ ___
 
    Note that this does not affect the designated block number of the next election. 
 
-    
+   #### Complexity 
+
+  - Check details of remove_and_replace_member() and do_phragmen().
  
 ### removeVoter()
 - **interface**: `api.tx.elections.removeVoter`
@@ -1736,9 +1874,15 @@ ___
 
   - `origin` is a current member. In this case, the deposit is unreserved and origin is removed as a member, consequently not being a candidate for the next round anymore.  Similar to [`remove_member`](Self::remove_member), if replacement runners exists, they  are immediately used. If the prime is renouncing, then no prime will exist until the  next round. 
 
-   The dispatch origin of this call must be signed, and have one of the above roles. 
+   The dispatch origin of this call must be signed, and have one of the above roles.  The type of renouncing must be provided as witness data. 
 
-    
+   #### Complexity 
+
+  - Renouncing::Candidate(count): O(count + log(count))
+
+  - Renouncing::Member: O(1)
+
+  - Renouncing::RunnerUp: O(1)
  
 ### submitCandidacy(candidate_count: `Compact<u32>`)
 - **interface**: `api.tx.elections.submitCandidacy`
@@ -1752,7 +1896,7 @@ ___
 
    Even if a candidate ends up being a member, they must call [`Call::renounce_candidacy`]  to get their deposit back. Losing the spot in an election will always lead to a slash. 
 
-    
+   The number of current candidates must be provided as witness data.  #### Complexity  O(C + log(C)) where C is candidate_count. 
  
 ### vote(votes: `Vec<AccountId32>`, value: `Compact<u128>`)
 - **interface**: `api.tx.elections.vote`
@@ -1845,7 +1989,9 @@ ___
 
    Emits `RegistrarAdded` if successful. 
 
-    
+   #### Complexity 
+
+  - `O(R)` where `R` registrar-count (governance-bounded and code-bounded).
  
 ### addSub(sub: `MultiAddress`, data: `Data`)
 - **interface**: `api.tx.identity.addSub`
@@ -1867,7 +2013,13 @@ ___
 
    Emits `JudgementUnrequested` if successful. 
 
-    
+   #### Complexity 
+
+  - `O(R + X)`.
+
+  - where `R` registrar-count (governance-bounded).
+
+  - where `X` additional-field-count (deposit-bounded and code-bounded).
  
 ### clearIdentity()
 - **interface**: `api.tx.identity.clearIdentity`
@@ -1879,7 +2031,15 @@ ___
 
    Emits `IdentityCleared` if successful. 
 
-    
+   #### Complexity 
+
+  - `O(R + S + X)`
+
+  - where `R` registrar-count (governance-bounded).
+
+  - where `S` subs-count (hard- and deposit-bounded).
+
+  - where `X` additional-field-count (deposit-bounded and code-bounded).
  
 ### killIdentity(target: `MultiAddress`)
 - **interface**: `api.tx.identity.killIdentity`
@@ -1893,7 +2053,15 @@ ___
 
    Emits `IdentityKilled` if successful. 
 
-    
+   #### Complexity 
+
+  - `O(R + S + X)`
+
+  - where `R` registrar-count (governance-bounded).
+
+  - where `S` subs-count (hard- and deposit-bounded).
+
+  - where `X` additional-field-count (deposit-bounded and code-bounded).
  
 ### provideJudgement(reg_index: `Compact<u32>`, target: `MultiAddress`, judgement: `PalletIdentityJudgement`, identity: `H256`)
 - **interface**: `api.tx.identity.provideJudgement`
@@ -1911,7 +2079,13 @@ ___
 
    Emits `JudgementGiven` if successful. 
 
-    
+   #### Complexity 
+
+  - `O(R + X)`.
+
+  - where `R` registrar-count (governance-bounded).
+
+  - where `X` additional-field-count (deposit-bounded and code-bounded).
  
 ### quitSub()
 - **interface**: `api.tx.identity.quitSub`
@@ -1953,7 +2127,13 @@ ___
 
    Emits `JudgementRequested` if successful. 
 
-    
+   #### Complexity 
+
+  - `O(R + X)`.
+
+  - where `R` registrar-count (governance-bounded).
+
+  - where `X` additional-field-count (deposit-bounded and code-bounded).
  
 ### setAccountId(index: `Compact<u32>`, new: `MultiAddress`)
 - **interface**: `api.tx.identity.setAccountId`
@@ -1965,7 +2145,11 @@ ___
 
   - `new`: the new account ID.
 
-    
+   #### Complexity 
+
+  - `O(R)`.
+
+  - where `R` registrar-count (governance-bounded).
  
 ### setFee(index: `Compact<u32>`, fee: `Compact<u128>`)
 - **interface**: `api.tx.identity.setFee`
@@ -1977,7 +2161,11 @@ ___
 
   - `fee`: the new fee.
 
-    
+   #### Complexity 
+
+  - `O(R)`.
+
+  - where `R` registrar-count (governance-bounded).
  
 ### setFields(index: `Compact<u32>`, fields: `PalletIdentityBitFlags`)
 - **interface**: `api.tx.identity.setFields`
@@ -1989,7 +2177,11 @@ ___
 
   - `fields`: the fields that the registrar concerns themselves with.
 
-    
+   #### Complexity 
+
+  - `O(R)`.
+
+  - where `R` registrar-count (governance-bounded).
  
 ### setIdentity(info: `PalletIdentityIdentityInfo`)
 - **interface**: `api.tx.identity.setIdentity`
@@ -2003,7 +2195,13 @@ ___
 
    Emits `IdentitySet` if successful. 
 
-    
+   #### Complexity 
+
+  - `O(X + X' + R)`
+
+  - where `X` additional-field-count (deposit-bounded and code-bounded)
+
+  - where `R` judgements-count (registrar-count-bounded)
  
 ### setSubs(subs: `Vec<(AccountId32,Data)>`)
 - **interface**: `api.tx.identity.setSubs`
@@ -2015,7 +2213,13 @@ ___
 
    - `subs`: The identity's (new) sub-accounts. 
 
-    
+   #### Complexity 
+
+  - `O(P + S)`
+
+  - where `P` old-subs-count (hard- and deposit-bounded).
+
+  - where `S` subs-count (hard- and deposit-bounded).
 
 ___
 
@@ -2024,7 +2228,13 @@ ___
  
 ### heartbeat(heartbeat: `PalletImOnlineHeartbeat`, signature: `PalletImOnlineSr25519AppSr25519Signature`)
 - **interface**: `api.tx.imOnline.heartbeat`
-- **summary**:     
+- **summary**:    #### Complexity: 
+
+  - `O(K + E)` where K is length of `Keys` (heartbeat.validators_len) and E is length of `heartbeat.network_state.external_address` 
+
+  - `O(K)`: decoding of length `K`
+
+  - `O(E)`: decoding/encoding of length `E`
 
 ___
 
@@ -2043,7 +2253,9 @@ ___
 
    Emits `IndexAssigned` if successful. 
 
-    
+   #### Complexity 
+
+  - `O(1)`.
  
 ### forceTransfer(new: `MultiAddress`, index: `u32`, freeze: `bool`)
 - **interface**: `api.tx.indices.forceTransfer`
@@ -2059,7 +2271,9 @@ ___
 
    Emits `IndexAssigned` if successful. 
 
-    
+   #### Complexity 
+
+  - `O(1)`.
  
 ### free(index: `u32`)
 - **interface**: `api.tx.indices.free`
@@ -2073,7 +2287,9 @@ ___
 
    Emits `IndexFreed` if successful. 
 
-    
+   #### Complexity 
+
+  - `O(1)`.
  
 ### freeze(index: `u32`)
 - **interface**: `api.tx.indices.freeze`
@@ -2085,7 +2301,9 @@ ___
 
    Emits `IndexFrozen` if successful. 
 
-    
+   #### Complexity 
+
+  - `O(1)`.
  
 ### transfer(new: `MultiAddress`, index: `u32`)
 - **interface**: `api.tx.indices.transfer`
@@ -2099,7 +2317,9 @@ ___
 
    Emits `IndexAssigned` if successful. 
 
-    
+   #### Complexity 
+
+  - `O(1)`.
 
 ___
 
@@ -2194,7 +2414,23 @@ ___
 
    NOTE: If this is the final approval, you will want to use `as_multi` instead. 
 
-    
+   #### Complexity 
+
+  - `O(S)`.
+
+  - Up to one balance-reserve or unreserve operation.
+
+  - One passthrough operation, one insert, both `O(S)` where `S` is the number of signatories. `S` is capped by `MaxSignatories`, with weight being proportional. 
+
+  - One encode & hash, both of complexity `O(S)`.
+
+  - Up to one binary search and insert (`O(logS + S)`).
+
+  - I/O: 1 read `O(S)`, up to 1 mutate `O(S)`. Up to one remove.
+
+  - One event.
+
+  - Storage: inserts one item, value size bounded by `MaxSignatories`, with a deposit taken for its lifetime of `DepositBase + threshold * DepositFactor`. 
  
 ### asMulti(threshold: `u16`, other_signatories: `Vec<AccountId32>`, maybe_timepoint: `Option<PalletMultisigTimepoint>`, call: `Call`, max_weight: `SpWeightsWeightV2Weight`)
 - **interface**: `api.tx.multisig.asMulti`
@@ -2218,7 +2454,27 @@ ___
 
    Result is equivalent to the dispatched result if `threshold` is exactly `1`. Otherwise  on success, result is `Ok` and the result from the interior call, if it was executed,  may be found in the deposited `MultisigExecuted` event. 
 
-    
+   #### Complexity 
+
+  - `O(S + Z + Call)`.
+
+  - Up to one balance-reserve or unreserve operation.
+
+  - One passthrough operation, one insert, both `O(S)` where `S` is the number of signatories. `S` is capped by `MaxSignatories`, with weight being proportional. 
+
+  - One call encode & hash, both of complexity `O(Z)` where `Z` is tx-len.
+
+  - One encode & hash, both of complexity `O(S)`.
+
+  - Up to one binary search and insert (`O(logS + S)`).
+
+  - I/O: 1 read `O(S)`, up to 1 mutate `O(S)`. Up to one remove.
+
+  - One event.
+
+  - The weight of the `call`.
+
+  - Storage: inserts one item, value size bounded by `MaxSignatories`, with a deposit taken for its lifetime of `DepositBase + threshold * DepositFactor`. 
  
 ### asMultiThreshold1(other_signatories: `Vec<AccountId32>`, call: `Call`)
 - **interface**: `api.tx.multisig.asMultiThreshold1`
@@ -2232,7 +2488,7 @@ ___
 
    Result is equivalent to the dispatched result. 
 
-    
+   #### Complexity  O(Z + C) where Z is the length of the call and C its execution weight. 
  
 ### cancelAsMulti(threshold: `u16`, other_signatories: `Vec<AccountId32>`, timepoint: `PalletMultisigTimepoint`, call_hash: `[u8;32]`)
 - **interface**: `api.tx.multisig.cancelAsMulti`
@@ -2248,7 +2504,21 @@ ___
 
   - `call_hash`: The hash of the call to be executed.
 
-    
+   #### Complexity 
+
+  - `O(S)`.
+
+  - Up to one balance-reserve or unreserve operation.
+
+  - One passthrough operation, one insert, both `O(S)` where `S` is the number of signatories. `S` is capped by `MaxSignatories`, with weight being proportional. 
+
+  - One encode & hash, both of complexity `O(S)`.
+
+  - One event.
+
+  - I/O: 1 read `O(S)`, one remove.
+
+  - Storage: removes one item.
 
 ___
 
@@ -2672,6 +2942,20 @@ ___
    Emits `Issued` event when successful. 
 
    Weight: `O(1)` 
+ 
+### mintPreSigned(mint_data: `PalletNftsPreSignedMint`, signature: `SpRuntimeMultiSignature`, signer: `AccountId32`)
+- **interface**: `api.tx.nfts.mintPreSigned`
+- **summary**:    Mint an item by providing the pre-signed approval. 
+
+   Origin must be Signed. 
+
+   - `mint_data`: The pre-signed approval that consists of the information about the item,  its metadata, attributes, who can mint it (`None` for anyone) and until what block  number. 
+
+  - `signature`: The signature of the `data` object.
+
+  - `signer`: The `data` object's signer. Should be an owner of the collection.
+
+   Emits `Issued` on success.  Emits `AttributeSet` if the attributes were provided.  Emits `ItemMetadataSet` if the metadata was not empty. 
  
 ### payTips(tips: `Vec<PalletNftsItemTip>`)
 - **interface**: `api.tx.nfts.payTips`
@@ -3742,8 +4026,6 @@ ___
 ### scheduleAfter(after: `u32`, maybe_periodic: `Option<(u32,u32)>`, priority: `u8`, call: `Call`)
 - **interface**: `api.tx.scheduler.scheduleAfter`
 - **summary**:    Anonymously schedule a task after a delay. 
-
-    
  
 ### scheduleNamed(id: `[u8;32]`, when: `u32`, maybe_periodic: `Option<(u32,u32)>`, priority: `u8`, call: `Call`)
 - **interface**: `api.tx.scheduler.scheduleNamed`
@@ -3752,8 +4034,6 @@ ___
 ### scheduleNamedAfter(id: `[u8;32]`, after: `u32`, maybe_periodic: `Option<(u32,u32)>`, priority: `u8`, call: `Call`)
 - **interface**: `api.tx.scheduler.scheduleNamedAfter`
 - **summary**:    Schedule a named task after a delay. 
-
-    
 
 ___
 
@@ -3768,7 +4048,9 @@ ___
 
    The dispatch origin of this function must be Signed and the account must be either be  convertible to a validator ID using the chain's typical addressing system (this usually  means being a controller account) or directly convertible into a validator ID (which  usually means being a stash account). 
 
-    
+   #### Complexity 
+
+  - `O(1)` in number of key types. Actual cost depends on the number of length of `T::Keys::key_ids()` which is fixed. 
  
 ### setKeys(keys: `KitchensinkRuntimeSessionKeys`, proof: `Bytes`)
 - **interface**: `api.tx.session.setKeys`
@@ -3776,7 +4058,9 @@ ___
 
    The dispatch origin of this function must be signed. 
 
-    
+   #### Complexity 
+
+  - `O(1)`. Actual cost depends on the number of length of `T::Keys::key_ids()` which is fixed. 
 
 ___
 
@@ -3795,7 +4079,17 @@ ___
 
   - `value`: A one time payment the bid would like to receive when joining the society.
 
-    
+   #### Complexity 
+
+  - O(M + B + C + logM + logB + X)
+
+  - B (len of bids)
+
+  - C (len of candidates)
+
+  - M (len of members)
+
+  - X (balance reserve)
  
 ### defenderVote(approve: `bool`)
 - **interface**: `api.tx.society.defenderVote`
@@ -3807,7 +4101,11 @@ ___
 
   - `approve`: A boolean which says if the candidate should be approved (`true`) or rejected (`false`). 
 
-    
+   #### Complexity 
+
+  - O(M + logM)
+
+  - M (len of members)
  
 ### found(founder: `MultiAddress`, max_members: `u32`, rules: `Bytes`)
 - **interface**: `api.tx.society.found`
@@ -3825,7 +4123,9 @@ ___
 
   - `rules` - The rules of this society concerning membership.
 
-    
+   #### Complexity 
+
+  - O(1)
  
 ### judgeSuspendedCandidate(who: `MultiAddress`, judgement: `PalletSocietyJudgement`)
 - **interface**: `api.tx.society.judgeSuspendedCandidate`
@@ -3845,7 +4145,15 @@ ___
 
   - `judgement` - `Approve`, `Reject`, or `Rebid`.
 
-    
+   #### Complexity 
+
+  - O(M + logM + B + X)
+
+  - B (len of bids)
+
+  - M (len of members)
+
+  - X (balance action)
  
 ### judgeSuspendedMember(who: `MultiAddress`, forgive: `bool`)
 - **interface**: `api.tx.society.judgeSuspendedMember`
@@ -3863,7 +4171,13 @@ ___
 
   - `forgive` - A boolean representing whether the suspension judgement origin forgives (`true`) or rejects (`false`) a suspended member. 
 
-    
+   #### Complexity 
+
+  - O(M + logM + B)
+
+  - B (len of bids)
+
+  - M (len of members)
  
 ### payout()
 - **interface**: `api.tx.society.payout`
@@ -3875,7 +4189,15 @@ ___
 
    The dispatch origin for this call must be _Signed_ and a member with  payouts remaining. 
 
-    
+   #### Complexity 
+
+  - O(M + logM + P + X)
+
+  - M (len of members)
+
+  - P (number of payouts for a particular member)
+
+  - X (currency transfer call)
  
 ### setMaxMembers(max: `u32`)
 - **interface**: `api.tx.society.setMaxMembers`
@@ -3887,7 +4209,9 @@ ___
 
   - `max` - The maximum number of members for the society.
 
-    
+   #### Complexity 
+
+  - O(1)
  
 ### unbid(pos: `u32`)
 - **interface**: `api.tx.society.unbid`
@@ -3901,7 +4225,13 @@ ___
 
   - `pos`: Position in the `Bids` vector of the bid who wants to unbid.
 
-    
+   #### Complexity 
+
+  - O(B + X)
+
+  - B (len of bids)
+
+  - X (balance unreserve)
  
 ### unfound()
 - **interface**: `api.tx.society.unfound`
@@ -3909,7 +4239,9 @@ ___
 
    The dispatch origin for this call must be Signed, and the signing account must be both  the `Founder` and the `Head`. This implies that it may only be done when there is one  member. 
 
-    
+   #### Complexity 
+
+  - O(1)
  
 ### unvouch(pos: `u32`)
 - **interface**: `api.tx.society.unvouch`
@@ -3921,7 +4253,11 @@ ___
 
   - `pos`: Position in the `Bids` vector of the bid who should be unvouched.
 
-    
+   #### Complexity 
+
+  - O(B)
+
+  - B (len of bids)
  
 ### vote(candidate: `MultiAddress`, approve: `bool`)
 - **interface**: `api.tx.society.vote`
@@ -3935,7 +4271,13 @@ ___
 
   - `approve`: A boolean which says if the candidate should be approved (`true`) or rejected (`false`). 
 
-    
+   #### Complexity 
+
+  - O(M + logM + C)
+
+  - C (len of candidates)
+
+  - M (len of members)
  
 ### vouch(who: `MultiAddress`, value: `u128`, tip: `u128`)
 - **interface**: `api.tx.society.vouch`
@@ -3955,7 +4297,17 @@ ___
 
   - `tip`: Your cut of the total `value` payout when the candidate is inducted into the society. Tips larger than `value` will be saturated upon payout. 
 
-    
+   #### Complexity 
+
+  - O(M + B + C + logM + logB + X)
+
+  - B (len of bids)
+
+  - C (len of candidates)
+
+  - M (len of members)
+
+  - X (balance reserve)
 
 ___
 
@@ -3970,7 +4322,15 @@ ___
 
    The dispatch origin for this call must be _Signed_ by the stash account. 
 
-   Emits `Bonded`.   
+   Emits `Bonded`.  #### Complexity 
+
+  - Independent of the arguments. Moderate complexity.
+
+  - O(1).
+
+  - Three extra DB entries.
+
+   NOTE: Two of the storage writes (`Self::bonded`, `Self::payee`) are _never_ cleaned  unless the `origin` falls below _existential deposit_ and gets removed as dust. 
  
 ### bondExtra(max_additional: `Compact<u128>`)
 - **interface**: `api.tx.staking.bondExtra`
@@ -3982,7 +4342,11 @@ ___
 
    Emits `Bonded`. 
 
-    
+   #### Complexity 
+
+  - Independent of the arguments. Insignificant complexity.
+
+  - O(1).
  
 ### cancelDeferredSlash(era: `u32`, slash_indices: `Vec<u32>`)
 - **interface**: `api.tx.staking.cancelDeferredSlash`
@@ -4000,7 +4364,13 @@ ___
 
    The dispatch origin for this call must be _Signed_ by the controller, not the stash. 
 
-    
+   #### Complexity 
+
+  - Independent of the arguments. Insignificant complexity.
+
+  - Contains one read.
+
+  - Writes are limited to the `origin` account key.
  
 ### chillOther(controller: `AccountId32`)
 - **interface**: `api.tx.staking.chillOther`
@@ -4040,7 +4410,11 @@ ___
 
    The election process starts multiple blocks before the end of the era.  If this is called just before a new era is triggered, the election process may not  have enough blocks to get a result. 
 
-    
+   #### Complexity 
+
+  - No arguments.
+
+  - Weight: O(1)
  
 ### forceNewEraAlways()
 - **interface**: `api.tx.staking.forceNewEraAlways`
@@ -4062,7 +4436,11 @@ ___
 
    The election process starts multiple blocks before the end of the era.  Thus the election process may be ongoing when this is called. In this case the  election will continue until the next era is triggered. 
 
-    
+   #### Complexity 
+
+  - No arguments.
+
+  - Weight: O(1)
  
 ### forceUnstake(stash: `AccountId32`, num_slashing_spans: `u32`)
 - **interface**: `api.tx.staking.forceUnstake`
@@ -4076,7 +4454,7 @@ ___
 
    The dispatch origin must be Root. 
 
-    
+   #### Complexity  Same as [`Self::set_validator_count`]. 
  
 ### kick(who: `Vec<MultiAddress>`)
 - **interface**: `api.tx.staking.kick`
@@ -4098,7 +4476,11 @@ ___
 
    The dispatch origin for this call must be _Signed_ by the controller, not the stash. 
 
-    
+   #### Complexity 
+
+  - The transaction's complexity is proportional to the size of `targets` (N) which is capped at CompactAssignments::LIMIT (T::MaxNominations). 
+
+  - Both the reads and writes follow a similar pattern.
  
 ### payoutStakers(validator_stash: `AccountId32`, era: `u32`)
 - **interface**: `api.tx.staking.payoutStakers`
@@ -4110,7 +4492,9 @@ ___
 
    The origin of this call must be _Signed_. Any account can call this function, even if  it is not one of the stakers. 
 
-    
+   #### Complexity 
+
+  - At most O(MaxNominatorRewardedPerValidator).
  
 ### reapStash(stash: `AccountId32`, num_slashing_spans: `u32`)
 - **interface**: `api.tx.staking.reapStash`
@@ -4130,7 +4514,11 @@ ___
 
    The dispatch origin must be signed by the controller. 
 
-    
+   #### Complexity 
+
+  - Time complexity: O(L), where L is unlocking chunks
+
+  - Bounded by `MaxUnlockingChunks`.
  
 ### scaleValidatorCount(factor: `Percent`)
 - **interface**: `api.tx.staking.scaleValidatorCount`
@@ -4138,7 +4526,7 @@ ___
 
    The dispatch origin must be Root. 
 
-    
+   #### Complexity  Same as [`Self::set_validator_count`]. 
  
 ### setController(controller: `MultiAddress`)
 - **interface**: `api.tx.staking.setController`
@@ -4148,7 +4536,13 @@ ___
 
    The dispatch origin for this call must be _Signed_ by the stash, not the controller. 
 
-    
+   #### Complexity  O(1) 
+
+  - Independent of the arguments. Insignificant complexity.
+
+  - Contains a limited number of reads.
+
+  - Writes are limited to the `origin` account key.
  
 ### setInvulnerables(invulnerables: `Vec<AccountId32>`)
 - **interface**: `api.tx.staking.setInvulnerables`
@@ -4170,7 +4564,17 @@ ___
 
    The dispatch origin for this call must be _Signed_ by the controller, not the stash. 
 
-    
+   #### Complexity 
+
+  - O(1)
+
+  - Independent of the arguments. Insignificant complexity.
+
+  - Contains a limited number of reads.
+
+  - Writes are limited to the `origin` account key.
+
+  ---------
  
 ### setStakingConfigs(min_nominator_bond: `PalletStakingPalletConfigOpU128`, min_validator_bond: `PalletStakingPalletConfigOpU128`, max_nominator_count: `PalletStakingPalletConfigOpU32`, max_validator_count: `PalletStakingPalletConfigOpU32`, chill_threshold: `PalletStakingPalletConfigOpPercent`, min_commission: `PalletStakingPalletConfigOpPerbill`)
 - **interface**: `api.tx.staking.setStakingConfigs`
@@ -4198,7 +4602,7 @@ ___
 
    The dispatch origin must be Root. 
 
-    
+   #### Complexity  O(1) 
  
 ### unbond(value: `Compact<u128>`)
 - **interface**: `api.tx.staking.unbond`
@@ -4236,7 +4640,7 @@ ___
 
    See also [`Call::unbond`]. 
 
-    
+   #### Complexity  O(S) where S is the number of slashing spans to remove  NOTE: Weight annotation is the kill scenario, we refund otherwise. 
 
 ___
 
@@ -4300,7 +4704,9 @@ ___
 
    The dispatch origin for this call must be _Signed_. 
 
-    
+   #### Complexity 
+
+  - O(1).
  
 ### sudo(call: `Call`)
 - **interface**: `api.tx.sudo.sudo`
@@ -4308,7 +4714,9 @@ ___
 
    The dispatch origin for this call must be _Signed_. 
 
-    
+   #### Complexity 
+
+  - O(1).
  
 ### sudoAs(who: `MultiAddress`, call: `Call`)
 - **interface**: `api.tx.sudo.sudoAs`
@@ -4316,7 +4724,9 @@ ___
 
    The dispatch origin for this call must be _Signed_. 
 
-    
+   #### Complexity 
+
+  - O(1).
  
 ### sudoUncheckedWeight(call: `Call`, weight: `SpWeightsWeightV2Weight`)
 - **interface**: `api.tx.sudo.sudoUncheckedWeight`
@@ -4324,7 +4734,9 @@ ___
 
    The dispatch origin for this call must be _Signed_. 
 
-    
+   #### Complexity 
+
+  - O(1).
 
 ___
 
@@ -4345,7 +4757,9 @@ ___
 - **interface**: `api.tx.system.remark`
 - **summary**:    Make some on-chain remark. 
 
-    
+   #### Complexity 
+
+  - `O(1)`
  
 ### remarkWithEvent(remark: `Bytes`)
 - **interface**: `api.tx.system.remarkWithEvent`
@@ -4355,13 +4769,17 @@ ___
 - **interface**: `api.tx.system.setCode`
 - **summary**:    Set the new runtime code. 
 
-    
+   #### Complexity 
+
+  - `O(C + S)` where `C` length of `code` and `S` complexity of `can_set_code`
  
 ### setCodeWithoutChecks(code: `Bytes`)
 - **interface**: `api.tx.system.setCodeWithoutChecks`
 - **summary**:    Set the new runtime code without doing any checks of the given `code`. 
 
-    
+   #### Complexity 
+
+  - `O(C)` where `C` length of `code`
  
 ### setHeapPages(pages: `u64`)
 - **interface**: `api.tx.system.setHeapPages`
@@ -4390,7 +4808,17 @@ ___
 
    + `proposal_weight_bound`: The maximum amount of weight consumed by executing the closed  proposal.  + `length_bound`: The upper bound for the length of the proposal in storage. Checked via  `storage::read` so it is `size_of::<u32>() == 4` larger than the pure length. 
 
-    
+   #### Complexity 
+
+  - `O(B + M + P1 + P2)` where:
+
+  - `B` is `proposal` size in bytes (length-fee-bounded)
+
+  - `M` is members-count (code- and governance-bounded)
+
+  - `P1` is the complexity of `proposal` preimage.
+
+  - `P2` is proposal-count (code-bounded)
  
 ### closeOldWeight(proposal_hash: `H256`, index: `Compact<u32>`, proposal_weight_bound: `Compact<u64>`, length_bound: `Compact<u32>`)
 - **interface**: `api.tx.technicalCommittee.closeOldWeight`
@@ -4406,7 +4834,17 @@ ___
 
    + `proposal_weight_bound`: The maximum amount of weight consumed by executing the closed  proposal.  + `length_bound`: The upper bound for the length of the proposal in storage. Checked via  `storage::read` so it is `size_of::<u32>() == 4` larger than the pure length. 
 
-    
+   #### Complexity 
+
+  - `O(B + M + P1 + P2)` where:
+
+  - `B` is `proposal` size in bytes (length-fee-bounded)
+
+  - `M` is members-count (code- and governance-bounded)
+
+  - `P1` is the complexity of `proposal` preimage.
+
+  - `P2` is proposal-count (code-bounded)
  
 ### disapproveProposal(proposal_hash: `H256`)
 - **interface**: `api.tx.technicalCommittee.disapproveProposal`
@@ -4418,7 +4856,7 @@ ___
 
   * `proposal_hash`: The hash of the proposal that should be disapproved.
 
-    
+   #### Complexity  O(P) where P is the number of max proposals 
  
 ### execute(proposal: `Call`, length_bound: `Compact<u32>`)
 - **interface**: `api.tx.technicalCommittee.execute`
@@ -4426,7 +4864,15 @@ ___
 
    Origin must be a member of the collective. 
 
-    
+   #### Complexity: 
+
+  - `O(B + M + P)` where:
+
+  - `B` is `proposal` size in bytes (length-fee-bounded)
+
+  - `M` members-count (code-bounded)
+
+  - `P` complexity of dispatching `proposal`
  
 ### propose(threshold: `Compact<u32>`, proposal: `Call`, length_bound: `Compact<u32>`)
 - **interface**: `api.tx.technicalCommittee.propose`
@@ -4436,7 +4882,19 @@ ___
 
    `threshold` determines whether `proposal` is executed directly (`threshold < 2`)  or put up for voting. 
 
-    
+   #### Complexity 
+
+  - `O(B + M + P1)` or `O(B + M + P2)` where:
+
+  - `B` is `proposal` size in bytes (length-fee-bounded)
+
+  - `M` is members-count (code- and governance-bounded)
+
+  - branching is influenced by `threshold` where:
+
+  - `P1` is proposal execution complexity (`threshold < 2`)
+
+  - `P2` is proposals-count (code-bounded) (`threshold >= 2`)
  
 ### setMembers(new_members: `Vec<AccountId32>`, prime: `Option<AccountId32>`, old_count: `u32`)
 - **interface**: `api.tx.technicalCommittee.setMembers`
@@ -4456,7 +4914,15 @@ ___
 
    The `pallet-collective` can also be managed by logic outside of the pallet through the  implementation of the trait [`ChangeMembers`].  Any call to `set_members` must be careful that the member set doesn't get out of sync  with other logic managing the member set. 
 
-    
+   #### Complexity: 
+
+  - `O(MP + N)` where:
+
+  - `M` old-members-count (code- and governance-bounded)
+
+  - `N` new-members-count (code- and governance-bounded)
+
+  - `P` proposals-count (code-bounded)
  
 ### vote(proposal: `H256`, index: `Compact<u32>`, approve: `bool`)
 - **interface**: `api.tx.technicalCommittee.vote`
@@ -4464,7 +4930,9 @@ ___
 
    Requires the sender to be a member. 
 
-   Transaction fees will be waived if the member is voting on any particular proposal  for the first time and the call is successful. Subsequent vote changes will charge a  fee.   
+   Transaction fees will be waived if the member is voting on any particular proposal  for the first time and the call is successful. Subsequent vote changes will charge a  fee.  #### Complexity 
+
+  - `O(M)` where `M` is members-count (code- and governance-bounded)
 
 ___
 
@@ -4532,7 +5000,13 @@ ___
 
    The dispatch origin for this call must be `Inherent`. 
 
-    
+   #### Complexity 
+
+  - `O(1)` (Note that implementations of `OnTimestampSet` must also be `O(1)`)
+
+  - 1 storage read and 1 storage mutation (codec `O(1)`). (because of `DidUpdate::take` in `on_finalize`) 
+
+  - 1 event handler `on_timestamp_set`. Must be `O(1)`.
 
 ___
 
@@ -4549,7 +5023,9 @@ ___
 
    - `hash`: The identity of the open tip for which a tip value is declared. This is formed  as the hash of the tuple of the original tip `reason` and the beneficiary account ID. 
 
-    
+   #### Complexity 
+
+  - : `O(T)` where `T` is the number of tippers. decoding `Tipper` vec of length `T`. `T` is charged as upper bound given by `ContainsLengthBound`. The actual cost depends on  the implementation of `T::Tippers`. 
  
 ### reportAwesome(reason: `Bytes`, who: `MultiAddress`)
 - **interface**: `api.tx.tips.reportAwesome`
@@ -4565,7 +5041,11 @@ ___
 
    Emits `NewTip` if successful. 
 
-    
+   #### Complexity 
+
+  - `O(R)` where `R` length of `reason`.
+
+  - encoding and hashing of 'reason'
  
 ### retractTip(hash: `H256`)
 - **interface**: `api.tx.tips.retractTip`
@@ -4579,7 +5059,11 @@ ___
 
    Emits `TipRetracted` if successful. 
 
-    
+   #### Complexity 
+
+  - `O(1)`
+
+  - Depends on the length of `T::Hash` which is fixed.
  
 ### slashTip(hash: `H256`)
 - **interface**: `api.tx.tips.slashTip`
@@ -4591,7 +5075,9 @@ ___
 
    Emits `TipSlashed` if successful. 
 
-    
+   #### Complexity 
+
+  - O(1).
  
 ### tip(hash: `H256`, tip_value: `Compact<u128>`)
 - **interface**: `api.tx.tips.tip`
@@ -4605,7 +5091,11 @@ ___
 
    Emits `TipClosing` if the threshold of tippers has been reached and the countdown period  has started. 
 
-    
+   #### Complexity 
+
+  - `O(T)` where `T` is the number of tippers. decoding `Tipper` vec of length `T`, insert tip and check closing, `T` is charged as upper bound given by `ContainsLengthBound`.  The actual cost depends on the implementation of `T::Tippers`. 
+
+   Actually weight could be lower as it depends on how many tips are in `OpenTip` but it  is weighted as if almost full i.e of length `T-1`. 
  
 ### tipNew(reason: `Bytes`, who: `MultiAddress`, tip_value: `Compact<u128>`)
 - **interface**: `api.tx.tips.tipNew`
@@ -4621,7 +5111,13 @@ ___
 
    Emits `NewTip` if successful. 
 
-    
+   #### Complexity 
+
+  - `O(R + T)` where `R` length of `reason`, `T` is the number of tippers.
+
+  - `O(T)`: decoding `Tipper` vec of length `T`. `T` is charged as upper bound given by `ContainsLengthBound`. The actual cost depends on the implementation of  `T::Tippers`. 
+
+  - `O(R)`: hashing and encoding of reason of length `R`
 
 ___
 
@@ -4630,15 +5126,21 @@ ___
  
 ### checkProof(proof: `SpTransactionStorageProofTransactionStorageProof`)
 - **interface**: `api.tx.transactionStorage.checkProof`
-- **summary**:    Check storage proof for block number `block_number() - StoragePeriod`.  If such block does not exist the proof is expected to be `None`.   
+- **summary**:    Check storage proof for block number `block_number() - StoragePeriod`.  If such block does not exist the proof is expected to be `None`.  #### Complexity 
+
+  - Linear w.r.t the number of indexed transactions in the proved block for random probing.  There's a DB read for each transaction. 
  
 ### renew(block: `u32`, index: `u32`)
 - **interface**: `api.tx.transactionStorage.renew`
-- **summary**:    Renew previously stored data. Parameters are the block number that contains  previous `store` or `renew` call and transaction index within that block.  Transaction index is emitted in the `Stored` or `Renewed` event.  Applies same fees as `store`.   
+- **summary**:    Renew previously stored data. Parameters are the block number that contains  previous `store` or `renew` call and transaction index within that block.  Transaction index is emitted in the `Stored` or `Renewed` event.  Applies same fees as `store`.  #### Complexity 
+
+  - O(1).
  
 ### store(data: `Bytes`)
 - **interface**: `api.tx.transactionStorage.store`
-- **summary**:    Index and store data off chain. Minimum data size is 1 bytes, maximum is  `MaxTransactionSize`. Data will be removed after `STORAGE_PERIOD` blocks, unless `renew`  is called. #  
+- **summary**:    Index and store data off chain. Minimum data size is 1 bytes, maximum is  `MaxTransactionSize`. Data will be removed after `STORAGE_PERIOD` blocks, unless `renew`  is called.  #### Complexity 
+
+  - O(n*log(n)) of data size, as all data is pushed to an in-memory trie.
 
 ___
 
@@ -4651,13 +5153,17 @@ ___
 
    May only be called from `T::ApproveOrigin`. 
 
-    
+   #### Complexity 
+
+  - O(1).
  
 ### proposeSpend(value: `Compact<u128>`, beneficiary: `MultiAddress`)
 - **interface**: `api.tx.treasury.proposeSpend`
 - **summary**:    Put forward a suggestion for spending. A deposit proportional to the value  is reserved and slashed if the proposal is rejected. It is returned once the  proposal is awarded. 
 
-    
+   #### Complexity 
+
+  - O(1)
  
 ### rejectProposal(proposal_id: `Compact<u32>`)
 - **interface**: `api.tx.treasury.rejectProposal`
@@ -4665,7 +5171,9 @@ ___
 
    May only be called from `T::RejectOrigin`. 
 
-    
+   #### Complexity 
+
+  - O(1)
  
 ### removeApproval(proposal_id: `Compact<u32>`)
 - **interface**: `api.tx.treasury.removeApproval`
@@ -4675,7 +5183,9 @@ ___
 
   - `proposal_id`: The index of a proposal
 
-    
+   #### Complexity 
+
+  - O(A) where `A` is the number of approvals
 
    Errors: 
 
@@ -5171,7 +5681,9 @@ ___
 
    If origin is root then the calls are dispatched without checking origin filter. (This  includes bypassing `frame_system::Config::BaseCallFilter`). 
 
-    
+   #### Complexity 
+
+  - O(C) where C is the number of calls to be batched.
 
    This will return `Ok` in all circumstances. To determine the success of the batch, an  event is deposited. If a call failed and the batch was interrupted, then the  `BatchInterrupted` event is deposited, along with the number of successful calls made  and the error of the failed call. If all were successful, then the `BatchCompleted`  event is deposited. 
  
@@ -5185,7 +5697,9 @@ ___
 
    If origin is root then the calls are dispatched without checking origin filter. (This  includes bypassing `frame_system::Config::BaseCallFilter`). 
 
-    
+   #### Complexity 
+
+  - O(C) where C is the number of calls to be batched.
  
 ### dispatchAs(as_origin: `KitchensinkRuntimeOriginCaller`, call: `Call`)
 - **interface**: `api.tx.utility.dispatchAs`
@@ -5193,7 +5707,9 @@ ___
 
    The dispatch origin for this call must be _Root_. 
 
-    
+   #### Complexity 
+
+  - O(1).
  
 ### forceBatch(calls: `Vec<Call>`)
 - **interface**: `api.tx.utility.forceBatch`
@@ -5205,7 +5721,9 @@ ___
 
    If origin is root then the calls are dispatch without checking origin filter. (This  includes bypassing `frame_system::Config::BaseCallFilter`). 
 
-    
+   #### Complexity 
+
+  - O(C) where C is the number of calls to be batched.
  
 ### withWeight(call: `Call`, weight: `SpWeightsWeightV2Weight`)
 - **interface**: `api.tx.utility.withWeight`
@@ -5236,7 +5754,9 @@ ___
 
    NOTE: This will unlock all schedules through the current block. 
 
-    
+   #### Complexity 
+
+  - `O(1)`.
  
 ### mergeSchedules(schedule1_index: `u32`, schedule2_index: `u32`)
 - **interface**: `api.tx.vesting.mergeSchedules`
@@ -5266,7 +5786,9 @@ ___
 
    Emits either `VestingCompleted` or `VestingUpdated`. 
 
-    
+   #### Complexity 
+
+  - `O(1)`.
  
 ### vestOther(target: `MultiAddress`)
 - **interface**: `api.tx.vesting.vestOther`
@@ -5278,7 +5800,9 @@ ___
 
    Emits either `VestingCompleted` or `VestingUpdated`. 
 
-    
+   #### Complexity 
+
+  - `O(1)`.
  
 ### vestedTransfer(target: `MultiAddress`, schedule: `PalletVestingVestingInfo`)
 - **interface**: `api.tx.vesting.vestedTransfer`
@@ -5294,7 +5818,9 @@ ___
 
    NOTE: This will unlock all schedules through the current block. 
 
-    
+   #### Complexity 
+
+  - `O(1)`.
 
 ___
 

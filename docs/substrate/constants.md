@@ -690,6 +690,10 @@ ___
 - **interface**: `api.consts.nfts.keyLimit`
 - **summary**:    The maximum length of an attribute key. 
  
+### maxAttributesPerCall: `u32`
+- **interface**: `api.consts.nfts.maxAttributesPerCall`
+- **summary**:    The max number of attributes a user could set per call. 
+ 
 ### maxDeadlineDuration: `u32`
 - **interface**: `api.consts.nfts.maxDeadlineDuration`
 - **summary**:    The max duration in blocks for deadlines. 

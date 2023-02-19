@@ -299,6 +299,12 @@ ___
 
    Once a segment reaches this length, we begin the next one.  We reset all segments and return to `0` at the beginning of every  epoch. 
  
+### skippedEpochs(): `Vec<(u64,u32)>`
+- **interface**: `api.query.babe.skippedEpochs`
+- **summary**:    A list of the last 100 skipped epochs and the corresponding session index  when the epoch was skipped. 
+
+   This is only used for validating equivocation proofs. An equivocation proof  must contains a key-ownership proof for a given session, therefore we need a  way to tie together sessions and epoch indices, i.e. we need to validate that  a validator was the owner of a given key on a given session, and what the  active epoch index was during that session. 
+ 
 ### underConstruction(`u32`): `Vec<[u8;32]>`
 - **interface**: `api.query.babe.underConstruction`
 - **summary**:    TWOX-NOTE: `SegmentIndex` is an increasing integer, so this is okay. 

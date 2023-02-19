@@ -491,10 +491,6 @@ ___
 - **interface**: `api.errors.contracts.ContractTrapped.is`
 - **summary**:    Contract trapped during execution. 
  
-### DebugMessageInvalidUTF8
-- **interface**: `api.errors.contracts.DebugMessageInvalidUTF8.is`
-- **summary**:    The debug message specified to `seal_debug_message` does contain invalid UTF-8. 
- 
 ### DecodingFailed
 - **interface**: `api.errors.contracts.DecodingFailed.is`
 - **summary**:    Input passed to a contract API function failed to decode as expected type. 
@@ -1263,6 +1259,10 @@ ___
 - **interface**: `api.errors.nfts.IncorrectData.is`
 - **summary**:    The provided data is incorrect. 
  
+### IncorrectMetadata
+- **interface**: `api.errors.nfts.IncorrectMetadata.is`
+- **summary**:    The provided metadata might be too long. 
+ 
 ### ItemLocked
 - **interface**: `api.errors.nfts.ItemLocked.is`
 - **summary**:    The item is locked (non-transferable). 
@@ -1286,6 +1286,10 @@ ___
 ### LockedItemMetadata
 - **interface**: `api.errors.nfts.LockedItemMetadata.is`
 - **summary**:    Item's metadata is locked. 
+ 
+### MaxAttributesLimitReached
+- **interface**: `api.errors.nfts.MaxAttributesLimitReached.is`
+- **summary**:    Can't set more attributes per one call. 
  
 ### MaxSupplyLocked
 - **interface**: `api.errors.nfts.MaxSupplyLocked.is`
@@ -1367,6 +1371,10 @@ ___
 - **interface**: `api.errors.nfts.WrongDuration.is`
 - **summary**:    The duration provided should be less than or equal to `MaxDeadlineDuration`. 
  
+### WrongOrigin
+- **interface**: `api.errors.nfts.WrongOrigin.is`
+- **summary**:    The extrinsic was sent by the wrong origin. 
+ 
 ### WrongOwner
 - **interface**: `api.errors.nfts.WrongOwner.is`
 - **summary**:    The owner turned out to be different to what was expected. 
@@ -1374,6 +1382,10 @@ ___
 ### WrongSetting
 - **interface**: `api.errors.nfts.WrongSetting.is`
 - **summary**:    The provided setting can't be set. 
+ 
+### WrongSignature
+- **interface**: `api.errors.nfts.WrongSignature.is`
+- **summary**:    The provided signature is incorrect. 
 
 ___
 
