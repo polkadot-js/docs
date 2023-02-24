@@ -39,6 +39,7 @@
        1	Kyle                          	isReady field no longer present or necessary (#296)
        1	Laszlo                        	Fixed typo in @polkadot/api-contract import (#375)
        1	Malte Kliemann                	Add info on how to create types (#224)
+       1	Micha Roon                    	add link to ss58 registry (#408)
        1	Michał Mirończuk              	Update blocks.md (#64)
        1	MOZGIII                       	Fix the metadata at custom RPC docs (#242)
        1	Olitelkes                     	lowercase to uppercase const ALICE (#399)
