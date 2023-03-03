@@ -5,15 +5,6 @@ __metadata:
   version: 6
   cacheKey: 8
 
-"@algolia/autocomplete-core@npm:1.6.3":
-  version: 1.6.3
-  resolution: "@algolia/autocomplete-core@npm:1.6.3"
-  dependencies:
-    "@algolia/autocomplete-shared": 1.6.3
-  checksum: 2dec8ca31360c595a596e83ac0c075e21cf7d3235b0e069d13d8e4e9de7305eaa75f8247475e813ed8cc0e35740cb79099ebfb0cde3a83d2c79db2084e8c62b4
-  languageName: node
-  linkType: hard
-
 "@algolia/autocomplete-core@npm:1.7.1":
   version: 1.7.1
   resolution: "@algolia/autocomplete-core@npm:1.7.1"
@@ -23,30 +14,28 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@algolia/autocomplete-js@npm:^1.5.1":
-  version: 1.6.3
-  resolution: "@algolia/autocomplete-js@npm:1.6.3"
+"@algolia/autocomplete-core@npm:1.8.3":
+  version: 1.8.3
+  resolution: "@algolia/autocomplete-core@npm:1.8.3"
   dependencies:
-    "@algolia/autocomplete-core": 1.6.3
-    "@algolia/autocomplete-preset-algolia": 1.6.3
-    "@algolia/autocomplete-shared": 1.6.3
-    htm: ^3.0.0
-    preact: ^10.0.0
-  peerDependencies:
-    "@algolia/client-search": ^4.5.1
-  checksum: bdfd54146d9b84b7a5213f4025d78ff05ecd6ea39a5afd58eea13a1f9b16219763b590f379e9bf032b9ec229687c986df30639e0682e9dade1f5bec5991c4a7a
+    "@algolia/autocomplete-shared": 1.8.3
+  checksum: d6bb5f82a91bbca882ba028ee64dab344607224df020b509c83e21c005a410ec46db0898f00628eb2575180ee8eddac1373d2ed3082b2b82c39803a3c7b9f8a1
   languageName: node
   linkType: hard
 
-"@algolia/autocomplete-preset-algolia@npm:1.6.3":
-  version: 1.6.3
-  resolution: "@algolia/autocomplete-preset-algolia@npm:1.6.3"
+"@algolia/autocomplete-js@npm:^1.8.2":
+  version: 1.8.3
+  resolution: "@algolia/autocomplete-js@npm:1.8.3"
   dependencies:
-    "@algolia/autocomplete-shared": 1.6.3
+    "@algolia/autocomplete-core": 1.8.3
+    "@algolia/autocomplete-preset-algolia": 1.8.3
+    "@algolia/autocomplete-shared": 1.8.3
+    htm: ^3.1.1
+    preact: ^10.0.0
   peerDependencies:
-    "@algolia/client-search": ^4.9.1
-    algoliasearch: ^4.9.1
-  checksum: f5b5a3a88353d8a990cf84d11e22c11b21422b565cff0619773162847a7820a1981b57ea948fffd54245f826cbeb650fa9476adc2df691650e864b422ae9d0fe
+    "@algolia/client-search": ">= 4.5.1 < 6"
+    algoliasearch: ">= 4.9.1 < 6"
+  checksum: bad433e06715304969657b3458ed2a94e584957b386499c7e22df79e8cbd6d4b6a6659b146349d08092bca231c4464b7266c90874a490cd9ca0a3694dd9bcf0f
   languageName: node
   linkType: hard
 
@@ -62,10 +51,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@algolia/autocomplete-shared@npm:1.6.3":
-  version: 1.6.3
-  resolution: "@algolia/autocomplete-shared@npm:1.6.3"
-  checksum: 2688f54bd82506ac1e6580476772a4d310a9cfa28fbd29c6e207ddc327f62b55e007d5ed5a83af3edd2faf06b09f2e989f9eb7c14d2472fb7a657bb9539fb730
+"@algolia/autocomplete-preset-algolia@npm:1.8.3":
+  version: 1.8.3
+  resolution: "@algolia/autocomplete-preset-algolia@npm:1.8.3"
+  dependencies:
+    "@algolia/autocomplete-shared": 1.8.3
+  peerDependencies:
+    "@algolia/client-search": ">= 4.9.1 < 6"
+    algoliasearch: ">= 4.9.1 < 6"
+  checksum: 81ff7addfab0a01697151bf7674f70eb328670a86a183b257fafce88cd24064dea000b322d3a35b05302a1a9e4522df2161032871bfe15ffa0a80afa8a8f3e17
   languageName: node
   linkType: hard
 
@@ -76,10 +70,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@algolia/autocomplete-theme-classic@npm:^1.5.1":
-  version: 1.6.3
-  resolution: "@algolia/autocomplete-theme-classic@npm:1.6.3"
-  checksum: 7c093668bbf7860a82771de905ff8cee9005ca4308bcc765c7f9bd2279319abd5426fb64f7bbb0b90f20d83a083bacfb478d2929680c489d6807a5ce32946d66
+"@algolia/autocomplete-shared@npm:1.8.3":
+  version: 1.8.3
+  resolution: "@algolia/autocomplete-shared@npm:1.8.3"
+  checksum: fd7a34dbb4eaa3000d741ac39238c2416b644295898069a2f8d39f5302e51fd48d8c2a208fc5e071218bcc3e196e919a12d13b2521a893bc00bce39d84b02192
+  languageName: node
+  linkType: hard
+
+"@algolia/autocomplete-theme-classic@npm:^1.8.2":
+  version: 1.8.3
+  resolution: "@algolia/autocomplete-theme-classic@npm:1.8.3"
+  checksum: 8b4eb03e7da159c08a8e8652cedee3068cb34093837acc2ab432c4f66370d18fd97bf0d9207c9e4b0a64807fc239224ae8abf14a03301866dee13a60c0fd44c6
   languageName: node
   linkType: hard
 
@@ -1741,12 +1742,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@cmfcmf/docusaurus-search-local@npm:^0.11.0":
-  version: 0.11.0
-  resolution: "@cmfcmf/docusaurus-search-local@npm:0.11.0"
+"@cmfcmf/docusaurus-search-local@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "@cmfcmf/docusaurus-search-local@npm:1.0.0"
   dependencies:
-    "@algolia/autocomplete-js": ^1.5.1
-    "@algolia/autocomplete-theme-classic": ^1.5.1
+    "@algolia/autocomplete-js": ^1.8.2
+    "@algolia/autocomplete-theme-classic": ^1.8.2
     "@algolia/client-search": ^4.12.0
     algoliasearch: ^4.12.0
     cheerio: ^1.0.0-rc.9
@@ -1754,12 +1755,12 @@ __metadata:
     lunr-languages: ^1.4.0
     mark.js: ^8.11.1
   peerDependencies:
-    "@docusaurus/core": ^v2.0.0-beta.21
+    "@docusaurus/core": ^2.0.0
     nodejieba: ^2.5.0
   peerDependenciesMeta:
     nodejieba:
       optional: true
-  checksum: 9657bc43987bb8fedeb48a50d1aa375fd947d9d7a3c46f09320c369e7c974ef8c6161847dba35b5166a1d83ce63120bdf6046c8fb4af8e147b8b9adde887737f
+  checksum: cf7c2f45b6ab79a6abcc61c25aeba8e21561902eefa60a55d14258d24eaa2d97a697ff799d8cd9c8692f68b0a3f70e32e9ad632054441f45804f4f446482adb7
   languageName: node
   linkType: hard
 
@@ -2795,9 +2796,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@polkadot/dev@npm:^0.69.23":
-  version: 0.69.23
-  resolution: "@polkadot/dev@npm:0.69.23"
+"@polkadot/dev@npm:^0.69.25":
+  version: 0.69.25
+  resolution: "@polkadot/dev@npm:0.69.25"
   dependencies:
     "@babel/cli": ^7.21.0
     "@babel/core": ^7.21.0
@@ -2830,7 +2831,6 @@ __metadata:
     "@typescript-eslint/eslint-plugin": ^5.54.0
     "@typescript-eslint/parser": ^5.54.0
     "@vue/component-compiler-utils": ^3.3.0
-    babel-plugin-module-extension-resolver: ^1.0.0
     babel-plugin-module-resolver: ^5.0.0
     babel-plugin-styled-components: ^2.0.7
     browserslist: ^4.21.5
@@ -2852,8 +2852,7 @@ __metadata:
     gh-release: ^7.0.2
     jsdom: ^21.1.0
     madge: ^6.0.0
-    prettier: ^2.8.4
-    rollup: ^3.17.3
+    rollup: ^3.18.0
     rollup-plugin-cleanup: ^3.2.1
     tap-parser: ^12.0.1
     typescript: ^4.9.5
@@ -2875,25 +2874,19 @@ __metadata:
     polkadot-dev-copy-dir: scripts/polkadot-dev-copy-dir.mjs
     polkadot-dev-copy-to: scripts/polkadot-dev-copy-to.mjs
     polkadot-dev-deno-map: scripts/polkadot-dev-deno-map.mjs
-    polkadot-dev-run-esbuild: scripts/polkadot-dev-run-esbuild.mjs
     polkadot-dev-run-lint: scripts/polkadot-dev-run-lint.mjs
     polkadot-dev-run-node-ts: scripts/polkadot-dev-run-node-ts.mjs
-    polkadot-dev-run-prettier: scripts/polkadot-dev-run-prettier.mjs
-    polkadot-dev-run-swc: scripts/polkadot-dev-run-swc.mjs
     polkadot-dev-run-test: scripts/polkadot-dev-run-test.mjs
     polkadot-dev-version: scripts/polkadot-dev-version.mjs
     polkadot-dev-yarn-only: scripts/polkadot-dev-yarn-only.mjs
-    polkadot-exec-esbuild: scripts/polkadot-exec-esbuild.mjs
     polkadot-exec-eslint: scripts/polkadot-exec-eslint.mjs
     polkadot-exec-ghpages: scripts/polkadot-exec-ghpages.mjs
     polkadot-exec-ghrelease: scripts/polkadot-exec-ghrelease.mjs
     polkadot-exec-node-test: scripts/polkadot-exec-node-test.mjs
-    polkadot-exec-prettier: scripts/polkadot-exec-prettier.mjs
     polkadot-exec-rollup: scripts/polkadot-exec-rollup.mjs
-    polkadot-exec-swc: scripts/polkadot-exec-swc.mjs
     polkadot-exec-tsc: scripts/polkadot-exec-tsc.mjs
     polkadot-exec-webpack: scripts/polkadot-exec-webpack.mjs
-  checksum: e927bb3b236002e264b5822cf3bd9d37f2e5105270185cf42c05428efe598bece657d3174b1ccc3867257a48181a5c8f29f6b58d7c65286a1a35f8c5df1a78d9
+  checksum: 80579467976cc5f124e0a5c04c4c142f541523485eb00d8838c82f9a48d0c14c8e5ce3fe139d02ed52af8013bdb2eb35cd06534962a4e80a46a1374bc46be8d1
   languageName: node
   linkType: hard
 
@@ -5198,13 +5191,6 @@ __metadata:
   dependencies:
     "@babel/helper-plugin-utils": 7.10.4
   checksum: 145ccf09c96d36411d340e78086555f8d4d5924ea39fcb0eca461c066cfa98bc4344982bb35eb85d054ef88f8d4dfc0205ba27370c1d8fcc78191b02908d044d
-  languageName: node
-  linkType: hard
-
-"babel-plugin-module-extension-resolver@npm:^1.0.0":
-  version: 1.0.0
-  resolution: "babel-plugin-module-extension-resolver@npm:1.0.0"
-  checksum: ade0426653bad6d395ee27ffef26b962635d070c78dd9b3a18a631dd9bf8009d76eb0bd26166ad4ab2fb178fb3d439da8d085f973038a122ee42851781570aa4
   languageName: node
   linkType: hard
 
@@ -9253,7 +9239,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"htm@npm:^3.0.0":
+"htm@npm:^3.1.1":
   version: 3.1.1
   resolution: "htm@npm:3.1.1"
   checksum: 1827a0cafffcff69690b048a4df59944086d7503fe5eb7c10b40834439205bdf992941e7aa25e92b3c2c086170565b4ed7c365bc072d31067c6e7a4e478776bd
@@ -12130,11 +12116,11 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "polkadot-js@workspace:."
   dependencies:
-    "@cmfcmf/docusaurus-search-local": ^0.11.0
+    "@cmfcmf/docusaurus-search-local": ^1.0.0
     "@docusaurus/core": 2.3.1
     "@docusaurus/preset-classic": 2.3.1
     "@mdx-js/react": ^1.6.22
-    "@polkadot/dev": ^0.69.23
+    "@polkadot/dev": ^0.69.25
     "@polkadot/typegen": ^9.14.2
     clsx: ^1.2.1
     react: ^18.2.0
@@ -12694,7 +12680,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prettier@npm:^1.18.2 || ^2.0.0, prettier@npm:^2.8.4":
+"prettier@npm:^1.18.2 || ^2.0.0":
   version: 2.8.4
   resolution: "prettier@npm:2.8.4"
   bin:
@@ -13713,9 +13699,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"rollup@npm:^3.17.3":
-  version: 3.17.3
-  resolution: "rollup@npm:3.17.3"
+"rollup@npm:^3.18.0":
+  version: 3.18.0
+  resolution: "rollup@npm:3.18.0"
   dependencies:
     fsevents: ~2.3.2
   dependenciesMeta:
@@ -13723,7 +13709,7 @@ __metadata:
       optional: true
   bin:
     rollup: dist/bin/rollup
-  checksum: afce20a6ef4a613e5803eff7fb17a3efe740e326257b43f48bdbe10783f3eae79587d7e455234bc68f3c3154a50f2c29c85d4d2a42cdebcc17a5abeaeb04e0ed
+  checksum: 0bcd1abb1cc383abdd09b5594de862ecb2f946e950954bb472a370289bdc4499aea8d04477be55ce205450d973d38ad255f0dc6926162500a251d73bf0e60e6f
   languageName: node
   linkType: hard
 
