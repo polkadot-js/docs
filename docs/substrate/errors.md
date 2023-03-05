@@ -34,6 +34,8 @@ This page lists the errors that can be encountered in the different modules.
 
 - **[fastUnstake](#fastunstake)**
 
+- **[glutton](#glutton)**
+
 - **[grandpa](#grandpa)**
 
 - **[identity](#identity)**
@@ -946,6 +948,17 @@ ___
 ___
 
 
+## glutton
+ 
+### AlreadyInitialized
+- **interface**: `api.errors.glutton.AlreadyInitialized.is`
+- **summary**:    The pallet was already initialized. 
+
+   Set `witness_count` to `Some` to bypass this error. 
+
+___
+
+
 ## grandpa
  
 ### ChangePending
@@ -1152,6 +1165,12 @@ ___
 ### Queued
 - **interface**: `api.errors.messageQueue.Queued.is`
 - **summary**:    The message is queued for future execution. 
+ 
+### TemporarilyUnprocessable
+- **interface**: `api.errors.messageQueue.TemporarilyUnprocessable.is`
+- **summary**:    This message is temporarily unprocessable. 
+
+   Such errors are expected, but not guaranteed, to resolve themselves eventually through  retrying. 
 
 ___
 
@@ -1371,6 +1390,10 @@ ___
 - **interface**: `api.errors.nfts.WrongDuration.is`
 - **summary**:    The duration provided should be less than or equal to `MaxDeadlineDuration`. 
  
+### WrongNamespace
+- **interface**: `api.errors.nfts.WrongNamespace.is`
+- **summary**:    The provided namespace isn't supported in this call. 
+ 
 ### WrongOrigin
 - **interface**: `api.errors.nfts.WrongOrigin.is`
 - **summary**:    The extrinsic was sent by the wrong origin. 
@@ -1460,6 +1483,10 @@ ___
 ### AccountBelongsToOtherPool
 - **interface**: `api.errors.nominationPools.AccountBelongsToOtherPool.is`
 - **summary**:    An account is already delegating in another pool. An account may only belong to one  pool at a time. 
+ 
+### BondExtraRestricted
+- **interface**: `api.errors.nominationPools.BondExtraRestricted.is`
+- **summary**:    Bonding extra is restricted to the exact pending reward amount. 
  
 ### CanNotChangeState
 - **interface**: `api.errors.nominationPools.CanNotChangeState.is`

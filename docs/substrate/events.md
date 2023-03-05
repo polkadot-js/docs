@@ -34,6 +34,8 @@ Events are emitted for certain operations on the runtime. The following sections
 
 - **[fastUnstake](#fastunstake)**
 
+- **[glutton](#glutton)**
+
 - **[grandpa](#grandpa)**
 
 - **[identity](#identity)**
@@ -662,6 +664,23 @@ ___
 ___
 
 
+## glutton
+ 
+### ComputationLimitSet(`Perbill`)
+- **interface**: `api.events.glutton.ComputationLimitSet.is`
+- **summary**:    The computation limit has been updated by root. 
+ 
+### PalletInitialized(`bool`)
+- **interface**: `api.events.glutton.PalletInitialized.is`
+- **summary**:    The pallet has been (re)initialized by root. 
+ 
+### StorageLimitSet(`Perbill`)
+- **interface**: `api.events.glutton.StorageLimitSet.is`
+- **summary**:    The storage limit has been updated by root. 
+
+___
+
+
 ## grandpa
  
 ### NewAuthorities(`Vec<(SpFinalityGrandpaAppPublic,u64)>`)
@@ -785,19 +804,19 @@ ___
 - **interface**: `api.events.messageQueue.Discarded.is`
 - **summary**:    Message discarded due to an inability to decode the item. Usually caused by state  corruption. 
  
-### OverweightEnqueued(`H256`, `PalletMessageQueueMockHelpersMessageOrigin`, `u32`, `u32`)
+### OverweightEnqueued(`H256`, `u32`, `u32`, `u32`)
 - **interface**: `api.events.messageQueue.OverweightEnqueued.is`
 - **summary**:    Message placed in overweight queue. 
  
-### PageReaped(`PalletMessageQueueMockHelpersMessageOrigin`, `u32`)
+### PageReaped(`u32`, `u32`)
 - **interface**: `api.events.messageQueue.PageReaped.is`
 - **summary**:    This page was reaped. 
  
-### Processed(`H256`, `PalletMessageQueueMockHelpersMessageOrigin`, `SpWeightsWeightV2Weight`, `bool`)
+### Processed(`H256`, `u32`, `SpWeightsWeightV2Weight`, `bool`)
 - **interface**: `api.events.messageQueue.Processed.is`
 - **summary**:    Message is processed. 
  
-### ProcessingFailed(`H256`, `PalletMessageQueueMockHelpersMessageOrigin`, `FrameSupportMessagesProcessMessageError`)
+### ProcessingFailed(`H256`, `u32`, `FrameSupportMessagesProcessMessageError`)
 - **interface**: `api.events.messageQueue.ProcessingFailed.is`
 - **summary**:    Message discarded due to an error in the `MessageProcessor` (usually a format error). 
 
@@ -938,6 +957,10 @@ ___
 ### OwnershipAcceptanceChanged(`AccountId32`, `Option<u32>`)
 - **interface**: `api.events.nfts.OwnershipAcceptanceChanged.is`
 - **summary**:    Ownership acceptance has changed for an account. 
+ 
+### PreSignedAttributesSet(`u32`, `u32`, `FrameSupportTokensMiscAttributeNamespace`)
+- **interface**: `api.events.nfts.PreSignedAttributesSet.is`
+- **summary**:    New attributes have been set for an `item` of the `collection`. 
  
 ### Redeposited(`u32`, `Vec<u32>`)
 - **interface**: `api.events.nfts.Redeposited.is`

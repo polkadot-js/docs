@@ -38,6 +38,8 @@ The following sections contain Storage methods are part of the default Substrate
 
 - **[fastUnstake](#fastunstake)**
 
+- **[glutton](#glutton)**
+
 - **[grandpa](#grandpa)**
 
 - **[identity](#identity)**
@@ -676,6 +678,29 @@ ___
 ___
 
 
+## glutton
+ 
+### compute(): `Perbill`
+- **interface**: `api.query.glutton.compute`
+- **summary**:    Storage value used to specify what percentage of the left over `ref_time`  to consume during `on_idle`. 
+ 
+### storage(): `Perbill`
+- **interface**: `api.query.glutton.storage`
+- **summary**:    Storage value used the specify what percentage of left over `proof_size`  to consume during `on_idle`. 
+ 
+### trashData(`u32`): `Option<[u8;1024]>`
+- **interface**: `api.query.glutton.trashData`
+- **summary**:    Storage map used for wasting proof size. 
+
+   It contains no meaningful data - hence the name "Trash". The maximal number of entries is  set to 65k, which is just below the next jump at 16^4. This is important to reduce the proof  size benchmarking overestimate. The assumption here is that we won't have more than 65k *  1KiB = 65MiB of proof size wasting in practice. However, this limit is not enforced, so the  pallet would also work out of the box with more entries, but its benchmarked proof weight  would possibly be underestimated in that case. 
+ 
+### trashDataCount(): `u32`
+- **interface**: `api.query.glutton.trashDataCount`
+- **summary**:    The current number of entries in `TrashData`. 
+
+___
+
+
 ## grandpa
  
 ### currentSetId(): `u64`
@@ -804,15 +829,15 @@ ___
 
 ## messageQueue
  
-### bookStateFor(`PalletMessageQueueMockHelpersMessageOrigin`): `PalletMessageQueueBookState`
+### bookStateFor(`u32`): `PalletMessageQueueBookState`
 - **interface**: `api.query.messageQueue.bookStateFor`
 - **summary**:    The index of the first and last (non-empty) pages. 
  
-### pages(`PalletMessageQueueMockHelpersMessageOrigin, u32`): `Option<PalletMessageQueuePage>`
+### pages(`u32, u32`): `Option<PalletMessageQueuePage>`
 - **interface**: `api.query.messageQueue.pages`
 - **summary**:    The map of page indices to pages. 
  
-### serviceHead(): `Option<PalletMessageQueueMockHelpersMessageOrigin>`
+### serviceHead(): `Option<u32>`
 - **interface**: `api.query.messageQueue.serviceHead`
 - **summary**:    The origin at which we should begin servicing. 
 
@@ -940,6 +965,10 @@ ___
 ### bondedPools(`u32`): `Option<PalletNominationPoolsBondedPoolInner>`
 - **interface**: `api.query.nominationPools.bondedPools`
 - **summary**:    Storage for bonded pools. 
+ 
+### claimPermissions(`AccountId32`): `PalletNominationPoolsClaimPermission`
+- **interface**: `api.query.nominationPools.claimPermissions`
+- **summary**:    Map from a pool member account to their opted claim permission. 
  
 ### counterForBondedPools(): `u32`
 - **interface**: `api.query.nominationPools.counterForBondedPools`

@@ -34,6 +34,8 @@ The following sections contain Extrinsics methods are part of the default Substr
 
 - **[fastUnstake](#fastunstake)**
 
+- **[glutton](#glutton)**
+
 - **[grandpa](#grandpa)**
 
 - **[identity](#identity)**
@@ -1954,6 +1956,29 @@ ___
 ___
 
 
+## glutton
+ 
+### initializePallet(new_count: `u32`, witness_count: `Option<u32>`)
+- **interface**: `api.tx.glutton.initializePallet`
+- **summary**:    Initializes the pallet by writing into `TrashData`. 
+
+   Only callable by Root. A good default for `trash_count` is `5_000`. 
+ 
+### setCompute(compute: `Perbill`)
+- **interface**: `api.tx.glutton.setCompute`
+- **summary**:    Set the `Compute` storage value that determines how much of the  block's weight `ref_time` to use during `on_idle`. 
+
+   Only callable by Root. 
+ 
+### setStorage(storage: `Perbill`)
+- **interface**: `api.tx.glutton.setStorage`
+- **summary**:    Set the `Storage` storage value that determines the PoV size usage  for each block. 
+
+   Only callable by Root. 
+
+___
+
+
 ## grandpa
  
 ### noteStalled(delay: `u32`, best_finalized_block_number: `u32`)
@@ -2371,9 +2396,11 @@ ___
 
 ## messageQueue
  
-### executeOverweight(message_origin: `PalletMessageQueueMockHelpersMessageOrigin`, page: `u32`, index: `u32`, weight_limit: `SpWeightsWeightV2Weight`)
+### executeOverweight(message_origin: `u32`, page: `u32`, index: `u32`, weight_limit: `SpWeightsWeightV2Weight`)
 - **interface**: `api.tx.messageQueue.executeOverweight`
 - **summary**:    Execute an overweight message. 
+
+   Temporary processing errors will be propagated whereas permanent errors are treated  as success condition. 
 
    - `origin`: Must be `Signed`. 
 
@@ -2387,7 +2414,7 @@ ___
 
    Benchmark complexity considerations: O(index + weight_limit). 
  
-### reapPage(message_origin: `PalletMessageQueueMockHelpersMessageOrigin`, page_index: `u32`)
+### reapPage(message_origin: `u32`, page_index: `u32`)
 - **interface**: `api.tx.messageQueue.reapPage`
 - **summary**:    Remove a page which has no more messages remaining to be processed or is stale. 
 
@@ -3021,6 +3048,20 @@ ___
 
    Weight: `O(1)` 
  
+### setAttributesPreSigned(data: `PalletNftsPreSignedAttributes`, signature: `SpRuntimeMultiSignature`, signer: `AccountId32`)
+- **interface**: `api.tx.nfts.setAttributesPreSigned`
+- **summary**:    Set attributes for an item by providing the pre-signed approval. 
+
+   Origin must be Signed and must be an owner of the `data.item`. 
+
+   - `data`: The pre-signed approval that consists of the information about the item,  attributes to update and until what block number. 
+
+  - `signature`: The signature of the `data` object.
+
+  - `signer`: The `data` object's signer. Should be an owner of the collection for the `CollectionOwner` namespace. 
+
+   Emits `AttributeSet` for each provided attribute.  Emits `ItemAttributesApprovalAdded` if the approval wasn't set before.  Emits `PreSignedAttributesSet` on success. 
+ 
 ### setCollectionMaxSupply(collection: `u32`, max_supply: `u32`)
 - **interface**: `api.tx.nfts.setCollectionMaxSupply`
 - **summary**:    Set the maximum number of items a collection could have. 
@@ -3237,7 +3278,15 @@ ___
 
    Additional funds can come from either the free balance of the account, of from the  accumulated rewards, see [`BondExtra`]. 
 
-   Bonding extra funds implies an automatic payout of all pending rewards as well. 
+   Bonding extra funds implies an automatic payout of all pending rewards as well.  See `bond_extra_other` to bond pending rewards of `other` members. 
+ 
+### bondExtraOther(member: `MultiAddress`, extra: `PalletNominationPoolsBondExtra`)
+- **interface**: `api.tx.nominationPools.bondExtraOther`
+- **summary**:    `origin` bonds funds from `extra` for some pool member `member` into their respective  pools. 
+
+   `origin` can bond extra funds from free balance or pending rewards when `origin ==  other`. 
+
+   In the case of `origin != other`, `origin` can only bond extra pending rewards of  `other` members assuming set_claim_permission for the given member is  `PermissionlessAll` or `PermissionlessCompound`. 
  
 ### chill(pool_id: `u32`)
 - **interface**: `api.tx.nominationPools.chill`
@@ -3252,8 +3301,16 @@ ___
 - **summary**:    A bonded member can use this to claim their payout based on the rewards that the pool  has accumulated since their last claimed payout (OR since joining if this is there first  time claiming rewards). The payout will be transferred to the member's account. 
 
    The member will earn rewards pro rata based on the members stake vs the sum of the  members in the pools stake. Rewards do not "expire". 
+
+   See `claim_payout_other` to caim rewards on bahalf of some `other` pool member. 
  
-### create(amount: `Compact<u128>`, root: `MultiAddress`, nominator: `MultiAddress`, state_toggler: `MultiAddress`)
+### claimPayoutOther(other: `AccountId32`)
+- **interface**: `api.tx.nominationPools.claimPayoutOther`
+- **summary**:    `origin` can claim payouts on some pool member `other`'s behalf. 
+
+   Pool member `other` must have a `PermissionlessAll` or `PermissionlessWithdraw` in order  for this call to be successful. 
+ 
+### create(amount: `Compact<u128>`, root: `MultiAddress`, nominator: `MultiAddress`, bouncer: `MultiAddress`)
 - **interface**: `api.tx.nominationPools.create`
 - **summary**:    Create a new delegation pool. 
 
@@ -3267,13 +3324,13 @@ ___
 
   * `nominator` - The account to set as the [`PoolRoles::nominator`].
 
-  * `state_toggler` - The account to set as the [`PoolRoles::state_toggler`].
+  * `bouncer` - The account to set as the [`PoolRoles::bouncer`].
 
    #### Note 
 
    In addition to `amount`, the caller will transfer the existential deposit; so the caller  needs at have at least `amount + existential_deposit` transferrable. 
  
-### createWithPoolId(amount: `Compact<u128>`, root: `MultiAddress`, nominator: `MultiAddress`, state_toggler: `MultiAddress`, pool_id: `u32`)
+### createWithPoolId(amount: `Compact<u128>`, root: `MultiAddress`, nominator: `MultiAddress`, bouncer: `MultiAddress`, pool_id: `u32`)
 - **interface**: `api.tx.nominationPools.createWithPoolId`
 - **summary**:    Create a new delegation pool with a previously used pool id 
 
@@ -3311,6 +3368,18 @@ ___
 
    This is useful if their are too many unlocking chunks to call `unbond`, and some  can be cleared by withdrawing. In the case there are too many unlocking chunks, the user  would probably see an error like `NoMoreChunks` emitted from the staking system when  they attempt to unbond. 
  
+### setClaimPermission(permission: `PalletNominationPoolsClaimPermission`)
+- **interface**: `api.tx.nominationPools.setClaimPermission`
+- **summary**:    Allows a pool member to set a claim permission to allow or disallow permissionless  bonding and withdrawing. 
+
+   By default, this is `Permissioned`, which implies only the pool member themselves can  claim their pending rewards. If a pool member wishes so, they can set this to  `PermissionlessAll` to allow any account to claim their rewards and bond extra to the  pool. 
+
+   #### Arguments 
+
+   * `origin` - Member of a pool. 
+
+  * `actor` - Account to claim reward. // improve this
+ 
 ### setConfigs(min_join_bond: `PalletNominationPoolsConfigOpU128`, min_create_bond: `PalletNominationPoolsConfigOpU128`, max_pools: `PalletNominationPoolsConfigOpU32`, max_members: `PalletNominationPoolsConfigOpU32`, max_members_per_pool: `PalletNominationPoolsConfigOpU32`)
 - **interface**: `api.tx.nominationPools.setConfigs`
 - **summary**:    Update configurations for the nomination pools. The origin for this call must be  Root. 
@@ -3331,7 +3400,7 @@ ___
 - **interface**: `api.tx.nominationPools.setMetadata`
 - **summary**:    Set a new metadata for the pool. 
 
-   The dispatch origin of this call must be signed by the state toggler, or the root role  of the pool. 
+   The dispatch origin of this call must be signed by the bouncer, or the root role  of the pool. 
  
 ### setState(pool_id: `u32`, state: `PalletNominationPoolsPoolState`)
 - **interface**: `api.tx.nominationPools.setState`
@@ -3341,7 +3410,7 @@ ___
 
    The dispatch origin of this call must be either: 
 
-   1. signed by the state toggler, or the root role of the pool,  2. if the pool conditions to be open are NOT met (as described by `ok_to_be_open`), and  then the state of the pool can be permissionlessly changed to `Destroying`. 
+   1. signed by the bouncer, or the root role of the pool,  2. if the pool conditions to be open are NOT met (as described by `ok_to_be_open`), and  then the state of the pool can be permissionlessly changed to `Destroying`. 
  
 ### unbond(member_account: `MultiAddress`, unbonding_points: `Compact<u128>`)
 - **interface**: `api.tx.nominationPools.unbond`
@@ -3351,7 +3420,7 @@ ___
 
    #### Conditions for a permissionless dispatch. 
 
-   * The pool is blocked and the caller is either the root or state-toggler. This is  refereed to as a kick. 
+   * The pool is blocked and the caller is either the root or bouncer. This is refereed to  as a kick. 
 
   * The pool is destroying and the member is not the depositor.
 
@@ -3367,7 +3436,7 @@ ___
 
    If there are too many unlocking chunks to unbond with the pool account,  [`Call::pool_withdraw_unbonded`] can be called to try and minimize unlocking chunks.  The [`StakingInterface::unbond`] will implicitly call [`Call::pool_withdraw_unbonded`]  to try to free chunks if necessary (ie. if unbound was called and no unlocking chunks  are available). However, it may not be possible to release the current unlocking chunks,  in which case, the result of this call will likely be the `NoMoreChunks` error from the  staking system. 
  
-### updateRoles(pool_id: `u32`, new_root: `PalletNominationPoolsConfigOpAccountId32`, new_nominator: `PalletNominationPoolsConfigOpAccountId32`, new_state_toggler: `PalletNominationPoolsConfigOpAccountId32`)
+### updateRoles(pool_id: `u32`, new_root: `PalletNominationPoolsConfigOpAccountId32`, new_nominator: `PalletNominationPoolsConfigOpAccountId32`, new_bouncer: `PalletNominationPoolsConfigOpAccountId32`)
 - **interface**: `api.tx.nominationPools.updateRoles`
 - **summary**:    Update the roles of the pool. 
 
@@ -3387,7 +3456,7 @@ ___
 
   * The target is the depositor and they are the only member in the sub pools.
 
-  * The pool is blocked and the caller is either the root or state-toggler.
+  * The pool is blocked and the caller is either the root or bouncer.
 
    #### Conditions for permissioned dispatch 
 
