@@ -74,6 +74,8 @@ Events are emitted for certain operations on the runtime. The following sections
 
 - **[remark](#remark)**
 
+- **[salary](#salary)**
+
 - **[scheduler](#scheduler)**
 
 - **[session](#session)**
@@ -225,6 +227,10 @@ ___
 ### AssetFrozen(`u32`)
 - **interface**: `api.events.assets.AssetFrozen.is`
 - **summary**:    Some asset `asset_id` was frozen. 
+ 
+### AssetMinBalanceChanged(`u32`, `u128`)
+- **interface**: `api.events.assets.AssetMinBalanceChanged.is`
+- **summary**:    The min_balance of an asset has been updated by the asset owner. 
  
 ### AssetStatusChanged(`u32`)
 - **interface**: `api.events.assets.AssetStatusChanged.is`
@@ -683,7 +689,7 @@ ___
 
 ## grandpa
  
-### NewAuthorities(`Vec<(SpFinalityGrandpaAppPublic,u64)>`)
+### NewAuthorities(`Vec<(SpConsensusGrandpaAppPublic,u64)>`)
 - **interface**: `api.events.grandpa.NewAuthorities.is`
 - **summary**:    New authority set has been applied. 
  
@@ -854,11 +860,11 @@ ___
 - **interface**: `api.events.nfts.ApprovalCancelled.is`
 - **summary**:    An approval for a `delegate` account to transfer the `item` of an item  `collection` was cancelled by its `owner`. 
  
-### AttributeCleared(`u32`, `Option<u32>`, `Bytes`, `FrameSupportTokensMiscAttributeNamespace`)
+### AttributeCleared(`u32`, `Option<u32>`, `Bytes`, `PalletNftsAttributeNamespace`)
 - **interface**: `api.events.nfts.AttributeCleared.is`
 - **summary**:    Attribute metadata has been cleared for a `collection` or `item`. 
  
-### AttributeSet(`u32`, `Option<u32>`, `Bytes`, `Bytes`, `FrameSupportTokensMiscAttributeNamespace`)
+### AttributeSet(`u32`, `Option<u32>`, `Bytes`, `Bytes`, `PalletNftsAttributeNamespace`)
 - **interface**: `api.events.nfts.AttributeSet.is`
 - **summary**:    New attribute metadata has been set for a `collection` or `item`. 
  
@@ -958,7 +964,11 @@ ___
 - **interface**: `api.events.nfts.OwnershipAcceptanceChanged.is`
 - **summary**:    Ownership acceptance has changed for an account. 
  
-### PreSignedAttributesSet(`u32`, `u32`, `FrameSupportTokensMiscAttributeNamespace`)
+### PalletAttributeSet(`u32`, `Option<u32>`, `PalletNftsPalletAttributes`, `Bytes`)
+- **interface**: `api.events.nfts.PalletAttributeSet.is`
+- **summary**:    A new attribute in the `Pallet` namespace was set for the `collection` or an `item`  within that `collection`. 
+ 
+### PreSignedAttributesSet(`u32`, `u32`, `PalletNftsAttributeNamespace`)
 - **interface**: `api.events.nfts.PreSignedAttributesSet.is`
 - **summary**:    New attributes have been set for an `item` of the `collection`. 
  
@@ -1339,6 +1349,27 @@ ___
 ### Stored(`AccountId32`, `H256`)
 - **interface**: `api.events.remark.Stored.is`
 - **summary**:    Stored data off chain. 
+
+___
+
+
+## salary
+ 
+### CycleStarted(`u32`)
+- **interface**: `api.events.salary.CycleStarted.is`
+- **summary**:    The next cycle begins. 
+ 
+### Inducted(`AccountId32`)
+- **interface**: `api.events.salary.Inducted.is`
+- **summary**:    A member is inducted into the payroll. 
+ 
+### Paid(`AccountId32`, `AccountId32`, `u128`, `Null`)
+- **interface**: `api.events.salary.Paid.is`
+- **summary**:    A payment happened. 
+ 
+### Registered(`AccountId32`, `u128`)
+- **interface**: `api.events.salary.Registered.is`
+- **summary**:    A member registered for a payout. 
 
 ___
 

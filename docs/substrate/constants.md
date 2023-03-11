@@ -58,6 +58,8 @@ The following sections contain the module constants, also known as parameter typ
 
 - **[referenda](#referenda)**
 
+- **[salary](#salary)**
+
 - **[scheduler](#scheduler)**
 
 - **[society](#society)**
@@ -905,6 +907,29 @@ ___
 ### undecidingTimeout: `u32`
 - **interface**: `api.consts.referenda.undecidingTimeout`
 - **summary**:    The number of blocks after submission that a referendum must begin being decided by.  Once this passes, then anyone may cancel the referendum. 
+
+___
+
+
+## salary
+ 
+### budget: `u128`
+- **interface**: `api.consts.salary.budget`
+- **summary**:    The total budget per cycle. 
+
+   This may change over the course of a cycle without any problem. 
+ 
+### payoutPeriod: `u32`
+- **interface**: `api.consts.salary.payoutPeriod`
+- **summary**:    The number of blocks within a cycle which accounts have to claim the payout. 
+
+   The number of blocks between sequential payout cycles is the sum of this and  `RegistrationPeriod`. 
+ 
+### registrationPeriod: `u32`
+- **interface**: `api.consts.salary.registrationPeriod`
+- **summary**:    The number of blocks within a cycle which accounts have to register their intent to  claim. 
+
+   The number of blocks between sequential payout cycles is the sum of this and  `PayoutPeriod`. 
 
 ___
 

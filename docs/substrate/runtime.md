@@ -6,6 +6,8 @@ The following section contains known runtime calls that may be available on spec
 
 - **[accountNonceApi](#accountnonceapi)**
 
+- **[assetsApi](#assetsapi)**
+
 - **[auraApi](#auraapi)**
 
 - **[authorFilterAPI](#authorfilterapi)**
@@ -44,6 +46,8 @@ The following section contains known runtime calls that may be available on spec
 
 - **[mmrApi](#mmrapi)**
 
+- **[nftsApi](#nftsapi)**
+
 - **[nimbusApi](#nimbusapi)**
 
 - **[nominationPoolsApi](#nominationpoolsapi)**
@@ -59,6 +63,8 @@ The following section contains known runtime calls that may be available on spec
 - **[rococoFinalityApi](#rococofinalityapi)**
 
 - **[sessionKeys](#sessionkeys)**
+
+- **[stakingApi](#stakingapi)**
 
 - **[taggedTransactionQueue](#taggedtransactionqueue)**
 
@@ -82,6 +88,16 @@ ___
 - **interface**: `api.call.accountNonceApi.accountNonce`
 - **runtime**: `AccountNonceApi_account_nonce`
 - **summary**: The API to query account nonce (aka transaction index)
+
+___
+
+
+## AssetsApi
+ 
+### accountBalances(account: `AccountId`): `Vec<(u32, TAssetBalance)>`
+- **interface**: `api.call.assetsApi.accountBalances`
+- **runtime**: `AssetsApi_account_balances`
+- **summary**: Return the current set of authorities.
 
 ___
 
@@ -157,6 +173,21 @@ ___
 
 
 ## BeefyApi
+ 
+### beefyGenesis(): `Option<BlockNumber>`
+- **interface**: `api.call.beefyApi.beefyGenesis`
+- **runtime**: `BeefyApi_beefy_genesis`
+- **summary**: Return the block number where BEEFY consensus is enabled/started
+ 
+### generateKeyOwnershipProof(setId: `ValidatorSetId`, authorityId: `AuthorityId`): `Option<OpaqueKeyOwnershipProof>`
+- **interface**: `api.call.beefyApi.generateKeyOwnershipProof`
+- **runtime**: `BeefyApi_generate_key_ownership_proof`
+- **summary**: Generates a proof of key ownership for the given authority in the given set.
+ 
+### submitReportEquivocationUnsignedExtrinsic(equivocationProof: `BeefyEquivocationProof`, keyOwnerProof: `OpaqueKeyOwnershipProof`): `Option<Null>`
+- **interface**: `api.call.beefyApi.submitReportEquivocationUnsignedExtrinsic`
+- **runtime**: `BeefyApi_submit_report_equivocation_unsigned_extrinsic`
+- **summary**: Submits an unsigned extrinsic to report an equivocation.
  
 ### validatorSet(): `Option<ValidatorSet>`
 - **interface**: `api.call.beefyApi.validatorSet`
@@ -471,6 +502,41 @@ ___
 ___
 
 
+## NftsApi
+ 
+### attribute(collection: `NftCollectionId`, item: `NftItemId`, key: `Bytes`): `Option<Bytes>`
+- **interface**: `api.call.nftsApi.attribute`
+- **runtime**: `NftsApi_attribute`
+- **summary**: An attribute
+ 
+### collectionAttribute(collection: `NftCollectionId`, key: `Bytes`): `Option<Bytes>`
+- **interface**: `api.call.nftsApi.collectionAttribute`
+- **runtime**: `NftsApi_collection_attribute`
+- **summary**: A collection attribute
+ 
+### collectionOwner(collection: `NftCollectionId`): `Option<AccountId>`
+- **interface**: `api.call.nftsApi.collectionOwner`
+- **runtime**: `NftsApi_collection_owner`
+- **summary**: A collection owner
+ 
+### customAttribute(account: `AccountId`, collection: `NftCollectionId`, item: `NftItemId`, key: `Bytes`): `Option<Bytes>`
+- **interface**: `api.call.nftsApi.customAttribute`
+- **runtime**: `NftsApi_custom_attribute`
+- **summary**: A custom attribute
+ 
+### owner(collection: `NftCollectionId`, item: `NftItemId`): `Option<AccountId>`
+- **interface**: `api.call.nftsApi.owner`
+- **runtime**: `NftsApi_owner`
+- **summary**: Collection owner
+ 
+### systemAttribute(collection: `NftCollectionId`, item: `NftItemId`, key: `Bytes`): `Option<Bytes>`
+- **interface**: `api.call.nftsApi.systemAttribute`
+- **runtime**: `NftsApi_system_attribute`
+- **summary**: System attribute
+
+___
+
+
 ## NimbusApi
  
 ### canAuthor(author: `AccountId`, relayParent: `u32`, parentHeader: `Header`): `bool`
@@ -483,10 +549,20 @@ ___
 
 ## NominationPoolsApi
  
+### balanceToPoints(poolId: `NpPoolId`, newFunds: `Balance`): `Balance`
+- **interface**: `api.call.nominationPoolsApi.balanceToPoints`
+- **runtime**: `NominationPoolsApi_balance_to_points`
+- **summary**: Returns the equivalent points of `new_funds` for a given pool.
+ 
 ### pendingRewards(member: `AccountId`): `Balance`
 - **interface**: `api.call.nominationPoolsApi.pendingRewards`
 - **runtime**: `NominationPoolsApi_pending_rewards`
 - **summary**: Returns the pending rewards for the given member.
+ 
+### pointsToBalance(poolId: `NpPoolId`, points: `Balance`): `Balance`
+- **interface**: `api.call.nominationPoolsApi.pointsToBalance`
+- **runtime**: `NominationPoolsApi_points_to_balance`
+- **summary**: Returns the equivalent balance of `points` for a given pool.
 
 ___
 
@@ -647,6 +723,16 @@ ___
 - **interface**: `api.call.sessionKeys.generateSessionKeys`
 - **runtime**: `SessionKeys_generate_session_keys`
 - **summary**: Generate a set of session keys with optionally using the given seed.
+
+___
+
+
+## StakingApi
+ 
+### nominationsQuota(balance: `Balance`): `u32`
+- **interface**: `api.call.stakingApi.nominationsQuota`
+- **runtime**: `StakingApi_nominations_quota`
+- **summary**: Returns the nominations quota for a nominator with a given balance.
 
 ___
 

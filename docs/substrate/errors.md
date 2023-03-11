@@ -70,6 +70,8 @@ This page lists the errors that can be encountered in the different modules.
 
 - **[remark](#remark)**
 
+- **[salary](#salary)**
+
 - **[scheduler](#scheduler)**
 
 - **[session](#session)**
@@ -549,7 +551,7 @@ ___
  
 ### ReentranceDenied
 - **interface**: `api.errors.contracts.ReentranceDenied.is`
-- **summary**:    A call tried to invoke a contract that is flagged as non-reentrant. 
+- **summary**:    A call tried to invoke a contract that is flagged as non-reentrant.  The only other cause is that a call from a contract into the runtime tried to call back  into `pallet-contracts`. This would make the whole pallet reentrant with regard to  contract code execution which is not supported. 
  
 ### StorageDepositLimitExhausted
 - **interface**: `api.errors.contracts.StorageDepositLimitExhausted.is`
@@ -1880,6 +1882,66 @@ ___
 ### Empty
 - **interface**: `api.errors.remark.Empty.is`
 - **summary**:    Attempting to store empty data. 
+
+___
+
+
+## salary
+ 
+### AlreadyInducted
+- **interface**: `api.errors.salary.AlreadyInducted.is`
+- **summary**:    The account is already inducted. 
+ 
+### AlreadyStarted
+- **interface**: `api.errors.salary.AlreadyStarted.is`
+- **summary**:    The salary system has already been started. 
+ 
+### Bankrupt
+- **interface**: `api.errors.salary.Bankrupt.is`
+- **summary**:    There is no budget left for the payout. 
+ 
+### ClaimZero
+- **interface**: `api.errors.salary.ClaimZero.is`
+- **summary**:    The member's claim is zero. 
+ 
+### Inconclusive
+- **interface**: `api.errors.salary.Inconclusive.is`
+- **summary**:    The payment has neither failed nor succeeded yet. 
+ 
+### NoClaim
+- **interface**: `api.errors.salary.NoClaim.is`
+- **summary**:    The member does not have a current valid claim. 
+ 
+### NotCurrent
+- **interface**: `api.errors.salary.NotCurrent.is`
+- **summary**:    The cycle is after that in which the payment was made. 
+ 
+### NotInducted
+- **interface**: `api.errors.salary.NotInducted.is`
+ 
+### NotMember
+- **interface**: `api.errors.salary.NotMember.is`
+- **summary**:    The account is not a ranked member. 
+ 
+### NotStarted
+- **interface**: `api.errors.salary.NotStarted.is`
+- **summary**:    The payout cycles have not yet started. 
+ 
+### NotYet
+- **interface**: `api.errors.salary.NotYet.is`
+- **summary**:    Cycle is not yet over. 
+ 
+### PayError
+- **interface**: `api.errors.salary.PayError.is`
+- **summary**:    There was some issue with the mechanism of payment. 
+ 
+### TooEarly
+- **interface**: `api.errors.salary.TooEarly.is`
+- **summary**:    Current cycle's payment period is not yet begun. 
+ 
+### TooLate
+- **interface**: `api.errors.salary.TooLate.is`
+- **summary**:    Current cycle's registration period is over. 
 
 ___
 

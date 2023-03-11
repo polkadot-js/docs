@@ -74,6 +74,8 @@ The following sections contain Extrinsics methods are part of the default Substr
 
 - **[rootTesting](#roottesting)**
 
+- **[salary](#salary)**
+
 - **[scheduler](#scheduler)**
 
 - **[session](#session)**
@@ -665,6 +667,20 @@ ___
    Emits `MetadataSet`. 
 
    Weight: `O(1)` 
+ 
+### setMinBalance(id: `Compact<u32>`, min_balance: `u128`)
+- **interface**: `api.tx.assets.setMinBalance`
+- **summary**:    Sets the minimum balance of an asset. 
+
+   Only works if there aren't any accounts that are holding the asset or if  the new value of `min_balance` is less than the old one. 
+
+   Origin must be Signed and the sender has to be the Owner of the  asset `id`. 
+
+   - `id`: The identifier of the asset. 
+
+  - `min_balance`: The new value of `min_balance`.
+
+   Emits `AssetMinBalanceChanged` event when successful. 
  
 ### setTeam(id: `Compact<u32>`, issuer: `MultiAddress`, admin: `MultiAddress`, freezer: `MultiAddress`)
 - **interface**: `api.tx.assets.setTeam`
@@ -1989,11 +2005,11 @@ ___
 
    Only callable by root. 
  
-### reportEquivocation(equivocation_proof: `SpFinalityGrandpaEquivocationProof`, key_owner_proof: `SpSessionMembershipProof`)
+### reportEquivocation(equivocation_proof: `SpConsensusGrandpaEquivocationProof`, key_owner_proof: `SpSessionMembershipProof`)
 - **interface**: `api.tx.grandpa.reportEquivocation`
 - **summary**:    Report voter equivocation/misbehavior. This method will verify the  equivocation proof and validate the given key ownership proof  against the extracted offender. If both are valid, the offence  will be reported. 
  
-### reportEquivocationUnsigned(equivocation_proof: `SpFinalityGrandpaEquivocationProof`, key_owner_proof: `SpSessionMembershipProof`)
+### reportEquivocationUnsigned(equivocation_proof: `SpConsensusGrandpaEquivocationProof`, key_owner_proof: `SpSessionMembershipProof`)
 - **interface**: `api.tx.grandpa.reportEquivocationUnsigned`
 - **summary**:    Report voter equivocation/misbehavior. This method will verify the  equivocation proof and validate the given key ownership proof  against the extracted offender. If both are valid, the offence  will be reported. 
 
@@ -2708,7 +2724,7 @@ ___
 
    Weight: `O(1)` 
  
-### clearAttribute(collection: `u32`, maybe_item: `Option<u32>`, namespace: `FrameSupportTokensMiscAttributeNamespace`, key: `Bytes`)
+### clearAttribute(collection: `u32`, maybe_item: `Option<u32>`, namespace: `PalletNftsAttributeNamespace`, key: `Bytes`)
 - **interface**: `api.tx.nfts.clearAttribute`
 - **summary**:    Clear an attribute for a collection or item. 
 
@@ -2878,7 +2894,7 @@ ___
 
    Weight: `O(1)` 
  
-### forceSetAttribute(set_as: `Option<AccountId32>`, collection: `u32`, maybe_item: `Option<u32>`, namespace: `FrameSupportTokensMiscAttributeNamespace`, key: `Bytes`, value: `Bytes`)
+### forceSetAttribute(set_as: `Option<AccountId32>`, collection: `u32`, maybe_item: `Option<u32>`, namespace: `PalletNftsAttributeNamespace`, key: `Bytes`, value: `Bytes`)
 - **interface**: `api.tx.nfts.forceSetAttribute`
 - **summary**:    Force-set an attribute for a collection or item. 
 
@@ -3020,7 +3036,7 @@ ___
 
    Emits `OwnershipAcceptanceChanged`. 
  
-### setAttribute(collection: `u32`, maybe_item: `Option<u32>`, namespace: `FrameSupportTokensMiscAttributeNamespace`, key: `Bytes`, value: `Bytes`)
+### setAttribute(collection: `u32`, maybe_item: `Option<u32>`, namespace: `PalletNftsAttributeNamespace`, key: `Bytes`, value: `Bytes`)
 - **interface**: `api.tx.nfts.setAttribute`
 - **summary**:    Set an attribute for a collection or item. 
 
@@ -4074,6 +4090,61 @@ ___
 ### fillBlock(ratio: `Perbill`)
 - **interface**: `api.tx.rootTesting.fillBlock`
 - **summary**:    A dispatch that will fill the block weight up to the given ratio. 
+
+___
+
+
+## salary
+ 
+### bump()
+- **interface**: `api.tx.salary.bump`
+- **summary**:    Move to next payout cycle, assuming that the present block is now within that cycle. 
+
+   - `origin`: A `Signed` origin of an account. 
+ 
+### checkPayment()
+- **interface**: `api.tx.salary.checkPayment`
+- **summary**:    Update a payment's status; if it failed, alter the state so the payment can be retried. 
+
+   This must be called within the same cycle as the failed payment. It will fail with  `Event::NotCurrent` otherwise. 
+
+   - `origin`: A `Signed` origin of an account which is a member of `Members` who has  received a payment this cycle. 
+ 
+### induct()
+- **interface**: `api.tx.salary.induct`
+- **summary**:    Induct oneself into the payout system. 
+ 
+### init()
+- **interface**: `api.tx.salary.init`
+- **summary**:    Start the first payout cycle. 
+
+   - `origin`: A `Signed` origin of an account. 
+ 
+### payout()
+- **interface**: `api.tx.salary.payout`
+- **summary**:    Request a payout. 
+
+   Will only work if we are after the first `RegistrationPeriod` blocks since the cycle  started but by no more than `PayoutPeriod` blocks. 
+
+   - `origin`: A `Signed` origin of an account which is a member of `Members`. 
+ 
+### payoutOther(beneficiary: `AccountId32`)
+- **interface**: `api.tx.salary.payoutOther`
+- **summary**:    Request a payout to a secondary account. 
+
+   Will only work if we are after the first `RegistrationPeriod` blocks since the cycle  started but by no more than `PayoutPeriod` blocks. 
+
+   - `origin`: A `Signed` origin of an account which is a member of `Members`. 
+
+  - `beneficiary`: The account to receive payment.
+ 
+### register()
+- **interface**: `api.tx.salary.register`
+- **summary**:    Register for a payout. 
+
+   Will only work if we are in the first `RegistrationPeriod` blocks since the cycle  started. 
+
+   - `origin`: A `Signed` origin of an account which is a member of `Members`. 
 
 ___
 

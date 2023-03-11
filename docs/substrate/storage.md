@@ -80,6 +80,8 @@ The following sections contain Storage methods are part of the default Substrate
 
 - **[referenda](#referenda)**
 
+- **[salary](#salary)**
+
 - **[scheduler](#scheduler)**
 
 - **[session](#session)**
@@ -878,7 +880,7 @@ ___
 - **interface**: `api.query.nfts.account`
 - **summary**:    The items held by any given account; set out this way so that items owned by a single  account can be enumerated. 
  
-### attribute(`u32, Option<u32>, FrameSupportTokensMiscAttributeNamespace, Bytes`): `Option<(Bytes,PalletNftsAttributeDeposit)>`
+### attribute(`u32, Option<u32>, PalletNftsAttributeNamespace, Bytes`): `Option<(Bytes,PalletNftsAttributeDeposit)>`
 - **interface**: `api.query.nfts.attribute`
 - **summary**:    Attributes of a collection. 
  
@@ -1100,6 +1102,9 @@ ___
 ### unboundedMap2(`u32`): `Option<Vec<u32>>`
 - **interface**: `api.query.pov.unboundedMap2`
  
+### unboundedMapTwox(`u32`): `Option<Vec<u32>>`
+- **interface**: `api.query.pov.unboundedMapTwox`
+ 
 ### unboundedValue(): `Option<Bytes>`
 - **interface**: `api.query.pov.unboundedValue`
 - **summary**:    A value without a MEL bound. 
@@ -1250,6 +1255,19 @@ ___
 - **summary**:    The sorted list of referenda ready to be decided but not yet being decided, ordered by  conviction-weighted approvals. 
 
    This should be empty if `DecidingCount` is less than `TrackInfo::max_deciding`. 
+
+___
+
+
+## salary
+ 
+### claimant(`AccountId32`): `Option<PalletSalaryClaimantStatus>`
+- **interface**: `api.query.salary.claimant`
+- **summary**:    The status of a claimant. 
+ 
+### status(): `Option<PalletSalaryStatusType>`
+- **interface**: `api.query.salary.status`
+- **summary**:    The overall status of the system. 
 
 ___
 

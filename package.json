@@ -1,6 +1,6 @@
 {
   "name": "polkadot-js",
-  "version": "0.0.247",
+  "version": "0.0.248",
   "private": true,
   "scripts": {
     "docusaurus": "docusaurus",
@@ -41,7 +41,7 @@
     "@cmfcmf/docusaurus-search-local": "^1.0.0"
   },
   "versions": {
-    "git": "0.0.247",
-    "npm": "0.0.247"
+    "git": "0.0.248",
+    "npm": "0.0.248"
   }
 }
