@@ -52,16 +52,19 @@ ___
 - **interface**: `api.rpc.author.hasKey`
 - **jsonrpc**: `author_hasKey`
 - **summary**: Returns true if the keystore has private keys for the given public key and key type.
+- **unsafe**: This method is only active with appropriate flags
  
 ### hasSessionKeys(sessionKeys: `Bytes`): `bool`
 - **interface**: `api.rpc.author.hasSessionKeys`
 - **jsonrpc**: `author_hasSessionKeys`
 - **summary**: Returns true if the keystore has private keys for the given session public keys.
+- **unsafe**: This method is only active with appropriate flags
  
 ### insertKey(keyType: `Text`, suri: `Text`, publicKey: `Bytes`): `Bytes`
 - **interface**: `api.rpc.author.insertKey`
 - **jsonrpc**: `author_insertKey`
 - **summary**: Insert a key into the keystore.
+- **unsafe**: This method is only active with appropriate flags
  
 ### pendingExtrinsics(): `Vec<Extrinsic>`
 - **interface**: `api.rpc.author.pendingExtrinsics`
@@ -72,11 +75,13 @@ ___
 - **interface**: `api.rpc.author.removeExtrinsic`
 - **jsonrpc**: `author_removeExtrinsic`
 - **summary**: Remove given extrinsic from the pool and temporarily ban it to prevent reimporting
+- **unsafe**: This method is only active with appropriate flags
  
 ### rotateKeys(): `Bytes`
 - **interface**: `api.rpc.author.rotateKeys`
 - **jsonrpc**: `author_rotateKeys`
 - **summary**: Generate new session keys and returns the corresponding public keys
+- **unsafe**: This method is only active with appropriate flags
  
 ### submitAndWatchExtrinsic(extrinsic: `Extrinsic`): `ExtrinsicStatus`
 - **interface**: `api.rpc.author.submitAndWatchExtrinsic`
@@ -97,6 +102,7 @@ ___
 - **interface**: `api.rpc.babe.epochAuthorship`
 - **jsonrpc**: `babe_epochAuthorship`
 - **summary**: Returns data about which slots (primary or secondary) can be claimed in the current epoch with the keys in the keystore
+- **unsafe**: This method is only active with appropriate flags
 
 ___
 
@@ -232,6 +238,7 @@ ___
 - **interface**: `api.rpc.dev.getBlockStats`
 - **jsonrpc**: `dev_getBlockStats`
 - **summary**: Reexecute the specified `block_hash` and gather statistics while doing so
+- **unsafe**: This method is only active with appropriate flags
 
 ___
 
@@ -547,11 +554,13 @@ ___
 - **interface**: `api.rpc.offchain.localStorageGet`
 - **jsonrpc**: `offchain_localStorageGet`
 - **summary**: Get offchain local storage under given key and prefix
+- **unsafe**: This method is only active with appropriate flags
  
 ### localStorageSet(kind: `StorageKind`, key: `Bytes`, value: `Bytes`): `Null`
 - **interface**: `api.rpc.offchain.localStorageSet`
 - **jsonrpc**: `offchain_localStorageSet`
 - **summary**: Set offchain local storage under given key and prefix
+- **unsafe**: This method is only active with appropriate flags
 
 ___
 
@@ -636,6 +645,7 @@ ___
 - **jsonrpc**: `state_getPairs`
 - **summary**: Returns the keys with prefix, leave empty to get all the keys (deprecated: Use getKeysPaged)
 - **deprecated**: Use `api.rpc.state.getKeysPaged` to retrieve keys
+- **unsafe**: This method is only active with appropriate flags
  
 ### getReadProof(keys: `Vec<StorageKey>`, at?: `BlockHash`): `ReadProof`
 - **interface**: `api.rpc.state.getReadProof`
@@ -666,6 +676,7 @@ ___
 - **interface**: `api.rpc.state.queryStorage`
 - **jsonrpc**: `state_queryStorage`
 - **summary**: Query historical storage entries (by key) starting from a start block
+- **unsafe**: This method is only active with appropriate flags
  
 ### queryStorageAt(keys: `Vec<StorageKey>`, at?: `BlockHash`): `Vec<StorageChangeSet>`
 - **interface**: `api.rpc.state.queryStorageAt`
@@ -686,11 +697,13 @@ ___
 - **interface**: `api.rpc.state.traceBlock`
 - **jsonrpc**: `state_traceBlock`
 - **summary**: Provides a way to trace the re-execution of a single block
+- **unsafe**: This method is only active with appropriate flags
  
 ### trieMigrationStatus(at?: `BlockHash`): `MigrationStatusResult`
 - **interface**: `api.rpc.state.trieMigrationStatus`
 - **jsonrpc**: `state_trieMigrationStatus`
 - **summary**: Check current migration state
+- **unsafe**: This method is only active with appropriate flags
 
 ___
 
@@ -716,11 +729,13 @@ ___
 - **interface**: `api.rpc.system.addLogFilter`
 - **jsonrpc**: `system_addLogFilter`
 - **summary**: Adds the supplied directives to the current log filter
+- **unsafe**: This method is only active with appropriate flags
  
 ### addReservedPeer(peer: `Text`): `Text`
 - **interface**: `api.rpc.system.addReservedPeer`
 - **jsonrpc**: `system_addReservedPeer`
 - **summary**: Adds a reserved peer
+- **unsafe**: This method is only active with appropriate flags
  
 ### chain(): `Text`
 - **interface**: `api.rpc.system.chain`
@@ -736,6 +751,7 @@ ___
 - **interface**: `api.rpc.system.dryRun`
 - **jsonrpc**: `system_dryRun`
 - **summary**: Dry run an extrinsic at a given block
+- **unsafe**: This method is only active with appropriate flags
  
 ### health(): `Health`
 - **interface**: `api.rpc.system.health`
@@ -761,6 +777,7 @@ ___
 - **interface**: `api.rpc.system.networkState`
 - **jsonrpc**: `system_networkState`
 - **summary**: Returns current state of the network
+- **unsafe**: This method is only active with appropriate flags
  
 ### nodeRoles(): `Vec<NodeRole>`
 - **interface**: `api.rpc.system.nodeRoles`
@@ -771,6 +788,7 @@ ___
 - **interface**: `api.rpc.system.peers`
 - **jsonrpc**: `system_peers`
 - **summary**: Returns the currently connected peers
+- **unsafe**: This method is only active with appropriate flags
  
 ### properties(): `ChainProperties`
 - **interface**: `api.rpc.system.properties`
@@ -781,6 +799,7 @@ ___
 - **interface**: `api.rpc.system.removeReservedPeer`
 - **jsonrpc**: `system_removeReservedPeer`
 - **summary**: Remove a reserved peer
+- **unsafe**: This method is only active with appropriate flags
  
 ### reservedPeers(): `Vec<Text>`
 - **interface**: `api.rpc.system.reservedPeers`
@@ -791,6 +810,7 @@ ___
 - **interface**: `api.rpc.system.resetLogFilter`
 - **jsonrpc**: `system_resetLogFilter`
 - **summary**: Resets the log filter to Substrate defaults
+- **unsafe**: This method is only active with appropriate flags
  
 ### syncState(): `SyncState`
 - **interface**: `api.rpc.system.syncState`
