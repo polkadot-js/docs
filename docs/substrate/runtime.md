@@ -458,6 +458,16 @@ ___
 - **interface**: `api.call.metadata.metadata`
 - **runtime**: `Metadata_metadata`
 - **summary**: Returns the metadata of a runtime
+ 
+### metadataAtVersion(version: `u32`): `Option<OpaqueMetadata>`
+- **interface**: `api.call.metadata.metadataAtVersion`
+- **runtime**: `Metadata_metadata_at_version`
+- **summary**: Returns the metadata at a given version.
+ 
+### metadataVersions(): `Vec<u32>`
+- **interface**: `api.call.metadata.metadataVersions`
+- **runtime**: `Metadata_metadata_versions`
+- **summary**: Returns the supported metadata versions.
 
 ___
 
