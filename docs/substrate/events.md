@@ -24,6 +24,8 @@ Events are emitted for certain operations on the runtime. The following sections
 
 - **[convictionVoting](#convictionvoting)**
 
+- **[coreFellowship](#corefellowship)**
+
 - **[council](#council)**
 
 - **[democracy](#democracy)**
@@ -310,9 +312,13 @@ ___
 
 ## balances
  
-### BalanceSet(`AccountId32`, `u128`, `u128`)
+### BalanceSet(`AccountId32`, `u128`)
 - **interface**: `api.events.balances.BalanceSet.is`
 - **summary**:    A balance was set by root. 
+ 
+### Burned(`AccountId32`, `u128`)
+- **interface**: `api.events.balances.Burned.is`
+- **summary**:    Some amount was burned from an account. 
  
 ### Deposit(`AccountId32`, `u128`)
 - **interface**: `api.events.balances.Deposit.is`
@@ -326,6 +332,22 @@ ___
 - **interface**: `api.events.balances.Endowed.is`
 - **summary**:    An account was created with some free balance. 
  
+### Issued(`u128`)
+- **interface**: `api.events.balances.Issued.is`
+- **summary**:    Total issuance was increased by `amount`, creating a credit to be balanced. 
+ 
+### Locked(`AccountId32`, `u128`)
+- **interface**: `api.events.balances.Locked.is`
+- **summary**:    Some balance was locked. 
+ 
+### Minted(`AccountId32`, `u128`)
+- **interface**: `api.events.balances.Minted.is`
+- **summary**:    Some amount was minted into an account. 
+ 
+### Rescinded(`u128`)
+- **interface**: `api.events.balances.Rescinded.is`
+- **summary**:    Total issuance was decreased by `amount`, creating a debt to be balanced. 
+ 
 ### Reserved(`AccountId32`, `u128`)
 - **interface**: `api.events.balances.Reserved.is`
 - **summary**:    Some balance was reserved (moved from free to reserved). 
@@ -334,17 +356,33 @@ ___
 - **interface**: `api.events.balances.ReserveRepatriated.is`
 - **summary**:    Some balance was moved from the reserve of the first account to the second account.  Final argument indicates the destination balance type. 
  
+### Restored(`AccountId32`, `u128`)
+- **interface**: `api.events.balances.Restored.is`
+- **summary**:    Some amount was restored into an account. 
+ 
 ### Slashed(`AccountId32`, `u128`)
 - **interface**: `api.events.balances.Slashed.is`
 - **summary**:    Some amount was removed from the account (e.g. for misbehavior). 
+ 
+### Suspended(`AccountId32`, `u128`)
+- **interface**: `api.events.balances.Suspended.is`
+- **summary**:    Some amount was suspended from an account (it can be restored later). 
  
 ### Transfer(`AccountId32`, `AccountId32`, `u128`)
 - **interface**: `api.events.balances.Transfer.is`
 - **summary**:    Transfer succeeded. 
  
+### Unlocked(`AccountId32`, `u128`)
+- **interface**: `api.events.balances.Unlocked.is`
+- **summary**:    Some balance was unlocked. 
+ 
 ### Unreserved(`AccountId32`, `u128`)
 - **interface**: `api.events.balances.Unreserved.is`
 - **summary**:    Some balance was unreserved (moved from reserved to free). 
+ 
+### Upgraded(`AccountId32`)
+- **interface**: `api.events.balances.Upgraded.is`
+- **summary**:    An account was upgraded. 
  
 ### Withdraw(`AccountId32`, `u128`)
 - **interface**: `api.events.balances.Withdraw.is`
@@ -465,6 +503,51 @@ ___
 ### Undelegated(`AccountId32`)
 - **interface**: `api.events.convictionVoting.Undelegated.is`
 - **summary**:    An \[account\] has cancelled a previous delegation operation. 
+
+___
+
+
+## coreFellowship
+ 
+### ActiveChanged(`AccountId32`, `bool`)
+- **interface**: `api.events.coreFellowship.ActiveChanged.is`
+- **summary**:    Member activity flag has been set. 
+ 
+### Demoted(`AccountId32`, `u16`)
+- **interface**: `api.events.coreFellowship.Demoted.is`
+- **summary**:    Member has been demoted to the given (non-zero) rank. 
+ 
+### EvidenceJudged(`AccountId32`, `PalletCoreFellowshipWish`, `Bytes`, `u16`, `Option<u16>`)
+- **interface**: `api.events.coreFellowship.EvidenceJudged.is`
+- **summary**:    Some submitted evidence was judged and removed. There may or may not have been a change  to the rank, but in any case, `last_proof` is reset. 
+ 
+### Imported(`AccountId32`, `u16`)
+- **interface**: `api.events.coreFellowship.Imported.is`
+- **summary**:    Pre-ranked account has been inducted at their current rank. 
+ 
+### Inducted(`AccountId32`)
+- **interface**: `api.events.coreFellowship.Inducted.is`
+- **summary**:    Member has begun being tracked in this pallet. 
+ 
+### Offboarded(`AccountId32`)
+- **interface**: `api.events.coreFellowship.Offboarded.is`
+- **summary**:    Member has been removed from being tracked in this pallet (i.e. because rank is now  zero). 
+ 
+### ParamsChanged(`PalletCoreFellowshipParamsType`)
+- **interface**: `api.events.coreFellowship.ParamsChanged.is`
+- **summary**:    Parameters for the pallet have changed. 
+ 
+### Promoted(`AccountId32`, `u16`)
+- **interface**: `api.events.coreFellowship.Promoted.is`
+- **summary**:    Member has been promoted to the given rank. 
+ 
+### Proven(`AccountId32`, `u16`)
+- **interface**: `api.events.coreFellowship.Proven.is`
+- **summary**:    Member has been proven at their current rank, postponing auto-demotion. 
+ 
+### Requested(`AccountId32`, `PalletCoreFellowshipWish`)
+- **interface**: `api.events.coreFellowship.Requested.is`
+- **summary**:    Member has stated evidence of their efforts their request for rank. 
 
 ___
 
@@ -988,7 +1071,7 @@ ___
 - **interface**: `api.events.nfts.SwapCreated.is`
 - **summary**:    An `item` swap intent was created. 
  
-### TeamChanged(`u32`, `AccountId32`, `AccountId32`, `AccountId32`)
+### TeamChanged(`u32`, `Option<AccountId32>`, `Option<AccountId32>`, `Option<AccountId32>`)
 - **interface**: `api.events.nfts.TeamChanged.is`
 - **summary**:    The management team changed. 
  
@@ -1063,6 +1146,22 @@ ___
 ### PaidOut(`AccountId32`, `u32`, `u128`)
 - **interface**: `api.events.nominationPools.PaidOut.is`
 - **summary**:    A payout has been made to a member. 
+ 
+### PoolCommissionChangeRateUpdated(`u32`, `PalletNominationPoolsCommissionChangeRate`)
+- **interface**: `api.events.nominationPools.PoolCommissionChangeRateUpdated.is`
+- **summary**:    A pool's commission `change_rate` has been changed. 
+ 
+### PoolCommissionClaimed(`u32`, `u128`)
+- **interface**: `api.events.nominationPools.PoolCommissionClaimed.is`
+- **summary**:    Pool commission has been claimed. 
+ 
+### PoolCommissionUpdated(`u32`, `Option<(Perbill,AccountId32)>`)
+- **interface**: `api.events.nominationPools.PoolCommissionUpdated.is`
+- **summary**:    A pool's commission setting has been changed. 
+ 
+### PoolMaxCommissionUpdated(`u32`, `Perbill`)
+- **interface**: `api.events.nominationPools.PoolMaxCommissionUpdated.is`
+- **summary**:    A pool's maximum commission setting has been changed. 
  
 ### PoolSlashed(`u32`, `u128`)
 - **interface**: `api.events.nominationPools.PoolSlashed.is`

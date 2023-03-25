@@ -24,6 +24,8 @@ This page lists the errors that can be encountered in the different modules.
 
 - **[convictionVoting](#convictionvoting)**
 
+- **[coreFellowship](#corefellowship)**
+
 - **[council](#council)**
 
 - **[democracy](#democracy)**
@@ -278,6 +280,10 @@ ___
 - **interface**: `api.errors.assets.BalanceLow.is`
 - **summary**:    Account balance must be greater than or equal to the transfer amount. 
  
+### CallbackFailed
+- **interface**: `api.errors.assets.CallbackFailed.is`
+- **summary**:    Callback action resulted in error 
+ 
 ### Frozen
 - **interface**: `api.errors.assets.Frozen.is`
 - **summary**:    The origin account is frozen. 
@@ -310,10 +316,6 @@ ___
 - **interface**: `api.errors.assets.NoPermission.is`
 - **summary**:    The signing account has no permission to do the operation. 
  
-### NoProvider
-- **interface**: `api.errors.assets.NoProvider.is`
-- **summary**:    Unable to increment the consumer reference counters on the account. Either no provider  reference exists to allow a non-zero balance of a non-self-sufficient asset, or the  maximum number of consumers has been reached. 
- 
 ### NotFrozen
 - **interface**: `api.errors.assets.NotFrozen.is`
 - **summary**:    The asset should be frozen before the given operation. 
@@ -321,6 +323,10 @@ ___
 ### Unapproved
 - **interface**: `api.errors.assets.Unapproved.is`
 - **summary**:    No approval exists that would allow the transfer. 
+ 
+### UnavailableConsumer
+- **interface**: `api.errors.assets.UnavailableConsumer.is`
+- **summary**:    Unable to increment the consumer reference counters on the account. Either no provider  reference exists to allow a non-zero balance of a non-self-sufficient asset, or one  fewer then the maximum number of consumers has been reached. 
  
 ### Unknown
 - **interface**: `api.errors.assets.Unknown.is`
@@ -362,35 +368,43 @@ ___
  
 ### DeadAccount
 - **interface**: `api.errors.balances.DeadAccount.is`
-- **summary**:    Beneficiary account must pre-exist 
+- **summary**:    Beneficiary account must pre-exist. 
  
 ### ExistentialDeposit
 - **interface**: `api.errors.balances.ExistentialDeposit.is`
-- **summary**:    Value too low to create account due to existential deposit 
+- **summary**:    Value too low to create account due to existential deposit. 
  
 ### ExistingVestingSchedule
 - **interface**: `api.errors.balances.ExistingVestingSchedule.is`
-- **summary**:    A vesting schedule already exists for this account 
+- **summary**:    A vesting schedule already exists for this account. 
+ 
+### Expendability
+- **interface**: `api.errors.balances.Expendability.is`
+- **summary**:    Transfer/payment would kill account. 
  
 ### InsufficientBalance
 - **interface**: `api.errors.balances.InsufficientBalance.is`
 - **summary**:    Balance too low to send value. 
  
-### KeepAlive
-- **interface**: `api.errors.balances.KeepAlive.is`
-- **summary**:    Transfer/payment would kill account 
- 
 ### LiquidityRestrictions
 - **interface**: `api.errors.balances.LiquidityRestrictions.is`
-- **summary**:    Account liquidity restrictions prevent withdrawal 
+- **summary**:    Account liquidity restrictions prevent withdrawal. 
+ 
+### TooManyFreezes
+- **interface**: `api.errors.balances.TooManyFreezes.is`
+- **summary**:    Number of freezes exceed `MaxFreezes`. 
+ 
+### TooManyHolds
+- **interface**: `api.errors.balances.TooManyHolds.is`
+- **summary**:    Number of holds exceed `MaxHolds`. 
  
 ### TooManyReserves
 - **interface**: `api.errors.balances.TooManyReserves.is`
-- **summary**:    Number of named reserves exceed MaxReserves 
+- **summary**:    Number of named reserves exceed `MaxReserves`. 
  
 ### VestingBalance
 - **interface**: `api.errors.balances.VestingBalance.is`
-- **summary**:    Vesting balance too high to send value 
+- **summary**:    Vesting balance too high to send value. 
 
 ___
 
@@ -475,7 +489,7 @@ ___
 - **interface**: `api.errors.contracts.CodeRejected.is`
 - **summary**:    The contract's code was found to be invalid during validation or instrumentation. 
 
-   The most likely cause of this is that an API was used which is not supported by the  node. This hapens if an older node is used with a new version of ink!. Try updating  your node to the newest available version. 
+   The most likely cause of this is that an API was used which is not supported by the  node. This happens if an older node is used with a new version of ink!. Try updating  your node to the newest available version. 
 
    A more detailed error can be found on the node console if debug messages are enabled  by supplying `-lruntime::contracts=debug`. 
  
@@ -635,6 +649,47 @@ ___
 ### NotVoter
 - **interface**: `api.errors.convictionVoting.NotVoter.is`
 - **summary**:    The given account did not vote on the poll. 
+
+___
+
+
+## coreFellowship
+ 
+### AlreadyInducted
+- **interface**: `api.errors.coreFellowship.AlreadyInducted.is`
+- **summary**:    The candidate has already been inducted. This should never happen since it would  require a candidate (rank 0) to already be tracked in the pallet. 
+ 
+### InvalidRank
+- **interface**: `api.errors.coreFellowship.InvalidRank.is`
+- **summary**:    The given rank is invalid - this generally means it's not between 1 and `RANK_COUNT`. 
+ 
+### NoPermission
+- **interface**: `api.errors.coreFellowship.NoPermission.is`
+- **summary**:    The origin does not have enough permission to do this operation. 
+ 
+### NothingDoing
+- **interface**: `api.errors.coreFellowship.NothingDoing.is`
+- **summary**:    No work needs to be done at present for this member. 
+ 
+### NotTracked
+- **interface**: `api.errors.coreFellowship.NotTracked.is`
+- **summary**:    The candidate has not been inducted, so cannot be offboarded from this pallet. 
+ 
+### Ranked
+- **interface**: `api.errors.coreFellowship.Ranked.is`
+- **summary**:    Member's rank is not zero. 
+ 
+### TooSoon
+- **interface**: `api.errors.coreFellowship.TooSoon.is`
+- **summary**:    Operation cannot be done yet since not enough time has passed. 
+ 
+### UnexpectedRank
+- **interface**: `api.errors.coreFellowship.UnexpectedRank.is`
+- **summary**:    Member's rank is not as expected - generally means that the rank provided to the call  does not agree with the state of the system. 
+ 
+### Unranked
+- **interface**: `api.errors.coreFellowship.Unranked.is`
+- **summary**:    Member's rank is too low. 
 
 ___
 
@@ -1268,6 +1323,10 @@ ___
 - **interface**: `api.errors.nfts.CollectionIdInUse.is`
 - **summary**:    Collection ID is already taken. 
  
+### CollectionNotEmpty
+- **interface**: `api.errors.nfts.CollectionNotEmpty.is`
+- **summary**:    Can't delete non-empty collections. 
+ 
 ### DeadlineExpired
 - **interface**: `api.errors.nfts.DeadlineExpired.is`
 - **summary**:    The deadline has already expired. 
@@ -1461,6 +1520,15 @@ ___
 - **interface**: `api.errors.nis.PortionTooBig.is`
 - **summary**:    The portion supplied is beyond the value of the receipt. 
  
+### Release1
+- **interface**: `api.errors.nis.Release1.is`
+ 
+### Release2
+- **interface**: `api.errors.nis.Release2.is`
+ 
+### Tah
+- **interface**: `api.errors.nis.Tah.is`
+ 
 ### Throttled
 - **interface**: `api.errors.nis.Throttled.is`
 - **summary**:    The thaw throttle has been reached for this period. 
@@ -1498,6 +1566,18 @@ ___
 - **interface**: `api.errors.nominationPools.CannotWithdrawAny.is`
 - **summary**:    None of the funds can be withdrawn yet because the bonding duration has not passed. 
  
+### CommissionChangeRateNotAllowed
+- **interface**: `api.errors.nominationPools.CommissionChangeRateNotAllowed.is`
+- **summary**:    The submitted changes to commission change rate are not allowed. 
+ 
+### CommissionChangeThrottled
+- **interface**: `api.errors.nominationPools.CommissionChangeThrottled.is`
+- **summary**:    Not enough blocks have surpassed since the last commission update. 
+ 
+### CommissionExceedsMaximum
+- **interface**: `api.errors.nominationPools.CommissionExceedsMaximum.is`
+- **summary**:    The supplied commission exceeds the max allowed commission. 
+ 
 ### Defensive
 - **interface**: `api.errors.nominationPools.Defensive.is`
 - **summary**:    Some error occurred that should never happen. This should be reported to the  maintainers. 
@@ -1513,6 +1593,10 @@ ___
 ### InvalidPoolId
 - **interface**: `api.errors.nominationPools.InvalidPoolId.is`
 - **summary**:    Pool id provided is not correct/usable. 
+ 
+### MaxCommissionRestricted
+- **interface**: `api.errors.nominationPools.MaxCommissionRestricted.is`
+- **summary**:    The pool's max commission cannot be set higher than the existing value. 
  
 ### MaxPoolMembers
 - **interface**: `api.errors.nominationPools.MaxPoolMembers.is`
@@ -1535,6 +1619,14 @@ ___
 - **summary**:    The amount does not meet the minimum bond to either join or create a pool. 
 
    The depositor can never unbond to a value less than  `Pallet::depositor_min_bond`. The caller does not have nominating  permissions for the pool. Members can never unbond to a value below `MinJoinBond`. 
+ 
+### NoCommissionCurrentSet
+- **interface**: `api.errors.nominationPools.NoCommissionCurrentSet.is`
+- **summary**:    No commission current has been set. 
+ 
+### NoPendingCommission
+- **interface**: `api.errors.nominationPools.NoPendingCommission.is`
+- **summary**:    There is no pending commission to claim. 
  
 ### NotDestroying
 - **interface**: `api.errors.nominationPools.NotDestroying.is`
