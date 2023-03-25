@@ -22,6 +22,8 @@ The following sections contain the module constants, also known as parameter typ
 
 - **[convictionVoting](#convictionvoting)**
 
+- **[coreFellowship](#corefellowship)**
+
 - **[democracy](#democracy)**
 
 - **[electionProviderMultiPhase](#electionprovidermultiphase)**
@@ -171,7 +173,19 @@ ___
  
 ### existentialDeposit: `u128`
 - **interface**: `api.consts.balances.existentialDeposit`
-- **summary**:    The minimum amount required to keep an account open. 
+- **summary**:    The minimum amount required to keep an account open. MUST BE GREATER THAN ZERO! 
+
+   If you *really* need it to be zero, you can enable the feature `insecure_zero_ed` for  this pallet. However, you do so at your own risk: this will open up a major DoS vector.  In case you have multiple sources of provider references, you may also get unexpected  behaviour if you set this to zero. 
+
+   Bottom line: Do yourself a favour and make it at least one! 
+ 
+### maxFreezes: `u32`
+- **interface**: `api.consts.balances.maxFreezes`
+- **summary**:    The maximum number of individual freeze locks that can exist on an account at any time. 
+ 
+### maxHolds: `u32`
+- **interface**: `api.consts.balances.maxHolds`
+- **summary**:    The maximum number of holds that can exist on an account at any time. 
  
 ### maxLocks: `u32`
 - **interface**: `api.consts.balances.maxLocks`
@@ -324,6 +338,15 @@ ___
 ___
 
 
+## coreFellowship
+ 
+### evidenceSize: `u32`
+- **interface**: `api.consts.coreFellowship.evidenceSize`
+- **summary**:    The maximum size in bytes submitted evidence is allowed to be. 
+
+___
+
+
 ## democracy
  
 ### cooloffPeriod: `u32`
@@ -415,6 +438,9 @@ ___
  
 ### minerMaxWeight: `SpWeightsWeightV2Weight`
 - **interface**: `api.consts.electionProviderMultiPhase.minerMaxWeight`
+ 
+### minerMaxWinners: `u32`
+- **interface**: `api.consts.electionProviderMultiPhase.minerMaxWinners`
  
 ### minerTxPriority: `u64`
 - **interface**: `api.consts.electionProviderMultiPhase.minerTxPriority`
@@ -731,6 +757,10 @@ ___
 
    Must be no greater than `MaxQueueLen`. 
  
+### holdReason: `KitchensinkRuntimeHoldReason`
+- **interface**: `api.consts.nis.holdReason`
+- **summary**:    The identifier of the hold reason. 
+ 
 ### intakePeriod: `u32`
 - **interface**: `api.consts.nis.intakePeriod`
 - **summary**:    The number of blocks between consecutive attempts to dequeue bids and create receipts. 
@@ -764,10 +794,6 @@ ___
 ### queueCount: `u32`
 - **interface**: `api.consts.nis.queueCount`
 - **summary**:    Number of duration queues in total. This sets the maximum duration supported, which is  this value multiplied by `Period`. 
- 
-### reserveId: `[u8;8]`
-- **interface**: `api.consts.nis.reserveId`
-- **summary**:    The name for the reserve ID. 
  
 ### thawThrottle: `(Perquintill,u32)`
 - **interface**: `api.consts.nis.thawThrottle`

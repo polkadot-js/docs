@@ -28,6 +28,8 @@ The following sections contain Storage methods are part of the default Substrate
 
 - **[convictionVoting](#convictionvoting)**
 
+- **[coreFellowship](#corefellowship)**
+
 - **[council](#council)**
 
 - **[democracy](#democracy)**
@@ -334,6 +336,14 @@ ___
 
    But this comes with tradeoffs, storing account balances in the system pallet stores  `frame_system` data alongside the account data contrary to storing account balances in the  `Balances` pallet, which uses a `StorageMap` to store balances data only.  NOTE: This is only used in the case that this pallet is used to store balances. 
  
+### freezes(`AccountId32`): `Vec<PalletBalancesIdAmount>`
+- **interface**: `api.query.balances.freezes`
+- **summary**:    Freeze locks on account balances. 
+ 
+### holds(`AccountId32`): `Vec<{"id":"KitchensinkRuntimeHoldReason","amount":"u128"}>`
+- **interface**: `api.query.balances.holds`
+- **summary**:    Holds on account balances. 
+ 
 ### inactiveIssuance(): `u128`
 - **interface**: `api.query.balances.inactiveIssuance`
 - **summary**:    The total units of outstanding deactivated balance in the system. 
@@ -451,6 +461,23 @@ ___
 ### votingFor(`AccountId32, u16`): `PalletConvictionVotingVoteVoting`
 - **interface**: `api.query.convictionVoting.votingFor`
 - **summary**:    All voting for a particular voter in a particular voting class. We store the balance for the  number of votes that we have recorded. 
+
+___
+
+
+## coreFellowship
+ 
+### member(`AccountId32`): `Option<PalletCoreFellowshipMemberStatus>`
+- **interface**: `api.query.coreFellowship.member`
+- **summary**:    The status of a claimant. 
+ 
+### memberEvidence(`AccountId32`): `Option<(PalletCoreFellowshipWish,Bytes)>`
+- **interface**: `api.query.coreFellowship.memberEvidence`
+- **summary**:    Some evidence together with the desired outcome for which it was presented. 
+ 
+### params(): `PalletCoreFellowshipParamsType`
+- **interface**: `api.query.coreFellowship.params`
+- **summary**:    The overall status of the system. 
 
 ___
 
@@ -996,6 +1023,10 @@ ___
 - **interface**: `api.query.nominationPools.counterForSubPoolsStorage`
 - **summary**:    Counter for the related counted storage map 
  
+### globalMaxCommission(): `Option<Perbill>`
+- **interface**: `api.query.nominationPools.globalMaxCommission`
+- **summary**:    The maximum commission that can be charged by a pool. Used on commission payouts to bound  pool commissions that are > `GlobalMaxCommission`, necessary if a future  `GlobalMaxCommission` is lower than some current pool commissions. 
+ 
 ### lastPoolId(): `u32`
 - **interface**: `api.query.nominationPools.lastPoolId`
 - **summary**:    Ever increasing number of all pools created so far. 
@@ -1042,11 +1073,11 @@ ___
  
 ### rewardPools(`u32`): `Option<PalletNominationPoolsRewardPool>`
 - **interface**: `api.query.nominationPools.rewardPools`
-- **summary**:    Reward pools. This is where there rewards for each pool accumulate. When a members payout  is claimed, the balance comes out fo the reward pool. Keyed by the bonded pools account. 
+- **summary**:    Reward pools. This is where there rewards for each pool accumulate. When a members payout is  claimed, the balance comes out fo the reward pool. Keyed by the bonded pools account. 
  
 ### subPoolsStorage(`u32`): `Option<PalletNominationPoolsSubPools>`
 - **interface**: `api.query.nominationPools.subPoolsStorage`
-- **summary**:    Groups of unbonding pools. Each group of unbonding pools belongs to a bonded pool,  hence the name sub-pools. Keyed by the bonded pools account. 
+- **summary**:    Groups of unbonding pools. Each group of unbonding pools belongs to a  bonded pool, hence the name sub-pools. Keyed by the bonded pools account. 
 
 ___
 

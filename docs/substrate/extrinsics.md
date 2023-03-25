@@ -24,6 +24,8 @@ The following sections contain Extrinsics methods are part of the default Substr
 
 - **[convictionVoting](#convictionvoting)**
 
+- **[coreFellowship](#corefellowship)**
+
 - **[council](#council)**
 
 - **[democracy](#democracy)**
@@ -838,11 +840,15 @@ ___
 
 ## balances
  
+### forceSetBalance(who: `MultiAddress`, new_free: `Compact<u128>`)
+- **interface**: `api.tx.balances.forceSetBalance`
+- **summary**:    Set the regular balance of a given account. 
+
+   The dispatch origin for this call is `root`. 
+ 
 ### forceTransfer(source: `MultiAddress`, dest: `MultiAddress`, value: `Compact<u128>`)
 - **interface**: `api.tx.balances.forceTransfer`
-- **summary**:    Exactly as `transfer`, except the origin must be root and the source account may be  specified.  #### Complexity 
-
-  - Same as transfer, but additional read and write because the source account is not assumed to be in the overlay. 
+- **summary**:    Exactly as `transfer_allow_death`, except the origin must be root and the source account  may be specified. 
  
 ### forceUnreserve(who: `MultiAddress`, amount: `u128`)
 - **interface**: `api.tx.balances.forceUnreserve`
@@ -850,37 +856,19 @@ ___
 
    Can only be called by ROOT. 
  
-### setBalance(who: `MultiAddress`, new_free: `Compact<u128>`, new_reserved: `Compact<u128>`)
-- **interface**: `api.tx.balances.setBalance`
-- **summary**:    Set the balances of a given account. 
-
-   This will alter `FreeBalance` and `ReservedBalance` in storage. it will  also alter the total issuance of the system (`TotalIssuance`) appropriately.  If the new free or reserved balance is below the existential deposit,  it will reset the account nonce (`frame_system::AccountNonce`). 
+### setBalanceDeprecated(who: `MultiAddress`, new_free: `Compact<u128>`, old_reserved: `Compact<u128>`)
+- **interface**: `api.tx.balances.setBalanceDeprecated`
+- **summary**:    Set the regular balance of a given account; it also takes a reserved balance but this  must be the same as the account's current reserved balance. 
 
    The dispatch origin for this call is `root`. 
+
+   WARNING: This call is DEPRECATED! Use `force_set_balance` instead. 
  
 ### transfer(dest: `MultiAddress`, value: `Compact<u128>`)
 - **interface**: `api.tx.balances.transfer`
-- **summary**:    Transfer some liquid free balance to another account. 
+- **summary**:    Alias for `transfer_allow_death`, provided only for name-wise compatibility. 
 
-   `transfer` will set the `FreeBalance` of the sender and receiver.  If the sender's account is below the existential deposit as a result  of the transfer, the account will be reaped. 
-
-   The dispatch origin for this call must be `Signed` by the transactor. 
-
-   #### Complexity 
-
-  - Dependent on arguments but not critical, given proper implementations for input config types. See related functions below. 
-
-  - It contains a limited number of reads and writes internally and no complex computation. 
-
-   Related functions: 
-
-   - `ensure_can_withdraw` is always called internally but has a bounded complexity. 
-
-  - Transferring balances to accounts that did not exist before will cause `T::OnNewAccount::on_new_account` to be called. 
-
-  - Removing enough funds from an account will trigger `T::DustRemoval::on_unbalanced`.
-
-  - `transfer_keep_alive` works the same way as `transfer`, but has an additional check that the transfer will not kill the origin account. 
+   WARNING: DEPRECATED! Will be released in approximately 3 months. 
  
 ### transferAll(dest: `MultiAddress`, keep_alive: `bool`)
 - **interface**: `api.tx.balances.transferAll`
@@ -892,17 +880,33 @@ ___
 
    - `dest`: The recipient of the transfer. 
 
-  - `keep_alive`: A boolean to determine if the `transfer_all` operation should send all of the funds the account has, causing the sender account to be killed (false), or  transfer everything except at least the existential deposit, which will guarantee to  keep the sender account alive (true). ## Complexity 
+  - `keep_alive`: A boolean to determine if the `transfer_all` operation should send all of the funds the account has, causing the sender account to be killed (false), or  transfer everything except at least the existential deposit, which will guarantee to  keep the sender account alive (true). 
+ 
+### transferAllowDeath(dest: `MultiAddress`, value: `Compact<u128>`)
+- **interface**: `api.tx.balances.transferAllowDeath`
+- **summary**:    Transfer some liquid free balance to another account. 
 
-  - O(1). Just like transfer, but reading the user's transferable balance first.
+   `transfer_allow_death` will set the `FreeBalance` of the sender and receiver.  If the sender's account is below the existential deposit as a result  of the transfer, the account will be reaped. 
+
+   The dispatch origin for this call must be `Signed` by the transactor. 
  
 ### transferKeepAlive(dest: `MultiAddress`, value: `Compact<u128>`)
 - **interface**: `api.tx.balances.transferKeepAlive`
-- **summary**:    Same as the [`transfer`] call, but with a check that the transfer will not kill the  origin account. 
+- **summary**:    Same as the [`transfer_allow_death`] call, but with a check that the transfer will not  kill the origin account. 
 
-   99% of the time you want [`transfer`] instead. 
+   99% of the time you want [`transfer_allow_death`] instead. 
 
-   [`transfer`]: struct.Pallet.html#method.transfer 
+   [`transfer_allow_death`]: struct.Pallet.html#method.transfer 
+ 
+### upgradeAccounts(who: `Vec<AccountId32>`)
+- **interface**: `api.tx.balances.upgradeAccounts`
+- **summary**:    Upgrade a specified account. 
+
+   - `origin`: Must be `Signed`. 
+
+  - `who`: The account to be upgraded.
+
+   This will waive the transaction fee if at least all but 10% of the accounts needed to  be upgraded. (We let some not have to be upgraded just in order to allow for the  possibililty of churn). 
 
 ___
 
@@ -1259,7 +1263,7 @@ ___
 
    If the code already exists in storage it will still return `Ok` and upgrades  the in storage version to the current  [`InstructionWeights::version`](InstructionWeights). 
 
-   - `determinism`: If this is set to any other value but [`Determinism::Deterministic`]  then the only way to use this code is to delegate call into it from an offchain  execution. Set to [`Determinism::Deterministic`] if in doubt. 
+   - `determinism`: If this is set to any other value but [`Determinism::Enforced`] then  the only way to use this code is to delegate call into it from an offchain execution.  Set to [`Determinism::Enforced`] if in doubt. 
 
    #### Note 
 
@@ -1383,6 +1387,97 @@ ___
   - `vote`: The vote configuration.
 
    Weight: `O(R)` where R is the number of polls the voter has voted on. 
+
+___
+
+
+## coreFellowship
+ 
+### approve(who: `AccountId32`, at_rank: `u16`)
+- **interface**: `api.tx.coreFellowship.approve`
+- **summary**:    Approve a member to continue at their rank. 
+
+   This resets `last_proof` to the current block, thereby delaying any automatic demotion. 
+
+   If `who` is not already tracked by this pallet, then it will become tracked.  `last_promotion` will be set to zero. 
+
+   - `origin`: An origin which satisfies `ApproveOrigin` or root. 
+
+  - `who`: A member (i.e. of non-zero rank).
+
+  - `at_rank`: The rank of member.
+ 
+### bump(who: `AccountId32`)
+- **interface**: `api.tx.coreFellowship.bump`
+- **summary**:    Bump the state of a member. 
+
+   This will demote a member whose `last_proof` is now beyond their rank's  `demotion_period`. 
+
+   - `origin`: A `Signed` origin of an account. 
+
+  - `who`: A member account whose state is to be updated.
+ 
+### import()
+- **interface**: `api.tx.coreFellowship.import`
+- **summary**:    Introduce an already-ranked individual of the collective into this pallet. The rank may  still be zero. 
+
+   This resets `last_proof` to the current block and `last_promotion` will be set to zero,  thereby delaying any automatic demotion but allowing immediate promotion. 
+
+   - `origin`: A signed origin of a ranked, but not tracked, account. 
+ 
+### induct(who: `AccountId32`)
+- **interface**: `api.tx.coreFellowship.induct`
+- **summary**:    Introduce a new and unranked candidate (rank zero). 
+
+   - `origin`: An origin which satisfies `InductOrigin` or root. 
+
+  - `who`: The account ID of the candidate to be inducted and become a member.
+ 
+### offboard(who: `AccountId32`)
+- **interface**: `api.tx.coreFellowship.offboard`
+- **summary**:    Stop tracking a prior member who is now not a ranked member of the collective. 
+
+   - `origin`: A `Signed` origin of an account. 
+
+  - `who`: The ID of an account which was tracked in this pallet but which is now not a ranked member of the collective. 
+ 
+### promote(who: `AccountId32`, to_rank: `u16`)
+- **interface**: `api.tx.coreFellowship.promote`
+- **summary**:    Increment the rank of a ranked and tracked account. 
+
+   - `origin`: An origin which satisfies `PromoteOrigin` with a `Success` result of  `to_rank` or more or root. 
+
+  - `who`: The account ID of the member to be promoted to `to_rank`.
+
+  - `to_rank`: One more than the current rank of `who`.
+ 
+### setActive(is_active: `bool`)
+- **interface**: `api.tx.coreFellowship.setActive`
+- **summary**:    Set whether a member is active or not. 
+
+   - `origin`: A `Signed` origin of a member's account. 
+
+  - `is_active`: `true` iff the member is active.
+ 
+### setParams(params: `PalletCoreFellowshipParamsType`)
+- **interface**: `api.tx.coreFellowship.setParams`
+- **summary**:    Set the parameters. 
+
+   - `origin`: A origin complying with `ParamsOrigin` or root. 
+
+  - `params`: The new parameters for the pallet.
+ 
+### submitEvidence(wish: `PalletCoreFellowshipWish`, evidence: `Bytes`)
+- **interface**: `api.tx.coreFellowship.submitEvidence`
+- **summary**:    Provide evidence that a rank is deserved. 
+
+   This is free as long as no evidence for the forthcoming judgement is already submitted.  Evidence is cleared after an outcome (either demotion, promotion of approval). 
+
+   - `origin`: A `Signed` origin of an inducted and ranked account. 
+
+  - `wish`: The stated desire of the member.
+
+  - `evidence`: A dump of evidence to be considered. This should generally be either a Markdown-encoded document or a series of 32-byte hashes which can be found on a  decentralised content-based-indexing system such as IPFS. 
 
 ___
 
@@ -2600,25 +2695,19 @@ ___
 
    Weight: `O(1)` 
  
-### burn(collection: `u32`, item: `u32`, check_owner: `Option<MultiAddress>`)
+### burn(collection: `u32`, item: `u32`)
 - **interface**: `api.tx.nfts.burn`
 - **summary**:    Destroy a single item. 
 
-   Origin must be Signed and the signing account must be either: 
-
-  - the Admin of the `collection`;
-
-  - the Owner of the `item`;
+   The origin must conform to `ForceOrigin` or must be Signed and the signing account must  be the owner of the `item`. 
 
    - `collection`: The collection of the item to be burned. 
 
   - `item`: The item to be burned.
 
-  - `check_owner`: If `Some` then the operation will fail with `WrongOwner` unless the item is owned by this value. 
+   Emits `Burned`. 
 
-   Emits `Burned` with the actual amount burned. 
-
-   Weight: `O(1)`  Modes: `check_owner.is_some()`. 
+   Weight: `O(1)` 
  
 ### buyItem(collection: `u32`, item: `u32`, bid_price: `u128`)
 - **interface**: `api.tx.nfts.buyItem`
@@ -2641,8 +2730,6 @@ ___
    Origin must be either: 
 
   - the `Force` origin;
-
-  - `Signed` with the signer being the Admin of the `collection`;
 
   - `Signed` with the signer being the Owner of the `item`;
 
@@ -2710,8 +2797,6 @@ ___
 
   - the `Force` origin;
 
-  - `Signed` with the signer being the Admin of the `collection`;
-
   - `Signed` with the signer being the Owner of the `item`;
 
    Arguments: 
@@ -2748,7 +2833,7 @@ ___
 - **interface**: `api.tx.nfts.clearCollectionMetadata`
 - **summary**:    Clear the metadata for a collection. 
 
-   Origin must be either `ForceOrigin` or `Signed` and the sender should be the Owner of  the `collection`. 
+   Origin must be either `ForceOrigin` or `Signed` and the sender should be the Admin of  the `collection`. 
 
    Any deposit is freed for the collection's owner. 
 
@@ -2762,7 +2847,7 @@ ___
 - **interface**: `api.tx.nfts.clearMetadata`
 - **summary**:    Clear the metadata for an item. 
 
-   Origin must be either `ForceOrigin` or Signed and the sender should be the Owner of the  `collection`. 
+   Origin must be either `ForceOrigin` or Signed and the sender should be the Admin of the  `collection`. 
 
    Any deposit is freed for the collection's owner. 
 
@@ -2818,17 +2903,19 @@ ___
 
    The origin must conform to `ForceOrigin` or must be `Signed` and the sender must be the  owner of the `collection`. 
 
+   NOTE: The collection must have 0 items to be destroyed. 
+
    - `collection`: The identifier of the collection to be destroyed. 
 
   - `witness`: Information on the items minted in the collection. This must be correct. 
 
    Emits `Destroyed` event when successful. 
 
-   Weight: `O(n + m)` where: 
-
-  - `n = witness.items`
+   Weight: `O(m + c + a)` where: 
 
   - `m = witness.item_metadatas`
+
+  - `c = witness.item_configs`
 
   - `a = witness.attributes`
  
@@ -2922,13 +3009,15 @@ ___
 - **interface**: `api.tx.nfts.lockCollection`
 - **summary**:    Disallows specified settings for the whole collection. 
 
-   Origin must be Signed and the sender should be the Freezer of the `collection`. 
+   Origin must be Signed and the sender should be the Owner of the `collection`. 
 
    - `collection`: The collection to be locked. 
 
   - `lock_settings`: The settings to be locked.
 
-   Note: it's possible to only lock(set) the setting, but not to unset it.  Emits `CollectionLocked`. 
+   Note: it's possible to only lock(set) the setting, but not to unset it. 
+
+   Emits `CollectionLocked`. 
 
    Weight: `O(1)` 
  
@@ -2936,7 +3025,7 @@ ___
 - **interface**: `api.tx.nfts.lockItemProperties`
 - **summary**:    Disallows changing the metadata or attributes of the item. 
 
-   Origin must be either `ForceOrigin` or Signed and the sender should be the Owner of the  `collection`. 
+   Origin must be either `ForceOrigin` or Signed and the sender should be the Admin  of the `collection`. 
 
    - `collection`: The collection if the `item`. 
 
@@ -2946,7 +3035,7 @@ ___
 
   - `lock_attributes`: Specifies whether the attributes in the `CollectionOwner` namespace should be locked. 
 
-   Note: `lock_attributes` affects the attributes in the `CollectionOwner` namespace  only. When the metadata or attributes are locked, it won't be possible the unlock them. 
+   Note: `lock_attributes` affects the attributes in the `CollectionOwner` namespace only.  When the metadata or attributes are locked, it won't be possible the unlock them. 
 
    Emits `ItemPropertiesLocked`. 
 
@@ -2970,7 +3059,7 @@ ___
 - **interface**: `api.tx.nfts.mint`
 - **summary**:    Mint an item of a particular collection. 
 
-   The origin must be Signed and the sender must be the Issuer of the `collection`. 
+   The origin must be Signed and the sender must comply with the `mint_settings` rules. 
 
    - `collection`: The collection of the item to be minted. 
 
@@ -2996,7 +3085,7 @@ ___
 
   - `signature`: The signature of the `data` object.
 
-  - `signer`: The `data` object's signer. Should be an owner of the collection.
+  - `signer`: The `data` object's signer. Should be an Issuer of the collection.
 
    Emits `Issued` on success.  Emits `AttributeSet` if the attributes were provided.  Emits `ItemMetadataSet` if the metadata was not empty. 
  
@@ -3042,7 +3131,7 @@ ___
 
    Origin must be Signed and must conform to the namespace ruleset: 
 
-  - `CollectionOwner` namespace could be modified by the `collection` owner only;
+  - `CollectionOwner` namespace could be modified by the `collection` Admin only;
 
   - `ItemOwner` namespace could be modified by the `maybe_item` owner only. `maybe_item` should be set in that case; 
 
@@ -3074,7 +3163,7 @@ ___
 
   - `signature`: The signature of the `data` object.
 
-  - `signer`: The `data` object's signer. Should be an owner of the collection for the `CollectionOwner` namespace. 
+  - `signer`: The `data` object's signer. Should be an Admin of the collection for the `CollectionOwner` namespace. 
 
    Emits `AttributeSet` for each provided attribute.  Emits `ItemAttributesApprovalAdded` if the approval wasn't set before.  Emits `PreSignedAttributesSet` on success. 
  
@@ -3094,7 +3183,7 @@ ___
 - **interface**: `api.tx.nfts.setCollectionMetadata`
 - **summary**:    Set the metadata for a collection. 
 
-   Origin must be either `ForceOrigin` or `Signed` and the sender should be the Owner of  the `collection`. 
+   Origin must be either `ForceOrigin` or `Signed` and the sender should be the Admin of  the `collection`. 
 
    If the origin is `Signed`, then funds of signer are reserved according to the formula:  `MetadataDepositBase + DepositPerByte * data.len` taking into  account any already reserved funds. 
 
@@ -3110,7 +3199,7 @@ ___
 - **interface**: `api.tx.nfts.setMetadata`
 - **summary**:    Set the metadata for an item. 
 
-   Origin must be either `ForceOrigin` or Signed and the sender should be the Owner of the  `collection`. 
+   Origin must be either `ForceOrigin` or Signed and the sender should be the Admin of the  `collection`. 
 
    If the origin is Signed, then funds of signer are reserved according to the formula:  `MetadataDepositBase + DepositPerByte * data.len` taking into  account any already reserved funds. 
 
@@ -3128,7 +3217,7 @@ ___
 - **interface**: `api.tx.nfts.setPrice`
 - **summary**:    Set (or reset) the price for an item. 
 
-   Origin must be Signed and must be the owner of the asset `item`. 
+   Origin must be Signed and must be the owner of the `item`. 
 
    - `collection`: The collection of the item. 
 
@@ -3140,11 +3229,13 @@ ___
 
    Emits `ItemPriceSet` on success if the price is not `None`.  Emits `ItemPriceRemoved` on success if the price is `None`. 
  
-### setTeam(collection: `u32`, issuer: `MultiAddress`, admin: `MultiAddress`, freezer: `MultiAddress`)
+### setTeam(collection: `u32`, issuer: `Option<MultiAddress>`, admin: `Option<MultiAddress>`, freezer: `Option<MultiAddress>`)
 - **interface**: `api.tx.nfts.setTeam`
 - **summary**:    Change the Issuer, Admin and Freezer of a collection. 
 
    Origin must be either `ForceOrigin` or Signed and the sender should be the Owner of the  `collection`. 
+
+   Note: by setting the role to `None` only the `ForceOrigin` will be able to change it  after to `Some(account)`. 
 
    - `collection`: The collection whose team should be changed. 
 
@@ -3163,8 +3254,6 @@ ___
 - **summary**:    Move an item from the sender account to another. 
 
    Origin must be Signed and the signing account must be either: 
-
-  - the Admin of the `collection`;
 
   - the Owner of the `item`;
 
@@ -3214,7 +3303,7 @@ ___
 - **interface**: `api.tx.nfts.updateMintSettings`
 - **summary**:    Update mint settings. 
 
-   Origin must be either `ForceOrigin` or `Signed` and the sender should be the Owner of  the `collection`. 
+   Origin must be either `ForceOrigin` or `Signed` and the sender should be the Issuer  of the `collection`. 
 
    - `collection`: The identifier of the collection to change. 
 
@@ -3312,9 +3401,15 @@ ___
 
    This directly forward the call to the staking pallet, on behalf of the pool bonded  account. 
  
+### claimCommission(pool_id: `u32`)
+- **interface**: `api.tx.nominationPools.claimCommission`
+- **summary**:    Claim pending commission. 
+
+   The dispatch origin of this call must be signed by the `root` role of the pool. Pending  commission is paid out and added to total claimed commission`. Total pending commission  is reset to zero. the current. 
+ 
 ### claimPayout()
 - **interface**: `api.tx.nominationPools.claimPayout`
-- **summary**:    A bonded member can use this to claim their payout based on the rewards that the pool  has accumulated since their last claimed payout (OR since joining if this is there first  time claiming rewards). The payout will be transferred to the member's account. 
+- **summary**:    A bonded member can use this to claim their payout based on the rewards that the pool  has accumulated since their last claimed payout (OR since joining if this is their first  time claiming rewards). The payout will be transferred to the member's account. 
 
    The member will earn rewards pro rata based on the members stake vs the sum of the  members in the pools stake. Rewards do not "expire". 
 
@@ -3396,7 +3491,27 @@ ___
 
   * `actor` - Account to claim reward. // improve this
  
-### setConfigs(min_join_bond: `PalletNominationPoolsConfigOpU128`, min_create_bond: `PalletNominationPoolsConfigOpU128`, max_pools: `PalletNominationPoolsConfigOpU32`, max_members: `PalletNominationPoolsConfigOpU32`, max_members_per_pool: `PalletNominationPoolsConfigOpU32`)
+### setCommission(pool_id: `u32`, new_commission: `Option<(Perbill,AccountId32)>`)
+- **interface**: `api.tx.nominationPools.setCommission`
+- **summary**:    Set the commission of a pool.  Both a commission percentage and a commission payee must be provided in the `current`  tuple. Where a `current` of `None` is provided, any current commission will be removed. 
+
+   - If a `None` is supplied to `new_commission`, existing commission will be removed. 
+ 
+### setCommissionChangeRate(pool_id: `u32`, change_rate: `PalletNominationPoolsCommissionChangeRate`)
+- **interface**: `api.tx.nominationPools.setCommissionChangeRate`
+- **summary**:    Set the commission change rate for a pool. 
+
+   Initial change rate is not bounded, whereas subsequent updates can only be more  restrictive than the current. 
+ 
+### setCommissionMax(pool_id: `u32`, max_commission: `Perbill`)
+- **interface**: `api.tx.nominationPools.setCommissionMax`
+- **summary**:    Set the maximum commission of a pool. 
+
+   - Initial max can be set to any `Perbill`, and only smaller values thereafter. 
+
+  - Current commission will be lowered in the event it is higher than a new max commission. 
+ 
+### setConfigs(min_join_bond: `PalletNominationPoolsConfigOpU128`, min_create_bond: `PalletNominationPoolsConfigOpU128`, max_pools: `PalletNominationPoolsConfigOpU32`, max_members: `PalletNominationPoolsConfigOpU32`, max_members_per_pool: `PalletNominationPoolsConfigOpU32`, global_max_commission: `PalletNominationPoolsConfigOpPerbill`)
 - **interface**: `api.tx.nominationPools.setConfigs`
 - **summary**:    Update configurations for the nomination pools. The origin for this call must be  Root. 
 
@@ -3411,12 +3526,14 @@ ___
   * `max_members` - Set [`MaxPoolMembers`].
 
   * `max_members_per_pool` - Set [`MaxPoolMembersPerPool`].
+
+  * `global_max_commission` - Set [`GlobalMaxCommission`].
  
 ### setMetadata(pool_id: `u32`, metadata: `Bytes`)
 - **interface**: `api.tx.nominationPools.setMetadata`
 - **summary**:    Set a new metadata for the pool. 
 
-   The dispatch origin of this call must be signed by the bouncer, or the root role  of the pool. 
+   The dispatch origin of this call must be signed by the bouncer, or the root role of the  pool. 
  
 ### setState(pool_id: `u32`, state: `PalletNominationPoolsPoolState`)
 - **interface**: `api.tx.nominationPools.setState`
