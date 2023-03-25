@@ -50,15 +50,39 @@ module.exports = {
       },
       'api/FAQ'
     ],
-    'Substrate Metadata': [
-      'substrate/intro',
-      'substrate/runtime',
-      'substrate/rpc',
-      'substrate/constants',
-      'substrate/storage',
-      'substrate/extrinsics',
-      'substrate/events',
-      'substrate/errors'
+    Metadata: [
+      {
+        Substrate: [
+          'substrate/intro',
+          'substrate/runtime',
+          'substrate/rpc',
+          'substrate/constants',
+          'substrate/storage',
+          'substrate/extrinsics',
+          'substrate/events',
+          'substrate/errors'
+        ],
+        Polkadot: [
+          'polkadot/intro',
+          'polkadot/runtime',
+          'polkadot/rpc',
+          'polkadot/constants',
+          'polkadot/storage',
+          'polkadot/extrinsics',
+          'polkadot/events',
+          'polkadot/errors'
+        ],
+        Kusama: [
+          'kusama/intro',
+          'kusama/runtime',
+          'kusama/rpc',
+          'kusama/constants',
+          'kusama/storage',
+          'kusama/extrinsics',
+          'kusama/events',
+          'kusama/errors'
+        ]
+      }
     ],
     Keyring: [
       'keyring/intro',
