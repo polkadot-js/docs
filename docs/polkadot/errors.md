@@ -20,6 +20,8 @@ This page lists the errors that can be encountered in the different modules.
 
 - **[configuration](#configuration)**
 
+- **[convictionVoting](#convictionvoting)**
+
 - **[council](#council)**
 
 - **[crowdloan](#crowdloan)**
@@ -58,6 +60,8 @@ This page lists the errors that can be encountered in the different modules.
 
 - **[proxy](#proxy)**
 
+- **[referenda](#referenda)**
+
 - **[registrar](#registrar)**
 
 - **[scheduler](#scheduler)**
@@ -85,6 +89,8 @@ This page lists the errors that can be encountered in the different modules.
 - **[vesting](#vesting)**
 
 - **[voterList](#voterlist)**
+
+- **[whitelist](#whitelist)**
 
 - **[xcmPallet](#xcmpallet)**
 
@@ -150,35 +156,43 @@ ___
  
 ### DeadAccount
 - **interface**: `api.errors.balances.DeadAccount.is`
-- **summary**:    Beneficiary account must pre-exist 
+- **summary**:    Beneficiary account must pre-exist. 
  
 ### ExistentialDeposit
 - **interface**: `api.errors.balances.ExistentialDeposit.is`
-- **summary**:    Value too low to create account due to existential deposit 
+- **summary**:    Value too low to create account due to existential deposit. 
  
 ### ExistingVestingSchedule
 - **interface**: `api.errors.balances.ExistingVestingSchedule.is`
-- **summary**:    A vesting schedule already exists for this account 
+- **summary**:    A vesting schedule already exists for this account. 
+ 
+### Expendability
+- **interface**: `api.errors.balances.Expendability.is`
+- **summary**:    Transfer/payment would kill account. 
  
 ### InsufficientBalance
 - **interface**: `api.errors.balances.InsufficientBalance.is`
 - **summary**:    Balance too low to send value. 
  
-### KeepAlive
-- **interface**: `api.errors.balances.KeepAlive.is`
-- **summary**:    Transfer/payment would kill account 
- 
 ### LiquidityRestrictions
 - **interface**: `api.errors.balances.LiquidityRestrictions.is`
-- **summary**:    Account liquidity restrictions prevent withdrawal 
+- **summary**:    Account liquidity restrictions prevent withdrawal. 
+ 
+### TooManyFreezes
+- **interface**: `api.errors.balances.TooManyFreezes.is`
+- **summary**:    Number of freezes exceed `MaxFreezes`. 
+ 
+### TooManyHolds
+- **interface**: `api.errors.balances.TooManyHolds.is`
+- **summary**:    Number of holds exceed `MaxHolds`. 
  
 ### TooManyReserves
 - **interface**: `api.errors.balances.TooManyReserves.is`
-- **summary**:    Number of named reserves exceed MaxReserves 
+- **summary**:    Number of named reserves exceed `MaxReserves`. 
  
 ### VestingBalance
 - **interface**: `api.errors.balances.VestingBalance.is`
-- **summary**:    Vesting balance too high to send value 
+- **summary**:    Vesting balance too high to send value. 
 
 ___
 
@@ -283,6 +297,59 @@ ___
 ### InvalidNewValue
 - **interface**: `api.errors.configuration.InvalidNewValue.is`
 - **summary**:    The new value for a configuration parameter is invalid. 
+
+___
+
+
+## convictionVoting
+ 
+### AlreadyDelegating
+- **interface**: `api.errors.convictionVoting.AlreadyDelegating.is`
+- **summary**:    The account is already delegating. 
+ 
+### AlreadyVoting
+- **interface**: `api.errors.convictionVoting.AlreadyVoting.is`
+- **summary**:    The account currently has votes attached to it and the operation cannot succeed until  these are removed, either through `unvote` or `reap_vote`. 
+ 
+### BadClass
+- **interface**: `api.errors.convictionVoting.BadClass.is`
+- **summary**:    The class ID supplied is invalid. 
+ 
+### ClassNeeded
+- **interface**: `api.errors.convictionVoting.ClassNeeded.is`
+- **summary**:    The class must be supplied since it is not easily determinable from the state. 
+ 
+### InsufficientFunds
+- **interface**: `api.errors.convictionVoting.InsufficientFunds.is`
+- **summary**:    Too high a balance was provided that the account cannot afford. 
+ 
+### MaxVotesReached
+- **interface**: `api.errors.convictionVoting.MaxVotesReached.is`
+- **summary**:    Maximum number of votes reached. 
+ 
+### Nonsense
+- **interface**: `api.errors.convictionVoting.Nonsense.is`
+- **summary**:    Delegation to oneself makes no sense. 
+ 
+### NoPermission
+- **interface**: `api.errors.convictionVoting.NoPermission.is`
+- **summary**:    The actor has no permission to conduct the action. 
+ 
+### NoPermissionYet
+- **interface**: `api.errors.convictionVoting.NoPermissionYet.is`
+- **summary**:    The actor has no permission to conduct the action right now but will do in the future. 
+ 
+### NotDelegating
+- **interface**: `api.errors.convictionVoting.NotDelegating.is`
+- **summary**:    The account is not currently delegating. 
+ 
+### NotOngoing
+- **interface**: `api.errors.convictionVoting.NotOngoing.is`
+- **summary**:    Poll is not ongoing. 
+ 
+### NotVoter
+- **interface**: `api.errors.convictionVoting.NotVoter.is`
+- **summary**:    The given account did not vote on the poll. 
 
 ___
 
@@ -930,6 +997,18 @@ ___
 - **interface**: `api.errors.nominationPools.CannotWithdrawAny.is`
 - **summary**:    None of the funds can be withdrawn yet because the bonding duration has not passed. 
  
+### CommissionChangeRateNotAllowed
+- **interface**: `api.errors.nominationPools.CommissionChangeRateNotAllowed.is`
+- **summary**:    The submitted changes to commission change rate are not allowed. 
+ 
+### CommissionChangeThrottled
+- **interface**: `api.errors.nominationPools.CommissionChangeThrottled.is`
+- **summary**:    Not enough blocks have surpassed since the last commission update. 
+ 
+### CommissionExceedsMaximum
+- **interface**: `api.errors.nominationPools.CommissionExceedsMaximum.is`
+- **summary**:    The supplied commission exceeds the max allowed commission. 
+ 
 ### Defensive
 - **interface**: `api.errors.nominationPools.Defensive.is`
 - **summary**:    Some error occurred that should never happen. This should be reported to the  maintainers. 
@@ -945,6 +1024,10 @@ ___
 ### InvalidPoolId
 - **interface**: `api.errors.nominationPools.InvalidPoolId.is`
 - **summary**:    Pool id provided is not correct/usable. 
+ 
+### MaxCommissionRestricted
+- **interface**: `api.errors.nominationPools.MaxCommissionRestricted.is`
+- **summary**:    The pool's max commission cannot be set higher than the existing value. 
  
 ### MaxPoolMembers
 - **interface**: `api.errors.nominationPools.MaxPoolMembers.is`
@@ -967,6 +1050,14 @@ ___
 - **summary**:    The amount does not meet the minimum bond to either join or create a pool. 
 
    The depositor can never unbond to a value less than  `Pallet::depositor_min_bond`. The caller does not have nominating  permissions for the pool. Members can never unbond to a value below `MinJoinBond`. 
+ 
+### NoCommissionCurrentSet
+- **interface**: `api.errors.nominationPools.NoCommissionCurrentSet.is`
+- **summary**:    No commission current has been set. 
+ 
+### NoPendingCommission
+- **interface**: `api.errors.nominationPools.NoPendingCommission.is`
+- **summary**:    There is no pending commission to claim. 
  
 ### NotDestroying
 - **interface**: `api.errors.nominationPools.NotDestroying.is`
@@ -1402,6 +1493,63 @@ ___
 ___
 
 
+## referenda
+ 
+### BadReferendum
+- **interface**: `api.errors.referenda.BadReferendum.is`
+- **summary**:    The referendum index provided is invalid in this context. 
+ 
+### BadStatus
+- **interface**: `api.errors.referenda.BadStatus.is`
+- **summary**:    The referendum status is invalid for this operation. 
+ 
+### BadTrack
+- **interface**: `api.errors.referenda.BadTrack.is`
+- **summary**:    The track identifier given was invalid. 
+ 
+### Full
+- **interface**: `api.errors.referenda.Full.is`
+- **summary**:    There are already a full complement of referenda in progress for this track. 
+ 
+### HasDeposit
+- **interface**: `api.errors.referenda.HasDeposit.is`
+- **summary**:    Referendum's decision deposit is already paid. 
+ 
+### NoDeposit
+- **interface**: `api.errors.referenda.NoDeposit.is`
+- **summary**:    The deposit cannot be refunded since none was made. 
+ 
+### NoPermission
+- **interface**: `api.errors.referenda.NoPermission.is`
+- **summary**:    The deposit refunder is not the depositor. 
+ 
+### NothingToDo
+- **interface**: `api.errors.referenda.NothingToDo.is`
+- **summary**:    There was nothing to do in the advancement. 
+ 
+### NotOngoing
+- **interface**: `api.errors.referenda.NotOngoing.is`
+- **summary**:    Referendum is not ongoing. 
+ 
+### NoTrack
+- **interface**: `api.errors.referenda.NoTrack.is`
+- **summary**:    No track exists for the proposal origin. 
+ 
+### PreimageNotExist
+- **interface**: `api.errors.referenda.PreimageNotExist.is`
+- **summary**:    The preimage does not exist. 
+ 
+### QueueEmpty
+- **interface**: `api.errors.referenda.QueueEmpty.is`
+- **summary**:    The queue of the track is empty. 
+ 
+### Unfinished
+- **interface**: `api.errors.referenda.Unfinished.is`
+- **summary**:    Any deposit cannot be refunded until after the decision is over. 
+
+___
+
+
 ## registrar
  
 ### AlreadyRegistered
@@ -1830,6 +1978,31 @@ ___
 ### List
 - **interface**: `api.errors.voterList.List.is`
 - **summary**:    A error in the list interface implementation. 
+
+___
+
+
+## whitelist
+ 
+### CallAlreadyWhitelisted
+- **interface**: `api.errors.whitelist.CallAlreadyWhitelisted.is`
+- **summary**:    The call was already whitelisted; No-Op. 
+ 
+### CallIsNotWhitelisted
+- **interface**: `api.errors.whitelist.CallIsNotWhitelisted.is`
+- **summary**:    The call was not whitelisted. 
+ 
+### InvalidCallWeightWitness
+- **interface**: `api.errors.whitelist.InvalidCallWeightWitness.is`
+- **summary**:    The weight of the decoded call was higher than the witness. 
+ 
+### UnavailablePreImage
+- **interface**: `api.errors.whitelist.UnavailablePreImage.is`
+- **summary**:    The preimage of the call hash could not be loaded. 
+ 
+### UndecodableCall
+- **interface**: `api.errors.whitelist.UndecodableCall.is`
+- **summary**:    The call could not be decoded. 
 
 ___
 

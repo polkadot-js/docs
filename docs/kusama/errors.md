@@ -22,11 +22,7 @@ This page lists the errors that can be encountered in the different modules.
 
 - **[convictionVoting](#convictionvoting)**
 
-- **[council](#council)**
-
 - **[crowdloan](#crowdloan)**
-
-- **[democracy](#democracy)**
 
 - **[electionProviderMultiPhase](#electionprovidermultiphase)**
 
@@ -62,7 +58,7 @@ This page lists the errors that can be encountered in the different modules.
 
 - **[parasDisputes](#parasdisputes)**
 
-- **[phragmenElection](#phragmenelection)**
+- **[parasSlashing](#parasslashing)**
 
 - **[preimage](#preimage)**
 
@@ -85,12 +81,6 @@ This page lists the errors that can be encountered in the different modules.
 - **[staking](#staking)**
 
 - **[system](#system)**
-
-- **[technicalCommittee](#technicalcommittee)**
-
-- **[technicalMembership](#technicalmembership)**
-
-- **[tips](#tips)**
 
 - **[treasury](#treasury)**
 
@@ -168,35 +158,43 @@ ___
  
 ### DeadAccount
 - **interface**: `api.errors.balances.DeadAccount.is`
-- **summary**:    Beneficiary account must pre-exist 
+- **summary**:    Beneficiary account must pre-exist. 
  
 ### ExistentialDeposit
 - **interface**: `api.errors.balances.ExistentialDeposit.is`
-- **summary**:    Value too low to create account due to existential deposit 
+- **summary**:    Value too low to create account due to existential deposit. 
  
 ### ExistingVestingSchedule
 - **interface**: `api.errors.balances.ExistingVestingSchedule.is`
-- **summary**:    A vesting schedule already exists for this account 
+- **summary**:    A vesting schedule already exists for this account. 
+ 
+### Expendability
+- **interface**: `api.errors.balances.Expendability.is`
+- **summary**:    Transfer/payment would kill account. 
  
 ### InsufficientBalance
 - **interface**: `api.errors.balances.InsufficientBalance.is`
 - **summary**:    Balance too low to send value. 
  
-### KeepAlive
-- **interface**: `api.errors.balances.KeepAlive.is`
-- **summary**:    Transfer/payment would kill account 
- 
 ### LiquidityRestrictions
 - **interface**: `api.errors.balances.LiquidityRestrictions.is`
-- **summary**:    Account liquidity restrictions prevent withdrawal 
+- **summary**:    Account liquidity restrictions prevent withdrawal. 
+ 
+### TooManyFreezes
+- **interface**: `api.errors.balances.TooManyFreezes.is`
+- **summary**:    Number of freezes exceed `MaxFreezes`. 
+ 
+### TooManyHolds
+- **interface**: `api.errors.balances.TooManyHolds.is`
+- **summary**:    Number of holds exceed `MaxHolds`. 
  
 ### TooManyReserves
 - **interface**: `api.errors.balances.TooManyReserves.is`
-- **summary**:    Number of named reserves exceed MaxReserves 
+- **summary**:    Number of named reserves exceed `MaxReserves`. 
  
 ### VestingBalance
 - **interface**: `api.errors.balances.VestingBalance.is`
-- **summary**:    Vesting balance too high to send value 
+- **summary**:    Vesting balance too high to send value. 
 
 ___
 
@@ -358,51 +356,6 @@ ___
 ___
 
 
-## council
- 
-### AlreadyInitialized
-- **interface**: `api.errors.council.AlreadyInitialized.is`
-- **summary**:    Members are already initialized! 
- 
-### DuplicateProposal
-- **interface**: `api.errors.council.DuplicateProposal.is`
-- **summary**:    Duplicate proposals not allowed 
- 
-### DuplicateVote
-- **interface**: `api.errors.council.DuplicateVote.is`
-- **summary**:    Duplicate vote ignored 
- 
-### NotMember
-- **interface**: `api.errors.council.NotMember.is`
-- **summary**:    Account is not a member 
- 
-### ProposalMissing
-- **interface**: `api.errors.council.ProposalMissing.is`
-- **summary**:    Proposal must exist 
- 
-### TooEarly
-- **interface**: `api.errors.council.TooEarly.is`
-- **summary**:    The close call was made too early, before the end of the voting. 
- 
-### TooManyProposals
-- **interface**: `api.errors.council.TooManyProposals.is`
-- **summary**:    There can only be a maximum of `MaxProposals` active proposals. 
- 
-### WrongIndex
-- **interface**: `api.errors.council.WrongIndex.is`
-- **summary**:    Mismatched index 
- 
-### WrongProposalLength
-- **interface**: `api.errors.council.WrongProposalLength.is`
-- **summary**:    The given length bound for the proposal was too low. 
- 
-### WrongProposalWeight
-- **interface**: `api.errors.council.WrongProposalWeight.is`
-- **summary**:    The given weight bound for the proposal was too low. 
-
-___
-
-
 ## crowdloan
  
 ### AlreadyInNewRaise
@@ -496,107 +449,6 @@ ___
 ### VrfDelayInProgress
 - **interface**: `api.errors.crowdloan.VrfDelayInProgress.is`
 - **summary**:    No contributions allowed during the VRF delay 
-
-___
-
-
-## democracy
- 
-### AlreadyCanceled
-- **interface**: `api.errors.democracy.AlreadyCanceled.is`
-- **summary**:    Cannot cancel the same proposal twice 
- 
-### AlreadyDelegating
-- **interface**: `api.errors.democracy.AlreadyDelegating.is`
-- **summary**:    The account is already delegating. 
- 
-### AlreadyVetoed
-- **interface**: `api.errors.democracy.AlreadyVetoed.is`
-- **summary**:    Identity may not veto a proposal twice 
- 
-### DuplicateProposal
-- **interface**: `api.errors.democracy.DuplicateProposal.is`
-- **summary**:    Proposal already made 
- 
-### InstantNotAllowed
-- **interface**: `api.errors.democracy.InstantNotAllowed.is`
-- **summary**:    The instant referendum origin is currently disallowed. 
- 
-### InsufficientFunds
-- **interface**: `api.errors.democracy.InsufficientFunds.is`
-- **summary**:    Too high a balance was provided that the account cannot afford. 
- 
-### InvalidHash
-- **interface**: `api.errors.democracy.InvalidHash.is`
-- **summary**:    Invalid hash 
- 
-### MaxVotesReached
-- **interface**: `api.errors.democracy.MaxVotesReached.is`
-- **summary**:    Maximum number of votes reached. 
- 
-### NoneWaiting
-- **interface**: `api.errors.democracy.NoneWaiting.is`
-- **summary**:    No proposals waiting 
- 
-### Nonsense
-- **interface**: `api.errors.democracy.Nonsense.is`
-- **summary**:    Delegation to oneself makes no sense. 
- 
-### NoPermission
-- **interface**: `api.errors.democracy.NoPermission.is`
-- **summary**:    The actor has no permission to conduct the action. 
- 
-### NoProposal
-- **interface**: `api.errors.democracy.NoProposal.is`
-- **summary**:    No external proposal 
- 
-### NotDelegating
-- **interface**: `api.errors.democracy.NotDelegating.is`
-- **summary**:    The account is not currently delegating. 
- 
-### NotSimpleMajority
-- **interface**: `api.errors.democracy.NotSimpleMajority.is`
-- **summary**:    Next external proposal not simple majority 
- 
-### NotVoter
-- **interface**: `api.errors.democracy.NotVoter.is`
-- **summary**:    The given account did not vote on the referendum. 
- 
-### PreimageNotExist
-- **interface**: `api.errors.democracy.PreimageNotExist.is`
-- **summary**:    The preimage does not exist. 
- 
-### ProposalBlacklisted
-- **interface**: `api.errors.democracy.ProposalBlacklisted.is`
-- **summary**:    Proposal still blacklisted 
- 
-### ProposalMissing
-- **interface**: `api.errors.democracy.ProposalMissing.is`
-- **summary**:    Proposal does not exist 
- 
-### ReferendumInvalid
-- **interface**: `api.errors.democracy.ReferendumInvalid.is`
-- **summary**:    Vote given for invalid referendum 
- 
-### TooMany
-- **interface**: `api.errors.democracy.TooMany.is`
-- **summary**:    Maximum number of items reached. 
- 
-### ValueLow
-- **interface**: `api.errors.democracy.ValueLow.is`
-- **summary**:    Value too low 
- 
-### VotesExist
-- **interface**: `api.errors.democracy.VotesExist.is`
-- **summary**:    The account currently has votes attached to it and the operation cannot succeed until  these are removed, either through `unvote` or `reap_vote`. 
- 
-### VotingPeriodLow
-- **interface**: `api.errors.democracy.VotingPeriodLow.is`
-- **summary**:    Voting period too low 
- 
-### WrongUpperBound
-- **interface**: `api.errors.democracy.WrongUpperBound.is`
-- **summary**:    Invalid upper bound. 
 
 ___
 
@@ -1127,6 +979,15 @@ ___
 - **interface**: `api.errors.nis.PortionTooBig.is`
 - **summary**:    The portion supplied is beyond the value of the receipt. 
  
+### Release1
+- **interface**: `api.errors.nis.Release1.is`
+ 
+### Release2
+- **interface**: `api.errors.nis.Release2.is`
+ 
+### Tah
+- **interface**: `api.errors.nis.Tah.is`
+ 
 ### Throttled
 - **interface**: `api.errors.nis.Throttled.is`
 - **summary**:    The thaw throttle has been reached for this period. 
@@ -1150,35 +1011,43 @@ ___
  
 ### DeadAccount
 - **interface**: `api.errors.nisCounterpartBalances.DeadAccount.is`
-- **summary**:    Beneficiary account must pre-exist 
+- **summary**:    Beneficiary account must pre-exist. 
  
 ### ExistentialDeposit
 - **interface**: `api.errors.nisCounterpartBalances.ExistentialDeposit.is`
-- **summary**:    Value too low to create account due to existential deposit 
+- **summary**:    Value too low to create account due to existential deposit. 
  
 ### ExistingVestingSchedule
 - **interface**: `api.errors.nisCounterpartBalances.ExistingVestingSchedule.is`
-- **summary**:    A vesting schedule already exists for this account 
+- **summary**:    A vesting schedule already exists for this account. 
+ 
+### Expendability
+- **interface**: `api.errors.nisCounterpartBalances.Expendability.is`
+- **summary**:    Transfer/payment would kill account. 
  
 ### InsufficientBalance
 - **interface**: `api.errors.nisCounterpartBalances.InsufficientBalance.is`
 - **summary**:    Balance too low to send value. 
  
-### KeepAlive
-- **interface**: `api.errors.nisCounterpartBalances.KeepAlive.is`
-- **summary**:    Transfer/payment would kill account 
- 
 ### LiquidityRestrictions
 - **interface**: `api.errors.nisCounterpartBalances.LiquidityRestrictions.is`
-- **summary**:    Account liquidity restrictions prevent withdrawal 
+- **summary**:    Account liquidity restrictions prevent withdrawal. 
+ 
+### TooManyFreezes
+- **interface**: `api.errors.nisCounterpartBalances.TooManyFreezes.is`
+- **summary**:    Number of freezes exceed `MaxFreezes`. 
+ 
+### TooManyHolds
+- **interface**: `api.errors.nisCounterpartBalances.TooManyHolds.is`
+- **summary**:    Number of holds exceed `MaxHolds`. 
  
 ### TooManyReserves
 - **interface**: `api.errors.nisCounterpartBalances.TooManyReserves.is`
-- **summary**:    Number of named reserves exceed MaxReserves 
+- **summary**:    Number of named reserves exceed `MaxReserves`. 
  
 ### VestingBalance
 - **interface**: `api.errors.nisCounterpartBalances.VestingBalance.is`
-- **summary**:    Vesting balance too high to send value 
+- **summary**:    Vesting balance too high to send value. 
 
 ___
 
@@ -1201,6 +1070,18 @@ ___
 - **interface**: `api.errors.nominationPools.CannotWithdrawAny.is`
 - **summary**:    None of the funds can be withdrawn yet because the bonding duration has not passed. 
  
+### CommissionChangeRateNotAllowed
+- **interface**: `api.errors.nominationPools.CommissionChangeRateNotAllowed.is`
+- **summary**:    The submitted changes to commission change rate are not allowed. 
+ 
+### CommissionChangeThrottled
+- **interface**: `api.errors.nominationPools.CommissionChangeThrottled.is`
+- **summary**:    Not enough blocks have surpassed since the last commission update. 
+ 
+### CommissionExceedsMaximum
+- **interface**: `api.errors.nominationPools.CommissionExceedsMaximum.is`
+- **summary**:    The supplied commission exceeds the max allowed commission. 
+ 
 ### Defensive
 - **interface**: `api.errors.nominationPools.Defensive.is`
 - **summary**:    Some error occurred that should never happen. This should be reported to the  maintainers. 
@@ -1216,6 +1097,10 @@ ___
 ### InvalidPoolId
 - **interface**: `api.errors.nominationPools.InvalidPoolId.is`
 - **summary**:    Pool id provided is not correct/usable. 
+ 
+### MaxCommissionRestricted
+- **interface**: `api.errors.nominationPools.MaxCommissionRestricted.is`
+- **summary**:    The pool's max commission cannot be set higher than the existing value. 
  
 ### MaxPoolMembers
 - **interface**: `api.errors.nominationPools.MaxPoolMembers.is`
@@ -1238,6 +1123,14 @@ ___
 - **summary**:    The amount does not meet the minimum bond to either join or create a pool. 
 
    The depositor can never unbond to a value less than  `Pallet::depositor_min_bond`. The caller does not have nominating  permissions for the pool. Members can never unbond to a value below `MinJoinBond`. 
+ 
+### NoCommissionCurrentSet
+- **interface**: `api.errors.nominationPools.NoCommissionCurrentSet.is`
+- **summary**:    No commission current has been set. 
+ 
+### NoPendingCommission
+- **interface**: `api.errors.nominationPools.NoPendingCommission.is`
+- **summary**:    There is no pending commission to claim. 
  
 ### NotDestroying
 - **interface**: `api.errors.nominationPools.NotDestroying.is`
@@ -1534,75 +1427,31 @@ ___
 ___
 
 
-## phragmenElection
+## parasSlashing
  
-### DuplicatedCandidate
-- **interface**: `api.errors.phragmenElection.DuplicatedCandidate.is`
-- **summary**:    Duplicated candidate submission. 
+### DuplicateSlashingReport
+- **interface**: `api.errors.parasSlashing.DuplicateSlashingReport.is`
+- **summary**:    The given slashing report is valid but already previously reported. 
  
-### InsufficientCandidateFunds
-- **interface**: `api.errors.phragmenElection.InsufficientCandidateFunds.is`
-- **summary**:    Candidate does not have enough funds. 
+### InvalidCandidateHash
+- **interface**: `api.errors.parasSlashing.InvalidCandidateHash.is`
+- **summary**:    The candidate hash is invalid. 
  
-### InvalidRenouncing
-- **interface**: `api.errors.phragmenElection.InvalidRenouncing.is`
-- **summary**:    The renouncing origin presented a wrong `Renouncing` parameter. 
+### InvalidKeyOwnershipProof
+- **interface**: `api.errors.parasSlashing.InvalidKeyOwnershipProof.is`
+- **summary**:    The key ownership proof is invalid. 
  
-### InvalidReplacement
-- **interface**: `api.errors.phragmenElection.InvalidReplacement.is`
-- **summary**:    Prediction regarding replacement after member removal is wrong. 
+### InvalidSessionIndex
+- **interface**: `api.errors.parasSlashing.InvalidSessionIndex.is`
+- **summary**:    The session index is too old or invalid. 
  
-### InvalidVoteCount
-- **interface**: `api.errors.phragmenElection.InvalidVoteCount.is`
-- **summary**:    The provided count of number of votes is incorrect. 
+### InvalidValidatorIndex
+- **interface**: `api.errors.parasSlashing.InvalidValidatorIndex.is`
+- **summary**:    There is no pending slash for the given validator index and time  slot. 
  
-### InvalidWitnessData
-- **interface**: `api.errors.phragmenElection.InvalidWitnessData.is`
-- **summary**:    The provided count of number of candidates is incorrect. 
- 
-### LowBalance
-- **interface**: `api.errors.phragmenElection.LowBalance.is`
-- **summary**:    Cannot vote with stake less than minimum balance. 
- 
-### MaximumVotesExceeded
-- **interface**: `api.errors.phragmenElection.MaximumVotesExceeded.is`
-- **summary**:    Cannot vote more than maximum allowed. 
- 
-### MemberSubmit
-- **interface**: `api.errors.phragmenElection.MemberSubmit.is`
-- **summary**:    Member cannot re-submit candidacy. 
- 
-### MustBeVoter
-- **interface**: `api.errors.phragmenElection.MustBeVoter.is`
-- **summary**:    Must be a voter. 
- 
-### NotMember
-- **interface**: `api.errors.phragmenElection.NotMember.is`
-- **summary**:    Not a member. 
- 
-### NoVotes
-- **interface**: `api.errors.phragmenElection.NoVotes.is`
-- **summary**:    Must vote for at least one candidate. 
- 
-### RunnerUpSubmit
-- **interface**: `api.errors.phragmenElection.RunnerUpSubmit.is`
-- **summary**:    Runner cannot re-submit candidacy. 
- 
-### TooManyCandidates
-- **interface**: `api.errors.phragmenElection.TooManyCandidates.is`
-- **summary**:    Too many candidates have been created. 
- 
-### TooManyVotes
-- **interface**: `api.errors.phragmenElection.TooManyVotes.is`
-- **summary**:    Cannot vote more than candidates. 
- 
-### UnableToPayBond
-- **interface**: `api.errors.phragmenElection.UnableToPayBond.is`
-- **summary**:    Voter can not pay voting bond. 
- 
-### UnableToVote
-- **interface**: `api.errors.phragmenElection.UnableToVote.is`
-- **summary**:    Cannot vote when no candidates or members exist. 
+### ValidatorIndexIdMismatch
+- **interface**: `api.errors.parasSlashing.ValidatorIndexIdMismatch.is`
+- **summary**:    The validator index does not match the validator id. 
 
 ___
 
@@ -2132,97 +1981,6 @@ ___
 ### SpecVersionNeedsToIncrease
 - **interface**: `api.errors.system.SpecVersionNeedsToIncrease.is`
 - **summary**:    The specification version is not allowed to decrease between the current runtime  and the new runtime. 
-
-___
-
-
-## technicalCommittee
- 
-### AlreadyInitialized
-- **interface**: `api.errors.technicalCommittee.AlreadyInitialized.is`
-- **summary**:    Members are already initialized! 
- 
-### DuplicateProposal
-- **interface**: `api.errors.technicalCommittee.DuplicateProposal.is`
-- **summary**:    Duplicate proposals not allowed 
- 
-### DuplicateVote
-- **interface**: `api.errors.technicalCommittee.DuplicateVote.is`
-- **summary**:    Duplicate vote ignored 
- 
-### NotMember
-- **interface**: `api.errors.technicalCommittee.NotMember.is`
-- **summary**:    Account is not a member 
- 
-### ProposalMissing
-- **interface**: `api.errors.technicalCommittee.ProposalMissing.is`
-- **summary**:    Proposal must exist 
- 
-### TooEarly
-- **interface**: `api.errors.technicalCommittee.TooEarly.is`
-- **summary**:    The close call was made too early, before the end of the voting. 
- 
-### TooManyProposals
-- **interface**: `api.errors.technicalCommittee.TooManyProposals.is`
-- **summary**:    There can only be a maximum of `MaxProposals` active proposals. 
- 
-### WrongIndex
-- **interface**: `api.errors.technicalCommittee.WrongIndex.is`
-- **summary**:    Mismatched index 
- 
-### WrongProposalLength
-- **interface**: `api.errors.technicalCommittee.WrongProposalLength.is`
-- **summary**:    The given length bound for the proposal was too low. 
- 
-### WrongProposalWeight
-- **interface**: `api.errors.technicalCommittee.WrongProposalWeight.is`
-- **summary**:    The given weight bound for the proposal was too low. 
-
-___
-
-
-## technicalMembership
- 
-### AlreadyMember
-- **interface**: `api.errors.technicalMembership.AlreadyMember.is`
-- **summary**:    Already a member. 
- 
-### NotMember
-- **interface**: `api.errors.technicalMembership.NotMember.is`
-- **summary**:    Not a member. 
- 
-### TooManyMembers
-- **interface**: `api.errors.technicalMembership.TooManyMembers.is`
-- **summary**:    Too many members. 
-
-___
-
-
-## tips
- 
-### AlreadyKnown
-- **interface**: `api.errors.tips.AlreadyKnown.is`
-- **summary**:    The tip was already found/started. 
- 
-### NotFinder
-- **interface**: `api.errors.tips.NotFinder.is`
-- **summary**:    The account attempting to retract the tip is not the finder of the tip. 
- 
-### Premature
-- **interface**: `api.errors.tips.Premature.is`
-- **summary**:    The tip cannot be claimed/closed because it's still in the countdown period. 
- 
-### ReasonTooBig
-- **interface**: `api.errors.tips.ReasonTooBig.is`
-- **summary**:    The reason given is just too big. 
- 
-### StillOpen
-- **interface**: `api.errors.tips.StillOpen.is`
-- **summary**:    The tip cannot be claimed/closed because there are not enough tippers yet. 
- 
-### UnknownTip
-- **interface**: `api.errors.tips.UnknownTip.is`
-- **summary**:    The tip hash is unknown. 
 
 ___
 

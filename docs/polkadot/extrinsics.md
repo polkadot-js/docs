@@ -20,6 +20,8 @@ The following sections contain Extrinsics methods are part of the default Polkad
 
 - **[configuration](#configuration)**
 
+- **[convictionVoting](#convictionvoting)**
+
 - **[council](#council)**
 
 - **[crowdloan](#crowdloan)**
@@ -64,6 +66,8 @@ The following sections contain Extrinsics methods are part of the default Polkad
 
 - **[proxy](#proxy)**
 
+- **[referenda](#referenda)**
+
 - **[registrar](#registrar)**
 
 - **[scheduler](#scheduler)**
@@ -93,6 +97,8 @@ The following sections contain Extrinsics methods are part of the default Polkad
 - **[vesting](#vesting)**
 
 - **[voterList](#voterlist)**
+
+- **[whitelist](#whitelist)**
 
 - **[xcmPallet](#xcmpallet)**
 
@@ -152,11 +158,15 @@ ___
 
 ## balances
  
+### forceSetBalance(who: `MultiAddress`, new_free: `Compact<u128>`)
+- **interface**: `api.tx.balances.forceSetBalance`
+- **summary**:    Set the regular balance of a given account. 
+
+   The dispatch origin for this call is `root`. 
+ 
 ### forceTransfer(source: `MultiAddress`, dest: `MultiAddress`, value: `Compact<u128>`)
 - **interface**: `api.tx.balances.forceTransfer`
-- **summary**:    Exactly as `transfer`, except the origin must be root and the source account may be  specified.  #### Complexity 
-
-  - Same as transfer, but additional read and write because the source account is not assumed to be in the overlay. 
+- **summary**:    Exactly as `transfer_allow_death`, except the origin must be root and the source account  may be specified. 
  
 ### forceUnreserve(who: `MultiAddress`, amount: `u128`)
 - **interface**: `api.tx.balances.forceUnreserve`
@@ -164,37 +174,19 @@ ___
 
    Can only be called by ROOT. 
  
-### setBalance(who: `MultiAddress`, new_free: `Compact<u128>`, new_reserved: `Compact<u128>`)
-- **interface**: `api.tx.balances.setBalance`
-- **summary**:    Set the balances of a given account. 
-
-   This will alter `FreeBalance` and `ReservedBalance` in storage. it will  also alter the total issuance of the system (`TotalIssuance`) appropriately.  If the new free or reserved balance is below the existential deposit,  it will reset the account nonce (`frame_system::AccountNonce`). 
+### setBalanceDeprecated(who: `MultiAddress`, new_free: `Compact<u128>`, old_reserved: `Compact<u128>`)
+- **interface**: `api.tx.balances.setBalanceDeprecated`
+- **summary**:    Set the regular balance of a given account; it also takes a reserved balance but this  must be the same as the account's current reserved balance. 
 
    The dispatch origin for this call is `root`. 
+
+   WARNING: This call is DEPRECATED! Use `force_set_balance` instead. 
  
 ### transfer(dest: `MultiAddress`, value: `Compact<u128>`)
 - **interface**: `api.tx.balances.transfer`
-- **summary**:    Transfer some liquid free balance to another account. 
+- **summary**:    Alias for `transfer_allow_death`, provided only for name-wise compatibility. 
 
-   `transfer` will set the `FreeBalance` of the sender and receiver.  If the sender's account is below the existential deposit as a result  of the transfer, the account will be reaped. 
-
-   The dispatch origin for this call must be `Signed` by the transactor. 
-
-   #### Complexity 
-
-  - Dependent on arguments but not critical, given proper implementations for input config types. See related functions below. 
-
-  - It contains a limited number of reads and writes internally and no complex computation. 
-
-   Related functions: 
-
-   - `ensure_can_withdraw` is always called internally but has a bounded complexity. 
-
-  - Transferring balances to accounts that did not exist before will cause `T::OnNewAccount::on_new_account` to be called. 
-
-  - Removing enough funds from an account will trigger `T::DustRemoval::on_unbalanced`.
-
-  - `transfer_keep_alive` works the same way as `transfer`, but has an additional check that the transfer will not kill the origin account. 
+   WARNING: DEPRECATED! Will be released in approximately 3 months. 
  
 ### transferAll(dest: `MultiAddress`, keep_alive: `bool`)
 - **interface**: `api.tx.balances.transferAll`
@@ -206,17 +198,33 @@ ___
 
    - `dest`: The recipient of the transfer. 
 
-  - `keep_alive`: A boolean to determine if the `transfer_all` operation should send all of the funds the account has, causing the sender account to be killed (false), or  transfer everything except at least the existential deposit, which will guarantee to  keep the sender account alive (true). ## Complexity 
+  - `keep_alive`: A boolean to determine if the `transfer_all` operation should send all of the funds the account has, causing the sender account to be killed (false), or  transfer everything except at least the existential deposit, which will guarantee to  keep the sender account alive (true). 
+ 
+### transferAllowDeath(dest: `MultiAddress`, value: `Compact<u128>`)
+- **interface**: `api.tx.balances.transferAllowDeath`
+- **summary**:    Transfer some liquid free balance to another account. 
 
-  - O(1). Just like transfer, but reading the user's transferable balance first.
+   `transfer_allow_death` will set the `FreeBalance` of the sender and receiver.  If the sender's account is below the existential deposit as a result  of the transfer, the account will be reaped. 
+
+   The dispatch origin for this call must be `Signed` by the transactor. 
  
 ### transferKeepAlive(dest: `MultiAddress`, value: `Compact<u128>`)
 - **interface**: `api.tx.balances.transferKeepAlive`
-- **summary**:    Same as the [`transfer`] call, but with a check that the transfer will not kill the  origin account. 
+- **summary**:    Same as the [`transfer_allow_death`] call, but with a check that the transfer will not  kill the origin account. 
 
-   99% of the time you want [`transfer`] instead. 
+   99% of the time you want [`transfer_allow_death`] instead. 
 
-   [`transfer`]: struct.Pallet.html#method.transfer 
+   [`transfer_allow_death`]: struct.Pallet.html#method.transfer 
+ 
+### upgradeAccounts(who: `Vec<AccountId32>`)
+- **interface**: `api.tx.balances.upgradeAccounts`
+- **summary**:    Upgrade a specified account. 
+
+   - `origin`: Must be `Signed`. 
+
+  - `who`: The account to be upgraded.
+
+   This will waive the transaction fee if at least all but 10% of the accounts needed to  be upgraded. (We let some not have to be upgraded just in order to allow for the  possibililty of churn). 
 
 ___
 
@@ -567,10 +575,6 @@ ___
 - **interface**: `api.tx.configuration.setCodeRetentionPeriod`
 - **summary**:    Set the acceptance period for an included candidate. 
  
-### setDisputeConclusionByTimeOutPeriod(new: `u32`)
-- **interface**: `api.tx.configuration.setDisputeConclusionByTimeOutPeriod`
-- **summary**:    Set the dispute conclusion by time out period. 
- 
 ### setDisputePeriod(new: `u32`)
 - **interface**: `api.tx.configuration.setDisputePeriod`
 - **summary**:    Set the dispute period, in number of sessions to keep for disputes. 
@@ -732,6 +736,125 @@ ___
 ### setZerothDelayTrancheWidth(new: `u32`)
 - **interface**: `api.tx.configuration.setZerothDelayTrancheWidth`
 - **summary**:    Set the zeroth delay tranche width. 
+
+___
+
+
+## convictionVoting
+ 
+### delegate(class: `u16`, to: `MultiAddress`, conviction: `PalletConvictionVotingConviction`, balance: `u128`)
+- **interface**: `api.tx.convictionVoting.delegate`
+- **summary**:    Delegate the voting power (with some given conviction) of the sending account for a  particular class of polls. 
+
+   The balance delegated is locked for as long as it's delegated, and thereafter for the  time appropriate for the conviction's lock period. 
+
+   The dispatch origin of this call must be _Signed_, and the signing account must either: 
+
+  - be delegating already; or
+
+  - have no voting activity (if there is, then it will need to be removed/consolidated through `reap_vote` or `unvote`). 
+
+   - `to`: The account whose voting the `target` account's voting power will follow. 
+
+  - `class`: The class of polls to delegate. To delegate multiple classes, multiple calls to this function are required. 
+
+  - `conviction`: The conviction that will be attached to the delegated votes. When the account is undelegated, the funds will be locked for the corresponding period. 
+
+  - `balance`: The amount of the account's balance to be used in delegating. This must not be more than the account's current balance. 
+
+   Emits `Delegated`. 
+
+   Weight: `O(R)` where R is the number of polls the voter delegating to has  voted on. Weight is initially charged as if maximum votes, but is refunded later. 
+ 
+### removeOtherVote(target: `MultiAddress`, class: `u16`, index: `u32`)
+- **interface**: `api.tx.convictionVoting.removeOtherVote`
+- **summary**:    Remove a vote for a poll. 
+
+   If the `target` is equal to the signer, then this function is exactly equivalent to  `remove_vote`. If not equal to the signer, then the vote must have expired,  either because the poll was cancelled, because the voter lost the poll or  because the conviction period is over. 
+
+   The dispatch origin of this call must be _Signed_. 
+
+   - `target`: The account of the vote to be removed; this account must have voted for poll  `index`. 
+
+  - `index`: The index of poll of the vote to be removed.
+
+  - `class`: The class of the poll.
+
+   Weight: `O(R + log R)` where R is the number of polls that `target` has voted on.  Weight is calculated for the maximum number of vote. 
+ 
+### removeVote(class: `Option<u16>`, index: `u32`)
+- **interface**: `api.tx.convictionVoting.removeVote`
+- **summary**:    Remove a vote for a poll. 
+
+   If: 
+
+  - the poll was cancelled, or
+
+  - the poll is ongoing, or
+
+  - the poll has ended such that
+
+  - the vote of the account was in opposition to the result; or
+
+  - there was no conviction to the account's vote; or
+
+  - the account made a split vote ...then the vote is removed cleanly and a following call to `unlock` may result in more  funds being available. 
+
+   If, however, the poll has ended and: 
+
+  - it finished corresponding to the vote of the account, and
+
+  - the account made a standard vote with conviction, and
+
+  - the lock period of the conviction is not over ...then the lock will be aggregated into the overall account's lock, which may involve 
+
+  *overlocking* (where the two locks are combined into a single lock that is the maximum of both the amount locked and the time is it locked for). 
+
+   The dispatch origin of this call must be _Signed_, and the signer must have a vote  registered for poll `index`. 
+
+   - `index`: The index of poll of the vote to be removed. 
+
+  - `class`: Optional parameter, if given it indicates the class of the poll. For polls which have finished or are cancelled, this must be `Some`. 
+
+   Weight: `O(R + log R)` where R is the number of polls that `target` has voted on.  Weight is calculated for the maximum number of vote. 
+ 
+### undelegate(class: `u16`)
+- **interface**: `api.tx.convictionVoting.undelegate`
+- **summary**:    Undelegate the voting power of the sending account for a particular class of polls. 
+
+   Tokens may be unlocked following once an amount of time consistent with the lock period  of the conviction with which the delegation was issued has passed. 
+
+   The dispatch origin of this call must be _Signed_ and the signing account must be  currently delegating. 
+
+   - `class`: The class of polls to remove the delegation from. 
+
+   Emits `Undelegated`. 
+
+   Weight: `O(R)` where R is the number of polls the voter delegating to has  voted on. Weight is initially charged as if maximum votes, but is refunded later. 
+ 
+### unlock(class: `u16`, target: `MultiAddress`)
+- **interface**: `api.tx.convictionVoting.unlock`
+- **summary**:    Remove the lock caused by prior voting/delegating which has expired within a particular  class. 
+
+   The dispatch origin of this call must be _Signed_. 
+
+   - `class`: The class of polls to unlock. 
+
+  - `target`: The account to remove the lock on.
+
+   Weight: `O(R)` with R number of vote of target. 
+ 
+### vote(poll_index: `Compact<u32>`, vote: `PalletConvictionVotingVoteAccountVote`)
+- **interface**: `api.tx.convictionVoting.vote`
+- **summary**:    Vote in a poll. If `vote.is_aye()`, the vote is to enact the proposal;  otherwise it is a vote to keep the status quo. 
+
+   The dispatch origin of this call must be _Signed_. 
+
+   - `poll_index`: The index of the poll to vote for. 
+
+  - `vote`: The vote configuration.
+
+   Weight: `O(R)` where R is the number of polls the voter has voted on. 
 
 ___
 
@@ -1903,9 +2026,15 @@ ___
 
    This directly forward the call to the staking pallet, on behalf of the pool bonded  account. 
  
+### claimCommission(pool_id: `u32`)
+- **interface**: `api.tx.nominationPools.claimCommission`
+- **summary**:    Claim pending commission. 
+
+   The dispatch origin of this call must be signed by the `root` role of the pool. Pending  commission is paid out and added to total claimed commission`. Total pending commission  is reset to zero. the current. 
+ 
 ### claimPayout()
 - **interface**: `api.tx.nominationPools.claimPayout`
-- **summary**:    A bonded member can use this to claim their payout based on the rewards that the pool  has accumulated since their last claimed payout (OR since joining if this is there first  time claiming rewards). The payout will be transferred to the member's account. 
+- **summary**:    A bonded member can use this to claim their payout based on the rewards that the pool  has accumulated since their last claimed payout (OR since joining if this is their first  time claiming rewards). The payout will be transferred to the member's account. 
 
    The member will earn rewards pro rata based on the members stake vs the sum of the  members in the pools stake. Rewards do not "expire". 
 
@@ -1987,7 +2116,27 @@ ___
 
   * `actor` - Account to claim reward. // improve this
  
-### setConfigs(min_join_bond: `PalletNominationPoolsConfigOpU128`, min_create_bond: `PalletNominationPoolsConfigOpU128`, max_pools: `PalletNominationPoolsConfigOpU32`, max_members: `PalletNominationPoolsConfigOpU32`, max_members_per_pool: `PalletNominationPoolsConfigOpU32`)
+### setCommission(pool_id: `u32`, new_commission: `Option<(Perbill,AccountId32)>`)
+- **interface**: `api.tx.nominationPools.setCommission`
+- **summary**:    Set the commission of a pool.  Both a commission percentage and a commission payee must be provided in the `current`  tuple. Where a `current` of `None` is provided, any current commission will be removed. 
+
+   - If a `None` is supplied to `new_commission`, existing commission will be removed. 
+ 
+### setCommissionChangeRate(pool_id: `u32`, change_rate: `PalletNominationPoolsCommissionChangeRate`)
+- **interface**: `api.tx.nominationPools.setCommissionChangeRate`
+- **summary**:    Set the commission change rate for a pool. 
+
+   Initial change rate is not bounded, whereas subsequent updates can only be more  restrictive than the current. 
+ 
+### setCommissionMax(pool_id: `u32`, max_commission: `Perbill`)
+- **interface**: `api.tx.nominationPools.setCommissionMax`
+- **summary**:    Set the maximum commission of a pool. 
+
+   - Initial max can be set to any `Perbill`, and only smaller values thereafter. 
+
+  - Current commission will be lowered in the event it is higher than a new max commission. 
+ 
+### setConfigs(min_join_bond: `PalletNominationPoolsConfigOpU128`, min_create_bond: `PalletNominationPoolsConfigOpU128`, max_pools: `PalletNominationPoolsConfigOpU32`, max_members: `PalletNominationPoolsConfigOpU32`, max_members_per_pool: `PalletNominationPoolsConfigOpU32`, global_max_commission: `PalletNominationPoolsConfigOpPerbill`)
 - **interface**: `api.tx.nominationPools.setConfigs`
 - **summary**:    Update configurations for the nomination pools. The origin for this call must be  Root. 
 
@@ -2002,12 +2151,14 @@ ___
   * `max_members` - Set [`MaxPoolMembers`].
 
   * `max_members_per_pool` - Set [`MaxPoolMembersPerPool`].
+
+  * `global_max_commission` - Set [`GlobalMaxCommission`].
  
 ### setMetadata(pool_id: `u32`, metadata: `Bytes`)
 - **interface**: `api.tx.nominationPools.setMetadata`
 - **summary**:    Set a new metadata for the pool. 
 
-   The dispatch origin of this call must be signed by the bouncer, or the root role  of the pool. 
+   The dispatch origin of this call must be signed by the bouncer, or the root role of the  pool. 
  
 ### setState(pool_id: `u32`, state: `PalletNominationPoolsPoolState`)
 - **interface**: `api.tx.nominationPools.setState`
@@ -2083,7 +2234,7 @@ ___
 
 ## paraInherent
  
-### enter(data: `PolkadotPrimitivesV2InherentData`)
+### enter(data: `PolkadotPrimitivesV4InherentData`)
 - **interface**: `api.tx.paraInherent.enter`
 - **summary**:    Enter the paras inherent. This will process bitfields and backed candidates. 
 
@@ -2122,7 +2273,7 @@ ___
 - **interface**: `api.tx.paras.forceSetCurrentHead`
 - **summary**:    Set the storage for the current parachain head data immediately. 
  
-### includePvfCheckStatement(stmt: `PolkadotPrimitivesV2PvfCheckStatement`, signature: `PolkadotPrimitivesV2ValidatorAppSignature`)
+### includePvfCheckStatement(stmt: `PolkadotPrimitivesV4PvfCheckStatement`, signature: `PolkadotPrimitivesV4ValidatorAppSignature`)
 - **interface**: `api.tx.paras.includePvfCheckStatement`
 - **summary**:    Includes a statement for a PVF pre-checking vote. Potentially, finalizes the vote and  enacts the results if that was the last vote before achieving the supermajority. 
  
@@ -2423,6 +2574,109 @@ ___
   - `proxy`: The account that the `caller` would like to remove as a proxy.
 
   - `proxy_type`: The permissions currently enabled for the removed proxy account.
+
+___
+
+
+## referenda
+ 
+### cancel(index: `u32`)
+- **interface**: `api.tx.referenda.cancel`
+- **summary**:    Cancel an ongoing referendum. 
+
+   - `origin`: must be the `CancelOrigin`. 
+
+  - `index`: The index of the referendum to be cancelled.
+
+   Emits `Cancelled`. 
+ 
+### kill(index: `u32`)
+- **interface**: `api.tx.referenda.kill`
+- **summary**:    Cancel an ongoing referendum and slash the deposits. 
+
+   - `origin`: must be the `KillOrigin`. 
+
+  - `index`: The index of the referendum to be cancelled.
+
+   Emits `Killed` and `DepositSlashed`. 
+ 
+### nudgeReferendum(index: `u32`)
+- **interface**: `api.tx.referenda.nudgeReferendum`
+- **summary**:    Advance a referendum onto its next logical state. Only used internally. 
+
+   - `origin`: must be `Root`. 
+
+  - `index`: the referendum to be advanced.
+ 
+### oneFewerDeciding(track: `u16`)
+- **interface**: `api.tx.referenda.oneFewerDeciding`
+- **summary**:    Advance a track onto its next logical state. Only used internally. 
+
+   - `origin`: must be `Root`. 
+
+  - `track`: the track to be advanced.
+
+   Action item for when there is now one fewer referendum in the deciding phase and the  `DecidingCount` is not yet updated. This means that we should either: 
+
+  - begin deciding another referendum (and leave `DecidingCount` alone); or
+
+  - decrement `DecidingCount`.
+ 
+### placeDecisionDeposit(index: `u32`)
+- **interface**: `api.tx.referenda.placeDecisionDeposit`
+- **summary**:    Post the Decision Deposit for a referendum. 
+
+   - `origin`: must be `Signed` and the account must have funds available for the  referendum's track's Decision Deposit. 
+
+  - `index`: The index of the submitted referendum whose Decision Deposit is yet to be posted. 
+
+   Emits `DecisionDepositPlaced`. 
+ 
+### refundDecisionDeposit(index: `u32`)
+- **interface**: `api.tx.referenda.refundDecisionDeposit`
+- **summary**:    Refund the Decision Deposit for a closed referendum back to the depositor. 
+
+   - `origin`: must be `Signed` or `Root`. 
+
+  - `index`: The index of a closed referendum whose Decision Deposit has not yet been refunded. 
+
+   Emits `DecisionDepositRefunded`. 
+ 
+### refundSubmissionDeposit(index: `u32`)
+- **interface**: `api.tx.referenda.refundSubmissionDeposit`
+- **summary**:    Refund the Submission Deposit for a closed referendum back to the depositor. 
+
+   - `origin`: must be `Signed` or `Root`. 
+
+  - `index`: The index of a closed referendum whose Submission Deposit has not yet been refunded. 
+
+   Emits `SubmissionDepositRefunded`. 
+ 
+### setMetadata(index: `u32`, maybe_hash: `Option<H256>`)
+- **interface**: `api.tx.referenda.setMetadata`
+- **summary**:    Set or clear metadata of a referendum. 
+
+   Parameters: 
+
+  - `origin`: Must be `Signed` by a creator of a referendum or by anyone to clear a metadata of a finished referendum. 
+
+  - `index`:  The index of a referendum to set or clear metadata for.
+
+  - `maybe_hash`: The hash of an on-chain stored preimage. `None` to clear a metadata.
+ 
+### submit(proposal_origin: `PolkadotRuntimeOriginCaller`, proposal: `FrameSupportPreimagesBounded`, enactment_moment: `FrameSupportScheduleDispatchTime`)
+- **interface**: `api.tx.referenda.submit`
+- **summary**:    Propose a referendum on a privileged action. 
+
+   - `origin`: must be `SubmitOrigin` and the account must have `SubmissionDeposit` funds  available. 
+
+  - `proposal_origin`: The origin from which the proposal should be executed.
+
+  - `proposal`: The proposal.
+
+  - `enactment_moment`: The moment that the proposal should be enacted.
+
+   Emits `Submitted`. 
 
 ___
 
@@ -3584,6 +3838,23 @@ ___
    Will always update the stored score of `dislocated` to the correct score, based on  `ScoreProvider`. 
 
    If `dislocated` does not exists, it returns an error. 
+
+___
+
+
+## whitelist
+ 
+### dispatchWhitelistedCall(call_hash: `H256`, call_encoded_len: `u32`, call_weight_witness: `SpWeightsWeightV2Weight`)
+- **interface**: `api.tx.whitelist.dispatchWhitelistedCall`
+ 
+### dispatchWhitelistedCallWithPreimage(call: `Call`)
+- **interface**: `api.tx.whitelist.dispatchWhitelistedCallWithPreimage`
+ 
+### removeWhitelistedCall(call_hash: `H256`)
+- **interface**: `api.tx.whitelist.removeWhitelistedCall`
+ 
+### whitelistCall(call_hash: `H256`)
+- **interface**: `api.tx.whitelist.whitelistCall`
 
 ___
 

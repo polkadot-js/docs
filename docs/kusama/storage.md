@@ -24,11 +24,7 @@ The following sections contain Storage methods are part of the default Kusama ru
 
 - **[convictionVoting](#convictionvoting)**
 
-- **[council](#council)**
-
 - **[crowdloan](#crowdloan)**
-
-- **[democracy](#democracy)**
 
 - **[dmp](#dmp)**
 
@@ -76,7 +72,7 @@ The following sections contain Storage methods are part of the default Kusama ru
 
 - **[parasShared](#parasshared)**
 
-- **[phragmenElection](#phragmenelection)**
+- **[parasSlashing](#parasslashing)**
 
 - **[preimage](#preimage)**
 
@@ -102,13 +98,7 @@ The following sections contain Storage methods are part of the default Kusama ru
 
 - **[system](#system)**
 
-- **[technicalCommittee](#technicalcommittee)**
-
-- **[technicalMembership](#technicalmembership)**
-
 - **[timestamp](#timestamp)**
-
-- **[tips](#tips)**
 
 - **[transactionPayment](#transactionpayment)**
 
@@ -265,6 +255,14 @@ ___
 
    But this comes with tradeoffs, storing account balances in the system pallet stores  `frame_system` data alongside the account data contrary to storing account balances in the  `Balances` pallet, which uses a `StorageMap` to store balances data only.  NOTE: This is only used in the case that this pallet is used to store balances. 
  
+### freezes(`AccountId32`): `Vec<PalletBalancesIdAmount>`
+- **interface**: `api.query.balances.freezes`
+- **summary**:    Freeze locks on account balances. 
+ 
+### holds(`AccountId32`): `Vec<{"id":"KusamaRuntimeHoldReason","amount":"u128"}>`
+- **interface**: `api.query.balances.holds`
+- **summary**:    Holds on account balances. 
+ 
 ### inactiveIssuance(): `u128`
 - **interface**: `api.query.balances.inactiveIssuance`
 - **summary**:    The total units of outstanding deactivated balance in the system. 
@@ -387,35 +385,6 @@ ___
 ___
 
 
-## council
- 
-### members(): `Vec<AccountId32>`
-- **interface**: `api.query.council.members`
-- **summary**:    The current members of the collective. This is stored sorted (just by value). 
- 
-### prime(): `Option<AccountId32>`
-- **interface**: `api.query.council.prime`
-- **summary**:    The prime member that helps determine the default vote behavior in case of absentations. 
- 
-### proposalCount(): `u32`
-- **interface**: `api.query.council.proposalCount`
-- **summary**:    Proposals so far. 
- 
-### proposalOf(`H256`): `Option<Call>`
-- **interface**: `api.query.council.proposalOf`
-- **summary**:    Actual proposal for a given hash, if it's current. 
- 
-### proposals(): `Vec<H256>`
-- **interface**: `api.query.council.proposals`
-- **summary**:    The hashes of the active proposals. 
- 
-### voting(`H256`): `Option<PalletCollectiveVotes>`
-- **interface**: `api.query.council.voting`
-- **summary**:    Votes on a given proposal, if it is ongoing. 
-
-___
-
-
 ## crowdloan
  
 ### endingsCount(): `u32`
@@ -433,71 +402,6 @@ ___
 ### nextFundIndex(): `u32`
 - **interface**: `api.query.crowdloan.nextFundIndex`
 - **summary**:    Tracker for the next available fund index 
-
-___
-
-
-## democracy
- 
-### blacklist(`H256`): `Option<(u32,Vec<AccountId32>)>`
-- **interface**: `api.query.democracy.blacklist`
-- **summary**:    A record of who vetoed what. Maps proposal hash to a possible existent block number  (until when it may not be resubmitted) and who vetoed it. 
- 
-### cancellations(`H256`): `bool`
-- **interface**: `api.query.democracy.cancellations`
-- **summary**:    Record of all proposals that have been subject to emergency cancellation. 
- 
-### depositOf(`u32`): `Option<(Vec<AccountId32>,u128)>`
-- **interface**: `api.query.democracy.depositOf`
-- **summary**:    Those who have locked a deposit. 
-
-   TWOX-NOTE: Safe, as increasing integer keys are safe. 
- 
-### lastTabledWasExternal(): `bool`
-- **interface**: `api.query.democracy.lastTabledWasExternal`
-- **summary**:    True if the last referendum tabled was submitted externally. False if it was a public  proposal. 
- 
-### lowestUnbaked(): `u32`
-- **interface**: `api.query.democracy.lowestUnbaked`
-- **summary**:    The lowest referendum index representing an unbaked referendum. Equal to  `ReferendumCount` if there isn't a unbaked referendum. 
- 
-### metadataOf(`PalletDemocracyMetadataOwner`): `Option<H256>`
-- **interface**: `api.query.democracy.metadataOf`
-- **summary**:    General information concerning any proposal or referendum.  The `PreimageHash` refers to the preimage of the `Preimages` provider which can be a JSON  dump or IPFS hash of a JSON file. 
-
-   Consider a garbage collection for a metadata of finished referendums to `unrequest` (remove)  large preimages. 
- 
-### nextExternal(): `Option<(FrameSupportPreimagesBounded,PalletDemocracyVoteThreshold)>`
-- **interface**: `api.query.democracy.nextExternal`
-- **summary**:    The referendum to be tabled whenever it would be valid to table an external proposal.  This happens when a referendum needs to be tabled and one of two conditions are met: 
-
-  - `LastTabledWasExternal` is `false`; or
-
-  - `PublicProps` is empty.
- 
-### publicPropCount(): `u32`
-- **interface**: `api.query.democracy.publicPropCount`
-- **summary**:    The number of (public) proposals that have been made so far. 
- 
-### publicProps(): `Vec<(u32,FrameSupportPreimagesBounded,AccountId32)>`
-- **interface**: `api.query.democracy.publicProps`
-- **summary**:    The public proposals. Unsorted. The second item is the proposal. 
- 
-### referendumCount(): `u32`
-- **interface**: `api.query.democracy.referendumCount`
-- **summary**:    The next free referendum index, aka the number of referenda started so far. 
- 
-### referendumInfoOf(`u32`): `Option<PalletDemocracyReferendumInfo>`
-- **interface**: `api.query.democracy.referendumInfoOf`
-- **summary**:    Information concerning any given referendum. 
-
-   TWOX-NOTE: SAFE as indexes are not under an attacker’s control. 
- 
-### votingOf(`AccountId32`): `PalletDemocracyVoteVoting`
-- **interface**: `api.query.democracy.votingOf`
-- **summary**:    All votes for a particular voter. We store the balance for the number of votes that we  have recorded. The second item is the total amount of delegations, that will be added. 
-
-   TWOX-NOTE: SAFE as `AccountId`s are crypto hashes anyway. 
 
 ___
 
@@ -927,6 +831,14 @@ ___
 
    But this comes with tradeoffs, storing account balances in the system pallet stores  `frame_system` data alongside the account data contrary to storing account balances in the  `Balances` pallet, which uses a `StorageMap` to store balances data only.  NOTE: This is only used in the case that this pallet is used to store balances. 
  
+### freezes(`AccountId32`): `Vec<PalletBalancesIdAmount>`
+- **interface**: `api.query.nisCounterpartBalances.freezes`
+- **summary**:    Freeze locks on account balances. 
+ 
+### holds(`AccountId32`): `Vec<PalletBalancesIdAmount>`
+- **interface**: `api.query.nisCounterpartBalances.holds`
+- **summary**:    Holds on account balances. 
+ 
 ### inactiveIssuance(): `u128`
 - **interface**: `api.query.nisCounterpartBalances.inactiveIssuance`
 - **summary**:    The total units of outstanding deactivated balance in the system. 
@@ -980,6 +892,10 @@ ___
 - **interface**: `api.query.nominationPools.counterForSubPoolsStorage`
 - **summary**:    Counter for the related counted storage map 
  
+### globalMaxCommission(): `Option<Perbill>`
+- **interface**: `api.query.nominationPools.globalMaxCommission`
+- **summary**:    The maximum commission that can be charged by a pool. Used on commission payouts to bound  pool commissions that are > `GlobalMaxCommission`, necessary if a future  `GlobalMaxCommission` is lower than some current pool commissions. 
+ 
 ### lastPoolId(): `u32`
 - **interface**: `api.query.nominationPools.lastPoolId`
 - **summary**:    Ever increasing number of all pools created so far. 
@@ -1026,11 +942,11 @@ ___
  
 ### rewardPools(`u32`): `Option<PalletNominationPoolsRewardPool>`
 - **interface**: `api.query.nominationPools.rewardPools`
-- **summary**:    Reward pools. This is where there rewards for each pool accumulate. When a members payout  is claimed, the balance comes out fo the reward pool. Keyed by the bonded pools account. 
+- **summary**:    Reward pools. This is where there rewards for each pool accumulate. When a members payout is  claimed, the balance comes out fo the reward pool. Keyed by the bonded pools account. 
  
 ### subPoolsStorage(`u32`): `Option<PalletNominationPoolsSubPools>`
 - **interface**: `api.query.nominationPools.subPoolsStorage`
-- **summary**:    Groups of unbonding pools. Each group of unbonding pools belongs to a bonded pool,  hence the name sub-pools. Keyed by the bonded pools account. 
+- **summary**:    Groups of unbonding pools. Each group of unbonding pools belongs to a  bonded pool, hence the name sub-pools. Keyed by the bonded pools account. 
 
 ___
 
@@ -1066,7 +982,7 @@ ___
 - **interface**: `api.query.paraInclusion.pendingAvailability`
 - **summary**:    Candidates pending availability by `ParaId`. 
  
-### pendingAvailabilityCommitments(`u32`): `Option<PolkadotPrimitivesV2CandidateCommitments>`
+### pendingAvailabilityCommitments(`u32`): `Option<PolkadotPrimitivesV4CandidateCommitments>`
 - **interface**: `api.query.paraInclusion.pendingAvailabilityCommitments`
 - **summary**:    The commitments of candidates pending availability, by `ParaId`. 
 
@@ -1083,7 +999,7 @@ ___
 
    If this is `None` at the end of the block, we panic and render the block invalid. 
  
-### onChainVotes(): `Option<PolkadotPrimitivesV2ScrapedOnChainVotes>`
+### onChainVotes(): `Option<PolkadotPrimitivesV4ScrapedOnChainVotes>`
 - **interface**: `api.query.paraInherent.onChainVotes`
 - **summary**:    Scraped on chain data for extracting resolved disputes as well as backing votes. 
 
@@ -1180,7 +1096,7 @@ ___
 
    Ordered ascending by block number. 
  
-### upgradeGoAheadSignal(`u32`): `Option<PolkadotPrimitivesV2UpgradeGoAhead>`
+### upgradeGoAheadSignal(`u32`): `Option<PolkadotPrimitivesV4UpgradeGoAhead>`
 - **interface**: `api.query.paras.upgradeGoAheadSignal`
 - **summary**:    This is used by the relay-chain to communicate to a parachain a go-ahead with in the upgrade procedure. 
 
@@ -1188,7 +1104,7 @@ ___
 
    NOTE that this field is used by parachains via merkle storage proofs, therefore changing  the format will require migration of parachains. 
  
-### upgradeRestrictionSignal(`u32`): `Option<PolkadotPrimitivesV2UpgradeRestriction>`
+### upgradeRestrictionSignal(`u32`): `Option<PolkadotPrimitivesV4UpgradeRestriction>`
 - **interface**: `api.query.paras.upgradeRestrictionSignal`
 - **summary**:    This is used by the relay-chain to communicate that there are restrictions for performing  an upgrade for this parachain. 
 
@@ -1201,7 +1117,7 @@ ___
 
 ## paraScheduler
  
-### availabilityCores(): `Vec<Option<PolkadotPrimitivesV2CoreOccupied>>`
+### availabilityCores(): `Vec<Option<PolkadotPrimitivesV4CoreOccupied>>`
 - **interface**: `api.query.paraScheduler.availabilityCores`
 - **summary**:    One entry for each availability core. Entries are `None` if the core is not currently occupied. Can be  temporarily `Some` if scheduled but not occupied.  The i'th parachain belongs to the i'th core, with the remaining cores all being  parathread-multiplexers. 
 
@@ -1252,7 +1168,7 @@ ___
 - **interface**: `api.query.parasDisputes.backersOnDisputes`
 - **summary**:    Backing votes stored for each dispute.  This storage is used for slashing. 
  
-### disputes(`u32, H256`): `Option<PolkadotPrimitivesV2DisputeState>`
+### disputes(`u32, H256`): `Option<PolkadotPrimitivesV4DisputeState>`
 - **interface**: `api.query.parasDisputes.disputes`
 - **summary**:    All ongoing or concluded disputes for the last several sessions. 
  
@@ -1277,7 +1193,7 @@ ___
 - **interface**: `api.query.paraSessionInfo.accountKeys`
 - **summary**:    The validator account keys of the validators actively participating in parachain consensus. 
  
-### assignmentKeysUnsafe(): `Vec<PolkadotPrimitivesV2AssignmentAppPublic>`
+### assignmentKeysUnsafe(): `Vec<PolkadotPrimitivesV4AssignmentAppPublic>`
 - **interface**: `api.query.paraSessionInfo.assignmentKeysUnsafe`
 - **summary**:    Assignment keys for the current session.  Note that this API is private due to it being prone to 'off-by-one' at session boundaries.  When in doubt, use `Sessions` API instead. 
  
@@ -1285,11 +1201,11 @@ ___
 - **interface**: `api.query.paraSessionInfo.earliestStoredSession`
 - **summary**:    The earliest session for which previous session info is stored. 
  
-### sessionExecutorParams(`u32`): `Option<PolkadotPrimitivesVstagingExecutorParams>`
+### sessionExecutorParams(`u32`): `Option<PolkadotPrimitivesV4ExecutorParams>`
 - **interface**: `api.query.paraSessionInfo.sessionExecutorParams`
 - **summary**:    Executor parameter set for a given session index 
  
-### sessions(`u32`): `Option<PolkadotPrimitivesV2SessionInfo>`
+### sessions(`u32`): `Option<PolkadotPrimitivesV4SessionInfo>`
 - **interface**: `api.query.paraSessionInfo.sessions`
 - **summary**:    Session information in a rolling window.  Should have an entry in range `EarliestStoredSession..=CurrentSessionIndex`.  Does not have any entries before the session index in the first session change notification. 
 
@@ -1302,7 +1218,7 @@ ___
 - **interface**: `api.query.parasShared.activeValidatorIndices`
 - **summary**:    All the validators actively participating in parachain consensus.  Indices are into the broader validator set. 
  
-### activeValidatorKeys(): `Vec<PolkadotPrimitivesV2ValidatorAppPublic>`
+### activeValidatorKeys(): `Vec<PolkadotPrimitivesV4ValidatorAppPublic>`
 - **interface**: `api.query.parasShared.activeValidatorKeys`
 - **summary**:    The parachain attestation keys of the validators actively participating in parachain consensus.  This should be the same length as `ActiveValidatorIndices`. 
  
@@ -1313,37 +1229,15 @@ ___
 ___
 
 
-## phragmenElection
+## parasSlashing
  
-### candidates(): `Vec<(AccountId32,u128)>`
-- **interface**: `api.query.phragmenElection.candidates`
-- **summary**:    The present candidate list. A current member or runner-up can never enter this vector  and is always implicitly assumed to be a candidate. 
-
-   Second element is the deposit. 
-
-   Invariant: Always sorted based on account id. 
+### unappliedSlashes(`u32, H256`): `Option<PolkadotRuntimeParachainsDisputesSlashingPendingSlashes>`
+- **interface**: `api.query.parasSlashing.unappliedSlashes`
+- **summary**:    Validators pending dispute slashes. 
  
-### electionRounds(): `u32`
-- **interface**: `api.query.phragmenElection.electionRounds`
-- **summary**:    The total number of vote rounds that have happened, excluding the upcoming one. 
- 
-### members(): `Vec<PalletElectionsPhragmenSeatHolder>`
-- **interface**: `api.query.phragmenElection.members`
-- **summary**:    The current elected members. 
-
-   Invariant: Always sorted based on account id. 
- 
-### runnersUp(): `Vec<PalletElectionsPhragmenSeatHolder>`
-- **interface**: `api.query.phragmenElection.runnersUp`
-- **summary**:    The current reserved runners-up. 
-
-   Invariant: Always sorted based on rank (worse to best). Upon removal of a member, the  last (i.e. _best_) runner-up will be replaced. 
- 
-### voting(`AccountId32`): `PalletElectionsPhragmenVoter`
-- **interface**: `api.query.phragmenElection.voting`
-- **summary**:    Votes and locked stake of a particular voter. 
-
-   TWOX-NOTE: SAFE as `AccountId` is a crypto hash. 
+### validatorSetCounts(`u32`): `Option<u32>`
+- **interface**: `api.query.parasSlashing.validatorSetCounts`
+- **summary**:    `ValidatorSetCount` per session. 
 
 ___
 
@@ -1890,48 +1784,6 @@ ___
 ___
 
 
-## technicalCommittee
- 
-### members(): `Vec<AccountId32>`
-- **interface**: `api.query.technicalCommittee.members`
-- **summary**:    The current members of the collective. This is stored sorted (just by value). 
- 
-### prime(): `Option<AccountId32>`
-- **interface**: `api.query.technicalCommittee.prime`
-- **summary**:    The prime member that helps determine the default vote behavior in case of absentations. 
- 
-### proposalCount(): `u32`
-- **interface**: `api.query.technicalCommittee.proposalCount`
-- **summary**:    Proposals so far. 
- 
-### proposalOf(`H256`): `Option<Call>`
-- **interface**: `api.query.technicalCommittee.proposalOf`
-- **summary**:    Actual proposal for a given hash, if it's current. 
- 
-### proposals(): `Vec<H256>`
-- **interface**: `api.query.technicalCommittee.proposals`
-- **summary**:    The hashes of the active proposals. 
- 
-### voting(`H256`): `Option<PalletCollectiveVotes>`
-- **interface**: `api.query.technicalCommittee.voting`
-- **summary**:    Votes on a given proposal, if it is ongoing. 
-
-___
-
-
-## technicalMembership
- 
-### members(): `Vec<AccountId32>`
-- **interface**: `api.query.technicalMembership.members`
-- **summary**:    The current membership, stored as an ordered Vec. 
- 
-### prime(): `Option<AccountId32>`
-- **interface**: `api.query.technicalMembership.prime`
-- **summary**:    The current prime member, if one exists. 
-
-___
-
-
 ## timestamp
  
 ### didUpdate(): `bool`
@@ -1941,19 +1793,6 @@ ___
 ### now(): `u64`
 - **interface**: `api.query.timestamp.now`
 - **summary**:    Current time for the current block. 
-
-___
-
-
-## tips
- 
-### reasons(`H256`): `Option<Bytes>`
-- **interface**: `api.query.tips.reasons`
-- **summary**:    Simple preimage lookup from the reason's hash to the original data. Again, has an  insecure enumerable hash since the key is guaranteed to be the result of a secure hash. 
- 
-### tips(`H256`): `Option<PalletTipsOpenTip>`
-- **interface**: `api.query.tips.tips`
-- **summary**:    TipsMap that are not yet completed. Keyed by the hash of `(reason, who)` from the value.  This has the insecure enumerable hash function since the key itself is already  guaranteed to be a secure hash. 
 
 ___
 

@@ -198,43 +198,38 @@ ___
 - **interface**: `api.call.metadata.metadata`
 - **runtime**: `Metadata_metadata`
 - **summary**: Returns the metadata of a runtime
+ 
+### metadataAtVersion(version: `u32`): `Option<OpaqueMetadata>`
+- **interface**: `api.call.metadata.metadataAtVersion`
+- **runtime**: `Metadata_metadata_at_version`
+- **summary**: Returns the metadata at a given version.
+ 
+### metadataVersions(): `Vec<u32>`
+- **interface**: `api.call.metadata.metadataVersions`
+- **runtime**: `Metadata_metadata_versions`
+- **summary**: Returns the supported metadata versions.
 
 ___
 
 
 ## MmrApi
  
-### generateBatchProof(leafIndices: `Vec<MmrLeafIndex>`): `Result<(Vec<MmrEncodableOpaqueLeaf>, MmrBatchProof), MmrError>`
-- **interface**: `api.call.mmrApi.generateBatchProof`
-- **runtime**: `MmrApi_generate_batch_proof`
-- **summary**: Generate MMR proof for a series of leaves under given indices.
- 
-### generateProof(leafIndex: `MmrLeafIndex`): `Result<(MmrEncodableOpaqueLeaf, MmrProof), MmrError>`
+### generateProof(blockNumbers: `Vec<BlockNumber>`, bestKnownBlockNumber: `Option<BlockNumber>`): `Result<(Vec<MmrEncodableOpaqueLeaf>, MmrBatchProof), MmrError>`
 - **interface**: `api.call.mmrApi.generateProof`
 - **runtime**: `MmrApi_generate_proof`
-- **summary**: Generate MMR proof for a leaf under given index.
+- **summary**: Generate MMR proof for the given block numbers.
  
-### mmrRoot(): `Result<Hash, MmrError>`
-- **interface**: `api.call.mmrApi.mmrRoot`
-- **runtime**: `MmrApi_mmr_root`
+### root(): `Result<Hash, MmrError>`
+- **interface**: `api.call.mmrApi.root`
+- **runtime**: `MmrApi_root`
 - **summary**: Return the on-chain MMR root hash.
  
-### verifyBatchProof(leaves: `Vec<MmrEncodableOpaqueLeaf>`, proof: `MmrBatchProof`): `Result<(), MmrError>`
-- **interface**: `api.call.mmrApi.verifyBatchProof`
-- **runtime**: `MmrApi_verify_batch_proof`
-- **summary**: Verify MMR proof against on-chain MMR for a batch of leaves.
- 
-### verifyBatchProofStateless(root: `Hash`, leaves: `Vec<MmrEncodableOpaqueLeaf>`, proof: `MmrBatchProof`): `Result<(), MmrError>`
-- **interface**: `api.call.mmrApi.verifyBatchProofStateless`
-- **runtime**: `MmrApi_verify_batch_proof_stateless`
-- **summary**: Verify MMR proof against given root hash or a batch of leaves.
- 
-### verifyProof(leaf: `MmrEncodableOpaqueLeaf`, proof: `MmrProof`): `Result<(), MmrError>`
+### verifyProof(leaves: `Vec<MmrEncodableOpaqueLeaf>`, proof: `MmrBatchProof`): `Result<(), MmrError>`
 - **interface**: `api.call.mmrApi.verifyProof`
 - **runtime**: `MmrApi_verify_proof`
 - **summary**: Verify MMR proof against on-chain MMR.
  
-### verifyProofStateless(root: `Hash`, leaf: `MmrEncodableOpaqueLeaf`, proof: `MmrProof`): `Result<(), MmrError>`
+### verifyProofStateless(root: `Hash`, leaves: `Vec<MmrEncodableOpaqueLeaf>`, proof: `MmrBatchProof`): `Result<(), MmrError>`
 - **interface**: `api.call.mmrApi.verifyProofStateless`
 - **runtime**: `MmrApi_verify_proof_stateless`
 - **summary**: Verify MMR proof against given root hash.
@@ -299,6 +294,11 @@ ___
 - **runtime**: `ParachainHost_check_validation_outputs`
 - **summary**: Checks if the given validation outputs pass the acceptance criteria.
  
+### disputes(): `Vec<(SessionIndex, CandidateHash, DisputeState)>`
+- **interface**: `api.call.parachainHost.disputes`
+- **runtime**: `ParachainHost_disputes`
+- **summary**: Returns all onchain disputes.
+ 
 ### dmqContents(paraId: `ParaId`): `Vec<InboundDownwardMessage>`
 - **interface**: `api.call.parachainHost.dmqContents`
 - **runtime**: `ParachainHost_dmq_contents`
@@ -323,6 +323,11 @@ ___
 - **interface**: `api.call.parachainHost.pvfsRequirePrecheck`
 - **runtime**: `ParachainHost_pvfs_require_precheck`
 - **summary**: Returns code hashes of PVFs that require pre-checking by validators in the active set.
+ 
+### sessionExecutorParams(sessionIndex: `SessionIndex`): `Option<ExecutorParams>`
+- **interface**: `api.call.parachainHost.sessionExecutorParams`
+- **runtime**: `ParachainHost_session_executor_params`
+- **summary**: Returns execution parameters for the session.
  
 ### sessionIndexForChild(): `SessionIndex`
 - **interface**: `api.call.parachainHost.sessionIndexForChild`

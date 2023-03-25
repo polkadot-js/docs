@@ -16,6 +16,8 @@ Events are emitted for certain operations on the runtime. The following sections
 
 - **[claims](#claims)**
 
+- **[convictionVoting](#convictionvoting)**
+
 - **[council](#council)**
 
 - **[crowdloan](#crowdloan)**
@@ -54,6 +56,8 @@ Events are emitted for certain operations on the runtime. The following sections
 
 - **[proxy](#proxy)**
 
+- **[referenda](#referenda)**
+
 - **[registrar](#registrar)**
 
 - **[scheduler](#scheduler)**
@@ -83,6 +87,8 @@ Events are emitted for certain operations on the runtime. The following sections
 - **[vesting](#vesting)**
 
 - **[voterList](#voterlist)**
+
+- **[whitelist](#whitelist)**
 
 - **[xcmPallet](#xcmpallet)**
 
@@ -125,9 +131,13 @@ ___
 
 ## balances
  
-### BalanceSet(`AccountId32`, `u128`, `u128`)
+### BalanceSet(`AccountId32`, `u128`)
 - **interface**: `api.events.balances.BalanceSet.is`
 - **summary**:    A balance was set by root. 
+ 
+### Burned(`AccountId32`, `u128`)
+- **interface**: `api.events.balances.Burned.is`
+- **summary**:    Some amount was burned from an account. 
  
 ### Deposit(`AccountId32`, `u128`)
 - **interface**: `api.events.balances.Deposit.is`
@@ -141,6 +151,18 @@ ___
 - **interface**: `api.events.balances.Endowed.is`
 - **summary**:    An account was created with some free balance. 
  
+### Issued(`u128`)
+- **interface**: `api.events.balances.Issued.is`
+- **summary**:    Total issuance was increased by `amount`, creating a credit to be balanced. 
+ 
+### Minted(`AccountId32`, `u128`)
+- **interface**: `api.events.balances.Minted.is`
+- **summary**:    Some amount was minted into an account. 
+ 
+### Rescinded(`u128`)
+- **interface**: `api.events.balances.Rescinded.is`
+- **summary**:    Total issuance was decreased by `amount`, creating a debt to be balanced. 
+ 
 ### Reserved(`AccountId32`, `u128`)
 - **interface**: `api.events.balances.Reserved.is`
 - **summary**:    Some balance was reserved (moved from free to reserved). 
@@ -149,9 +171,17 @@ ___
 - **interface**: `api.events.balances.ReserveRepatriated.is`
 - **summary**:    Some balance was moved from the reserve of the first account to the second account.  Final argument indicates the destination balance type. 
  
+### Restored(`AccountId32`, `u128`)
+- **interface**: `api.events.balances.Restored.is`
+- **summary**:    Some amount was restored into an account. 
+ 
 ### Slashed(`AccountId32`, `u128`)
 - **interface**: `api.events.balances.Slashed.is`
 - **summary**:    Some amount was removed from the account (e.g. for misbehavior). 
+ 
+### Suspended(`AccountId32`, `u128`)
+- **interface**: `api.events.balances.Suspended.is`
+- **summary**:    Some amount was suspended from an account (it can be restored later). 
  
 ### Transfer(`AccountId32`, `AccountId32`, `u128`)
 - **interface**: `api.events.balances.Transfer.is`
@@ -160,6 +190,10 @@ ___
 ### Unreserved(`AccountId32`, `u128`)
 - **interface**: `api.events.balances.Unreserved.is`
 - **summary**:    Some balance was unreserved (moved from reserved to free). 
+ 
+### Upgraded(`AccountId32`)
+- **interface**: `api.events.balances.Upgraded.is`
+- **summary**:    An account was upgraded. 
  
 ### Withdraw(`AccountId32`, `u128`)
 - **interface**: `api.events.balances.Withdraw.is`
@@ -227,6 +261,19 @@ ___
 ### Claimed(`AccountId32`, `EthereumAddress`, `u128`)
 - **interface**: `api.events.claims.Claimed.is`
 - **summary**:    Someone claimed some DOTs. 
+
+___
+
+
+## convictionVoting
+ 
+### Delegated(`AccountId32`, `AccountId32`)
+- **interface**: `api.events.convictionVoting.Delegated.is`
+- **summary**:    An account has delegated their vote to another account. \[who, target\] 
+ 
+### Undelegated(`AccountId32`)
+- **interface**: `api.events.convictionVoting.Undelegated.is`
+- **summary**:    An \[account\] has cancelled a previous delegation operation. 
 
 ___
 
@@ -608,6 +655,22 @@ ___
 - **interface**: `api.events.nominationPools.PaidOut.is`
 - **summary**:    A payout has been made to a member. 
  
+### PoolCommissionChangeRateUpdated(`u32`, `PalletNominationPoolsCommissionChangeRate`)
+- **interface**: `api.events.nominationPools.PoolCommissionChangeRateUpdated.is`
+- **summary**:    A pool's commission `change_rate` has been changed. 
+ 
+### PoolCommissionClaimed(`u32`, `u128`)
+- **interface**: `api.events.nominationPools.PoolCommissionClaimed.is`
+- **summary**:    Pool commission has been claimed. 
+ 
+### PoolCommissionUpdated(`u32`, `Option<(Perbill,AccountId32)>`)
+- **interface**: `api.events.nominationPools.PoolCommissionUpdated.is`
+- **summary**:    A pool's commission setting has been changed. 
+ 
+### PoolMaxCommissionUpdated(`u32`, `Perbill`)
+- **interface**: `api.events.nominationPools.PoolMaxCommissionUpdated.is`
+- **summary**:    A pool's maximum commission setting has been changed. 
+ 
 ### PoolSlashed(`u32`, `u128`)
 - **interface**: `api.events.nominationPools.PoolSlashed.is`
 - **summary**:    The active balance of pool `pool_id` has been slashed to `balance`. 
@@ -656,15 +719,15 @@ ___
 
 ## paraInclusion
  
-### CandidateBacked(`PolkadotPrimitivesV2CandidateReceipt`, `Bytes`, `u32`, `u32`)
+### CandidateBacked(`PolkadotPrimitivesV4CandidateReceipt`, `Bytes`, `u32`, `u32`)
 - **interface**: `api.events.paraInclusion.CandidateBacked.is`
 - **summary**:    A candidate was backed. `[candidate, head_data]` 
  
-### CandidateIncluded(`PolkadotPrimitivesV2CandidateReceipt`, `Bytes`, `u32`, `u32`)
+### CandidateIncluded(`PolkadotPrimitivesV4CandidateReceipt`, `Bytes`, `u32`, `u32`)
 - **interface**: `api.events.paraInclusion.CandidateIncluded.is`
 - **summary**:    A candidate was included. `[candidate, head_data]` 
  
-### CandidateTimedOut(`PolkadotPrimitivesV2CandidateReceipt`, `Bytes`, `u32`)
+### CandidateTimedOut(`PolkadotPrimitivesV4CandidateReceipt`, `Bytes`, `u32`)
 - **interface**: `api.events.paraInclusion.CandidateTimedOut.is`
 - **summary**:    A candidate timed out. `[candidate, head_data]` 
 
@@ -717,10 +780,6 @@ ___
 ### DisputeInitiated(`H256`, `PolkadotRuntimeParachainsDisputesDisputeLocation`)
 - **interface**: `api.events.parasDisputes.DisputeInitiated.is`
 - **summary**:    A dispute has been initiated. \[candidate hash, dispute location\] 
- 
-### DisputeTimedOut(`H256`)
-- **interface**: `api.events.parasDisputes.DisputeTimedOut.is`
-- **summary**:    A dispute has timed out due to insufficient participation.  `\[para id, candidate hash\]` 
  
 ### Revert(`u32`)
 - **interface**: `api.events.parasDisputes.Revert.is`
@@ -802,6 +861,73 @@ ___
 ### PureCreated(`AccountId32`, `AccountId32`, `PolkadotRuntimeProxyType`, `u16`)
 - **interface**: `api.events.proxy.PureCreated.is`
 - **summary**:    A pure account has been created by new proxy with given  disambiguation index and proxy type. 
+
+___
+
+
+## referenda
+ 
+### Approved(`u32`)
+- **interface**: `api.events.referenda.Approved.is`
+- **summary**:    A referendum has been approved and its proposal has been scheduled. 
+ 
+### Cancelled(`u32`, `PalletConvictionVotingTally`)
+- **interface**: `api.events.referenda.Cancelled.is`
+- **summary**:    A referendum has been cancelled. 
+ 
+### ConfirmAborted(`u32`)
+- **interface**: `api.events.referenda.ConfirmAborted.is`
+ 
+### Confirmed(`u32`, `PalletConvictionVotingTally`)
+- **interface**: `api.events.referenda.Confirmed.is`
+- **summary**:    A referendum has ended its confirmation phase and is ready for approval. 
+ 
+### ConfirmStarted(`u32`)
+- **interface**: `api.events.referenda.ConfirmStarted.is`
+ 
+### DecisionDepositPlaced(`u32`, `AccountId32`, `u128`)
+- **interface**: `api.events.referenda.DecisionDepositPlaced.is`
+- **summary**:    The decision deposit has been placed. 
+ 
+### DecisionDepositRefunded(`u32`, `AccountId32`, `u128`)
+- **interface**: `api.events.referenda.DecisionDepositRefunded.is`
+- **summary**:    The decision deposit has been refunded. 
+ 
+### DecisionStarted(`u32`, `u16`, `FrameSupportPreimagesBounded`, `PalletConvictionVotingTally`)
+- **interface**: `api.events.referenda.DecisionStarted.is`
+- **summary**:    A referendum has moved into the deciding phase. 
+ 
+### DepositSlashed(`AccountId32`, `u128`)
+- **interface**: `api.events.referenda.DepositSlashed.is`
+- **summary**:    A deposit has been slashaed. 
+ 
+### Killed(`u32`, `PalletConvictionVotingTally`)
+- **interface**: `api.events.referenda.Killed.is`
+- **summary**:    A referendum has been killed. 
+ 
+### MetadataCleared(`u32`, `H256`)
+- **interface**: `api.events.referenda.MetadataCleared.is`
+- **summary**:    Metadata for a referendum has been cleared. 
+ 
+### MetadataSet(`u32`, `H256`)
+- **interface**: `api.events.referenda.MetadataSet.is`
+- **summary**:    Metadata for a referendum has been set. 
+ 
+### Rejected(`u32`, `PalletConvictionVotingTally`)
+- **interface**: `api.events.referenda.Rejected.is`
+- **summary**:    A proposal has been rejected by referendum. 
+ 
+### SubmissionDepositRefunded(`u32`, `AccountId32`, `u128`)
+- **interface**: `api.events.referenda.SubmissionDepositRefunded.is`
+- **summary**:    The submission deposit has been refunded. 
+ 
+### Submitted(`u32`, `u16`, `FrameSupportPreimagesBounded`)
+- **interface**: `api.events.referenda.Submitted.is`
+- **summary**:    A referendum has been submitted. 
+ 
+### TimedOut(`u32`, `PalletConvictionVotingTally`)
+- **interface**: `api.events.referenda.TimedOut.is`
+- **summary**:    A referendum has been timed out without being decided. 
 
 ___
 
@@ -1194,6 +1320,20 @@ ___
 ### ScoreUpdated(`AccountId32`, `u64`)
 - **interface**: `api.events.voterList.ScoreUpdated.is`
 - **summary**:    Updated the score of some account to the given amount. 
+
+___
+
+
+## whitelist
+ 
+### CallWhitelisted(`H256`)
+- **interface**: `api.events.whitelist.CallWhitelisted.is`
+ 
+### WhitelistedCallDispatched(`H256`, `Result<FrameSupportDispatchPostDispatchInfo, SpRuntimeDispatchErrorWithPostInfo>`)
+- **interface**: `api.events.whitelist.WhitelistedCallDispatched.is`
+ 
+### WhitelistedCallRemoved(`H256`)
+- **interface**: `api.events.whitelist.WhitelistedCallRemoved.is`
 
 ___
 

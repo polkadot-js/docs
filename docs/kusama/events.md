@@ -18,11 +18,7 @@ Events are emitted for certain operations on the runtime. The following sections
 
 - **[convictionVoting](#convictionvoting)**
 
-- **[council](#council)**
-
 - **[crowdloan](#crowdloan)**
-
-- **[democracy](#democracy)**
 
 - **[electionProviderMultiPhase](#electionprovidermultiphase)**
 
@@ -58,8 +54,6 @@ Events are emitted for certain operations on the runtime. The following sections
 
 - **[parasDisputes](#parasdisputes)**
 
-- **[phragmenElection](#phragmenelection)**
-
 - **[preimage](#preimage)**
 
 - **[proxy](#proxy)**
@@ -81,12 +75,6 @@ Events are emitted for certain operations on the runtime. The following sections
 - **[staking](#staking)**
 
 - **[system](#system)**
-
-- **[technicalCommittee](#technicalcommittee)**
-
-- **[technicalMembership](#technicalmembership)**
-
-- **[tips](#tips)**
 
 - **[transactionPayment](#transactionpayment)**
 
@@ -143,9 +131,13 @@ ___
 
 ## balances
  
-### BalanceSet(`AccountId32`, `u128`, `u128`)
+### BalanceSet(`AccountId32`, `u128`)
 - **interface**: `api.events.balances.BalanceSet.is`
 - **summary**:    A balance was set by root. 
+ 
+### Burned(`AccountId32`, `u128`)
+- **interface**: `api.events.balances.Burned.is`
+- **summary**:    Some amount was burned from an account. 
  
 ### Deposit(`AccountId32`, `u128`)
 - **interface**: `api.events.balances.Deposit.is`
@@ -159,6 +151,18 @@ ___
 - **interface**: `api.events.balances.Endowed.is`
 - **summary**:    An account was created with some free balance. 
  
+### Issued(`u128`)
+- **interface**: `api.events.balances.Issued.is`
+- **summary**:    Total issuance was increased by `amount`, creating a credit to be balanced. 
+ 
+### Minted(`AccountId32`, `u128`)
+- **interface**: `api.events.balances.Minted.is`
+- **summary**:    Some amount was minted into an account. 
+ 
+### Rescinded(`u128`)
+- **interface**: `api.events.balances.Rescinded.is`
+- **summary**:    Total issuance was decreased by `amount`, creating a debt to be balanced. 
+ 
 ### Reserved(`AccountId32`, `u128`)
 - **interface**: `api.events.balances.Reserved.is`
 - **summary**:    Some balance was reserved (moved from free to reserved). 
@@ -167,9 +171,17 @@ ___
 - **interface**: `api.events.balances.ReserveRepatriated.is`
 - **summary**:    Some balance was moved from the reserve of the first account to the second account.  Final argument indicates the destination balance type. 
  
+### Restored(`AccountId32`, `u128`)
+- **interface**: `api.events.balances.Restored.is`
+- **summary**:    Some amount was restored into an account. 
+ 
 ### Slashed(`AccountId32`, `u128`)
 - **interface**: `api.events.balances.Slashed.is`
 - **summary**:    Some amount was removed from the account (e.g. for misbehavior). 
+ 
+### Suspended(`AccountId32`, `u128`)
+- **interface**: `api.events.balances.Suspended.is`
+- **summary**:    Some amount was suspended from an account (it can be restored later). 
  
 ### Transfer(`AccountId32`, `AccountId32`, `u128`)
 - **interface**: `api.events.balances.Transfer.is`
@@ -178,6 +190,10 @@ ___
 ### Unreserved(`AccountId32`, `u128`)
 - **interface**: `api.events.balances.Unreserved.is`
 - **summary**:    Some balance was unreserved (moved from reserved to free). 
+ 
+### Upgraded(`AccountId32`)
+- **interface**: `api.events.balances.Upgraded.is`
+- **summary**:    An account was upgraded. 
  
 ### Withdraw(`AccountId32`, `u128`)
 - **interface**: `api.events.balances.Withdraw.is`
@@ -262,39 +278,6 @@ ___
 ___
 
 
-## council
- 
-### Approved(`H256`)
-- **interface**: `api.events.council.Approved.is`
-- **summary**:    A motion was approved by the required threshold. 
- 
-### Closed(`H256`, `u32`, `u32`)
-- **interface**: `api.events.council.Closed.is`
-- **summary**:    A proposal was closed because its threshold was reached or after its duration was up. 
- 
-### Disapproved(`H256`)
-- **interface**: `api.events.council.Disapproved.is`
-- **summary**:    A motion was not approved by the required threshold. 
- 
-### Executed(`H256`, `Result<Null, SpRuntimeDispatchError>`)
-- **interface**: `api.events.council.Executed.is`
-- **summary**:    A motion was executed; result will be `Ok` if it returned without error. 
- 
-### MemberExecuted(`H256`, `Result<Null, SpRuntimeDispatchError>`)
-- **interface**: `api.events.council.MemberExecuted.is`
-- **summary**:    A single member did some action; result will be `Ok` if it returned without error. 
- 
-### Proposed(`AccountId32`, `u32`, `H256`, `u32`)
-- **interface**: `api.events.council.Proposed.is`
-- **summary**:    A motion (given hash) has been proposed (by given account) with a threshold (given  `MemberCount`). 
- 
-### Voted(`AccountId32`, `H256`, `bool`, `u32`, `u32`)
-- **interface**: `api.events.council.Voted.is`
-- **summary**:    A motion (given hash) has been voted on by given account, leaving  a tally (yes votes and no votes given respectively as `MemberCount`). 
-
-___
-
-
 ## crowdloan
  
 ### AddedToNewRaise(`u32`)
@@ -336,79 +319,6 @@ ___
 ### Withdrew(`AccountId32`, `u32`, `u128`)
 - **interface**: `api.events.crowdloan.Withdrew.is`
 - **summary**:    Withdrew full balance of a contributor. 
-
-___
-
-
-## democracy
- 
-### Blacklisted(`H256`)
-- **interface**: `api.events.democracy.Blacklisted.is`
-- **summary**:    A proposal_hash has been blacklisted permanently. 
- 
-### Cancelled(`u32`)
-- **interface**: `api.events.democracy.Cancelled.is`
-- **summary**:    A referendum has been cancelled. 
- 
-### Delegated(`AccountId32`, `AccountId32`)
-- **interface**: `api.events.democracy.Delegated.is`
-- **summary**:    An account has delegated their vote to another account. 
- 
-### ExternalTabled()
-- **interface**: `api.events.democracy.ExternalTabled.is`
-- **summary**:    An external proposal has been tabled. 
- 
-### MetadataCleared(`PalletDemocracyMetadataOwner`, `H256`)
-- **interface**: `api.events.democracy.MetadataCleared.is`
-- **summary**:    Metadata for a proposal or a referendum has been cleared. 
- 
-### MetadataSet(`PalletDemocracyMetadataOwner`, `H256`)
-- **interface**: `api.events.democracy.MetadataSet.is`
-- **summary**:    Metadata for a proposal or a referendum has been set. 
- 
-### MetadataTransferred(`PalletDemocracyMetadataOwner`, `PalletDemocracyMetadataOwner`, `H256`)
-- **interface**: `api.events.democracy.MetadataTransferred.is`
-- **summary**:    Metadata has been transferred to new owner. 
- 
-### NotPassed(`u32`)
-- **interface**: `api.events.democracy.NotPassed.is`
-- **summary**:    A proposal has been rejected by referendum. 
- 
-### Passed(`u32`)
-- **interface**: `api.events.democracy.Passed.is`
-- **summary**:    A proposal has been approved by referendum. 
- 
-### ProposalCanceled(`u32`)
-- **interface**: `api.events.democracy.ProposalCanceled.is`
-- **summary**:    A proposal got canceled. 
- 
-### Proposed(`u32`, `u128`)
-- **interface**: `api.events.democracy.Proposed.is`
-- **summary**:    A motion has been proposed by a public account. 
- 
-### Seconded(`AccountId32`, `u32`)
-- **interface**: `api.events.democracy.Seconded.is`
-- **summary**:    An account has secconded a proposal 
- 
-### Started(`u32`, `PalletDemocracyVoteThreshold`)
-- **interface**: `api.events.democracy.Started.is`
-- **summary**:    A referendum has begun. 
- 
-### Tabled(`u32`, `u128`)
-- **interface**: `api.events.democracy.Tabled.is`
-- **summary**:    A public proposal has been tabled for referendum vote. 
- 
-### Undelegated(`AccountId32`)
-- **interface**: `api.events.democracy.Undelegated.is`
-- **summary**:    An account has cancelled a previous delegation operation. 
- 
-### Vetoed(`AccountId32`, `H256`, `u32`)
-- **interface**: `api.events.democracy.Vetoed.is`
-- **summary**:    An external proposal has been vetoed. 
- 
-### Voted(`AccountId32`, `u32`, `PalletDemocracyVoteAccountVote`)
-- **interface**: `api.events.democracy.Voted.is`
-- **summary**:    An account has voted in a referendum 
 
 ___
 
@@ -738,9 +648,13 @@ ___
 
 ## nisCounterpartBalances
  
-### BalanceSet(`AccountId32`, `u128`, `u128`)
+### BalanceSet(`AccountId32`, `u128`)
 - **interface**: `api.events.nisCounterpartBalances.BalanceSet.is`
 - **summary**:    A balance was set by root. 
+ 
+### Burned(`AccountId32`, `u128`)
+- **interface**: `api.events.nisCounterpartBalances.Burned.is`
+- **summary**:    Some amount was burned from an account. 
  
 ### Deposit(`AccountId32`, `u128`)
 - **interface**: `api.events.nisCounterpartBalances.Deposit.is`
@@ -754,6 +668,18 @@ ___
 - **interface**: `api.events.nisCounterpartBalances.Endowed.is`
 - **summary**:    An account was created with some free balance. 
  
+### Issued(`u128`)
+- **interface**: `api.events.nisCounterpartBalances.Issued.is`
+- **summary**:    Total issuance was increased by `amount`, creating a credit to be balanced. 
+ 
+### Minted(`AccountId32`, `u128`)
+- **interface**: `api.events.nisCounterpartBalances.Minted.is`
+- **summary**:    Some amount was minted into an account. 
+ 
+### Rescinded(`u128`)
+- **interface**: `api.events.nisCounterpartBalances.Rescinded.is`
+- **summary**:    Total issuance was decreased by `amount`, creating a debt to be balanced. 
+ 
 ### Reserved(`AccountId32`, `u128`)
 - **interface**: `api.events.nisCounterpartBalances.Reserved.is`
 - **summary**:    Some balance was reserved (moved from free to reserved). 
@@ -762,9 +688,17 @@ ___
 - **interface**: `api.events.nisCounterpartBalances.ReserveRepatriated.is`
 - **summary**:    Some balance was moved from the reserve of the first account to the second account.  Final argument indicates the destination balance type. 
  
+### Restored(`AccountId32`, `u128`)
+- **interface**: `api.events.nisCounterpartBalances.Restored.is`
+- **summary**:    Some amount was restored into an account. 
+ 
 ### Slashed(`AccountId32`, `u128`)
 - **interface**: `api.events.nisCounterpartBalances.Slashed.is`
 - **summary**:    Some amount was removed from the account (e.g. for misbehavior). 
+ 
+### Suspended(`AccountId32`, `u128`)
+- **interface**: `api.events.nisCounterpartBalances.Suspended.is`
+- **summary**:    Some amount was suspended from an account (it can be restored later). 
  
 ### Transfer(`AccountId32`, `AccountId32`, `u128`)
 - **interface**: `api.events.nisCounterpartBalances.Transfer.is`
@@ -773,6 +707,10 @@ ___
 ### Unreserved(`AccountId32`, `u128`)
 - **interface**: `api.events.nisCounterpartBalances.Unreserved.is`
 - **summary**:    Some balance was unreserved (moved from reserved to free). 
+ 
+### Upgraded(`AccountId32`)
+- **interface**: `api.events.nisCounterpartBalances.Upgraded.is`
+- **summary**:    An account was upgraded. 
  
 ### Withdraw(`AccountId32`, `u128`)
 - **interface**: `api.events.nisCounterpartBalances.Withdraw.is`
@@ -804,6 +742,22 @@ ___
 ### PaidOut(`AccountId32`, `u32`, `u128`)
 - **interface**: `api.events.nominationPools.PaidOut.is`
 - **summary**:    A payout has been made to a member. 
+ 
+### PoolCommissionChangeRateUpdated(`u32`, `PalletNominationPoolsCommissionChangeRate`)
+- **interface**: `api.events.nominationPools.PoolCommissionChangeRateUpdated.is`
+- **summary**:    A pool's commission `change_rate` has been changed. 
+ 
+### PoolCommissionClaimed(`u32`, `u128`)
+- **interface**: `api.events.nominationPools.PoolCommissionClaimed.is`
+- **summary**:    Pool commission has been claimed. 
+ 
+### PoolCommissionUpdated(`u32`, `Option<(Perbill,AccountId32)>`)
+- **interface**: `api.events.nominationPools.PoolCommissionUpdated.is`
+- **summary**:    A pool's commission setting has been changed. 
+ 
+### PoolMaxCommissionUpdated(`u32`, `Perbill`)
+- **interface**: `api.events.nominationPools.PoolMaxCommissionUpdated.is`
+- **summary**:    A pool's maximum commission setting has been changed. 
  
 ### PoolSlashed(`u32`, `u128`)
 - **interface**: `api.events.nominationPools.PoolSlashed.is`
@@ -853,15 +807,15 @@ ___
 
 ## paraInclusion
  
-### CandidateBacked(`PolkadotPrimitivesV2CandidateReceipt`, `Bytes`, `u32`, `u32`)
+### CandidateBacked(`PolkadotPrimitivesV4CandidateReceipt`, `Bytes`, `u32`, `u32`)
 - **interface**: `api.events.paraInclusion.CandidateBacked.is`
 - **summary**:    A candidate was backed. `[candidate, head_data]` 
  
-### CandidateIncluded(`PolkadotPrimitivesV2CandidateReceipt`, `Bytes`, `u32`, `u32`)
+### CandidateIncluded(`PolkadotPrimitivesV4CandidateReceipt`, `Bytes`, `u32`, `u32`)
 - **interface**: `api.events.paraInclusion.CandidateIncluded.is`
 - **summary**:    A candidate was included. `[candidate, head_data]` 
  
-### CandidateTimedOut(`PolkadotPrimitivesV2CandidateReceipt`, `Bytes`, `u32`)
+### CandidateTimedOut(`PolkadotPrimitivesV4CandidateReceipt`, `Bytes`, `u32`)
 - **interface**: `api.events.paraInclusion.CandidateTimedOut.is`
 - **summary**:    A candidate timed out. `[candidate, head_data]` 
 
@@ -915,48 +869,9 @@ ___
 - **interface**: `api.events.parasDisputes.DisputeInitiated.is`
 - **summary**:    A dispute has been initiated. \[candidate hash, dispute location\] 
  
-### DisputeTimedOut(`H256`)
-- **interface**: `api.events.parasDisputes.DisputeTimedOut.is`
-- **summary**:    A dispute has timed out due to insufficient participation.  `\[para id, candidate hash\]` 
- 
 ### Revert(`u32`)
 - **interface**: `api.events.parasDisputes.Revert.is`
 - **summary**:    A dispute has concluded with supermajority against a candidate.  Block authors should no longer build on top of this head and should  instead revert the block at the given height. This should be the  number of the child of the last known valid block in the chain. 
-
-___
-
-
-## phragmenElection
- 
-### CandidateSlashed(`AccountId32`, `u128`)
-- **interface**: `api.events.phragmenElection.CandidateSlashed.is`
-- **summary**:    A candidate was slashed by amount due to failing to obtain a seat as member or  runner-up. 
-
-   Note that old members and runners-up are also candidates. 
- 
-### ElectionError()
-- **interface**: `api.events.phragmenElection.ElectionError.is`
-- **summary**:    Internal error happened while trying to perform election. 
- 
-### EmptyTerm()
-- **interface**: `api.events.phragmenElection.EmptyTerm.is`
-- **summary**:    No (or not enough) candidates existed for this round. This is different from  `NewTerm(\[\])`. See the description of `NewTerm`. 
- 
-### MemberKicked(`AccountId32`)
-- **interface**: `api.events.phragmenElection.MemberKicked.is`
-- **summary**:    A member has been removed. This should always be followed by either `NewTerm` or  `EmptyTerm`. 
- 
-### NewTerm(`Vec<(AccountId32,u128)>`)
-- **interface**: `api.events.phragmenElection.NewTerm.is`
-- **summary**:    A new term with new_members. This indicates that enough candidates existed to run  the election, not that enough have has been elected. The inner value must be examined  for this purpose. A `NewTerm(\[\])` indicates that some candidates got their bond  slashed and none were elected, whilst `EmptyTerm` means that no candidates existed to  begin with. 
- 
-### Renounced(`AccountId32`)
-- **interface**: `api.events.phragmenElection.Renounced.is`
-- **summary**:    Someone has renounced their candidacy. 
- 
-### SeatHolderSlashed(`AccountId32`, `u128`)
-- **interface**: `api.events.phragmenElection.SeatHolderSlashed.is`
-- **summary**:    A seat holder was slashed by amount by being forcefully removed from the set. 
 
 ___
 
@@ -1329,93 +1244,6 @@ ___
 ### Remarked(`AccountId32`, `H256`)
 - **interface**: `api.events.system.Remarked.is`
 - **summary**:    On on-chain remark happened. 
-
-___
-
-
-## technicalCommittee
- 
-### Approved(`H256`)
-- **interface**: `api.events.technicalCommittee.Approved.is`
-- **summary**:    A motion was approved by the required threshold. 
- 
-### Closed(`H256`, `u32`, `u32`)
-- **interface**: `api.events.technicalCommittee.Closed.is`
-- **summary**:    A proposal was closed because its threshold was reached or after its duration was up. 
- 
-### Disapproved(`H256`)
-- **interface**: `api.events.technicalCommittee.Disapproved.is`
-- **summary**:    A motion was not approved by the required threshold. 
- 
-### Executed(`H256`, `Result<Null, SpRuntimeDispatchError>`)
-- **interface**: `api.events.technicalCommittee.Executed.is`
-- **summary**:    A motion was executed; result will be `Ok` if it returned without error. 
- 
-### MemberExecuted(`H256`, `Result<Null, SpRuntimeDispatchError>`)
-- **interface**: `api.events.technicalCommittee.MemberExecuted.is`
-- **summary**:    A single member did some action; result will be `Ok` if it returned without error. 
- 
-### Proposed(`AccountId32`, `u32`, `H256`, `u32`)
-- **interface**: `api.events.technicalCommittee.Proposed.is`
-- **summary**:    A motion (given hash) has been proposed (by given account) with a threshold (given  `MemberCount`). 
- 
-### Voted(`AccountId32`, `H256`, `bool`, `u32`, `u32`)
-- **interface**: `api.events.technicalCommittee.Voted.is`
-- **summary**:    A motion (given hash) has been voted on by given account, leaving  a tally (yes votes and no votes given respectively as `MemberCount`). 
-
-___
-
-
-## technicalMembership
- 
-### Dummy()
-- **interface**: `api.events.technicalMembership.Dummy.is`
-- **summary**:    Phantom member, never used. 
- 
-### KeyChanged()
-- **interface**: `api.events.technicalMembership.KeyChanged.is`
-- **summary**:    One of the members' keys changed. 
- 
-### MemberAdded()
-- **interface**: `api.events.technicalMembership.MemberAdded.is`
-- **summary**:    The given member was added; see the transaction for who. 
- 
-### MemberRemoved()
-- **interface**: `api.events.technicalMembership.MemberRemoved.is`
-- **summary**:    The given member was removed; see the transaction for who. 
- 
-### MembersReset()
-- **interface**: `api.events.technicalMembership.MembersReset.is`
-- **summary**:    The membership was reset; see the transaction for who the new set is. 
- 
-### MembersSwapped()
-- **interface**: `api.events.technicalMembership.MembersSwapped.is`
-- **summary**:    Two members were swapped; see the transaction for who. 
-
-___
-
-
-## tips
- 
-### NewTip(`H256`)
-- **interface**: `api.events.tips.NewTip.is`
-- **summary**:    A new tip suggestion has been opened. 
- 
-### TipClosed(`H256`, `AccountId32`, `u128`)
-- **interface**: `api.events.tips.TipClosed.is`
-- **summary**:    A tip suggestion has been closed. 
- 
-### TipClosing(`H256`)
-- **interface**: `api.events.tips.TipClosing.is`
-- **summary**:    A tip suggestion has reached threshold and is closing. 
- 
-### TipRetracted(`H256`)
-- **interface**: `api.events.tips.TipRetracted.is`
-- **summary**:    A tip suggestion has been retracted. 
- 
-### TipSlashed(`H256`, `AccountId32`, `u128`)
-- **interface**: `api.events.tips.TipSlashed.is`
-- **summary**:    A tip suggestion has been slashed. 
 
 ___
 

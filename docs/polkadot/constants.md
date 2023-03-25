@@ -18,6 +18,8 @@ The following sections contain the module constants, also known as parameter typ
 
 - **[claims](#claims)**
 
+- **[convictionVoting](#convictionvoting)**
+
 - **[crowdloan](#crowdloan)**
 
 - **[democracy](#democracy)**
@@ -43,6 +45,8 @@ The following sections contain the module constants, also known as parameter typ
 - **[phragmenElection](#phragmenelection)**
 
 - **[proxy](#proxy)**
+
+- **[referenda](#referenda)**
 
 - **[registrar](#registrar)**
 
@@ -115,6 +119,14 @@ ___
 ### existentialDeposit: `u128`
 - **interface**: `api.consts.balances.existentialDeposit`
 - **summary**:    The minimum amount required to keep an account open. 
+ 
+### maxFreezes: `u32`
+- **interface**: `api.consts.balances.maxFreezes`
+- **summary**:    The maximum number of individual freeze locks that can exist on an account at any time. 
+ 
+### maxHolds: `u32`
+- **interface**: `api.consts.balances.maxHolds`
+- **summary**:    The maximum number of holds that can exist on an account at any time. 
  
 ### maxLocks: `u32`
 - **interface**: `api.consts.balances.maxLocks`
@@ -189,6 +201,23 @@ ___
  
 ### prefix: `Bytes`
 - **interface**: `api.consts.claims.prefix`
+
+___
+
+
+## convictionVoting
+ 
+### maxVotes: `u32`
+- **interface**: `api.consts.convictionVoting.maxVotes`
+- **summary**:    The maximum number of concurrent votes an account may have. 
+
+   Also used to compute weight, an overly large value can lead to extrinsics with large  weight estimation: see `delegate` for instance. 
+ 
+### voteLockingPeriod: `u32`
+- **interface**: `api.consts.convictionVoting.voteLockingPeriod`
+- **summary**:    The minimum period of vote locking. 
+
+   It should be no shorter than enactment period to ensure that in the case of an approval,  those successful voters are locked into the consequences that their votes entail. 
 
 ___
 
@@ -301,6 +330,9 @@ ___
  
 ### minerMaxWeight: `SpWeightsWeightV2Weight`
 - **interface**: `api.consts.electionProviderMultiPhase.minerMaxWeight`
+ 
+### minerMaxWinners: `u32`
+- **interface**: `api.consts.electionProviderMultiPhase.minerMaxWinners`
  
 ### minerTxPriority: `u64`
 - **interface**: `api.consts.electionProviderMultiPhase.minerTxPriority`
@@ -566,6 +598,31 @@ ___
 - **summary**:    The amount of currency needed per proxy added. 
 
    This is held for adding 32 bytes plus an instance of `ProxyType` more into a  pre-existing storage value. Thus, when configuring `ProxyDepositFactor` one should take  into account `32 + proxy_type.encode().len()` bytes of data. 
+
+___
+
+
+## referenda
+ 
+### alarmInterval: `u32`
+- **interface**: `api.consts.referenda.alarmInterval`
+- **summary**:    Quantization level for the referendum wakeup scheduler. A higher number will result in  fewer storage reads/writes needed for smaller voters, but also result in delays to the  automatic referendum status changes. Explicit servicing instructions are unaffected. 
+ 
+### maxQueued: `u32`
+- **interface**: `api.consts.referenda.maxQueued`
+- **summary**:    Maximum size of the referendum queue for a single track. 
+ 
+### submissionDeposit: `u128`
+- **interface**: `api.consts.referenda.submissionDeposit`
+- **summary**:    The minimum amount to be used as a deposit for a public referendum proposal. 
+ 
+### tracks: `Vec<(u16,PalletReferendaTrackInfo)>`
+- **interface**: `api.consts.referenda.tracks`
+- **summary**:    Information concerning the different referendum tracks. 
+ 
+### undecidingTimeout: `u32`
+- **interface**: `api.consts.referenda.undecidingTimeout`
+- **summary**:    The number of blocks after submission that a referendum must begin being decided by.  Once this passes, then anyone may cancel the referendum. 
 
 ___
 
