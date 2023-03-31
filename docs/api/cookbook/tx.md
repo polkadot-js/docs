@@ -139,6 +139,8 @@ tx.send(({ status }) => {
 
 The signing is indicated by the first byte in the transaction, so in this case we have called `.send` on it (no `.sign` or `.signAndSend`), so it will be sent using the unsigned state, without signature attached.
 
+NOTE: The status event is only available on providers that support subscriptions such as `WSProvider` or `ScProvider`. On `HttpProvider`, which does not have bi-directional capabilities, there are no subscriptions, so it cannot listen to the events that are emitted by the transaction pool. In the case of `HttpProvider` the result object returned will always be the non-unique transaction hash.
+
 
 ## How can I batch transactions?
 
