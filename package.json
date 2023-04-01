@@ -1,6 +1,6 @@
 {
   "name": "polkadot-js",
-  "version": "0.0.256",
+  "version": "0.0.257",
   "engine-strict": true,
   "engines": {
     "node": ">=18.14"
@@ -45,7 +45,7 @@
     "@cmfcmf/docusaurus-search-local": "^1.0.0"
   },
   "versions": {
-    "git": "0.0.256",
-    "npm": "0.0.256"
+    "git": "0.0.257",
+    "npm": "0.0.257"
   }
 }

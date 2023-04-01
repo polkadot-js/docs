@@ -421,11 +421,15 @@ ___
 
    TWOX-NOTE: SAFE since `AccountId` is a secure hash. 
  
-### deletionQueue(): `Vec<PalletContractsStorageDeletedContract>`
+### deletionQueue(`u32`): `Option<Bytes>`
 - **interface**: `api.query.contracts.deletionQueue`
 - **summary**:    Evicted contracts that await child trie deletion. 
 
-   Child trie deletion is a heavy operation depending on the amount of storage items  stored in said trie. Therefore this operation is performed lazily in `on_initialize`. 
+   Child trie deletion is a heavy operation depending on the amount of storage items  stored in said trie. Therefore this operation is performed lazily in `on_idle`. 
+ 
+### deletionQueueCounter(): `PalletContractsStorageDeletionQueueManager`
+- **interface**: `api.query.contracts.deletionQueueCounter`
+- **summary**:    A pair of monotonic counters used to track the latest contract marked for deletion  and the latest deleted contract in queue. 
  
 ### nonce(): `u64`
 - **interface**: `api.query.contracts.nonce`

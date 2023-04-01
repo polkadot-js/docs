@@ -513,12 +513,6 @@ ___
 - **interface**: `api.errors.contracts.DecodingFailed.is`
 - **summary**:    Input passed to a contract API function failed to decode as expected type. 
  
-### DeletionQueueFull
-- **interface**: `api.errors.contracts.DeletionQueueFull.is`
-- **summary**:    Removal of a contract failed because the deletion queue is full. 
-
-   This can happen when calling `seal_terminate`.  The queue is filled by deleting contracts and emptied by a fixed amount each block.  Trying again during another block is the only way to resolve this issue. 
- 
 ### DuplicateContract
 - **interface**: `api.errors.contracts.DuplicateContract.is`
 - **summary**:    A contract with the same AccountId already exists. 

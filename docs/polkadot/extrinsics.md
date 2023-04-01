@@ -563,6 +563,10 @@ ___
 
 ## configuration
  
+### setAsyncBackingParams(new: `PolkadotPrimitivesVstagingAsyncBackingParams`)
+- **interface**: `api.tx.configuration.setAsyncBackingParams`
+- **summary**:    Set the asynchronous backing parameters. 
+ 
 ### setBypassConsistencyCheck(new: `bool`)
 - **interface**: `api.tx.configuration.setBypassConsistencyCheck`
 - **summary**:    Setting this to true will disable consistency checks for the configuration setters.  Use with caution. 

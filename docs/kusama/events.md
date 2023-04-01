@@ -155,6 +155,10 @@ ___
 - **interface**: `api.events.balances.Issued.is`
 - **summary**:    Total issuance was increased by `amount`, creating a credit to be balanced. 
  
+### Locked(`AccountId32`, `u128`)
+- **interface**: `api.events.balances.Locked.is`
+- **summary**:    Some balance was locked. 
+ 
 ### Minted(`AccountId32`, `u128`)
 - **interface**: `api.events.balances.Minted.is`
 - **summary**:    Some amount was minted into an account. 
@@ -186,6 +190,10 @@ ___
 ### Transfer(`AccountId32`, `AccountId32`, `u128`)
 - **interface**: `api.events.balances.Transfer.is`
 - **summary**:    Transfer succeeded. 
+ 
+### Unlocked(`AccountId32`, `u128`)
+- **interface**: `api.events.balances.Unlocked.is`
+- **summary**:    Some balance was unlocked. 
  
 ### Unreserved(`AccountId32`, `u128`)
 - **interface**: `api.events.balances.Unreserved.is`
@@ -672,6 +680,10 @@ ___
 - **interface**: `api.events.nisCounterpartBalances.Issued.is`
 - **summary**:    Total issuance was increased by `amount`, creating a credit to be balanced. 
  
+### Locked(`AccountId32`, `u128`)
+- **interface**: `api.events.nisCounterpartBalances.Locked.is`
+- **summary**:    Some balance was locked. 
+ 
 ### Minted(`AccountId32`, `u128`)
 - **interface**: `api.events.nisCounterpartBalances.Minted.is`
 - **summary**:    Some amount was minted into an account. 
@@ -703,6 +715,10 @@ ___
 ### Transfer(`AccountId32`, `AccountId32`, `u128`)
 - **interface**: `api.events.nisCounterpartBalances.Transfer.is`
 - **summary**:    Transfer succeeded. 
+ 
+### Unlocked(`AccountId32`, `u128`)
+- **interface**: `api.events.nisCounterpartBalances.Unlocked.is`
+- **summary**:    Some balance was unlocked. 
  
 ### Unreserved(`AccountId32`, `u128`)
 - **interface**: `api.events.nisCounterpartBalances.Unreserved.is`
