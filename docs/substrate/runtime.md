@@ -38,6 +38,8 @@ The following section contains known runtime calls that may be available on spec
 
 - **[ethereumRuntimeRPCApi](#ethereumruntimerpcapi)**
 
+- **[fungiblesApi](#fungiblesapi)**
+
 - **[grandpaApi](#grandpaapi)**
 
 - **[kusamaFinalityApi](#kusamafinalityapi)**
@@ -413,6 +415,16 @@ ___
 - **interface**: `api.call.ethereumRuntimeRPCApi.storageAt`
 - **runtime**: `EthereumRuntimeRPCApi_storage_at`
 - **summary**: For a given account address and index, returns pallet_evm::AccountStorages.
+
+___
+
+
+## FungiblesApi
+ 
+### queryAccountBalances(account: `AccountId`): `Result<Vec<XcmV3MultiAsset>, FungiblesAccessError>`
+- **interface**: `api.call.fungiblesApi.queryAccountBalances`
+- **runtime**: `FungiblesApi_query_account_balances`
+- **summary**: Returns the list of all `MultiAsset` that an `AccountId` has
 
 ___
 

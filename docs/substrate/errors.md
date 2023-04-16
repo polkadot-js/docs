@@ -1514,15 +1514,6 @@ ___
 - **interface**: `api.errors.nis.PortionTooBig.is`
 - **summary**:    The portion supplied is beyond the value of the receipt. 
  
-### Release1
-- **interface**: `api.errors.nis.Release1.is`
- 
-### Release2
-- **interface**: `api.errors.nis.Release2.is`
- 
-### Tah
-- **interface**: `api.errors.nis.Tah.is`
- 
 ### Throttled
 - **interface**: `api.errors.nis.Throttled.is`
 - **summary**:    The thaw throttle has been reached for this period. 

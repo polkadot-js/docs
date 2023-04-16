@@ -589,6 +589,10 @@ ___
 - **interface**: `api.tx.configuration.setDisputePostConclusionAcceptancePeriod`
 - **summary**:    Set the dispute post conclusion acceptance period. 
  
+### setExecutorParams(new: `PolkadotPrimitivesV4ExecutorParams`)
+- **interface**: `api.tx.configuration.setExecutorParams`
+- **summary**:    Set PVF executor parameters. 
+ 
 ### setGroupRotationFrequency(new: `u32`)
 - **interface**: `api.tx.configuration.setGroupRotationFrequency`
 - **summary**:    Set the parachain validator-group rotation frequency 

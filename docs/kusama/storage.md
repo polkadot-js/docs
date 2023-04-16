@@ -259,7 +259,7 @@ ___
 - **interface**: `api.query.balances.freezes`
 - **summary**:    Freeze locks on account balances. 
  
-### holds(`AccountId32`): `Vec<{"id":"KusamaRuntimeHoldReason","amount":"u128"}>`
+### holds(`AccountId32`): `Vec<{"id":"KusamaRuntimeRuntimeHoldReason","amount":"u128"}>`
 - **interface**: `api.query.balances.holds`
 - **summary**:    Holds on account balances. 
  

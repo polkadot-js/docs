@@ -587,6 +587,10 @@ ___
 - **interface**: `api.tx.configuration.setDisputePostConclusionAcceptancePeriod`
 - **summary**:    Set the dispute post conclusion acceptance period. 
  
+### setExecutorParams(new: `PolkadotPrimitivesV4ExecutorParams`)
+- **interface**: `api.tx.configuration.setExecutorParams`
+- **summary**:    Set PVF executor parameters. 
+ 
 ### setGroupRotationFrequency(new: `u32`)
 - **interface**: `api.tx.configuration.setGroupRotationFrequency`
 - **summary**:    Set the parachain validator-group rotation frequency 
@@ -867,32 +871,6 @@ ___
  
 ### close(proposal_hash: `H256`, index: `Compact<u32>`, proposal_weight_bound: `SpWeightsWeightV2Weight`, length_bound: `Compact<u32>`)
 - **interface**: `api.tx.council.close`
-- **summary**:    Close a vote that is either approved, disapproved or whose voting period has ended. 
-
-   May be called by any signed account in order to finish voting and close the proposal. 
-
-   If called before the end of the voting period it will only close the vote if it is  has enough votes to be approved or disapproved. 
-
-   If called after the end of the voting period abstentions are counted as rejections  unless there is a prime member set and the prime member cast an approval. 
-
-   If the close operation completes successfully with disapproval, the transaction fee will  be waived. Otherwise execution of the approved operation will be charged to the caller. 
-
-   + `proposal_weight_bound`: The maximum amount of weight consumed by executing the closed  proposal.  + `length_bound`: The upper bound for the length of the proposal in storage. Checked via  `storage::read` so it is `size_of::<u32>() == 4` larger than the pure length. 
-
-   #### Complexity 
-
-  - `O(B + M + P1 + P2)` where:
-
-  - `B` is `proposal` size in bytes (length-fee-bounded)
-
-  - `M` is members-count (code- and governance-bounded)
-
-  - `P1` is the complexity of `proposal` preimage.
-
-  - `P2` is proposal-count (code-bounded)
- 
-### closeOldWeight(proposal_hash: `H256`, index: `Compact<u32>`, proposal_weight_bound: `Compact<u64>`, length_bound: `Compact<u32>`)
-- **interface**: `api.tx.council.closeOldWeight`
 - **summary**:    Close a vote that is either approved, disapproved or whose voting period has ended. 
 
    May be called by any signed account in order to finish voting and close the proposal. 
@@ -3239,32 +3217,6 @@ ___
  
 ### close(proposal_hash: `H256`, index: `Compact<u32>`, proposal_weight_bound: `SpWeightsWeightV2Weight`, length_bound: `Compact<u32>`)
 - **interface**: `api.tx.technicalCommittee.close`
-- **summary**:    Close a vote that is either approved, disapproved or whose voting period has ended. 
-
-   May be called by any signed account in order to finish voting and close the proposal. 
-
-   If called before the end of the voting period it will only close the vote if it is  has enough votes to be approved or disapproved. 
-
-   If called after the end of the voting period abstentions are counted as rejections  unless there is a prime member set and the prime member cast an approval. 
-
-   If the close operation completes successfully with disapproval, the transaction fee will  be waived. Otherwise execution of the approved operation will be charged to the caller. 
-
-   + `proposal_weight_bound`: The maximum amount of weight consumed by executing the closed  proposal.  + `length_bound`: The upper bound for the length of the proposal in storage. Checked via  `storage::read` so it is `size_of::<u32>() == 4` larger than the pure length. 
-
-   #### Complexity 
-
-  - `O(B + M + P1 + P2)` where:
-
-  - `B` is `proposal` size in bytes (length-fee-bounded)
-
-  - `M` is members-count (code- and governance-bounded)
-
-  - `P1` is the complexity of `proposal` preimage.
-
-  - `P2` is proposal-count (code-bounded)
- 
-### closeOldWeight(proposal_hash: `H256`, index: `Compact<u32>`, proposal_weight_bound: `Compact<u64>`, length_bound: `Compact<u32>`)
-- **interface**: `api.tx.technicalCommittee.closeOldWeight`
 - **summary**:    Close a vote that is either approved, disapproved or whose voting period has ended. 
 
    May be called by any signed account in order to finish voting and close the proposal. 
