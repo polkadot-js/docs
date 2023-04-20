@@ -113,7 +113,7 @@ let unsubscribe; // this is the function of type `() => void` that should be cal
 // we subscribe to any account change and log the new list.
 // note that `web3AccountsSubscribe` returns the function to unsubscribe
 unsubscribe = await web3AccountsSubscribe(( injectedAccounts ) => { 
-    injectedAccounts.map(( accounts ) => {
+    injectedAccounts.map(( account ) => {
         console.log(account.address);
     })
  });
