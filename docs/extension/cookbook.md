@@ -102,7 +102,7 @@ const extensions = await web3Enable('my cool dapp');
 
 if (extensions.length === 0) {
     // no extension installed, or the user did not accept the authorization
-    // in this case we should inform the use and give a link to the extension
+    // in this case we should inform the user and give a link to the extension
     return;
 }
 
@@ -113,7 +113,7 @@ let unsubscribe; // this is the function of type `() => void` that should be cal
 // we subscribe to any account change and log the new list.
 // note that `web3AccountsSubscribe` returns the function to unsubscribe
 unsubscribe = await web3AccountsSubscribe(( injectedAccounts ) => { 
-    injectedAccounts.map(( accounts ) => {
+    injectedAccounts.map(( account ) => {
         console.log(account.address);
     })
  });
