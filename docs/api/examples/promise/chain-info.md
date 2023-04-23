@@ -21,5 +21,5 @@ async function main () {
   // {ss58Format: 0, tokenDecimals: [10], tokenSymbol: [DOT]}
 }
 
-main().catch(console.error).finally(() => process.exit());;
+main().catch(console.error).finally(() => process.exit());
 ```
