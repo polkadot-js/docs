@@ -408,6 +408,10 @@ ___
 
 ## dmp
  
+### deliveryFeeFactor(`u32`): `u128`
+- **interface**: `api.query.dmp.deliveryFeeFactor`
+- **summary**:    The number to multiply the base delivery fee by. 
+ 
 ### downwardMessageQueueHeads(`u32`): `H256`
 - **interface**: `api.query.dmp.downwardMessageQueueHeads`
 - **summary**:    A mapping that stores the downward message queue MQC head for each para. 

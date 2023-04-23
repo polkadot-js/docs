@@ -24,8 +24,6 @@ The following sections contain Extrinsics methods are part of the default Kusama
 
 - **[crowdloan](#crowdloan)**
 
-- **[dmp](#dmp)**
-
 - **[electionProviderMultiPhase](#electionprovidermultiphase)**
 
 - **[fastUnstake](#fastunstake)**
@@ -936,11 +934,6 @@ ___
    - `who`: The account whose contribution should be withdrawn. 
 
   - `index`: The parachain to whose crowdloan the contribution was made.
-
-___
-
-
-## dmp
 
 ___
 

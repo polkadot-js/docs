@@ -20,6 +20,8 @@ The following sections contain the module constants, also known as parameter typ
 
 - **[convictionVoting](#convictionvoting)**
 
+- **[council](#council)**
+
 - **[crowdloan](#crowdloan)**
 
 - **[democracy](#democracy)**
@@ -57,6 +59,8 @@ The following sections contain the module constants, also known as parameter typ
 - **[staking](#staking)**
 
 - **[system](#system)**
+
+- **[technicalCommittee](#technicalcommittee)**
 
 - **[timestamp](#timestamp)**
 
@@ -222,6 +226,15 @@ ___
 - **summary**:    The minimum period of vote locking. 
 
    It should be no shorter than enactment period to ensure that in the case of an approval,  those successful voters are locked into the consequences that their votes entail. 
+
+___
+
+
+## council
+ 
+### maxProposalWeight: `SpWeightsWeightV2Weight`
+- **interface**: `api.consts.council.maxProposalWeight`
+- **summary**:    The maximum weight of a dispatch call that can be proposed and executed. 
 
 ___
 
@@ -746,6 +759,15 @@ ___
 ### version: `SpVersionRuntimeVersion`
 - **interface**: `api.consts.system.version`
 - **summary**:    Get the chain's current version. 
+
+___
+
+
+## technicalCommittee
+ 
+### maxProposalWeight: `SpWeightsWeightV2Weight`
+- **interface**: `api.consts.technicalCommittee.maxProposalWeight`
+- **summary**:    The maximum weight of a dispatch call that can be proposed and executed. 
 
 ___
 

@@ -10,6 +10,8 @@ This page lists the errors that can be encountered in the different modules.
 
 - **[allianceMotion](#alliancemotion)**
 
+- **[assetRate](#assetrate)**
+
 - **[assets](#assets)**
 
 - **[babe](#babe)**
@@ -254,6 +256,19 @@ ___
 ### WrongProposalWeight
 - **interface**: `api.errors.allianceMotion.WrongProposalWeight.is`
 - **summary**:    The given weight bound for the proposal was too low. 
+
+___
+
+
+## assetRate
+ 
+### AlreadyExists
+- **interface**: `api.errors.assetRate.AlreadyExists.is`
+- **summary**:    The given asset ID already has an assigned conversion rate and cannot be re-created. 
+ 
+### UnknownAssetId
+- **interface**: `api.errors.assetRate.UnknownAssetId.is`
+- **summary**:    The given asset ID is unknown. 
 
 ___
 

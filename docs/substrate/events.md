@@ -10,6 +10,8 @@ Events are emitted for certain operations on the runtime. The following sections
 
 - **[allianceMotion](#alliancemotion)**
 
+- **[assetRate](#assetrate)**
+
 - **[assets](#assets)**
 
 - **[assetTxPayment](#assettxpayment)**
@@ -208,6 +210,20 @@ ___
 ___
 
 
+## assetRate
+ 
+### AssetRateCreated(`u32`, `u128`)
+- **interface**: `api.events.assetRate.AssetRateCreated.is`
+ 
+### AssetRateRemoved(`u32`)
+- **interface**: `api.events.assetRate.AssetRateRemoved.is`
+ 
+### AssetRateUpdated(`u32`, `u128`, `u128`)
+- **interface**: `api.events.assetRate.AssetRateUpdated.is`
+
+___
+
+
 ## assets
  
 ### AccountsDestroyed(`u32`, `u32`, `u32`)
@@ -332,6 +348,10 @@ ___
 - **interface**: `api.events.balances.Endowed.is`
 - **summary**:    An account was created with some free balance. 
  
+### Frozen(`AccountId32`, `u128`)
+- **interface**: `api.events.balances.Frozen.is`
+- **summary**:    Some balance was frozen. 
+ 
 ### Issued(`u128`)
 - **interface**: `api.events.balances.Issued.is`
 - **summary**:    Total issuance was increased by `amount`, creating a credit to be balanced. 
@@ -367,6 +387,10 @@ ___
 ### Suspended(`AccountId32`, `u128`)
 - **interface**: `api.events.balances.Suspended.is`
 - **summary**:    Some amount was suspended from an account (it can be restored later). 
+ 
+### Thawed(`AccountId32`, `u128`)
+- **interface**: `api.events.balances.Thawed.is`
+- **summary**:    Some balance was thawed. 
  
 ### Transfer(`AccountId32`, `AccountId32`, `u128`)
 - **interface**: `api.events.balances.Transfer.is`

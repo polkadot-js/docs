@@ -151,6 +151,10 @@ ___
 - **interface**: `api.events.balances.Endowed.is`
 - **summary**:    An account was created with some free balance. 
  
+### Frozen(`AccountId32`, `u128`)
+- **interface**: `api.events.balances.Frozen.is`
+- **summary**:    Some balance was frozen. 
+ 
 ### Issued(`u128`)
 - **interface**: `api.events.balances.Issued.is`
 - **summary**:    Total issuance was increased by `amount`, creating a credit to be balanced. 
@@ -186,6 +190,10 @@ ___
 ### Suspended(`AccountId32`, `u128`)
 - **interface**: `api.events.balances.Suspended.is`
 - **summary**:    Some amount was suspended from an account (it can be restored later). 
+ 
+### Thawed(`AccountId32`, `u128`)
+- **interface**: `api.events.balances.Thawed.is`
+- **summary**:    Some balance was thawed. 
  
 ### Transfer(`AccountId32`, `AccountId32`, `u128`)
 - **interface**: `api.events.balances.Transfer.is`

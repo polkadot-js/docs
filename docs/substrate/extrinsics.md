@@ -10,6 +10,8 @@ The following sections contain Extrinsics methods are part of the default Substr
 
 - **[allianceMotion](#alliancemotion)**
 
+- **[assetRate](#assetrate)**
+
 - **[assets](#assets)**
 
 - **[babe](#babe)**
@@ -320,6 +322,35 @@ ___
    Transaction fees will be waived if the member is voting on any particular proposal  for the first time and the call is successful. Subsequent vote changes will charge a  fee.  #### Complexity 
 
   - `O(M)` where `M` is members-count (code- and governance-bounded)
+
+___
+
+
+## assetRate
+ 
+### create(asset_id: `u32`, rate: `u128`)
+- **interface**: `api.tx.assetRate.create`
+- **summary**:    Initialize a conversion rate to native balance for the given asset. 
+
+   #### Complexity 
+
+  - O(1)
+ 
+### remove(asset_id: `u32`)
+- **interface**: `api.tx.assetRate.remove`
+- **summary**:    Remove an existing conversion rate to native balance for the given asset. 
+
+   #### Complexity 
+
+  - O(1)
+ 
+### update(asset_id: `u32`, rate: `u128`)
+- **interface**: `api.tx.assetRate.update`
+- **summary**:    Update the conversion rate to native balance for the given asset. 
+
+   #### Complexity 
+
+  - O(1)
 
 ___
 

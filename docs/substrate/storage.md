@@ -10,6 +10,8 @@ The following sections contain Storage methods are part of the default Substrate
 
 - **[allianceMotion](#alliancemotion)**
 
+- **[assetRate](#assetrate)**
+
 - **[assets](#assets)**
 
 - **[authorityDiscovery](#authoritydiscovery)**
@@ -184,6 +186,17 @@ ___
 ### voting(`H256`): `Option<PalletCollectiveVotes>`
 - **interface**: `api.query.allianceMotion.voting`
 - **summary**:    Votes on a given proposal, if it is ongoing. 
+
+___
+
+
+## assetRate
+ 
+### conversionRateToNative(`u32`): `Option<u128>`
+- **interface**: `api.query.assetRate.conversionRateToNative`
+- **summary**:    Maps an asset to its fixed point representation in the native balance. 
+
+   E.g. `native_amount = asset_amount * ConversionRateToNative::<T>::get(asset_id)` 
 
 ___
 

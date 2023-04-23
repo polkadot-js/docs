@@ -8,6 +8,8 @@ The following sections contain the module constants, also known as parameter typ
 
 - **[alliance](#alliance)**
 
+- **[allianceMotion](#alliancemotion)**
+
 - **[assets](#assets)**
 
 - **[babe](#babe)**
@@ -23,6 +25,8 @@ The following sections contain the module constants, also known as parameter typ
 - **[convictionVoting](#convictionvoting)**
 
 - **[coreFellowship](#corefellowship)**
+
+- **[council](#council)**
 
 - **[democracy](#democracy)**
 
@@ -72,6 +76,8 @@ The following sections contain the module constants, also known as parameter typ
 
 - **[system](#system)**
 
+- **[technicalCommittee](#technicalcommittee)**
+
 - **[timestamp](#timestamp)**
 
 - **[tips](#tips)**
@@ -113,6 +119,15 @@ ___
 ### maxWebsiteUrlLength: `u32`
 - **interface**: `api.consts.alliance.maxWebsiteUrlLength`
 - **summary**:    The maximum length of a website URL. 
+
+___
+
+
+## allianceMotion
+ 
+### maxProposalWeight: `SpWeightsWeightV2Weight`
+- **interface**: `api.consts.allianceMotion.maxProposalWeight`
+- **summary**:    The maximum weight of a dispatch call that can be proposed and executed. 
 
 ___
 
@@ -327,6 +342,15 @@ ___
 ### evidenceSize: `u32`
 - **interface**: `api.consts.coreFellowship.evidenceSize`
 - **summary**:    The maximum size in bytes submitted evidence is allowed to be. 
+
+___
+
+
+## council
+ 
+### maxProposalWeight: `SpWeightsWeightV2Weight`
+- **interface**: `api.consts.council.maxProposalWeight`
+- **summary**:    The maximum weight of a dispatch call that can be proposed and executed. 
 
 ___
 
@@ -1099,6 +1123,15 @@ ___
 ### version: `SpVersionRuntimeVersion`
 - **interface**: `api.consts.system.version`
 - **summary**:    Get the chain's current version. 
+
+___
+
+
+## technicalCommittee
+ 
+### maxProposalWeight: `SpWeightsWeightV2Weight`
+- **interface**: `api.consts.technicalCommittee.maxProposalWeight`
+- **summary**:    The maximum weight of a dispatch call that can be proposed and executed. 
 
 ___
 

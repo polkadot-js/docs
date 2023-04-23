@@ -28,8 +28,6 @@ The following sections contain Extrinsics methods are part of the default Polkad
 
 - **[democracy](#democracy)**
 
-- **[dmp](#dmp)**
-
 - **[electionProviderMultiPhase](#electionprovidermultiphase)**
 
 - **[fastUnstake](#fastunstake)**
@@ -1316,11 +1314,6 @@ ___
    - `ref_index`: The index of the referendum to vote for. 
 
   - `vote`: The vote configuration.
-
-___
-
-
-## dmp
 
 ___
 
