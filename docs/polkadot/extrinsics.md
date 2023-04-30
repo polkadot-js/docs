@@ -3824,7 +3824,7 @@ ___
 - **interface**: `api.tx.xcmPallet.forceDefaultXcmVersion`
 - **summary**:    Set a safe XCM version (the version that XCM should be encoded with if the most recent  version a destination can accept is unknown). 
 
-   - `origin`: Must be Root. 
+   - `origin`: Must be an origin specified by AdminOrigin. 
 
   - `maybe_xcm_version`: The default XCM encoding version, or `None` to disable.
  
@@ -3832,15 +3832,23 @@ ___
 - **interface**: `api.tx.xcmPallet.forceSubscribeVersionNotify`
 - **summary**:    Ask a location to notify us regarding their XCM version and any changes to it. 
 
-   - `origin`: Must be Root. 
+   - `origin`: Must be an origin specified by AdminOrigin. 
 
   - `location`: The location to which we should subscribe for XCM version notifications.
+ 
+### forceSuspension(suspended: `bool`)
+- **interface**: `api.tx.xcmPallet.forceSuspension`
+- **summary**:    Set or unset the global suspension state of the XCM executor. 
+
+   - `origin`: Must be an origin specified by AdminOrigin. 
+
+  - `suspended`: `true` to suspend, `false` to resume.
  
 ### forceUnsubscribeVersionNotify(location: `XcmVersionedMultiLocation`)
 - **interface**: `api.tx.xcmPallet.forceUnsubscribeVersionNotify`
 - **summary**:    Require that a particular destination should no longer notify us regarding any XCM  version changes. 
 
-   - `origin`: Must be Root. 
+   - `origin`: Must be an origin specified by AdminOrigin. 
 
   - `location`: The location to which we are currently subscribed for XCM version notifications which we no longer desire. 
  
@@ -3848,7 +3856,7 @@ ___
 - **interface**: `api.tx.xcmPallet.forceXcmVersion`
 - **summary**:    Extoll that a particular destination can be communicated with through a particular  version of XCM. 
 
-   - `origin`: Must be Root. 
+   - `origin`: Must be an origin specified by AdminOrigin. 
 
   - `location`: The destination that is being described.
 

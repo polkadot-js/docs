@@ -964,14 +964,6 @@ ___
 ### reports(`H256`): `Option<SpStakingOffenceOffenceDetails>`
 - **interface**: `api.query.offences.reports`
 - **summary**:    The primary structure that holds all offence records keyed by report identifiers. 
- 
-### reportsByKindIndex(`[u8;16]`): `Bytes`
-- **interface**: `api.query.offences.reportsByKindIndex`
-- **summary**:    Enumerates all reports of a kind along with the time they happened. 
-
-   All reports are sorted by the time of offence. 
-
-   Note that the actual type of this mapping is `Vec<u8>`, this is because values of  different types are not supported at the moment so we are doing the manual serialization. 
 
 ___
 
@@ -1979,3 +1971,7 @@ ___
 ### versionNotifyTargets(`u32, XcmVersionedMultiLocation`): `Option<(u64,SpWeightsWeightV2Weight,u32)>`
 - **interface**: `api.query.xcmPallet.versionNotifyTargets`
 - **summary**:    The target locations that are subscribed to our version changes, as well as the most recent  of our versions we informed them of. 
+ 
+### xcmExecutionSuspended(): `bool`
+- **interface**: `api.query.xcmPallet.xcmExecutionSuspended`
+- **summary**:    Global suspension state of the XCM executor. 

@@ -614,6 +614,8 @@ ___
 ### queuedSolution(): `Option<PalletElectionProviderMultiPhaseReadySolution>`
 - **interface**: `api.query.electionProviderMultiPhase.queuedSolution`
 - **summary**:    Current best solution, signed or unsigned, queued to be returned upon `elect`. 
+
+   Always sorted by score. 
  
 ### round(): `u32`
 - **interface**: `api.query.electionProviderMultiPhase.round`
@@ -1108,14 +1110,6 @@ ___
 ### reports(`H256`): `Option<SpStakingOffenceOffenceDetails>`
 - **interface**: `api.query.offences.reports`
 - **summary**:    The primary structure that holds all offence records keyed by report identifiers. 
- 
-### reportsByKindIndex(`[u8;16]`): `Bytes`
-- **interface**: `api.query.offences.reportsByKindIndex`
-- **summary**:    Enumerates all reports of a kind along with the time they happened. 
-
-   All reports are sorted by the time of offence. 
-
-   Note that the actual type of this mapping is `Vec<u8>`, this is because values of  different types are not supported at the moment so we are doing the manual serialization. 
 
 ___
 

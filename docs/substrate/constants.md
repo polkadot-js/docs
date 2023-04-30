@@ -273,6 +273,10 @@ ___
 
 ## contracts
  
+### defaultDepositLimit: `u128`
+- **interface**: `api.consts.contracts.defaultDepositLimit`
+- **summary**:    Fallback value to limit the storage deposit if it's not being set by the caller. 
+ 
 ### depositPerByte: `u128`
 - **interface**: `api.consts.contracts.depositPerByte`
 - **summary**:    The amount of balance a caller has to pay for each byte of storage. 
