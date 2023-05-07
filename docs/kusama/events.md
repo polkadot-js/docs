@@ -1056,6 +1056,9 @@ ___
  
 ### Reserved(`u32`, `AccountId32`)
 - **interface**: `api.events.registrar.Reserved.is`
+ 
+### Swapped(`u32`, `u32`)
+- **interface**: `api.events.registrar.Swapped.is`
 
 ___
 

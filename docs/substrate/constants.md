@@ -72,6 +72,8 @@ The following sections contain the module constants, also known as parameter typ
 
 - **[staking](#staking)**
 
+- **[statement](#statement)**
+
 - **[stateTrieMigration](#statetriemigration)**
 
 - **[system](#system)**
@@ -1071,6 +1073,35 @@ ___
 - **summary**:    Number of eras that slashes are deferred by, after computation. 
 
    This should be less than the bonding duration. Set to 0 if slashes  should be applied immediately, without opportunity for intervention. 
+
+___
+
+
+## statement
+ 
+### byteCost: `u128`
+- **interface**: `api.consts.statement.byteCost`
+- **summary**:    Cost of data byte used for priority calculation. 
+ 
+### maxAllowedBytes: `u32`
+- **interface**: `api.consts.statement.maxAllowedBytes`
+- **summary**:    Maximum data bytes allowed per account. 
+ 
+### maxAllowedStatements: `u32`
+- **interface**: `api.consts.statement.maxAllowedStatements`
+- **summary**:    Maximum number of statements allowed per account. 
+ 
+### minAllowedBytes: `u32`
+- **interface**: `api.consts.statement.minAllowedBytes`
+- **summary**:    Minimum data bytes allowed per account. 
+ 
+### minAllowedStatements: `u32`
+- **interface**: `api.consts.statement.minAllowedStatements`
+- **summary**:    Minimum number of statements allowed per account. 
+ 
+### statementCost: `u128`
+- **interface**: `api.consts.statement.statementCost`
+- **summary**:    Min balance for priority statements. 
 
 ___
 

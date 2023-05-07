@@ -452,6 +452,8 @@ ___
 ### queuedSolution(): `Option<PalletElectionProviderMultiPhaseReadySolution>`
 - **interface**: `api.query.electionProviderMultiPhase.queuedSolution`
 - **summary**:    Current best solution, signed or unsigned, queued to be returned upon `elect`. 
+
+   Always sorted by score. 
  
 ### round(): `u32`
 - **interface**: `api.query.electionProviderMultiPhase.round`

@@ -68,6 +68,8 @@ The following sections contain Storage methods are part of the default Polkadot 
 
 - **[parasShared](#parasshared)**
 
+- **[parasSlashing](#parasslashing)**
+
 - **[phragmenElection](#phragmenelection)**
 
 - **[preimage](#preimage)**
@@ -544,6 +546,8 @@ ___
 ### queuedSolution(): `Option<PalletElectionProviderMultiPhaseReadySolution>`
 - **interface**: `api.query.electionProviderMultiPhase.queuedSolution`
 - **summary**:    Current best solution, signed or unsigned, queued to be returned upon `elect`. 
+
+   Always sorted by score. 
  
 ### round(): `u32`
 - **interface**: `api.query.electionProviderMultiPhase.round`
@@ -1188,6 +1192,19 @@ ___
 ### currentSessionIndex(): `u32`
 - **interface**: `api.query.parasShared.currentSessionIndex`
 - **summary**:    The current session index. 
+
+___
+
+
+## parasSlashing
+ 
+### unappliedSlashes(`u32, H256`): `Option<PolkadotRuntimeParachainsDisputesSlashingPendingSlashes>`
+- **interface**: `api.query.parasSlashing.unappliedSlashes`
+- **summary**:    Validators pending dispute slashes. 
+ 
+### validatorSetCounts(`u32`): `Option<u32>`
+- **interface**: `api.query.parasSlashing.validatorSetCounts`
+- **summary**:    `ValidatorSetCount` per session. 
 
 ___
 

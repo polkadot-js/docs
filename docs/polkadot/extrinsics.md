@@ -58,6 +58,8 @@ The following sections contain Extrinsics methods are part of the default Polkad
 
 - **[parasShared](#parasshared)**
 
+- **[parasSlashing](#parasslashing)**
+
 - **[phragmenElection](#phragmenelection)**
 
 - **[preimage](#preimage)**
@@ -2270,6 +2272,14 @@ ___
 
 
 ## parasShared
+
+___
+
+
+## parasSlashing
+ 
+### reportDisputeLostUnsigned(dispute_proof: `PolkadotRuntimeParachainsDisputesSlashingDisputeProof`, key_owner_proof: `SpSessionMembershipProof`)
+- **interface**: `api.tx.parasSlashing.reportDisputeLostUnsigned`
 
 ___
 

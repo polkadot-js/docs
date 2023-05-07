@@ -88,6 +88,8 @@ Events are emitted for certain operations on the runtime. The following sections
 
 - **[staking](#staking)**
 
+- **[statement](#statement)**
+
 - **[stateTrieMigration](#statetriemigration)**
 
 - **[sudo](#sudo)**
@@ -471,7 +473,7 @@ ___
 
 ## contracts
  
-### Called(`AccountId32`, `AccountId32`)
+### Called(`PalletContractsOrigin`, `AccountId32`)
 - **interface**: `api.events.contracts.Called.is`
 - **summary**:    A contract was called either by a plain account or another contract. 
 
@@ -1671,6 +1673,15 @@ ___
 ### Withdrawn(`AccountId32`, `u128`)
 - **interface**: `api.events.staking.Withdrawn.is`
 - **summary**:    An account has called `withdraw_unbonded` and removed unbonding chunks worth `Balance`  from the unlocking queue. 
+
+___
+
+
+## statement
+ 
+### NewStatement(`AccountId32`, `SpStatementStoreStatement`)
+- **interface**: `api.events.statement.NewStatement.is`
+- **summary**:    A new statement is submitted 
 
 ___
 

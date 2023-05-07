@@ -2122,7 +2122,7 @@ ___
  
 ### InUse
 - **interface**: `api.errors.xcmPallet.InUse.is`
-- **summary**:    The unlock operation cannot succeed because there are still users of the lock. 
+- **summary**:    The unlock operation cannot succeed because there are still consumers of the lock. 
  
 ### InvalidAsset
 - **interface**: `api.errors.xcmPallet.InvalidAsset.is`

@@ -54,6 +54,8 @@ This page lists the errors that can be encountered in the different modules.
 
 - **[parasDisputes](#parasdisputes)**
 
+- **[parasSlashing](#parasslashing)**
+
 - **[phragmenElection](#phragmenelection)**
 
 - **[preimage](#preimage)**
@@ -1354,6 +1356,35 @@ ___
 ___
 
 
+## parasSlashing
+ 
+### DuplicateSlashingReport
+- **interface**: `api.errors.parasSlashing.DuplicateSlashingReport.is`
+- **summary**:    The given slashing report is valid but already previously reported. 
+ 
+### InvalidCandidateHash
+- **interface**: `api.errors.parasSlashing.InvalidCandidateHash.is`
+- **summary**:    The candidate hash is invalid. 
+ 
+### InvalidKeyOwnershipProof
+- **interface**: `api.errors.parasSlashing.InvalidKeyOwnershipProof.is`
+- **summary**:    The key ownership proof is invalid. 
+ 
+### InvalidSessionIndex
+- **interface**: `api.errors.parasSlashing.InvalidSessionIndex.is`
+- **summary**:    The session index is too old or invalid. 
+ 
+### InvalidValidatorIndex
+- **interface**: `api.errors.parasSlashing.InvalidValidatorIndex.is`
+- **summary**:    There is no pending slash for the given validator index and time  slot. 
+ 
+### ValidatorIndexIdMismatch
+- **interface**: `api.errors.parasSlashing.ValidatorIndexIdMismatch.is`
+- **summary**:    The validator index does not match the validator id. 
+
+___
+
+
 ## phragmenElection
  
 ### DuplicatedCandidate
@@ -2047,7 +2078,7 @@ ___
  
 ### InUse
 - **interface**: `api.errors.xcmPallet.InUse.is`
-- **summary**:    The unlock operation cannot succeed because there are still users of the lock. 
+- **summary**:    The unlock operation cannot succeed because there are still consumers of the lock. 
  
 ### InvalidAsset
 - **interface**: `api.errors.xcmPallet.InvalidAsset.is`
