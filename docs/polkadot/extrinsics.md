@@ -3181,9 +3181,7 @@ ___
 - **interface**: `api.tx.system.remark`
 - **summary**:    Make some on-chain remark. 
 
-   #### Complexity 
-
-  - `O(1)`
+   - `O(1)` 
  
 ### remarkWithEvent(remark: `Bytes`)
 - **interface**: `api.tx.system.remarkWithEvent`
@@ -3192,18 +3190,10 @@ ___
 ### setCode(code: `Bytes`)
 - **interface**: `api.tx.system.setCode`
 - **summary**:    Set the new runtime code. 
-
-   #### Complexity 
-
-  - `O(C + S)` where `C` length of `code` and `S` complexity of `can_set_code`
  
 ### setCodeWithoutChecks(code: `Bytes`)
 - **interface**: `api.tx.system.setCodeWithoutChecks`
 - **summary**:    Set the new runtime code without doing any checks of the given `code`. 
-
-   #### Complexity 
-
-  - `O(C)` where `C` length of `code`
  
 ### setHeapPages(pages: `u64`)
 - **interface**: `api.tx.system.setHeapPages`

@@ -377,6 +377,20 @@ ___
 
    Weight: `O(1)` 
  
+### block(id: `Compact<u32>`, who: `MultiAddress`)
+- **interface**: `api.tx.assets.block`
+- **summary**:    Disallow further unprivileged transfers of an asset `id` to and from an account `who`. 
+
+   Origin must be Signed and the sender should be the Freezer of the asset `id`. 
+
+   - `id`: The identifier of the account's asset. 
+
+  - `who`: The account to be unblocked.
+
+   Emits `Blocked`. 
+
+   Weight: `O(1)` 
+ 
 ### burn(id: `Compact<u32>`, who: `MultiAddress`, amount: `Compact<u128>`)
 - **interface**: `api.tx.assets.burn`
 - **summary**:    Reduce the balance of `who` by as much as possible up to `amount` assets of `id`. 
@@ -597,7 +611,7 @@ ___
  
 ### freeze(id: `Compact<u32>`, who: `MultiAddress`)
 - **interface**: `api.tx.assets.freeze`
-- **summary**:    Disallow further unprivileged transfers from an account. 
+- **summary**:    Disallow further unprivileged transfers of an asset `id` from an account `who`. `who`  must already exist as an entry in `Account`s of the asset. If you want to freeze an  account that does not have an entry, use `touch_other` first. 
 
    Origin must be Signed and the sender should be the Freezer of the asset `id`. 
 
@@ -639,13 +653,25 @@ ___
  
 ### refund(id: `Compact<u32>`, allow_burn: `bool`)
 - **interface**: `api.tx.assets.refund`
-- **summary**:    Return the deposit (if any) of an asset account. 
+- **summary**:    Return the deposit (if any) of an asset account or a consumer reference (if any) of an  account. 
 
    The origin must be Signed. 
 
-   - `id`: The identifier of the asset for the account to be created. 
+   - `id`: The identifier of the asset for which the caller would like the deposit  refunded. 
 
   - `allow_burn`: If `true` then assets may be destroyed in order to complete the refund.
+
+   Emits `Refunded` event when successful. 
+ 
+### refundOther(id: `Compact<u32>`, who: `MultiAddress`)
+- **interface**: `api.tx.assets.refundOther`
+- **summary**:    Return the deposit (if any) of a target asset account. Useful if you are the depositor. 
+
+   The origin must be Signed and either the account owner, depositor, or asset `Admin`. In  order to burn a non-zero balance of the asset, the caller must be the account and should  use `refund`. 
+
+   - `id`: The identifier of the asset for the account holding a deposit. 
+
+  - `who`: The account to refund.
 
    Emits `Refunded` event when successful. 
  
@@ -715,7 +741,7 @@ ___
  
 ### thaw(id: `Compact<u32>`, who: `MultiAddress`)
 - **interface**: `api.tx.assets.thaw`
-- **summary**:    Allow unprivileged transfers from an account again. 
+- **summary**:    Allow unprivileged transfers to and from an account again. 
 
    Origin must be Signed and the sender should be the Admin of the asset `id`. 
 
@@ -748,6 +774,20 @@ ___
    - `origin`: Must be Signed; the signer account must have sufficient funds for a deposit  to be taken. 
 
   - `id`: The identifier of the asset for the account to be created.
+
+   Emits `Touched` event when successful. 
+ 
+### touchOther(id: `Compact<u32>`, who: `MultiAddress`)
+- **interface**: `api.tx.assets.touchOther`
+- **summary**:    Create an asset account for `who`. 
+
+   A deposit will be taken from the signer account. 
+
+   - `origin`: Must be Signed by `Freezer` or `Admin` of the asset `id`; the signer account  must have sufficient funds for a deposit to be taken. 
+
+  - `id`: The identifier of the asset for the account to be created.
+
+  - `who`: The account to be created.
 
    Emits `Touched` event when successful. 
  
@@ -4544,7 +4584,7 @@ ___
 
 ## staking
  
-### bond(controller: `MultiAddress`, value: `Compact<u128>`, payee: `PalletStakingRewardDestination`)
+### bond(value: `Compact<u128>`, payee: `PalletStakingRewardDestination`)
 - **interface**: `api.tx.staking.bond`
 - **summary**:    Take the origin account as a stash and lock up `value` of its balance. `controller` will  be the account that controls it. 
 
@@ -4758,9 +4798,9 @@ ___
 
    #### Complexity  Same as [`Self::set_validator_count`]. 
  
-### setController(controller: `MultiAddress`)
+### setController()
 - **interface**: `api.tx.staking.setController`
-- **summary**:    (Re-)set the controller of a stash. 
+- **summary**:    (Re-)sets the controller of a stash to the stash itself. This function previously  accepted a `controller` argument to set the controller to an account other than the  stash itself. This functionality has now been removed, now only setting the controller  to the stash, if it is not already. 
 
    Effects will be felt instantly (as soon as this function is completed successfully). 
 
@@ -4987,9 +5027,7 @@ ___
 - **interface**: `api.tx.system.remark`
 - **summary**:    Make some on-chain remark. 
 
-   #### Complexity 
-
-  - `O(1)`
+   - `O(1)` 
  
 ### remarkWithEvent(remark: `Bytes`)
 - **interface**: `api.tx.system.remarkWithEvent`
@@ -4998,18 +5036,10 @@ ___
 ### setCode(code: `Bytes`)
 - **interface**: `api.tx.system.setCode`
 - **summary**:    Set the new runtime code. 
-
-   #### Complexity 
-
-  - `O(C + S)` where `C` length of `code` and `S` complexity of `can_set_code`
  
 ### setCodeWithoutChecks(code: `Bytes`)
 - **interface**: `api.tx.system.setCodeWithoutChecks`
 - **summary**:    Set the new runtime code without doing any checks of the given `code`. 
-
-   #### Complexity 
-
-  - `O(C)` where `C` length of `code`
  
 ### setHeapPages(pages: `u64`)
 - **interface**: `api.tx.system.setHeapPages`

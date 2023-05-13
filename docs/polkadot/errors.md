@@ -1284,10 +1284,6 @@ ___
 - **interface**: `api.errors.paras.NotRegistered.is`
 - **summary**:    Para is not registered in our system. 
  
-### PvfCheckDisabled
-- **interface**: `api.errors.paras.PvfCheckDisabled.is`
-- **summary**:    The PVF pre-checking statement cannot be included since the PVF pre-checking mechanism  is disabled. 
- 
 ### PvfCheckDoubleVote
 - **interface**: `api.errors.paras.PvfCheckDoubleVote.is`
 - **summary**:    The given validator already has cast a vote. 

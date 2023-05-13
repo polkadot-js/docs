@@ -260,6 +260,10 @@ ___
 - **interface**: `api.events.assets.AssetThawed.is`
 - **summary**:    Some asset `asset_id` was thawed. 
  
+### Blocked(`u32`, `AccountId32`)
+- **interface**: `api.events.assets.Blocked.is`
+- **summary**:    Some account `who` was blocked. 
+ 
 ### Burned(`u32`, `AccountId32`, `u128`)
 - **interface**: `api.events.assets.Burned.is`
 - **summary**:    Some assets were destroyed. 
@@ -307,6 +311,10 @@ ___
 ### Thawed(`u32`, `AccountId32`)
 - **interface**: `api.events.assets.Thawed.is`
 - **summary**:    Some account `who` was thawed. 
+ 
+### Touched(`u32`, `AccountId32`, `AccountId32`)
+- **interface**: `api.events.assets.Touched.is`
+- **summary**:    Some account `who` was created with a deposit from `depositor`. 
  
 ### Transferred(`u32`, `AccountId32`, `AccountId32`, `u128`)
 - **interface**: `api.events.assets.Transferred.is`
