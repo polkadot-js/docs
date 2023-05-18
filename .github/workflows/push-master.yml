@@ -25,5 +25,5 @@ jobs:
         node-version: 'lts/*'
     - name: build
       run: |
-        yarn install --immutable | grep -v 'YN0013'
+        yarn install --immutable
         yarn ${{ matrix.step }}
