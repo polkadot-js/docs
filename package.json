@@ -19,10 +19,10 @@
     "test": "echo \"Skipping test\""
   },
   "devDependencies": {
-    "@docusaurus/core": "2.4.0",
-    "@docusaurus/preset-classic": "2.4.0",
+    "@docusaurus/core": "2.4.1",
+    "@docusaurus/preset-classic": "2.4.1",
     "@mdx-js/react": "^1.6.22",
-    "@polkadot/dev": "^0.73.17",
+    "@polkadot/dev": "^0.73.24",
     "@polkadot/typegen": "^10.7.1",
     "clsx": "^1.2.1",
     "react": "^18.2.0",
