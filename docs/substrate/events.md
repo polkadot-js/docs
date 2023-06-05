@@ -10,6 +10,8 @@ Events are emitted for certain operations on the runtime. The following sections
 
 - **[allianceMotion](#alliancemotion)**
 
+- **[assetConversion](#assetconversion)**
+
 - **[assetRate](#assetrate)**
 
 - **[assets](#assets)**
@@ -54,6 +56,8 @@ Events are emitted for certain operations on the runtime. The following sections
 
 - **[multisig](#multisig)**
 
+- **[nftFractionalization](#nftfractionalization)**
+
 - **[nfts](#nfts)**
 
 - **[nis](#nis)**
@@ -61,6 +65,8 @@ Events are emitted for certain operations on the runtime. The following sections
 - **[nominationPools](#nominationpools)**
 
 - **[offences](#offences)**
+
+- **[poolAssets](#poolassets)**
 
 - **[pov](#pov)**
 
@@ -208,6 +214,31 @@ ___
 ### Voted(`AccountId32`, `H256`, `bool`, `u32`, `u32`)
 - **interface**: `api.events.allianceMotion.Voted.is`
 - **summary**:    A motion (given hash) has been voted on by given account, leaving  a tally (yes votes and no votes given respectively as `MemberCount`). 
+
+___
+
+
+## assetConversion
+ 
+### LiquidityAdded(`AccountId32`, `AccountId32`, `(PalletAssetConversionNativeOrAssetId,PalletAssetConversionNativeOrAssetId)`, `u128`, `u128`, `u32`, `u128`)
+- **interface**: `api.events.assetConversion.LiquidityAdded.is`
+- **summary**:    A successful call of the `AddLiquidity` extrinsic will create this event. 
+ 
+### LiquidityRemoved(`AccountId32`, `AccountId32`, `(PalletAssetConversionNativeOrAssetId,PalletAssetConversionNativeOrAssetId)`, `u128`, `u128`, `u32`, `u128`, `Permill`)
+- **interface**: `api.events.assetConversion.LiquidityRemoved.is`
+- **summary**:    A successful call of the `RemoveLiquidity` extrinsic will create this event. 
+ 
+### PoolCreated(`AccountId32`, `(PalletAssetConversionNativeOrAssetId,PalletAssetConversionNativeOrAssetId)`, `u32`)
+- **interface**: `api.events.assetConversion.PoolCreated.is`
+- **summary**:    A successful call of the `CretaPool` extrinsic will create this event. 
+ 
+### SwapExecuted(`AccountId32`, `AccountId32`, `Vec<PalletAssetConversionNativeOrAssetId>`, `u128`, `u128`)
+- **interface**: `api.events.assetConversion.SwapExecuted.is`
+- **summary**:    Assets have been converted from one to another. Both `SwapExactTokenForToken`  and `SwapTokenForExactToken` will generate this event. 
+ 
+### Transfer(`AccountId32`, `AccountId32`, `PalletAssetConversionNativeOrAssetId`, `u128`)
+- **interface**: `api.events.assetConversion.Transfer.is`
+- **summary**:    An amount has been transferred from one account to another. 
 
 ___
 
@@ -791,15 +822,15 @@ ___
  
 ### ComputationLimitSet(`Perbill`)
 - **interface**: `api.events.glutton.ComputationLimitSet.is`
-- **summary**:    The computation limit has been updated by root. 
+- **summary**:    The computation limit has been updated. 
  
 ### PalletInitialized(`bool`)
 - **interface**: `api.events.glutton.PalletInitialized.is`
-- **summary**:    The pallet has been (re)initialized by root. 
+- **summary**:    The pallet has been (re)initialized. 
  
 ### StorageLimitSet(`Perbill`)
 - **interface**: `api.events.glutton.StorageLimitSet.is`
-- **summary**:    The storage limit has been updated by root. 
+- **summary**:    The storage limit has been updated. 
 
 ___
 
@@ -923,11 +954,7 @@ ___
 
 ## messageQueue
  
-### Discarded(`H256`)
-- **interface**: `api.events.messageQueue.Discarded.is`
-- **summary**:    Message discarded due to an inability to decode the item. Usually caused by state  corruption. 
- 
-### OverweightEnqueued(`H256`, `u32`, `u32`, `u32`)
+### OverweightEnqueued(`[u8;32]`, `u32`, `u32`, `u32`)
 - **interface**: `api.events.messageQueue.OverweightEnqueued.is`
 - **summary**:    Message placed in overweight queue. 
  
@@ -935,11 +962,11 @@ ___
 - **interface**: `api.events.messageQueue.PageReaped.is`
 - **summary**:    This page was reaped. 
  
-### Processed(`H256`, `u32`, `SpWeightsWeightV2Weight`, `bool`)
+### Processed(`[u8;32]`, `u32`, `SpWeightsWeightV2Weight`, `bool`)
 - **interface**: `api.events.messageQueue.Processed.is`
 - **summary**:    Message is processed. 
  
-### ProcessingFailed(`H256`, `u32`, `FrameSupportMessagesProcessMessageError`)
+### ProcessingFailed(`[u8;32]`, `u32`, `FrameSupportMessagesProcessMessageError`)
 - **interface**: `api.events.messageQueue.ProcessingFailed.is`
 - **summary**:    Message discarded due to an error in the `MessageProcessor` (usually a format error). 
 
@@ -963,6 +990,19 @@ ___
 ### NewMultisig(`AccountId32`, `AccountId32`, `[u8;32]`)
 - **interface**: `api.events.multisig.NewMultisig.is`
 - **summary**:    A new multisig operation has begun. 
+
+___
+
+
+## nftFractionalization
+ 
+### NftFractionalized(`u32`, `u32`, `u128`, `u32`, `AccountId32`)
+- **interface**: `api.events.nftFractionalization.NftFractionalized.is`
+- **summary**:    An NFT was successfully fractionalized. 
+ 
+### NftUnified(`u32`, `u32`, `u32`, `AccountId32`)
+- **interface**: `api.events.nftFractionalization.NftUnified.is`
+- **summary**:    An NFT was successfully returned back. 
 
 ___
 
@@ -1239,6 +1279,107 @@ ___
 ### Offence(`[u8;16]`, `Bytes`)
 - **interface**: `api.events.offences.Offence.is`
 - **summary**:    There is an offence reported of the given `kind` happened at the `session_index` and  (kind-specific) time slot. This event is not deposited for duplicate slashes.  \[kind, timeslot\]. 
+
+___
+
+
+## poolAssets
+ 
+### AccountsDestroyed(`u32`, `u32`, `u32`)
+- **interface**: `api.events.poolAssets.AccountsDestroyed.is`
+- **summary**:    Accounts were destroyed for given asset. 
+ 
+### ApprovalCancelled(`u32`, `AccountId32`, `AccountId32`)
+- **interface**: `api.events.poolAssets.ApprovalCancelled.is`
+- **summary**:    An approval for account `delegate` was cancelled by `owner`. 
+ 
+### ApprovalsDestroyed(`u32`, `u32`, `u32`)
+- **interface**: `api.events.poolAssets.ApprovalsDestroyed.is`
+- **summary**:    Approvals were destroyed for given asset. 
+ 
+### ApprovedTransfer(`u32`, `AccountId32`, `AccountId32`, `u128`)
+- **interface**: `api.events.poolAssets.ApprovedTransfer.is`
+- **summary**:    (Additional) funds have been approved for transfer to a destination account. 
+ 
+### AssetFrozen(`u32`)
+- **interface**: `api.events.poolAssets.AssetFrozen.is`
+- **summary**:    Some asset `asset_id` was frozen. 
+ 
+### AssetMinBalanceChanged(`u32`, `u128`)
+- **interface**: `api.events.poolAssets.AssetMinBalanceChanged.is`
+- **summary**:    The min_balance of an asset has been updated by the asset owner. 
+ 
+### AssetStatusChanged(`u32`)
+- **interface**: `api.events.poolAssets.AssetStatusChanged.is`
+- **summary**:    An asset has had its attributes changed by the `Force` origin. 
+ 
+### AssetThawed(`u32`)
+- **interface**: `api.events.poolAssets.AssetThawed.is`
+- **summary**:    Some asset `asset_id` was thawed. 
+ 
+### Blocked(`u32`, `AccountId32`)
+- **interface**: `api.events.poolAssets.Blocked.is`
+- **summary**:    Some account `who` was blocked. 
+ 
+### Burned(`u32`, `AccountId32`, `u128`)
+- **interface**: `api.events.poolAssets.Burned.is`
+- **summary**:    Some assets were destroyed. 
+ 
+### Created(`u32`, `AccountId32`, `AccountId32`)
+- **interface**: `api.events.poolAssets.Created.is`
+- **summary**:    Some asset class was created. 
+ 
+### Destroyed(`u32`)
+- **interface**: `api.events.poolAssets.Destroyed.is`
+- **summary**:    An asset class was destroyed. 
+ 
+### DestructionStarted(`u32`)
+- **interface**: `api.events.poolAssets.DestructionStarted.is`
+- **summary**:    An asset class is in the process of being destroyed. 
+ 
+### ForceCreated(`u32`, `AccountId32`)
+- **interface**: `api.events.poolAssets.ForceCreated.is`
+- **summary**:    Some asset class was force-created. 
+ 
+### Frozen(`u32`, `AccountId32`)
+- **interface**: `api.events.poolAssets.Frozen.is`
+- **summary**:    Some account `who` was frozen. 
+ 
+### Issued(`u32`, `AccountId32`, `u128`)
+- **interface**: `api.events.poolAssets.Issued.is`
+- **summary**:    Some assets were issued. 
+ 
+### MetadataCleared(`u32`)
+- **interface**: `api.events.poolAssets.MetadataCleared.is`
+- **summary**:    Metadata has been cleared for an asset. 
+ 
+### MetadataSet(`u32`, `Bytes`, `Bytes`, `u8`, `bool`)
+- **interface**: `api.events.poolAssets.MetadataSet.is`
+- **summary**:    New metadata has been set for an asset. 
+ 
+### OwnerChanged(`u32`, `AccountId32`)
+- **interface**: `api.events.poolAssets.OwnerChanged.is`
+- **summary**:    The owner changed. 
+ 
+### TeamChanged(`u32`, `AccountId32`, `AccountId32`, `AccountId32`)
+- **interface**: `api.events.poolAssets.TeamChanged.is`
+- **summary**:    The management team changed. 
+ 
+### Thawed(`u32`, `AccountId32`)
+- **interface**: `api.events.poolAssets.Thawed.is`
+- **summary**:    Some account `who` was thawed. 
+ 
+### Touched(`u32`, `AccountId32`, `AccountId32`)
+- **interface**: `api.events.poolAssets.Touched.is`
+- **summary**:    Some account `who` was created with a deposit from `depositor`. 
+ 
+### Transferred(`u32`, `AccountId32`, `AccountId32`, `u128`)
+- **interface**: `api.events.poolAssets.Transferred.is`
+- **summary**:    Some assets were transferred. 
+ 
+### TransferredApproved(`u32`, `AccountId32`, `AccountId32`, `AccountId32`, `u128`)
+- **interface**: `api.events.poolAssets.TransferredApproved.is`
+- **summary**:    An `amount` was transferred in its entirety from `owner` to `destination` by  the approved `delegate`. 
 
 ___
 

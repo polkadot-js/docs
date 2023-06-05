@@ -42,6 +42,8 @@ This page lists the errors that can be encountered in the different modules.
 
 - **[indices](#indices)**
 
+- **[messageQueue](#messagequeue)**
+
 - **[multisig](#multisig)**
 
 - **[nominationPools](#nominationpools)**
@@ -83,8 +85,6 @@ This page lists the errors that can be encountered in the different modules.
 - **[tips](#tips)**
 
 - **[treasury](#treasury)**
-
-- **[ump](#ump)**
 
 - **[utility](#utility)**
 
@@ -916,6 +916,41 @@ ___
 ### Permanent
 - **interface**: `api.errors.indices.Permanent.is`
 - **summary**:    The index is permanent and may not be freed/changed. 
+
+___
+
+
+## messageQueue
+ 
+### AlreadyProcessed
+- **interface**: `api.errors.messageQueue.AlreadyProcessed.is`
+- **summary**:    The message was already processed and cannot be processed again. 
+ 
+### InsufficientWeight
+- **interface**: `api.errors.messageQueue.InsufficientWeight.is`
+- **summary**:    There is temporarily not enough weight to continue servicing messages. 
+ 
+### NoMessage
+- **interface**: `api.errors.messageQueue.NoMessage.is`
+- **summary**:    The referenced message could not be found. 
+ 
+### NoPage
+- **interface**: `api.errors.messageQueue.NoPage.is`
+- **summary**:    Page to be reaped does not exist. 
+ 
+### NotReapable
+- **interface**: `api.errors.messageQueue.NotReapable.is`
+- **summary**:    Page is not reapable because it has items remaining to be processed and is not old  enough. 
+ 
+### Queued
+- **interface**: `api.errors.messageQueue.Queued.is`
+- **summary**:    The message is queued for future execution. 
+ 
+### TemporarilyUnprocessable
+- **interface**: `api.errors.messageQueue.TemporarilyUnprocessable.is`
+- **summary**:    This message is temporarily unprocessable. 
+
+   Such errors are expected, but not guaranteed, to resolve themselves eventually through  retrying. 
 
 ___
 
@@ -1949,19 +1984,6 @@ ___
 ### TooManyApprovals
 - **interface**: `api.errors.treasury.TooManyApprovals.is`
 - **summary**:    Too many approvals in the queue. 
-
-___
-
-
-## ump
- 
-### UnknownMessageIndex
-- **interface**: `api.errors.ump.UnknownMessageIndex.is`
-- **summary**:    The message index given is unknown. 
- 
-### WeightOverLimit
-- **interface**: `api.errors.ump.WeightOverLimit.is`
-- **summary**:    The amount of weight given is possibly not enough for executing the message. 
 
 ___
 

@@ -38,6 +38,8 @@ The following sections contain the module constants, also known as parameter typ
 
 - **[indices](#indices)**
 
+- **[messageQueue](#messagequeue)**
+
 - **[multisig](#multisig)**
 
 - **[nominationPools](#nominationpools)**
@@ -473,6 +475,27 @@ ___
 ### deposit: `u128`
 - **interface**: `api.consts.indices.deposit`
 - **summary**:    The deposit needed for reserving an index. 
+
+___
+
+
+## messageQueue
+ 
+### heapSize: `u32`
+- **interface**: `api.consts.messageQueue.heapSize`
+- **summary**:    The size of the page; this implies the maximum message size which can be sent. 
+
+   A good value depends on the expected message sizes, their weights, the weight that is  available for processing them and the maximal needed message size. The maximal message  size is slightly lower than this as defined by [`MaxMessageLenOf`]. 
+ 
+### maxStale: `u32`
+- **interface**: `api.consts.messageQueue.maxStale`
+- **summary**:    The maximum number of stale pages (i.e. of overweight messages) allowed before culling  can happen. Once there are more stale pages than this, then historical pages may be  dropped, even if they contain unprocessed overweight messages. 
+ 
+### serviceWeight: `Option<SpWeightsWeightV2Weight>`
+- **interface**: `api.consts.messageQueue.serviceWeight`
+- **summary**:    The amount of weight (if any) which should be provided to the message queue for  servicing enqueued items. 
+
+   This may be legitimately `None` in the case that you will call  `ServiceQueues::service_queues` manually. 
 
 ___
 

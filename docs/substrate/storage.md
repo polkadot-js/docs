@@ -10,6 +10,8 @@ The following sections contain Storage methods are part of the default Substrate
 
 - **[allianceMotion](#alliancemotion)**
 
+- **[assetConversion](#assetconversion)**
+
 - **[assetRate](#assetrate)**
 
 - **[assets](#assets)**
@@ -60,6 +62,8 @@ The following sections contain Storage methods are part of the default Substrate
 
 - **[multisig](#multisig)**
 
+- **[nftFractionalization](#nftfractionalization)**
+
 - **[nfts](#nfts)**
 
 - **[nis](#nis)**
@@ -67,6 +71,8 @@ The following sections contain Storage methods are part of the default Substrate
 - **[nominationPools](#nominationpools)**
 
 - **[offences](#offences)**
+
+- **[poolAssets](#poolassets)**
 
 - **[pov](#pov)**
 
@@ -186,6 +192,19 @@ ___
 ### voting(`H256`): `Option<PalletCollectiveVotes>`
 - **interface**: `api.query.allianceMotion.voting`
 - **summary**:    Votes on a given proposal, if it is ongoing. 
+
+___
+
+
+## assetConversion
+ 
+### nextPoolAssetId(): `Option<u32>`
+- **interface**: `api.query.assetConversion.nextPoolAssetId`
+- **summary**:    Stores the `PoolAssetId` that is going to be used for the next lp token.  This gets incremented whenever a new lp pool is created. 
+ 
+### pools(`(PalletAssetConversionNativeOrAssetId,PalletAssetConversionNativeOrAssetId)`): `Option<PalletAssetConversionPoolInfo>`
+- **interface**: `api.query.assetConversion.pools`
+- **summary**:    Map from `PoolAssetId` to `PoolInfo`. This establishes whether a pool has been officially  created rather than people sending tokens directly to a pool's public account. 
 
 ___
 
@@ -353,7 +372,7 @@ ___
 - **interface**: `api.query.balances.freezes`
 - **summary**:    Freeze locks on account balances. 
  
-### holds(`AccountId32`): `Vec<{"id":"KitchensinkRuntimeHoldReason","amount":"u128"}>`
+### holds(`AccountId32`): `Vec<{"id":"KitchensinkRuntimeRuntimeHoldReason","amount":"u128"}>`
 - **interface**: `api.query.balances.holds`
 - **summary**:    Holds on account balances. 
  
@@ -443,6 +462,9 @@ ___
 ### deletionQueueCounter(): `PalletContractsStorageDeletionQueueManager`
 - **interface**: `api.query.contracts.deletionQueueCounter`
 - **summary**:    A pair of monotonic counters used to track the latest contract marked for deletion  and the latest deleted contract in queue. 
+ 
+### migrationInProgress(): `Option<Bytes>`
+- **interface**: `api.query.contracts.migrationInProgress`
  
 ### nonce(): `u64`
 - **interface**: `api.query.contracts.nonce`
@@ -707,21 +729,21 @@ ___
 - **interface**: `api.query.fastUnstake.erasToCheckPerBlock`
 - **summary**:    Number of eras to check per block. 
 
-   If set to 0, this pallet does absolutely nothing. 
+   If set to 0, this pallet does absolutely nothing. Cannot be set to more than  [`Config::MaxErasToCheckPerBlock`]. 
 
-   Based on the amount of weight available at `on_idle`, up to this many eras of a single  nominator might be checked. 
+   Based on the amount of weight available at [`Pallet::on_idle`], up to this many eras are  checked. The checking is represented by updating [`UnstakeRequest::checked`], which is  stored in [`Head`]. 
  
 ### head(): `Option<PalletFastUnstakeUnstakeRequest>`
 - **interface**: `api.query.fastUnstake.head`
 - **summary**:    The current "head of the queue" being unstaked. 
+
+   The head in itself can be a batch of up to [`Config::BatchSize`] stakers. 
  
 ### queue(`AccountId32`): `Option<u128>`
 - **interface**: `api.query.fastUnstake.queue`
 - **summary**:    The map of all accounts wishing to be unstaked. 
 
    Keeps track of `AccountId` wishing to unstake and it's corresponding deposit. 
-
-   TWOX-NOTE: SAFE since `AccountId` is a secure hash. 
 
 ___
 
@@ -920,6 +942,15 @@ ___
 ___
 
 
+## nftFractionalization
+ 
+### nftToAsset(`(u32,u32)`): `Option<PalletNftFractionalizationDetails>`
+- **interface**: `api.query.nftFractionalization.nftToAsset`
+- **summary**:    Keeps track of the corresponding NFT ID, asset ID and amount minted. 
+
+___
+
+
 ## nfts
  
 ### account(`AccountId32, u32, u32`): `Option<Null>`
@@ -1110,6 +1141,27 @@ ___
 ### reports(`H256`): `Option<SpStakingOffenceOffenceDetails>`
 - **interface**: `api.query.offences.reports`
 - **summary**:    The primary structure that holds all offence records keyed by report identifiers. 
+
+___
+
+
+## poolAssets
+ 
+### account(`u32, AccountId32`): `Option<PalletAssetsAssetAccount>`
+- **interface**: `api.query.poolAssets.account`
+- **summary**:    The holdings of a specific account for a specific asset. 
+ 
+### approvals(`u32, AccountId32, AccountId32`): `Option<PalletAssetsApproval>`
+- **interface**: `api.query.poolAssets.approvals`
+- **summary**:    Approved balance transfers. First balance is the amount approved for transfer. Second  is the amount of `T::Currency` reserved for storing this.  First key is the asset ID, second key is the owner and third key is the delegate. 
+ 
+### asset(`u32`): `Option<PalletAssetsAssetDetails>`
+- **interface**: `api.query.poolAssets.asset`
+- **summary**:    Details of an asset. 
+ 
+### metadata(`u32`): `PalletAssetsAssetMetadata`
+- **interface**: `api.query.poolAssets.metadata`
+- **summary**:    Metadata of an asset. 
 
 ___
 

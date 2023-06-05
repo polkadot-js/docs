@@ -10,6 +10,8 @@ The following sections contain the module constants, also known as parameter typ
 
 - **[allianceMotion](#alliancemotion)**
 
+- **[assetConversion](#assetconversion)**
+
 - **[assets](#assets)**
 
 - **[babe](#babe)**
@@ -50,11 +52,15 @@ The following sections contain the module constants, also known as parameter typ
 
 - **[multisig](#multisig)**
 
+- **[nftFractionalization](#nftfractionalization)**
+
 - **[nfts](#nfts)**
 
 - **[nis](#nis)**
 
 - **[nominationPools](#nominationpools)**
+
+- **[poolAssets](#poolassets)**
 
 - **[proxy](#proxy)**
 
@@ -130,6 +136,39 @@ ___
 ### maxProposalWeight: `SpWeightsWeightV2Weight`
 - **interface**: `api.consts.allianceMotion.maxProposalWeight`
 - **summary**:    The maximum weight of a dispatch call that can be proposed and executed. 
+
+___
+
+
+## assetConversion
+ 
+### allowMultiAssetPools: `bool`
+- **interface**: `api.consts.assetConversion.allowMultiAssetPools`
+- **summary**:    A setting to allow creating pools with both non-native assets. 
+ 
+### liquidityWithdrawalFee: `Permill`
+- **interface**: `api.consts.assetConversion.liquidityWithdrawalFee`
+- **summary**:    A fee to withdraw the liquidity. 
+ 
+### lpFee: `u32`
+- **interface**: `api.consts.assetConversion.lpFee`
+- **summary**:    A % the liquidity providers will take of every swap. Represents 10ths of a percent. 
+ 
+### maxSwapPathLength: `u32`
+- **interface**: `api.consts.assetConversion.maxSwapPathLength`
+- **summary**:    The max number of hops in a swap. 
+ 
+### mintMinLiquidity: `u128`
+- **interface**: `api.consts.assetConversion.mintMinLiquidity`
+- **summary**:    The minimum LP token amount that could be minted. Ameliorates rounding errors. 
+ 
+### palletId: `FrameSupportPalletId`
+- **interface**: `api.consts.assetConversion.palletId`
+- **summary**:    The pallet's id, used for deriving its sovereign account ID. 
+ 
+### poolSetupFee: `u128`
+- **interface**: `api.consts.assetConversion.poolSetupFee`
+- **summary**:    A one-time fee to setup the pool. 
 
 ___
 
@@ -698,6 +737,31 @@ ___
 ___
 
 
+## nftFractionalization
+ 
+### deposit: `u128`
+- **interface**: `api.consts.nftFractionalization.deposit`
+- **summary**:    The deposit paid by the user locking an NFT. The deposit is returned to the original NFT  owner when the asset is unified and the NFT is unlocked. 
+ 
+### newAssetName: `Bytes`
+- **interface**: `api.consts.nftFractionalization.newAssetName`
+- **summary**:    The newly created asset's name. 
+ 
+### newAssetSymbol: `Bytes`
+- **interface**: `api.consts.nftFractionalization.newAssetSymbol`
+- **summary**:    The newly created asset's symbol. 
+ 
+### palletId: `FrameSupportPalletId`
+- **interface**: `api.consts.nftFractionalization.palletId`
+- **summary**:    The pallet's id, used for deriving its sovereign account ID. 
+ 
+### stringLimit: `u32`
+- **interface**: `api.consts.nftFractionalization.stringLimit`
+- **summary**:    The maximum length of a name or symbol stored on-chain. 
+
+___
+
+
 ## nfts
  
 ### approvalsLimit: `u32`
@@ -771,10 +835,6 @@ ___
 
    Must be no greater than `MaxQueueLen`. 
  
-### holdReason: `KitchensinkRuntimeHoldReason`
-- **interface**: `api.consts.nis.holdReason`
-- **summary**:    The identifier of the hold reason. 
- 
 ### intakePeriod: `u32`
 - **interface**: `api.consts.nis.intakePeriod`
 - **summary**:    The number of blocks between consecutive attempts to dequeue bids and create receipts. 
@@ -831,6 +891,41 @@ ___
 ### palletId: `FrameSupportPalletId`
 - **interface**: `api.consts.nominationPools.palletId`
 - **summary**:    The nomination pool's pallet id. 
+
+___
+
+
+## poolAssets
+ 
+### approvalDeposit: `u128`
+- **interface**: `api.consts.poolAssets.approvalDeposit`
+- **summary**:    The amount of funds that must be reserved when creating a new approval. 
+ 
+### assetAccountDeposit: `u128`
+- **interface**: `api.consts.poolAssets.assetAccountDeposit`
+- **summary**:    The amount of funds that must be reserved for a non-provider asset account to be  maintained. 
+ 
+### assetDeposit: `u128`
+- **interface**: `api.consts.poolAssets.assetDeposit`
+- **summary**:    The basic amount of funds that must be reserved for an asset. 
+ 
+### metadataDepositBase: `u128`
+- **interface**: `api.consts.poolAssets.metadataDepositBase`
+- **summary**:    The basic amount of funds that must be reserved when adding metadata to your asset. 
+ 
+### metadataDepositPerByte: `u128`
+- **interface**: `api.consts.poolAssets.metadataDepositPerByte`
+- **summary**:    The additional funds that must be reserved for the number of bytes you store in your  metadata. 
+ 
+### removeItemsLimit: `u32`
+- **interface**: `api.consts.poolAssets.removeItemsLimit`
+- **summary**:    Max number of items to destroy per `destroy_accounts` and `destroy_approvals` call. 
+
+   Must be configured to result in a weight that makes each call fit in a block. 
+ 
+### stringLimit: `u32`
+- **interface**: `api.consts.poolAssets.stringLimit`
+- **summary**:    The maximum length of a name or symbol stored on-chain. 
 
 ___
 

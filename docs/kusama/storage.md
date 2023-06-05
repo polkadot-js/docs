@@ -48,6 +48,8 @@ The following sections contain Storage methods are part of the default Kusama ru
 
 - **[initializer](#initializer)**
 
+- **[messageQueue](#messagequeue)**
+
 - **[multisig](#multisig)**
 
 - **[nis](#nis)**
@@ -103,8 +105,6 @@ The following sections contain Storage methods are part of the default Kusama ru
 - **[transactionPayment](#transactionpayment)**
 
 - **[treasury](#treasury)**
-
-- **[ump](#ump)**
 
 - **[vesting](#vesting)**
 
@@ -510,21 +510,21 @@ ___
 - **interface**: `api.query.fastUnstake.erasToCheckPerBlock`
 - **summary**:    Number of eras to check per block. 
 
-   If set to 0, this pallet does absolutely nothing. 
+   If set to 0, this pallet does absolutely nothing. Cannot be set to more than  [`Config::MaxErasToCheckPerBlock`]. 
 
-   Based on the amount of weight available at `on_idle`, up to this many eras of a single  nominator might be checked. 
+   Based on the amount of weight available at [`Pallet::on_idle`], up to this many eras are  checked. The checking is represented by updating [`UnstakeRequest::checked`], which is  stored in [`Head`]. 
  
 ### head(): `Option<PalletFastUnstakeUnstakeRequest>`
 - **interface**: `api.query.fastUnstake.head`
 - **summary**:    The current "head of the queue" being unstaked. 
+
+   The head in itself can be a batch of up to [`Config::BatchSize`] stakers. 
  
 ### queue(`AccountId32`): `Option<u128>`
 - **interface**: `api.query.fastUnstake.queue`
 - **summary**:    The map of all accounts wishing to be unstaked. 
 
    Keeps track of `AccountId` wishing to unstake and it's corresponding deposit. 
-
-   TWOX-NOTE: SAFE since `AccountId` is a secure hash. 
 
 ___
 
@@ -787,6 +787,23 @@ ___
 ___
 
 
+## messageQueue
+ 
+### bookStateFor(`PolkadotRuntimeParachainsInclusionAggregateMessageOrigin`): `PalletMessageQueueBookState`
+- **interface**: `api.query.messageQueue.bookStateFor`
+- **summary**:    The index of the first and last (non-empty) pages. 
+ 
+### pages(`PolkadotRuntimeParachainsInclusionAggregateMessageOrigin, u32`): `Option<PalletMessageQueuePage>`
+- **interface**: `api.query.messageQueue.pages`
+- **summary**:    The map of page indices to pages. 
+ 
+### serviceHead(): `Option<PolkadotRuntimeParachainsInclusionAggregateMessageOrigin>`
+- **interface**: `api.query.messageQueue.serviceHead`
+- **summary**:    The origin at which we should begin servicing. 
+
+___
+
+
 ## multisig
  
 ### multisigs(`AccountId32, [u8;32]`): `Option<PalletMultisigMultisig>`
@@ -841,7 +858,7 @@ ___
 - **interface**: `api.query.nisCounterpartBalances.freezes`
 - **summary**:    Freeze locks on account balances. 
  
-### holds(`AccountId32`): `Vec<PalletBalancesIdAmount>`
+### holds(`AccountId32`): `Vec<{"id":"KusamaRuntimeRuntimeHoldReason","amount":"u128"}>`
 - **interface**: `api.query.nisCounterpartBalances.holds`
 - **summary**:    Holds on account balances. 
  
@@ -1229,7 +1246,7 @@ ___
 
 ## parasSlashing
  
-### unappliedSlashes(`u32, H256`): `Option<PolkadotRuntimeParachainsDisputesSlashingPendingSlashes>`
+### unappliedSlashes(`u32, H256`): `Option<PolkadotPrimitivesVstagingSlashingPendingSlashes>`
 - **interface**: `api.query.parasSlashing.unappliedSlashes`
 - **summary**:    Validators pending dispute slashes. 
  
@@ -1823,61 +1840,6 @@ ___
 ### proposals(`u32`): `Option<PalletTreasuryProposal>`
 - **interface**: `api.query.treasury.proposals`
 - **summary**:    Proposals that have been made. 
-
-___
-
-
-## ump
- 
-### counterForOverweight(): `u32`
-- **interface**: `api.query.ump.counterForOverweight`
-- **summary**:    Counter for the related counted storage map 
- 
-### needsDispatch(): `Vec<u32>`
-- **interface**: `api.query.ump.needsDispatch`
-- **summary**:    The ordered list of `ParaId`s that have a `RelayDispatchQueue` entry. 
-
-   Invariant: 
-
-  - The set of items from this vector should be exactly the set of the keys in `RelayDispatchQueues` and `RelayDispatchQueueSize`. 
- 
-### nextDispatchRoundStartWith(): `Option<u32>`
-- **interface**: `api.query.ump.nextDispatchRoundStartWith`
-- **summary**:    This is the para that gets will get dispatched first during the next upward dispatchable queue  execution round. 
-
-   Invariant: 
-
-  - If `Some(para)`, then `para` must be present in `NeedsDispatch`.
- 
-### overweight(`u64`): `Option<(u32,Bytes)>`
-- **interface**: `api.query.ump.overweight`
-- **summary**:    The messages that exceeded max individual message weight budget. 
-
-   These messages stay there until manually dispatched. 
- 
-### overweightCount(): `u64`
-- **interface**: `api.query.ump.overweightCount`
-- **summary**:    The number of overweight messages ever recorded in `Overweight` (and thus the lowest free  index). 
- 
-### relayDispatchQueues(`u32`): `Vec<Bytes>`
-- **interface**: `api.query.ump.relayDispatchQueues`
-- **summary**:    The messages waiting to be handled by the relay-chain originating from a certain parachain. 
-
-   Note that some upward messages might have been already processed by the inclusion logic. E.g.  channel management messages. 
-
-   The messages are processed in FIFO order. 
- 
-### relayDispatchQueueSize(`u32`): `(u32,u32)`
-- **interface**: `api.query.ump.relayDispatchQueueSize`
-- **summary**:    Size of the dispatch queues. Caches sizes of the queues in `RelayDispatchQueue`. 
-
-   First item in the tuple is the count of messages and second  is the total length (in bytes) of the message payloads. 
-
-   Note that this is an auxiliary mapping: it's possible to tell the byte size and the number of  messages only looking at `RelayDispatchQueues`. This mapping is separate to avoid the cost of  loading the whole message queue if only the total size and count are required. 
-
-   Invariant: 
-
-  - The set of keys should exactly match the set of keys of `RelayDispatchQueues`.
 
 ___
 

@@ -10,6 +10,8 @@ This page lists the errors that can be encountered in the different modules.
 
 - **[allianceMotion](#alliancemotion)**
 
+- **[assetConversion](#assetconversion)**
+
 - **[assetRate](#assetrate)**
 
 - **[assets](#assets)**
@@ -54,11 +56,15 @@ This page lists the errors that can be encountered in the different modules.
 
 - **[multisig](#multisig)**
 
+- **[nftFractionalization](#nftfractionalization)**
+
 - **[nfts](#nfts)**
 
 - **[nis](#nis)**
 
 - **[nominationPools](#nominationpools)**
+
+- **[poolAssets](#poolassets)**
 
 - **[preimage](#preimage)**
 
@@ -256,6 +262,103 @@ ___
 ### WrongProposalWeight
 - **interface**: `api.errors.allianceMotion.WrongProposalWeight.is`
 - **summary**:    The given weight bound for the proposal was too low. 
+
+___
+
+
+## assetConversion
+ 
+### AmountLessThanMinimal
+- **interface**: `api.errors.assetConversion.AmountLessThanMinimal.is`
+- **summary**:    Provided amount should be greater than or equal to the existential deposit/asset's  minimal amount. 
+ 
+### AmountOutTooHigh
+- **interface**: `api.errors.assetConversion.AmountOutTooHigh.is`
+- **summary**:    Desired amount can't be equal to the pool reserve. 
+ 
+### AssetOneDepositDidNotMeetMinimum
+- **interface**: `api.errors.assetConversion.AssetOneDepositDidNotMeetMinimum.is`
+- **summary**:    The minimal amount requirement for the first token in the pair wasn't met. 
+ 
+### AssetOneWithdrawalDidNotMeetMinimum
+- **interface**: `api.errors.assetConversion.AssetOneWithdrawalDidNotMeetMinimum.is`
+- **summary**:    The minimal amount requirement for the first token in the pair wasn't met. 
+ 
+### AssetTwoDepositDidNotMeetMinimum
+- **interface**: `api.errors.assetConversion.AssetTwoDepositDidNotMeetMinimum.is`
+- **summary**:    The minimal amount requirement for the second token in the pair wasn't met. 
+ 
+### AssetTwoWithdrawalDidNotMeetMinimum
+- **interface**: `api.errors.assetConversion.AssetTwoWithdrawalDidNotMeetMinimum.is`
+- **summary**:    The minimal amount requirement for the second token in the pair wasn't met. 
+ 
+### EqualAssets
+- **interface**: `api.errors.assetConversion.EqualAssets.is`
+- **summary**:    Provided assets are equal. 
+ 
+### InsufficientLiquidity
+- **interface**: `api.errors.assetConversion.InsufficientLiquidity.is`
+- **summary**:    Insufficient liquidity in the pool. 
+ 
+### InsufficientLiquidityMinted
+- **interface**: `api.errors.assetConversion.InsufficientLiquidityMinted.is`
+- **summary**:    Insufficient liquidity minted. 
+ 
+### InvalidPath
+- **interface**: `api.errors.assetConversion.InvalidPath.is`
+- **summary**:    The provided path must consists of 2 assets at least. 
+ 
+### NonUniquePath
+- **interface**: `api.errors.assetConversion.NonUniquePath.is`
+- **summary**:    The provided path must consists of unique assets. 
+ 
+### OptimalAmountLessThanDesired
+- **interface**: `api.errors.assetConversion.OptimalAmountLessThanDesired.is`
+- **summary**:    Optimal calculated amount is less than desired. 
+ 
+### Overflow
+- **interface**: `api.errors.assetConversion.Overflow.is`
+- **summary**:    An overflow happened. 
+ 
+### PathError
+- **interface**: `api.errors.assetConversion.PathError.is`
+- **summary**:    It was not possible to calculate path data. 
+ 
+### PoolExists
+- **interface**: `api.errors.assetConversion.PoolExists.is`
+- **summary**:    Pool already exists. 
+ 
+### PoolMustContainNativeCurrency
+- **interface**: `api.errors.assetConversion.PoolMustContainNativeCurrency.is`
+- **summary**:    Only pools with native on one side are valid. 
+ 
+### PoolNotFound
+- **interface**: `api.errors.assetConversion.PoolNotFound.is`
+- **summary**:    The pool doesn't exist. 
+ 
+### ProvidedMaximumNotSufficientForSwap
+- **interface**: `api.errors.assetConversion.ProvidedMaximumNotSufficientForSwap.is`
+- **summary**:    Provided maximum amount is not sufficient for swap. 
+ 
+### ProvidedMinimumNotSufficientForSwap
+- **interface**: `api.errors.assetConversion.ProvidedMinimumNotSufficientForSwap.is`
+- **summary**:    Calculated amount out is less than provided minimum amount. 
+ 
+### ReserveLeftLessThanMinimal
+- **interface**: `api.errors.assetConversion.ReserveLeftLessThanMinimal.is`
+- **summary**:    Reserve needs to always be greater than or equal to the existential deposit/asset's  minimal amount. 
+ 
+### WrongDesiredAmount
+- **interface**: `api.errors.assetConversion.WrongDesiredAmount.is`
+- **summary**:    Desired amount can't be zero. 
+ 
+### ZeroAmount
+- **interface**: `api.errors.assetConversion.ZeroAmount.is`
+- **summary**:    Amount can't be zero. 
+ 
+### ZeroLiquidity
+- **interface**: `api.errors.assetConversion.ZeroLiquidity.is`
+- **summary**:    Requested liquidity can't be zero. 
 
 ___
 
@@ -552,9 +655,17 @@ ___
 - **interface**: `api.errors.contracts.MaxCallDepthReached.is`
 - **summary**:    Performing a call was denied because the calling depth reached the limit  of what is specified in the schedule. 
  
+### MigrationInProgress
+- **interface**: `api.errors.contracts.MigrationInProgress.is`
+- **summary**:    A pending migration needs to complete before the extrinsic can be called. 
+ 
 ### NoChainExtension
 - **interface**: `api.errors.contracts.NoChainExtension.is`
 - **summary**:    The chain does not provide a chain extension. Calling the chain extension results  in this error. Note that this usually  shouldn't happen as deploying such contracts  is rejected. 
+ 
+### NoMigrationPerformed
+- **interface**: `api.errors.contracts.NoMigrationPerformed.is`
+- **summary**:    Migrate dispatch call was attempted but no migration was performed. 
  
 ### OutOfBounds
 - **interface**: `api.errors.contracts.OutOfBounds.is`
@@ -1302,6 +1413,27 @@ ___
 ___
 
 
+## nftFractionalization
+ 
+### IncorrectAssetId
+- **interface**: `api.errors.nftFractionalization.IncorrectAssetId.is`
+- **summary**:    Asset ID does not correspond to locked NFT. 
+ 
+### NftNotFound
+- **interface**: `api.errors.nftFractionalization.NftNotFound.is`
+- **summary**:    NFT doesn't exist. 
+ 
+### NftNotFractionalized
+- **interface**: `api.errors.nftFractionalization.NftNotFractionalized.is`
+- **summary**:    NFT has not yet been fractionalised. 
+ 
+### NoPermission
+- **interface**: `api.errors.nftFractionalization.NoPermission.is`
+- **summary**:    The signing account has no permission to do the operation. 
+
+___
+
+
 ## nfts
  
 ### AlreadyClaimed
@@ -1451,6 +1583,10 @@ ___
 ### UnknownSwap
 - **interface**: `api.errors.nfts.UnknownSwap.is`
 - **summary**:    Swap doesn't exist. 
+ 
+### WitnessRequired
+- **interface**: `api.errors.nfts.WitnessRequired.is`
+- **summary**:    The witness data should be provided. 
  
 ### WrongDelegate
 - **interface**: `api.errors.nfts.WrongDelegate.is`
@@ -1671,6 +1807,91 @@ ___
 ### SubPoolsNotFound
 - **interface**: `api.errors.nominationPools.SubPoolsNotFound.is`
 - **summary**:    A sub pool does not exist. 
+
+___
+
+
+## poolAssets
+ 
+### AlreadyExists
+- **interface**: `api.errors.poolAssets.AlreadyExists.is`
+- **summary**:    The asset-account already exists. 
+ 
+### AssetNotLive
+- **interface**: `api.errors.poolAssets.AssetNotLive.is`
+- **summary**:    The asset is not live, and likely being destroyed. 
+ 
+### BadMetadata
+- **interface**: `api.errors.poolAssets.BadMetadata.is`
+- **summary**:    Invalid metadata given. 
+ 
+### BadWitness
+- **interface**: `api.errors.poolAssets.BadWitness.is`
+- **summary**:    Invalid witness data given. 
+ 
+### BalanceLow
+- **interface**: `api.errors.poolAssets.BalanceLow.is`
+- **summary**:    Account balance must be greater than or equal to the transfer amount. 
+ 
+### CallbackFailed
+- **interface**: `api.errors.poolAssets.CallbackFailed.is`
+- **summary**:    Callback action resulted in error 
+ 
+### Frozen
+- **interface**: `api.errors.poolAssets.Frozen.is`
+- **summary**:    The origin account is frozen. 
+ 
+### IncorrectStatus
+- **interface**: `api.errors.poolAssets.IncorrectStatus.is`
+- **summary**:    The asset status is not the expected status. 
+ 
+### InUse
+- **interface**: `api.errors.poolAssets.InUse.is`
+- **summary**:    The asset ID is already taken. 
+ 
+### LiveAsset
+- **interface**: `api.errors.poolAssets.LiveAsset.is`
+- **summary**:    The asset is a live asset and is actively being used. Usually emit for operations such  as `start_destroy` which require the asset to be in a destroying state. 
+ 
+### MinBalanceZero
+- **interface**: `api.errors.poolAssets.MinBalanceZero.is`
+- **summary**:    Minimum balance should be non-zero. 
+ 
+### NoAccount
+- **interface**: `api.errors.poolAssets.NoAccount.is`
+- **summary**:    The account to alter does not exist. 
+ 
+### NoDeposit
+- **interface**: `api.errors.poolAssets.NoDeposit.is`
+- **summary**:    The asset-account doesn't have an associated deposit. 
+ 
+### NoPermission
+- **interface**: `api.errors.poolAssets.NoPermission.is`
+- **summary**:    The signing account has no permission to do the operation. 
+ 
+### NotFrozen
+- **interface**: `api.errors.poolAssets.NotFrozen.is`
+- **summary**:    The asset should be frozen before the given operation. 
+ 
+### Unapproved
+- **interface**: `api.errors.poolAssets.Unapproved.is`
+- **summary**:    No approval exists that would allow the transfer. 
+ 
+### UnavailableConsumer
+- **interface**: `api.errors.poolAssets.UnavailableConsumer.is`
+- **summary**:    Unable to increment the consumer reference counters on the account. Either no provider  reference exists to allow a non-zero balance of a non-self-sufficient asset, or one  fewer then the maximum number of consumers has been reached. 
+ 
+### Unknown
+- **interface**: `api.errors.poolAssets.Unknown.is`
+- **summary**:    The given asset ID is unknown. 
+ 
+### WouldBurn
+- **interface**: `api.errors.poolAssets.WouldBurn.is`
+- **summary**:    The operation would result in funds being burned. 
+ 
+### WouldDie
+- **interface**: `api.errors.poolAssets.WouldDie.is`
+- **summary**:    The source account would not survive the transfer and it needs to stay alive. 
 
 ___
 
