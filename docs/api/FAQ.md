@@ -48,26 +48,26 @@ There are 3 `Address` types that are generally configured in different chains, a
 - `type Address = AccountId` (Rust), this is used in a number of chains such as Kusama/Polkadot (prior to the 28 runtime) and a previous default for the node-template chain as well. To override to this type of Address, use the API types `{ "Address": "AccountId", "LookupSource": "AccountId" }`
 
 
-The above may also apply when when you use [polkadot-js/apps](https://github.com/polkadot-js/apps) to connect to your node. Known chains are correctly configured, however any custom chain may need additional types.
+The above may also apply when you use [polkadot-js/apps](https://github.com/polkadot-js/apps) to connect to your node. Known chains are correctly configured, however any custom chain may need additional types.
 
 
 ## I would like to sign transactions offline
 
-The API itself is independent on where the signature comes from and how it is injected. Additionally it implements a signer interface, that can be used for external signing - an example of this is the [polkadot-js/apps](https://github.com/polkadot-js/apps) support for signing via extensions and even the [polkadot-js/extension](https://github.com/polkadot-js/extension) support for tools such as the [Parity Signer](https://github.com/paritytech/parity-signer).
+The API itself is independent of where the signature comes from and how it is injected. Additionally it implements a signer interface, that can be used for external signing - an example of this is the [polkadot-js/apps](https://github.com/polkadot-js/apps) support for signing via extensions and even the [polkadot-js/extension](https://github.com/polkadot-js/extension) support for tools such as the [Parity Signer](https://github.com/paritytech/parity-signer).
 
 As of this writing we don't have an explicit example of implementing the signer interface in these docs, although we do use one in [our tests](https://github.com/polkadot-js/api/blob/master/packages/api/src/test/SingleAccountSigner.ts). Additionally, the [polkadot-js/tools](https://github.com/polkadot-js/tools) has an implementation of [a very basic offline signer](https://github.com/polkadot-js/tools/tree/master/packages/signer-cli) where transactions are generated in one process and signatures in another non-connected process.
 
 
 ## I would like to send a root transaction
 
-Some calls in Polkadot/Substrate can only be submitted as root, these are indicated by `ensure_root(origin)` in the Rust codebase. Root here does not refer to the actual account, i.e. `//Alice` on  a `--dev` chain, but rather that it cannot be submitted as a bare user transaction. This restriction applies to chain upgrades, changing balances or anything that modifies the state and/or chain operation.
+Some calls in Polkadot/Substrate can only be submitted as root, these are indicated by `ensure_root(origin)` in the Rust codebase. Root here does not refer to the actual account, i.e. `//Alice` on a `--dev` chain, but rather that it cannot be submitted as a bare user transaction. This restriction applies to chain upgrades, changing balances or anything that modifies the state and/or chain operation.
 
-To submit these transactions, it needs to be send as a [wrapped transaction](start/api.tx.wrap.md#sudo-use) via either `sudo.sudo` (assuming you have access on your chain) or `democracy.proposal` (which would allow users of the chain to vote on it).
+To submit these transactions, it needs to be sent as a [wrapped transaction](start/api.tx.wrap.md#sudo-use) via either `sudo.sudo` (assuming you have access on your chain) or `democracy.proposal` (which would allow users of the chain to vote on it).
 
 
 ## How do I call a function with a Tuple input
 
-Tuples, as defined in the Polkadot/Substrate types appear as `(TypeA, TypeB)`. For instance we may have an `(AccountId, u64)` input as defined in the metadata or as part of the user types. To specify a Tuple as an input, wrap it in an  array format, for instance to call `query.module.get((u32, u64))` where a `(u32, u64)` Tuple input is expected, you would do  `query.module.get([123, 456])`
+Tuples, as defined in the Polkadot/Substrate types appear as `(TypeA, TypeB)`. For instance we may have an `(AccountId, u64)` input as defined in the metadata or as part of the user types. To specify a Tuple as an input, wrap it in an array format, for instance to call `query.module.get((u32, u64))` where a `(u32, u64)` Tuple input is expected, you would do `query.module.get([123, 456])`
 
 
 ## How long do transactions live
@@ -95,7 +95,7 @@ If you are on a chain that has not been upgraded yet, you need to add `Weight: '
 
 ## On a non-current, non Substrate 2.0 branch, my balances are wrong
 
-As part of the Substrate 2.0 release, the `RefCount` type has been changed from ` u8` to a `u32`. Since the API always track latest Substrate, this change has been applied by default. The impact of this type is that it is used in the `AccountInfo` type which is returned from `system.account`, which, in turn, tracks balances.
+As part of the Substrate 2.0 release, the `RefCount` type has been changed from ` u8` to a `u32`. Since the API always tracks latest Substrate, this change has been applied by default. The impact of this type is that it is used in the `AccountInfo` type which is returned from `system.account`, which, in turn, tracks balances.
 
 If on an older version of the chain, apply the older type via `RefCount: 'u8'` to your types.
 
