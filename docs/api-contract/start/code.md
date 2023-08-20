@@ -5,7 +5,7 @@ title: Code
 The `CodePromise` class allows the developer to manage calls to the `instantiate_with_code` dispatchable in the contracts pallet. 
 It is useful in cases where an existing `codeHash` is not available, meaning that the code has never been deployed to the blockchain in its current form. 
 
-The `instantiate_with_code` dispatchable uploads the wasm code the blockchain and creates a new instance in one go. Learn how it works under the hood in the [Substrate Metadata](../../substrate/extrinsics.md#instantiatewithcodevalue-compactu128-gas_limit-compactu64-storage_deposit_limit-optioncompactu128-code-bytes-data-bytes-salt-bytes) section 
+The `instantiate_with_code` dispatchable uploads the wasm code to the blockchain and creates a new instance in one go. Learn how it works under the hood in the [Substrate Metadata](../../substrate/extrinsics.md#instantiatewithcodevalue-compactu128-gas_limit-compactu64-storage_deposit_limit-optioncompactu128-code-bytes-data-bytes-salt-bytes) section 
 
 The `CodePromise` constructor takes 3 arguments: an API instance, the contract metadata, and the contract code. Only the wasm code will end up on-chain; the metadata is only used in the JavaScript world. See [Prerequisites](./basics.md) to find out how to obtain them.
 
@@ -29,7 +29,7 @@ const storageDepositLimit = null
 // used to derive contract address, 
 // use null to prevent duplicate contracts
 const salt = new Uint8Array()
-// balance to transfer to the contract account, formerly know as "endowment". 
+// balance to transfer to the contract account, formerly known as "endowment". 
 // use only with payable constructors, will fail otherwise. 
 const value = api.registry.createType('Balance', 1000)
 const initValue = 1;
