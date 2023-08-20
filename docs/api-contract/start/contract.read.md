@@ -70,5 +70,5 @@ const callValue = await contract.query.balanceOf(from, { gasLimit: -1 }, target)
 In this example we have specified a `gasLimit` of `-1`, in a subsequent section we will expand on this. for now, just remember that is indicated to use max available, i.e. we don't explicitly want to specify a value.
 
 
-Now that we understand the underlying call/read interfaces where a message is executed, but not part of a block, we will loo into [sending transaction messages](contract.tx.md) in our next section.
+Now that we understand the underlying call/read interfaces where a message is executed, but not part of a block, we will look into [sending transaction messages](contract.tx.md) in our next section.
 
