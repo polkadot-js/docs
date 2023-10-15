@@ -12,6 +12,8 @@ The following sections contain the module constants, also known as parameter typ
 
 - **[balances](#balances)**
 
+- **[beefy](#beefy)**
+
 - **[bounties](#bounties)**
 
 - **[childBounties](#childbounties)**
@@ -63,6 +65,8 @@ The following sections contain the module constants, also known as parameter typ
 - **[society](#society)**
 
 - **[staking](#staking)**
+
+- **[stateTrieMigration](#statetriemigration)**
 
 - **[system](#system)**
 
@@ -116,6 +120,10 @@ ___
 ### maxAuthorities: `u32`
 - **interface**: `api.consts.babe.maxAuthorities`
 - **summary**:    Max number of authorities allowed 
+ 
+### maxNominators: `u32`
+- **interface**: `api.consts.babe.maxNominators`
+- **summary**:    The maximum number of nominators for each validator. 
 
 ___
 
@@ -145,6 +153,25 @@ ___
 ### maxReserves: `u32`
 - **interface**: `api.consts.balances.maxReserves`
 - **summary**:    The maximum number of named reserves that can exist on an account. 
+
+___
+
+
+## beefy
+ 
+### maxAuthorities: `u32`
+- **interface**: `api.consts.beefy.maxAuthorities`
+- **summary**:    The maximum number of authorities that can be added. 
+ 
+### maxNominators: `u32`
+- **interface**: `api.consts.beefy.maxNominators`
+- **summary**:    The maximum number of nominators for each validator. 
+ 
+### maxSetIdSessionEntries: `u64`
+- **interface**: `api.consts.beefy.maxSetIdSessionEntries`
+- **summary**:    The maximum number of entries to keep in the set id to session index mapping. 
+
+   Since the `SetIdSession` map is only used for validating equivocations this  value should relate to the bonding duration of whatever staking system is  being used (if any). If equivocation handling is not enabled then this value  can be zero. 
 
 ___
 
@@ -236,11 +263,11 @@ ___
  
 ### minContribution: `u128`
 - **interface**: `api.consts.crowdloan.minContribution`
-- **summary**:    The minimum amount that may be contributed into a crowdloan. Should almost certainly be at  least `ExistentialDeposit`. 
+- **summary**:    The minimum amount that may be contributed into a crowdloan. Should almost certainly be  at least `ExistentialDeposit`. 
  
 ### palletId: `FrameSupportPalletId`
 - **interface**: `api.consts.crowdloan.palletId`
-- **summary**:    `PalletId` for the crowdloan pallet. An appropriate value could be `PalletId(*b"py/cfund")` 
+- **summary**:    `PalletId` for the crowdloan pallet. An appropriate value could be  `PalletId(*b"py/cfund")` 
  
 ### removeKeysLimit: `u32`
 - **interface**: `api.consts.crowdloan.removeKeysLimit`
@@ -258,14 +285,6 @@ ___
 ### betterUnsignedThreshold: `Perbill`
 - **interface**: `api.consts.electionProviderMultiPhase.betterUnsignedThreshold`
 - **summary**:    The minimum amount of improvement to the solution score that defines a solution as  "better" in the Unsigned phase. 
- 
-### maxElectableTargets: `u16`
-- **interface**: `api.consts.electionProviderMultiPhase.maxElectableTargets`
-- **summary**:    The maximum number of electable targets to put in the snapshot. 
- 
-### maxElectingVoters: `u32`
-- **interface**: `api.consts.electionProviderMultiPhase.maxElectingVoters`
-- **summary**:    The maximum number of electing voters to put in the snapshot. At the moment, snapshots  are only over a single block, but once multi-block elections are introduced they will  take place over multiple blocks. 
  
 ### maxWinners: `u32`
 - **interface**: `api.consts.electionProviderMultiPhase.maxWinners`
@@ -377,6 +396,10 @@ ___
 ### maxAuthorities: `u32`
 - **interface**: `api.consts.grandpa.maxAuthorities`
 - **summary**:    Max Authorities in use 
+ 
+### maxNominators: `u32`
+- **interface**: `api.consts.grandpa.maxNominators`
+- **summary**:    The maximum number of nominators for each validator. 
  
 ### maxSetIdSessionEntries: `u64`
 - **interface**: `api.consts.grandpa.maxSetIdSessionEntries`
@@ -686,7 +709,7 @@ ___
  
 ### paraDeposit: `u128`
 - **interface**: `api.consts.registrar.paraDeposit`
-- **summary**:    The deposit to be paid to run a parathread.  This should include the cost for storing the genesis head and validation code. 
+- **summary**:    The deposit to be paid to run a on-demand parachain.  This should include the cost for storing the genesis head and validation code. 
 
 ___
 
@@ -721,25 +744,29 @@ ___
 
 ## society
  
-### candidateDeposit: `u128`
-- **interface**: `api.consts.society.candidateDeposit`
-- **summary**:    The minimum amount of a deposit required for a bid to be made. 
- 
 ### challengePeriod: `u32`
 - **interface**: `api.consts.society.challengePeriod`
 - **summary**:    The number of blocks between membership challenges. 
  
-### maxCandidateIntake: `u32`
-- **interface**: `api.consts.society.maxCandidateIntake`
-- **summary**:    The maximum number of candidates that we accept per round. 
+### claimPeriod: `u32`
+- **interface**: `api.consts.society.claimPeriod`
+- **summary**:    The number of blocks on which new candidates can claim their membership and be the  named head. 
+ 
+### graceStrikes: `u32`
+- **interface**: `api.consts.society.graceStrikes`
+- **summary**:    The maximum number of strikes before a member gets funds slashed. 
+ 
+### maxBids: `u32`
+- **interface**: `api.consts.society.maxBids`
+- **summary**:    The maximum number of bids at once. 
  
 ### maxLockDuration: `u32`
 - **interface**: `api.consts.society.maxLockDuration`
 - **summary**:    The maximum duration of the payout lock. 
  
-### maxStrikes: `u32`
-- **interface**: `api.consts.society.maxStrikes`
-- **summary**:    The number of times a member may vote the wrong way (or not at all, when they are a  skeptic) before they become suspended. 
+### maxPayouts: `u32`
+- **interface**: `api.consts.society.maxPayouts`
+- **summary**:    The maximum number of payouts a member may have waiting unclaimed. 
  
 ### palletId: `FrameSupportPalletId`
 - **interface**: `api.consts.society.palletId`
@@ -749,13 +776,9 @@ ___
 - **interface**: `api.consts.society.periodSpend`
 - **summary**:    The amount of incentive paid within each period. Doesn't include VoterTip. 
  
-### rotationPeriod: `u32`
-- **interface**: `api.consts.society.rotationPeriod`
-- **summary**:    The number of blocks between candidate/membership rotation periods. 
- 
-### wrongSideDeduction: `u128`
-- **interface**: `api.consts.society.wrongSideDeduction`
-- **summary**:    The amount of the unpaid reward that gets deducted in the case that either a skeptic  doesn't vote or someone votes in the wrong way. 
+### votingPeriod: `u32`
+- **interface**: `api.consts.society.votingPeriod`
+- **summary**:    The number of blocks on which new candidates should be voted on. Together with  `ClaimPeriod`, this sums to the number of blocks between candidate intake periods. 
 
 ___
 
@@ -778,10 +801,6 @@ ___
 
    Note: `HistoryDepth` is used as the upper bound for the `BoundedVec`  item `StakingLedger.claimed_rewards`. Setting this value lower than  the existing value can lead to inconsistencies in the  `StakingLedger` and will need to be handled properly in a migration.  The test `reducing_history_depth_abrupt` shows this effect. 
  
-### maxNominations: `u32`
-- **interface**: `api.consts.staking.maxNominations`
-- **summary**:    Maximum number of nominations per nominator. 
- 
 ### maxNominatorRewardedPerValidator: `u32`
 - **interface**: `api.consts.staking.maxNominatorRewardedPerValidator`
 - **summary**:    The maximum number of nominators rewarded for each validator. 
@@ -803,6 +822,31 @@ ___
 - **summary**:    Number of eras that slashes are deferred by, after computation. 
 
    This should be less than the bonding duration. Set to 0 if slashes  should be applied immediately, without opportunity for intervention. 
+
+___
+
+
+## stateTrieMigration
+ 
+### maxKeyLen: `u32`
+- **interface**: `api.consts.stateTrieMigration.maxKeyLen`
+- **summary**:    Maximal number of bytes that a key can have. 
+
+   FRAME itself does not limit the key length.  The concrete value must therefore depend on your storage usage.  A [`frame_support::storage::StorageNMap`] for example can have an arbitrary number of  keys which are then hashed and concatenated, resulting in arbitrarily long keys. 
+
+   Use the *state migration RPC* to retrieve the length of the longest key in your  storage: <https://github.com/paritytech/substrate/issues/11642> 
+
+   The migration will halt with a `Halted` event if this value is too small.  Since there is no real penalty from over-estimating, it is advised to use a large  value. The default is 512 byte. 
+
+   Some key lengths for reference: 
+
+  - [`frame_support::storage::StorageValue`]: 32 byte
+
+  - [`frame_support::storage::StorageMap`]: 64 byte
+
+  - [`frame_support::storage::StorageDoubleMap`]: 96 byte
+
+   For more info see  <https://www.shawntabrizi.com/substrate/querying-substrate-storage-via-rpc/> 
 
 ___
 

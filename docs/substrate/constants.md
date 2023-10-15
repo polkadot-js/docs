@@ -20,6 +20,8 @@ The following sections contain the module constants, also known as parameter typ
 
 - **[bounties](#bounties)**
 
+- **[broker](#broker)**
+
 - **[childBounties](#childbounties)**
 
 - **[contracts](#contracts)**
@@ -70,6 +72,8 @@ The following sections contain the module constants, also known as parameter typ
 
 - **[referenda](#referenda)**
 
+- **[safeMode](#safemode)**
+
 - **[salary](#salary)**
 
 - **[scheduler](#scheduler)**
@@ -93,6 +97,8 @@ The following sections contain the module constants, also known as parameter typ
 - **[transactionPayment](#transactionpayment)**
 
 - **[treasury](#treasury)**
+
+- **[txPause](#txpause)**
 
 - **[uniques](#uniques)**
 
@@ -221,6 +227,10 @@ ___
 ### maxAuthorities: `u32`
 - **interface**: `api.consts.babe.maxAuthorities`
 - **summary**:    Max number of authorities allowed 
+ 
+### maxNominators: `u32`
+- **interface**: `api.consts.babe.maxNominators`
+- **summary**:    The maximum number of nominators for each validator. 
 
 ___
 
@@ -299,6 +309,27 @@ ___
 ___
 
 
+## broker
+ 
+### maxLeasedCores: `u32`
+- **interface**: `api.consts.broker.maxLeasedCores`
+- **summary**:    Maximum number of legacy leases. 
+ 
+### maxReservedCores: `u32`
+- **interface**: `api.consts.broker.maxReservedCores`
+- **summary**:    Maximum number of system cores. 
+ 
+### palletId: `FrameSupportPalletId`
+- **interface**: `api.consts.broker.palletId`
+- **summary**:    Identifier from which the internal Pot is generated. 
+ 
+### timeslicePeriod: `u32`
+- **interface**: `api.consts.broker.timeslicePeriod`
+- **summary**:    Number of Relay-chain blocks per timeslice. 
+
+___
+
+
 ## childBounties
  
 ### childBountyValueMinimum: `u128`
@@ -313,6 +344,10 @@ ___
 
 
 ## contracts
+ 
+### codeHashLockupDepositPercent: `Perbill`
+- **interface**: `api.consts.contracts.codeHashLockupDepositPercent`
+- **summary**:    The percentage of the storage deposit that should be held for using a code hash.  Instantiating a contract, or calling [`chain_extension::Ext::add_delegate_dependency`]  protects the code from being removed. In order to prevent abuse these actions are  protected with a percentage of the code deposit. 
  
 ### defaultDepositLimit: `u128`
 - **interface**: `api.consts.contracts.defaultDepositLimit`
@@ -334,15 +369,25 @@ ___
 
    Changing this value for an existing chain might need a storage migration. 
  
+### environment: `PalletContractsEnvironment`
+- **interface**: `api.consts.contracts.environment`
+- **summary**:    Type that bundles together all the runtime configurable interface types. 
+
+   This is not a real config. We just mention the type here as constant so that  its type appears in the metadata. Only valid value is `()`. 
+ 
 ### maxCodeLen: `u32`
 - **interface**: `api.consts.contracts.maxCodeLen`
-- **summary**:    The maximum length of a contract code in bytes. This limit applies to the instrumented  version of the code. Therefore `instantiate_with_code` can fail even when supplying  a wasm binary below this maximum size. 
+- **summary**:    The maximum length of a contract code in bytes. 
 
    The value should be chosen carefully taking into the account the overall memory limit  your runtime has, as well as the [maximum allowed callstack  depth](#associatedtype.CallStack). Look into the `integrity_test()` for some insights. 
  
 ### maxDebugBufferLen: `u32`
 - **interface**: `api.consts.contracts.maxDebugBufferLen`
 - **summary**:    The maximum length of the debug buffer in bytes. 
+ 
+### maxDelegateDependencies: `u32`
+- **interface**: `api.consts.contracts.maxDelegateDependencies`
+- **summary**:    The maximum number of delegate_dependencies that a contract can lock with  [`chain_extension::Ext::add_delegate_dependency`]. 
  
 ### maxStorageKeyLen: `u32`
 - **interface**: `api.consts.contracts.maxStorageKeyLen`
@@ -468,14 +513,6 @@ ___
 ### betterUnsignedThreshold: `Perbill`
 - **interface**: `api.consts.electionProviderMultiPhase.betterUnsignedThreshold`
 - **summary**:    The minimum amount of improvement to the solution score that defines a solution as  "better" in the Unsigned phase. 
- 
-### maxElectableTargets: `u16`
-- **interface**: `api.consts.electionProviderMultiPhase.maxElectableTargets`
-- **summary**:    The maximum number of electable targets to put in the snapshot. 
- 
-### maxElectingVoters: `u32`
-- **interface**: `api.consts.electionProviderMultiPhase.maxElectingVoters`
-- **summary**:    The maximum number of electing voters to put in the snapshot. At the moment, snapshots  are only over a single block, but once multi-block elections are introduced they will  take place over multiple blocks. 
  
 ### maxWinners: `u32`
 - **interface**: `api.consts.electionProviderMultiPhase.maxWinners`
@@ -619,6 +656,10 @@ ___
 ### maxAuthorities: `u32`
 - **interface**: `api.consts.grandpa.maxAuthorities`
 - **summary**:    Max Authorities in use 
+ 
+### maxNominators: `u32`
+- **interface**: `api.consts.grandpa.maxNominators`
+- **summary**:    The maximum number of nominators for each validator. 
  
 ### maxSetIdSessionEntries: `u64`
 - **interface**: `api.consts.grandpa.maxSetIdSessionEntries`
@@ -1046,6 +1087,41 @@ ___
 ___
 
 
+## safeMode
+ 
+### enterDepositAmount: `Option<u128>`
+- **interface**: `api.consts.safeMode.enterDepositAmount`
+- **summary**:    The amount that will be reserved upon calling [`Pallet::enter`]. 
+
+   `None` disallows permissionlessly enabling the safe-mode and is a sane default. 
+ 
+### enterDuration: `u32`
+- **interface**: `api.consts.safeMode.enterDuration`
+- **summary**:    For how many blocks the safe-mode will be entered by [`Pallet::enter`]. 
+ 
+### extendDepositAmount: `Option<u128>`
+- **interface**: `api.consts.safeMode.extendDepositAmount`
+- **summary**:    The amount that will be reserved upon calling [`Pallet::extend`]. 
+
+   `None` disallows permissionlessly extending the safe-mode and is a sane default. 
+ 
+### extendDuration: `u32`
+- **interface**: `api.consts.safeMode.extendDuration`
+- **summary**:    For how many blocks the safe-mode can be extended by each [`Pallet::extend`] call. 
+
+   This does not impose a hard limit as the safe-mode can be extended multiple times. 
+ 
+### releaseDelay: `Option<u32>`
+- **interface**: `api.consts.safeMode.releaseDelay`
+- **summary**:    The minimal duration a deposit will remain reserved after safe-mode is entered or  extended, unless [`Pallet::force_release_deposit`] is successfully called sooner. 
+
+   Every deposit is tied to a specific activation or extension, thus each deposit can be  released independently after the delay for it has passed. 
+
+   `None` disallows permissionlessly releasing the safe-mode deposits and is a sane  default. 
+
+___
+
+
 ## salary
  
 ### budget: `u128`
@@ -1086,25 +1162,29 @@ ___
 
 ## society
  
-### candidateDeposit: `u128`
-- **interface**: `api.consts.society.candidateDeposit`
-- **summary**:    The minimum amount of a deposit required for a bid to be made. 
- 
 ### challengePeriod: `u32`
 - **interface**: `api.consts.society.challengePeriod`
 - **summary**:    The number of blocks between membership challenges. 
  
-### maxCandidateIntake: `u32`
-- **interface**: `api.consts.society.maxCandidateIntake`
-- **summary**:    The maximum number of candidates that we accept per round. 
+### claimPeriod: `u32`
+- **interface**: `api.consts.society.claimPeriod`
+- **summary**:    The number of blocks on which new candidates can claim their membership and be the  named head. 
+ 
+### graceStrikes: `u32`
+- **interface**: `api.consts.society.graceStrikes`
+- **summary**:    The maximum number of strikes before a member gets funds slashed. 
+ 
+### maxBids: `u32`
+- **interface**: `api.consts.society.maxBids`
+- **summary**:    The maximum number of bids at once. 
  
 ### maxLockDuration: `u32`
 - **interface**: `api.consts.society.maxLockDuration`
 - **summary**:    The maximum duration of the payout lock. 
  
-### maxStrikes: `u32`
-- **interface**: `api.consts.society.maxStrikes`
-- **summary**:    The number of times a member may vote the wrong way (or not at all, when they are a  skeptic) before they become suspended. 
+### maxPayouts: `u32`
+- **interface**: `api.consts.society.maxPayouts`
+- **summary**:    The maximum number of payouts a member may have waiting unclaimed. 
  
 ### palletId: `FrameSupportPalletId`
 - **interface**: `api.consts.society.palletId`
@@ -1114,13 +1194,9 @@ ___
 - **interface**: `api.consts.society.periodSpend`
 - **summary**:    The amount of incentive paid within each period. Doesn't include VoterTip. 
  
-### rotationPeriod: `u32`
-- **interface**: `api.consts.society.rotationPeriod`
-- **summary**:    The number of blocks between candidate/membership rotation periods. 
- 
-### wrongSideDeduction: `u128`
-- **interface**: `api.consts.society.wrongSideDeduction`
-- **summary**:    The amount of the unpaid reward that gets deducted in the case that either a skeptic  doesn't vote or someone votes in the wrong way. 
+### votingPeriod: `u32`
+- **interface**: `api.consts.society.votingPeriod`
+- **summary**:    The number of blocks on which new candidates should be voted on. Together with  `ClaimPeriod`, this sums to the number of blocks between candidate intake periods. 
 
 ___
 
@@ -1142,10 +1218,6 @@ ___
    If migrating an existing pallet from storage value to config value,  this should be set to same value or greater as in storage. 
 
    Note: `HistoryDepth` is used as the upper bound for the `BoundedVec`  item `StakingLedger.claimed_rewards`. Setting this value lower than  the existing value can lead to inconsistencies in the  `StakingLedger` and will need to be handled properly in a migration.  The test `reducing_history_depth_abrupt` shows this effect. 
- 
-### maxNominations: `u32`
-- **interface**: `api.consts.staking.maxNominations`
-- **summary**:    Maximum number of nominations per nominator. 
  
 ### maxNominatorRewardedPerValidator: `u32`
 - **interface**: `api.consts.staking.maxNominatorRewardedPerValidator`
@@ -1350,6 +1422,17 @@ ___
 ### spendPeriod: `u32`
 - **interface**: `api.consts.treasury.spendPeriod`
 - **summary**:    Period between successive spends. 
+
+___
+
+
+## txPause
+ 
+### maxNameLen: `u32`
+- **interface**: `api.consts.txPause.maxNameLen`
+- **summary**:    Maximum length for pallet name and call name SCALE encoded string names. 
+
+   TOO LONG NAMES WILL BE TREATED AS PAUSED. 
 
 ___
 

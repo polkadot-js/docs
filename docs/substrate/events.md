@@ -12,6 +12,8 @@ Events are emitted for certain operations on the runtime. The following sections
 
 - **[assetConversion](#assetconversion)**
 
+- **[assetConversionTxPayment](#assetconversiontxpayment)**
+
 - **[assetRate](#assetrate)**
 
 - **[assets](#assets)**
@@ -21,6 +23,8 @@ Events are emitted for certain operations on the runtime. The following sections
 - **[balances](#balances)**
 
 - **[bounties](#bounties)**
+
+- **[broker](#broker)**
 
 - **[childBounties](#childbounties)**
 
@@ -84,6 +88,8 @@ Events are emitted for certain operations on the runtime. The following sections
 
 - **[remark](#remark)**
 
+- **[safeMode](#safemode)**
+
 - **[salary](#salary)**
 
 - **[scheduler](#scheduler)**
@@ -113,6 +119,8 @@ Events are emitted for certain operations on the runtime. The following sections
 - **[transactionStorage](#transactionstorage)**
 
 - **[treasury](#treasury)**
+
+- **[txPause](#txpause)**
 
 - **[uniques](#uniques)**
 
@@ -228,7 +236,7 @@ ___
 - **interface**: `api.events.assetConversion.LiquidityRemoved.is`
 - **summary**:    A successful call of the `RemoveLiquidity` extrinsic will create this event. 
  
-### PoolCreated(`AccountId32`, `(PalletAssetConversionNativeOrAssetId,PalletAssetConversionNativeOrAssetId)`, `u32`)
+### PoolCreated(`AccountId32`, `(PalletAssetConversionNativeOrAssetId,PalletAssetConversionNativeOrAssetId)`, `AccountId32`, `u32`)
 - **interface**: `api.events.assetConversion.PoolCreated.is`
 - **summary**:    A successful call of the `CretaPool` extrinsic will create this event. 
  
@@ -239,6 +247,19 @@ ___
 ### Transfer(`AccountId32`, `AccountId32`, `PalletAssetConversionNativeOrAssetId`, `u128`)
 - **interface**: `api.events.assetConversion.Transfer.is`
 - **summary**:    An amount has been transferred from one account to another. 
+
+___
+
+
+## assetConversionTxPayment
+ 
+### AssetRefundFailed(`u128`)
+- **interface**: `api.events.assetConversionTxPayment.AssetRefundFailed.is`
+- **summary**:    A swap of the refund in native currency back to asset failed. 
+ 
+### AssetTxFeePaid(`AccountId32`, `u128`, `u128`, `u32`)
+- **interface**: `api.events.assetConversionTxPayment.AssetTxFeePaid.is`
+- **summary**:    A transaction fee `actual_fee`, of which `tip` was added to the minimum inclusion fee,  has been paid by `who` in an asset `asset_id`. 
 
 ___
 
@@ -489,6 +510,123 @@ ___
 ___
 
 
+## broker
+ 
+### AllowedRenewalDropped(`u32`, `u16`)
+- **interface**: `api.events.broker.AllowedRenewalDropped.is`
+- **summary**:    Some historical Instantaneous Core Pool payment record has been dropped. 
+ 
+### Assigned(`PalletBrokerRegionId`, `u32`, `u32`)
+- **interface**: `api.events.broker.Assigned.is`
+- **summary**:    A Region has been assigned to a particular task. 
+ 
+### ClaimsReady(`u32`, `u128`, `u128`)
+- **interface**: `api.events.broker.ClaimsReady.is`
+- **summary**:    Some historical Instantaneous Core Pool Revenue is ready for payout claims. 
+ 
+### ContributionDropped(`PalletBrokerRegionId`)
+- **interface**: `api.events.broker.ContributionDropped.is`
+- **summary**:    Some historical Instantaneous Core Pool contribution record has been dropped. 
+ 
+### CoreAssigned(`u16`, `u32`, `Vec<(PalletBrokerCoretimeInterfaceCoreAssignment,u16)>`)
+- **interface**: `api.events.broker.CoreAssigned.is`
+- **summary**:    A Core has been assigned to one or more tasks and/or the Pool on the Relay-chain. 
+ 
+### CoreCountChanged(`u16`)
+- **interface**: `api.events.broker.CoreCountChanged.is`
+- **summary**:    The number of cores available for scheduling has changed. 
+ 
+### CoreCountRequested(`u16`)
+- **interface**: `api.events.broker.CoreCountRequested.is`
+- **summary**:    A new number of cores has been requested. 
+ 
+### CreditPurchased(`AccountId32`, `AccountId32`, `u128`)
+- **interface**: `api.events.broker.CreditPurchased.is`
+- **summary**:    Some Instantaneous Coretime Pool credit has been purchased. 
+ 
+### HistoryDropped(`u32`, `u128`)
+- **interface**: `api.events.broker.HistoryDropped.is`
+- **summary**:    Some historical Instantaneous Core Pool payment record has been dropped. 
+ 
+### HistoryIgnored(`u32`, `u128`)
+- **interface**: `api.events.broker.HistoryIgnored.is`
+- **summary**:    Some historical Instantaneous Core Pool payment record has been ignored because the  timeslice was already known. Governance may need to intervene. 
+ 
+### HistoryInitialized(`u32`, `u32`, `u32`)
+- **interface**: `api.events.broker.HistoryInitialized.is`
+- **summary**:    Some historical Instantaneous Core Pool payment record has been initialized. 
+ 
+### Interlaced(`PalletBrokerRegionId`, `(PalletBrokerRegionId,PalletBrokerRegionId)`)
+- **interface**: `api.events.broker.Interlaced.is`
+- **summary**:    A Region has been converted into two overlapping Regions each of lesser regularity. 
+ 
+### Leased(`u32`, `u32`)
+- **interface**: `api.events.broker.Leased.is`
+- **summary**:    A new lease has been created. 
+ 
+### LeaseEnding(`u32`, `u32`)
+- **interface**: `api.events.broker.LeaseEnding.is`
+- **summary**:    A lease is about to end. 
+ 
+### Partitioned(`PalletBrokerRegionId`, `(PalletBrokerRegionId,PalletBrokerRegionId)`)
+- **interface**: `api.events.broker.Partitioned.is`
+- **summary**:    A Region has been split into two non-overlapping Regions. 
+ 
+### Pooled(`PalletBrokerRegionId`, `u32`)
+- **interface**: `api.events.broker.Pooled.is`
+- **summary**:    A Region has been added to the Instantaneous Coretime Pool. 
+ 
+### Purchased(`AccountId32`, `PalletBrokerRegionId`, `u128`, `u32`)
+- **interface**: `api.events.broker.Purchased.is`
+- **summary**:    A Region of Bulk Coretime has been purchased. 
+ 
+### RegionDropped(`PalletBrokerRegionId`, `u32`)
+- **interface**: `api.events.broker.RegionDropped.is`
+- **summary**:    A Region has been dropped due to being out of date. 
+ 
+### Renewable(`u16`, `u128`, `u32`, `Vec<PalletBrokerScheduleItem>`)
+- **interface**: `api.events.broker.Renewable.is`
+- **summary**:    The workload of a core has become renewable. 
+ 
+### Renewed(`AccountId32`, `u128`, `u16`, `u16`, `u32`, `u32`, `Vec<PalletBrokerScheduleItem>`)
+- **interface**: `api.events.broker.Renewed.is`
+- **summary**:    A workload has been renewed. 
+ 
+### ReservationCancelled(`u32`, `Vec<PalletBrokerScheduleItem>`)
+- **interface**: `api.events.broker.ReservationCancelled.is`
+- **summary**:    A reservation for a workload has been cancelled. 
+ 
+### ReservationMade(`u32`, `Vec<PalletBrokerScheduleItem>`)
+- **interface**: `api.events.broker.ReservationMade.is`
+- **summary**:    There is a new reservation for a workload. 
+ 
+### RevenueClaimBegun(`PalletBrokerRegionId`, `u32`)
+- **interface**: `api.events.broker.RevenueClaimBegun.is`
+- **summary**:    The act of claiming revenue has begun. 
+ 
+### RevenueClaimItem(`u32`, `u128`)
+- **interface**: `api.events.broker.RevenueClaimItem.is`
+- **summary**:    A particular timeslice has a non-zero claim. 
+ 
+### RevenueClaimPaid(`AccountId32`, `u128`, `Option<PalletBrokerRegionId>`)
+- **interface**: `api.events.broker.RevenueClaimPaid.is`
+- **summary**:    A revenue claim has (possibly only in part) been paid. 
+ 
+### SaleInitialized(`u32`, `u32`, `u128`, `u128`, `u32`, `u32`, `u16`, `u16`)
+- **interface**: `api.events.broker.SaleInitialized.is`
+- **summary**:    A new sale has been initialized. 
+ 
+### SalesStarted(`u128`, `u16`)
+- **interface**: `api.events.broker.SalesStarted.is`
+- **summary**:    The sale rotation has been started and a new sale is imminent. 
+ 
+### Transferred(`PalletBrokerRegionId`, `u32`, `AccountId32`, `AccountId32`)
+- **interface**: `api.events.broker.Transferred.is`
+- **summary**:    Ownership of a Region has been transferred. 
+
+___
+
+
 ## childBounties
  
 ### Added(`u32`, `u32`)
@@ -520,11 +658,11 @@ ___
 
    Please keep in mind that like all events this is only emitted for successful  calls. This is because on failure all storage changes including events are  rolled back. 
  
-### CodeRemoved(`H256`)
+### CodeRemoved(`H256`, `u128`, `AccountId32`)
 - **interface**: `api.events.contracts.CodeRemoved.is`
 - **summary**:    A code with the specified hash was removed. 
  
-### CodeStored(`H256`)
+### CodeStored(`H256`, `u128`, `AccountId32`)
 - **interface**: `api.events.contracts.CodeStored.is`
 - **summary**:    Code with the specified hash has been stored. 
  
@@ -547,6 +685,14 @@ ___
 ### Instantiated(`AccountId32`, `AccountId32`)
 - **interface**: `api.events.contracts.Instantiated.is`
 - **summary**:    Contract deployed by address at the specified address. 
+ 
+### StorageDepositTransferredAndHeld(`AccountId32`, `AccountId32`, `u128`)
+- **interface**: `api.events.contracts.StorageDepositTransferredAndHeld.is`
+- **summary**:    Some funds have been transferred and held as storage deposit. 
+ 
+### StorageDepositTransferredAndReleased(`AccountId32`, `AccountId32`, `u128`)
+- **interface**: `api.events.contracts.StorageDepositTransferredAndReleased.is`
+- **summary**:    Some storage deposit funds have been transferred and released. 
  
 ### Terminated(`AccountId32`, `AccountId32`)
 - **interface**: `api.events.contracts.Terminated.is`
@@ -820,7 +966,7 @@ ___
 
 ## glutton
  
-### ComputationLimitSet(`Perbill`)
+### ComputationLimitSet(`u64`)
 - **interface**: `api.events.glutton.ComputationLimitSet.is`
 - **summary**:    The computation limit has been updated. 
  
@@ -828,7 +974,7 @@ ___
 - **interface**: `api.events.glutton.PalletInitialized.is`
 - **summary**:    The pallet has been (re)initialized. 
  
-### StorageLimitSet(`Perbill`)
+### StorageLimitSet(`u64`)
 - **interface**: `api.events.glutton.StorageLimitSet.is`
 - **summary**:    The storage limit has been updated. 
 
@@ -1109,7 +1255,7 @@ ___
 - **interface**: `api.events.nfts.ItemTransferUnlocked.is`
 - **summary**:    An `item` became transferable. 
  
-### NextCollectionIdIncremented(`u32`)
+### NextCollectionIdIncremented(`Option<u32>`)
 - **interface**: `api.events.nfts.NextCollectionIdIncremented.is`
 - **summary**:    Event gets emitted when the `NextCollectionId` gets incremented. 
  
@@ -1627,6 +1773,47 @@ ___
 ___
 
 
+## safeMode
+ 
+### CannotDeposit()
+- **interface**: `api.events.safeMode.CannotDeposit.is`
+- **summary**:    Could not hold funds for entering or extending the safe-mode. 
+
+   This error comes from the underlying `Currency`. 
+ 
+### CannotRelease()
+- **interface**: `api.events.safeMode.CannotRelease.is`
+- **summary**:    Could not release funds for entering or extending the safe-mode. 
+
+   This error comes from the underlying `Currency`. 
+ 
+### DepositPlaced(`AccountId32`, `u128`)
+- **interface**: `api.events.safeMode.DepositPlaced.is`
+- **summary**:    An account reserved funds for either entering or extending the safe-mode. 
+ 
+### DepositReleased(`AccountId32`, `u128`)
+- **interface**: `api.events.safeMode.DepositReleased.is`
+- **summary**:    An account had a reserve released that was reserved. 
+ 
+### DepositSlashed(`AccountId32`, `u128`)
+- **interface**: `api.events.safeMode.DepositSlashed.is`
+- **summary**:    An account had reserve slashed that was reserved. 
+ 
+### Entered(`u32`)
+- **interface**: `api.events.safeMode.Entered.is`
+- **summary**:    The safe-mode was entered until inclusively this block. 
+ 
+### Exited(`PalletSafeModeExitReason`)
+- **interface**: `api.events.safeMode.Exited.is`
+- **summary**:    Exited the safe-mode for a specific reason. 
+ 
+### Extended(`u32`)
+- **interface**: `api.events.safeMode.Extended.is`
+- **summary**:    The safe-mode was extended until inclusively this block. 
+
+___
+
+
 ## salary
  
 ### CycleStarted(`u32`)
@@ -1712,6 +1899,10 @@ ___
 - **interface**: `api.events.society.Deposit.is`
 - **summary**:    Some funds were deposited into the society account. 
  
+### Elevated(`AccountId32`, `u32`)
+- **interface**: `api.events.society.Elevated.is`
+- **summary**:    A \[member\] got elevated to \[rank\]. 
+ 
 ### Founded(`AccountId32`)
 - **interface**: `api.events.society.Founded.is`
 - **summary**:    The society is founded by the given identity. 
@@ -1724,13 +1915,9 @@ ___
 - **interface**: `api.events.society.MemberSuspended.is`
 - **summary**:    A member has been suspended 
  
-### NewMaxMembers(`u32`)
-- **interface**: `api.events.society.NewMaxMembers.is`
-- **summary**:    A new \[max\] member count has been set 
- 
-### SkepticsChosen(`Vec<AccountId32>`)
-- **interface**: `api.events.society.SkepticsChosen.is`
-- **summary**:    A group of members has been choosen as Skeptics 
+### NewParams(`PalletSocietyGroupParams`)
+- **interface**: `api.events.society.NewParams.is`
+- **summary**:    A new set of \[params\] has been set for the group. 
  
 ### SuspendedMemberJudgement(`AccountId32`, `bool`)
 - **interface**: `api.events.society.SuspendedMemberJudgement.is`
@@ -1802,6 +1989,14 @@ ___
 ### SlashReported(`AccountId32`, `Perbill`, `u32`)
 - **interface**: `api.events.staking.SlashReported.is`
 - **summary**:    A slash for the given validator, for the given percentage of their stake, at the given  era as been reported. 
+ 
+### SnapshotTargetsSizeExceeded(`u32`)
+- **interface**: `api.events.staking.SnapshotTargetsSizeExceeded.is`
+- **summary**:    Targets size limit reached. 
+ 
+### SnapshotVotersSizeExceeded(`u32`)
+- **interface**: `api.events.staking.SnapshotVotersSizeExceeded.is`
+- **summary**:    Voters size limit reached. 
  
 ### StakersElected()
 - **interface**: `api.events.staking.StakersElected.is`
@@ -2052,6 +2247,19 @@ ___
 ### UpdatedInactive(`u128`, `u128`)
 - **interface**: `api.events.treasury.UpdatedInactive.is`
 - **summary**:    The inactive funds of the pallet have been updated. 
+
+___
+
+
+## txPause
+ 
+### CallPaused(`(Bytes,Bytes)`)
+- **interface**: `api.events.txPause.CallPaused.is`
+- **summary**:    This pallet, or a specific call is now paused. 
+ 
+### CallUnpaused(`(Bytes,Bytes)`)
+- **interface**: `api.events.txPause.CallUnpaused.is`
+- **summary**:    This pallet, or a specific call is now unpaused. 
 
 ___
 

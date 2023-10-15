@@ -24,11 +24,7 @@ The following sections contain Storage methods are part of the default Polkadot 
 
 - **[convictionVoting](#convictionvoting)**
 
-- **[council](#council)**
-
 - **[crowdloan](#crowdloan)**
-
-- **[democracy](#democracy)**
 
 - **[dmp](#dmp)**
 
@@ -72,8 +68,6 @@ The following sections contain Storage methods are part of the default Polkadot 
 
 - **[parasSlashing](#parasslashing)**
 
-- **[phragmenElection](#phragmenelection)**
-
 - **[preimage](#preimage)**
 
 - **[proxy](#proxy)**
@@ -94,13 +88,7 @@ The following sections contain Storage methods are part of the default Polkadot 
 
 - **[system](#system)**
 
-- **[technicalCommittee](#technicalcommittee)**
-
-- **[technicalMembership](#technicalmembership)**
-
 - **[timestamp](#timestamp)**
-
-- **[tips](#tips)**
 
 - **[transactionPayment](#transactionpayment)**
 
@@ -385,35 +373,6 @@ ___
 ___
 
 
-## council
- 
-### members(): `Vec<AccountId32>`
-- **interface**: `api.query.council.members`
-- **summary**:    The current members of the collective. This is stored sorted (just by value). 
- 
-### prime(): `Option<AccountId32>`
-- **interface**: `api.query.council.prime`
-- **summary**:    The prime member that helps determine the default vote behavior in case of absentations. 
- 
-### proposalCount(): `u32`
-- **interface**: `api.query.council.proposalCount`
-- **summary**:    Proposals so far. 
- 
-### proposalOf(`H256`): `Option<Call>`
-- **interface**: `api.query.council.proposalOf`
-- **summary**:    Actual proposal for a given hash, if it's current. 
- 
-### proposals(): `Vec<H256>`
-- **interface**: `api.query.council.proposals`
-- **summary**:    The hashes of the active proposals. 
- 
-### voting(`H256`): `Option<PalletCollectiveVotes>`
-- **interface**: `api.query.council.voting`
-- **summary**:    Votes on a given proposal, if it is ongoing. 
-
-___
-
-
 ## crowdloan
  
 ### endingsCount(): `u32`
@@ -431,71 +390,6 @@ ___
 ### nextFundIndex(): `u32`
 - **interface**: `api.query.crowdloan.nextFundIndex`
 - **summary**:    Tracker for the next available fund index 
-
-___
-
-
-## democracy
- 
-### blacklist(`H256`): `Option<(u32,Vec<AccountId32>)>`
-- **interface**: `api.query.democracy.blacklist`
-- **summary**:    A record of who vetoed what. Maps proposal hash to a possible existent block number  (until when it may not be resubmitted) and who vetoed it. 
- 
-### cancellations(`H256`): `bool`
-- **interface**: `api.query.democracy.cancellations`
-- **summary**:    Record of all proposals that have been subject to emergency cancellation. 
- 
-### depositOf(`u32`): `Option<(Vec<AccountId32>,u128)>`
-- **interface**: `api.query.democracy.depositOf`
-- **summary**:    Those who have locked a deposit. 
-
-   TWOX-NOTE: Safe, as increasing integer keys are safe. 
- 
-### lastTabledWasExternal(): `bool`
-- **interface**: `api.query.democracy.lastTabledWasExternal`
-- **summary**:    True if the last referendum tabled was submitted externally. False if it was a public  proposal. 
- 
-### lowestUnbaked(): `u32`
-- **interface**: `api.query.democracy.lowestUnbaked`
-- **summary**:    The lowest referendum index representing an unbaked referendum. Equal to  `ReferendumCount` if there isn't a unbaked referendum. 
- 
-### metadataOf(`PalletDemocracyMetadataOwner`): `Option<H256>`
-- **interface**: `api.query.democracy.metadataOf`
-- **summary**:    General information concerning any proposal or referendum.  The `PreimageHash` refers to the preimage of the `Preimages` provider which can be a JSON  dump or IPFS hash of a JSON file. 
-
-   Consider a garbage collection for a metadata of finished referendums to `unrequest` (remove)  large preimages. 
- 
-### nextExternal(): `Option<(FrameSupportPreimagesBounded,PalletDemocracyVoteThreshold)>`
-- **interface**: `api.query.democracy.nextExternal`
-- **summary**:    The referendum to be tabled whenever it would be valid to table an external proposal.  This happens when a referendum needs to be tabled and one of two conditions are met: 
-
-  - `LastTabledWasExternal` is `false`; or
-
-  - `PublicProps` is empty.
- 
-### publicPropCount(): `u32`
-- **interface**: `api.query.democracy.publicPropCount`
-- **summary**:    The number of (public) proposals that have been made so far. 
- 
-### publicProps(): `Vec<(u32,FrameSupportPreimagesBounded,AccountId32)>`
-- **interface**: `api.query.democracy.publicProps`
-- **summary**:    The public proposals. Unsorted. The second item is the proposal. 
- 
-### referendumCount(): `u32`
-- **interface**: `api.query.democracy.referendumCount`
-- **summary**:    The next free referendum index, aka the number of referenda started so far. 
- 
-### referendumInfoOf(`u32`): `Option<PalletDemocracyReferendumInfo>`
-- **interface**: `api.query.democracy.referendumInfoOf`
-- **summary**:    Information concerning any given referendum. 
-
-   TWOX-NOTE: SAFE as indexes are not under an attacker’s control. 
- 
-### votingOf(`AccountId32`): `PalletDemocracyVoteVoting`
-- **interface**: `api.query.democracy.votingOf`
-- **summary**:    All votes for a particular voter. We store the balance for the number of votes that we  have recorded. The second item is the total amount of delegations, that will be added. 
-
-   TWOX-NOTE: SAFE as `AccountId`s are crypto hashes anyway. 
 
 ___
 
@@ -735,7 +629,7 @@ ___
 - **interface**: `api.query.hrmp.hrmpWatermarks`
 - **summary**:    The HRMP watermark associated with each para.  Invariant: 
 
-  - each para `P` used here as a key should satisfy `Paras::is_valid_para(P)` within a session.
+  - each para `P` used here as a key should satisfy `Paras::is_valid_para(P)` within a session. 
 
 ___
 
@@ -787,9 +681,9 @@ ___
 - **interface**: `api.query.imOnline.keys`
 - **summary**:    The current set of keys that may issue a heartbeat. 
  
-### receivedHeartbeats(`u32, u32`): `Option<WrapperOpaque<PalletImOnlineBoundedOpaqueNetworkState>>`
+### receivedHeartbeats(`u32, u32`): `Option<bool>`
 - **interface**: `api.query.imOnline.receivedHeartbeats`
-- **summary**:    For each session index, we keep a mapping of `SessionIndex` and `AuthIndex` to  `WrapperOpaque<BoundedOpaqueNetworkState>`. 
+- **summary**:    For each session index, we keep a mapping of `SessionIndex` and `AuthIndex`. 
 
 ___
 
@@ -819,7 +713,7 @@ ___
 
    Semantically a `bool`, but this guarantees it should never hit the trie,  as this is cleared in `on_finalize` and Frame optimizes `None` values to be empty values. 
 
-   As a `bool`, `set(false)` and `remove()` both lead to the next `get()` being false, but one of  them writes to the trie and one does not. This confusion makes `Option<()>` more suitable for  the semantics of this variable. 
+   As a `bool`, `set(false)` and `remove()` both lead to the next `get()` being false, but one  of them writes to the trie and one does not. This confusion makes `Option<()>` more suitable  for the semantics of this variable. 
 
 ___
 
@@ -966,7 +860,7 @@ ___
 - **interface**: `api.query.paraInclusion.pendingAvailability`
 - **summary**:    Candidates pending availability by `ParaId`. 
  
-### pendingAvailabilityCommitments(`u32`): `Option<PolkadotPrimitivesV4CandidateCommitments>`
+### pendingAvailabilityCommitments(`u32`): `Option<PolkadotPrimitivesV5CandidateCommitments>`
 - **interface**: `api.query.paraInclusion.pendingAvailabilityCommitments`
 - **summary**:    The commitments of candidates pending availability, by `ParaId`. 
 
@@ -983,7 +877,7 @@ ___
 
    If this is `None` at the end of the block, we panic and render the block invalid. 
  
-### onChainVotes(): `Option<PolkadotPrimitivesV4ScrapedOnChainVotes>`
+### onChainVotes(): `Option<PolkadotPrimitivesV5ScrapedOnChainVotes>`
 - **interface**: `api.query.paraInherent.onChainVotes`
 - **summary**:    Scraped on chain data for extracting resolved disputes as well as backing votes. 
 
@@ -1026,9 +920,13 @@ ___
 - **interface**: `api.query.paras.heads`
 - **summary**:    The head-data of every registered para. 
  
+### mostRecentContext(`u32`): `Option<u32>`
+- **interface**: `api.query.paras.mostRecentContext`
+- **summary**:    The context (relay-chain block number) of the most recent parachain head. 
+ 
 ### parachains(): `Vec<u32>`
 - **interface**: `api.query.paras.parachains`
-- **summary**:    All parachains. Ordered ascending by `ParaId`. Parathreads are not included. 
+- **summary**:    All lease holding parachains. Ordered ascending by `ParaId`. On demand parachains are not  included. 
 
    Consider using the [`ParachainsCache`] type of modifying. 
  
@@ -1048,7 +946,7 @@ ___
  
 ### pastCodePruning(): `Vec<(u32,u32)>`
 - **interface**: `api.query.paras.pastCodePruning`
-- **summary**:    Which paras have past code that needs pruning and the relay-chain block at which the code was replaced.  Note that this is the actual height of the included block, not the expected height at which the  code upgrade would be applied, although they may be equal.  This is to ensure the entire acceptance period is covered, not an offset acceptance period starting  from the time at which the parachain perceives a code upgrade as having occurred.  Multiple entries for a single para are permitted. Ordered ascending by block number. 
+- **summary**:    Which paras have past code that needs pruning and the relay-chain block at which the code  was replaced. Note that this is the actual height of the included block, not the expected  height at which the code upgrade would be applied, although they may be equal.  This is to ensure the entire acceptance period is covered, not an offset acceptance period  starting from the time at which the parachain perceives a code upgrade as having occurred.  Multiple entries for a single para are permitted. Ordered ascending by block number. 
  
 ### pvfActiveVoteList(): `Vec<H256>`
 - **interface**: `api.query.paras.pvfActiveVoteList`
@@ -1080,15 +978,15 @@ ___
 
    Ordered ascending by block number. 
  
-### upgradeGoAheadSignal(`u32`): `Option<PolkadotPrimitivesV4UpgradeGoAhead>`
+### upgradeGoAheadSignal(`u32`): `Option<PolkadotPrimitivesV5UpgradeGoAhead>`
 - **interface**: `api.query.paras.upgradeGoAheadSignal`
-- **summary**:    This is used by the relay-chain to communicate to a parachain a go-ahead with in the upgrade procedure. 
+- **summary**:    This is used by the relay-chain to communicate to a parachain a go-ahead with in the upgrade  procedure. 
 
-   This value is absent when there are no upgrades scheduled or during the time the relay chain  performs the checks. It is set at the first relay-chain block when the corresponding parachain  can switch its upgrade function. As soon as the parachain's block is included, the value  gets reset to `None`. 
+   This value is absent when there are no upgrades scheduled or during the time the relay chain  performs the checks. It is set at the first relay-chain block when the corresponding  parachain can switch its upgrade function. As soon as the parachain's block is included, the  value gets reset to `None`. 
 
    NOTE that this field is used by parachains via merkle storage proofs, therefore changing  the format will require migration of parachains. 
  
-### upgradeRestrictionSignal(`u32`): `Option<PolkadotPrimitivesV4UpgradeRestriction>`
+### upgradeRestrictionSignal(`u32`): `Option<PolkadotPrimitivesV5UpgradeRestriction>`
 - **interface**: `api.query.paras.upgradeRestrictionSignal`
 - **summary**:    This is used by the relay-chain to communicate that there are restrictions for performing  an upgrade for this parachain. 
 
@@ -1101,9 +999,9 @@ ___
 
 ## paraScheduler
  
-### availabilityCores(): `Vec<Option<PolkadotPrimitivesV4CoreOccupied>>`
+### availabilityCores(): `Vec<PolkadotPrimitivesV5CoreOccupied>`
 - **interface**: `api.query.paraScheduler.availabilityCores`
-- **summary**:    One entry for each availability core. Entries are `None` if the core is not currently occupied. Can be  temporarily `Some` if scheduled but not occupied.  The i'th parachain belongs to the i'th core, with the remaining cores all being  parathread-multiplexers. 
+- **summary**:    One entry for each availability core. Entries are `None` if the core is not currently  occupied. Can be temporarily `Some` if scheduled but not occupied.  The i'th parachain belongs to the i'th core, with the remaining cores all being  parathread-multiplexers. 
 
    Bounded by the maximum of either of these two values: 
 
@@ -1111,29 +1009,13 @@ ___
 
   * The number of validators divided by `configuration.max_validators_per_core`.
  
-### parathreadClaimIndex(): `Vec<u32>`
-- **interface**: `api.query.paraScheduler.parathreadClaimIndex`
-- **summary**:    An index used to ensure that only one claim on a parathread exists in the queue or is  currently being handled by an occupied core. 
-
-   Bounded by the number of parathread cores and scheduling lookahead. Reasonably, 10 * 50 = 500. 
- 
-### parathreadQueue(): `PolkadotRuntimeParachainsSchedulerParathreadClaimQueue`
-- **interface**: `api.query.paraScheduler.parathreadQueue`
-- **summary**:    A queue of upcoming claims and which core they should be mapped onto. 
-
-   The number of queued claims is bounded at the `scheduling_lookahead`  multiplied by the number of parathread multiplexer cores. Reasonably, 10 * 50 = 500. 
- 
-### scheduled(): `Vec<PolkadotRuntimeParachainsSchedulerCoreAssignment>`
-- **interface**: `api.query.paraScheduler.scheduled`
-- **summary**:    Currently scheduled cores - free but up to be occupied. 
-
-   Bounded by the number of cores: one for each parachain and parathread multiplexer. 
-
-   The value contained here will not be valid after the end of a block. Runtime APIs should be used to determine scheduled cores/  for the upcoming block. 
+### claimQueue(): `BTreeMap<u32, Vec<Option<PolkadotPrimitivesV5ParasEntry>>>`
+- **interface**: `api.query.paraScheduler.claimQueue`
+- **summary**:    One entry for each availability core. The `VecDeque` represents the assignments to be  scheduled on that core. `None` is used to signal to not schedule the next para of the core  as there is one currently being scheduled. Not using `None` here would overwrite the  `CoreState` in the runtime API. The value contained here will not be valid after the end of  a block. Runtime APIs should be used to determine scheduled cores/ for the upcoming block. 
  
 ### sessionStartBlock(): `u32`
 - **interface**: `api.query.paraScheduler.sessionStartBlock`
-- **summary**:    The block number where the session start occurred. Used to track how many group rotations have occurred. 
+- **summary**:    The block number where the session start occurred. Used to track how many group rotations  have occurred. 
 
    Note that in the context of parachains modules the session change is signaled during  the block and enacted at the end of the block (at the finalization stage, to be exact).  Thus for all intents and purposes the effect of the session change is observed at the  block following the session change, block number of which we save in this storage value. 
  
@@ -1141,7 +1023,7 @@ ___
 - **interface**: `api.query.paraScheduler.validatorGroups`
 - **summary**:    All the validator groups. One for each core. Indices are into `ActiveValidators` - not the  broader set of Polkadot validators, but instead just the subset used for parachains during  this session. 
 
-   Bound: The number of cores is the sum of the numbers of parachains and parathread multiplexers.  Reasonably, 100-1000. The dominant factor is the number of validators: safe upper bound at 10k. 
+   Bound: The number of cores is the sum of the numbers of parachains and parathread  multiplexers. Reasonably, 100-1000. The dominant factor is the number of validators: safe  upper bound at 10k. 
 
 ___
 
@@ -1152,7 +1034,7 @@ ___
 - **interface**: `api.query.parasDisputes.backersOnDisputes`
 - **summary**:    Backing votes stored for each dispute.  This storage is used for slashing. 
  
-### disputes(`u32, H256`): `Option<PolkadotPrimitivesV4DisputeState>`
+### disputes(`u32, H256`): `Option<PolkadotPrimitivesV5DisputeState>`
 - **interface**: `api.query.parasDisputes.disputes`
 - **summary**:    All ongoing or concluded disputes for the last several sessions. 
  
@@ -1177,7 +1059,7 @@ ___
 - **interface**: `api.query.paraSessionInfo.accountKeys`
 - **summary**:    The validator account keys of the validators actively participating in parachain consensus. 
  
-### assignmentKeysUnsafe(): `Vec<PolkadotPrimitivesV4AssignmentAppPublic>`
+### assignmentKeysUnsafe(): `Vec<PolkadotPrimitivesV5AssignmentAppPublic>`
 - **interface**: `api.query.paraSessionInfo.assignmentKeysUnsafe`
 - **summary**:    Assignment keys for the current session.  Note that this API is private due to it being prone to 'off-by-one' at session boundaries.  When in doubt, use `Sessions` API instead. 
  
@@ -1185,11 +1067,11 @@ ___
 - **interface**: `api.query.paraSessionInfo.earliestStoredSession`
 - **summary**:    The earliest session for which previous session info is stored. 
  
-### sessionExecutorParams(`u32`): `Option<PolkadotPrimitivesV4ExecutorParams>`
+### sessionExecutorParams(`u32`): `Option<PolkadotPrimitivesV5ExecutorParams>`
 - **interface**: `api.query.paraSessionInfo.sessionExecutorParams`
 - **summary**:    Executor parameter set for a given session index 
  
-### sessions(`u32`): `Option<PolkadotPrimitivesV4SessionInfo>`
+### sessions(`u32`): `Option<PolkadotPrimitivesV5SessionInfo>`
 - **interface**: `api.query.paraSessionInfo.sessions`
 - **summary**:    Session information in a rolling window.  Should have an entry in range `EarliestStoredSession..=CurrentSessionIndex`.  Does not have any entries before the session index in the first session change notification. 
 
@@ -1202,9 +1084,13 @@ ___
 - **interface**: `api.query.parasShared.activeValidatorIndices`
 - **summary**:    All the validators actively participating in parachain consensus.  Indices are into the broader validator set. 
  
-### activeValidatorKeys(): `Vec<PolkadotPrimitivesV4ValidatorAppPublic>`
+### activeValidatorKeys(): `Vec<PolkadotPrimitivesV5ValidatorAppPublic>`
 - **interface**: `api.query.parasShared.activeValidatorKeys`
-- **summary**:    The parachain attestation keys of the validators actively participating in parachain consensus.  This should be the same length as `ActiveValidatorIndices`. 
+- **summary**:    The parachain attestation keys of the validators actively participating in parachain  consensus. This should be the same length as `ActiveValidatorIndices`. 
+ 
+### allowedRelayParents(): `PolkadotRuntimeParachainsSharedAllowedRelayParentsTracker`
+- **interface**: `api.query.parasShared.allowedRelayParents`
+- **summary**:    All allowed relay-parents. 
  
 ### currentSessionIndex(): `u32`
 - **interface**: `api.query.parasShared.currentSessionIndex`
@@ -1215,48 +1101,13 @@ ___
 
 ## parasSlashing
  
-### unappliedSlashes(`u32, H256`): `Option<PolkadotPrimitivesVstagingSlashingPendingSlashes>`
+### unappliedSlashes(`u32, H256`): `Option<PolkadotPrimitivesV5SlashingPendingSlashes>`
 - **interface**: `api.query.parasSlashing.unappliedSlashes`
 - **summary**:    Validators pending dispute slashes. 
  
 ### validatorSetCounts(`u32`): `Option<u32>`
 - **interface**: `api.query.parasSlashing.validatorSetCounts`
 - **summary**:    `ValidatorSetCount` per session. 
-
-___
-
-
-## phragmenElection
- 
-### candidates(): `Vec<(AccountId32,u128)>`
-- **interface**: `api.query.phragmenElection.candidates`
-- **summary**:    The present candidate list. A current member or runner-up can never enter this vector  and is always implicitly assumed to be a candidate. 
-
-   Second element is the deposit. 
-
-   Invariant: Always sorted based on account id. 
- 
-### electionRounds(): `u32`
-- **interface**: `api.query.phragmenElection.electionRounds`
-- **summary**:    The total number of vote rounds that have happened, excluding the upcoming one. 
- 
-### members(): `Vec<PalletElectionsPhragmenSeatHolder>`
-- **interface**: `api.query.phragmenElection.members`
-- **summary**:    The current elected members. 
-
-   Invariant: Always sorted based on account id. 
- 
-### runnersUp(): `Vec<PalletElectionsPhragmenSeatHolder>`
-- **interface**: `api.query.phragmenElection.runnersUp`
-- **summary**:    The current reserved runners-up. 
-
-   Invariant: Always sorted based on rank (worse to best). Upon removal of a member, the  last (i.e. _best_) runner-up will be replaced. 
- 
-### voting(`AccountId32`): `PalletElectionsPhragmenVoter`
-- **interface**: `api.query.phragmenElection.voting`
-- **summary**:    Votes and locked stake of a particular voter. 
-
-   TWOX-NOTE: SAFE as `AccountId` is a crypto hash. 
 
 ___
 
@@ -1325,7 +1176,7 @@ ___
 - **interface**: `api.query.registrar.paras`
 - **summary**:    Amount held on deposit for each para and the original depositor. 
 
-   The given account ID is responsible for registering the code and initial head data, but may only do  so if it isn't yet registered. (After that, it's up to governance to do so.) 
+   The given account ID is responsible for registering the code and initial head data, but may  only do so if it isn't yet registered. (After that, it's up to governance to do so.) 
  
 ### pendingSwap(`u32`): `Option<u32>`
 - **interface**: `api.query.registrar.pendingSwap`
@@ -1393,7 +1244,7 @@ ___
 - **interface**: `api.query.slots.leases`
 - **summary**:    Amounts held on deposit for each (possibly future) leased parachain. 
 
-   The actual amount locked on its behalf by any account at any time is the maximum of the second values  of the items in this list whose first value is the account. 
+   The actual amount locked on its behalf by any account at any time is the maximum of the  second values of the items in this list whose first value is the account. 
 
    The first item in the list is the amount locked for the current Lease Period. Following  items are for the subsequent lease periods. 
 
@@ -1550,7 +1401,7 @@ ___
 - **interface**: `api.query.staking.nominators`
 - **summary**:    The map from nominator stash key to their nomination preferences, namely the validators that  they wish to support. 
 
-   Note that the keys of this storage map might become non-decodable in case the  [`Config::MaxNominations`] configuration is decreased. In this rare case, these nominators  are still existent in storage, their key is correct and retrievable (i.e. `contains_key`  indicates that they exist), but their value cannot be decoded. Therefore, the non-decodable  nominators will effectively not-exist, until they re-submit their preferences such that it  is within the bounds of the newly set `Config::MaxNominations`. 
+   Note that the keys of this storage map might become non-decodable in case the  account's [`NominationsQuota::MaxNominations`] configuration is decreased.  In this rare case, these nominators  are still existent in storage, their key is correct and retrievable (i.e. `contains_key`  indicates that they exist), but their value cannot be decoded. Therefore, the non-decodable  nominators will effectively not-exist, until they re-submit their preferences such that it  is within the bounds of the newly set `Config::MaxNominations`. 
 
    This implies that `::iter_keys().count()` and `::iter().count()` might return different  values for this map. Moreover, the main `::count()` is aligned with the former, namely the  number of keys that exist. 
 
@@ -1676,7 +1527,7 @@ ___
 
    All topic vectors have deterministic storage locations depending on the topic. This  allows light-clients to leverage the changes trie storage tracking mechanism and  in case of changes fetch the list of events of interest. 
 
-   The value has the type `(T::BlockNumber, EventIndex)` because if we used only just  the `EventIndex` then in case if the topic has the same contents on the next block  no notification will be triggered thus the event might be lost. 
+   The value has the type `(BlockNumberFor<T>, EventIndex)` because if we used only just  the `EventIndex` then in case if the topic has the same contents on the next block  no notification will be triggered thus the event might be lost. 
  
 ### executionPhase(): `Option<FrameSystemPhase>`
 - **interface**: `api.query.system.executionPhase`
@@ -1713,48 +1564,6 @@ ___
 ___
 
 
-## technicalCommittee
- 
-### members(): `Vec<AccountId32>`
-- **interface**: `api.query.technicalCommittee.members`
-- **summary**:    The current members of the collective. This is stored sorted (just by value). 
- 
-### prime(): `Option<AccountId32>`
-- **interface**: `api.query.technicalCommittee.prime`
-- **summary**:    The prime member that helps determine the default vote behavior in case of absentations. 
- 
-### proposalCount(): `u32`
-- **interface**: `api.query.technicalCommittee.proposalCount`
-- **summary**:    Proposals so far. 
- 
-### proposalOf(`H256`): `Option<Call>`
-- **interface**: `api.query.technicalCommittee.proposalOf`
-- **summary**:    Actual proposal for a given hash, if it's current. 
- 
-### proposals(): `Vec<H256>`
-- **interface**: `api.query.technicalCommittee.proposals`
-- **summary**:    The hashes of the active proposals. 
- 
-### voting(`H256`): `Option<PalletCollectiveVotes>`
-- **interface**: `api.query.technicalCommittee.voting`
-- **summary**:    Votes on a given proposal, if it is ongoing. 
-
-___
-
-
-## technicalMembership
- 
-### members(): `Vec<AccountId32>`
-- **interface**: `api.query.technicalMembership.members`
-- **summary**:    The current membership, stored as an ordered Vec. 
- 
-### prime(): `Option<AccountId32>`
-- **interface**: `api.query.technicalMembership.prime`
-- **summary**:    The current prime member, if one exists. 
-
-___
-
-
 ## timestamp
  
 ### didUpdate(): `bool`
@@ -1764,19 +1573,6 @@ ___
 ### now(): `u64`
 - **interface**: `api.query.timestamp.now`
 - **summary**:    Current time for the current block. 
-
-___
-
-
-## tips
- 
-### reasons(`H256`): `Option<Bytes>`
-- **interface**: `api.query.tips.reasons`
-- **summary**:    Simple preimage lookup from the reason's hash to the original data. Again, has an  insecure enumerable hash since the key is guaranteed to be the result of a secure hash. 
- 
-### tips(`H256`): `Option<PalletTipsOpenTip>`
-- **interface**: `api.query.tips.tips`
-- **summary**:    TipsMap that are not yet completed. Keyed by the hash of `(reason, who)` from the value.  This has the insecure enumerable hash function since the key itself is already  guaranteed to be a secure hash. 
 
 ___
 

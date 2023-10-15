@@ -14,6 +14,10 @@ The following sections contain Storage methods are part of the default Kusama ru
 
 - **[balances](#balances)**
 
+- **[beefy](#beefy)**
+
+- **[beefyMmrLeaf](#beefymmrleaf)**
+
 - **[bounties](#bounties)**
 
 - **[childBounties](#childbounties)**
@@ -50,6 +54,8 @@ The following sections contain Storage methods are part of the default Kusama ru
 
 - **[messageQueue](#messagequeue)**
 
+- **[mmr](#mmr)**
+
 - **[multisig](#multisig)**
 
 - **[nis](#nis)**
@@ -59,6 +65,8 @@ The following sections contain Storage methods are part of the default Kusama ru
 - **[nominationPools](#nominationpools)**
 
 - **[offences](#offences)**
+
+- **[paraAssignmentProvider](#paraassignmentprovider)**
 
 - **[paraInclusion](#parainclusion)**
 
@@ -95,6 +103,8 @@ The following sections contain Storage methods are part of the default Kusama ru
 - **[society](#society)**
 
 - **[staking](#staking)**
+
+- **[stateTrieMigration](#statetriemigration)**
 
 - **[substrate](#substrate)**
 
@@ -278,6 +288,50 @@ ___
 ### totalIssuance(): `u128`
 - **interface**: `api.query.balances.totalIssuance`
 - **summary**:    The total units issued in the system. 
+
+___
+
+
+## beefy
+ 
+### authorities(): `Vec<SpConsensusBeefyEcdsaCryptoPublic>`
+- **interface**: `api.query.beefy.authorities`
+- **summary**:    The current authorities set 
+ 
+### genesisBlock(): `Option<u32>`
+- **interface**: `api.query.beefy.genesisBlock`
+- **summary**:    Block number where BEEFY consensus is enabled/started.  By changing this (through governance or sudo), BEEFY consensus is effectively  restarted from the new block number. 
+ 
+### nextAuthorities(): `Vec<SpConsensusBeefyEcdsaCryptoPublic>`
+- **interface**: `api.query.beefy.nextAuthorities`
+- **summary**:    Authorities set scheduled to be used with the next session 
+ 
+### setIdSession(`u64`): `Option<u32>`
+- **interface**: `api.query.beefy.setIdSession`
+- **summary**:    A mapping from BEEFY set ID to the index of the *most recent* session for which its  members were responsible. 
+
+   This is only used for validating equivocation proofs. An equivocation proof must  contains a key-ownership proof for a given session, therefore we need a way to tie  together sessions and BEEFY set ids, i.e. we need to validate that a validator  was the owner of a given key on a given session, and what the active set ID was  during that session. 
+
+   TWOX-NOTE: `ValidatorSetId` is not under user control. 
+ 
+### validatorSetId(): `u64`
+- **interface**: `api.query.beefy.validatorSetId`
+- **summary**:    The current validator set id 
+
+___
+
+
+## beefyMmrLeaf
+ 
+### beefyAuthorities(): `SpConsensusBeefyMmrBeefyAuthoritySet`
+- **interface**: `api.query.beefyMmrLeaf.beefyAuthorities`
+- **summary**:    Details of current BEEFY authority set. 
+ 
+### beefyNextAuthorities(): `SpConsensusBeefyMmrBeefyAuthoritySet`
+- **interface**: `api.query.beefyMmrLeaf.beefyNextAuthorities`
+- **summary**:    Details of next BEEFY authority set. 
+
+   This storage entry is used as cache for calls to `update_beefy_next_authority_set`. 
 
 ___
 
@@ -698,7 +752,7 @@ ___
 - **interface**: `api.query.hrmp.hrmpWatermarks`
 - **summary**:    The HRMP watermark associated with each para.  Invariant: 
 
-  - each para `P` used here as a key should satisfy `Paras::is_valid_para(P)` within a session.
+  - each para `P` used here as a key should satisfy `Paras::is_valid_para(P)` within a session. 
 
 ___
 
@@ -750,9 +804,9 @@ ___
 - **interface**: `api.query.imOnline.keys`
 - **summary**:    The current set of keys that may issue a heartbeat. 
  
-### receivedHeartbeats(`u32, u32`): `Option<WrapperOpaque<PalletImOnlineBoundedOpaqueNetworkState>>`
+### receivedHeartbeats(`u32, u32`): `Option<bool>`
 - **interface**: `api.query.imOnline.receivedHeartbeats`
-- **summary**:    For each session index, we keep a mapping of `SessionIndex` and `AuthIndex` to  `WrapperOpaque<BoundedOpaqueNetworkState>`. 
+- **summary**:    For each session index, we keep a mapping of `SessionIndex` and `AuthIndex`. 
 
 ___
 
@@ -782,7 +836,7 @@ ___
 
    Semantically a `bool`, but this guarantees it should never hit the trie,  as this is cleared in `on_finalize` and Frame optimizes `None` values to be empty values. 
 
-   As a `bool`, `set(false)` and `remove()` both lead to the next `get()` being false, but one of  them writes to the trie and one does not. This confusion makes `Option<()>` more suitable for  the semantics of this variable. 
+   As a `bool`, `set(false)` and `remove()` both lead to the next `get()` being false, but one  of them writes to the trie and one does not. This confusion makes `Option<()>` more suitable  for the semantics of this variable. 
 
 ___
 
@@ -800,6 +854,25 @@ ___
 ### serviceHead(): `Option<PolkadotRuntimeParachainsInclusionAggregateMessageOrigin>`
 - **interface**: `api.query.messageQueue.serviceHead`
 - **summary**:    The origin at which we should begin servicing. 
+
+___
+
+
+## mmr
+ 
+### nodes(`u64`): `Option<H256>`
+- **interface**: `api.query.mmr.nodes`
+- **summary**:    Hashes of the nodes in the MMR. 
+
+   Note this collection only contains MMR peaks, the inner nodes (and leaves)  are pruned and only stored in the Offchain DB. 
+ 
+### numberOfLeaves(): `u64`
+- **interface**: `api.query.mmr.numberOfLeaves`
+- **summary**:    Current size of the MMR (number of leaves). 
+ 
+### rootHash(): `H256`
+- **interface**: `api.query.mmr.rootHash`
+- **summary**:    Latest MMR Root hash. 
 
 ___
 
@@ -987,6 +1060,11 @@ ___
 ___
 
 
+## paraAssignmentProvider
+
+___
+
+
 ## paraInclusion
  
 ### availabilityBitfields(`u32`): `Option<PolkadotRuntimeParachainsInclusionAvailabilityBitfieldRecord>`
@@ -997,7 +1075,7 @@ ___
 - **interface**: `api.query.paraInclusion.pendingAvailability`
 - **summary**:    Candidates pending availability by `ParaId`. 
  
-### pendingAvailabilityCommitments(`u32`): `Option<PolkadotPrimitivesV4CandidateCommitments>`
+### pendingAvailabilityCommitments(`u32`): `Option<PolkadotPrimitivesV5CandidateCommitments>`
 - **interface**: `api.query.paraInclusion.pendingAvailabilityCommitments`
 - **summary**:    The commitments of candidates pending availability, by `ParaId`. 
 
@@ -1014,7 +1092,7 @@ ___
 
    If this is `None` at the end of the block, we panic and render the block invalid. 
  
-### onChainVotes(): `Option<PolkadotPrimitivesV4ScrapedOnChainVotes>`
+### onChainVotes(): `Option<PolkadotPrimitivesV5ScrapedOnChainVotes>`
 - **interface**: `api.query.paraInherent.onChainVotes`
 - **summary**:    Scraped on chain data for extracting resolved disputes as well as backing votes. 
 
@@ -1057,9 +1135,13 @@ ___
 - **interface**: `api.query.paras.heads`
 - **summary**:    The head-data of every registered para. 
  
+### mostRecentContext(`u32`): `Option<u32>`
+- **interface**: `api.query.paras.mostRecentContext`
+- **summary**:    The context (relay-chain block number) of the most recent parachain head. 
+ 
 ### parachains(): `Vec<u32>`
 - **interface**: `api.query.paras.parachains`
-- **summary**:    All parachains. Ordered ascending by `ParaId`. Parathreads are not included. 
+- **summary**:    All lease holding parachains. Ordered ascending by `ParaId`. On demand parachains are not  included. 
 
    Consider using the [`ParachainsCache`] type of modifying. 
  
@@ -1079,7 +1161,7 @@ ___
  
 ### pastCodePruning(): `Vec<(u32,u32)>`
 - **interface**: `api.query.paras.pastCodePruning`
-- **summary**:    Which paras have past code that needs pruning and the relay-chain block at which the code was replaced.  Note that this is the actual height of the included block, not the expected height at which the  code upgrade would be applied, although they may be equal.  This is to ensure the entire acceptance period is covered, not an offset acceptance period starting  from the time at which the parachain perceives a code upgrade as having occurred.  Multiple entries for a single para are permitted. Ordered ascending by block number. 
+- **summary**:    Which paras have past code that needs pruning and the relay-chain block at which the code  was replaced. Note that this is the actual height of the included block, not the expected  height at which the code upgrade would be applied, although they may be equal.  This is to ensure the entire acceptance period is covered, not an offset acceptance period  starting from the time at which the parachain perceives a code upgrade as having occurred.  Multiple entries for a single para are permitted. Ordered ascending by block number. 
  
 ### pvfActiveVoteList(): `Vec<H256>`
 - **interface**: `api.query.paras.pvfActiveVoteList`
@@ -1111,15 +1193,15 @@ ___
 
    Ordered ascending by block number. 
  
-### upgradeGoAheadSignal(`u32`): `Option<PolkadotPrimitivesV4UpgradeGoAhead>`
+### upgradeGoAheadSignal(`u32`): `Option<PolkadotPrimitivesV5UpgradeGoAhead>`
 - **interface**: `api.query.paras.upgradeGoAheadSignal`
-- **summary**:    This is used by the relay-chain to communicate to a parachain a go-ahead with in the upgrade procedure. 
+- **summary**:    This is used by the relay-chain to communicate to a parachain a go-ahead with in the upgrade  procedure. 
 
-   This value is absent when there are no upgrades scheduled or during the time the relay chain  performs the checks. It is set at the first relay-chain block when the corresponding parachain  can switch its upgrade function. As soon as the parachain's block is included, the value  gets reset to `None`. 
+   This value is absent when there are no upgrades scheduled or during the time the relay chain  performs the checks. It is set at the first relay-chain block when the corresponding  parachain can switch its upgrade function. As soon as the parachain's block is included, the  value gets reset to `None`. 
 
    NOTE that this field is used by parachains via merkle storage proofs, therefore changing  the format will require migration of parachains. 
  
-### upgradeRestrictionSignal(`u32`): `Option<PolkadotPrimitivesV4UpgradeRestriction>`
+### upgradeRestrictionSignal(`u32`): `Option<PolkadotPrimitivesV5UpgradeRestriction>`
 - **interface**: `api.query.paras.upgradeRestrictionSignal`
 - **summary**:    This is used by the relay-chain to communicate that there are restrictions for performing  an upgrade for this parachain. 
 
@@ -1132,9 +1214,9 @@ ___
 
 ## paraScheduler
  
-### availabilityCores(): `Vec<Option<PolkadotPrimitivesV4CoreOccupied>>`
+### availabilityCores(): `Vec<PolkadotPrimitivesV5CoreOccupied>`
 - **interface**: `api.query.paraScheduler.availabilityCores`
-- **summary**:    One entry for each availability core. Entries are `None` if the core is not currently occupied. Can be  temporarily `Some` if scheduled but not occupied.  The i'th parachain belongs to the i'th core, with the remaining cores all being  parathread-multiplexers. 
+- **summary**:    One entry for each availability core. Entries are `None` if the core is not currently  occupied. Can be temporarily `Some` if scheduled but not occupied.  The i'th parachain belongs to the i'th core, with the remaining cores all being  parathread-multiplexers. 
 
    Bounded by the maximum of either of these two values: 
 
@@ -1142,29 +1224,13 @@ ___
 
   * The number of validators divided by `configuration.max_validators_per_core`.
  
-### parathreadClaimIndex(): `Vec<u32>`
-- **interface**: `api.query.paraScheduler.parathreadClaimIndex`
-- **summary**:    An index used to ensure that only one claim on a parathread exists in the queue or is  currently being handled by an occupied core. 
-
-   Bounded by the number of parathread cores and scheduling lookahead. Reasonably, 10 * 50 = 500. 
- 
-### parathreadQueue(): `PolkadotRuntimeParachainsSchedulerParathreadClaimQueue`
-- **interface**: `api.query.paraScheduler.parathreadQueue`
-- **summary**:    A queue of upcoming claims and which core they should be mapped onto. 
-
-   The number of queued claims is bounded at the `scheduling_lookahead`  multiplied by the number of parathread multiplexer cores. Reasonably, 10 * 50 = 500. 
- 
-### scheduled(): `Vec<PolkadotRuntimeParachainsSchedulerCoreAssignment>`
-- **interface**: `api.query.paraScheduler.scheduled`
-- **summary**:    Currently scheduled cores - free but up to be occupied. 
-
-   Bounded by the number of cores: one for each parachain and parathread multiplexer. 
-
-   The value contained here will not be valid after the end of a block. Runtime APIs should be used to determine scheduled cores/  for the upcoming block. 
+### claimQueue(): `BTreeMap<u32, Vec<Option<PolkadotPrimitivesV5ParasEntry>>>`
+- **interface**: `api.query.paraScheduler.claimQueue`
+- **summary**:    One entry for each availability core. The `VecDeque` represents the assignments to be  scheduled on that core. `None` is used to signal to not schedule the next para of the core  as there is one currently being scheduled. Not using `None` here would overwrite the  `CoreState` in the runtime API. The value contained here will not be valid after the end of  a block. Runtime APIs should be used to determine scheduled cores/ for the upcoming block. 
  
 ### sessionStartBlock(): `u32`
 - **interface**: `api.query.paraScheduler.sessionStartBlock`
-- **summary**:    The block number where the session start occurred. Used to track how many group rotations have occurred. 
+- **summary**:    The block number where the session start occurred. Used to track how many group rotations  have occurred. 
 
    Note that in the context of parachains modules the session change is signaled during  the block and enacted at the end of the block (at the finalization stage, to be exact).  Thus for all intents and purposes the effect of the session change is observed at the  block following the session change, block number of which we save in this storage value. 
  
@@ -1172,7 +1238,7 @@ ___
 - **interface**: `api.query.paraScheduler.validatorGroups`
 - **summary**:    All the validator groups. One for each core. Indices are into `ActiveValidators` - not the  broader set of Polkadot validators, but instead just the subset used for parachains during  this session. 
 
-   Bound: The number of cores is the sum of the numbers of parachains and parathread multiplexers.  Reasonably, 100-1000. The dominant factor is the number of validators: safe upper bound at 10k. 
+   Bound: The number of cores is the sum of the numbers of parachains and parathread  multiplexers. Reasonably, 100-1000. The dominant factor is the number of validators: safe  upper bound at 10k. 
 
 ___
 
@@ -1183,7 +1249,7 @@ ___
 - **interface**: `api.query.parasDisputes.backersOnDisputes`
 - **summary**:    Backing votes stored for each dispute.  This storage is used for slashing. 
  
-### disputes(`u32, H256`): `Option<PolkadotPrimitivesV4DisputeState>`
+### disputes(`u32, H256`): `Option<PolkadotPrimitivesV5DisputeState>`
 - **interface**: `api.query.parasDisputes.disputes`
 - **summary**:    All ongoing or concluded disputes for the last several sessions. 
  
@@ -1208,7 +1274,7 @@ ___
 - **interface**: `api.query.paraSessionInfo.accountKeys`
 - **summary**:    The validator account keys of the validators actively participating in parachain consensus. 
  
-### assignmentKeysUnsafe(): `Vec<PolkadotPrimitivesV4AssignmentAppPublic>`
+### assignmentKeysUnsafe(): `Vec<PolkadotPrimitivesV5AssignmentAppPublic>`
 - **interface**: `api.query.paraSessionInfo.assignmentKeysUnsafe`
 - **summary**:    Assignment keys for the current session.  Note that this API is private due to it being prone to 'off-by-one' at session boundaries.  When in doubt, use `Sessions` API instead. 
  
@@ -1216,11 +1282,11 @@ ___
 - **interface**: `api.query.paraSessionInfo.earliestStoredSession`
 - **summary**:    The earliest session for which previous session info is stored. 
  
-### sessionExecutorParams(`u32`): `Option<PolkadotPrimitivesV4ExecutorParams>`
+### sessionExecutorParams(`u32`): `Option<PolkadotPrimitivesV5ExecutorParams>`
 - **interface**: `api.query.paraSessionInfo.sessionExecutorParams`
 - **summary**:    Executor parameter set for a given session index 
  
-### sessions(`u32`): `Option<PolkadotPrimitivesV4SessionInfo>`
+### sessions(`u32`): `Option<PolkadotPrimitivesV5SessionInfo>`
 - **interface**: `api.query.paraSessionInfo.sessions`
 - **summary**:    Session information in a rolling window.  Should have an entry in range `EarliestStoredSession..=CurrentSessionIndex`.  Does not have any entries before the session index in the first session change notification. 
 
@@ -1233,9 +1299,13 @@ ___
 - **interface**: `api.query.parasShared.activeValidatorIndices`
 - **summary**:    All the validators actively participating in parachain consensus.  Indices are into the broader validator set. 
  
-### activeValidatorKeys(): `Vec<PolkadotPrimitivesV4ValidatorAppPublic>`
+### activeValidatorKeys(): `Vec<PolkadotPrimitivesV5ValidatorAppPublic>`
 - **interface**: `api.query.parasShared.activeValidatorKeys`
-- **summary**:    The parachain attestation keys of the validators actively participating in parachain consensus.  This should be the same length as `ActiveValidatorIndices`. 
+- **summary**:    The parachain attestation keys of the validators actively participating in parachain  consensus. This should be the same length as `ActiveValidatorIndices`. 
+ 
+### allowedRelayParents(): `PolkadotRuntimeParachainsSharedAllowedRelayParentsTracker`
+- **interface**: `api.query.parasShared.allowedRelayParents`
+- **summary**:    All allowed relay-parents. 
  
 ### currentSessionIndex(): `u32`
 - **interface**: `api.query.parasShared.currentSessionIndex`
@@ -1246,7 +1316,7 @@ ___
 
 ## parasSlashing
  
-### unappliedSlashes(`u32, H256`): `Option<PolkadotPrimitivesVstagingSlashingPendingSlashes>`
+### unappliedSlashes(`u32, H256`): `Option<PolkadotPrimitivesV5SlashingPendingSlashes>`
 - **interface**: `api.query.parasSlashing.unappliedSlashes`
 - **summary**:    Validators pending dispute slashes. 
  
@@ -1342,7 +1412,7 @@ ___
 - **interface**: `api.query.registrar.paras`
 - **summary**:    Amount held on deposit for each para and the original depositor. 
 
-   The given account ID is responsible for registering the code and initial head data, but may only do  so if it isn't yet registered. (After that, it's up to governance to do so.) 
+   The given account ID is responsible for registering the code and initial head data, but may  only do so if it isn't yet registered. (After that, it's up to governance to do so.) 
  
 ### pendingSwap(`u32`): `Option<u32>`
 - **interface**: `api.query.registrar.pendingSwap`
@@ -1410,7 +1480,7 @@ ___
 - **interface**: `api.query.slots.leases`
 - **summary**:    Amounts held on deposit for each (possibly future) leased parachain. 
 
-   The actual amount locked on its behalf by any account at any time is the maximum of the second values  of the items in this list whose first value is the account. 
+   The actual amount locked on its behalf by any account at any time is the maximum of the  second values of the items in this list whose first value is the account. 
 
    The first item in the list is the amount locked for the current Lease Period. Following  items are for the subsequent lease periods. 
 
@@ -1429,17 +1499,20 @@ ___
 - **interface**: `api.query.society.bids`
 - **summary**:    The current bids, stored ordered by the value of the bid. 
  
-### candidates(): `Vec<PalletSocietyBid>`
+### candidates(`AccountId32`): `Option<PalletSocietyCandidacy>`
 - **interface**: `api.query.society.candidates`
-- **summary**:    The current set of candidates; bidders that are attempting to become members. 
  
-### defender(): `Option<AccountId32>`
-- **interface**: `api.query.society.defender`
-- **summary**:    The defending member currently being challenged. 
+### challengeRoundCount(): `u32`
+- **interface**: `api.query.society.challengeRoundCount`
+- **summary**:    The number of challenge rounds there have been. Used to identify stale DefenderVotes. 
  
-### defenderVotes(`AccountId32`): `Option<PalletSocietyVote>`
+### defenderVotes(`u32, AccountId32`): `Option<PalletSocietyVote>`
 - **interface**: `api.query.society.defenderVotes`
-- **summary**:    Votes for the defender. 
+- **summary**:    Votes for the defender, keyed by challenge round. 
+ 
+### defending(): `Option<(AccountId32,AccountId32,PalletSocietyTally)>`
+- **interface**: `api.query.society.defending`
+- **summary**:    The defending member currently being challenged, along with a running tally of votes. 
  
 ### founder(): `Option<AccountId32>`
 - **interface**: `api.query.society.founder`
@@ -1447,47 +1520,59 @@ ___
  
 ### head(): `Option<AccountId32>`
 - **interface**: `api.query.society.head`
-- **summary**:    The most primary from the most recently approved members. 
+- **summary**:    The most primary from the most recently approved rank 0 members in the society. 
  
-### maxMembers(): `u32`
-- **interface**: `api.query.society.maxMembers`
+### memberByIndex(`u32`): `Option<AccountId32>`
+- **interface**: `api.query.society.memberByIndex`
+- **summary**:    The current items in `Members` keyed by their unique index. Keys are densely populated  `0..MemberCount` (does not include `MemberCount`). 
+ 
+### memberCount(): `u32`
+- **interface**: `api.query.society.memberCount`
+- **summary**:    The number of items in `Members` currently. (Doesn't include `SuspendedMembers`.) 
+ 
+### members(`AccountId32`): `Option<PalletSocietyMemberRecord>`
+- **interface**: `api.query.society.members`
+- **summary**:    The current members and their rank. Doesn't include `SuspendedMembers`. 
+ 
+### nextHead(): `Option<PalletSocietyIntakeRecord>`
+- **interface**: `api.query.society.nextHead`
+- **summary**:    At the end of the claim period, this contains the most recently approved members (along with  their bid and round ID) who is from the most recent round with the lowest bid. They will  become the new `Head`. 
+ 
+### parameters(): `Option<PalletSocietyGroupParams>`
+- **interface**: `api.query.society.parameters`
 - **summary**:    The max number of members for the society at one time. 
  
-### members(): `Vec<AccountId32>`
-- **interface**: `api.query.society.members`
-- **summary**:    The current set of members, ordered. 
- 
-### payouts(`AccountId32`): `Vec<(u32,u128)>`
+### payouts(`AccountId32`): `PalletSocietyPayoutRecord`
 - **interface**: `api.query.society.payouts`
-- **summary**:    Pending payouts; ordered by block number, with the amount that should be paid out. 
+- **summary**:    Information regarding rank-0 payouts, past and future. 
  
 ### pot(): `u128`
 - **interface**: `api.query.society.pot`
 - **summary**:    Amount of our account balance that is specifically for the next round's bid(s). 
  
+### roundCount(): `u32`
+- **interface**: `api.query.society.roundCount`
+- **summary**:    The number of rounds which have passed. 
+ 
 ### rules(): `Option<H256>`
 - **interface**: `api.query.society.rules`
 - **summary**:    A hash of the rules of this society concerning membership. Can only be set once and  only by the founder. 
  
-### strikes(`AccountId32`): `u32`
-- **interface**: `api.query.society.strikes`
-- **summary**:    The ongoing number of losing votes cast by the member. 
+### skeptic(): `Option<AccountId32>`
+- **interface**: `api.query.society.skeptic`
+- **summary**:    The current skeptic. 
  
-### suspendedCandidates(`AccountId32`): `Option<(u128,PalletSocietyBidKind)>`
-- **interface**: `api.query.society.suspendedCandidates`
-- **summary**:    The set of suspended candidates. 
- 
-### suspendedMembers(`AccountId32`): `bool`
+### suspendedMembers(`AccountId32`): `Option<PalletSocietyMemberRecord>`
 - **interface**: `api.query.society.suspendedMembers`
-- **summary**:    The set of suspended members. 
+- **summary**:    The set of suspended members, with their old membership record. 
+ 
+### voteClearCursor(`AccountId32`): `Option<Bytes>`
+- **interface**: `api.query.society.voteClearCursor`
+- **summary**:    Clear-cursor for Vote, map from Candidate -> (Maybe) Cursor. 
  
 ### votes(`AccountId32, AccountId32`): `Option<PalletSocietyVote>`
 - **interface**: `api.query.society.votes`
 - **summary**:    Double map from Candidate -> Voter -> (Maybe) Vote. 
- 
-### vouching(`AccountId32`): `Option<PalletSocietyVouchingStatus>`
-- **interface**: `api.query.society.vouching`
-- **summary**:    Members currently vouching or banned from vouching again 
 
 ___
 
@@ -1636,7 +1721,7 @@ ___
 - **interface**: `api.query.staking.nominators`
 - **summary**:    The map from nominator stash key to their nomination preferences, namely the validators that  they wish to support. 
 
-   Note that the keys of this storage map might become non-decodable in case the  [`Config::MaxNominations`] configuration is decreased. In this rare case, these nominators  are still existent in storage, their key is correct and retrievable (i.e. `contains_key`  indicates that they exist), but their value cannot be decoded. Therefore, the non-decodable  nominators will effectively not-exist, until they re-submit their preferences such that it  is within the bounds of the newly set `Config::MaxNominations`. 
+   Note that the keys of this storage map might become non-decodable in case the  account's [`NominationsQuota::MaxNominations`] configuration is decreased.  In this rare case, these nominators  are still existent in storage, their key is correct and retrievable (i.e. `contains_key`  indicates that they exist), but their value cannot be decoded. Therefore, the non-decodable  nominators will effectively not-exist, until they re-submit their preferences such that it  is within the bounds of the newly set `Config::MaxNominations`. 
 
    This implies that `::iter_keys().count()` and `::iter().count()` might return different  values for this map. Moreover, the main `::count()` is aligned with the former, namely the  number of keys that exist. 
 
@@ -1691,6 +1776,29 @@ ___
 ### validatorSlashInEra(`u32, AccountId32`): `Option<(Perbill,u128)>`
 - **interface**: `api.query.staking.validatorSlashInEra`
 - **summary**:    All slashing events on validators, mapped by era to the highest slash proportion  and slash value of the era. 
+
+___
+
+
+## stateTrieMigration
+ 
+### autoLimits(): `Option<PalletStateTrieMigrationMigrationLimits>`
+- **interface**: `api.query.stateTrieMigration.autoLimits`
+- **summary**:    The limits that are imposed on automatic migrations. 
+
+   If set to None, then no automatic migration happens. 
+ 
+### migrationProcess(): `PalletStateTrieMigrationMigrationTask`
+- **interface**: `api.query.stateTrieMigration.migrationProcess`
+- **summary**:    Migration progress. 
+
+   This stores the snapshot of the last migrated keys. It can be set into motion and move  forward by any of the means provided by this pallet. 
+ 
+### signedMigrationMaxLimits(): `Option<PalletStateTrieMigrationMigrationLimits>`
+- **interface**: `api.query.stateTrieMigration.signedMigrationMaxLimits`
+- **summary**:    The maximum limits that the signed migration could use. 
+
+   If not set, no signed submission is allowed. 
 
 ___
 
@@ -1762,7 +1870,7 @@ ___
 
    All topic vectors have deterministic storage locations depending on the topic. This  allows light-clients to leverage the changes trie storage tracking mechanism and  in case of changes fetch the list of events of interest. 
 
-   The value has the type `(T::BlockNumber, EventIndex)` because if we used only just  the `EventIndex` then in case if the topic has the same contents on the next block  no notification will be triggered thus the event might be lost. 
+   The value has the type `(BlockNumberFor<T>, EventIndex)` because if we used only just  the `EventIndex` then in case if the topic has the same contents on the next block  no notification will be triggered thus the event might be lost. 
  
 ### executionPhase(): `Option<FrameSystemPhase>`
 - **interface**: `api.query.system.executionPhase`

@@ -76,6 +76,8 @@ Events are emitted for certain operations on the runtime. The following sections
 
 - **[staking](#staking)**
 
+- **[stateTrieMigration](#statetriemigration)**
+
 - **[system](#system)**
 
 - **[transactionPayment](#transactionpayment)**
@@ -112,7 +114,7 @@ ___
  
 ### ReserveConfiscated(`u32`, `AccountId32`, `u128`)
 - **interface**: `api.events.auctions.ReserveConfiscated.is`
-- **summary**:    Someone attempted to lease the same slot twice for a parachain. The amount is held in reserve  but no parachain slot has been leased. 
+- **summary**:    Someone attempted to lease the same slot twice for a parachain. The amount is held in  reserve but no parachain slot has been leased. 
  
 ### Reserved(`AccountId32`, `u128`, `u128`)
 - **interface**: `api.events.auctions.Reserved.is`
@@ -124,7 +126,7 @@ ___
  
 ### WinningOffset(`u32`, `u32`)
 - **interface**: `api.events.auctions.WinningOffset.is`
-- **summary**:    The winning offset was chosen for an auction. This will map into the `Winning` storage map. 
+- **summary**:    The winning offset was chosen for an auction. This will map into the `Winning` storage  map. 
 
 ___
 
@@ -860,15 +862,15 @@ ___
 
 ## paraInclusion
  
-### CandidateBacked(`PolkadotPrimitivesV4CandidateReceipt`, `Bytes`, `u32`, `u32`)
+### CandidateBacked(`PolkadotPrimitivesV5CandidateReceipt`, `Bytes`, `u32`, `u32`)
 - **interface**: `api.events.paraInclusion.CandidateBacked.is`
 - **summary**:    A candidate was backed. `[candidate, head_data]` 
  
-### CandidateIncluded(`PolkadotPrimitivesV4CandidateReceipt`, `Bytes`, `u32`, `u32`)
+### CandidateIncluded(`PolkadotPrimitivesV5CandidateReceipt`, `Bytes`, `u32`, `u32`)
 - **interface**: `api.events.paraInclusion.CandidateIncluded.is`
 - **summary**:    A candidate was included. `[candidate, head_data]` 
  
-### CandidateTimedOut(`PolkadotPrimitivesV4CandidateReceipt`, `Bytes`, `u32`)
+### CandidateTimedOut(`PolkadotPrimitivesV5CandidateReceipt`, `Bytes`, `u32`)
 - **interface**: `api.events.paraInclusion.CandidateTimedOut.is`
 - **summary**:    A candidate timed out. `[candidate, head_data]` 
  
@@ -1165,6 +1167,10 @@ ___
 - **interface**: `api.events.society.Deposit.is`
 - **summary**:    Some funds were deposited into the society account. 
  
+### Elevated(`AccountId32`, `u32`)
+- **interface**: `api.events.society.Elevated.is`
+- **summary**:    A \[member\] got elevated to \[rank\]. 
+ 
 ### Founded(`AccountId32`)
 - **interface**: `api.events.society.Founded.is`
 - **summary**:    The society is founded by the given identity. 
@@ -1177,13 +1183,9 @@ ___
 - **interface**: `api.events.society.MemberSuspended.is`
 - **summary**:    A member has been suspended 
  
-### NewMaxMembers(`u32`)
-- **interface**: `api.events.society.NewMaxMembers.is`
-- **summary**:    A new \[max\] member count has been set 
- 
-### SkepticsChosen(`Vec<AccountId32>`)
-- **interface**: `api.events.society.SkepticsChosen.is`
-- **summary**:    A group of members has been choosen as Skeptics 
+### NewParams(`PalletSocietyGroupParams`)
+- **interface**: `api.events.society.NewParams.is`
+- **summary**:    A new set of \[params\] has been set for the group. 
  
 ### SuspendedMemberJudgement(`AccountId32`, `bool`)
 - **interface**: `api.events.society.SuspendedMemberJudgement.is`
@@ -1256,6 +1258,14 @@ ___
 - **interface**: `api.events.staking.SlashReported.is`
 - **summary**:    A slash for the given validator, for the given percentage of their stake, at the given  era as been reported. 
  
+### SnapshotTargetsSizeExceeded(`u32`)
+- **interface**: `api.events.staking.SnapshotTargetsSizeExceeded.is`
+- **summary**:    Targets size limit reached. 
+ 
+### SnapshotVotersSizeExceeded(`u32`)
+- **interface**: `api.events.staking.SnapshotVotersSizeExceeded.is`
+- **summary**:    Voters size limit reached. 
+ 
 ### StakersElected()
 - **interface**: `api.events.staking.StakersElected.is`
 - **summary**:    A new set of stakers was elected. 
@@ -1275,6 +1285,27 @@ ___
 ### Withdrawn(`AccountId32`, `u128`)
 - **interface**: `api.events.staking.Withdrawn.is`
 - **summary**:    An account has called `withdraw_unbonded` and removed unbonding chunks worth `Balance`  from the unlocking queue. 
+
+___
+
+
+## stateTrieMigration
+ 
+### AutoMigrationFinished()
+- **interface**: `api.events.stateTrieMigration.AutoMigrationFinished.is`
+- **summary**:    The auto migration task finished. 
+ 
+### Halted(`PalletStateTrieMigrationError`)
+- **interface**: `api.events.stateTrieMigration.Halted.is`
+- **summary**:    Migration got halted due to an error or miss-configuration. 
+ 
+### Migrated(`u32`, `u32`, `PalletStateTrieMigrationMigrationCompute`)
+- **interface**: `api.events.stateTrieMigration.Migrated.is`
+- **summary**:    Given number of `(top, child)` keys were migrated respectively, with the given  `compute`. 
+ 
+### Slashed(`AccountId32`, `u128`)
+- **interface**: `api.events.stateTrieMigration.Slashed.is`
+- **summary**:    Some account got slashed by the given amount. 
 
 ___
 
@@ -1479,7 +1510,7 @@ ___
  
 ### NotifyOverweight(`u64`, `u8`, `u8`, `SpWeightsWeightV2Weight`, `SpWeightsWeightV2Weight`)
 - **interface**: `api.events.xcmPallet.NotifyOverweight.is`
-- **summary**:    Query response has been received and query is removed. The registered notification could  not be dispatched because the dispatch weight is greater than the maximum weight  originally budgeted by this runtime for the query result. 
+- **summary**:    Query response has been received and query is removed. The registered notification  could not be dispatched because the dispatch weight is greater than the maximum weight  originally budgeted by this runtime for the query result. 
  
 ### NotifyTargetMigrationFail(`XcmVersionedMultiLocation`, `u64`)
 - **interface**: `api.events.xcmPallet.NotifyTargetMigrationFail.is`
@@ -1525,4 +1556,4 @@ ___
  
 ### VersionNotifyUnrequested(`XcmV3MultiLocation`, `XcmV3MultiassetMultiAssets`, `[u8;32]`)
 - **interface**: `api.events.xcmPallet.VersionNotifyUnrequested.is`
-- **summary**:    We have requested that a remote chain stops sending us XCM version change notifications. 
+- **summary**:    We have requested that a remote chain stops sending us XCM version change  notifications. 

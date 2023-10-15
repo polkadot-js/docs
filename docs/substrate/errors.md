@@ -22,6 +22,8 @@ This page lists the errors that can be encountered in the different modules.
 
 - **[bounties](#bounties)**
 
+- **[broker](#broker)**
+
 - **[childBounties](#childbounties)**
 
 - **[contracts](#contracts)**
@@ -80,6 +82,8 @@ This page lists the errors that can be encountered in the different modules.
 
 - **[remark](#remark)**
 
+- **[safeMode](#safemode)**
+
 - **[salary](#salary)**
 
 - **[scheduler](#scheduler)**
@@ -105,6 +109,8 @@ This page lists the errors that can be encountered in the different modules.
 - **[transactionStorage](#transactionstorage)**
 
 - **[treasury](#treasury)**
+
+- **[txPause](#txpause)**
 
 - **[uniques](#uniques)**
 
@@ -239,6 +245,10 @@ ___
 - **interface**: `api.errors.allianceMotion.NotMember.is`
 - **summary**:    Account is not a member 
  
+### PrimeAccountNotMember
+- **interface**: `api.errors.allianceMotion.PrimeAccountNotMember.is`
+- **summary**:    Prime account is not a member 
+ 
 ### ProposalMissing
 - **interface**: `api.errors.allianceMotion.ProposalMissing.is`
 - **summary**:    Proposal must exist 
@@ -268,13 +278,17 @@ ___
 
 ## assetConversion
  
-### AmountLessThanMinimal
-- **interface**: `api.errors.assetConversion.AmountLessThanMinimal.is`
+### AmountOneLessThanMinimal
+- **interface**: `api.errors.assetConversion.AmountOneLessThanMinimal.is`
 - **summary**:    Provided amount should be greater than or equal to the existential deposit/asset's  minimal amount. 
  
 ### AmountOutTooHigh
 - **interface**: `api.errors.assetConversion.AmountOutTooHigh.is`
 - **summary**:    Desired amount can't be equal to the pool reserve. 
+ 
+### AmountTwoLessThanMinimal
+- **interface**: `api.errors.assetConversion.AmountTwoLessThanMinimal.is`
+- **summary**:    Provided amount should be greater than or equal to the existential deposit/asset's  minimal amount. 
  
 ### AssetOneDepositDidNotMeetMinimum
 - **interface**: `api.errors.assetConversion.AssetOneDepositDidNotMeetMinimum.is`
@@ -292,9 +306,17 @@ ___
 - **interface**: `api.errors.assetConversion.AssetTwoWithdrawalDidNotMeetMinimum.is`
 - **summary**:    The minimal amount requirement for the second token in the pair wasn't met. 
  
+### CorrespondenceError
+- **interface**: `api.errors.assetConversion.CorrespondenceError.is`
+- **summary**:    Unable to find an element in an array/vec that should have one-to-one correspondence  with another. For example, an array of assets constituting a `path` should have a  corresponding array of `amounts` along the path. 
+ 
 ### EqualAssets
 - **interface**: `api.errors.assetConversion.EqualAssets.is`
 - **summary**:    Provided assets are equal. 
+ 
+### IncorrectPoolAssetId
+- **interface**: `api.errors.assetConversion.IncorrectPoolAssetId.is`
+- **summary**:    It was not possible to get or increment the Id of the pool. 
  
 ### InsufficientLiquidity
 - **interface**: `api.errors.assetConversion.InsufficientLiquidity.is`
@@ -348,6 +370,10 @@ ___
 - **interface**: `api.errors.assetConversion.ReserveLeftLessThanMinimal.is`
 - **summary**:    Reserve needs to always be greater than or equal to the existential deposit/asset's  minimal amount. 
  
+### UnsupportedAsset
+- **interface**: `api.errors.assetConversion.UnsupportedAsset.is`
+- **summary**:    Provided asset is not supported for pool. 
+ 
 ### WrongDesiredAmount
 - **interface**: `api.errors.assetConversion.WrongDesiredAmount.is`
 - **summary**:    Desired amount can't be zero. 
@@ -369,8 +395,8 @@ ___
 - **interface**: `api.errors.assetRate.AlreadyExists.is`
 - **summary**:    The given asset ID already has an assigned conversion rate and cannot be re-created. 
  
-### UnknownAssetId
-- **interface**: `api.errors.assetRate.UnknownAssetId.is`
+### UnknownAssetKind
+- **interface**: `api.errors.assetRate.UnknownAssetKind.is`
 - **summary**:    The given asset ID is unknown. 
 
 ___
@@ -576,6 +602,123 @@ ___
 ___
 
 
+## broker
+ 
+### AlreadyExpired
+- **interface**: `api.errors.broker.AlreadyExpired.is`
+- **summary**:    The lease expiry time has already passed. 
+ 
+### CompletePivot
+- **interface**: `api.errors.broker.CompletePivot.is`
+- **summary**:    The pivot mask for the interlacing is complete (and therefore not a strict subset). 
+ 
+### CorruptWorkplan
+- **interface**: `api.errors.broker.CorruptWorkplan.is`
+- **summary**:    The workplan of the pallet's state is invalid. This indicates a state corruption. 
+ 
+### ExteriorPivot
+- **interface**: `api.errors.broker.ExteriorPivot.is`
+- **summary**:    The pivot mask for the interlacing is not contained within the region's interlace mask. 
+ 
+### IncompleteAssignment
+- **interface**: `api.errors.broker.IncompleteAssignment.is`
+- **summary**:    The workload assigned for renewal is incomplete. This is unexpected and indicates a  logic error. 
+ 
+### InvalidConfig
+- **interface**: `api.errors.broker.InvalidConfig.is`
+- **summary**:    The configuration could not be applied because it is invalid. 
+ 
+### NoHistory
+- **interface**: `api.errors.broker.NoHistory.is`
+- **summary**:    The history item does not exist. 
+ 
+### NoSales
+- **interface**: `api.errors.broker.NoSales.is`
+- **summary**:    There is no sale happening currently. 
+ 
+### NotAllowed
+- **interface**: `api.errors.broker.NotAllowed.is`
+- **summary**:    Invalid attempt to renew. 
+ 
+### NothingToDo
+- **interface**: `api.errors.broker.NothingToDo.is`
+- **summary**:    There is no work to be done. 
+ 
+### NotOwner
+- **interface**: `api.errors.broker.NotOwner.is`
+- **summary**:    The owner of the region is not the origin. 
+ 
+### Overpriced
+- **interface**: `api.errors.broker.Overpriced.is`
+- **summary**:    The price limit is exceeded. 
+ 
+### PivotTooEarly
+- **interface**: `api.errors.broker.PivotTooEarly.is`
+- **summary**:    The pivot point of the partition at the beginning of the region. 
+ 
+### PivotTooLate
+- **interface**: `api.errors.broker.PivotTooLate.is`
+- **summary**:    The pivot point of the partition at or after the end of the region. 
+ 
+### SoldOut
+- **interface**: `api.errors.broker.SoldOut.is`
+- **summary**:    The sale limit has been reached. 
+ 
+### StillValid
+- **interface**: `api.errors.broker.StillValid.is`
+- **summary**:    An item cannot be dropped because it is still valid. 
+ 
+### TooEarly
+- **interface**: `api.errors.broker.TooEarly.is`
+- **summary**:    The purchase cannot happen yet as the sale period is yet to begin. 
+ 
+### TooManyLeases
+- **interface**: `api.errors.broker.TooManyLeases.is`
+- **summary**:    The maximum amount of leases has already been reached. 
+ 
+### TooManyReservations
+- **interface**: `api.errors.broker.TooManyReservations.is`
+- **summary**:    The maximum amount of reservations has already been reached. 
+ 
+### Unavailable
+- **interface**: `api.errors.broker.Unavailable.is`
+- **summary**:    There are no cores available. 
+ 
+### Uninitialized
+- **interface**: `api.errors.broker.Uninitialized.is`
+- **summary**:    This pallet has not yet been initialized. 
+ 
+### UnknownContribution
+- **interface**: `api.errors.broker.UnknownContribution.is`
+- **summary**:    The identified contribution to the Instantaneous Core Pool is unknown. 
+ 
+### UnknownRegion
+- **interface**: `api.errors.broker.UnknownRegion.is`
+- **summary**:    The given region identity is not known. 
+ 
+### UnknownRenewal
+- **interface**: `api.errors.broker.UnknownRenewal.is`
+- **summary**:    The renewal record cannot be found. 
+ 
+### UnknownReservation
+- **interface**: `api.errors.broker.UnknownReservation.is`
+- **summary**:    No reservation of the given index exists. 
+ 
+### UnknownRevenue
+- **interface**: `api.errors.broker.UnknownRevenue.is`
+- **summary**:    The revenue for the Instantaneous Core Sales of this period is not (yet) known and thus  this operation cannot proceed. 
+ 
+### VoidPivot
+- **interface**: `api.errors.broker.VoidPivot.is`
+- **summary**:    The pivot mask for the interlacing is void (and therefore unschedulable). 
+ 
+### WrongTime
+- **interface**: `api.errors.broker.WrongTime.is`
+- **summary**:    The renewal operation is not valid at the current time (it may become valid in the next  sale). 
+
+___
+
+
 ## childBounties
  
 ### InsufficientBountyBalance
@@ -595,6 +738,14 @@ ___
 
 ## contracts
  
+### CannotAddSelfAsDelegateDependency
+- **interface**: `api.errors.contracts.CannotAddSelfAsDelegateDependency.is`
+- **summary**:    Can not add a delegate dependency to the code hash of the contract itself. 
+ 
+### CodeInfoNotFound
+- **interface**: `api.errors.contracts.CodeInfoNotFound.is`
+- **summary**:    No code info could be found at the supplied code hash. 
+ 
 ### CodeInUse
 - **interface**: `api.errors.contracts.CodeInUse.is`
 - **summary**:    Code removal was denied because the code is still in use by at least one contract. 
@@ -605,7 +756,7 @@ ___
  
 ### CodeRejected
 - **interface**: `api.errors.contracts.CodeRejected.is`
-- **summary**:    The contract's code was found to be invalid during validation or instrumentation. 
+- **summary**:    The contract's code was found to be invalid during validation. 
 
    The most likely cause of this is that an API was used which is not supported by the  node. This happens if an older node is used with a new version of ink!. Try updating  your node to the newest available version. 
 
@@ -631,6 +782,14 @@ ___
 - **interface**: `api.errors.contracts.DecodingFailed.is`
 - **summary**:    Input passed to a contract API function failed to decode as expected type. 
  
+### DelegateDependencyAlreadyExists
+- **interface**: `api.errors.contracts.DelegateDependencyAlreadyExists.is`
+- **summary**:    The contract already depends on the given delegate dependency. 
+ 
+### DelegateDependencyNotFound
+- **interface**: `api.errors.contracts.DelegateDependencyNotFound.is`
+- **summary**:    The dependency was not found in the contract's delegate dependencies. 
+ 
 ### DuplicateContract
 - **interface**: `api.errors.contracts.DuplicateContract.is`
 - **summary**:    A contract with the same AccountId already exists. 
@@ -647,13 +806,17 @@ ___
 - **interface**: `api.errors.contracts.InvalidCallFlags.is`
 - **summary**:    Invalid combination of flags supplied to `seal_call` or `seal_delegate_call`. 
  
-### InvalidScheduleVersion
-- **interface**: `api.errors.contracts.InvalidScheduleVersion.is`
-- **summary**:    A new schedule must have a greater version than the current one. 
+### InvalidSchedule
+- **interface**: `api.errors.contracts.InvalidSchedule.is`
+- **summary**:    Invalid schedule supplied, e.g. with zero weight of a basic operation. 
  
 ### MaxCallDepthReached
 - **interface**: `api.errors.contracts.MaxCallDepthReached.is`
 - **summary**:    Performing a call was denied because the calling depth reached the limit  of what is specified in the schedule. 
+ 
+### MaxDelegateDependenciesReached
+- **interface**: `api.errors.contracts.MaxDelegateDependenciesReached.is`
+- **summary**:    The contract has reached its maximum number of delegate dependencies. 
  
 ### MigrationInProgress
 - **interface**: `api.errors.contracts.MigrationInProgress.is`
@@ -831,6 +994,10 @@ ___
 ### NotMember
 - **interface**: `api.errors.council.NotMember.is`
 - **summary**:    Account is not a member 
+ 
+### PrimeAccountNotMember
+- **interface**: `api.errors.council.PrimeAccountNotMember.is`
+- **summary**:    Prime account is not a member 
  
 ### ProposalMissing
 - **interface**: `api.errors.council.ProposalMissing.is`
@@ -1132,6 +1299,10 @@ ___
 - **summary**:    The pallet was already initialized. 
 
    Set `witness_count` to `Some` to bypass this error. 
+ 
+### InsaneLimit
+- **interface**: `api.errors.glutton.InsaneLimit.is`
+- **summary**:    The limit was over [`crate::RESOURCE_HARD_LIMIT`]. 
 
 ___
 
@@ -1342,6 +1513,12 @@ ___
 ### Queued
 - **interface**: `api.errors.messageQueue.Queued.is`
 - **summary**:    The message is queued for future execution. 
+ 
+### QueuePaused
+- **interface**: `api.errors.messageQueue.QueuePaused.is`
+- **summary**:    The queue is paused and no message can be executed from it. 
+
+   This can change at any time and may resolve in the future by re-trying. 
  
 ### TemporarilyUnprocessable
 - **interface**: `api.errors.messageQueue.TemporarilyUnprocessable.is`
@@ -1709,6 +1886,10 @@ ___
 ### CommissionChangeThrottled
 - **interface**: `api.errors.nominationPools.CommissionChangeThrottled.is`
 - **summary**:    Not enough blocks have surpassed since the last commission update. 
+ 
+### CommissionExceedsGlobalMaximum
+- **interface**: `api.errors.nominationPools.CommissionExceedsGlobalMaximum.is`
+- **summary**:    The supplied commission exceeds global maximum commission. 
  
 ### CommissionExceedsMaximum
 - **interface**: `api.errors.nominationPools.CommissionExceedsMaximum.is`
@@ -2199,6 +2380,39 @@ ___
 ___
 
 
+## safeMode
+ 
+### AlreadyDeposited
+- **interface**: `api.errors.safeMode.AlreadyDeposited.is`
+- **summary**:    The account already has a deposit reserved and can therefore not enter or extend again. 
+ 
+### CannotReleaseYet
+- **interface**: `api.errors.safeMode.CannotReleaseYet.is`
+- **summary**:    This deposit cannot be released yet. 
+ 
+### CurrencyError
+- **interface**: `api.errors.safeMode.CurrencyError.is`
+- **summary**:    An error from the underlying `Currency`. 
+ 
+### Entered
+- **interface**: `api.errors.safeMode.Entered.is`
+- **summary**:    The safe-mode is (already or still) entered. 
+ 
+### Exited
+- **interface**: `api.errors.safeMode.Exited.is`
+- **summary**:    The safe-mode is (already or still) exited. 
+ 
+### NoDeposit
+- **interface**: `api.errors.safeMode.NoDeposit.is`
+- **summary**:    There is no balance reserved. 
+ 
+### NotConfigured
+- **interface**: `api.errors.safeMode.NotConfigured.is`
+- **summary**:    This functionality of the pallet is disabled by the configuration. 
+
+___
+
+
 ## salary
  
 ### AlreadyInducted
@@ -2319,6 +2533,10 @@ ___
 - **interface**: `api.errors.society.AlreadyCandidate.is`
 - **summary**:    User is already a candidate. 
  
+### AlreadyElevated
+- **interface**: `api.errors.society.AlreadyElevated.is`
+- **summary**:    The member is already elevated to this rank. 
+ 
 ### AlreadyFounded
 - **interface**: `api.errors.society.AlreadyFounded.is`
 - **summary**:    Society already founded. 
@@ -2327,13 +2545,21 @@ ___
 - **interface**: `api.errors.society.AlreadyMember.is`
 - **summary**:    User is already a member. 
  
+### AlreadyPunished
+- **interface**: `api.errors.society.AlreadyPunished.is`
+- **summary**:    The skeptic has already been punished for this offence. 
+ 
 ### AlreadyVouching
 - **interface**: `api.errors.society.AlreadyVouching.is`
 - **summary**:    Member is already vouching or banned from vouching again. 
  
-### BadPosition
-- **interface**: `api.errors.society.BadPosition.is`
-- **summary**:    An incorrect position was provided. 
+### Approved
+- **interface**: `api.errors.society.Approved.is`
+- **summary**:    The candidacy cannot be dropped as the candidate was clearly approved. 
+ 
+### Expired
+- **interface**: `api.errors.society.Expired.is`
+- **summary**:    The skeptic need not vote on candidates from expired rounds. 
  
 ### Founder
 - **interface**: `api.errors.society.Founder.is`
@@ -2343,6 +2569,14 @@ ___
 - **interface**: `api.errors.society.Head.is`
 - **summary**:    Cannot remove the head of the chain. 
  
+### InProgress
+- **interface**: `api.errors.society.InProgress.is`
+- **summary**:    The candidacy cannot be concluded as the voting is still in progress. 
+ 
+### InsufficientFunds
+- **interface**: `api.errors.society.InsufficientFunds.is`
+- **summary**:    Funds are insufficient to pay off society debts. 
+ 
 ### InsufficientPot
 - **interface**: `api.errors.society.InsufficientPot.is`
 - **summary**:    Not enough in pot to accept candidate. 
@@ -2351,9 +2585,21 @@ ___
 - **interface**: `api.errors.society.MaxMembers.is`
 - **summary**:    Too many members in the society. 
  
+### NoDefender
+- **interface**: `api.errors.society.NoDefender.is`
+- **summary**:    There is no defender currently. 
+ 
 ### NoPayout
 - **interface**: `api.errors.society.NoPayout.is`
 - **summary**:    Nothing to payout. 
+ 
+### NotApproved
+- **interface**: `api.errors.society.NotApproved.is`
+- **summary**:    The membership cannot be claimed as the candidate was not clearly approved. 
+ 
+### NotBidder
+- **interface**: `api.errors.society.NotBidder.is`
+- **summary**:    User is not a bidder. 
  
 ### NotCandidate
 - **interface**: `api.errors.society.NotCandidate.is`
@@ -2363,6 +2609,10 @@ ___
 - **interface**: `api.errors.society.NotFounder.is`
 - **summary**:    The caller is not the founder. 
  
+### NotGroup
+- **interface**: `api.errors.society.NotGroup.is`
+- **summary**:    Group doesn't exist. 
+ 
 ### NotHead
 - **interface**: `api.errors.society.NotHead.is`
 - **summary**:    The caller is not the head. 
@@ -2371,17 +2621,37 @@ ___
 - **interface**: `api.errors.society.NotMember.is`
 - **summary**:    User is not a member. 
  
+### NotRejected
+- **interface**: `api.errors.society.NotRejected.is`
+- **summary**:    The candidate cannot be kicked as the candidate was not clearly rejected. 
+ 
 ### NotSuspended
 - **interface**: `api.errors.society.NotSuspended.is`
 - **summary**:    User is not suspended. 
  
-### NotVouching
-- **interface**: `api.errors.society.NotVouching.is`
+### NotVouchingOnBidder
+- **interface**: `api.errors.society.NotVouchingOnBidder.is`
 - **summary**:    Member is not vouching. 
+ 
+### NoVotes
+- **interface**: `api.errors.society.NoVotes.is`
+- **summary**:    The candidate/defender has no stale votes to remove. 
+ 
+### Rejected
+- **interface**: `api.errors.society.Rejected.is`
+- **summary**:    The candidacy cannot be bestowed as the candidate was clearly rejected. 
  
 ### Suspended
 - **interface**: `api.errors.society.Suspended.is`
 - **summary**:    User is suspended. 
+ 
+### TooEarly
+- **interface**: `api.errors.society.TooEarly.is`
+- **summary**:    The candidacy cannot be pruned until a full additional intake period has passed. 
+ 
+### Voted
+- **interface**: `api.errors.society.Voted.is`
+- **summary**:    The skeptic already voted. 
 
 ___
 
@@ -2580,6 +2850,10 @@ ___
 - **interface**: `api.errors.technicalCommittee.NotMember.is`
 - **summary**:    Account is not a member 
  
+### PrimeAccountNotMember
+- **interface**: `api.errors.technicalCommittee.PrimeAccountNotMember.is`
+- **summary**:    Prime account is not a member 
+ 
 ### ProposalMissing
 - **interface**: `api.errors.technicalCommittee.ProposalMissing.is`
 - **summary**:    Proposal must exist 
@@ -2731,6 +3005,26 @@ ___
 ### TooManyApprovals
 - **interface**: `api.errors.treasury.TooManyApprovals.is`
 - **summary**:    Too many approvals in the queue. 
+
+___
+
+
+## txPause
+ 
+### IsPaused
+- **interface**: `api.errors.txPause.IsPaused.is`
+- **summary**:    The call is paused. 
+ 
+### IsUnpaused
+- **interface**: `api.errors.txPause.IsUnpaused.is`
+- **summary**:    The call is unpaused. 
+ 
+### NotFound
+- **interface**: `api.errors.txPause.NotFound.is`
+ 
+### Unpausable
+- **interface**: `api.errors.txPause.Unpausable.is`
+- **summary**:    The call is whitelisted and cannot be paused. 
 
 ___
 

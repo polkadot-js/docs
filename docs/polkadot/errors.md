@@ -22,11 +22,7 @@ This page lists the errors that can be encountered in the different modules.
 
 - **[convictionVoting](#convictionvoting)**
 
-- **[council](#council)**
-
 - **[crowdloan](#crowdloan)**
-
-- **[democracy](#democracy)**
 
 - **[electionProviderMultiPhase](#electionprovidermultiphase)**
 
@@ -58,8 +54,6 @@ This page lists the errors that can be encountered in the different modules.
 
 - **[parasSlashing](#parasslashing)**
 
-- **[phragmenElection](#phragmenelection)**
-
 - **[preimage](#preimage)**
 
 - **[proxy](#proxy)**
@@ -77,12 +71,6 @@ This page lists the errors that can be encountered in the different modules.
 - **[staking](#staking)**
 
 - **[system](#system)**
-
-- **[technicalCommittee](#technicalcommittee)**
-
-- **[technicalMembership](#technicalmembership)**
-
-- **[tips](#tips)**
 
 - **[treasury](#treasury)**
 
@@ -277,7 +265,7 @@ ___
  
 ### PotUnderflow
 - **interface**: `api.errors.claims.PotUnderflow.is`
-- **summary**:    There's not enough in the pot to pay out some unvested amount. Generally implies a logic  error. 
+- **summary**:    There's not enough in the pot to pay out some unvested amount. Generally implies a  logic error. 
  
 ### SenderHasNoClaim
 - **interface**: `api.errors.claims.SenderHasNoClaim.is`
@@ -352,51 +340,6 @@ ___
 ### NotVoter
 - **interface**: `api.errors.convictionVoting.NotVoter.is`
 - **summary**:    The given account did not vote on the poll. 
-
-___
-
-
-## council
- 
-### AlreadyInitialized
-- **interface**: `api.errors.council.AlreadyInitialized.is`
-- **summary**:    Members are already initialized! 
- 
-### DuplicateProposal
-- **interface**: `api.errors.council.DuplicateProposal.is`
-- **summary**:    Duplicate proposals not allowed 
- 
-### DuplicateVote
-- **interface**: `api.errors.council.DuplicateVote.is`
-- **summary**:    Duplicate vote ignored 
- 
-### NotMember
-- **interface**: `api.errors.council.NotMember.is`
-- **summary**:    Account is not a member 
- 
-### ProposalMissing
-- **interface**: `api.errors.council.ProposalMissing.is`
-- **summary**:    Proposal must exist 
- 
-### TooEarly
-- **interface**: `api.errors.council.TooEarly.is`
-- **summary**:    The close call was made too early, before the end of the voting. 
- 
-### TooManyProposals
-- **interface**: `api.errors.council.TooManyProposals.is`
-- **summary**:    There can only be a maximum of `MaxProposals` active proposals. 
- 
-### WrongIndex
-- **interface**: `api.errors.council.WrongIndex.is`
-- **summary**:    Mismatched index 
- 
-### WrongProposalLength
-- **interface**: `api.errors.council.WrongProposalLength.is`
-- **summary**:    The given length bound for the proposal was too low. 
- 
-### WrongProposalWeight
-- **interface**: `api.errors.council.WrongProposalWeight.is`
-- **summary**:    The given weight bound for the proposal was too low. 
 
 ___
 
@@ -485,7 +428,7 @@ ___
  
 ### NotReadyToDissolve
 - **interface**: `api.errors.crowdloan.NotReadyToDissolve.is`
-- **summary**:    The crowdloan is not ready to dissolve. Potentially still has a slot or in retirement period. 
+- **summary**:    The crowdloan is not ready to dissolve. Potentially still has a slot or in retirement  period. 
  
 ### Overflow
 - **interface**: `api.errors.crowdloan.Overflow.is`
@@ -494,107 +437,6 @@ ___
 ### VrfDelayInProgress
 - **interface**: `api.errors.crowdloan.VrfDelayInProgress.is`
 - **summary**:    No contributions allowed during the VRF delay 
-
-___
-
-
-## democracy
- 
-### AlreadyCanceled
-- **interface**: `api.errors.democracy.AlreadyCanceled.is`
-- **summary**:    Cannot cancel the same proposal twice 
- 
-### AlreadyDelegating
-- **interface**: `api.errors.democracy.AlreadyDelegating.is`
-- **summary**:    The account is already delegating. 
- 
-### AlreadyVetoed
-- **interface**: `api.errors.democracy.AlreadyVetoed.is`
-- **summary**:    Identity may not veto a proposal twice 
- 
-### DuplicateProposal
-- **interface**: `api.errors.democracy.DuplicateProposal.is`
-- **summary**:    Proposal already made 
- 
-### InstantNotAllowed
-- **interface**: `api.errors.democracy.InstantNotAllowed.is`
-- **summary**:    The instant referendum origin is currently disallowed. 
- 
-### InsufficientFunds
-- **interface**: `api.errors.democracy.InsufficientFunds.is`
-- **summary**:    Too high a balance was provided that the account cannot afford. 
- 
-### InvalidHash
-- **interface**: `api.errors.democracy.InvalidHash.is`
-- **summary**:    Invalid hash 
- 
-### MaxVotesReached
-- **interface**: `api.errors.democracy.MaxVotesReached.is`
-- **summary**:    Maximum number of votes reached. 
- 
-### NoneWaiting
-- **interface**: `api.errors.democracy.NoneWaiting.is`
-- **summary**:    No proposals waiting 
- 
-### Nonsense
-- **interface**: `api.errors.democracy.Nonsense.is`
-- **summary**:    Delegation to oneself makes no sense. 
- 
-### NoPermission
-- **interface**: `api.errors.democracy.NoPermission.is`
-- **summary**:    The actor has no permission to conduct the action. 
- 
-### NoProposal
-- **interface**: `api.errors.democracy.NoProposal.is`
-- **summary**:    No external proposal 
- 
-### NotDelegating
-- **interface**: `api.errors.democracy.NotDelegating.is`
-- **summary**:    The account is not currently delegating. 
- 
-### NotSimpleMajority
-- **interface**: `api.errors.democracy.NotSimpleMajority.is`
-- **summary**:    Next external proposal not simple majority 
- 
-### NotVoter
-- **interface**: `api.errors.democracy.NotVoter.is`
-- **summary**:    The given account did not vote on the referendum. 
- 
-### PreimageNotExist
-- **interface**: `api.errors.democracy.PreimageNotExist.is`
-- **summary**:    The preimage does not exist. 
- 
-### ProposalBlacklisted
-- **interface**: `api.errors.democracy.ProposalBlacklisted.is`
-- **summary**:    Proposal still blacklisted 
- 
-### ProposalMissing
-- **interface**: `api.errors.democracy.ProposalMissing.is`
-- **summary**:    Proposal does not exist 
- 
-### ReferendumInvalid
-- **interface**: `api.errors.democracy.ReferendumInvalid.is`
-- **summary**:    Vote given for invalid referendum 
- 
-### TooMany
-- **interface**: `api.errors.democracy.TooMany.is`
-- **summary**:    Maximum number of items reached. 
- 
-### ValueLow
-- **interface**: `api.errors.democracy.ValueLow.is`
-- **summary**:    Value too low 
- 
-### VotesExist
-- **interface**: `api.errors.democracy.VotesExist.is`
-- **summary**:    The account currently has votes attached to it and the operation cannot succeed until  these are removed, either through `unvote` or `reap_vote`. 
- 
-### VotingPeriodLow
-- **interface**: `api.errors.democracy.VotingPeriodLow.is`
-- **summary**:    Voting period too low 
- 
-### WrongUpperBound
-- **interface**: `api.errors.democracy.WrongUpperBound.is`
-- **summary**:    Invalid upper bound. 
 
 ___
 
@@ -946,6 +788,12 @@ ___
 - **interface**: `api.errors.messageQueue.Queued.is`
 - **summary**:    The message is queued for future execution. 
  
+### QueuePaused
+- **interface**: `api.errors.messageQueue.QueuePaused.is`
+- **summary**:    The queue is paused and no message can be executed from it. 
+
+   This can change at any time and may resolve in the future by re-trying. 
+ 
 ### TemporarilyUnprocessable
 - **interface**: `api.errors.messageQueue.TemporarilyUnprocessable.is`
 - **summary**:    This message is temporarily unprocessable. 
@@ -1041,6 +889,10 @@ ___
 ### CommissionChangeThrottled
 - **interface**: `api.errors.nominationPools.CommissionChangeThrottled.is`
 - **summary**:    Not enough blocks have surpassed since the last commission update. 
+ 
+### CommissionExceedsGlobalMaximum
+- **interface**: `api.errors.nominationPools.CommissionExceedsGlobalMaximum.is`
+- **summary**:    The supplied commission exceeds global maximum commission. 
  
 ### CommissionExceedsMaximum
 - **interface**: `api.errors.nominationPools.CommissionExceedsMaximum.is`
@@ -1157,13 +1009,13 @@ ___
 - **interface**: `api.errors.paraInclusion.BitfieldReferencesFreedCore.is`
 - **summary**:    A bitfield that references a freed core,  either intentionally or as part of a concluded  invalid dispute. 
  
-### CandidateNotInParentContext
-- **interface**: `api.errors.paraInclusion.CandidateNotInParentContext.is`
-- **summary**:    Candidate not in parent context. 
- 
 ### CandidateScheduledBeforeParaFree
 - **interface**: `api.errors.paraInclusion.CandidateScheduledBeforeParaFree.is`
 - **summary**:    Candidate scheduled despite pending candidate already existing for the para. 
+ 
+### DisallowedRelayParent
+- **interface**: `api.errors.paraInclusion.DisallowedRelayParent.is`
+- **summary**:    The candidate's relay-parent was not allowed. Either it was  not recent enough or it didn't advance based on the last parachain block. 
  
 ### HeadDataTooLarge
 - **interface**: `api.errors.paraInclusion.HeadDataTooLarge.is`
@@ -1180,6 +1032,10 @@ ___
 ### InsufficientBacking
 - **interface**: `api.errors.paraInclusion.InsufficientBacking.is`
 - **summary**:    Insufficient (non-majority) backing. 
+ 
+### InvalidAssignment
+- **interface**: `api.errors.paraInclusion.InvalidAssignment.is`
+- **summary**:    Failed to compute group index for the core: either it's out of bounds  or the relay parent doesn't belong to the current session. 
  
 ### InvalidBacking
 - **interface**: `api.errors.paraInclusion.InvalidBacking.is`
@@ -1215,7 +1071,7 @@ ___
  
 ### ParaHeadMismatch
 - **interface**: `api.errors.paraInclusion.ParaHeadMismatch.is`
-- **summary**:    The `para_head` hash in the candidate descriptor doesn't match the hash of the actual para head in the  commitments. 
+- **summary**:    The `para_head` hash in the candidate descriptor doesn't match the hash of the actual  para head in the commitments. 
  
 ### PrematureCodeUpgrade
 - **interface**: `api.errors.paraInclusion.PrematureCodeUpgrade.is`
@@ -1256,10 +1112,6 @@ ___
 ### WrongBitfieldSize
 - **interface**: `api.errors.paraInclusion.WrongBitfieldSize.is`
 - **summary**:    Availability bitfield has unexpected size. 
- 
-### WrongCollator
-- **interface**: `api.errors.paraInclusion.WrongCollator.is`
-- **summary**:    Candidate included with the wrong collator. 
 
 ___
 
@@ -1297,7 +1149,7 @@ ___
  
 ### CannotDowngrade
 - **interface**: `api.errors.paras.CannotDowngrade.is`
-- **summary**:    Para cannot be downgraded to a parathread. 
+- **summary**:    Para cannot be downgraded to an on-demand parachain. 
  
 ### CannotOffboard
 - **interface**: `api.errors.paras.CannotOffboard.is`
@@ -1309,7 +1161,7 @@ ___
  
 ### CannotUpgrade
 - **interface**: `api.errors.paras.CannotUpgrade.is`
-- **summary**:    Para cannot be upgraded to a parachain. 
+- **summary**:    Para cannot be upgraded to a lease holding parachain. 
  
 ### CannotUpgradeCode
 - **interface**: `api.errors.paras.CannotUpgradeCode.is`
@@ -1412,79 +1264,6 @@ ___
 ### ValidatorIndexIdMismatch
 - **interface**: `api.errors.parasSlashing.ValidatorIndexIdMismatch.is`
 - **summary**:    The validator index does not match the validator id. 
-
-___
-
-
-## phragmenElection
- 
-### DuplicatedCandidate
-- **interface**: `api.errors.phragmenElection.DuplicatedCandidate.is`
-- **summary**:    Duplicated candidate submission. 
- 
-### InsufficientCandidateFunds
-- **interface**: `api.errors.phragmenElection.InsufficientCandidateFunds.is`
-- **summary**:    Candidate does not have enough funds. 
- 
-### InvalidRenouncing
-- **interface**: `api.errors.phragmenElection.InvalidRenouncing.is`
-- **summary**:    The renouncing origin presented a wrong `Renouncing` parameter. 
- 
-### InvalidReplacement
-- **interface**: `api.errors.phragmenElection.InvalidReplacement.is`
-- **summary**:    Prediction regarding replacement after member removal is wrong. 
- 
-### InvalidVoteCount
-- **interface**: `api.errors.phragmenElection.InvalidVoteCount.is`
-- **summary**:    The provided count of number of votes is incorrect. 
- 
-### InvalidWitnessData
-- **interface**: `api.errors.phragmenElection.InvalidWitnessData.is`
-- **summary**:    The provided count of number of candidates is incorrect. 
- 
-### LowBalance
-- **interface**: `api.errors.phragmenElection.LowBalance.is`
-- **summary**:    Cannot vote with stake less than minimum balance. 
- 
-### MaximumVotesExceeded
-- **interface**: `api.errors.phragmenElection.MaximumVotesExceeded.is`
-- **summary**:    Cannot vote more than maximum allowed. 
- 
-### MemberSubmit
-- **interface**: `api.errors.phragmenElection.MemberSubmit.is`
-- **summary**:    Member cannot re-submit candidacy. 
- 
-### MustBeVoter
-- **interface**: `api.errors.phragmenElection.MustBeVoter.is`
-- **summary**:    Must be a voter. 
- 
-### NotMember
-- **interface**: `api.errors.phragmenElection.NotMember.is`
-- **summary**:    Not a member. 
- 
-### NoVotes
-- **interface**: `api.errors.phragmenElection.NoVotes.is`
-- **summary**:    Must vote for at least one candidate. 
- 
-### RunnerUpSubmit
-- **interface**: `api.errors.phragmenElection.RunnerUpSubmit.is`
-- **summary**:    Runner cannot re-submit candidacy. 
- 
-### TooManyCandidates
-- **interface**: `api.errors.phragmenElection.TooManyCandidates.is`
-- **summary**:    Too many candidates have been created. 
- 
-### TooManyVotes
-- **interface**: `api.errors.phragmenElection.TooManyVotes.is`
-- **summary**:    Cannot vote more than candidates. 
- 
-### UnableToPayBond
-- **interface**: `api.errors.phragmenElection.UnableToPayBond.is`
-- **summary**:    Voter can not pay voting bond. 
- 
-### UnableToVote
-- **interface**: `api.errors.phragmenElection.UnableToVote.is`
-- **summary**:    Cannot vote when no candidates or members exist. 
 
 ___
 
@@ -1624,15 +1403,15 @@ ___
  
 ### CannotDowngrade
 - **interface**: `api.errors.registrar.CannotDowngrade.is`
-- **summary**:    Cannot schedule downgrade of parachain to parathread 
+- **summary**:    Cannot schedule downgrade of lease holding parachain to on-demand parachain 
  
 ### CannotSwap
 - **interface**: `api.errors.registrar.CannotSwap.is`
-- **summary**:    Cannot perform a parachain slot / lifecycle swap. Check that the state of both paras are  correct for the swap to work. 
+- **summary**:    Cannot perform a parachain slot / lifecycle swap. Check that the state of both paras  are correct for the swap to work. 
  
 ### CannotUpgrade
 - **interface**: `api.errors.registrar.CannotUpgrade.is`
-- **summary**:    Cannot schedule upgrade of parathread to parachain 
+- **summary**:    Cannot schedule upgrade of on-demand parachain to lease holding parachain 
  
 ### CodeTooLarge
 - **interface**: `api.errors.registrar.CodeTooLarge.is`
@@ -1656,7 +1435,7 @@ ___
  
 ### NotParathread
 - **interface**: `api.errors.registrar.NotParathread.is`
-- **summary**:    Para is not a Parathread. 
+- **summary**:    Para is not a Parathread (on-demand parachain). 
  
 ### NotRegistered
 - **interface**: `api.errors.registrar.NotRegistered.is`
@@ -1668,7 +1447,7 @@ ___
  
 ### ParaLocked
 - **interface**: `api.errors.registrar.ParaLocked.is`
-- **summary**:    Para is locked from manipulation by the manager. Must use parachain or relay chain governance. 
+- **summary**:    Para is locked from manipulation by the manager. Must use parachain or relay chain  governance. 
 
 ___
 
@@ -1872,97 +1651,6 @@ ___
 ___
 
 
-## technicalCommittee
- 
-### AlreadyInitialized
-- **interface**: `api.errors.technicalCommittee.AlreadyInitialized.is`
-- **summary**:    Members are already initialized! 
- 
-### DuplicateProposal
-- **interface**: `api.errors.technicalCommittee.DuplicateProposal.is`
-- **summary**:    Duplicate proposals not allowed 
- 
-### DuplicateVote
-- **interface**: `api.errors.technicalCommittee.DuplicateVote.is`
-- **summary**:    Duplicate vote ignored 
- 
-### NotMember
-- **interface**: `api.errors.technicalCommittee.NotMember.is`
-- **summary**:    Account is not a member 
- 
-### ProposalMissing
-- **interface**: `api.errors.technicalCommittee.ProposalMissing.is`
-- **summary**:    Proposal must exist 
- 
-### TooEarly
-- **interface**: `api.errors.technicalCommittee.TooEarly.is`
-- **summary**:    The close call was made too early, before the end of the voting. 
- 
-### TooManyProposals
-- **interface**: `api.errors.technicalCommittee.TooManyProposals.is`
-- **summary**:    There can only be a maximum of `MaxProposals` active proposals. 
- 
-### WrongIndex
-- **interface**: `api.errors.technicalCommittee.WrongIndex.is`
-- **summary**:    Mismatched index 
- 
-### WrongProposalLength
-- **interface**: `api.errors.technicalCommittee.WrongProposalLength.is`
-- **summary**:    The given length bound for the proposal was too low. 
- 
-### WrongProposalWeight
-- **interface**: `api.errors.technicalCommittee.WrongProposalWeight.is`
-- **summary**:    The given weight bound for the proposal was too low. 
-
-___
-
-
-## technicalMembership
- 
-### AlreadyMember
-- **interface**: `api.errors.technicalMembership.AlreadyMember.is`
-- **summary**:    Already a member. 
- 
-### NotMember
-- **interface**: `api.errors.technicalMembership.NotMember.is`
-- **summary**:    Not a member. 
- 
-### TooManyMembers
-- **interface**: `api.errors.technicalMembership.TooManyMembers.is`
-- **summary**:    Too many members. 
-
-___
-
-
-## tips
- 
-### AlreadyKnown
-- **interface**: `api.errors.tips.AlreadyKnown.is`
-- **summary**:    The tip was already found/started. 
- 
-### NotFinder
-- **interface**: `api.errors.tips.NotFinder.is`
-- **summary**:    The account attempting to retract the tip is not the finder of the tip. 
- 
-### Premature
-- **interface**: `api.errors.tips.Premature.is`
-- **summary**:    The tip cannot be claimed/closed because it's still in the countdown period. 
- 
-### ReasonTooBig
-- **interface**: `api.errors.tips.ReasonTooBig.is`
-- **summary**:    The reason given is just too big. 
- 
-### StillOpen
-- **interface**: `api.errors.tips.StillOpen.is`
-- **summary**:    The tip cannot be claimed/closed because there are not enough tippers yet. 
- 
-### UnknownTip
-- **interface**: `api.errors.tips.UnknownTip.is`
-- **summary**:    The tip hash is unknown. 
-
-___
-
-
 ## treasury
  
 ### InsufficientPermission
@@ -2120,7 +1808,7 @@ ___
  
 ### SendFailure
 - **interface**: `api.errors.xcmPallet.SendFailure.is`
-- **summary**:    There was some other issue (i.e. not to do with routing) in sending the message. Perhaps  a lack of space for buffering the message. 
+- **summary**:    There was some other issue (i.e. not to do with routing) in sending the message.  Perhaps a lack of space for buffering the message. 
  
 ### TooManyAssets
 - **interface**: `api.errors.xcmPallet.TooManyAssets.is`

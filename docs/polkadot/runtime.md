@@ -309,6 +309,11 @@ ___
 - **runtime**: `ParachainHost_inbound_hrmp_channels_contents`
 - **summary**: Get the contents of all channels addressed to the given recipient.
  
+### keyOwnershipProof(validatorId: `ValidatorId`): `Option<OpaqueKeyOwnershipProof>`
+- **interface**: `api.call.parachainHost.keyOwnershipProof`
+- **runtime**: `ParachainHost_key_ownership_proof`
+- **summary**: Returns a merkle proof of a validator session key
+ 
 ### onChainVotes(): `Option<ScrapedOnChainVotes>`
 - **interface**: `api.call.parachainHost.onChainVotes`
 - **runtime**: `ParachainHost_on_chain_votes`
@@ -343,6 +348,16 @@ ___
 - **interface**: `api.call.parachainHost.submitPvfCheckStatement`
 - **runtime**: `ParachainHost_submit_pvf_check_statement`
 - **summary**: Submits a PVF pre-checking statement into the transaction pool.
+ 
+### submitReportDisputeLost(disputeProof: `DisputeProof`, keyOwnershipProof: `OpaqueKeyOwnershipProof`): `Option<Null>`
+- **interface**: `api.call.parachainHost.submitReportDisputeLost`
+- **runtime**: `ParachainHost_submit_report_dispute_lost`
+- **summary**: Submit an unsigned extrinsic to slash validators who lost a dispute about a candidate of a past session
+ 
+### unappliedSlashes(): `Vec<(SessionIndex, CandidateHash, PendingSlashes)>`
+- **interface**: `api.call.parachainHost.unappliedSlashes`
+- **runtime**: `ParachainHost_unapplied_slashes`
+- **summary**: Returns a list of validators that lost a past session dispute and need to be slashed
  
 ### validationCode(paraId: `ParaId`, assumption: `OccupiedCoreAssumption`): `ValidationCode`
 - **interface**: `api.call.parachainHost.validationCode`

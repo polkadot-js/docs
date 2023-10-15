@@ -22,6 +22,8 @@ The following sections contain Extrinsics methods are part of the default Substr
 
 - **[bounties](#bounties)**
 
+- **[broker](#broker)**
+
 - **[childBounties](#childbounties)**
 
 - **[contracts](#contracts)**
@@ -84,6 +86,8 @@ The following sections contain Extrinsics methods are part of the default Substr
 
 - **[rootTesting](#roottesting)**
 
+- **[safeMode](#safemode)**
+
 - **[salary](#salary)**
 
 - **[scheduler](#scheduler)**
@@ -111,6 +115,8 @@ The following sections contain Extrinsics methods are part of the default Substr
 - **[transactionStorage](#transactionstorage)**
 
 - **[treasury](#treasury)**
+
+- **[txPause](#txpause)**
 
 - **[uniques](#uniques)**
 
@@ -255,15 +261,15 @@ ___
 
 ## assetRate
  
-### create(asset_id: `u32`, rate: `u128`)
+### create(asset_kind: `u32`, rate: `u128`)
 - **interface**: `api.tx.assetRate.create`
 - **summary**:    See [`Pallet::create`]. 
  
-### remove(asset_id: `u32`)
+### remove(asset_kind: `u32`)
 - **interface**: `api.tx.assetRate.remove`
 - **summary**:    See [`Pallet::remove`]. 
  
-### update(asset_id: `u32`, rate: `u128`)
+### update(asset_kind: `u32`, rate: `u128`)
 - **interface**: `api.tx.assetRate.update`
 - **summary**:    See [`Pallet::update`]. 
 
@@ -498,6 +504,87 @@ ___
 ### unassignCurator(bounty_id: `Compact<u32>`)
 - **interface**: `api.tx.bounties.unassignCurator`
 - **summary**:    See [`Pallet::unassign_curator`]. 
+
+___
+
+
+## broker
+ 
+### assign(region_id: `PalletBrokerRegionId`, task: `u32`, finality: `PalletBrokerFinality`)
+- **interface**: `api.tx.broker.assign`
+- **summary**:    See [`Pallet::assign`]. 
+ 
+### claimRevenue(region_id: `PalletBrokerRegionId`, max_timeslices: `u32`)
+- **interface**: `api.tx.broker.claimRevenue`
+- **summary**:    See [`Pallet::claim_revenue`]. 
+ 
+### configure(config: `PalletBrokerConfigRecord`)
+- **interface**: `api.tx.broker.configure`
+- **summary**:    See [`Pallet::configure`]. 
+ 
+### dropContribution(region_id: `PalletBrokerRegionId`)
+- **interface**: `api.tx.broker.dropContribution`
+- **summary**:    See [`Pallet::drop_contribution`]. 
+ 
+### dropHistory(when: `u32`)
+- **interface**: `api.tx.broker.dropHistory`
+- **summary**:    See [`Pallet::drop_history`]. 
+ 
+### dropRegion(region_id: `PalletBrokerRegionId`)
+- **interface**: `api.tx.broker.dropRegion`
+- **summary**:    See [`Pallet::drop_region`]. 
+ 
+### dropRenewal(core: `u16`, when: `u32`)
+- **interface**: `api.tx.broker.dropRenewal`
+- **summary**:    See [`Pallet::drop_renewal`]. 
+ 
+### interlace(region_id: `PalletBrokerRegionId`, pivot: `PalletBrokerCoreMask`)
+- **interface**: `api.tx.broker.interlace`
+- **summary**:    See [`Pallet::interlace`]. 
+ 
+### partition(region_id: `PalletBrokerRegionId`, pivot: `u32`)
+- **interface**: `api.tx.broker.partition`
+- **summary**:    See [`Pallet::partition`]. 
+ 
+### pool(region_id: `PalletBrokerRegionId`, payee: `AccountId32`, finality: `PalletBrokerFinality`)
+- **interface**: `api.tx.broker.pool`
+- **summary**:    See [`Pallet::pool`]. 
+ 
+### purchase(price_limit: `u128`)
+- **interface**: `api.tx.broker.purchase`
+- **summary**:    See [`Pallet::purchase`]. 
+ 
+### purchaseCredit(amount: `u128`, beneficiary: `AccountId32`)
+- **interface**: `api.tx.broker.purchaseCredit`
+- **summary**:    See [`Pallet::purchase_credit`]. 
+ 
+### renew(core: `u16`)
+- **interface**: `api.tx.broker.renew`
+- **summary**:    See [`Pallet::renew`]. 
+ 
+### requestCoreCount(core_count: `u16`)
+- **interface**: `api.tx.broker.requestCoreCount`
+- **summary**:    See [`Pallet::request_core_count`]. 
+ 
+### reserve(workload: `Vec<PalletBrokerScheduleItem>`)
+- **interface**: `api.tx.broker.reserve`
+- **summary**:    See [`Pallet::reserve`]. 
+ 
+### setLease(task: `u32`, until: `u32`)
+- **interface**: `api.tx.broker.setLease`
+- **summary**:    See [`Pallet::set_lease`]. 
+ 
+### startSales(initial_price: `u128`, core_count: `u16`)
+- **interface**: `api.tx.broker.startSales`
+- **summary**:    See [`Pallet::start_sales`]. 
+ 
+### transfer(region_id: `PalletBrokerRegionId`, new_owner: `AccountId32`)
+- **interface**: `api.tx.broker.transfer`
+- **summary**:    See [`Pallet::transfer`]. 
+ 
+### unreserve(item_index: `u32`)
+- **interface**: `api.tx.broker.unreserve`
+- **summary**:    See [`Pallet::unreserve`]. 
 
 ___
 
@@ -837,11 +924,11 @@ ___
 - **interface**: `api.tx.glutton.initializePallet`
 - **summary**:    See [`Pallet::initialize_pallet`]. 
  
-### setCompute(compute: `Perbill`)
+### setCompute(compute: `u64`)
 - **interface**: `api.tx.glutton.setCompute`
 - **summary**:    See [`Pallet::set_compute`]. 
  
-### setStorage(storage: `Perbill`)
+### setStorage(storage: `u64`)
 - **interface**: `api.tx.glutton.setStorage`
 - **summary**:    See [`Pallet::set_storage`]. 
 
@@ -1697,6 +1784,43 @@ ___
 ___
 
 
+## safeMode
+ 
+### enter()
+- **interface**: `api.tx.safeMode.enter`
+- **summary**:    See [`Pallet::enter`]. 
+ 
+### extend()
+- **interface**: `api.tx.safeMode.extend`
+- **summary**:    See [`Pallet::extend`]. 
+ 
+### forceEnter()
+- **interface**: `api.tx.safeMode.forceEnter`
+- **summary**:    See [`Pallet::force_enter`]. 
+ 
+### forceExit()
+- **interface**: `api.tx.safeMode.forceExit`
+- **summary**:    See [`Pallet::force_exit`]. 
+ 
+### forceExtend()
+- **interface**: `api.tx.safeMode.forceExtend`
+- **summary**:    See [`Pallet::force_extend`]. 
+ 
+### forceReleaseDeposit(account: `AccountId32`, block: `u32`)
+- **interface**: `api.tx.safeMode.forceReleaseDeposit`
+- **summary**:    See [`Pallet::force_release_deposit`]. 
+ 
+### forceSlashDeposit(account: `AccountId32`, block: `u32`)
+- **interface**: `api.tx.safeMode.forceSlashDeposit`
+- **summary**:    See [`Pallet::force_slash_deposit`]. 
+ 
+### releaseDeposit(account: `AccountId32`, block: `u32`)
+- **interface**: `api.tx.safeMode.releaseDeposit`
+- **summary**:    See [`Pallet::release_deposit`]. 
+
+___
+
+
 ## salary
  
 ### bump()
@@ -1774,43 +1898,71 @@ ___
 
 ## society
  
+### bestowMembership(candidate: `AccountId32`)
+- **interface**: `api.tx.society.bestowMembership`
+- **summary**:    See [`Pallet::bestow_membership`]. 
+ 
 ### bid(value: `u128`)
 - **interface**: `api.tx.society.bid`
 - **summary**:    See [`Pallet::bid`]. 
+ 
+### claimMembership()
+- **interface**: `api.tx.society.claimMembership`
+- **summary**:    See [`Pallet::claim_membership`]. 
+ 
+### cleanupCandidacy(candidate: `AccountId32`, max: `u32`)
+- **interface**: `api.tx.society.cleanupCandidacy`
+- **summary**:    See [`Pallet::cleanup_candidacy`]. 
+ 
+### cleanupChallenge(challenge_round: `u32`, max: `u32`)
+- **interface**: `api.tx.society.cleanupChallenge`
+- **summary**:    See [`Pallet::cleanup_challenge`]. 
  
 ### defenderVote(approve: `bool`)
 - **interface**: `api.tx.society.defenderVote`
 - **summary**:    See [`Pallet::defender_vote`]. 
  
-### found(founder: `MultiAddress`, max_members: `u32`, rules: `Bytes`)
-- **interface**: `api.tx.society.found`
-- **summary**:    See [`Pallet::found`]. 
+### dissolve()
+- **interface**: `api.tx.society.dissolve`
+- **summary**:    See [`Pallet::dissolve`]. 
  
-### judgeSuspendedCandidate(who: `MultiAddress`, judgement: `PalletSocietyJudgement`)
-- **interface**: `api.tx.society.judgeSuspendedCandidate`
-- **summary**:    See [`Pallet::judge_suspended_candidate`]. 
+### dropCandidate(candidate: `AccountId32`)
+- **interface**: `api.tx.society.dropCandidate`
+- **summary**:    See [`Pallet::drop_candidate`]. 
+ 
+### foundSociety(founder: `MultiAddress`, max_members: `u32`, max_intake: `u32`, max_strikes: `u32`, candidate_deposit: `u128`, rules: `Bytes`)
+- **interface**: `api.tx.society.foundSociety`
+- **summary**:    See [`Pallet::found_society`]. 
  
 ### judgeSuspendedMember(who: `MultiAddress`, forgive: `bool`)
 - **interface**: `api.tx.society.judgeSuspendedMember`
 - **summary**:    See [`Pallet::judge_suspended_member`]. 
  
+### kickCandidate(candidate: `AccountId32`)
+- **interface**: `api.tx.society.kickCandidate`
+- **summary**:    See [`Pallet::kick_candidate`]. 
+ 
 ### payout()
 - **interface**: `api.tx.society.payout`
 - **summary**:    See [`Pallet::payout`]. 
  
-### setMaxMembers(max: `u32`)
-- **interface**: `api.tx.society.setMaxMembers`
-- **summary**:    See [`Pallet::set_max_members`]. 
+### punishSkeptic()
+- **interface**: `api.tx.society.punishSkeptic`
+- **summary**:    See [`Pallet::punish_skeptic`]. 
  
-### unbid(pos: `u32`)
+### resignCandidacy()
+- **interface**: `api.tx.society.resignCandidacy`
+- **summary**:    See [`Pallet::resign_candidacy`]. 
+ 
+### setParameters(max_members: `u32`, max_intake: `u32`, max_strikes: `u32`, candidate_deposit: `u128`)
+- **interface**: `api.tx.society.setParameters`
+- **summary**:    See [`Pallet::set_parameters`]. 
+ 
+### unbid()
 - **interface**: `api.tx.society.unbid`
 - **summary**:    See [`Pallet::unbid`]. 
  
-### unfound()
-- **interface**: `api.tx.society.unfound`
-- **summary**:    See [`Pallet::unfound`]. 
- 
-### unvouch(pos: `u32`)
+### unvouch()
 - **interface**: `api.tx.society.unvouch`
 - **summary**:    See [`Pallet::unvouch`]. 
  
@@ -1821,6 +1973,10 @@ ___
 ### vouch(who: `MultiAddress`, value: `u128`, tip: `u128`)
 - **interface**: `api.tx.society.vouch`
 - **summary**:    See [`Pallet::vouch`]. 
+ 
+### waiveRepay(amount: `u128`)
+- **interface**: `api.tx.society.waiveRepay`
+- **summary**:    See [`Pallet::waive_repay`]. 
 
 ___
 
@@ -2163,6 +2319,19 @@ ___
 ___
 
 
+## txPause
+ 
+### pause(full_name: `(Bytes,Bytes)`)
+- **interface**: `api.tx.txPause.pause`
+- **summary**:    See [`Pallet::pause`]. 
+ 
+### unpause(ident: `(Bytes,Bytes)`)
+- **interface**: `api.tx.txPause.unpause`
+- **summary**:    See [`Pallet::unpause`]. 
+
+___
+
+
 ## uniques
  
 ### approveTransfer(collection: `u32`, item: `u32`, delegate: `MultiAddress`)
@@ -2331,6 +2500,10 @@ ___
 ### putInFrontOf(lighter: `MultiAddress`)
 - **interface**: `api.tx.voterList.putInFrontOf`
 - **summary**:    See [`Pallet::put_in_front_of`]. 
+ 
+### putInFrontOfOther(heavier: `MultiAddress`, lighter: `MultiAddress`)
+- **interface**: `api.tx.voterList.putInFrontOfOther`
+- **summary**:    See [`Pallet::put_in_front_of_other`]. 
  
 ### rebag(dislocated: `MultiAddress`)
 - **interface**: `api.tx.voterList.rebag`

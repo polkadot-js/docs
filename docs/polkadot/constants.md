@@ -20,11 +20,7 @@ The following sections contain the module constants, also known as parameter typ
 
 - **[convictionVoting](#convictionvoting)**
 
-- **[council](#council)**
-
 - **[crowdloan](#crowdloan)**
-
-- **[democracy](#democracy)**
 
 - **[electionProviderMultiPhase](#electionprovidermultiphase)**
 
@@ -46,8 +42,6 @@ The following sections contain the module constants, also known as parameter typ
 
 - **[paras](#paras)**
 
-- **[phragmenElection](#phragmenelection)**
-
 - **[proxy](#proxy)**
 
 - **[referenda](#referenda)**
@@ -62,11 +56,7 @@ The following sections contain the module constants, also known as parameter typ
 
 - **[system](#system)**
 
-- **[technicalCommittee](#technicalcommittee)**
-
 - **[timestamp](#timestamp)**
-
-- **[tips](#tips)**
 
 - **[transactionPayment](#transactionpayment)**
 
@@ -116,6 +106,10 @@ ___
 ### maxAuthorities: `u32`
 - **interface**: `api.consts.babe.maxAuthorities`
 - **summary**:    Max number of authorities allowed 
+ 
+### maxNominators: `u32`
+- **interface**: `api.consts.babe.maxNominators`
+- **summary**:    The maximum number of nominators for each validator. 
 
 ___
 
@@ -232,87 +226,19 @@ ___
 ___
 
 
-## council
- 
-### maxProposalWeight: `SpWeightsWeightV2Weight`
-- **interface**: `api.consts.council.maxProposalWeight`
-- **summary**:    The maximum weight of a dispatch call that can be proposed and executed. 
-
-___
-
-
 ## crowdloan
  
 ### minContribution: `u128`
 - **interface**: `api.consts.crowdloan.minContribution`
-- **summary**:    The minimum amount that may be contributed into a crowdloan. Should almost certainly be at  least `ExistentialDeposit`. 
+- **summary**:    The minimum amount that may be contributed into a crowdloan. Should almost certainly be  at least `ExistentialDeposit`. 
  
 ### palletId: `FrameSupportPalletId`
 - **interface**: `api.consts.crowdloan.palletId`
-- **summary**:    `PalletId` for the crowdloan pallet. An appropriate value could be `PalletId(*b"py/cfund")` 
+- **summary**:    `PalletId` for the crowdloan pallet. An appropriate value could be  `PalletId(*b"py/cfund")` 
  
 ### removeKeysLimit: `u32`
 - **interface**: `api.consts.crowdloan.removeKeysLimit`
 - **summary**:    Max number of storage keys to remove per extrinsic call. 
-
-___
-
-
-## democracy
- 
-### cooloffPeriod: `u32`
-- **interface**: `api.consts.democracy.cooloffPeriod`
-- **summary**:    Period in blocks where an external proposal may not be re-submitted after being vetoed. 
- 
-### enactmentPeriod: `u32`
-- **interface**: `api.consts.democracy.enactmentPeriod`
-- **summary**:    The period between a proposal being approved and enacted. 
-
-   It should generally be a little more than the unstake period to ensure that  voting stakers have an opportunity to remove themselves from the system in the case  where they are on the losing side of a vote. 
- 
-### fastTrackVotingPeriod: `u32`
-- **interface**: `api.consts.democracy.fastTrackVotingPeriod`
-- **summary**:    Minimum voting period allowed for a fast-track referendum. 
- 
-### instantAllowed: `bool`
-- **interface**: `api.consts.democracy.instantAllowed`
-- **summary**:    Indicator for whether an emergency origin is even allowed to happen. Some chains may  want to set this permanently to `false`, others may want to condition it on things such  as an upgrade having happened recently. 
- 
-### launchPeriod: `u32`
-- **interface**: `api.consts.democracy.launchPeriod`
-- **summary**:    How often (in blocks) new public referenda are launched. 
- 
-### maxBlacklisted: `u32`
-- **interface**: `api.consts.democracy.maxBlacklisted`
-- **summary**:    The maximum number of items which can be blacklisted. 
- 
-### maxDeposits: `u32`
-- **interface**: `api.consts.democracy.maxDeposits`
-- **summary**:    The maximum number of deposits a public proposal may have at any time. 
- 
-### maxProposals: `u32`
-- **interface**: `api.consts.democracy.maxProposals`
-- **summary**:    The maximum number of public proposals that can exist at any time. 
- 
-### maxVotes: `u32`
-- **interface**: `api.consts.democracy.maxVotes`
-- **summary**:    The maximum number of votes for an account. 
-
-   Also used to compute weight, an overly big value can  lead to extrinsic with very big weight: see `delegate` for instance. 
- 
-### minimumDeposit: `u128`
-- **interface**: `api.consts.democracy.minimumDeposit`
-- **summary**:    The minimum amount to be used as a deposit for a public referendum proposal. 
- 
-### voteLockingPeriod: `u32`
-- **interface**: `api.consts.democracy.voteLockingPeriod`
-- **summary**:    The minimum period of vote locking. 
-
-   It should be no shorter than enactment period to ensure that in the case of an approval,  those successful voters are locked into the consequences that their votes entail. 
- 
-### votingPeriod: `u32`
-- **interface**: `api.consts.democracy.votingPeriod`
-- **summary**:    How often (in blocks) to check for new votes. 
 
 ___
 
@@ -326,14 +252,6 @@ ___
 ### betterUnsignedThreshold: `Perbill`
 - **interface**: `api.consts.electionProviderMultiPhase.betterUnsignedThreshold`
 - **summary**:    The minimum amount of improvement to the solution score that defines a solution as  "better" in the Unsigned phase. 
- 
-### maxElectableTargets: `u16`
-- **interface**: `api.consts.electionProviderMultiPhase.maxElectableTargets`
-- **summary**:    The maximum number of electable targets to put in the snapshot. 
- 
-### maxElectingVoters: `u32`
-- **interface**: `api.consts.electionProviderMultiPhase.maxElectingVoters`
-- **summary**:    The maximum number of electing voters to put in the snapshot. At the moment, snapshots  are only over a single block, but once multi-block elections are introduced they will  take place over multiple blocks. 
  
 ### maxWinners: `u32`
 - **interface**: `api.consts.electionProviderMultiPhase.maxWinners`
@@ -420,6 +338,10 @@ ___
 ### maxAuthorities: `u32`
 - **interface**: `api.consts.grandpa.maxAuthorities`
 - **summary**:    Max Authorities in use 
+ 
+### maxNominators: `u32`
+- **interface**: `api.consts.grandpa.maxNominators`
+- **summary**:    The maximum number of nominators for each validator. 
  
 ### maxSetIdSessionEntries: `u64`
 - **interface**: `api.consts.grandpa.maxSetIdSessionEntries`
@@ -548,63 +470,6 @@ ___
 ___
 
 
-## phragmenElection
- 
-### candidacyBond: `u128`
-- **interface**: `api.consts.phragmenElection.candidacyBond`
-- **summary**:    How much should be locked up in order to submit one's candidacy. 
- 
-### desiredMembers: `u32`
-- **interface**: `api.consts.phragmenElection.desiredMembers`
-- **summary**:    Number of members to elect. 
- 
-### desiredRunnersUp: `u32`
-- **interface**: `api.consts.phragmenElection.desiredRunnersUp`
-- **summary**:    Number of runners_up to keep. 
- 
-### maxCandidates: `u32`
-- **interface**: `api.consts.phragmenElection.maxCandidates`
-- **summary**:    The maximum number of candidates in a phragmen election. 
-
-   Warning: This impacts the size of the election which is run onchain. Chose wisely, and  consider how it will impact `T::WeightInfo::election_phragmen`. 
-
-   When this limit is reached no more candidates are accepted in the election. 
- 
-### maxVoters: `u32`
-- **interface**: `api.consts.phragmenElection.maxVoters`
-- **summary**:    The maximum number of voters to allow in a phragmen election. 
-
-   Warning: This impacts the size of the election which is run onchain. Chose wisely, and  consider how it will impact `T::WeightInfo::election_phragmen`. 
-
-   When the limit is reached the new voters are ignored. 
- 
-### maxVotesPerVoter: `u32`
-- **interface**: `api.consts.phragmenElection.maxVotesPerVoter`
-- **summary**:    Maximum numbers of votes per voter. 
-
-   Warning: This impacts the size of the election which is run onchain. Chose wisely, and  consider how it will impact `T::WeightInfo::election_phragmen`. 
- 
-### palletId: `[u8;8]`
-- **interface**: `api.consts.phragmenElection.palletId`
-- **summary**:    Identifier for the elections-phragmen pallet's lock 
- 
-### termDuration: `u32`
-- **interface**: `api.consts.phragmenElection.termDuration`
-- **summary**:    How long each seat is kept. This defines the next block number at which an election  round will happen. If set to zero, no elections are ever triggered and the module will  be in passive mode. 
- 
-### votingBondBase: `u128`
-- **interface**: `api.consts.phragmenElection.votingBondBase`
-- **summary**:    Base deposit associated with voting. 
-
-   This should be sensibly high to economically ensure the pallet cannot be attacked by  creating a gigantic number of votes. 
- 
-### votingBondFactor: `u128`
-- **interface**: `api.consts.phragmenElection.votingBondFactor`
-- **summary**:    The amount of bond that need to be locked for each vote (32 bytes). 
-
-___
-
-
 ## proxy
  
 ### announcementDepositBase: `u128`
@@ -675,7 +540,7 @@ ___
  
 ### paraDeposit: `u128`
 - **interface**: `api.consts.registrar.paraDeposit`
-- **summary**:    The deposit to be paid to run a parathread.  This should include the cost for storing the genesis head and validation code. 
+- **summary**:    The deposit to be paid to run a on-demand parachain.  This should include the cost for storing the genesis head and validation code. 
 
 ___
 
@@ -725,10 +590,6 @@ ___
    If migrating an existing pallet from storage value to config value,  this should be set to same value or greater as in storage. 
 
    Note: `HistoryDepth` is used as the upper bound for the `BoundedVec`  item `StakingLedger.claimed_rewards`. Setting this value lower than  the existing value can lead to inconsistencies in the  `StakingLedger` and will need to be handled properly in a migration.  The test `reducing_history_depth_abrupt` shows this effect. 
- 
-### maxNominations: `u32`
-- **interface**: `api.consts.staking.maxNominations`
-- **summary**:    Maximum number of nominations per nominator. 
  
 ### maxNominatorRewardedPerValidator: `u32`
 - **interface**: `api.consts.staking.maxNominatorRewardedPerValidator`
@@ -786,47 +647,11 @@ ___
 ___
 
 
-## technicalCommittee
- 
-### maxProposalWeight: `SpWeightsWeightV2Weight`
-- **interface**: `api.consts.technicalCommittee.maxProposalWeight`
-- **summary**:    The maximum weight of a dispatch call that can be proposed and executed. 
-
-___
-
-
 ## timestamp
  
 ### minimumPeriod: `u64`
 - **interface**: `api.consts.timestamp.minimumPeriod`
 - **summary**:    The minimum period between blocks. Beware that this is different to the *expected*  period that the block production apparatus provides. Your chosen consensus system will  generally work with this to determine a sensible block time. e.g. For Aura, it will be  double this period on default settings. 
-
-___
-
-
-## tips
- 
-### dataDepositPerByte: `u128`
-- **interface**: `api.consts.tips.dataDepositPerByte`
-- **summary**:    The amount held on deposit per byte within the tip report reason or bounty description. 
- 
-### maximumReasonLength: `u32`
-- **interface**: `api.consts.tips.maximumReasonLength`
-- **summary**:    Maximum acceptable reason length. 
-
-   Benchmarks depend on this value, be sure to update weights file when changing this value 
- 
-### tipCountdown: `u32`
-- **interface**: `api.consts.tips.tipCountdown`
-- **summary**:    The period for which a tip remains open after is has achieved threshold tippers. 
- 
-### tipFindersFee: `Percent`
-- **interface**: `api.consts.tips.tipFindersFee`
-- **summary**:    The percent of the final tip which goes to the original reporter of the tip. 
- 
-### tipReportDepositBase: `u128`
-- **interface**: `api.consts.tips.tipReportDepositBase`
-- **summary**:    The amount held on deposit for placing a tip report. 
 
 ___
 

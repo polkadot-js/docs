@@ -6,6 +6,8 @@ The following section contains known runtime calls that may be available on spec
 
 - **[accountNonceApi](#accountnonceapi)**
 
+- **[assetConversionApi](#assetconversionapi)**
+
 - **[assetsApi](#assetsapi)**
 
 - **[auraApi](#auraapi)**
@@ -90,6 +92,26 @@ ___
 - **interface**: `api.call.accountNonceApi.accountNonce`
 - **runtime**: `AccountNonceApi_account_nonce`
 - **summary**: The API to query account nonce (aka transaction index)
+
+___
+
+
+## AssetConversionApi
+ 
+### getReserves(asset1: `XcmV3MultiLocation`, asset2: `XcmV3MultiLocation`): `Option<(Balance,Balance)>`
+- **interface**: `api.call.assetConversionApi.getReserves`
+- **runtime**: `AssetConversionApi_get_reserves`
+- **summary**: Get pool reserves
+ 
+### quotePriceExactTokensForTokens(asset1: `XcmV3MultiLocation`, asset2: `XcmV3MultiLocation`, amount: `u128`, include_fee: `bool`): `Option<(Balance)>`
+- **interface**: `api.call.assetConversionApi.quotePriceExactTokensForTokens`
+- **runtime**: `AssetConversionApi_quote_price_exact_tokens_for_tokens`
+- **summary**: Quote price: exact tokens for tokens
+ 
+### quotePriceTokensForExactTokens(asset1: `XcmV3MultiLocation`, asset2: `XcmV3MultiLocation`, amount: `u128`, include_fee: `bool`): `Option<(Balance)>`
+- **interface**: `api.call.assetConversionApi.quotePriceTokensForExactTokens`
+- **runtime**: `AssetConversionApi_quote_price_tokens_for_exact_tokens`
+- **summary**: Quote price: tokens for exact tokens
 
 ___
 
@@ -361,7 +383,7 @@ ___
 - **runtime**: `EthereumRuntimeRPCApi_author`
 - **summary**: Returns the converted FindAuthor::find_author authority id.
  
-### call(from: `H160`, to: `H160`, data: `Vec<u8>`, value: `U256`, gasLimit: `U256`, maxFeePerGas: `Option<U256>`, maxPriorityFeePerGas: `Option<U256>`, nonce: `Option<U256>`, estimate: `bool`, accessList: `Option<Vec<(H160, Vec<H256>)>>`): `Result<EvmCallInfo, DispatchError>`
+### call(from: `H160`, to: `H160`, data: `Vec<u8>`, value: `U256`, gasLimit: `U256`, maxFeePerGas: `Option<U256>`, maxPriorityFeePerGas: `Option<U256>`, nonce: `Option<U256>`, estimate: `bool`, accessList: `Option<Vec<(H160, Vec<H256>)>>`): `Result<EvmCallInfoV2, DispatchError>`
 - **interface**: `api.call.ethereumRuntimeRPCApi.call`
 - **runtime**: `EthereumRuntimeRPCApi_call`
 - **summary**: Returns a frame_ethereum::call response. If `estimate` is true,
@@ -371,7 +393,7 @@ ___
 - **runtime**: `EthereumRuntimeRPCApi_chain_id`
 - **summary**: Returns runtime defined pallet_evm::ChainId.
  
-### create(from: `H160`, data: `Vec<u8>`, value: `U256`, gasLimit: `U256`, maxFeePerGas: `Option<U256>`, maxPriorityFeePerGas: `Option<U256>`, nonce: `Option<U256>`, estimate: `bool`, accessList: `Option<Vec<(H160, Vec<H256>)>>`): `Result<EvmCreateInfo, DispatchError>`
+### create(from: `H160`, data: `Vec<u8>`, value: `U256`, gasLimit: `U256`, maxFeePerGas: `Option<U256>`, maxPriorityFeePerGas: `Option<U256>`, nonce: `Option<U256>`, estimate: `bool`, accessList: `Option<Vec<(H160, Vec<H256>)>>`): `Result<EvmCreateInfoV2, DispatchError>`
 - **interface**: `api.call.ethereumRuntimeRPCApi.create`
 - **runtime**: `EthereumRuntimeRPCApi_create`
 - **summary**: Returns a frame_ethereum::call response. If `estimate` is true,
@@ -421,7 +443,7 @@ ___
 
 ## FungiblesApi
  
-### queryAccountBalances(account: `AccountId`): `Result<Vec<XcmV3MultiAsset>, FungiblesAccessError>`
+### queryAccountBalances(account: `AccountId`): `Result<XcmVersionedMultiAssets, FungiblesAccessError>`
 - **interface**: `api.call.fungiblesApi.queryAccountBalances`
 - **runtime**: `FungiblesApi_query_account_balances`
 - **summary**: Returns the list of all `MultiAsset` that an `AccountId` has
@@ -641,6 +663,11 @@ ___
 - **runtime**: `ParachainHost_inbound_hrmp_channels_contents`
 - **summary**: Get the contents of all channels addressed to the given recipient.
  
+### keyOwnershipProof(validatorId: `ValidatorId`): `Option<OpaqueKeyOwnershipProof>`
+- **interface**: `api.call.parachainHost.keyOwnershipProof`
+- **runtime**: `ParachainHost_key_ownership_proof`
+- **summary**: Returns a merkle proof of a validator session key
+ 
 ### onChainVotes(): `Option<ScrapedOnChainVotes>`
 - **interface**: `api.call.parachainHost.onChainVotes`
 - **runtime**: `ParachainHost_on_chain_votes`
@@ -675,6 +702,16 @@ ___
 - **interface**: `api.call.parachainHost.submitPvfCheckStatement`
 - **runtime**: `ParachainHost_submit_pvf_check_statement`
 - **summary**: Submits a PVF pre-checking statement into the transaction pool.
+ 
+### submitReportDisputeLost(disputeProof: `DisputeProof`, keyOwnershipProof: `OpaqueKeyOwnershipProof`): `Option<Null>`
+- **interface**: `api.call.parachainHost.submitReportDisputeLost`
+- **runtime**: `ParachainHost_submit_report_dispute_lost`
+- **summary**: Submit an unsigned extrinsic to slash validators who lost a dispute about a candidate of a past session
+ 
+### unappliedSlashes(): `Vec<(SessionIndex, CandidateHash, PendingSlashes)>`
+- **interface**: `api.call.parachainHost.unappliedSlashes`
+- **runtime**: `ParachainHost_unapplied_slashes`
+- **summary**: Returns a list of validators that lost a past session dispute and need to be slashed
  
 ### validationCode(paraId: `ParaId`, assumption: `OccupiedCoreAssumption`): `ValidationCode`
 - **interface**: `api.call.parachainHost.validationCode`

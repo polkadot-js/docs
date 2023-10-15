@@ -26,6 +26,8 @@ The following sections contain Storage methods are part of the default Substrate
 
 - **[bounties](#bounties)**
 
+- **[broker](#broker)**
+
 - **[childBounties](#childbounties)**
 
 - **[contracts](#contracts)**
@@ -90,6 +92,8 @@ The following sections contain Storage methods are part of the default Substrate
 
 - **[referenda](#referenda)**
 
+- **[safeMode](#safemode)**
+
 - **[salary](#salary)**
 
 - **[scheduler](#scheduler)**
@@ -121,6 +125,8 @@ The following sections contain Storage methods are part of the default Substrate
 - **[transactionStorage](#transactionstorage)**
 
 - **[treasury](#treasury)**
+
+- **[txPause](#txpause)**
 
 - **[uniques](#uniques)**
 
@@ -215,7 +221,7 @@ ___
 - **interface**: `api.query.assetRate.conversionRateToNative`
 - **summary**:    Maps an asset to its fixed point representation in the native balance. 
 
-   E.g. `native_amount = asset_amount * ConversionRateToNative::<T>::get(asset_id)` 
+   E.g. `native_amount = asset_amount * ConversionRateToNative::<T>::get(asset_kind)` 
 
 ___
 
@@ -416,6 +422,59 @@ ___
 ___
 
 
+## broker
+ 
+### allowedRenewals(`PalletBrokerAllowedRenewalId`): `Option<PalletBrokerAllowedRenewalRecord>`
+- **interface**: `api.query.broker.allowedRenewals`
+- **summary**:    Records of allowed renewals. 
+ 
+### configuration(): `Option<PalletBrokerConfigRecord>`
+- **interface**: `api.query.broker.configuration`
+- **summary**:    The current configuration of this pallet. 
+ 
+### instaPoolContribution(`PalletBrokerRegionId`): `Option<PalletBrokerContributionRecord>`
+- **interface**: `api.query.broker.instaPoolContribution`
+- **summary**:    Record of a single contribution to the Instantaneous Coretime Pool. 
+ 
+### instaPoolHistory(`u32`): `Option<PalletBrokerInstaPoolHistoryRecord>`
+- **interface**: `api.query.broker.instaPoolHistory`
+- **summary**:    Total InstaPool rewards for each Timeslice and the number of core parts which contributed. 
+ 
+### instaPoolIo(`u32`): `PalletBrokerPoolIoRecord`
+- **interface**: `api.query.broker.instaPoolIo`
+- **summary**:    Record of Coretime entering or leaving the Instantaneous Coretime Pool. 
+ 
+### leases(): `Vec<PalletBrokerLeaseRecordItem>`
+- **interface**: `api.query.broker.leases`
+- **summary**:    The Polkadot Core legacy leases. 
+ 
+### regions(`PalletBrokerRegionId`): `Option<PalletBrokerRegionRecord>`
+- **interface**: `api.query.broker.regions`
+- **summary**:    The current (unassigned) Regions. 
+ 
+### reservations(): `Vec<Vec<PalletBrokerScheduleItem>>`
+- **interface**: `api.query.broker.reservations`
+- **summary**:    The Polkadot Core reservations (generally tasked with the maintenance of System Chains). 
+ 
+### saleInfo(): `Option<PalletBrokerSaleInfoRecord>`
+- **interface**: `api.query.broker.saleInfo`
+- **summary**:    The details of the current sale, including its properties and status. 
+ 
+### status(): `Option<PalletBrokerStatusRecord>`
+- **interface**: `api.query.broker.status`
+- **summary**:    The current status of miscellaneous subsystems of this pallet. 
+ 
+### workload(`u16`): `Vec<PalletBrokerScheduleItem>`
+- **interface**: `api.query.broker.workload`
+- **summary**:    The current workload of each core. This gets updated with workplan as timeslices pass. 
+ 
+### workplan(`(u32,u16)`): `Option<Vec<PalletBrokerScheduleItem>>`
+- **interface**: `api.query.broker.workplan`
+- **summary**:    The work we plan on having each core do at a particular time in the future. 
+
+___
+
+
 ## childBounties
  
 ### childBounties(`u32, u32`): `Option<PalletChildBountiesChildBounty>`
@@ -443,9 +502,9 @@ ___
 
 ## contracts
  
-### codeStorage(`H256`): `Option<PalletContractsWasmPrefabWasmModule>`
-- **interface**: `api.query.contracts.codeStorage`
-- **summary**:    A mapping between an original code hash and instrumented wasm code, ready for execution. 
+### codeInfoOf(`H256`): `Option<PalletContractsWasmCodeInfo>`
+- **interface**: `api.query.contracts.codeInfoOf`
+- **summary**:    A mapping from a contract's code hash to its code info. 
  
 ### contractInfoOf(`AccountId32`): `Option<PalletContractsStorageContractInfo>`
 - **interface**: `api.query.contracts.contractInfoOf`
@@ -465,6 +524,7 @@ ___
  
 ### migrationInProgress(): `Option<Bytes>`
 - **interface**: `api.query.contracts.migrationInProgress`
+- **summary**:    A migration can span across multiple blocks. This storage defines a cursor to track the  progress of the migration, enabling us to resume from the last completed position. 
  
 ### nonce(): `u64`
 - **interface**: `api.query.contracts.nonce`
@@ -480,13 +540,9 @@ ___
 
    Do not use it to determine the number of contracts. It won't be decremented if  a contract is destroyed. 
  
-### ownerInfoOf(`H256`): `Option<PalletContractsWasmOwnerInfo>`
-- **interface**: `api.query.contracts.ownerInfoOf`
-- **summary**:    A mapping between an original code hash and its owner information. 
- 
 ### pristineCode(`H256`): `Option<Bytes>`
 - **interface**: `api.query.contracts.pristineCode`
-- **summary**:    A mapping from an original code hash to the original code, untouched by instrumentation. 
+- **summary**:    A mapping from a contract's code hash to its code. 
 
 ___
 
@@ -750,13 +806,17 @@ ___
 
 ## glutton
  
-### compute(): `Perbill`
+### compute(): `u64`
 - **interface**: `api.query.glutton.compute`
-- **summary**:    Storage value used to specify what percentage of the left over `ref_time`  to consume during `on_idle`. 
+- **summary**:    The proportion of the remaining `ref_time` to consume during `on_idle`. 
+
+   `1.0` is mapped to `100%`. Must be at most [`crate::RESOURCE_HARD_LIMIT`]. Setting this to  over `1.0` could stall the chain. 
  
-### storage(): `Perbill`
+### storage(): `u64`
 - **interface**: `api.query.glutton.storage`
-- **summary**:    Storage value used the specify what percentage of left over `proof_size`  to consume during `on_idle`. 
+- **summary**:    The proportion of the remaining `proof_size` to consume during `on_idle`. 
+
+   `1.0` is mapped to `100%`. Must be at most [`crate::RESOURCE_HARD_LIMIT`]. Setting this to  over `1.0` could stall the chain. 
  
 ### trashData(`u32`): `Option<[u8;1024]>`
 - **interface**: `api.query.glutton.trashData`
@@ -851,9 +911,9 @@ ___
 - **interface**: `api.query.imOnline.keys`
 - **summary**:    The current set of keys that may issue a heartbeat. 
  
-### receivedHeartbeats(`u32, u32`): `Option<WrapperOpaque<PalletImOnlineBoundedOpaqueNetworkState>>`
+### receivedHeartbeats(`u32, u32`): `Option<bool>`
 - **interface**: `api.query.imOnline.receivedHeartbeats`
-- **summary**:    For each session index, we keep a mapping of `SessionIndex` and `AuthIndex` to  `WrapperOpaque<BoundedOpaqueNetworkState>`. 
+- **summary**:    For each session index, we keep a mapping of `SessionIndex` and `AuthIndex`. 
 
 ___
 
@@ -1353,6 +1413,25 @@ ___
 ___
 
 
+## safeMode
+ 
+### deposits(`AccountId32, u32`): `Option<u128>`
+- **interface**: `api.query.safeMode.deposits`
+- **summary**:    Holds the reserve that was taken from an account at a specific block number. 
+
+   This helps governance to have an overview of outstanding deposits that should be returned or  slashed. 
+ 
+### enteredUntil(): `Option<u32>`
+- **interface**: `api.query.safeMode.enteredUntil`
+- **summary**:    Contains the last block number that the safe-mode will remain entered in. 
+
+   Set to `None` when safe-mode is exited. 
+
+   Safe-mode is automatically exited when the current block number exceeds this value. 
+
+___
+
+
 ## salary
  
 ### claimant(`AccountId32`): `Option<PalletSalaryClaimantStatus>`
@@ -1425,17 +1504,20 @@ ___
 - **interface**: `api.query.society.bids`
 - **summary**:    The current bids, stored ordered by the value of the bid. 
  
-### candidates(): `Vec<PalletSocietyBid>`
+### candidates(`AccountId32`): `Option<PalletSocietyCandidacy>`
 - **interface**: `api.query.society.candidates`
-- **summary**:    The current set of candidates; bidders that are attempting to become members. 
  
-### defender(): `Option<AccountId32>`
-- **interface**: `api.query.society.defender`
-- **summary**:    The defending member currently being challenged. 
+### challengeRoundCount(): `u32`
+- **interface**: `api.query.society.challengeRoundCount`
+- **summary**:    The number of challenge rounds there have been. Used to identify stale DefenderVotes. 
  
-### defenderVotes(`AccountId32`): `Option<PalletSocietyVote>`
+### defenderVotes(`u32, AccountId32`): `Option<PalletSocietyVote>`
 - **interface**: `api.query.society.defenderVotes`
-- **summary**:    Votes for the defender. 
+- **summary**:    Votes for the defender, keyed by challenge round. 
+ 
+### defending(): `Option<(AccountId32,AccountId32,PalletSocietyTally)>`
+- **interface**: `api.query.society.defending`
+- **summary**:    The defending member currently being challenged, along with a running tally of votes. 
  
 ### founder(): `Option<AccountId32>`
 - **interface**: `api.query.society.founder`
@@ -1443,47 +1525,59 @@ ___
  
 ### head(): `Option<AccountId32>`
 - **interface**: `api.query.society.head`
-- **summary**:    The most primary from the most recently approved members. 
+- **summary**:    The most primary from the most recently approved rank 0 members in the society. 
  
-### maxMembers(): `u32`
-- **interface**: `api.query.society.maxMembers`
+### memberByIndex(`u32`): `Option<AccountId32>`
+- **interface**: `api.query.society.memberByIndex`
+- **summary**:    The current items in `Members` keyed by their unique index. Keys are densely populated  `0..MemberCount` (does not include `MemberCount`). 
+ 
+### memberCount(): `u32`
+- **interface**: `api.query.society.memberCount`
+- **summary**:    The number of items in `Members` currently. (Doesn't include `SuspendedMembers`.) 
+ 
+### members(`AccountId32`): `Option<PalletSocietyMemberRecord>`
+- **interface**: `api.query.society.members`
+- **summary**:    The current members and their rank. Doesn't include `SuspendedMembers`. 
+ 
+### nextHead(): `Option<PalletSocietyIntakeRecord>`
+- **interface**: `api.query.society.nextHead`
+- **summary**:    At the end of the claim period, this contains the most recently approved members (along with  their bid and round ID) who is from the most recent round with the lowest bid. They will  become the new `Head`. 
+ 
+### parameters(): `Option<PalletSocietyGroupParams>`
+- **interface**: `api.query.society.parameters`
 - **summary**:    The max number of members for the society at one time. 
  
-### members(): `Vec<AccountId32>`
-- **interface**: `api.query.society.members`
-- **summary**:    The current set of members, ordered. 
- 
-### payouts(`AccountId32`): `Vec<(u32,u128)>`
+### payouts(`AccountId32`): `PalletSocietyPayoutRecord`
 - **interface**: `api.query.society.payouts`
-- **summary**:    Pending payouts; ordered by block number, with the amount that should be paid out. 
+- **summary**:    Information regarding rank-0 payouts, past and future. 
  
 ### pot(): `u128`
 - **interface**: `api.query.society.pot`
 - **summary**:    Amount of our account balance that is specifically for the next round's bid(s). 
  
+### roundCount(): `u32`
+- **interface**: `api.query.society.roundCount`
+- **summary**:    The number of rounds which have passed. 
+ 
 ### rules(): `Option<H256>`
 - **interface**: `api.query.society.rules`
 - **summary**:    A hash of the rules of this society concerning membership. Can only be set once and  only by the founder. 
  
-### strikes(`AccountId32`): `u32`
-- **interface**: `api.query.society.strikes`
-- **summary**:    The ongoing number of losing votes cast by the member. 
+### skeptic(): `Option<AccountId32>`
+- **interface**: `api.query.society.skeptic`
+- **summary**:    The current skeptic. 
  
-### suspendedCandidates(`AccountId32`): `Option<(u128,PalletSocietyBidKind)>`
-- **interface**: `api.query.society.suspendedCandidates`
-- **summary**:    The set of suspended candidates. 
- 
-### suspendedMembers(`AccountId32`): `bool`
+### suspendedMembers(`AccountId32`): `Option<PalletSocietyMemberRecord>`
 - **interface**: `api.query.society.suspendedMembers`
-- **summary**:    The set of suspended members. 
+- **summary**:    The set of suspended members, with their old membership record. 
+ 
+### voteClearCursor(`AccountId32`): `Option<Bytes>`
+- **interface**: `api.query.society.voteClearCursor`
+- **summary**:    Clear-cursor for Vote, map from Candidate -> (Maybe) Cursor. 
  
 ### votes(`AccountId32, AccountId32`): `Option<PalletSocietyVote>`
 - **interface**: `api.query.society.votes`
 - **summary**:    Double map from Candidate -> Voter -> (Maybe) Vote. 
- 
-### vouching(`AccountId32`): `Option<PalletSocietyVouchingStatus>`
-- **interface**: `api.query.society.vouching`
-- **summary**:    Members currently vouching or banned from vouching again 
 
 ___
 
@@ -1632,7 +1726,7 @@ ___
 - **interface**: `api.query.staking.nominators`
 - **summary**:    The map from nominator stash key to their nomination preferences, namely the validators that  they wish to support. 
 
-   Note that the keys of this storage map might become non-decodable in case the  [`Config::MaxNominations`] configuration is decreased. In this rare case, these nominators  are still existent in storage, their key is correct and retrievable (i.e. `contains_key`  indicates that they exist), but their value cannot be decoded. Therefore, the non-decodable  nominators will effectively not-exist, until they re-submit their preferences such that it  is within the bounds of the newly set `Config::MaxNominations`. 
+   Note that the keys of this storage map might become non-decodable in case the  account's [`NominationsQuota::MaxNominations`] configuration is decreased.  In this rare case, these nominators  are still existent in storage, their key is correct and retrievable (i.e. `contains_key`  indicates that they exist), but their value cannot be decoded. Therefore, the non-decodable  nominators will effectively not-exist, until they re-submit their preferences such that it  is within the bounds of the newly set `Config::MaxNominations`. 
 
    This implies that `::iter_keys().count()` and `::iter().count()` might return different  values for this map. Moreover, the main `::count()` is aligned with the former, namely the  number of keys that exist. 
 
@@ -1790,7 +1884,7 @@ ___
 
    All topic vectors have deterministic storage locations depending on the topic. This  allows light-clients to leverage the changes trie storage tracking mechanism and  in case of changes fetch the list of events of interest. 
 
-   The value has the type `(T::BlockNumber, EventIndex)` because if we used only just  the `EventIndex` then in case if the topic has the same contents on the next block  no notification will be triggered thus the event might be lost. 
+   The value has the type `(BlockNumberFor<T>, EventIndex)` because if we used only just  the `EventIndex` then in case if the topic has the same contents on the next block  no notification will be triggered thus the event might be lost. 
  
 ### executionPhase(): `Option<FrameSystemPhase>`
 - **interface**: `api.query.system.executionPhase`
@@ -1955,6 +2049,15 @@ ___
 ### proposals(`u32`): `Option<PalletTreasuryProposal>`
 - **interface**: `api.query.treasury.proposals`
 - **summary**:    Proposals that have been made. 
+
+___
+
+
+## txPause
+ 
+### pausedCalls(`(Bytes,Bytes)`): `Option<Null>`
+- **interface**: `api.query.txPause.pausedCalls`
+- **summary**:    The set of calls that are explicitly paused. 
 
 ___
 

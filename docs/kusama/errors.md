@@ -12,6 +12,8 @@ This page lists the errors that can be encountered in the different modules.
 
 - **[balances](#balances)**
 
+- **[beefy](#beefy)**
+
 - **[bounties](#bounties)**
 
 - **[childBounties](#childbounties)**
@@ -81,6 +83,8 @@ This page lists the errors that can be encountered in the different modules.
 - **[society](#society)**
 
 - **[staking](#staking)**
+
+- **[stateTrieMigration](#statetriemigration)**
 
 - **[system](#system)**
 
@@ -199,6 +203,23 @@ ___
 ___
 
 
+## beefy
+ 
+### DuplicateOffenceReport
+- **interface**: `api.errors.beefy.DuplicateOffenceReport.is`
+- **summary**:    A given equivocation report is valid but already previously reported. 
+ 
+### InvalidEquivocationProof
+- **interface**: `api.errors.beefy.InvalidEquivocationProof.is`
+- **summary**:    An equivocation proof provided as part of an equivocation report is invalid. 
+ 
+### InvalidKeyOwnershipProof
+- **interface**: `api.errors.beefy.InvalidKeyOwnershipProof.is`
+- **summary**:    A key ownership proof provided as part of an equivocation report is invalid. 
+
+___
+
+
 ## bounties
  
 ### HasActiveChildBounty
@@ -277,7 +298,7 @@ ___
  
 ### PotUnderflow
 - **interface**: `api.errors.claims.PotUnderflow.is`
-- **summary**:    There's not enough in the pot to pay out some unvested amount. Generally implies a logic  error. 
+- **summary**:    There's not enough in the pot to pay out some unvested amount. Generally implies a  logic error. 
  
 ### SenderHasNoClaim
 - **interface**: `api.errors.claims.SenderHasNoClaim.is`
@@ -440,7 +461,7 @@ ___
  
 ### NotReadyToDissolve
 - **interface**: `api.errors.crowdloan.NotReadyToDissolve.is`
-- **summary**:    The crowdloan is not ready to dissolve. Potentially still has a slot or in retirement period. 
+- **summary**:    The crowdloan is not ready to dissolve. Potentially still has a slot or in retirement  period. 
  
 ### Overflow
 - **interface**: `api.errors.crowdloan.Overflow.is`
@@ -898,6 +919,12 @@ ___
 - **interface**: `api.errors.messageQueue.Queued.is`
 - **summary**:    The message is queued for future execution. 
  
+### QueuePaused
+- **interface**: `api.errors.messageQueue.QueuePaused.is`
+- **summary**:    The queue is paused and no message can be executed from it. 
+
+   This can change at any time and may resolve in the future by re-trying. 
+ 
 ### TemporarilyUnprocessable
 - **interface**: `api.errors.messageQueue.TemporarilyUnprocessable.is`
 - **summary**:    This message is temporarily unprocessable. 
@@ -1104,6 +1131,10 @@ ___
 - **interface**: `api.errors.nominationPools.CommissionChangeThrottled.is`
 - **summary**:    Not enough blocks have surpassed since the last commission update. 
  
+### CommissionExceedsGlobalMaximum
+- **interface**: `api.errors.nominationPools.CommissionExceedsGlobalMaximum.is`
+- **summary**:    The supplied commission exceeds global maximum commission. 
+ 
 ### CommissionExceedsMaximum
 - **interface**: `api.errors.nominationPools.CommissionExceedsMaximum.is`
 - **summary**:    The supplied commission exceeds the max allowed commission. 
@@ -1219,13 +1250,13 @@ ___
 - **interface**: `api.errors.paraInclusion.BitfieldReferencesFreedCore.is`
 - **summary**:    A bitfield that references a freed core,  either intentionally or as part of a concluded  invalid dispute. 
  
-### CandidateNotInParentContext
-- **interface**: `api.errors.paraInclusion.CandidateNotInParentContext.is`
-- **summary**:    Candidate not in parent context. 
- 
 ### CandidateScheduledBeforeParaFree
 - **interface**: `api.errors.paraInclusion.CandidateScheduledBeforeParaFree.is`
 - **summary**:    Candidate scheduled despite pending candidate already existing for the para. 
+ 
+### DisallowedRelayParent
+- **interface**: `api.errors.paraInclusion.DisallowedRelayParent.is`
+- **summary**:    The candidate's relay-parent was not allowed. Either it was  not recent enough or it didn't advance based on the last parachain block. 
  
 ### HeadDataTooLarge
 - **interface**: `api.errors.paraInclusion.HeadDataTooLarge.is`
@@ -1242,6 +1273,10 @@ ___
 ### InsufficientBacking
 - **interface**: `api.errors.paraInclusion.InsufficientBacking.is`
 - **summary**:    Insufficient (non-majority) backing. 
+ 
+### InvalidAssignment
+- **interface**: `api.errors.paraInclusion.InvalidAssignment.is`
+- **summary**:    Failed to compute group index for the core: either it's out of bounds  or the relay parent doesn't belong to the current session. 
  
 ### InvalidBacking
 - **interface**: `api.errors.paraInclusion.InvalidBacking.is`
@@ -1277,7 +1312,7 @@ ___
  
 ### ParaHeadMismatch
 - **interface**: `api.errors.paraInclusion.ParaHeadMismatch.is`
-- **summary**:    The `para_head` hash in the candidate descriptor doesn't match the hash of the actual para head in the  commitments. 
+- **summary**:    The `para_head` hash in the candidate descriptor doesn't match the hash of the actual  para head in the commitments. 
  
 ### PrematureCodeUpgrade
 - **interface**: `api.errors.paraInclusion.PrematureCodeUpgrade.is`
@@ -1318,10 +1353,6 @@ ___
 ### WrongBitfieldSize
 - **interface**: `api.errors.paraInclusion.WrongBitfieldSize.is`
 - **summary**:    Availability bitfield has unexpected size. 
- 
-### WrongCollator
-- **interface**: `api.errors.paraInclusion.WrongCollator.is`
-- **summary**:    Candidate included with the wrong collator. 
 
 ___
 
@@ -1359,7 +1390,7 @@ ___
  
 ### CannotDowngrade
 - **interface**: `api.errors.paras.CannotDowngrade.is`
-- **summary**:    Para cannot be downgraded to a parathread. 
+- **summary**:    Para cannot be downgraded to an on-demand parachain. 
  
 ### CannotOffboard
 - **interface**: `api.errors.paras.CannotOffboard.is`
@@ -1371,7 +1402,7 @@ ___
  
 ### CannotUpgrade
 - **interface**: `api.errors.paras.CannotUpgrade.is`
-- **summary**:    Para cannot be upgraded to a parachain. 
+- **summary**:    Para cannot be upgraded to a lease holding parachain. 
  
 ### CannotUpgradeCode
 - **interface**: `api.errors.paras.CannotUpgradeCode.is`
@@ -1682,15 +1713,15 @@ ___
  
 ### CannotDowngrade
 - **interface**: `api.errors.registrar.CannotDowngrade.is`
-- **summary**:    Cannot schedule downgrade of parachain to parathread 
+- **summary**:    Cannot schedule downgrade of lease holding parachain to on-demand parachain 
  
 ### CannotSwap
 - **interface**: `api.errors.registrar.CannotSwap.is`
-- **summary**:    Cannot perform a parachain slot / lifecycle swap. Check that the state of both paras are  correct for the swap to work. 
+- **summary**:    Cannot perform a parachain slot / lifecycle swap. Check that the state of both paras  are correct for the swap to work. 
  
 ### CannotUpgrade
 - **interface**: `api.errors.registrar.CannotUpgrade.is`
-- **summary**:    Cannot schedule upgrade of parathread to parachain 
+- **summary**:    Cannot schedule upgrade of on-demand parachain to lease holding parachain 
  
 ### CodeTooLarge
 - **interface**: `api.errors.registrar.CodeTooLarge.is`
@@ -1714,7 +1745,7 @@ ___
  
 ### NotParathread
 - **interface**: `api.errors.registrar.NotParathread.is`
-- **summary**:    Para is not a Parathread. 
+- **summary**:    Para is not a Parathread (on-demand parachain). 
  
 ### NotRegistered
 - **interface**: `api.errors.registrar.NotRegistered.is`
@@ -1726,7 +1757,7 @@ ___
  
 ### ParaLocked
 - **interface**: `api.errors.registrar.ParaLocked.is`
-- **summary**:    Para is locked from manipulation by the manager. Must use parachain or relay chain governance. 
+- **summary**:    Para is locked from manipulation by the manager. Must use parachain or relay chain  governance. 
 
 ___
 
@@ -1804,6 +1835,10 @@ ___
 - **interface**: `api.errors.society.AlreadyCandidate.is`
 - **summary**:    User is already a candidate. 
  
+### AlreadyElevated
+- **interface**: `api.errors.society.AlreadyElevated.is`
+- **summary**:    The member is already elevated to this rank. 
+ 
 ### AlreadyFounded
 - **interface**: `api.errors.society.AlreadyFounded.is`
 - **summary**:    Society already founded. 
@@ -1812,13 +1847,21 @@ ___
 - **interface**: `api.errors.society.AlreadyMember.is`
 - **summary**:    User is already a member. 
  
+### AlreadyPunished
+- **interface**: `api.errors.society.AlreadyPunished.is`
+- **summary**:    The skeptic has already been punished for this offence. 
+ 
 ### AlreadyVouching
 - **interface**: `api.errors.society.AlreadyVouching.is`
 - **summary**:    Member is already vouching or banned from vouching again. 
  
-### BadPosition
-- **interface**: `api.errors.society.BadPosition.is`
-- **summary**:    An incorrect position was provided. 
+### Approved
+- **interface**: `api.errors.society.Approved.is`
+- **summary**:    The candidacy cannot be dropped as the candidate was clearly approved. 
+ 
+### Expired
+- **interface**: `api.errors.society.Expired.is`
+- **summary**:    The skeptic need not vote on candidates from expired rounds. 
  
 ### Founder
 - **interface**: `api.errors.society.Founder.is`
@@ -1828,6 +1871,14 @@ ___
 - **interface**: `api.errors.society.Head.is`
 - **summary**:    Cannot remove the head of the chain. 
  
+### InProgress
+- **interface**: `api.errors.society.InProgress.is`
+- **summary**:    The candidacy cannot be concluded as the voting is still in progress. 
+ 
+### InsufficientFunds
+- **interface**: `api.errors.society.InsufficientFunds.is`
+- **summary**:    Funds are insufficient to pay off society debts. 
+ 
 ### InsufficientPot
 - **interface**: `api.errors.society.InsufficientPot.is`
 - **summary**:    Not enough in pot to accept candidate. 
@@ -1836,9 +1887,21 @@ ___
 - **interface**: `api.errors.society.MaxMembers.is`
 - **summary**:    Too many members in the society. 
  
+### NoDefender
+- **interface**: `api.errors.society.NoDefender.is`
+- **summary**:    There is no defender currently. 
+ 
 ### NoPayout
 - **interface**: `api.errors.society.NoPayout.is`
 - **summary**:    Nothing to payout. 
+ 
+### NotApproved
+- **interface**: `api.errors.society.NotApproved.is`
+- **summary**:    The membership cannot be claimed as the candidate was not clearly approved. 
+ 
+### NotBidder
+- **interface**: `api.errors.society.NotBidder.is`
+- **summary**:    User is not a bidder. 
  
 ### NotCandidate
 - **interface**: `api.errors.society.NotCandidate.is`
@@ -1848,6 +1911,10 @@ ___
 - **interface**: `api.errors.society.NotFounder.is`
 - **summary**:    The caller is not the founder. 
  
+### NotGroup
+- **interface**: `api.errors.society.NotGroup.is`
+- **summary**:    Group doesn't exist. 
+ 
 ### NotHead
 - **interface**: `api.errors.society.NotHead.is`
 - **summary**:    The caller is not the head. 
@@ -1856,17 +1923,37 @@ ___
 - **interface**: `api.errors.society.NotMember.is`
 - **summary**:    User is not a member. 
  
+### NotRejected
+- **interface**: `api.errors.society.NotRejected.is`
+- **summary**:    The candidate cannot be kicked as the candidate was not clearly rejected. 
+ 
 ### NotSuspended
 - **interface**: `api.errors.society.NotSuspended.is`
 - **summary**:    User is not suspended. 
  
-### NotVouching
-- **interface**: `api.errors.society.NotVouching.is`
+### NotVouchingOnBidder
+- **interface**: `api.errors.society.NotVouchingOnBidder.is`
 - **summary**:    Member is not vouching. 
+ 
+### NoVotes
+- **interface**: `api.errors.society.NoVotes.is`
+- **summary**:    The candidate/defender has no stale votes to remove. 
+ 
+### Rejected
+- **interface**: `api.errors.society.Rejected.is`
+- **summary**:    The candidacy cannot be bestowed as the candidate was clearly rejected. 
  
 ### Suspended
 - **interface**: `api.errors.society.Suspended.is`
 - **summary**:    User is suspended. 
+ 
+### TooEarly
+- **interface**: `api.errors.society.TooEarly.is`
+- **summary**:    The candidacy cannot be pruned until a full additional intake period has passed. 
+ 
+### Voted
+- **interface**: `api.errors.society.Voted.is`
+- **summary**:    The skeptic already voted. 
 
 ___
 
@@ -1972,6 +2059,37 @@ ___
 ### TooManyValidators
 - **interface**: `api.errors.staking.TooManyValidators.is`
 - **summary**:    There are too many validator candidates in the system. Governance needs to adjust the  staking settings to keep things safe for the runtime. 
+
+___
+
+
+## stateTrieMigration
+ 
+### BadChildRoot
+- **interface**: `api.errors.stateTrieMigration.BadChildRoot.is`
+- **summary**:    Bad child root provided. 
+ 
+### BadWitness
+- **interface**: `api.errors.stateTrieMigration.BadWitness.is`
+- **summary**:    Bad witness data provided. 
+ 
+### KeyTooLong
+- **interface**: `api.errors.stateTrieMigration.KeyTooLong.is`
+- **summary**:    A key was longer than the configured maximum. 
+
+   This means that the migration halted at the current [`Progress`] and  can be resumed with a larger [`crate::Config::MaxKeyLen`] value.  Retrying with the same [`crate::Config::MaxKeyLen`] value will not work.  The value should only be increased to avoid a storage migration for the currently  stored [`crate::Progress::LastKey`]. 
+ 
+### MaxSignedLimits
+- **interface**: `api.errors.stateTrieMigration.MaxSignedLimits.is`
+- **summary**:    Max signed limits not respected. 
+ 
+### NotEnoughFunds
+- **interface**: `api.errors.stateTrieMigration.NotEnoughFunds.is`
+- **summary**:    submitter does not have enough funds. 
+ 
+### SignedMigrationNotAllowed
+- **interface**: `api.errors.stateTrieMigration.SignedMigrationNotAllowed.is`
+- **summary**:    Signed migration is not allowed because the maximum limit is not set yet. 
 
 ___
 
@@ -2164,7 +2282,7 @@ ___
  
 ### SendFailure
 - **interface**: `api.errors.xcmPallet.SendFailure.is`
-- **summary**:    There was some other issue (i.e. not to do with routing) in sending the message. Perhaps  a lack of space for buffering the message. 
+- **summary**:    There was some other issue (i.e. not to do with routing) in sending the message.  Perhaps a lack of space for buffering the message. 
  
 ### TooManyAssets
 - **interface**: `api.errors.xcmPallet.TooManyAssets.is`

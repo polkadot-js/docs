@@ -18,11 +18,7 @@ Events are emitted for certain operations on the runtime. The following sections
 
 - **[convictionVoting](#convictionvoting)**
 
-- **[council](#council)**
-
 - **[crowdloan](#crowdloan)**
-
-- **[democracy](#democracy)**
 
 - **[electionProviderMultiPhase](#electionprovidermultiphase)**
 
@@ -52,8 +48,6 @@ Events are emitted for certain operations on the runtime. The following sections
 
 - **[parasDisputes](#parasdisputes)**
 
-- **[phragmenElection](#phragmenelection)**
-
 - **[preimage](#preimage)**
 
 - **[proxy](#proxy)**
@@ -71,12 +65,6 @@ Events are emitted for certain operations on the runtime. The following sections
 - **[staking](#staking)**
 
 - **[system](#system)**
-
-- **[technicalCommittee](#technicalcommittee)**
-
-- **[technicalMembership](#technicalmembership)**
-
-- **[tips](#tips)**
 
 - **[transactionPayment](#transactionpayment)**
 
@@ -112,7 +100,7 @@ ___
  
 ### ReserveConfiscated(`u32`, `AccountId32`, `u128`)
 - **interface**: `api.events.auctions.ReserveConfiscated.is`
-- **summary**:    Someone attempted to lease the same slot twice for a parachain. The amount is held in reserve  but no parachain slot has been leased. 
+- **summary**:    Someone attempted to lease the same slot twice for a parachain. The amount is held in  reserve but no parachain slot has been leased. 
  
 ### Reserved(`AccountId32`, `u128`, `u128`)
 - **interface**: `api.events.auctions.Reserved.is`
@@ -124,7 +112,7 @@ ___
  
 ### WinningOffset(`u32`, `u32`)
 - **interface**: `api.events.auctions.WinningOffset.is`
-- **summary**:    The winning offset was chosen for an auction. This will map into the `Winning` storage map. 
+- **summary**:    The winning offset was chosen for an auction. This will map into the `Winning` storage  map. 
 
 ___
 
@@ -294,39 +282,6 @@ ___
 ___
 
 
-## council
- 
-### Approved(`H256`)
-- **interface**: `api.events.council.Approved.is`
-- **summary**:    A motion was approved by the required threshold. 
- 
-### Closed(`H256`, `u32`, `u32`)
-- **interface**: `api.events.council.Closed.is`
-- **summary**:    A proposal was closed because its threshold was reached or after its duration was up. 
- 
-### Disapproved(`H256`)
-- **interface**: `api.events.council.Disapproved.is`
-- **summary**:    A motion was not approved by the required threshold. 
- 
-### Executed(`H256`, `Result<Null, SpRuntimeDispatchError>`)
-- **interface**: `api.events.council.Executed.is`
-- **summary**:    A motion was executed; result will be `Ok` if it returned without error. 
- 
-### MemberExecuted(`H256`, `Result<Null, SpRuntimeDispatchError>`)
-- **interface**: `api.events.council.MemberExecuted.is`
-- **summary**:    A single member did some action; result will be `Ok` if it returned without error. 
- 
-### Proposed(`AccountId32`, `u32`, `H256`, `u32`)
-- **interface**: `api.events.council.Proposed.is`
-- **summary**:    A motion (given hash) has been proposed (by given account) with a threshold (given  `MemberCount`). 
- 
-### Voted(`AccountId32`, `H256`, `bool`, `u32`, `u32`)
-- **interface**: `api.events.council.Voted.is`
-- **summary**:    A motion (given hash) has been voted on by given account, leaving  a tally (yes votes and no votes given respectively as `MemberCount`). 
-
-___
-
-
 ## crowdloan
  
 ### AddedToNewRaise(`u32`)
@@ -368,79 +323,6 @@ ___
 ### Withdrew(`AccountId32`, `u32`, `u128`)
 - **interface**: `api.events.crowdloan.Withdrew.is`
 - **summary**:    Withdrew full balance of a contributor. 
-
-___
-
-
-## democracy
- 
-### Blacklisted(`H256`)
-- **interface**: `api.events.democracy.Blacklisted.is`
-- **summary**:    A proposal_hash has been blacklisted permanently. 
- 
-### Cancelled(`u32`)
-- **interface**: `api.events.democracy.Cancelled.is`
-- **summary**:    A referendum has been cancelled. 
- 
-### Delegated(`AccountId32`, `AccountId32`)
-- **interface**: `api.events.democracy.Delegated.is`
-- **summary**:    An account has delegated their vote to another account. 
- 
-### ExternalTabled()
-- **interface**: `api.events.democracy.ExternalTabled.is`
-- **summary**:    An external proposal has been tabled. 
- 
-### MetadataCleared(`PalletDemocracyMetadataOwner`, `H256`)
-- **interface**: `api.events.democracy.MetadataCleared.is`
-- **summary**:    Metadata for a proposal or a referendum has been cleared. 
- 
-### MetadataSet(`PalletDemocracyMetadataOwner`, `H256`)
-- **interface**: `api.events.democracy.MetadataSet.is`
-- **summary**:    Metadata for a proposal or a referendum has been set. 
- 
-### MetadataTransferred(`PalletDemocracyMetadataOwner`, `PalletDemocracyMetadataOwner`, `H256`)
-- **interface**: `api.events.democracy.MetadataTransferred.is`
-- **summary**:    Metadata has been transferred to new owner. 
- 
-### NotPassed(`u32`)
-- **interface**: `api.events.democracy.NotPassed.is`
-- **summary**:    A proposal has been rejected by referendum. 
- 
-### Passed(`u32`)
-- **interface**: `api.events.democracy.Passed.is`
-- **summary**:    A proposal has been approved by referendum. 
- 
-### ProposalCanceled(`u32`)
-- **interface**: `api.events.democracy.ProposalCanceled.is`
-- **summary**:    A proposal got canceled. 
- 
-### Proposed(`u32`, `u128`)
-- **interface**: `api.events.democracy.Proposed.is`
-- **summary**:    A motion has been proposed by a public account. 
- 
-### Seconded(`AccountId32`, `u32`)
-- **interface**: `api.events.democracy.Seconded.is`
-- **summary**:    An account has secconded a proposal 
- 
-### Started(`u32`, `PalletDemocracyVoteThreshold`)
-- **interface**: `api.events.democracy.Started.is`
-- **summary**:    A referendum has begun. 
- 
-### Tabled(`u32`, `u128`)
-- **interface**: `api.events.democracy.Tabled.is`
-- **summary**:    A public proposal has been tabled for referendum vote. 
- 
-### Undelegated(`AccountId32`)
-- **interface**: `api.events.democracy.Undelegated.is`
-- **summary**:    An account has cancelled a previous delegation operation. 
- 
-### Vetoed(`AccountId32`, `H256`, `u32`)
-- **interface**: `api.events.democracy.Vetoed.is`
-- **summary**:    An external proposal has been vetoed. 
- 
-### Voted(`AccountId32`, `u32`, `PalletDemocracyVoteAccountVote`)
-- **interface**: `api.events.democracy.Voted.is`
-- **summary**:    An account has voted in a referendum 
 
 ___
 
@@ -756,15 +638,15 @@ ___
 
 ## paraInclusion
  
-### CandidateBacked(`PolkadotPrimitivesV4CandidateReceipt`, `Bytes`, `u32`, `u32`)
+### CandidateBacked(`PolkadotPrimitivesV5CandidateReceipt`, `Bytes`, `u32`, `u32`)
 - **interface**: `api.events.paraInclusion.CandidateBacked.is`
 - **summary**:    A candidate was backed. `[candidate, head_data]` 
  
-### CandidateIncluded(`PolkadotPrimitivesV4CandidateReceipt`, `Bytes`, `u32`, `u32`)
+### CandidateIncluded(`PolkadotPrimitivesV5CandidateReceipt`, `Bytes`, `u32`, `u32`)
 - **interface**: `api.events.paraInclusion.CandidateIncluded.is`
 - **summary**:    A candidate was included. `[candidate, head_data]` 
  
-### CandidateTimedOut(`PolkadotPrimitivesV4CandidateReceipt`, `Bytes`, `u32`)
+### CandidateTimedOut(`PolkadotPrimitivesV5CandidateReceipt`, `Bytes`, `u32`)
 - **interface**: `api.events.paraInclusion.CandidateTimedOut.is`
 - **summary**:    A candidate timed out. `[candidate, head_data]` 
  
@@ -825,41 +707,6 @@ ___
 ### Revert(`u32`)
 - **interface**: `api.events.parasDisputes.Revert.is`
 - **summary**:    A dispute has concluded with supermajority against a candidate.  Block authors should no longer build on top of this head and should  instead revert the block at the given height. This should be the  number of the child of the last known valid block in the chain. 
-
-___
-
-
-## phragmenElection
- 
-### CandidateSlashed(`AccountId32`, `u128`)
-- **interface**: `api.events.phragmenElection.CandidateSlashed.is`
-- **summary**:    A candidate was slashed by amount due to failing to obtain a seat as member or  runner-up. 
-
-   Note that old members and runners-up are also candidates. 
- 
-### ElectionError()
-- **interface**: `api.events.phragmenElection.ElectionError.is`
-- **summary**:    Internal error happened while trying to perform election. 
- 
-### EmptyTerm()
-- **interface**: `api.events.phragmenElection.EmptyTerm.is`
-- **summary**:    No (or not enough) candidates existed for this round. This is different from  `NewTerm(\[\])`. See the description of `NewTerm`. 
- 
-### MemberKicked(`AccountId32`)
-- **interface**: `api.events.phragmenElection.MemberKicked.is`
-- **summary**:    A member has been removed. This should always be followed by either `NewTerm` or  `EmptyTerm`. 
- 
-### NewTerm(`Vec<(AccountId32,u128)>`)
-- **interface**: `api.events.phragmenElection.NewTerm.is`
-- **summary**:    A new term with new_members. This indicates that enough candidates existed to run  the election, not that enough have has been elected. The inner value must be examined  for this purpose. A `NewTerm(\[\])` indicates that some candidates got their bond  slashed and none were elected, whilst `EmptyTerm` means that no candidates existed to  begin with. 
- 
-### Renounced(`AccountId32`)
-- **interface**: `api.events.phragmenElection.Renounced.is`
-- **summary**:    Someone has renounced their candidacy. 
- 
-### SeatHolderSlashed(`AccountId32`, `u128`)
-- **interface**: `api.events.phragmenElection.SeatHolderSlashed.is`
-- **summary**:    A seat holder was slashed by amount by being forcefully removed from the set. 
 
 ___
 
@@ -1085,6 +932,14 @@ ___
 - **interface**: `api.events.staking.SlashReported.is`
 - **summary**:    A slash for the given validator, for the given percentage of their stake, at the given  era as been reported. 
  
+### SnapshotTargetsSizeExceeded(`u32`)
+- **interface**: `api.events.staking.SnapshotTargetsSizeExceeded.is`
+- **summary**:    Targets size limit reached. 
+ 
+### SnapshotVotersSizeExceeded(`u32`)
+- **interface**: `api.events.staking.SnapshotVotersSizeExceeded.is`
+- **summary**:    Voters size limit reached. 
+ 
 ### StakersElected()
 - **interface**: `api.events.staking.StakersElected.is`
 - **summary**:    A new set of stakers was elected. 
@@ -1133,93 +988,6 @@ ___
 ### Remarked(`AccountId32`, `H256`)
 - **interface**: `api.events.system.Remarked.is`
 - **summary**:    On on-chain remark happened. 
-
-___
-
-
-## technicalCommittee
- 
-### Approved(`H256`)
-- **interface**: `api.events.technicalCommittee.Approved.is`
-- **summary**:    A motion was approved by the required threshold. 
- 
-### Closed(`H256`, `u32`, `u32`)
-- **interface**: `api.events.technicalCommittee.Closed.is`
-- **summary**:    A proposal was closed because its threshold was reached or after its duration was up. 
- 
-### Disapproved(`H256`)
-- **interface**: `api.events.technicalCommittee.Disapproved.is`
-- **summary**:    A motion was not approved by the required threshold. 
- 
-### Executed(`H256`, `Result<Null, SpRuntimeDispatchError>`)
-- **interface**: `api.events.technicalCommittee.Executed.is`
-- **summary**:    A motion was executed; result will be `Ok` if it returned without error. 
- 
-### MemberExecuted(`H256`, `Result<Null, SpRuntimeDispatchError>`)
-- **interface**: `api.events.technicalCommittee.MemberExecuted.is`
-- **summary**:    A single member did some action; result will be `Ok` if it returned without error. 
- 
-### Proposed(`AccountId32`, `u32`, `H256`, `u32`)
-- **interface**: `api.events.technicalCommittee.Proposed.is`
-- **summary**:    A motion (given hash) has been proposed (by given account) with a threshold (given  `MemberCount`). 
- 
-### Voted(`AccountId32`, `H256`, `bool`, `u32`, `u32`)
-- **interface**: `api.events.technicalCommittee.Voted.is`
-- **summary**:    A motion (given hash) has been voted on by given account, leaving  a tally (yes votes and no votes given respectively as `MemberCount`). 
-
-___
-
-
-## technicalMembership
- 
-### Dummy()
-- **interface**: `api.events.technicalMembership.Dummy.is`
-- **summary**:    Phantom member, never used. 
- 
-### KeyChanged()
-- **interface**: `api.events.technicalMembership.KeyChanged.is`
-- **summary**:    One of the members' keys changed. 
- 
-### MemberAdded()
-- **interface**: `api.events.technicalMembership.MemberAdded.is`
-- **summary**:    The given member was added; see the transaction for who. 
- 
-### MemberRemoved()
-- **interface**: `api.events.technicalMembership.MemberRemoved.is`
-- **summary**:    The given member was removed; see the transaction for who. 
- 
-### MembersReset()
-- **interface**: `api.events.technicalMembership.MembersReset.is`
-- **summary**:    The membership was reset; see the transaction for who the new set is. 
- 
-### MembersSwapped()
-- **interface**: `api.events.technicalMembership.MembersSwapped.is`
-- **summary**:    Two members were swapped; see the transaction for who. 
-
-___
-
-
-## tips
- 
-### NewTip(`H256`)
-- **interface**: `api.events.tips.NewTip.is`
-- **summary**:    A new tip suggestion has been opened. 
- 
-### TipClosed(`H256`, `AccountId32`, `u128`)
-- **interface**: `api.events.tips.TipClosed.is`
-- **summary**:    A tip suggestion has been closed. 
- 
-### TipClosing(`H256`)
-- **interface**: `api.events.tips.TipClosing.is`
-- **summary**:    A tip suggestion has reached threshold and is closing. 
- 
-### TipRetracted(`H256`)
-- **interface**: `api.events.tips.TipRetracted.is`
-- **summary**:    A tip suggestion has been retracted. 
- 
-### TipSlashed(`H256`, `AccountId32`, `u128`)
-- **interface**: `api.events.tips.TipSlashed.is`
-- **summary**:    A tip suggestion has been slashed. 
 
 ___
 
@@ -1395,7 +1163,7 @@ ___
  
 ### NotifyOverweight(`u64`, `u8`, `u8`, `SpWeightsWeightV2Weight`, `SpWeightsWeightV2Weight`)
 - **interface**: `api.events.xcmPallet.NotifyOverweight.is`
-- **summary**:    Query response has been received and query is removed. The registered notification could  not be dispatched because the dispatch weight is greater than the maximum weight  originally budgeted by this runtime for the query result. 
+- **summary**:    Query response has been received and query is removed. The registered notification  could not be dispatched because the dispatch weight is greater than the maximum weight  originally budgeted by this runtime for the query result. 
  
 ### NotifyTargetMigrationFail(`XcmVersionedMultiLocation`, `u64`)
 - **interface**: `api.events.xcmPallet.NotifyTargetMigrationFail.is`
@@ -1441,4 +1209,4 @@ ___
  
 ### VersionNotifyUnrequested(`XcmV3MultiLocation`, `XcmV3MultiassetMultiAssets`, `[u8;32]`)
 - **interface**: `api.events.xcmPallet.VersionNotifyUnrequested.is`
-- **summary**:    We have requested that a remote chain stops sending us XCM version change notifications. 
+- **summary**:    We have requested that a remote chain stops sending us XCM version change  notifications. 

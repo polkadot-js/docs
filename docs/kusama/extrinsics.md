@@ -12,6 +12,8 @@ The following sections contain Extrinsics methods are part of the default Kusama
 
 - **[balances](#balances)**
 
+- **[beefy](#beefy)**
+
 - **[bounties](#bounties)**
 
 - **[childBounties](#childbounties)**
@@ -85,6 +87,8 @@ The following sections contain Extrinsics methods are part of the default Kusama
 - **[society](#society)**
 
 - **[staking](#staking)**
+
+- **[stateTrieMigration](#statetriemigration)**
 
 - **[system](#system)**
 
@@ -177,6 +181,19 @@ ___
 ### upgradeAccounts(who: `Vec<AccountId32>`)
 - **interface**: `api.tx.balances.upgradeAccounts`
 - **summary**:    See [`Pallet::upgrade_accounts`]. 
+
+___
+
+
+## beefy
+ 
+### reportEquivocation(equivocation_proof: `SpConsensusBeefyEquivocationProof`, key_owner_proof: `SpSessionMembershipProof`)
+- **interface**: `api.tx.beefy.reportEquivocation`
+- **summary**:    See [`Pallet::report_equivocation`]. 
+ 
+### reportEquivocationUnsigned(equivocation_proof: `SpConsensusBeefyEquivocationProof`, key_owner_proof: `SpSessionMembershipProof`)
+- **interface**: `api.tx.beefy.reportEquivocationUnsigned`
+- **summary**:    See [`Pallet::report_equivocation_unsigned`]. 
 
 ___
 
@@ -290,10 +307,6 @@ ___
 - **interface**: `api.tx.configuration.setBypassConsistencyCheck`
 - **summary**:    See [`Pallet::set_bypass_consistency_check`]. 
  
-### setChainAvailabilityPeriod(new: `u32`)
-- **interface**: `api.tx.configuration.setChainAvailabilityPeriod`
-- **summary**:    See [`Pallet::set_chain_availability_period`]. 
- 
 ### setCodeRetentionPeriod(new: `u32`)
 - **interface**: `api.tx.configuration.setCodeRetentionPeriod`
 - **summary**:    See [`Pallet::set_code_retention_period`]. 
@@ -306,7 +319,7 @@ ___
 - **interface**: `api.tx.configuration.setDisputePostConclusionAcceptancePeriod`
 - **summary**:    See [`Pallet::set_dispute_post_conclusion_acceptance_period`]. 
  
-### setExecutorParams(new: `PolkadotPrimitivesV4ExecutorParams`)
+### setExecutorParams(new: `PolkadotPrimitivesV5ExecutorParams`)
 - **interface**: `api.tx.configuration.setExecutorParams`
 - **summary**:    See [`Pallet::set_executor_params`]. 
  
@@ -337,14 +350,6 @@ ___
 ### setHrmpMaxParachainOutboundChannels(new: `u32`)
 - **interface**: `api.tx.configuration.setHrmpMaxParachainOutboundChannels`
 - **summary**:    See [`Pallet::set_hrmp_max_parachain_outbound_channels`]. 
- 
-### setHrmpMaxParathreadInboundChannels(new: `u32`)
-- **interface**: `api.tx.configuration.setHrmpMaxParathreadInboundChannels`
-- **summary**:    See [`Pallet::set_hrmp_max_parathread_inbound_channels`]. 
- 
-### setHrmpMaxParathreadOutboundChannels(new: `u32`)
-- **interface**: `api.tx.configuration.setHrmpMaxParathreadOutboundChannels`
-- **summary**:    See [`Pallet::set_hrmp_max_parathread_outbound_channels`]. 
  
 ### setHrmpOpenRequestTtl(new: `u32`)
 - **interface**: `api.tx.configuration.setHrmpOpenRequestTtl`
@@ -414,17 +419,37 @@ ___
 - **interface**: `api.tx.configuration.setNoShowSlots`
 - **summary**:    See [`Pallet::set_no_show_slots`]. 
  
-### setParathreadCores(new: `u32`)
-- **interface**: `api.tx.configuration.setParathreadCores`
-- **summary**:    See [`Pallet::set_parathread_cores`]. 
+### setOnDemandBaseFee(new: `u128`)
+- **interface**: `api.tx.configuration.setOnDemandBaseFee`
+- **summary**:    See [`Pallet::set_on_demand_base_fee`]. 
  
-### setParathreadRetries(new: `u32`)
-- **interface**: `api.tx.configuration.setParathreadRetries`
-- **summary**:    See [`Pallet::set_parathread_retries`]. 
+### setOnDemandCores(new: `u32`)
+- **interface**: `api.tx.configuration.setOnDemandCores`
+- **summary**:    See [`Pallet::set_on_demand_cores`]. 
  
-### setPvfCheckingEnabled(new: `bool`)
-- **interface**: `api.tx.configuration.setPvfCheckingEnabled`
-- **summary**:    See [`Pallet::set_pvf_checking_enabled`]. 
+### setOnDemandFeeVariability(new: `Perbill`)
+- **interface**: `api.tx.configuration.setOnDemandFeeVariability`
+- **summary**:    See [`Pallet::set_on_demand_fee_variability`]. 
+ 
+### setOnDemandQueueMaxSize(new: `u32`)
+- **interface**: `api.tx.configuration.setOnDemandQueueMaxSize`
+- **summary**:    See [`Pallet::set_on_demand_queue_max_size`]. 
+ 
+### setOnDemandRetries(new: `u32`)
+- **interface**: `api.tx.configuration.setOnDemandRetries`
+- **summary**:    See [`Pallet::set_on_demand_retries`]. 
+ 
+### setOnDemandTargetQueueUtilization(new: `Perbill`)
+- **interface**: `api.tx.configuration.setOnDemandTargetQueueUtilization`
+- **summary**:    See [`Pallet::set_on_demand_target_queue_utilization`]. 
+ 
+### setOnDemandTtl(new: `u32`)
+- **interface**: `api.tx.configuration.setOnDemandTtl`
+- **summary**:    See [`Pallet::set_on_demand_ttl`]. 
+ 
+### setParasAvailabilityPeriod(new: `u32`)
+- **interface**: `api.tx.configuration.setParasAvailabilityPeriod`
+- **summary**:    See [`Pallet::set_paras_availability_period`]. 
  
 ### setPvfVotingTtl(new: `u32`)
 - **interface**: `api.tx.configuration.setPvfVotingTtl`
@@ -437,10 +462,6 @@ ___
 ### setSchedulingLookahead(new: `u32`)
 - **interface**: `api.tx.configuration.setSchedulingLookahead`
 - **summary**:    See [`Pallet::set_scheduling_lookahead`]. 
- 
-### setThreadAvailabilityPeriod(new: `u32`)
-- **interface**: `api.tx.configuration.setThreadAvailabilityPeriod`
-- **summary**:    See [`Pallet::set_thread_availability_period`]. 
  
 ### setValidationUpgradeCooldown(new: `u32`)
 - **interface**: `api.tx.configuration.setValidationUpgradeCooldown`
@@ -1005,7 +1026,7 @@ ___
 
 ## paraInherent
  
-### enter(data: `PolkadotPrimitivesV4InherentData`)
+### enter(data: `PolkadotPrimitivesV5InherentData`)
 - **interface**: `api.tx.paraInherent.enter`
 - **summary**:    See [`Pallet::enter`]. 
 
@@ -1038,7 +1059,11 @@ ___
 - **interface**: `api.tx.paras.forceSetCurrentHead`
 - **summary**:    See [`Pallet::force_set_current_head`]. 
  
-### includePvfCheckStatement(stmt: `PolkadotPrimitivesV4PvfCheckStatement`, signature: `PolkadotPrimitivesV4ValidatorAppSignature`)
+### forceSetMostRecentContext(para: `u32`, context: `u32`)
+- **interface**: `api.tx.paras.forceSetMostRecentContext`
+- **summary**:    See [`Pallet::force_set_most_recent_context`]. 
+ 
+### includePvfCheckStatement(stmt: `PolkadotPrimitivesV5PvfCheckStatement`, signature: `PolkadotPrimitivesV5ValidatorAppSignature`)
 - **interface**: `api.tx.paras.includePvfCheckStatement`
 - **summary**:    See [`Pallet::include_pvf_check_statement`]. 
  
@@ -1065,7 +1090,7 @@ ___
 
 ## parasSlashing
  
-### reportDisputeLostUnsigned(dispute_proof: `PolkadotPrimitivesVstagingSlashingDisputeProof`, key_owner_proof: `SpSessionMembershipProof`)
+### reportDisputeLostUnsigned(dispute_proof: `PolkadotPrimitivesV5SlashingDisputeProof`, key_owner_proof: `SpSessionMembershipProof`)
 - **interface**: `api.tx.parasSlashing.reportDisputeLostUnsigned`
 - **summary**:    See [`Pallet::report_dispute_lost_unsigned`]. 
 
@@ -1322,43 +1347,71 @@ ___
 
 ## society
  
+### bestowMembership(candidate: `AccountId32`)
+- **interface**: `api.tx.society.bestowMembership`
+- **summary**:    See [`Pallet::bestow_membership`]. 
+ 
 ### bid(value: `u128`)
 - **interface**: `api.tx.society.bid`
 - **summary**:    See [`Pallet::bid`]. 
+ 
+### claimMembership()
+- **interface**: `api.tx.society.claimMembership`
+- **summary**:    See [`Pallet::claim_membership`]. 
+ 
+### cleanupCandidacy(candidate: `AccountId32`, max: `u32`)
+- **interface**: `api.tx.society.cleanupCandidacy`
+- **summary**:    See [`Pallet::cleanup_candidacy`]. 
+ 
+### cleanupChallenge(challenge_round: `u32`, max: `u32`)
+- **interface**: `api.tx.society.cleanupChallenge`
+- **summary**:    See [`Pallet::cleanup_challenge`]. 
  
 ### defenderVote(approve: `bool`)
 - **interface**: `api.tx.society.defenderVote`
 - **summary**:    See [`Pallet::defender_vote`]. 
  
-### found(founder: `MultiAddress`, max_members: `u32`, rules: `Bytes`)
-- **interface**: `api.tx.society.found`
-- **summary**:    See [`Pallet::found`]. 
+### dissolve()
+- **interface**: `api.tx.society.dissolve`
+- **summary**:    See [`Pallet::dissolve`]. 
  
-### judgeSuspendedCandidate(who: `MultiAddress`, judgement: `PalletSocietyJudgement`)
-- **interface**: `api.tx.society.judgeSuspendedCandidate`
-- **summary**:    See [`Pallet::judge_suspended_candidate`]. 
+### dropCandidate(candidate: `AccountId32`)
+- **interface**: `api.tx.society.dropCandidate`
+- **summary**:    See [`Pallet::drop_candidate`]. 
+ 
+### foundSociety(founder: `MultiAddress`, max_members: `u32`, max_intake: `u32`, max_strikes: `u32`, candidate_deposit: `u128`, rules: `Bytes`)
+- **interface**: `api.tx.society.foundSociety`
+- **summary**:    See [`Pallet::found_society`]. 
  
 ### judgeSuspendedMember(who: `MultiAddress`, forgive: `bool`)
 - **interface**: `api.tx.society.judgeSuspendedMember`
 - **summary**:    See [`Pallet::judge_suspended_member`]. 
  
+### kickCandidate(candidate: `AccountId32`)
+- **interface**: `api.tx.society.kickCandidate`
+- **summary**:    See [`Pallet::kick_candidate`]. 
+ 
 ### payout()
 - **interface**: `api.tx.society.payout`
 - **summary**:    See [`Pallet::payout`]. 
  
-### setMaxMembers(max: `u32`)
-- **interface**: `api.tx.society.setMaxMembers`
-- **summary**:    See [`Pallet::set_max_members`]. 
+### punishSkeptic()
+- **interface**: `api.tx.society.punishSkeptic`
+- **summary**:    See [`Pallet::punish_skeptic`]. 
  
-### unbid(pos: `u32`)
+### resignCandidacy()
+- **interface**: `api.tx.society.resignCandidacy`
+- **summary**:    See [`Pallet::resign_candidacy`]. 
+ 
+### setParameters(max_members: `u32`, max_intake: `u32`, max_strikes: `u32`, candidate_deposit: `u128`)
+- **interface**: `api.tx.society.setParameters`
+- **summary**:    See [`Pallet::set_parameters`]. 
+ 
+### unbid()
 - **interface**: `api.tx.society.unbid`
 - **summary**:    See [`Pallet::unbid`]. 
  
-### unfound()
-- **interface**: `api.tx.society.unfound`
-- **summary**:    See [`Pallet::unfound`]. 
- 
-### unvouch(pos: `u32`)
+### unvouch()
 - **interface**: `api.tx.society.unvouch`
 - **summary**:    See [`Pallet::unvouch`]. 
  
@@ -1369,6 +1422,10 @@ ___
 ### vouch(who: `MultiAddress`, value: `u128`, tip: `u128`)
 - **interface**: `api.tx.society.vouch`
 - **summary**:    See [`Pallet::vouch`]. 
+ 
+### waiveRepay(amount: `u128`)
+- **interface**: `api.tx.society.waiveRepay`
+- **summary**:    See [`Pallet::waive_repay`]. 
 
 ___
 
@@ -1478,6 +1535,35 @@ ___
 ### withdrawUnbonded(num_slashing_spans: `u32`)
 - **interface**: `api.tx.staking.withdrawUnbonded`
 - **summary**:    See [`Pallet::withdraw_unbonded`]. 
+
+___
+
+
+## stateTrieMigration
+ 
+### continueMigrate(limits: `PalletStateTrieMigrationMigrationLimits`, real_size_upper: `u32`, witness_task: `PalletStateTrieMigrationMigrationTask`)
+- **interface**: `api.tx.stateTrieMigration.continueMigrate`
+- **summary**:    See [`Pallet::continue_migrate`]. 
+ 
+### controlAutoMigration(maybe_config: `Option<PalletStateTrieMigrationMigrationLimits>`)
+- **interface**: `api.tx.stateTrieMigration.controlAutoMigration`
+- **summary**:    See [`Pallet::control_auto_migration`]. 
+ 
+### forceSetProgress(progress_top: `PalletStateTrieMigrationProgress`, progress_child: `PalletStateTrieMigrationProgress`)
+- **interface**: `api.tx.stateTrieMigration.forceSetProgress`
+- **summary**:    See [`Pallet::force_set_progress`]. 
+ 
+### migrateCustomChild(root: `Bytes`, child_keys: `Vec<Bytes>`, total_size: `u32`)
+- **interface**: `api.tx.stateTrieMigration.migrateCustomChild`
+- **summary**:    See [`Pallet::migrate_custom_child`]. 
+ 
+### migrateCustomTop(keys: `Vec<Bytes>`, witness_size: `u32`)
+- **interface**: `api.tx.stateTrieMigration.migrateCustomTop`
+- **summary**:    See [`Pallet::migrate_custom_top`]. 
+ 
+### setSignedMaxLimits(limits: `PalletStateTrieMigrationMigrationLimits`)
+- **interface**: `api.tx.stateTrieMigration.setSignedMaxLimits`
+- **summary**:    See [`Pallet::set_signed_max_limits`]. 
 
 ___
 
@@ -1612,6 +1698,10 @@ ___
 ### putInFrontOf(lighter: `MultiAddress`)
 - **interface**: `api.tx.voterList.putInFrontOf`
 - **summary**:    See [`Pallet::put_in_front_of`]. 
+ 
+### putInFrontOfOther(heavier: `MultiAddress`, lighter: `MultiAddress`)
+- **interface**: `api.tx.voterList.putInFrontOfOther`
+- **summary**:    See [`Pallet::put_in_front_of_other`]. 
  
 ### rebag(dislocated: `MultiAddress`)
 - **interface**: `api.tx.voterList.rebag`
