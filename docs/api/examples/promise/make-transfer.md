@@ -22,7 +22,7 @@ async function main () {
   const alice = keyring.addFromUri('//Alice');
 
   // Create a extrinsic, transferring 12345 units to Bob
-  const transfer = api.tx.balances.transfer(BOB, 12345);
+  const transfer = api.tx.balances.transferAllowDeath(BOB, 12345);
 
   // Sign and send the transaction using our account
   const hash = await transfer.signAndSend(alice);
