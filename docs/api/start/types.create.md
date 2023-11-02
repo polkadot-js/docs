@@ -128,19 +128,13 @@ const three = api.createType('TypedEnum', 'Three');  // Default initialization
 console.log(three.asThree.isNone);  // true
 ```
 
-You may want to construct a `Call` type given a specific tx. This can be done via `api.createType('Call', foo)`. It can be useful if you intend on only needing the call hex.
+You may want to construct a `Call` type given a specific tx. Using create type is unneecessary `createType`, and it can be achieved by simply using the `method` key attached to a `tx`.
 
 ```js
 const tx = await api.tx.balances.transfer(BOB, 12345);
-const call = api.createType('Call', {
-  callIndex: tx.callIndex,
-  args: tx.args,
-});
-
-console.log('Call Hex: ', call.toHex());
+console.log('Hex = ', tx.method.toHex())
 ```
 
 ## Using with TypeScript
 
 The API is built with TypeScript (as are all projects in the [polkadot-js organization](https://github.com/polkadot-js/) and as such allows developers using TS to have access to all the type interfaces defined on the chain, as well as having access to typings on interacting with the `api.*` namespaces. In the next section we will provide an overview of [what is available in terms of types and TypeScript](typescript.md).
-
