@@ -11,6 +11,19 @@ Circling back to metadata. There are two important things to remember when using
    - `address` can be an `Address`, an `AccountId`, an `Uint8Array` publicKey, a hex publicKey or an ss58 formatted address;
    - `value` can be a `Balance`, a value encoded in hex, a `BN` object, a base-10 string, a JS `number`, a JS `BigInt` or even a SCALE-encoded `Uint8Array`
 
+3. It is advised to not supply a `api.tx.somewhere.something`, `api.query.somewhere.something` etc. call with `Codec` types created via `createType`, but to simply apply the value. This will ensure that if the `Codec` type needed for a certain call changes given a specific runtime, then the API will be able to resolve that type for you. This ensures the minimum amount of maintence, and refactoring required when changes to the type naming is applied.
+
+```js
+// The following is not advised
+const something = api.createType('SomeType', { foo: 'bar' });
+...
+await api.tx.somewhere.something(something);
+...
+
+// This following is advised
+await api.tx.somewhere.something({ foo: 'bar' });
+```
+
 In cases where a value is returned such as storage queries, the response from the chain is always encoded into the correct `Codec` type. This means that while the node may return an encoded block (with encoded extrinsics) via `api.rpc.chain.getBlock()`, this is decoded into a proper `SignedBlock` by the API. Outputting this value via `.toJSON()` will yield an encoding for RPC, so if you are not using TypeScript (which adds code helpers on decoded objects), a representation via `.toHuman()` will be more representative of the actual object fields, re-formatted for human consumption.
 
 
@@ -115,7 +128,13 @@ const three = api.createType('TypedEnum', 'Three');  // Default initialization
 console.log(three.asThree.isNone);  // true
 ```
 
+You may want to construct a `Call` type given a specific tx. Using create type is unneecessary `createType`, and it can be achieved by simply using the `method` key attached to a `tx`.
+
+```js
+const tx = await api.tx.balances.transfer(BOB, 12345);
+console.log('Hex = ', tx.method.toHex())
+```
+
 ## Using with TypeScript
 
 The API is built with TypeScript (as are all projects in the [polkadot-js organization](https://github.com/polkadot-js/) and as such allows developers using TS to have access to all the type interfaces defined on the chain, as well as having access to typings on interacting with the `api.*` namespaces. In the next section we will provide an overview of [what is available in terms of types and TypeScript](typescript.md).
-
