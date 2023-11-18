@@ -1826,6 +1826,10 @@ _These are well-known keys that are always available to the runtime implementati
 ### heapPages(): `u64`
 - **interface**: `api.query.substrate.heapPages`
 - **summary**:    Number of wasm linear memory pages required for execution of the runtime. 
+ 
+### intrablockEntropy(): `AccountId32`
+- **interface**: `api.query.substrate.intrablockEntropy`
+- **summary**:    Current intra-block entropy (a universally unique `[u8; 32]` value) is stored here. 
 
 ___
 

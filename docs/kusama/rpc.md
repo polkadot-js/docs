@@ -102,10 +102,10 @@ ___
 - **jsonrpc**: `beefy_getFinalizedHead`
 - **summary**: Returns hash of the latest BEEFY finalized block as seen by this client.
  
-### subscribeJustifications(): `BeefySignedCommitment`
+### subscribeJustifications(): `BeefyVersionedFinalityProof`
 - **interface**: `api.rpc.beefy.subscribeJustifications`
 - **jsonrpc**: `beefy_subscribeJustifications`
-- **summary**: Returns the block most recently finalized by BEEFY, alongside side its justification.
+- **summary**: Returns the block most recently finalized by BEEFY, alongside its justification.
 
 ___
 
