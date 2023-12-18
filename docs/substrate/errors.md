@@ -100,6 +100,8 @@ This page lists the errors that can be encountered in the different modules.
 
 - **[system](#system)**
 
+- **[tasksExample](#tasksexample)**
+
 - **[technicalCommittee](#technicalcommittee)**
 
 - **[technicalMembership](#technicalmembership)**
@@ -220,8 +222,8 @@ ___
 - **interface**: `api.errors.alliance.WithoutGoodIdentityJudgement.is`
 - **summary**:    The account's identity has no good judgement. 
  
-### WithoutIdentityDisplayAndWebsite
-- **interface**: `api.errors.alliance.WithoutIdentityDisplayAndWebsite.is`
+### WithoutRequiredIdentityFields
+- **interface**: `api.errors.alliance.WithoutRequiredIdentityFields.is`
 - **summary**:    The account's identity does not have display field and website field. 
 
 ___
@@ -879,6 +881,10 @@ ___
 ### ValueTooLarge
 - **interface**: `api.errors.contracts.ValueTooLarge.is`
 - **summary**:    The size defined in `T::MaxValueSize` was exceeded. 
+ 
+### XCMDecodeFailed
+- **interface**: `api.errors.contracts.XCMDecodeFailed.is`
+- **summary**:    Failed to decode the XCM program. 
 
 ___
 
@@ -1402,10 +1408,6 @@ ___
 - **interface**: `api.errors.identity.StickyJudgement.is`
 - **summary**:    Sticky judgement. 
  
-### TooManyFields
-- **interface**: `api.errors.identity.TooManyFields.is`
-- **summary**:    Too many additional fields. 
- 
 ### TooManyRegistrars
 - **interface**: `api.errors.identity.TooManyRegistrars.is`
 - **summary**:    Maximum amount of registrars reached. Cannot add any more. 
@@ -1519,6 +1521,10 @@ ___
 - **summary**:    The queue is paused and no message can be executed from it. 
 
    This can change at any time and may resolve in the future by re-trying. 
+ 
+### RecursiveDisallowed
+- **interface**: `api.errors.messageQueue.RecursiveDisallowed.is`
+- **summary**:    Another call is in progress and needs to finish before this call can happen. 
  
 ### TemporarilyUnprocessable
 - **interface**: `api.errors.messageQueue.TemporarilyUnprocessable.is`
@@ -1935,7 +1941,7 @@ ___
 - **interface**: `api.errors.nominationPools.MinimumBondNotMet.is`
 - **summary**:    The amount does not meet the minimum bond to either join or create a pool. 
 
-   The depositor can never unbond to a value less than  `Pallet::depositor_min_bond`. The caller does not have nominating  permissions for the pool. Members can never unbond to a value below `MinJoinBond`. 
+   The depositor can never unbond to a value less than `Pallet::depositor_min_bond`. The  caller does not have nominating permissions for the pool. Members can never unbond to a  value below `MinJoinBond`. 
  
 ### NoCommissionCurrentSet
 - **interface**: `api.errors.nominationPools.NoCommissionCurrentSet.is`
@@ -1948,6 +1954,10 @@ ___
 ### NotDestroying
 - **interface**: `api.errors.nominationPools.NotDestroying.is`
 - **summary**:    A pool must be in [`PoolState::Destroying`] in order for the depositor to unbond or for  other members to be permissionlessly unbonded. 
+ 
+### NothingToAdjust
+- **interface**: `api.errors.nominationPools.NothingToAdjust.is`
+- **summary**:    No imbalance in the ED deposit for the pool. 
  
 ### NotKickerOrDestroying
 - **interface**: `api.errors.nominationPools.NotKickerOrDestroying.is`
@@ -2102,6 +2112,14 @@ ___
 ### TooBig
 - **interface**: `api.errors.preimage.TooBig.is`
 - **summary**:    Preimage is too large to store on-chain. 
+ 
+### TooFew
+- **interface**: `api.errors.preimage.TooFew.is`
+- **summary**:    Too few hashes were requested to be upgraded (i.e. zero). 
+ 
+### TooMany
+- **interface**: `api.errors.preimage.TooMany.is`
+- **summary**:    More than `MAX_HASH_UPGRADE_BULK_COUNT` hashes were requested to be upgraded at once. 
 
 ___
 
@@ -2690,6 +2708,10 @@ ___
 - **interface**: `api.errors.staking.CommissionTooLow.is`
 - **summary**:    Commission is too low. Must be at least `MinCommission`. 
  
+### ControllerDeprecated
+- **interface**: `api.errors.staking.ControllerDeprecated.is`
+- **summary**:    Used when attempting to use deprecated controller account logic. 
+ 
 ### DuplicateIndex
 - **interface**: `api.errors.staking.DuplicateIndex.is`
 - **summary**:    Duplicate index. 
@@ -2721,6 +2743,10 @@ ___
 ### InvalidNumberOfNominations
 - **interface**: `api.errors.staking.InvalidNumberOfNominations.is`
 - **summary**:    Invalid number of nominations. 
+ 
+### InvalidPage
+- **interface**: `api.errors.staking.InvalidPage.is`
+- **summary**:    No nominators exist on this page. 
  
 ### InvalidSlashIndex
 - **interface**: `api.errors.staking.InvalidSlashIndex.is`
@@ -2796,7 +2822,7 @@ ___
  
 ### RequireSudo
 - **interface**: `api.errors.sudo.RequireSudo.is`
-- **summary**:    Sender must be the Sudo account 
+- **summary**:    Sender must be the Sudo account. 
 
 ___
 
@@ -2807,6 +2833,10 @@ ___
 - **interface**: `api.errors.system.CallFiltered.is`
 - **summary**:    The origin filter prevent the call to be dispatched. 
  
+### FailedTask
+- **interface**: `api.errors.system.FailedTask.is`
+- **summary**:    The specified [`Task`] failed during execution. 
+ 
 ### FailedToExtractRuntimeVersion
 - **interface**: `api.errors.system.FailedToExtractRuntimeVersion.is`
 - **summary**:    Failed to extract the runtime version from the new runtime. 
@@ -2816,6 +2846,10 @@ ___
 ### InvalidSpecName
 - **interface**: `api.errors.system.InvalidSpecName.is`
 - **summary**:    The name of specification does not match between the current runtime  and the new runtime. 
+ 
+### InvalidTask
+- **interface**: `api.errors.system.InvalidTask.is`
+- **summary**:    The specified [`Task`] is not valid. 
  
 ### NonDefaultComposite
 - **interface**: `api.errors.system.NonDefaultComposite.is`
@@ -2828,6 +2862,15 @@ ___
 ### SpecVersionNeedsToIncrease
 - **interface**: `api.errors.system.SpecVersionNeedsToIncrease.is`
 - **summary**:    The specification version is not allowed to decrease between the current runtime  and the new runtime. 
+
+___
+
+
+## tasksExample
+ 
+### NotFound
+- **interface**: `api.errors.tasksExample.NotFound.is`
+- **summary**:    The referenced task was not found. 
 
 ___
 
@@ -2904,6 +2947,10 @@ ___
 - **interface**: `api.errors.tips.AlreadyKnown.is`
 - **summary**:    The tip was already found/started. 
  
+### MaxTipAmountExceeded
+- **interface**: `api.errors.tips.MaxTipAmountExceeded.is`
+- **summary**:    The tip given was too generous. 
+ 
 ### NotFinder
 - **interface**: `api.errors.tips.NotFinder.is`
 - **summary**:    The account attempting to retract the tip is not the finder of the tip. 
@@ -2940,10 +2987,6 @@ ___
 ### EmptyTransaction
 - **interface**: `api.errors.transactionStorage.EmptyTransaction.is`
 - **summary**:    Attempting to store empty transaction 
- 
-### InsufficientFunds
-- **interface**: `api.errors.transactionStorage.InsufficientFunds.is`
-- **summary**:    Insufficient account balance. 
  
 ### InvalidProof
 - **interface**: `api.errors.transactionStorage.InvalidProof.is`
@@ -2986,6 +3029,22 @@ ___
 
 ## treasury
  
+### AlreadyAttempted
+- **interface**: `api.errors.treasury.AlreadyAttempted.is`
+- **summary**:    The payment has already been attempted. 
+ 
+### EarlyPayout
+- **interface**: `api.errors.treasury.EarlyPayout.is`
+- **summary**:    The spend is not yet eligible for payout. 
+ 
+### FailedToConvertBalance
+- **interface**: `api.errors.treasury.FailedToConvertBalance.is`
+- **summary**:    The balance of the asset kind is not convertible to the balance of the native asset. 
+ 
+### Inconclusive
+- **interface**: `api.errors.treasury.Inconclusive.is`
+- **summary**:    The payment has neither failed nor succeeded yet. 
+ 
 ### InsufficientPermission
 - **interface**: `api.errors.treasury.InsufficientPermission.is`
 - **summary**:    The spend origin is valid but the amount it is allowed to spend is lower than the  amount to be spent. 
@@ -2996,11 +3055,23 @@ ___
  
 ### InvalidIndex
 - **interface**: `api.errors.treasury.InvalidIndex.is`
-- **summary**:    No proposal or bounty at that index. 
+- **summary**:    No proposal, bounty or spend at that index. 
+ 
+### NotAttempted
+- **interface**: `api.errors.treasury.NotAttempted.is`
+- **summary**:    The payout was not yet attempted/claimed. 
+ 
+### PayoutError
+- **interface**: `api.errors.treasury.PayoutError.is`
+- **summary**:    There was some issue with the mechanism of payment. 
  
 ### ProposalNotApproved
 - **interface**: `api.errors.treasury.ProposalNotApproved.is`
 - **summary**:    Proposal has not been approved. 
+ 
+### SpendExpired
+- **interface**: `api.errors.treasury.SpendExpired.is`
+- **summary**:    The spend has expired and cannot be claimed. 
  
 ### TooManyApprovals
 - **interface**: `api.errors.treasury.TooManyApprovals.is`

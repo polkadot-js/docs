@@ -60,6 +60,8 @@ The following sections contain Storage methods are part of the default Substrate
 
 - **[messageQueue](#messagequeue)**
 
+- **[mixnet](#mixnet)**
+
 - **[mmr](#mmr)**
 
 - **[multisig](#multisig)**
@@ -111,6 +113,8 @@ The following sections contain Storage methods are part of the default Substrate
 - **[sudo](#sudo)**
 
 - **[system](#system)**
+
+- **[tasksExample](#tasksexample)**
 
 - **[technicalCommittee](#technicalcommittee)**
 
@@ -374,11 +378,11 @@ ___
 
    But this comes with tradeoffs, storing account balances in the system pallet stores  `frame_system` data alongside the account data contrary to storing account balances in the  `Balances` pallet, which uses a `StorageMap` to store balances data only.  NOTE: This is only used in the case that this pallet is used to store balances. 
  
-### freezes(`AccountId32`): `Vec<PalletBalancesIdAmount>`
+### freezes(`AccountId32`): `Vec<PalletBalancesIdAmountRuntimeFreezeReason>`
 - **interface**: `api.query.balances.freezes`
 - **summary**:    Freeze locks on account balances. 
  
-### holds(`AccountId32`): `Vec<{"id":"KitchensinkRuntimeRuntimeHoldReason","amount":"u128"}>`
+### holds(`AccountId32`): `Vec<PalletBalancesIdAmountRuntimeHoldReason>`
 - **interface**: `api.query.balances.holds`
 - **summary**:    Holds on account balances. 
  
@@ -632,7 +636,7 @@ ___
  
 ### metadataOf(`PalletDemocracyMetadataOwner`): `Option<H256>`
 - **interface**: `api.query.democracy.metadataOf`
-- **summary**:    General information concerning any proposal or referendum.  The `PreimageHash` refers to the preimage of the `Preimages` provider which can be a JSON  dump or IPFS hash of a JSON file. 
+- **summary**:    General information concerning any proposal or referendum.  The `Hash` refers to the preimage of the `Preimages` provider which can be a JSON  dump or IPFS hash of a JSON file. 
 
    Consider a garbage collection for a metadata of finished referendums to `unrequest` (remove)  large preimages. 
  
@@ -833,6 +837,10 @@ ___
 
 ## grandpa
  
+### authorities(): `Vec<(SpConsensusGrandpaAppPublic,u64)>`
+- **interface**: `api.query.grandpa.authorities`
+- **summary**:    The current list of authorities. 
+ 
 ### currentSetId(): `u64`
 - **interface**: `api.query.grandpa.currentSetId`
 - **summary**:    The number of changes (both in terms of keys and underlying economic responsibilities)  in the "set" of Grandpa validators from genesis. 
@@ -970,6 +978,29 @@ ___
 ### serviceHead(): `Option<u32>`
 - **interface**: `api.query.messageQueue.serviceHead`
 - **summary**:    The origin at which we should begin servicing. 
+
+___
+
+
+## mixnet
+ 
+### currentSessionIndex(): `u32`
+- **interface**: `api.query.mixnet.currentSessionIndex`
+- **summary**:    Index of the current session. This may be offset relative to the session index tracked by  eg `pallet_session`; mixnet session indices are independent. 
+ 
+### currentSessionStartBlock(): `u32`
+- **interface**: `api.query.mixnet.currentSessionStartBlock`
+- **summary**:    Block in which the current session started. 
+ 
+### mixnodes(`u32, u32`): `Option<PalletMixnetBoundedMixnode>`
+- **interface**: `api.query.mixnet.mixnodes`
+- **summary**:    Mixnode sets by session index. Only the mixnode sets for the previous, current, and next  sessions are kept; older sets are discarded. 
+
+   The mixnodes in each set are keyed by authority index so we can easily check if an  authority has registered a mixnode. The authority indices should only be used during  registration; the authority indices for the very first session are made up. 
+ 
+### nextAuthorityIds(`u32`): `Option<SpMixnetAppPublic>`
+- **interface**: `api.query.mixnet.nextAuthorityIds`
+- **summary**:    Authority list for the next session. 
 
 ___
 
@@ -1188,6 +1219,12 @@ ___
 ### subPoolsStorage(`u32`): `Option<PalletNominationPoolsSubPools>`
 - **interface**: `api.query.nominationPools.subPoolsStorage`
 - **summary**:    Groups of unbonding pools. Each group of unbonding pools belongs to a  bonded pool, hence the name sub-pools. Keyed by the bonded pools account. 
+ 
+### totalValueLocked(): `u128`
+- **interface**: `api.query.nominationPools.totalValueLocked`
+- **summary**:    The sum of funds across all pools. 
+
+   This might be lower but never higher than the sum of `total_balance` of all [`PoolMembers`]  because calling `pool_withdraw_unbonded` might decrease the total stake of the pool's  `bonded_account` without adjusting the pallet-internal `UnbondingPool`'s. 
 
 ___
 
@@ -1277,7 +1314,11 @@ ___
 ### preimageFor(`(H256,u32)`): `Option<Bytes>`
 - **interface**: `api.query.preimage.preimageFor`
  
-### statusFor(`H256`): `Option<PalletPreimageRequestStatus>`
+### requestStatusFor(`H256`): `Option<PalletPreimageRequestStatus>`
+- **interface**: `api.query.preimage.requestStatusFor`
+- **summary**:    The request status of a given hash. 
+ 
+### statusFor(`H256`): `Option<PalletPreimageOldRequestStatus>`
 - **interface**: `api.query.preimage.statusFor`
 - **summary**:    The request status of a given hash. 
 
@@ -1342,7 +1383,7 @@ ___
  
 ### metadataOf(`u32`): `Option<H256>`
 - **interface**: `api.query.rankedPolls.metadataOf`
-- **summary**:    The metadata is a general information concerning the referendum.  The `PreimageHash` refers to the preimage of the `Preimages` provider which can be a JSON  dump or IPFS hash of a JSON file. 
+- **summary**:    The metadata is a general information concerning the referendum.  The `Hash` refers to the preimage of the `Preimages` provider which can be a JSON  dump or IPFS hash of a JSON file. 
 
    Consider a garbage collection for a metadata of finished referendums to `unrequest` (remove)  large preimages. 
  
@@ -1392,7 +1433,7 @@ ___
  
 ### metadataOf(`u32`): `Option<H256>`
 - **interface**: `api.query.referenda.metadataOf`
-- **summary**:    The metadata is a general information concerning the referendum.  The `PreimageHash` refers to the preimage of the `Preimages` provider which can be a JSON  dump or IPFS hash of a JSON file. 
+- **summary**:    The metadata is a general information concerning the referendum.  The `Hash` refers to the preimage of the `Preimages` provider which can be a JSON  dump or IPFS hash of a JSON file. 
 
    Consider a garbage collection for a metadata of finished referendums to `unrequest` (remove)  large preimages. 
  
@@ -1610,6 +1651,14 @@ ___
 - **interface**: `api.query.staking.chillThreshold`
 - **summary**:    The threshold for when users can start calling `chill_other` for other validators /  nominators. The threshold is compared to the actual number of validators / nominators  (`CountFor*`) in the system compared to the configured max (`Max*Count`). 
  
+### claimedRewards(`u32, AccountId32`): `Vec<u32>`
+- **interface**: `api.query.staking.claimedRewards`
+- **summary**:    History of claimed paged rewards by era and validator. 
+
+   This is keyed by era and validator stash which maps to the set of page indexes which have  been claimed. 
+
+   It is removed after [`Config::HistoryDepth`] eras. 
+ 
 ### counterForNominators(): `u32`
 - **interface**: `api.query.staking.counterForNominators`
 - **summary**:    Counter for the related counted storage map 
@@ -1632,35 +1681,59 @@ ___
  
 ### erasRewardPoints(`u32`): `PalletStakingEraRewardPoints`
 - **interface**: `api.query.staking.erasRewardPoints`
-- **summary**:    Rewards for the last `HISTORY_DEPTH` eras.  If reward hasn't been set or has been removed then 0 reward is returned. 
+- **summary**:    Rewards for the last [`Config::HistoryDepth`] eras.  If reward hasn't been set or has been removed then 0 reward is returned. 
  
-### erasStakers(`u32, AccountId32`): `PalletStakingExposure`
+### erasStakers(`u32, AccountId32`): `SpStakingExposure`
 - **interface**: `api.query.staking.erasStakers`
 - **summary**:    Exposure of validator at era. 
 
    This is keyed first by the era index to allow bulk deletion and then the stash account. 
 
-   Is it removed after `HISTORY_DEPTH` eras.  If stakers hasn't been set or has been removed then empty exposure is returned. 
+   Is it removed after [`Config::HistoryDepth`] eras.  If stakers hasn't been set or has been removed then empty exposure is returned. 
+
+   Note: Deprecated since v14. Use `EraInfo` instead to work with exposures. 
  
-### erasStakersClipped(`u32, AccountId32`): `PalletStakingExposure`
+### erasStakersClipped(`u32, AccountId32`): `SpStakingExposure`
 - **interface**: `api.query.staking.erasStakersClipped`
 - **summary**:    Clipped Exposure of validator at era. 
 
-   This is similar to [`ErasStakers`] but number of nominators exposed is reduced to the  `T::MaxNominatorRewardedPerValidator` biggest stakers.  (Note: the field `total` and `own` of the exposure remains unchanged).  This is used to limit the i/o cost for the nominator payout. 
+   Note: This is deprecated, should be used as read-only and will be removed in the future.  New `Exposure`s are stored in a paged manner in `ErasStakersPaged` instead. 
+
+   This is similar to [`ErasStakers`] but number of nominators exposed is reduced to the  `T::MaxExposurePageSize` biggest stakers.  (Note: the field `total` and `own` of the exposure remains unchanged).  This is used to limit the i/o cost for the nominator payout. 
 
    This is keyed fist by the era index to allow bulk deletion and then the stash account. 
 
-   Is it removed after `HISTORY_DEPTH` eras.  If stakers hasn't been set or has been removed then empty exposure is returned. 
+   It is removed after [`Config::HistoryDepth`] eras.  If stakers hasn't been set or has been removed then empty exposure is returned. 
+
+   Note: Deprecated since v14. Use `EraInfo` instead to work with exposures. 
+ 
+### erasStakersOverview(`u32, AccountId32`): `Option<SpStakingPagedExposureMetadata>`
+- **interface**: `api.query.staking.erasStakersOverview`
+- **summary**:    Summary of validator exposure at a given era. 
+
+   This contains the total stake in support of the validator and their own stake. In addition,  it can also be used to get the number of nominators backing this validator and the number of  exposure pages they are divided into. The page count is useful to determine the number of  pages of rewards that needs to be claimed. 
+
+   This is keyed first by the era index to allow bulk deletion and then the stash account.  Should only be accessed through `EraInfo`. 
+
+   Is it removed after [`Config::HistoryDepth`] eras.  If stakers hasn't been set or has been removed then empty overview is returned. 
+ 
+### erasStakersPaged(`u32, AccountId32, u32`): `Option<SpStakingExposurePage>`
+- **interface**: `api.query.staking.erasStakersPaged`
+- **summary**:    Paginated exposure of a validator at given era. 
+
+   This is keyed first by the era index to allow bulk deletion, then stash account and finally  the page. Should only be accessed through `EraInfo`. 
+
+   This is cleared after [`Config::HistoryDepth`] eras. 
  
 ### erasStartSessionIndex(`u32`): `Option<u32>`
 - **interface**: `api.query.staking.erasStartSessionIndex`
-- **summary**:    The session index at which the era start for the last `HISTORY_DEPTH` eras. 
+- **summary**:    The session index at which the era start for the last [`Config::HistoryDepth`] eras. 
 
    Note: This tracks the starting session (i.e. session index when era start being active)  for the eras in `[CurrentEra - HISTORY_DEPTH, CurrentEra]`. 
  
 ### erasTotalStake(`u32`): `u128`
 - **interface**: `api.query.staking.erasTotalStake`
-- **summary**:    The total amount staked for the last `HISTORY_DEPTH` eras.  If total hasn't been set or has been removed then 0 stake is returned. 
+- **summary**:    The total amount staked for the last [`Config::HistoryDepth`] eras.  If total hasn't been set or has been removed then 0 stake is returned. 
  
 ### erasValidatorPrefs(`u32, AccountId32`): `PalletStakingValidatorPrefs`
 - **interface**: `api.query.staking.erasValidatorPrefs`
@@ -1668,11 +1741,11 @@ ___
 
    This is keyed first by the era index to allow bulk deletion and then the stash account. 
 
-   Is it removed after `HISTORY_DEPTH` eras. 
+   Is it removed after [`Config::HistoryDepth`] eras. 
  
 ### erasValidatorReward(`u32`): `Option<u128>`
 - **interface**: `api.query.staking.erasValidatorReward`
-- **summary**:    The total validator era payout for the last `HISTORY_DEPTH` eras. 
+- **summary**:    The total validator era payout for the last [`Config::HistoryDepth`] eras. 
 
    Eras that haven't finished yet or has been removed doesn't have reward. 
  
@@ -1687,6 +1760,8 @@ ___
 ### ledger(`AccountId32`): `Option<PalletStakingStakingLedger>`
 - **interface**: `api.query.staking.ledger`
 - **summary**:    Map from all (unlocked) "controller" accounts to the info regarding the staking. 
+
+   Note: All the reads and mutations to this storage *MUST* be done through the methods exposed  by [`StakingLedger`] to ensure data and lock consistency. 
  
 ### maxNominatorsCount(): `Option<u32>`
 - **interface**: `api.query.staking.maxNominatorsCount`
@@ -1832,7 +1907,7 @@ _These are well-known keys that are always available to the runtime implementati
 - **interface**: `api.query.substrate.heapPages`
 - **summary**:    Number of wasm linear memory pages required for execution of the runtime. 
  
-### intrablockEntropy(): `AccountId32`
+### intrablockEntropy(): `[u8;32]`
 - **interface**: `api.query.substrate.intrablockEntropy`
 - **summary**:    Current intra-block entropy (a universally unique `[u8; 32]` value) is stored here. 
 
@@ -1925,6 +2000,19 @@ ___
 ___
 
 
+## tasksExample
+ 
+### numbers(`u32`): `Option<u32>`
+- **interface**: `api.query.tasksExample.numbers`
+- **summary**:    Numbers to be added into the total. 
+ 
+### total(): `(u32,u32)`
+- **interface**: `api.query.tasksExample.total`
+- **summary**:    Some running total. 
+
+___
+
+
 ## technicalCommittee
  
 ### members(): `Vec<AccountId32>`
@@ -1971,11 +2059,13 @@ ___
  
 ### didUpdate(): `bool`
 - **interface**: `api.query.timestamp.didUpdate`
-- **summary**:    Did the timestamp get updated in this block? 
+- **summary**:    Whether the timestamp has been updated in this block. 
+
+   This value is updated to `true` upon successful submission of a timestamp by a node.  It is then checked at the end of each block execution in the `on_finalize` hook. 
  
 ### now(): `u64`
 - **interface**: `api.query.timestamp.now`
-- **summary**:    Current time for the current block. 
+- **summary**:    The current time for the current block. 
 
 ___
 
@@ -2053,6 +2143,14 @@ ___
 ### proposals(`u32`): `Option<PalletTreasuryProposal>`
 - **interface**: `api.query.treasury.proposals`
 - **summary**:    Proposals that have been made. 
+ 
+### spendCount(): `u32`
+- **interface**: `api.query.treasury.spendCount`
+- **summary**:    The count of spends that have been made. 
+ 
+### spends(`u32`): `Option<PalletTreasurySpendStatus>`
+- **interface**: `api.query.treasury.spends`
+- **summary**:    Spends that have been approved and being processed. 
 
 ___
 

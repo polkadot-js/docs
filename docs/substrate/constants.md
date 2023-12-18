@@ -52,6 +52,8 @@ The following sections contain the module constants, also known as parameter typ
 
 - **[messageQueue](#messagequeue)**
 
+- **[mixnet](#mixnet)**
+
 - **[multisig](#multisig)**
 
 - **[nftFractionalization](#nftfractionalization)**
@@ -542,10 +544,6 @@ ___
 
    For example, if it is 5, that means that at least 5 blocks will elapse between attempts  to submit the worker's solution. 
  
-### signedDepositBase: `u128`
-- **interface**: `api.consts.electionProviderMultiPhase.signedDepositBase`
-- **summary**:    Base deposit for a signed solution. 
- 
 ### signedDepositByte: `u128`
 - **interface**: `api.consts.electionProviderMultiPhase.signedDepositByte`
 - **summary**:    Per-byte deposit for a signed solution. 
@@ -676,13 +674,9 @@ ___
 - **interface**: `api.consts.identity.basicDeposit`
 - **summary**:    The amount held on deposit for a registered identity 
  
-### fieldDeposit: `u128`
-- **interface**: `api.consts.identity.fieldDeposit`
-- **summary**:    The amount held on deposit per additional field for a registered identity. 
- 
-### maxAdditionalFields: `u32`
-- **interface**: `api.consts.identity.maxAdditionalFields`
-- **summary**:    Maximum number of additional fields that may be stored in an ID. Needed to bound the I/O  required to access an identity, but can be pretty high. 
+### byteDeposit: `u128`
+- **interface**: `api.consts.identity.byteDeposit`
+- **summary**:    The amount held on deposit per encoded byte for a registered identity. 
  
 ### maxRegistrars: `u32`
 - **interface**: `api.consts.identity.maxRegistrars`
@@ -753,6 +747,51 @@ ___
 - **summary**:    The amount of weight (if any) which should be provided to the message queue for  servicing enqueued items. 
 
    This may be legitimately `None` in the case that you will call  `ServiceQueues::service_queues` manually. 
+
+___
+
+
+## mixnet
+ 
+### maxAuthorities: `u32`
+- **interface**: `api.consts.mixnet.maxAuthorities`
+- **summary**:    The maximum number of authorities per session. 
+ 
+### maxExternalAddressesPerMixnode: `u32`
+- **interface**: `api.consts.mixnet.maxExternalAddressesPerMixnode`
+- **summary**:    The maximum number of external addresses for a mixnode. 
+ 
+### maxExternalAddressSize: `u32`
+- **interface**: `api.consts.mixnet.maxExternalAddressSize`
+- **summary**:    The maximum size of one of a mixnode's external addresses. 
+ 
+### minMixnodes: `u32`
+- **interface**: `api.consts.mixnet.minMixnodes`
+- **summary**:    Minimum number of mixnodes. If there are fewer than this many mixnodes registered for a  session, the mixnet will not be active during the session. 
+ 
+### numCoverToCurrentBlocks: `u32`
+- **interface**: `api.consts.mixnet.numCoverToCurrentBlocks`
+- **summary**:    Length of the first phase of each session (`CoverToCurrent`), in blocks. 
+ 
+### numCoverToPrevBlocks: `u32`
+- **interface**: `api.consts.mixnet.numCoverToPrevBlocks`
+- **summary**:    Length of the third phase of each session (`CoverToPrev`), in blocks. 
+ 
+### numRegisterEndSlackBlocks: `u32`
+- **interface**: `api.consts.mixnet.numRegisterEndSlackBlocks`
+- **summary**:    The number of "slack" blocks at the end of each session.  [`maybe_register`](Pallet::maybe_register) will try to register before this slack  period, but may post registration transactions during the slack period as a last  resort. 
+ 
+### numRegisterStartSlackBlocks: `u32`
+- **interface**: `api.consts.mixnet.numRegisterStartSlackBlocks`
+- **summary**:    The number of "slack" blocks at the start of each session, during which  [`maybe_register`](Pallet::maybe_register) will not attempt to post registration  transactions. 
+ 
+### numRequestsToCurrentBlocks: `u32`
+- **interface**: `api.consts.mixnet.numRequestsToCurrentBlocks`
+- **summary**:    Length of the second phase of each session (`RequestsToCurrent`), in blocks. 
+ 
+### registrationPriority: `u64`
+- **interface**: `api.consts.mixnet.registrationPriority`
+- **summary**:    Priority of unsigned transactions used to register mixnodes. 
 
 ___
 
@@ -928,6 +967,10 @@ ___
    Moreover, this relates to the `RewardCounter` type as well, as the arithmetic operations  are a function of number of points, and by setting this value to e.g. 10, you ensure  that the total number of points in the system are at most 10 times the total_issuance of  the chain, in the absolute worse case. 
 
    For a value of 10, the threshold would be a pool points-to-balance ratio of 10:1.  Such a scenario would also be the equivalent of the pool being 90% slashed. 
+ 
+### maxUnbonding: `u32`
+- **interface**: `api.consts.nominationPools.maxUnbonding`
+- **summary**:    The maximum number of simultaneous unbonding chunks that can exist per member. 
  
 ### palletId: `FrameSupportPalletId`
 - **interface**: `api.consts.nominationPools.palletId`
@@ -1211,19 +1254,23 @@ ___
 - **interface**: `api.consts.staking.historyDepth`
 - **summary**:    Number of eras to keep in history. 
 
-   Following information is kept for eras in `[current_era -  HistoryDepth, current_era]`: `ErasStakers`, `ErasStakersClipped`,  `ErasValidatorPrefs`, `ErasValidatorReward`, `ErasRewardPoints`,  `ErasTotalStake`, `ErasStartSessionIndex`,  `StakingLedger.claimed_rewards`. 
+   Following information is kept for eras in `[current_era -  HistoryDepth, current_era]`: `ErasStakers`, `ErasStakersClipped`,  `ErasValidatorPrefs`, `ErasValidatorReward`, `ErasRewardPoints`,  `ErasTotalStake`, `ErasStartSessionIndex`, `ClaimedRewards`, `ErasStakersPaged`,  `ErasStakersOverview`. 
 
    Must be more than the number of eras delayed by session.  I.e. active era must always be in history. I.e. `active_era >  current_era - history_depth` must be guaranteed. 
 
    If migrating an existing pallet from storage value to config value,  this should be set to same value or greater as in storage. 
 
-   Note: `HistoryDepth` is used as the upper bound for the `BoundedVec`  item `StakingLedger.claimed_rewards`. Setting this value lower than  the existing value can lead to inconsistencies in the  `StakingLedger` and will need to be handled properly in a migration.  The test `reducing_history_depth_abrupt` shows this effect. 
+   Note: `HistoryDepth` is used as the upper bound for the `BoundedVec`  item `StakingLedger.legacy_claimed_rewards`. Setting this value lower than  the existing value can lead to inconsistencies in the  `StakingLedger` and will need to be handled properly in a migration.  The test `reducing_history_depth_abrupt` shows this effect. 
  
-### maxNominatorRewardedPerValidator: `u32`
-- **interface**: `api.consts.staking.maxNominatorRewardedPerValidator`
-- **summary**:    The maximum number of nominators rewarded for each validator. 
+### maxExposurePageSize: `u32`
+- **interface**: `api.consts.staking.maxExposurePageSize`
+- **summary**:    The maximum size of each `T::ExposurePage`. 
 
-   For each validator only the `$MaxNominatorRewardedPerValidator` biggest stakers can  claim their reward. This used to limit the i/o cost for the nominator payout. 
+   An `ExposurePage` is weakly bounded to a maximum of `MaxExposurePageSize`  nominators. 
+
+   For older non-paged exposure, a reward payout was restricted to the top  `MaxExposurePageSize` nominators. This is to limit the i/o cost for the  nominator payout. 
+
+   Note: `MaxExposurePageSize` is used to bound `ClaimedRewards` and is unsafe to reduce  without handling it in a migration. 
  
 ### maxUnlockingChunks: `u32`
 - **interface**: `api.consts.staking.maxUnlockingChunks`
@@ -1342,7 +1389,9 @@ ___
  
 ### minimumPeriod: `u64`
 - **interface**: `api.consts.timestamp.minimumPeriod`
-- **summary**:    The minimum period between blocks. Beware that this is different to the *expected*  period that the block production apparatus provides. Your chosen consensus system will  generally work with this to determine a sensible block time. e.g. For Aura, it will be  double this period on default settings. 
+- **summary**:    The minimum period between blocks. 
+
+   Be aware that this is different to the *expected* period that the block production  apparatus provides. Your chosen consensus system will generally work with this to  determine a sensible block time. For example, in the Aura pallet it will be double this  period on default settings. 
 
 ___
 
@@ -1358,6 +1407,10 @@ ___
 - **summary**:    Maximum acceptable reason length. 
 
    Benchmarks depend on this value, be sure to update weights file when changing this value 
+ 
+### maxTipAmount: `u128`
+- **interface**: `api.consts.tips.maxTipAmount`
+- **summary**:    The maximum amount for a single tip. 
  
 ### tipCountdown: `u32`
 - **interface**: `api.consts.tips.tipCountdown`
@@ -1378,9 +1431,9 @@ ___
  
 ### operationalFeeMultiplier: `u8`
 - **interface**: `api.consts.transactionPayment.operationalFeeMultiplier`
-- **summary**:    A fee mulitplier for `Operational` extrinsics to compute "virtual tip" to boost their  `priority` 
+- **summary**:    A fee multiplier for `Operational` extrinsics to compute "virtual tip" to boost their  `priority` 
 
-   This value is multipled by the `final_fee` to obtain a "virtual tip" that is later  added to a tip component in regular `priority` calculations.  It means that a `Normal` transaction can front-run a similarly-sized `Operational`  extrinsic (with no tip), by including a tip value greater than the virtual tip. 
+   This value is multiplied by the `final_fee` to obtain a "virtual tip" that is later  added to a tip component in regular `priority` calculations.  It means that a `Normal` transaction can front-run a similarly-sized `Operational`  extrinsic (with no tip), by including a tip value greater than the virtual tip. 
 
    ```rust,ignore  // For `Normal`  let priority = priority_calc(tip); 
 
@@ -1406,6 +1459,10 @@ ___
 ### palletId: `FrameSupportPalletId`
 - **interface**: `api.consts.treasury.palletId`
 - **summary**:    The treasury's pallet id, used for deriving its sovereign account ID. 
+ 
+### payoutPeriod: `u32`
+- **interface**: `api.consts.treasury.payoutPeriod`
+- **summary**:    The period during which an approved treasury spend has to be claimed. 
  
 ### proposalBond: `Permill`
 - **interface**: `api.consts.treasury.proposalBond`

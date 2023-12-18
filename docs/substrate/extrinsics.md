@@ -56,6 +56,8 @@ The following sections contain Extrinsics methods are part of the default Substr
 
 - **[messageQueue](#messagequeue)**
 
+- **[mixnet](#mixnet)**
+
 - **[multisig](#multisig)**
 
 - **[nftFractionalization](#nftfractionalization)**
@@ -439,14 +441,6 @@ ___
 ### forceUnreserve(who: `MultiAddress`, amount: `u128`)
 - **interface**: `api.tx.balances.forceUnreserve`
 - **summary**:    See [`Pallet::force_unreserve`]. 
- 
-### setBalanceDeprecated(who: `MultiAddress`, new_free: `Compact<u128>`, old_reserved: `Compact<u128>`)
-- **interface**: `api.tx.balances.setBalanceDeprecated`
-- **summary**:    See [`Pallet::set_balance_deprecated`]. 
- 
-### transfer(dest: `MultiAddress`, value: `Compact<u128>`)
-- **interface**: `api.tx.balances.transfer`
-- **summary**:    See [`Pallet::transfer`]. 
  
 ### transferAll(dest: `MultiAddress`, keep_alive: `bool`)
 - **interface**: `api.tx.balances.transferAll`
@@ -1002,11 +996,11 @@ ___
 - **interface**: `api.tx.identity.setFee`
 - **summary**:    See [`Pallet::set_fee`]. 
  
-### setFields(index: `Compact<u32>`, fields: `PalletIdentityBitFlags`)
+### setFields(index: `Compact<u32>`, fields: `u64`)
 - **interface**: `api.tx.identity.setFields`
 - **summary**:    See [`Pallet::set_fields`]. 
  
-### setIdentity(info: `PalletIdentityIdentityInfo`)
+### setIdentity(info: `PalletIdentityLegacyIdentityInfo`)
 - **interface**: `api.tx.identity.setIdentity`
 - **summary**:    See [`Pallet::set_identity`]. 
  
@@ -1081,6 +1075,15 @@ ___
 ### reapPage(message_origin: `u32`, page_index: `u32`)
 - **interface**: `api.tx.messageQueue.reapPage`
 - **summary**:    See [`Pallet::reap_page`]. 
+
+___
+
+
+## mixnet
+ 
+### register(registration: `PalletMixnetRegistration`, signature: `SpMixnetAppSignature`)
+- **interface**: `api.tx.mixnet.register`
+- **summary**:    See `Pallet::register`. 
 
 ___
 
@@ -1315,6 +1318,10 @@ ___
 
 ## nominationPools
  
+### adjustPoolDeposit(pool_id: `u32`)
+- **interface**: `api.tx.nominationPools.adjustPoolDeposit`
+- **summary**:    See [`Pallet::adjust_pool_deposit`]. 
+ 
 ### bondExtra(extra: `PalletNominationPoolsBondExtra`)
 - **interface**: `api.tx.nominationPools.bondExtra`
 - **summary**:    See [`Pallet::bond_extra`]. 
@@ -1370,6 +1377,10 @@ ___
 ### setCommissionChangeRate(pool_id: `u32`, change_rate: `PalletNominationPoolsCommissionChangeRate`)
 - **interface**: `api.tx.nominationPools.setCommissionChangeRate`
 - **summary**:    See [`Pallet::set_commission_change_rate`]. 
+ 
+### setCommissionClaimPermission(pool_id: `u32`, permission: `Option<PalletNominationPoolsCommissionClaimPermission>`)
+- **interface**: `api.tx.nominationPools.setCommissionClaimPermission`
+- **summary**:    See [`Pallet::set_commission_claim_permission`]. 
  
 ### setCommissionMax(pool_id: `u32`, max_commission: `Perbill`)
 - **interface**: `api.tx.nominationPools.setCommissionMax`
@@ -1549,6 +1560,10 @@ ___
 
 
 ## preimage
+ 
+### ensureUpdated(hashes: `Vec<H256>`)
+- **interface**: `api.tx.preimage.ensureUpdated`
+- **summary**:    See [`Pallet::ensure_updated`]. 
  
 ### notePreimage(bytes: `Bytes`)
 - **interface**: `api.tx.preimage.notePreimage`
@@ -1779,7 +1794,11 @@ ___
  
 ### fillBlock(ratio: `Perbill`)
 - **interface**: `api.tx.rootTesting.fillBlock`
-- **summary**:    See [`Pallet::fill_block`]. 
+- **summary**:    See `Pallet::fill_block`. 
+ 
+### triggerDefensive()
+- **interface**: `api.tx.rootTesting.triggerDefensive`
+- **summary**:    See `Pallet::trigger_defensive`. 
 
 ___
 
@@ -1999,7 +2018,7 @@ ___
 - **interface**: `api.tx.staking.chill`
 - **summary**:    See [`Pallet::chill`]. 
  
-### chillOther(controller: `AccountId32`)
+### chillOther(stash: `AccountId32`)
 - **interface**: `api.tx.staking.chillOther`
 - **summary**:    See [`Pallet::chill_other`]. 
  
@@ -2038,6 +2057,10 @@ ___
 ### payoutStakers(validator_stash: `AccountId32`, era: `u32`)
 - **interface**: `api.tx.staking.payoutStakers`
 - **summary**:    See [`Pallet::payout_stakers`]. 
+ 
+### payoutStakersByPage(validator_stash: `AccountId32`, era: `u32`, page: `u32`)
+- **interface**: `api.tx.staking.payoutStakersByPage`
+- **summary**:    See [`Pallet::payout_stakers_by_page`]. 
  
 ### reapStash(stash: `AccountId32`, num_slashing_spans: `u32`)
 - **interface**: `api.tx.staking.reapStash`
@@ -2078,6 +2101,10 @@ ___
 ### unbond(value: `Compact<u128>`)
 - **interface**: `api.tx.staking.unbond`
 - **summary**:    See [`Pallet::unbond`]. 
+ 
+### updatePayee(controller: `AccountId32`)
+- **interface**: `api.tx.staking.updatePayee`
+- **summary**:    See [`Pallet::update_payee`]. 
  
 ### validate(prefs: `PalletStakingValidatorPrefs`)
 - **interface**: `api.tx.staking.validate`
@@ -2121,6 +2148,10 @@ ___
 
 ## sudo
  
+### removeKey()
+- **interface**: `api.tx.sudo.removeKey`
+- **summary**:    See [`Pallet::remove_key`]. 
+ 
 ### setKey(new: `MultiAddress`)
 - **interface**: `api.tx.sudo.setKey`
 - **summary**:    See [`Pallet::set_key`]. 
@@ -2141,6 +2172,10 @@ ___
 
 
 ## system
+ 
+### doTask(task: `KitchensinkRuntimeRuntimeTask`)
+- **interface**: `api.tx.system.doTask`
+- **summary**:    See [`Pallet::do_task`]. 
  
 ### killPrefix(prefix: `Bytes`, subkeys: `u32`)
 - **interface**: `api.tx.system.killPrefix`
@@ -2300,6 +2335,14 @@ ___
 - **interface**: `api.tx.treasury.approveProposal`
 - **summary**:    See [`Pallet::approve_proposal`]. 
  
+### checkStatus(index: `u32`)
+- **interface**: `api.tx.treasury.checkStatus`
+- **summary**:    See [`Pallet::check_status`]. 
+ 
+### payout(index: `u32`)
+- **interface**: `api.tx.treasury.payout`
+- **summary**:    See [`Pallet::payout`]. 
+ 
 ### proposeSpend(value: `Compact<u128>`, beneficiary: `MultiAddress`)
 - **interface**: `api.tx.treasury.proposeSpend`
 - **summary**:    See [`Pallet::propose_spend`]. 
@@ -2312,9 +2355,17 @@ ___
 - **interface**: `api.tx.treasury.removeApproval`
 - **summary**:    See [`Pallet::remove_approval`]. 
  
-### spend(amount: `Compact<u128>`, beneficiary: `MultiAddress`)
+### spend(asset_kind: `u32`, amount: `Compact<u128>`, beneficiary: `MultiAddress`, valid_from: `Option<u32>`)
 - **interface**: `api.tx.treasury.spend`
 - **summary**:    See [`Pallet::spend`]. 
+ 
+### spendLocal(amount: `Compact<u128>`, beneficiary: `MultiAddress`)
+- **interface**: `api.tx.treasury.spendLocal`
+- **summary**:    See [`Pallet::spend_local`]. 
+ 
+### voidSpend(index: `u32`)
+- **interface**: `api.tx.treasury.voidSpend`
+- **summary**:    See [`Pallet::void_spend`]. 
 
 ___
 
@@ -2471,6 +2522,10 @@ ___
 
 
 ## vesting
+ 
+### forceRemoveVestingSchedule(target: `MultiAddress`, schedule_index: `u32`)
+- **interface**: `api.tx.vesting.forceRemoveVestingSchedule`
+- **summary**:    See [`Pallet::force_remove_vesting_schedule`]. 
  
 ### forceVestedTransfer(source: `MultiAddress`, target: `MultiAddress`, schedule: `PalletVestingVestingInfo`)
 - **interface**: `api.tx.vesting.forceVestedTransfer`

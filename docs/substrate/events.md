@@ -88,6 +88,8 @@ Events are emitted for certain operations on the runtime. The following sections
 
 - **[remark](#remark)**
 
+- **[rootTesting](#roottesting)**
+
 - **[safeMode](#safemode)**
 
 - **[salary](#salary)**
@@ -95,6 +97,8 @@ Events are emitted for certain operations on the runtime. The following sections
 - **[scheduler](#scheduler)**
 
 - **[session](#session)**
+
+- **[skipFeelessPayment](#skipfeelesspayment)**
 
 - **[society](#society)**
 
@@ -479,6 +483,10 @@ ___
 
 ## bounties
  
+### BountyApproved(`u32`)
+- **interface**: `api.events.bounties.BountyApproved.is`
+- **summary**:    A bounty is approved. 
+ 
 ### BountyAwarded(`u32`, `AccountId32`)
 - **interface**: `api.events.bounties.BountyAwarded.is`
 - **summary**:    A bounty is awarded to a beneficiary. 
@@ -506,6 +514,18 @@ ___
 ### BountyRejected(`u32`, `u128`)
 - **interface**: `api.events.bounties.BountyRejected.is`
 - **summary**:    A bounty proposal was rejected; funds were slashed. 
+ 
+### CuratorAccepted(`u32`, `AccountId32`)
+- **interface**: `api.events.bounties.CuratorAccepted.is`
+- **summary**:    A bounty curator is accepted. 
+ 
+### CuratorProposed(`u32`, `AccountId32`)
+- **interface**: `api.events.bounties.CuratorProposed.is`
+- **summary**:    A bounty curator is proposed. 
+ 
+### CuratorUnassigned(`u32`)
+- **interface**: `api.events.bounties.CuratorUnassigned.is`
+- **summary**:    A bounty curator is unassigned. 
 
 ___
 
@@ -1053,7 +1073,7 @@ ___
 - **interface**: `api.events.imOnline.HeartbeatReceived.is`
 - **summary**:    A new heartbeat was received from `AuthorityId`. 
  
-### SomeOffline(`Vec<(AccountId32,PalletStakingExposure)>`)
+### SomeOffline(`Vec<(AccountId32,SpStakingExposure)>`)
 - **interface**: `api.events.imOnline.SomeOffline.is`
 - **summary**:    At the end of the session, at least one validator was found to be offline. 
 
@@ -1108,11 +1128,11 @@ ___
 - **interface**: `api.events.messageQueue.PageReaped.is`
 - **summary**:    This page was reaped. 
  
-### Processed(`[u8;32]`, `u32`, `SpWeightsWeightV2Weight`, `bool`)
+### Processed(`H256`, `u32`, `SpWeightsWeightV2Weight`, `bool`)
 - **interface**: `api.events.messageQueue.Processed.is`
 - **summary**:    Message is processed. 
  
-### ProcessingFailed(`[u8;32]`, `u32`, `FrameSupportMessagesProcessMessageError`)
+### ProcessingFailed(`H256`, `u32`, `FrameSupportMessagesProcessMessageError`)
 - **interface**: `api.events.messageQueue.ProcessingFailed.is`
 - **summary**:    Message discarded due to an error in the `MessageProcessor` (usually a format error). 
 
@@ -1363,6 +1383,14 @@ ___
 
    The removal can be voluntary (withdrawn all unbonded funds) or involuntary (kicked). 
  
+### MinBalanceDeficitAdjusted(`u32`, `u128`)
+- **interface**: `api.events.nominationPools.MinBalanceDeficitAdjusted.is`
+- **summary**:    Topped up deficit in frozen ED of the reward pool. 
+ 
+### MinBalanceExcessAdjusted(`u32`, `u128`)
+- **interface**: `api.events.nominationPools.MinBalanceExcessAdjusted.is`
+- **summary**:    Claimed excess frozen ED of af the reward pool. 
+ 
 ### PaidOut(`AccountId32`, `u32`, `u128`)
 - **interface**: `api.events.nominationPools.PaidOut.is`
 - **summary**:    A payout has been made to a member. 
@@ -1374,6 +1402,10 @@ ___
 ### PoolCommissionClaimed(`u32`, `u128`)
 - **interface**: `api.events.nominationPools.PoolCommissionClaimed.is`
 - **summary**:    Pool commission has been claimed. 
+ 
+### PoolCommissionClaimPermissionUpdated(`u32`, `Option<PalletNominationPoolsCommissionClaimPermission>`)
+- **interface**: `api.events.nominationPools.PoolCommissionClaimPermissionUpdated.is`
+- **summary**:    Pool commission claim permission has been updated. 
  
 ### PoolCommissionUpdated(`u32`, `Option<(Perbill,AccountId32)>`)
 - **interface**: `api.events.nominationPools.PoolCommissionUpdated.is`
@@ -1635,7 +1667,7 @@ ___
  
 ### DepositSlashed(`AccountId32`, `u128`)
 - **interface**: `api.events.rankedPolls.DepositSlashed.is`
-- **summary**:    A deposit has been slashaed. 
+- **summary**:    A deposit has been slashed. 
  
 ### Killed(`u32`, `PalletRankedCollectiveTally`)
 - **interface**: `api.events.rankedPolls.Killed.is`
@@ -1731,7 +1763,7 @@ ___
  
 ### DepositSlashed(`AccountId32`, `u128`)
 - **interface**: `api.events.referenda.DepositSlashed.is`
-- **summary**:    A deposit has been slashaed. 
+- **summary**:    A deposit has been slashed. 
  
 ### Killed(`u32`, `PalletConvictionVotingTally`)
 - **interface**: `api.events.referenda.Killed.is`
@@ -1769,6 +1801,15 @@ ___
 ### Stored(`AccountId32`, `H256`)
 - **interface**: `api.events.remark.Stored.is`
 - **summary**:    Stored data off chain. 
+
+___
+
+
+## rootTesting
+ 
+### DefensiveTestCall()
+- **interface**: `api.events.rootTesting.DefensiveTestCall.is`
+- **summary**:    Event dispatched when the trigger_defensive extrinsic is called. 
 
 ___
 
@@ -1869,6 +1910,15 @@ ___
 ### NewSession(`u32`)
 - **interface**: `api.events.session.NewSession.is`
 - **summary**:    New session has happened. Note that the argument is the session index, not the  block number as the type might suggest. 
+
+___
+
+
+## skipFeelessPayment
+ 
+### FeeSkipped(`AccountId32`)
+- **interface**: `api.events.skipFeelessPayment.FeeSkipped.is`
+- **summary**:    A transaction fee was skipped. 
 
 ___
 
@@ -1978,9 +2028,9 @@ ___
 - **interface**: `api.events.staking.PayoutStarted.is`
 - **summary**:    The stakers' rewards are getting paid. 
  
-### Rewarded(`AccountId32`, `u128`)
+### Rewarded(`AccountId32`, `PalletStakingRewardDestination`, `u128`)
 - **interface**: `api.events.staking.Rewarded.is`
-- **summary**:    The nominator has been rewarded by this amount. 
+- **summary**:    The nominator has been rewarded by this amount to this destination. 
  
 ### Slashed(`AccountId32`, `u128`)
 - **interface**: `api.events.staking.Slashed.is`
@@ -2053,17 +2103,21 @@ ___
 
 ## sudo
  
-### KeyChanged(`Option<AccountId32>`)
+### KeyChanged(`Option<AccountId32>`, `AccountId32`)
 - **interface**: `api.events.sudo.KeyChanged.is`
-- **summary**:    The \[sudoer\] just switched identity; the old key is supplied if one existed. 
+- **summary**:    The sudo key has been updated. 
+ 
+### KeyRemoved()
+- **interface**: `api.events.sudo.KeyRemoved.is`
+- **summary**:    The key was permanently removed. 
  
 ### Sudid(`Result<Null, SpRuntimeDispatchError>`)
 - **interface**: `api.events.sudo.Sudid.is`
-- **summary**:    A sudo just took place. \[result\] 
+- **summary**:    A sudo call just took place. 
  
 ### SudoAsDone(`Result<Null, SpRuntimeDispatchError>`)
 - **interface**: `api.events.sudo.SudoAsDone.is`
-- **summary**:    A sudo just took place. \[result\] 
+- **summary**:    A [sudo_as](Pallet::sudo_as) call just took place. 
 
 ___
 
@@ -2093,6 +2147,18 @@ ___
 ### Remarked(`AccountId32`, `H256`)
 - **interface**: `api.events.system.Remarked.is`
 - **summary**:    On on-chain remark happened. 
+ 
+### TaskCompleted(`KitchensinkRuntimeRuntimeTask`)
+- **interface**: `api.events.system.TaskCompleted.is`
+- **summary**:    A [`Task`] has finished executing. 
+ 
+### TaskFailed(`KitchensinkRuntimeRuntimeTask`, `SpRuntimeDispatchError`)
+- **interface**: `api.events.system.TaskFailed.is`
+- **summary**:    A [`Task`] failed during execution. 
+ 
+### TaskStarted(`KitchensinkRuntimeRuntimeTask`)
+- **interface**: `api.events.system.TaskStarted.is`
+- **summary**:    A [`Task`] has started executing 
 
 ___
 
@@ -2212,6 +2278,14 @@ ___
 
 ## treasury
  
+### AssetSpendApproved(`u32`, `u32`, `u128`, `AccountId32`, `u32`, `u32`)
+- **interface**: `api.events.treasury.AssetSpendApproved.is`
+- **summary**:    A new asset spend proposal has been approved. 
+ 
+### AssetSpendVoided(`u32`)
+- **interface**: `api.events.treasury.AssetSpendVoided.is`
+- **summary**:    An approved spend was voided. 
+ 
 ### Awarded(`u32`, `u128`, `AccountId32`)
 - **interface**: `api.events.treasury.Awarded.is`
 - **summary**:    Some funds have been allocated. 
@@ -2223,6 +2297,14 @@ ___
 ### Deposit(`u128`)
 - **interface**: `api.events.treasury.Deposit.is`
 - **summary**:    Some funds have been deposited. 
+ 
+### Paid(`u32`, `Null`)
+- **interface**: `api.events.treasury.Paid.is`
+- **summary**:    A payment happened. 
+ 
+### PaymentFailed(`u32`, `Null`)
+- **interface**: `api.events.treasury.PaymentFailed.is`
+- **summary**:    A payment failed and can be retried. 
  
 ### Proposed(`u32`)
 - **interface**: `api.events.treasury.Proposed.is`
@@ -2243,6 +2325,10 @@ ___
 ### Spending(`u128`)
 - **interface**: `api.events.treasury.Spending.is`
 - **summary**:    We have ended a spend period and will now allocate funds. 
+ 
+### SpendProcessed(`u32`)
+- **interface**: `api.events.treasury.SpendProcessed.is`
+- **summary**:    A spend was processed and removed from the storage. It might have been successfully  paid or it may have expired. 
  
 ### UpdatedInactive(`u128`, `u128`)
 - **interface**: `api.events.treasury.UpdatedInactive.is`
