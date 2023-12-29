@@ -18,7 +18,7 @@ const code = new CodePromise(api, metadata, wasm);
 The newly generated `code` object lets you call `instantiate_with_code` without having to encode the data yourself.
 You will need to provide values for the instantiation options. Getting accurate gas and storage deposit costs is possible by calling the [instantiate](http://localhost:8080/substrate/rpc#instantiaterequest-instantiaterequest-at-blockhash-contractinstantiateresult) RPC, which dry runs the instantiation and returns the outcome. For the scope of this tutorial we will use hardcoded values.
 
-Here is how you would retrieve the contract address after instantiation for an [ink! incrementer contract](https://github.com/paritytech/ink/blob/master/examples/incrementer/lib.rs), whose constructor signature looks like this: `new (initValue: i32)` 
+Here is how you would retrieve the contract address after instantiation for an [ink! incrementer contract]([https://github.com/paritytech/ink/blob/master/examples/incrementer/lib.rs](https://github.com/paritytech/ink-examples/blob/main/incrementer/lib.rs)), whose constructor signature looks like this: `new (initValue: i32)` 
 
 ```javascript
 // maximum gas to be consumed for the instantiation. if limit is too small the instantiation will fail.
