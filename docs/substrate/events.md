@@ -917,7 +917,7 @@ ___
 - **interface**: `api.events.electionProviderMultiPhase.SolutionStored.is`
 - **summary**:    A solution was stored with the given compute. 
 
-   The `origin` indicates the origin of the solution. If `origin` is `Some(AccountId)`,  the stored solution was submited in the signed phase by a miner with the `AccountId`.  Otherwise, the solution was stored either during the unsigned phase or by  `T::ForceOrigin`. The `bool` is `true` when a previous solution was ejected to make  room for this one. 
+   The `origin` indicates the origin of the solution. If `origin` is `Some(AccountId)`,  the stored solution was submitted in the signed phase by a miner with the `AccountId`.  Otherwise, the solution was stored either during the unsigned phase or by  `T::ForceOrigin`. The `bool` is `true` when a previous solution was ejected to make  room for this one. 
 
 ___
 
@@ -1358,7 +1358,7 @@ ___
  
 ### Transferred(`AccountId32`, `AccountId32`, `u32`)
 - **interface**: `api.events.nis.Transferred.is`
-- **summary**:    A receipt was transfered. 
+- **summary**:    A receipt was transferred. 
 
 ___
 

@@ -426,7 +426,7 @@ ___
  
 ### maxRegistrars: `u32`
 - **interface**: `api.consts.identity.maxRegistrars`
-- **summary**:    Maxmimum number of registrars allowed in the system. Needed to bound the complexity  of, e.g., updating judgements. 
+- **summary**:    Maximum number of registrars allowed in the system. Needed to bound the complexity  of, e.g., updating judgements. 
  
 ### maxSubAccounts: `u32`
 - **interface**: `api.consts.identity.maxSubAccounts`

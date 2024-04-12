@@ -7,7 +7,7 @@ The [@polkadot/extension-dapp](https://www.npmjs.com/package/@polkadot/extension
 
 - `web3Enable(dappName: string): Promise<InjectedExtension[]>` - to be called before anything else, retrieves the list of all injected extensions/providers
 - `web3Accounts(): Promise<InjectedAccountWithMeta[]>` - returns a list of all the injected accounts, across all extensions (source in meta)
-- `web3AccountsSubscribe(cb: (accounts: InjectedAccountWithMeta[]) => any): Promise<Unsubcall>` - subscribes to the accounts accross all extensions, returning a full list as changes are made
+- `web3AccountsSubscribe(cb: (accounts: InjectedAccountWithMeta[]) => any): Promise<Unsubcall>` - subscribes to the accounts across all extensions, returning a full list as changes are made
 - `web3FromAddress(address: string): Promise<InjectedExtension>` - Retrieves a provider for a specific address
 - `web3FromSource(name: string): Promise<InjectedExtension>` - Retrieves a provider identified by the name
 - `isWeb3Injected: boolean` - boolean to indicate if `injectedWeb3` was found on the page
