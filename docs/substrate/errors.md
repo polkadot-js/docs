@@ -2998,7 +2998,7 @@ ___
  
 ### MissingStateData
 - **interface**: `api.errors.transactionStorage.MissingStateData.is`
-- **summary**:    Unable to verify proof because state data is missing. 
+- **summary**:    Unable to verify proof becasue state data is missing. 
  
 ### NotConfigured
 - **interface**: `api.errors.transactionStorage.NotConfigured.is`
