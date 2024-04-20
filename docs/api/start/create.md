@@ -28,6 +28,11 @@ We generally recommend always specifying the endpoint since in most cases we wan
 
 At this time the only provider type that is fully supported by the API is the WebSocket version. Polkadot/Substrate really comes alive with possibilities once you have access to bi-directional RPCs such as what WebSockets provide. (It is technically possible to have some limited capability via bare-HTTP, but at this point WebSockets is the only fully-operational and supported version - always remember that it is just "upgraded HTTP".)
 
+There are a number of organisations that maintain free RPC WebSocket endpoints for the community. The list is fluid and so the easiest way to discover them is to use the [apps UI](https://polkadot.js.org/apps/) to see what are available (once selected the physical RPC `wss://` endpoint can be seen in the URL or under the custom endpoint in the network selector under Development). As of writing, here are some existing RPC WebSocket endpoints:
+
+- Parity: `wss://rpc.polkadot.io`
+- OnFinality: `wss://polkadot.api.onfinality.io/public-ws`
+- Patract Elara: `wss://polkadot.elara.patract.io`
 
 ## API Instance
 
