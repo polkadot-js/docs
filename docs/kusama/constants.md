@@ -22,6 +22,8 @@ The following sections contain the module constants, also known as parameter typ
 
 - **[convictionVoting](#convictionvoting)**
 
+- **[coretime](#coretime)**
+
 - **[crowdloan](#crowdloan)**
 
 - **[electionProviderMultiPhase](#electionprovidermultiphase)**
@@ -31,10 +33,6 @@ The following sections contain the module constants, also known as parameter typ
 - **[fellowshipReferenda](#fellowshipreferenda)**
 
 - **[grandpa](#grandpa)**
-
-- **[identity](#identity)**
-
-- **[imOnline](#imonline)**
 
 - **[indices](#indices)**
 
@@ -47,6 +45,8 @@ The following sections contain the module constants, also known as parameter typ
 - **[nisCounterpartBalances](#niscounterpartbalances)**
 
 - **[nominationPools](#nominationpools)**
+
+- **[onDemandAssignmentProvider](#ondemandassignmentprovider)**
 
 - **[paras](#paras)**
 
@@ -65,8 +65,6 @@ The following sections contain the module constants, also known as parameter typ
 - **[society](#society)**
 
 - **[staking](#staking)**
-
-- **[stateTrieMigration](#statetriemigration)**
 
 - **[system](#system)**
 
@@ -142,17 +140,17 @@ ___
 - **interface**: `api.consts.balances.maxFreezes`
 - **summary**:    The maximum number of individual freeze locks that can exist on an account at any time. 
  
-### maxHolds: `u32`
-- **interface**: `api.consts.balances.maxHolds`
-- **summary**:    The maximum number of holds that can exist on an account at any time. 
- 
 ### maxLocks: `u32`
 - **interface**: `api.consts.balances.maxLocks`
 - **summary**:    The maximum number of locks that should exist on an account.  Not strictly enforced, but used for weight estimation. 
+
+   Use of locks is deprecated in favour of freezes. See `https://github.com/paritytech/substrate/pull/12951/` 
  
 ### maxReserves: `u32`
 - **interface**: `api.consts.balances.maxReserves`
 - **summary**:    The maximum number of named reserves that can exist on an account. 
+
+   Use of reserves is deprecated in favour of holds. See `https://github.com/paritytech/substrate/pull/12951/` 
 
 ___
 
@@ -259,6 +257,19 @@ ___
 ___
 
 
+## coretime
+ 
+### brokerId: `u32`
+- **interface**: `api.consts.coretime.brokerId`
+- **summary**:    The ParaId of the coretime chain. 
+ 
+### brokerPotLocation: `StagingXcmV4Junctions`
+- **interface**: `api.consts.coretime.brokerPotLocation`
+- **summary**:    The coretime chain pot location. 
+
+___
+
+
 ## crowdloan
  
 ### minContribution: `u128`
@@ -281,10 +292,6 @@ ___
 ### betterSignedThreshold: `Perbill`
 - **interface**: `api.consts.electionProviderMultiPhase.betterSignedThreshold`
 - **summary**:    The minimum amount of improvement to the solution score that defines a solution as  "better" in the Signed phase. 
- 
-### betterUnsignedThreshold: `Perbill`
-- **interface**: `api.consts.electionProviderMultiPhase.betterUnsignedThreshold`
-- **summary**:    The minimum amount of improvement to the solution score that defines a solution as  "better" in the Unsigned phase. 
  
 ### maxWinners: `u32`
 - **interface**: `api.consts.electionProviderMultiPhase.maxWinners`
@@ -314,10 +321,6 @@ ___
 
    For example, if it is 5, that means that at least 5 blocks will elapse between attempts  to submit the worker's solution. 
  
-### signedDepositBase: `u128`
-- **interface**: `api.consts.electionProviderMultiPhase.signedDepositBase`
-- **summary**:    Base deposit for a signed solution. 
- 
 ### signedDepositByte: `u128`
 - **interface**: `api.consts.electionProviderMultiPhase.signedDepositByte`
 - **summary**:    Per-byte deposit for a signed solution. 
@@ -342,17 +345,9 @@ ___
 
    If [`Config::MinerConfig`] is being implemented to submit signed solutions (outside of  this pallet), then [`MinerConfig::solution_weight`] is used to compare against  this value. 
  
-### signedPhase: `u32`
-- **interface**: `api.consts.electionProviderMultiPhase.signedPhase`
-- **summary**:    Duration of the signed phase. 
- 
 ### signedRewardBase: `u128`
 - **interface**: `api.consts.electionProviderMultiPhase.signedRewardBase`
 - **summary**:    Base reward for a signed solution 
- 
-### unsignedPhase: `u32`
-- **interface**: `api.consts.electionProviderMultiPhase.unsignedPhase`
-- **summary**:    Duration of the unsigned phase. 
 
 ___
 
@@ -410,46 +405,6 @@ ___
 ___
 
 
-## identity
- 
-### basicDeposit: `u128`
-- **interface**: `api.consts.identity.basicDeposit`
-- **summary**:    The amount held on deposit for a registered identity 
- 
-### fieldDeposit: `u128`
-- **interface**: `api.consts.identity.fieldDeposit`
-- **summary**:    The amount held on deposit per additional field for a registered identity. 
- 
-### maxAdditionalFields: `u32`
-- **interface**: `api.consts.identity.maxAdditionalFields`
-- **summary**:    Maximum number of additional fields that may be stored in an ID. Needed to bound the I/O  required to access an identity, but can be pretty high. 
- 
-### maxRegistrars: `u32`
-- **interface**: `api.consts.identity.maxRegistrars`
-- **summary**:    Maxmimum number of registrars allowed in the system. Needed to bound the complexity  of, e.g., updating judgements. 
- 
-### maxSubAccounts: `u32`
-- **interface**: `api.consts.identity.maxSubAccounts`
-- **summary**:    The maximum number of sub-accounts allowed per identified account. 
- 
-### subAccountDeposit: `u128`
-- **interface**: `api.consts.identity.subAccountDeposit`
-- **summary**:    The amount held on deposit for a registered subaccount. This should account for the fact  that one storage item's value will increase by the size of an account ID, and there will  be another trie item whose value is the size of an account ID plus 32 bytes. 
-
-___
-
-
-## imOnline
- 
-### unsignedPriority: `u64`
-- **interface**: `api.consts.imOnline.unsignedPriority`
-- **summary**:    A configuration for base priority of unsigned transactions. 
-
-   This is exposed so that it can be tuned for particular runtime, when  multiple pallets send unsigned transactions. 
-
-___
-
-
 ## indices
  
 ### deposit: `u128`
@@ -467,15 +422,21 @@ ___
 
    A good value depends on the expected message sizes, their weights, the weight that is  available for processing them and the maximal needed message size. The maximal message  size is slightly lower than this as defined by [`MaxMessageLenOf`]. 
  
+### idleMaxServiceWeight: `Option<SpWeightsWeightV2Weight>`
+- **interface**: `api.consts.messageQueue.idleMaxServiceWeight`
+- **summary**:    The maximum amount of weight (if any) to be used from remaining weight `on_idle` which  should be provided to the message queue for servicing enqueued items `on_idle`.  Useful for parachains to process messages at the same block they are received. 
+
+   If `None`, it will not call `ServiceQueues::service_queues` in `on_idle`. 
+ 
 ### maxStale: `u32`
 - **interface**: `api.consts.messageQueue.maxStale`
 - **summary**:    The maximum number of stale pages (i.e. of overweight messages) allowed before culling  can happen. Once there are more stale pages than this, then historical pages may be  dropped, even if they contain unprocessed overweight messages. 
  
 ### serviceWeight: `Option<SpWeightsWeightV2Weight>`
 - **interface**: `api.consts.messageQueue.serviceWeight`
-- **summary**:    The amount of weight (if any) which should be provided to the message queue for  servicing enqueued items. 
+- **summary**:    The amount of weight (if any) which should be provided to the message queue for  servicing enqueued items `on_initialize`. 
 
-   This may be legitimately `None` in the case that you will call  `ServiceQueues::service_queues` manually. 
+   This may be legitimately `None` in the case that you will call  `ServiceQueues::service_queues` manually or set [`Self::IdleMaxServiceWeight`] to have  it run in `on_idle`. 
 
 ___
 
@@ -568,17 +529,17 @@ ___
 - **interface**: `api.consts.nisCounterpartBalances.maxFreezes`
 - **summary**:    The maximum number of individual freeze locks that can exist on an account at any time. 
  
-### maxHolds: `u32`
-- **interface**: `api.consts.nisCounterpartBalances.maxHolds`
-- **summary**:    The maximum number of holds that can exist on an account at any time. 
- 
 ### maxLocks: `u32`
 - **interface**: `api.consts.nisCounterpartBalances.maxLocks`
 - **summary**:    The maximum number of locks that should exist on an account.  Not strictly enforced, but used for weight estimation. 
+
+   Use of locks is deprecated in favour of freezes. See `https://github.com/paritytech/substrate/pull/12951/` 
  
 ### maxReserves: `u32`
 - **interface**: `api.consts.nisCounterpartBalances.maxReserves`
 - **summary**:    The maximum number of named reserves that can exist on an account. 
+
+   Use of reserves is deprecated in favour of holds. See `https://github.com/paritytech/substrate/pull/12951/` 
 
 ___
 
@@ -595,9 +556,30 @@ ___
 
    For a value of 10, the threshold would be a pool points-to-balance ratio of 10:1.  Such a scenario would also be the equivalent of the pool being 90% slashed. 
  
+### maxUnbonding: `u32`
+- **interface**: `api.consts.nominationPools.maxUnbonding`
+- **summary**:    The maximum number of simultaneous unbonding chunks that can exist per member. 
+ 
 ### palletId: `FrameSupportPalletId`
 - **interface**: `api.consts.nominationPools.palletId`
 - **summary**:    The nomination pool's pallet id. 
+
+___
+
+
+## onDemandAssignmentProvider
+ 
+### maxHistoricalRevenue: `u32`
+- **interface**: `api.consts.onDemandAssignmentProvider.maxHistoricalRevenue`
+- **summary**:    The maximum number of blocks some historical revenue  information stored for. 
+ 
+### palletId: `FrameSupportPalletId`
+- **interface**: `api.consts.onDemandAssignmentProvider.palletId`
+- **summary**:    Identifier for the internal revenue balance. 
+ 
+### trafficDefaultValue: `u128`
+- **interface**: `api.consts.onDemandAssignmentProvider.trafficDefaultValue`
+- **summary**:    The default value for the spot traffic multiplier. 
 
 ___
 
@@ -793,19 +775,23 @@ ___
 - **interface**: `api.consts.staking.historyDepth`
 - **summary**:    Number of eras to keep in history. 
 
-   Following information is kept for eras in `[current_era -  HistoryDepth, current_era]`: `ErasStakers`, `ErasStakersClipped`,  `ErasValidatorPrefs`, `ErasValidatorReward`, `ErasRewardPoints`,  `ErasTotalStake`, `ErasStartSessionIndex`,  `StakingLedger.claimed_rewards`. 
+   Following information is kept for eras in `[current_era -  HistoryDepth, current_era]`: `ErasStakers`, `ErasStakersClipped`,  `ErasValidatorPrefs`, `ErasValidatorReward`, `ErasRewardPoints`,  `ErasTotalStake`, `ErasStartSessionIndex`, `ClaimedRewards`, `ErasStakersPaged`,  `ErasStakersOverview`. 
 
    Must be more than the number of eras delayed by session.  I.e. active era must always be in history. I.e. `active_era >  current_era - history_depth` must be guaranteed. 
 
    If migrating an existing pallet from storage value to config value,  this should be set to same value or greater as in storage. 
 
-   Note: `HistoryDepth` is used as the upper bound for the `BoundedVec`  item `StakingLedger.claimed_rewards`. Setting this value lower than  the existing value can lead to inconsistencies in the  `StakingLedger` and will need to be handled properly in a migration.  The test `reducing_history_depth_abrupt` shows this effect. 
+   Note: `HistoryDepth` is used as the upper bound for the `BoundedVec`  item `StakingLedger.legacy_claimed_rewards`. Setting this value lower than  the existing value can lead to inconsistencies in the  `StakingLedger` and will need to be handled properly in a migration.  The test `reducing_history_depth_abrupt` shows this effect. 
  
-### maxNominatorRewardedPerValidator: `u32`
-- **interface**: `api.consts.staking.maxNominatorRewardedPerValidator`
-- **summary**:    The maximum number of nominators rewarded for each validator. 
+### maxExposurePageSize: `u32`
+- **interface**: `api.consts.staking.maxExposurePageSize`
+- **summary**:    The maximum size of each `T::ExposurePage`. 
 
-   For each validator only the `$MaxNominatorRewardedPerValidator` biggest stakers can  claim their reward. This used to limit the i/o cost for the nominator payout. 
+   An `ExposurePage` is weakly bounded to a maximum of `MaxExposurePageSize`  nominators. 
+
+   For older non-paged exposure, a reward payout was restricted to the top  `MaxExposurePageSize` nominators. This is to limit the i/o cost for the  nominator payout. 
+
+   Note: `MaxExposurePageSize` is used to bound `ClaimedRewards` and is unsafe to reduce  without handling it in a migration. 
  
 ### maxUnlockingChunks: `u32`
 - **interface**: `api.consts.staking.maxUnlockingChunks`
@@ -822,31 +808,6 @@ ___
 - **summary**:    Number of eras that slashes are deferred by, after computation. 
 
    This should be less than the bonding duration. Set to 0 if slashes  should be applied immediately, without opportunity for intervention. 
-
-___
-
-
-## stateTrieMigration
- 
-### maxKeyLen: `u32`
-- **interface**: `api.consts.stateTrieMigration.maxKeyLen`
-- **summary**:    Maximal number of bytes that a key can have. 
-
-   FRAME itself does not limit the key length.  The concrete value must therefore depend on your storage usage.  A [`frame_support::storage::StorageNMap`] for example can have an arbitrary number of  keys which are then hashed and concatenated, resulting in arbitrarily long keys. 
-
-   Use the *state migration RPC* to retrieve the length of the longest key in your  storage: <https://github.com/paritytech/substrate/issues/11642> 
-
-   The migration will halt with a `Halted` event if this value is too small.  Since there is no real penalty from over-estimating, it is advised to use a large  value. The default is 512 byte. 
-
-   Some key lengths for reference: 
-
-  - [`frame_support::storage::StorageValue`]: 32 byte
-
-  - [`frame_support::storage::StorageMap`]: 64 byte
-
-  - [`frame_support::storage::StorageDoubleMap`]: 96 byte
-
-   For more info see  <https://www.shawntabrizi.com/substrate/querying-substrate-storage-via-rpc/> 
 
 ___
 
@@ -877,7 +838,7 @@ ___
  
 ### version: `SpVersionRuntimeVersion`
 - **interface**: `api.consts.system.version`
-- **summary**:    Get the chain's current version. 
+- **summary**:    Get the chain's in-code version. 
 
 ___
 
@@ -886,7 +847,9 @@ ___
  
 ### minimumPeriod: `u64`
 - **interface**: `api.consts.timestamp.minimumPeriod`
-- **summary**:    The minimum period between blocks. Beware that this is different to the *expected*  period that the block production apparatus provides. Your chosen consensus system will  generally work with this to determine a sensible block time. e.g. For Aura, it will be  double this period on default settings. 
+- **summary**:    The minimum period between blocks. 
+
+   Be aware that this is different to the *expected* period that the block production  apparatus provides. Your chosen consensus system will generally work with this to  determine a sensible block time. For example, in the Aura pallet it will be double this  period on default settings. 
 
 ___
 
@@ -895,9 +858,9 @@ ___
  
 ### operationalFeeMultiplier: `u8`
 - **interface**: `api.consts.transactionPayment.operationalFeeMultiplier`
-- **summary**:    A fee mulitplier for `Operational` extrinsics to compute "virtual tip" to boost their  `priority` 
+- **summary**:    A fee multiplier for `Operational` extrinsics to compute "virtual tip" to boost their  `priority` 
 
-   This value is multipled by the `final_fee` to obtain a "virtual tip" that is later  added to a tip component in regular `priority` calculations.  It means that a `Normal` transaction can front-run a similarly-sized `Operational`  extrinsic (with no tip), by including a tip value greater than the virtual tip. 
+   This value is multiplied by the `final_fee` to obtain a "virtual tip" that is later  added to a tip component in regular `priority` calculations.  It means that a `Normal` transaction can front-run a similarly-sized `Operational`  extrinsic (with no tip), by including a tip value greater than the virtual tip. 
 
    ```rust,ignore  // For `Normal`  let priority = priority_calc(tip); 
 
@@ -924,17 +887,9 @@ ___
 - **interface**: `api.consts.treasury.palletId`
 - **summary**:    The treasury's pallet id, used for deriving its sovereign account ID. 
  
-### proposalBond: `Permill`
-- **interface**: `api.consts.treasury.proposalBond`
-- **summary**:    Fraction of a proposal's value that should be bonded in order to place the proposal.  An accepted proposal gets these back. A rejected proposal does not. 
- 
-### proposalBondMaximum: `Option<u128>`
-- **interface**: `api.consts.treasury.proposalBondMaximum`
-- **summary**:    Maximum amount of funds that should be placed in a deposit for making a proposal. 
- 
-### proposalBondMinimum: `u128`
-- **interface**: `api.consts.treasury.proposalBondMinimum`
-- **summary**:    Minimum amount of funds that should be placed in a deposit for making a proposal. 
+### payoutPeriod: `u32`
+- **interface**: `api.consts.treasury.payoutPeriod`
+- **summary**:    The period during which an approved treasury spend has to be claimed. 
  
 ### spendPeriod: `u32`
 - **interface**: `api.consts.treasury.spendPeriod`

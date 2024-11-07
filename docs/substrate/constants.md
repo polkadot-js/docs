@@ -18,6 +18,8 @@ The following sections contain the module constants, also known as parameter typ
 
 - **[balances](#balances)**
 
+- **[beefy](#beefy)**
+
 - **[bounties](#bounties)**
 
 - **[broker](#broker)**
@@ -53,6 +55,8 @@ The following sections contain the module constants, also known as parameter typ
 - **[messageQueue](#messagequeue)**
 
 - **[mixnet](#mixnet)**
+
+- **[multiBlockMigrations](#multiblockmigrations)**
 
 - **[multisig](#multisig)**
 
@@ -150,10 +154,6 @@ ___
 
 ## assetConversion
  
-### allowMultiAssetPools: `bool`
-- **interface**: `api.consts.assetConversion.allowMultiAssetPools`
-- **summary**:    A setting to allow creating pools with both non-native assets. 
- 
 ### liquidityWithdrawalFee: `Permill`
 - **interface**: `api.consts.assetConversion.liquidityWithdrawalFee`
 - **summary**:    A fee to withdraw the liquidity. 
@@ -177,6 +177,10 @@ ___
 ### poolSetupFee: `u128`
 - **interface**: `api.consts.assetConversion.poolSetupFee`
 - **summary**:    A one-time fee to setup the pool. 
+ 
+### poolSetupFeeAsset: `FrameSupportTokensFungibleUnionOfNativeOrWithId`
+- **interface**: `api.consts.assetConversion.poolSetupFeeAsset`
+- **summary**:    Asset class from [`Config::Assets`] used to pay the [`Config::PoolSetupFee`]. 
 
 ___
 
@@ -251,17 +255,36 @@ ___
 - **interface**: `api.consts.balances.maxFreezes`
 - **summary**:    The maximum number of individual freeze locks that can exist on an account at any time. 
  
-### maxHolds: `u32`
-- **interface**: `api.consts.balances.maxHolds`
-- **summary**:    The maximum number of holds that can exist on an account at any time. 
- 
 ### maxLocks: `u32`
 - **interface**: `api.consts.balances.maxLocks`
 - **summary**:    The maximum number of locks that should exist on an account.  Not strictly enforced, but used for weight estimation. 
+
+   Use of locks is deprecated in favour of freezes. See `https://github.com/paritytech/substrate/pull/12951/` 
  
 ### maxReserves: `u32`
 - **interface**: `api.consts.balances.maxReserves`
 - **summary**:    The maximum number of named reserves that can exist on an account. 
+
+   Use of reserves is deprecated in favour of holds. See `https://github.com/paritytech/substrate/pull/12951/` 
+
+___
+
+
+## beefy
+ 
+### maxAuthorities: `u32`
+- **interface**: `api.consts.beefy.maxAuthorities`
+- **summary**:    The maximum number of authorities that can be added. 
+ 
+### maxNominators: `u32`
+- **interface**: `api.consts.beefy.maxNominators`
+- **summary**:    The maximum number of nominators for each validator. 
+ 
+### maxSetIdSessionEntries: `u64`
+- **interface**: `api.consts.beefy.maxSetIdSessionEntries`
+- **summary**:    The maximum number of entries to keep in the set id to session index mapping. 
+
+   Since the `SetIdSession` map is only used for validating equivocations this  value should relate to the bonding duration of whatever staking system is  being used (if any). If equivocation handling is not enabled then this value  can be zero. 
 
 ___
 
@@ -347,9 +370,15 @@ ___
 
 ## contracts
  
+### apiVersion: `u16`
+- **interface**: `api.consts.contracts.apiVersion`
+- **summary**:    The version of the HostFn APIs that are available in the runtime. 
+
+   Only valid value is `()`. 
+ 
 ### codeHashLockupDepositPercent: `Perbill`
 - **interface**: `api.consts.contracts.codeHashLockupDepositPercent`
-- **summary**:    The percentage of the storage deposit that should be held for using a code hash.  Instantiating a contract, or calling [`chain_extension::Ext::add_delegate_dependency`]  protects the code from being removed. In order to prevent abuse these actions are  protected with a percentage of the code deposit. 
+- **summary**:    The percentage of the storage deposit that should be held for using a code hash.  Instantiating a contract, or calling [`chain_extension::Ext::lock_delegate_dependency`]  protects the code from being removed. In order to prevent abuse these actions are  protected with a percentage of the code deposit. 
  
 ### defaultDepositLimit: `u128`
 - **interface**: `api.consts.contracts.defaultDepositLimit`
@@ -389,11 +418,15 @@ ___
  
 ### maxDelegateDependencies: `u32`
 - **interface**: `api.consts.contracts.maxDelegateDependencies`
-- **summary**:    The maximum number of delegate_dependencies that a contract can lock with  [`chain_extension::Ext::add_delegate_dependency`]. 
+- **summary**:    The maximum number of delegate_dependencies that a contract can lock with  [`chain_extension::Ext::lock_delegate_dependency`]. 
  
 ### maxStorageKeyLen: `u32`
 - **interface**: `api.consts.contracts.maxStorageKeyLen`
 - **summary**:    The maximum allowable length in bytes for storage keys. 
+ 
+### maxTransientStorageSize: `u32`
+- **interface**: `api.consts.contracts.maxTransientStorageSize`
+- **summary**:    The maximum size of the transient storage in bytes.  This includes keys, values, and previous entries used for storage rollback. 
  
 ### schedule: `PalletContractsSchedule`
 - **interface**: `api.consts.contracts.schedule`
@@ -434,6 +467,12 @@ ___
 ### evidenceSize: `u32`
 - **interface**: `api.consts.coreFellowship.evidenceSize`
 - **summary**:    The maximum size in bytes submitted evidence is allowed to be. 
+ 
+### maxRank: `u32`
+- **interface**: `api.consts.coreFellowship.maxRank`
+- **summary**:    Represents the highest possible rank in this pallet. 
+
+   Increasing this value is supported, but decreasing it may lead to a broken state. 
 
 ___
 
@@ -512,10 +551,6 @@ ___
 - **interface**: `api.consts.electionProviderMultiPhase.betterSignedThreshold`
 - **summary**:    The minimum amount of improvement to the solution score that defines a solution as  "better" in the Signed phase. 
  
-### betterUnsignedThreshold: `Perbill`
-- **interface**: `api.consts.electionProviderMultiPhase.betterUnsignedThreshold`
-- **summary**:    The minimum amount of improvement to the solution score that defines a solution as  "better" in the Unsigned phase. 
- 
 ### maxWinners: `u32`
 - **interface**: `api.consts.electionProviderMultiPhase.maxWinners`
 - **summary**:    The maximum number of winners that can be elected by this `ElectionProvider`  implementation. 
@@ -568,17 +603,9 @@ ___
 
    If [`Config::MinerConfig`] is being implemented to submit signed solutions (outside of  this pallet), then [`MinerConfig::solution_weight`] is used to compare against  this value. 
  
-### signedPhase: `u32`
-- **interface**: `api.consts.electionProviderMultiPhase.signedPhase`
-- **summary**:    Duration of the signed phase. 
- 
 ### signedRewardBase: `u128`
 - **interface**: `api.consts.electionProviderMultiPhase.signedRewardBase`
 - **summary**:    Base reward for a signed solution 
- 
-### unsignedPhase: `u32`
-- **interface**: `api.consts.electionProviderMultiPhase.unsignedPhase`
-- **summary**:    Duration of the unsigned phase. 
 
 ___
 
@@ -672,7 +699,7 @@ ___
  
 ### basicDeposit: `u128`
 - **interface**: `api.consts.identity.basicDeposit`
-- **summary**:    The amount held on deposit for a registered identity 
+- **summary**:    The amount held on deposit for a registered identity. 
  
 ### byteDeposit: `u128`
 - **interface**: `api.consts.identity.byteDeposit`
@@ -680,11 +707,23 @@ ___
  
 ### maxRegistrars: `u32`
 - **interface**: `api.consts.identity.maxRegistrars`
-- **summary**:    Maxmimum number of registrars allowed in the system. Needed to bound the complexity  of, e.g., updating judgements. 
+- **summary**:    Maximum number of registrars allowed in the system. Needed to bound the complexity  of, e.g., updating judgements. 
  
 ### maxSubAccounts: `u32`
 - **interface**: `api.consts.identity.maxSubAccounts`
 - **summary**:    The maximum number of sub-accounts allowed per identified account. 
+ 
+### maxSuffixLength: `u32`
+- **interface**: `api.consts.identity.maxSuffixLength`
+- **summary**:    The maximum length of a suffix. 
+ 
+### maxUsernameLength: `u32`
+- **interface**: `api.consts.identity.maxUsernameLength`
+- **summary**:    The maximum length of a username, including its suffix and any system-added delimiters. 
+ 
+### pendingUsernameExpiration: `u32`
+- **interface**: `api.consts.identity.pendingUsernameExpiration`
+- **summary**:    The number of blocks within which a username grant must be accepted. 
  
 ### subAccountDeposit: `u128`
 - **interface**: `api.consts.identity.subAccountDeposit`
@@ -738,15 +777,21 @@ ___
 
    A good value depends on the expected message sizes, their weights, the weight that is  available for processing them and the maximal needed message size. The maximal message  size is slightly lower than this as defined by [`MaxMessageLenOf`]. 
  
+### idleMaxServiceWeight: `Option<SpWeightsWeightV2Weight>`
+- **interface**: `api.consts.messageQueue.idleMaxServiceWeight`
+- **summary**:    The maximum amount of weight (if any) to be used from remaining weight `on_idle` which  should be provided to the message queue for servicing enqueued items `on_idle`.  Useful for parachains to process messages at the same block they are received. 
+
+   If `None`, it will not call `ServiceQueues::service_queues` in `on_idle`. 
+ 
 ### maxStale: `u32`
 - **interface**: `api.consts.messageQueue.maxStale`
 - **summary**:    The maximum number of stale pages (i.e. of overweight messages) allowed before culling  can happen. Once there are more stale pages than this, then historical pages may be  dropped, even if they contain unprocessed overweight messages. 
  
 ### serviceWeight: `Option<SpWeightsWeightV2Weight>`
 - **interface**: `api.consts.messageQueue.serviceWeight`
-- **summary**:    The amount of weight (if any) which should be provided to the message queue for  servicing enqueued items. 
+- **summary**:    The amount of weight (if any) which should be provided to the message queue for  servicing enqueued items `on_initialize`. 
 
-   This may be legitimately `None` in the case that you will call  `ServiceQueues::service_queues` manually. 
+   This may be legitimately `None` in the case that you will call  `ServiceQueues::service_queues` manually or set [`Self::IdleMaxServiceWeight`] to have  it run in `on_idle`. 
 
 ___
 
@@ -792,6 +837,23 @@ ___
 ### registrationPriority: `u64`
 - **interface**: `api.consts.mixnet.registrationPriority`
 - **summary**:    Priority of unsigned transactions used to register mixnodes. 
+
+___
+
+
+## multiBlockMigrations
+ 
+### cursorMaxLen: `u32`
+- **interface**: `api.consts.multiBlockMigrations.cursorMaxLen`
+- **summary**:    The maximal length of an encoded cursor. 
+
+   A good default needs to selected such that no migration will ever have a cursor with MEL  above this limit. This is statically checked in `integrity_test`. 
+ 
+### identifierMaxLen: `u32`
+- **interface**: `api.consts.multiBlockMigrations.identifierMaxLen`
+- **summary**:    The maximal length of an encoded identifier. 
+
+   A good default needs to selected such that no migration will ever have an identifier  with MEL above this limit. This is statically checked in `integrity_test`. 
 
 ___
 
@@ -1340,7 +1402,7 @@ ___
 
   - [`frame_support::storage::StorageDoubleMap`]: 96 byte
 
-   For more info see  <https://www.shawntabrizi.com/substrate/querying-substrate-storage-via-rpc/> 
+   For more info see  <https://www.shawntabrizi.com/blog/substrate/querying-substrate-storage-via-rpc/> 
 
 ___
 
@@ -1371,7 +1433,7 @@ ___
  
 ### version: `SpVersionRuntimeVersion`
 - **interface**: `api.consts.system.version`
-- **summary**:    Get the chain's current version. 
+- **summary**:    Get the chain's in-code version. 
 
 ___
 
@@ -1422,7 +1484,7 @@ ___
  
 ### tipReportDepositBase: `u128`
 - **interface**: `api.consts.tips.tipReportDepositBase`
-- **summary**:    The amount held on deposit for placing a tip report. 
+- **summary**:    The non-zero amount held on deposit for placing a tip report. 
 
 ___
 
@@ -1463,18 +1525,6 @@ ___
 ### payoutPeriod: `u32`
 - **interface**: `api.consts.treasury.payoutPeriod`
 - **summary**:    The period during which an approved treasury spend has to be claimed. 
- 
-### proposalBond: `Permill`
-- **interface**: `api.consts.treasury.proposalBond`
-- **summary**:    Fraction of a proposal's value that should be bonded in order to place the proposal.  An accepted proposal gets these back. A rejected proposal does not. 
- 
-### proposalBondMaximum: `Option<u128>`
-- **interface**: `api.consts.treasury.proposalBondMaximum`
-- **summary**:    Maximum amount of funds that should be placed in a deposit for making a proposal. 
- 
-### proposalBondMinimum: `u128`
-- **interface**: `api.consts.treasury.proposalBondMinimum`
-- **summary**:    Minimum amount of funds that should be placed in a deposit for making a proposal. 
  
 ### spendPeriod: `u32`
 - **interface**: `api.consts.treasury.spendPeriod`

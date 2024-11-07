@@ -6,11 +6,15 @@ The following sections contain Extrinsics methods are part of the default Polkad
 
 (NOTE: These were generated from a static/snapshot view of a recent default Polkadot runtime. Some items may not be available in older nodes, or in any customized implementations.)
 
+- **[assetRate](#assetrate)**
+
 - **[auctions](#auctions)**
 
 - **[babe](#babe)**
 
 - **[balances](#balances)**
+
+- **[beefy](#beefy)**
 
 - **[bounties](#bounties)**
 
@@ -33,8 +37,6 @@ The following sections contain Extrinsics methods are part of the default Polkad
 - **[hrmp](#hrmp)**
 
 - **[identity](#identity)**
-
-- **[imOnline](#imonline)**
 
 - **[indices](#indices)**
 
@@ -74,6 +76,8 @@ The following sections contain Extrinsics methods are part of the default Polkad
 
 - **[staking](#staking)**
 
+- **[stateTrieMigration](#statetriemigration)**
+
 - **[system](#system)**
 
 - **[timestamp](#timestamp)**
@@ -90,6 +94,23 @@ The following sections contain Extrinsics methods are part of the default Polkad
 
 - **[xcmPallet](#xcmpallet)**
 
+
+___
+
+
+## assetRate
+ 
+### create(asset_kind: `PolkadotRuntimeCommonImplsVersionedLocatableAsset`, rate: `u128`)
+- **interface**: `api.tx.assetRate.create`
+- **summary**:    See [`Pallet::create`]. 
+ 
+### remove(asset_kind: `PolkadotRuntimeCommonImplsVersionedLocatableAsset`)
+- **interface**: `api.tx.assetRate.remove`
+- **summary**:    See [`Pallet::remove`]. 
+ 
+### update(asset_kind: `PolkadotRuntimeCommonImplsVersionedLocatableAsset`, rate: `u128`)
+- **interface**: `api.tx.assetRate.update`
+- **summary**:    See [`Pallet::update`]. 
 
 ___
 
@@ -130,6 +151,10 @@ ___
 
 ## balances
  
+### forceAdjustTotalIssuance(direction: `PalletBalancesAdjustmentDirection`, delta: `Compact<u128>`)
+- **interface**: `api.tx.balances.forceAdjustTotalIssuance`
+- **summary**:    See [`Pallet::force_adjust_total_issuance`]. 
+ 
 ### forceSetBalance(who: `MultiAddress`, new_free: `Compact<u128>`)
 - **interface**: `api.tx.balances.forceSetBalance`
 - **summary**:    See [`Pallet::force_set_balance`]. 
@@ -141,14 +166,6 @@ ___
 ### forceUnreserve(who: `MultiAddress`, amount: `u128`)
 - **interface**: `api.tx.balances.forceUnreserve`
 - **summary**:    See [`Pallet::force_unreserve`]. 
- 
-### setBalanceDeprecated(who: `MultiAddress`, new_free: `Compact<u128>`, old_reserved: `Compact<u128>`)
-- **interface**: `api.tx.balances.setBalanceDeprecated`
-- **summary**:    See [`Pallet::set_balance_deprecated`]. 
- 
-### transfer(dest: `MultiAddress`, value: `Compact<u128>`)
-- **interface**: `api.tx.balances.transfer`
-- **summary**:    See [`Pallet::transfer`]. 
  
 ### transferAll(dest: `MultiAddress`, keep_alive: `bool`)
 - **interface**: `api.tx.balances.transferAll`
@@ -165,6 +182,23 @@ ___
 ### upgradeAccounts(who: `Vec<AccountId32>`)
 - **interface**: `api.tx.balances.upgradeAccounts`
 - **summary**:    See [`Pallet::upgrade_accounts`]. 
+
+___
+
+
+## beefy
+ 
+### reportEquivocation(equivocation_proof: `SpConsensusBeefyEquivocationProof`, key_owner_proof: `SpSessionMembershipProof`)
+- **interface**: `api.tx.beefy.reportEquivocation`
+- **summary**:    See [`Pallet::report_equivocation`]. 
+ 
+### reportEquivocationUnsigned(equivocation_proof: `SpConsensusBeefyEquivocationProof`, key_owner_proof: `SpSessionMembershipProof`)
+- **interface**: `api.tx.beefy.reportEquivocationUnsigned`
+- **summary**:    See [`Pallet::report_equivocation_unsigned`]. 
+ 
+### setNewGenesis(delay_in_blocks: `u32`)
+- **interface**: `api.tx.beefy.setNewGenesis`
+- **summary**:    See [`Pallet::set_new_genesis`]. 
 
 ___
 
@@ -270,7 +304,11 @@ ___
 
 ## configuration
  
-### setAsyncBackingParams(new: `PolkadotPrimitivesVstagingAsyncBackingParams`)
+### setApprovalVotingParams(new: `PolkadotPrimitivesVstagingApprovalVotingParams`)
+- **interface**: `api.tx.configuration.setApprovalVotingParams`
+- **summary**:    See [`Pallet::set_approval_voting_params`]. 
+ 
+### setAsyncBackingParams(new: `PolkadotPrimitivesV6AsyncBackingAsyncBackingParams`)
 - **interface**: `api.tx.configuration.setAsyncBackingParams`
 - **summary**:    See [`Pallet::set_async_backing_params`]. 
  
@@ -282,6 +320,10 @@ ___
 - **interface**: `api.tx.configuration.setCodeRetentionPeriod`
 - **summary**:    See [`Pallet::set_code_retention_period`]. 
  
+### setCoretimeCores(new: `u32`)
+- **interface**: `api.tx.configuration.setCoretimeCores`
+- **summary**:    See [`Pallet::set_coretime_cores`]. 
+ 
 ### setDisputePeriod(new: `u32`)
 - **interface**: `api.tx.configuration.setDisputePeriod`
 - **summary**:    See [`Pallet::set_dispute_period`]. 
@@ -290,7 +332,7 @@ ___
 - **interface**: `api.tx.configuration.setDisputePostConclusionAcceptancePeriod`
 - **summary**:    See [`Pallet::set_dispute_post_conclusion_acceptance_period`]. 
  
-### setExecutorParams(new: `PolkadotPrimitivesV5ExecutorParams`)
+### setExecutorParams(new: `PolkadotPrimitivesV6ExecutorParams`)
 - **interface**: `api.tx.configuration.setExecutorParams`
 - **summary**:    See [`Pallet::set_executor_params`]. 
  
@@ -374,6 +416,10 @@ ___
 - **interface**: `api.tx.configuration.setMaxValidatorsPerCore`
 - **summary**:    See [`Pallet::set_max_validators_per_core`]. 
  
+### setMinimumBackingVotes(new: `u32`)
+- **interface**: `api.tx.configuration.setMinimumBackingVotes`
+- **summary**:    See [`Pallet::set_minimum_backing_votes`]. 
+ 
 ### setMinimumValidationUpgradeDelay(new: `u32`)
 - **interface**: `api.tx.configuration.setMinimumValidationUpgradeDelay`
 - **summary**:    See [`Pallet::set_minimum_validation_upgrade_delay`]. 
@@ -390,13 +436,13 @@ ___
 - **interface**: `api.tx.configuration.setNoShowSlots`
 - **summary**:    See [`Pallet::set_no_show_slots`]. 
  
+### setNodeFeature(index: `u8`, value: `bool`)
+- **interface**: `api.tx.configuration.setNodeFeature`
+- **summary**:    See [`Pallet::set_node_feature`]. 
+ 
 ### setOnDemandBaseFee(new: `u128`)
 - **interface**: `api.tx.configuration.setOnDemandBaseFee`
 - **summary**:    See [`Pallet::set_on_demand_base_fee`]. 
- 
-### setOnDemandCores(new: `u32`)
-- **interface**: `api.tx.configuration.setOnDemandCores`
-- **summary**:    See [`Pallet::set_on_demand_cores`]. 
  
 ### setOnDemandFeeVariability(new: `Perbill`)
 - **interface**: `api.tx.configuration.setOnDemandFeeVariability`
@@ -580,7 +626,15 @@ ___
 
 ## hrmp
  
-### forceCleanHrmp(para: `u32`, inbound: `u32`, outbound: `u32`)
+### establishChannelWithSystem(target_system_chain: `u32`)
+- **interface**: `api.tx.hrmp.establishChannelWithSystem`
+- **summary**:    See [`Pallet::establish_channel_with_system`]. 
+ 
+### establishSystemChannel(sender: `u32`, recipient: `u32`)
+- **interface**: `api.tx.hrmp.establishSystemChannel`
+- **summary**:    See [`Pallet::establish_system_channel`]. 
+ 
+### forceCleanHrmp(para: `u32`, num_inbound: `u32`, num_outbound: `u32`)
 - **interface**: `api.tx.hrmp.forceCleanHrmp`
 - **summary**:    See [`Pallet::force_clean_hrmp`]. 
  
@@ -600,22 +654,30 @@ ___
 - **interface**: `api.tx.hrmp.hrmpAcceptOpenChannel`
 - **summary**:    See [`Pallet::hrmp_accept_open_channel`]. 
  
-### hrmpCancelOpenRequest(channel_id: `PolkadotParachainPrimitivesHrmpChannelId`, open_requests: `u32`)
+### hrmpCancelOpenRequest(channel_id: `PolkadotParachainPrimitivesPrimitivesHrmpChannelId`, open_requests: `u32`)
 - **interface**: `api.tx.hrmp.hrmpCancelOpenRequest`
 - **summary**:    See [`Pallet::hrmp_cancel_open_request`]. 
  
-### hrmpCloseChannel(channel_id: `PolkadotParachainPrimitivesHrmpChannelId`)
+### hrmpCloseChannel(channel_id: `PolkadotParachainPrimitivesPrimitivesHrmpChannelId`)
 - **interface**: `api.tx.hrmp.hrmpCloseChannel`
 - **summary**:    See [`Pallet::hrmp_close_channel`]. 
  
 ### hrmpInitOpenChannel(recipient: `u32`, proposed_max_capacity: `u32`, proposed_max_message_size: `u32`)
 - **interface**: `api.tx.hrmp.hrmpInitOpenChannel`
 - **summary**:    See [`Pallet::hrmp_init_open_channel`]. 
+ 
+### pokeChannelDeposits(sender: `u32`, recipient: `u32`)
+- **interface**: `api.tx.hrmp.pokeChannelDeposits`
+- **summary**:    See [`Pallet::poke_channel_deposits`]. 
 
 ___
 
 
 ## identity
+ 
+### acceptUsername(username: `Bytes`)
+- **interface**: `api.tx.identity.acceptUsername`
+- **summary**:    See [`Pallet::accept_username`]. 
  
 ### addRegistrar(account: `MultiAddress`)
 - **interface**: `api.tx.identity.addRegistrar`
@@ -624,6 +686,10 @@ ___
 ### addSub(sub: `MultiAddress`, data: `Data`)
 - **interface**: `api.tx.identity.addSub`
 - **summary**:    See [`Pallet::add_sub`]. 
+ 
+### addUsernameAuthority(authority: `MultiAddress`, suffix: `Bytes`, allocation: `u32`)
+- **interface**: `api.tx.identity.addUsernameAuthority`
+- **summary**:    See [`Pallet::add_username_authority`]. 
  
 ### cancelRequest(reg_index: `u32`)
 - **interface**: `api.tx.identity.cancelRequest`
@@ -645,9 +711,21 @@ ___
 - **interface**: `api.tx.identity.quitSub`
 - **summary**:    See [`Pallet::quit_sub`]. 
  
+### removeDanglingUsername(username: `Bytes`)
+- **interface**: `api.tx.identity.removeDanglingUsername`
+- **summary**:    See [`Pallet::remove_dangling_username`]. 
+ 
+### removeExpiredApproval(username: `Bytes`)
+- **interface**: `api.tx.identity.removeExpiredApproval`
+- **summary**:    See [`Pallet::remove_expired_approval`]. 
+ 
 ### removeSub(sub: `MultiAddress`)
 - **interface**: `api.tx.identity.removeSub`
 - **summary**:    See [`Pallet::remove_sub`]. 
+ 
+### removeUsernameAuthority(authority: `MultiAddress`)
+- **interface**: `api.tx.identity.removeUsernameAuthority`
+- **summary**:    See [`Pallet::remove_username_authority`]. 
  
 ### renameSub(sub: `MultiAddress`, data: `Data`)
 - **interface**: `api.tx.identity.renameSub`
@@ -665,26 +743,25 @@ ___
 - **interface**: `api.tx.identity.setFee`
 - **summary**:    See [`Pallet::set_fee`]. 
  
-### setFields(index: `Compact<u32>`, fields: `PalletIdentityBitFlags`)
+### setFields(index: `Compact<u32>`, fields: `u64`)
 - **interface**: `api.tx.identity.setFields`
 - **summary**:    See [`Pallet::set_fields`]. 
  
-### setIdentity(info: `PalletIdentityIdentityInfo`)
+### setIdentity(info: `PalletIdentityLegacyIdentityInfo`)
 - **interface**: `api.tx.identity.setIdentity`
 - **summary**:    See [`Pallet::set_identity`]. 
+ 
+### setPrimaryUsername(username: `Bytes`)
+- **interface**: `api.tx.identity.setPrimaryUsername`
+- **summary**:    See [`Pallet::set_primary_username`]. 
  
 ### setSubs(subs: `Vec<(AccountId32,Data)>`)
 - **interface**: `api.tx.identity.setSubs`
 - **summary**:    See [`Pallet::set_subs`]. 
-
-___
-
-
-## imOnline
  
-### heartbeat(heartbeat: `PalletImOnlineHeartbeat`, signature: `PalletImOnlineSr25519AppSr25519Signature`)
-- **interface**: `api.tx.imOnline.heartbeat`
-- **summary**:    See [`Pallet::heartbeat`]. 
+### setUsernameFor(who: `MultiAddress`, username: `Bytes`, signature: `Option<SpRuntimeMultiSignature>`)
+- **interface**: `api.tx.identity.setUsernameFor`
+- **summary**:    See [`Pallet::set_username_for`]. 
 
 ___
 
@@ -759,6 +836,10 @@ ___
 
 ## nominationPools
  
+### adjustPoolDeposit(pool_id: `u32`)
+- **interface**: `api.tx.nominationPools.adjustPoolDeposit`
+- **summary**:    See [`Pallet::adjust_pool_deposit`]. 
+ 
 ### bondExtra(extra: `PalletNominationPoolsBondExtra`)
 - **interface**: `api.tx.nominationPools.bondExtra`
 - **summary**:    See [`Pallet::bond_extra`]. 
@@ -815,6 +896,10 @@ ___
 - **interface**: `api.tx.nominationPools.setCommissionChangeRate`
 - **summary**:    See [`Pallet::set_commission_change_rate`]. 
  
+### setCommissionClaimPermission(pool_id: `u32`, permission: `Option<PalletNominationPoolsCommissionClaimPermission>`)
+- **interface**: `api.tx.nominationPools.setCommissionClaimPermission`
+- **summary**:    See [`Pallet::set_commission_claim_permission`]. 
+ 
 ### setCommissionMax(pool_id: `u32`, max_commission: `Perbill`)
 - **interface**: `api.tx.nominationPools.setCommissionMax`
 - **summary**:    See [`Pallet::set_commission_max`]. 
@@ -853,7 +938,7 @@ ___
 
 ## paraInherent
  
-### enter(data: `PolkadotPrimitivesV5InherentData`)
+### enter(data: `PolkadotPrimitivesV6InherentData`)
 - **interface**: `api.tx.paraInherent.enter`
 - **summary**:    See [`Pallet::enter`]. 
 
@@ -890,7 +975,7 @@ ___
 - **interface**: `api.tx.paras.forceSetMostRecentContext`
 - **summary**:    See [`Pallet::force_set_most_recent_context`]. 
  
-### includePvfCheckStatement(stmt: `PolkadotPrimitivesV5PvfCheckStatement`, signature: `PolkadotPrimitivesV5ValidatorAppSignature`)
+### includePvfCheckStatement(stmt: `PolkadotPrimitivesV6PvfCheckStatement`, signature: `PolkadotPrimitivesV6ValidatorAppSignature`)
 - **interface**: `api.tx.paras.includePvfCheckStatement`
 - **summary**:    See [`Pallet::include_pvf_check_statement`]. 
  
@@ -917,7 +1002,7 @@ ___
 
 ## parasSlashing
  
-### reportDisputeLostUnsigned(dispute_proof: `PolkadotPrimitivesV5SlashingDisputeProof`, key_owner_proof: `SpSessionMembershipProof`)
+### reportDisputeLostUnsigned(dispute_proof: `PolkadotPrimitivesV6SlashingDisputeProof`, key_owner_proof: `SpSessionMembershipProof`)
 - **interface**: `api.tx.parasSlashing.reportDisputeLostUnsigned`
 - **summary**:    See [`Pallet::report_dispute_lost_unsigned`]. 
 
@@ -925,6 +1010,10 @@ ___
 
 
 ## preimage
+ 
+### ensureUpdated(hashes: `Vec<H256>`)
+- **interface**: `api.tx.preimage.ensureUpdated`
+- **summary**:    See [`Pallet::ensure_updated`]. 
  
 ### notePreimage(bytes: `Bytes`)
 - **interface**: `api.tx.preimage.notePreimage`
@@ -1149,9 +1238,13 @@ ___
 - **interface**: `api.tx.staking.chill`
 - **summary**:    See [`Pallet::chill`]. 
  
-### chillOther(controller: `AccountId32`)
+### chillOther(stash: `AccountId32`)
 - **interface**: `api.tx.staking.chillOther`
 - **summary**:    See [`Pallet::chill_other`]. 
+ 
+### deprecateControllerBatch(controllers: `Vec<AccountId32>`)
+- **interface**: `api.tx.staking.deprecateControllerBatch`
+- **summary**:    See [`Pallet::deprecate_controller_batch`]. 
  
 ### forceApplyMinCommission(validator_stash: `AccountId32`)
 - **interface**: `api.tx.staking.forceApplyMinCommission`
@@ -1189,6 +1282,10 @@ ___
 - **interface**: `api.tx.staking.payoutStakers`
 - **summary**:    See [`Pallet::payout_stakers`]. 
  
+### payoutStakersByPage(validator_stash: `AccountId32`, era: `u32`, page: `u32`)
+- **interface**: `api.tx.staking.payoutStakersByPage`
+- **summary**:    See [`Pallet::payout_stakers_by_page`]. 
+ 
 ### reapStash(stash: `AccountId32`, num_slashing_spans: `u32`)
 - **interface**: `api.tx.staking.reapStash`
 - **summary**:    See [`Pallet::reap_stash`]. 
@@ -1196,6 +1293,10 @@ ___
 ### rebond(value: `Compact<u128>`)
 - **interface**: `api.tx.staking.rebond`
 - **summary**:    See [`Pallet::rebond`]. 
+ 
+### restoreLedger(stash: `AccountId32`, maybe_controller: `Option<AccountId32>`, maybe_total: `Option<u128>`, maybe_unlocking: `Option<Vec<PalletStakingUnlockChunk>>`)
+- **interface**: `api.tx.staking.restoreLedger`
+- **summary**:    See [`Pallet::restore_ledger`]. 
  
 ### scaleValidatorCount(factor: `Percent`)
 - **interface**: `api.tx.staking.scaleValidatorCount`
@@ -1229,6 +1330,10 @@ ___
 - **interface**: `api.tx.staking.unbond`
 - **summary**:    See [`Pallet::unbond`]. 
  
+### updatePayee(controller: `AccountId32`)
+- **interface**: `api.tx.staking.updatePayee`
+- **summary**:    See [`Pallet::update_payee`]. 
+ 
 ### validate(prefs: `PalletStakingValidatorPrefs`)
 - **interface**: `api.tx.staking.validate`
 - **summary**:    See [`Pallet::validate`]. 
@@ -1240,7 +1345,48 @@ ___
 ___
 
 
+## stateTrieMigration
+ 
+### continueMigrate(limits: `PalletStateTrieMigrationMigrationLimits`, real_size_upper: `u32`, witness_task: `PalletStateTrieMigrationMigrationTask`)
+- **interface**: `api.tx.stateTrieMigration.continueMigrate`
+- **summary**:    See [`Pallet::continue_migrate`]. 
+ 
+### controlAutoMigration(maybe_config: `Option<PalletStateTrieMigrationMigrationLimits>`)
+- **interface**: `api.tx.stateTrieMigration.controlAutoMigration`
+- **summary**:    See [`Pallet::control_auto_migration`]. 
+ 
+### forceSetProgress(progress_top: `PalletStateTrieMigrationProgress`, progress_child: `PalletStateTrieMigrationProgress`)
+- **interface**: `api.tx.stateTrieMigration.forceSetProgress`
+- **summary**:    See [`Pallet::force_set_progress`]. 
+ 
+### migrateCustomChild(root: `Bytes`, child_keys: `Vec<Bytes>`, total_size: `u32`)
+- **interface**: `api.tx.stateTrieMigration.migrateCustomChild`
+- **summary**:    See [`Pallet::migrate_custom_child`]. 
+ 
+### migrateCustomTop(keys: `Vec<Bytes>`, witness_size: `u32`)
+- **interface**: `api.tx.stateTrieMigration.migrateCustomTop`
+- **summary**:    See [`Pallet::migrate_custom_top`]. 
+ 
+### setSignedMaxLimits(limits: `PalletStateTrieMigrationMigrationLimits`)
+- **interface**: `api.tx.stateTrieMigration.setSignedMaxLimits`
+- **summary**:    See [`Pallet::set_signed_max_limits`]. 
+
+___
+
+
 ## system
+ 
+### applyAuthorizedUpgrade(code: `Bytes`)
+- **interface**: `api.tx.system.applyAuthorizedUpgrade`
+- **summary**:    See [`Pallet::apply_authorized_upgrade`]. 
+ 
+### authorizeUpgrade(code_hash: `H256`)
+- **interface**: `api.tx.system.authorizeUpgrade`
+- **summary**:    See [`Pallet::authorize_upgrade`]. 
+ 
+### authorizeUpgradeWithoutChecks(code_hash: `H256`)
+- **interface**: `api.tx.system.authorizeUpgradeWithoutChecks`
+- **summary**:    See [`Pallet::authorize_upgrade_without_checks`]. 
  
 ### killPrefix(prefix: `Bytes`, subkeys: `u32`)
 - **interface**: `api.tx.system.killPrefix`
@@ -1292,6 +1438,14 @@ ___
 - **interface**: `api.tx.treasury.approveProposal`
 - **summary**:    See [`Pallet::approve_proposal`]. 
  
+### checkStatus(index: `u32`)
+- **interface**: `api.tx.treasury.checkStatus`
+- **summary**:    See [`Pallet::check_status`]. 
+ 
+### payout(index: `u32`)
+- **interface**: `api.tx.treasury.payout`
+- **summary**:    See [`Pallet::payout`]. 
+ 
 ### proposeSpend(value: `Compact<u128>`, beneficiary: `MultiAddress`)
 - **interface**: `api.tx.treasury.proposeSpend`
 - **summary**:    See [`Pallet::propose_spend`]. 
@@ -1304,9 +1458,17 @@ ___
 - **interface**: `api.tx.treasury.removeApproval`
 - **summary**:    See [`Pallet::remove_approval`]. 
  
-### spend(amount: `Compact<u128>`, beneficiary: `MultiAddress`)
+### spend(asset_kind: `PolkadotRuntimeCommonImplsVersionedLocatableAsset`, amount: `Compact<u128>`, beneficiary: `XcmVersionedLocation`, valid_from: `Option<u32>`)
 - **interface**: `api.tx.treasury.spend`
 - **summary**:    See [`Pallet::spend`]. 
+ 
+### spendLocal(amount: `Compact<u128>`, beneficiary: `MultiAddress`)
+- **interface**: `api.tx.treasury.spendLocal`
+- **summary**:    See [`Pallet::spend_local`]. 
+ 
+### voidSpend(index: `u32`)
+- **interface**: `api.tx.treasury.voidSpend`
+- **summary**:    See [`Pallet::void_spend`]. 
 
 ___
 
@@ -1341,6 +1503,10 @@ ___
 
 
 ## vesting
+ 
+### forceRemoveVestingSchedule(target: `MultiAddress`, schedule_index: `u32`)
+- **interface**: `api.tx.vesting.forceRemoveVestingSchedule`
+- **summary**:    See [`Pallet::force_remove_vesting_schedule`]. 
  
 ### forceVestedTransfer(source: `MultiAddress`, target: `MultiAddress`, schedule: `PalletVestingVestingInfo`)
 - **interface**: `api.tx.vesting.forceVestedTransfer`
@@ -1405,6 +1571,10 @@ ___
 
 ## xcmPallet
  
+### claimAssets(assets: `XcmVersionedAssets`, beneficiary: `XcmVersionedLocation`)
+- **interface**: `api.tx.xcmPallet.claimAssets`
+- **summary**:    See [`Pallet::claim_assets`]. 
+ 
 ### execute(message: `XcmVersionedXcm`, max_weight: `SpWeightsWeightV2Weight`)
 - **interface**: `api.tx.xcmPallet.execute`
 - **summary**:    See [`Pallet::execute`]. 
@@ -1413,7 +1583,7 @@ ___
 - **interface**: `api.tx.xcmPallet.forceDefaultXcmVersion`
 - **summary**:    See [`Pallet::force_default_xcm_version`]. 
  
-### forceSubscribeVersionNotify(location: `XcmVersionedMultiLocation`)
+### forceSubscribeVersionNotify(location: `XcmVersionedLocation`)
 - **interface**: `api.tx.xcmPallet.forceSubscribeVersionNotify`
 - **summary**:    See [`Pallet::force_subscribe_version_notify`]. 
  
@@ -1421,30 +1591,38 @@ ___
 - **interface**: `api.tx.xcmPallet.forceSuspension`
 - **summary**:    See [`Pallet::force_suspension`]. 
  
-### forceUnsubscribeVersionNotify(location: `XcmVersionedMultiLocation`)
+### forceUnsubscribeVersionNotify(location: `XcmVersionedLocation`)
 - **interface**: `api.tx.xcmPallet.forceUnsubscribeVersionNotify`
 - **summary**:    See [`Pallet::force_unsubscribe_version_notify`]. 
  
-### forceXcmVersion(location: `XcmV3MultiLocation`, version: `u32`)
+### forceXcmVersion(location: `StagingXcmV4Location`, version: `u32`)
 - **interface**: `api.tx.xcmPallet.forceXcmVersion`
 - **summary**:    See [`Pallet::force_xcm_version`]. 
  
-### limitedReserveTransferAssets(dest: `XcmVersionedMultiLocation`, beneficiary: `XcmVersionedMultiLocation`, assets: `XcmVersionedMultiAssets`, fee_asset_item: `u32`, weight_limit: `XcmV3WeightLimit`)
+### limitedReserveTransferAssets(dest: `XcmVersionedLocation`, beneficiary: `XcmVersionedLocation`, assets: `XcmVersionedAssets`, fee_asset_item: `u32`, weight_limit: `XcmV3WeightLimit`)
 - **interface**: `api.tx.xcmPallet.limitedReserveTransferAssets`
 - **summary**:    See [`Pallet::limited_reserve_transfer_assets`]. 
  
-### limitedTeleportAssets(dest: `XcmVersionedMultiLocation`, beneficiary: `XcmVersionedMultiLocation`, assets: `XcmVersionedMultiAssets`, fee_asset_item: `u32`, weight_limit: `XcmV3WeightLimit`)
+### limitedTeleportAssets(dest: `XcmVersionedLocation`, beneficiary: `XcmVersionedLocation`, assets: `XcmVersionedAssets`, fee_asset_item: `u32`, weight_limit: `XcmV3WeightLimit`)
 - **interface**: `api.tx.xcmPallet.limitedTeleportAssets`
 - **summary**:    See [`Pallet::limited_teleport_assets`]. 
  
-### reserveTransferAssets(dest: `XcmVersionedMultiLocation`, beneficiary: `XcmVersionedMultiLocation`, assets: `XcmVersionedMultiAssets`, fee_asset_item: `u32`)
+### reserveTransferAssets(dest: `XcmVersionedLocation`, beneficiary: `XcmVersionedLocation`, assets: `XcmVersionedAssets`, fee_asset_item: `u32`)
 - **interface**: `api.tx.xcmPallet.reserveTransferAssets`
 - **summary**:    See [`Pallet::reserve_transfer_assets`]. 
  
-### send(dest: `XcmVersionedMultiLocation`, message: `XcmVersionedXcm`)
+### send(dest: `XcmVersionedLocation`, message: `XcmVersionedXcm`)
 - **interface**: `api.tx.xcmPallet.send`
 - **summary**:    See [`Pallet::send`]. 
  
-### teleportAssets(dest: `XcmVersionedMultiLocation`, beneficiary: `XcmVersionedMultiLocation`, assets: `XcmVersionedMultiAssets`, fee_asset_item: `u32`)
+### teleportAssets(dest: `XcmVersionedLocation`, beneficiary: `XcmVersionedLocation`, assets: `XcmVersionedAssets`, fee_asset_item: `u32`)
 - **interface**: `api.tx.xcmPallet.teleportAssets`
 - **summary**:    See [`Pallet::teleport_assets`]. 
+ 
+### transferAssets(dest: `XcmVersionedLocation`, beneficiary: `XcmVersionedLocation`, assets: `XcmVersionedAssets`, fee_asset_item: `u32`, weight_limit: `XcmV3WeightLimit`)
+- **interface**: `api.tx.xcmPallet.transferAssets`
+- **summary**:    See [`Pallet::transfer_assets`]. 
+ 
+### transferAssetsUsingTypeAndThen(dest: `XcmVersionedLocation`, assets: `XcmVersionedAssets`, assets_transfer_type: `StagingXcmExecutorAssetTransferTransferType`, remote_fees_id: `XcmVersionedAssetId`, fees_transfer_type: `StagingXcmExecutorAssetTransferTransferType`, custom_xcm_on_dest: `XcmVersionedXcm`, weight_limit: `XcmV3WeightLimit`)
+- **interface**: `api.tx.xcmPallet.transferAssetsUsingTypeAndThen`
+- **summary**:    See [`Pallet::transfer_assets_using_type_and_then`]. 

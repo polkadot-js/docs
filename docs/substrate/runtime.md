@@ -12,6 +12,8 @@ The following section contains known runtime calls that may be available on spec
 
 - **[auraApi](#auraapi)**
 
+- **[auraUnincludedSegmentApi](#auraunincludedsegmentapi)**
+
 - **[authorFilterAPI](#authorfilterapi)**
 
 - **[authorityDiscoveryApi](#authoritydiscoveryapi)**
@@ -38,15 +40,23 @@ The following section contains known runtime calls that may be available on spec
 
 - **[difficultyApi](#difficultyapi)**
 
+- **[dryRunApi](#dryrunapi)**
+
 - **[ethereumRuntimeRPCApi](#ethereumruntimerpcapi)**
 
 - **[fungiblesApi](#fungiblesapi)**
+
+- **[genesisBuilder](#genesisbuilder)**
 
 - **[grandpaApi](#grandpaapi)**
 
 - **[kusamaFinalityApi](#kusamafinalityapi)**
 
+- **[locationToAccountApi](#locationtoaccountapi)**
+
 - **[metadata](#metadata)**
+
+- **[mixnetApi](#mixnetapi)**
 
 - **[mmrApi](#mmrapi)**
 
@@ -80,7 +90,11 @@ The following section contains known runtime calls that may be available on spec
 
 - **[transactionPaymentCallApi](#transactionpaymentcallapi)**
 
+- **[validateStatement](#validatestatement)**
+
 - **[westendFinalityApi](#westendfinalityapi)**
+
+- **[xcmPaymentApi](#xcmpaymentapi)**
 
 
 ___
@@ -98,17 +112,17 @@ ___
 
 ## AssetConversionApi
  
-### getReserves(asset1: `XcmV3MultiLocation`, asset2: `XcmV3MultiLocation`): `Option<(Balance,Balance)>`
+### getReserves(asset1: `StagingXcmV3MultiLocation`, asset2: `StagingXcmV3MultiLocation`): `Option<(Balance,Balance)>`
 - **interface**: `api.call.assetConversionApi.getReserves`
 - **runtime**: `AssetConversionApi_get_reserves`
 - **summary**: Get pool reserves
  
-### quotePriceExactTokensForTokens(asset1: `XcmV3MultiLocation`, asset2: `XcmV3MultiLocation`, amount: `u128`, include_fee: `bool`): `Option<(Balance)>`
+### quotePriceExactTokensForTokens(asset1: `StagingXcmV3MultiLocation`, asset2: `StagingXcmV3MultiLocation`, amount: `u128`, include_fee: `bool`): `Option<(Balance)>`
 - **interface**: `api.call.assetConversionApi.quotePriceExactTokensForTokens`
 - **runtime**: `AssetConversionApi_quote_price_exact_tokens_for_tokens`
 - **summary**: Quote price: exact tokens for tokens
  
-### quotePriceTokensForExactTokens(asset1: `XcmV3MultiLocation`, asset2: `XcmV3MultiLocation`, amount: `u128`, include_fee: `bool`): `Option<(Balance)>`
+### quotePriceTokensForExactTokens(asset1: `StagingXcmV3MultiLocation`, asset2: `StagingXcmV3MultiLocation`, amount: `u128`, include_fee: `bool`): `Option<(Balance)>`
 - **interface**: `api.call.assetConversionApi.quotePriceTokensForExactTokens`
 - **runtime**: `AssetConversionApi_quote_price_tokens_for_exact_tokens`
 - **summary**: Quote price: tokens for exact tokens
@@ -137,6 +151,16 @@ ___
 - **interface**: `api.call.auraApi.slotDuration`
 - **runtime**: `AuraApi_slot_duration`
 - **summary**: Returns the slot duration for Aura.
+
+___
+
+
+## AuraUnincludedSegmentApi
+ 
+### canBuildUpon(includedHash: `BlockHash`, slot: `Slot`): `bool`
+- **interface**: `api.call.auraUnincludedSegmentApi.canBuildUpon`
+- **runtime**: `AuraUnincludedSegmentApi_can_build_upon`
+- **summary**: Whether it is legal to extend the chain
 
 ___
 
@@ -208,10 +232,10 @@ ___
 - **runtime**: `BeefyApi_generate_key_ownership_proof`
 - **summary**: Generates a proof of key ownership for the given authority in the given set.
  
-### submitReportEquivocationUnsignedExtrinsic(equivocationProof: `BeefyEquivocationProof`, keyOwnerProof: `OpaqueKeyOwnershipProof`): `Option<Null>`
-- **interface**: `api.call.beefyApi.submitReportEquivocationUnsignedExtrinsic`
-- **runtime**: `BeefyApi_submit_report_equivocation_unsigned_extrinsic`
-- **summary**: Submits an unsigned extrinsic to report an equivocation.
+### submitReportDoubleVotingUnsignedExtrinsic(equivocationProof: `SpConsensusBeefyDoubleVotingProof`, keyOwnerProof: `OpaqueKeyOwnershipProof`): `Option<Null>`
+- **interface**: `api.call.beefyApi.submitReportDoubleVotingUnsignedExtrinsic`
+- **runtime**: `BeefyApi_submit_report_double_voting_unsigned_extrinsic`
+- **summary**: Submits an unsigned extrinsic to report a double voting equivocation.
  
 ### validatorSet(): `Option<ValidatorSet>`
 - **interface**: `api.call.beefyApi.validatorSet`
@@ -328,7 +352,7 @@ ___
 - **runtime**: `Core_execute_block`
 - **summary**: Execute the given block.
  
-### initializeBlock(header: `Header`): `Null`
+### initializeBlock(header: `Header`): `ExtrinsicInclusionMode`
 - **interface**: `api.call.core.initializeBlock`
 - **runtime**: `Core_initialize_block`
 - **summary**: Initialize a block with the given header.
@@ -362,6 +386,21 @@ ___
 - **interface**: `api.call.difficultyApi.difficulty`
 - **runtime**: `DifficultyApi_difficulty`
 - **summary**: Return the target difficulty of the next block.
+
+___
+
+
+## DryRunApi
+ 
+### dryRunCall(origin: `OriginCaller`, call: `RuntimeCall`): `Result<CallDryRunEffects, XcmDryRunApiError>`
+- **interface**: `api.call.dryRunApi.dryRunCall`
+- **runtime**: `DryRunApi_dry_run_call`
+- **summary**: Dry run call
+ 
+### dryRunXcm(originLocation: `VersionedMultiLocation`, xcm: `VersionedXcm`): `Result<XcmDryRunEffects, XcmDryRunApiError>`
+- **interface**: `api.call.dryRunApi.dryRunXcm`
+- **runtime**: `DryRunApi_dry_run_xcm`
+- **summary**: Dry run XCM program
 
 ___
 
@@ -443,10 +482,25 @@ ___
 
 ## FungiblesApi
  
-### queryAccountBalances(account: `AccountId`): `Result<XcmVersionedMultiAssets, FungiblesAccessError>`
+### queryAccountBalances(account: `AccountId`): `Result<XcmVersionedAssets, FungiblesAccessError>`
 - **interface**: `api.call.fungiblesApi.queryAccountBalances`
 - **runtime**: `FungiblesApi_query_account_balances`
 - **summary**: Returns the list of all `MultiAsset` that an `AccountId` has
+
+___
+
+
+## GenesisBuilder
+ 
+### buildConfig(json: `Vec<u8>`): `Result<(), GenesisBuildErr>`
+- **interface**: `api.call.genesisBuilder.buildConfig`
+- **runtime**: `GenesisBuilder_build_config`
+- **summary**: Build `RuntimeGenesisConfig` from a JSON blob not using any defaults and store it in the storage.
+ 
+### createDefaultConfig(): `Vec<u8>`
+- **interface**: `api.call.genesisBuilder.createDefaultConfig`
+- **runtime**: `GenesisBuilder_create_default_config`
+- **summary**: Creates the default `RuntimeGenesisConfig` and returns it as a JSON blob.
 
 ___
 
@@ -486,6 +540,16 @@ ___
 ___
 
 
+## LocationToAccountApi
+ 
+### convertLocation(location: `XcmVersionedLocation`): `Result<AccountId, Error>`
+- **interface**: `api.call.locationToAccountApi.convertLocation`
+- **runtime**: `LocationToAccountApi_convert_location`
+- **summary**: Converts `Location` to `AccountId`
+
+___
+
+
 ## Metadata
  
 ### metadata(): `OpaqueMetadata`
@@ -506,6 +570,31 @@ ___
 ___
 
 
+## MixnetApi
+ 
+### currentMixnodes(): `Result<Mixnode, MixnodesErr>`
+- **interface**: `api.call.mixnetApi.currentMixnodes`
+- **runtime**: `MixnetApi_current_mixnodes`
+- **summary**: Get the index and phase of the current session.
+ 
+### maybeRegister(session_index: `u32`, mixnode: `Mixnode`): `bool`
+- **interface**: `api.call.mixnetApi.maybeRegister`
+- **runtime**: `MixnetApi_maybe_register`
+- **summary**: Try to register a mixnode for the next session.
+ 
+### prevMixnodes(): `Result<Mixnode, MixnodesErr>`
+- **interface**: `api.call.mixnetApi.prevMixnodes`
+- **runtime**: `MixnetApi_prev_mixnodes`
+- **summary**: Get the index and phase of the current session.
+ 
+### sessionStatus(): `SessionStatus`
+- **interface**: `api.call.mixnetApi.sessionStatus`
+- **runtime**: `MixnetApi_session_status`
+- **summary**: Get the index and phase of the current session.
+
+___
+
+
 ## MmrApi
  
 ### generateProof(blockNumbers: `Vec<BlockNumber>`, bestKnownBlockNumber: `Option<BlockNumber>`): `Result<(Vec<MmrEncodableOpaqueLeaf>, MmrBatchProof), MmrError>`
@@ -513,9 +602,14 @@ ___
 - **runtime**: `MmrApi_generate_proof`
 - **summary**: Generate MMR proof for the given block numbers.
  
-### root(): `Result<Hash, MmrError>`
-- **interface**: `api.call.mmrApi.root`
-- **runtime**: `MmrApi_root`
+### mmrLeafCount(): `Result<U64, MmrError>`
+- **interface**: `api.call.mmrApi.mmrLeafCount`
+- **runtime**: `MmrApi_mmr_leaf_count`
+- **summary**: Return the number of MMR blocks in the chain.
+ 
+### mmrRoot(): `Result<Hash, MmrError>`
+- **interface**: `api.call.mmrApi.mmrRoot`
+- **runtime**: `MmrApi_mmr_root`
 - **summary**: Return the on-chain MMR root hash.
  
 ### verifyProof(leaves: `Vec<MmrEncodableOpaqueLeaf>`, proof: `MmrBatchProof`): `Result<(), MmrError>`
@@ -623,10 +717,20 @@ ___
 
 ## ParachainHost
  
+### approvalVotingParams(): `ApprovalVotingParams`
+- **interface**: `api.call.parachainHost.approvalVotingParams`
+- **runtime**: `ParachainHost_approval_voting_params`
+- **summary**: Approval voting configuration parameters
+ 
 ### assumedValidationData(paraId: `ParaId`, hash: `Hash`): `Option<(PersistedValidationData, ValidationCodeHash)>`
 - **interface**: `api.call.parachainHost.assumedValidationData`
 - **runtime**: `ParachainHost_assumed_validation_data`
 - **summary**: Returns the persisted validation data for the given `ParaId` along with the corresponding validation code hash.
+ 
+### asyncBackingParams(): `AsyncBackingParams`
+- **interface**: `api.call.parachainHost.asyncBackingParams`
+- **runtime**: `ParachainHost_async_backing_params`
+- **summary**: Returns candidate's acceptance limitations for asynchronous backing for a relay parent
  
 ### availabilityCores(): `Vec<CoreState>`
 - **interface**: `api.call.parachainHost.availabilityCores`
@@ -648,6 +752,16 @@ ___
 - **runtime**: `ParachainHost_check_validation_outputs`
 - **summary**: Checks if the given validation outputs pass the acceptance criteria.
  
+### claimQueue(): `BTreeMap<CoreIndex, Vec<u32>>`
+- **interface**: `api.call.parachainHost.claimQueue`
+- **runtime**: `ParachainHost_claim_queue`
+- **summary**: Claim queue
+ 
+### disabledValidators(): `ValidatorIndex`
+- **interface**: `api.call.parachainHost.disabledValidators`
+- **runtime**: `ParachainHost_disabled_validators`
+- **summary**: Returns a list of all disabled validators at the given block
+ 
 ### disputes(): `Vec<(SessionIndex, CandidateHash, DisputeState)>`
 - **interface**: `api.call.parachainHost.disputes`
 - **runtime**: `ParachainHost_disputes`
@@ -668,10 +782,25 @@ ___
 - **runtime**: `ParachainHost_key_ownership_proof`
 - **summary**: Returns a merkle proof of a validator session key
  
+### minimumBackingVotes(): `u32`
+- **interface**: `api.call.parachainHost.minimumBackingVotes`
+- **runtime**: `ParachainHost_minimum_backing_votes`
+- **summary**: Get the minimum number of backing votes for a parachain candidate. This is a staging method! Do not use on production runtimes!
+ 
+### nodeFeatures(): `NodeFeatures`
+- **interface**: `api.call.parachainHost.nodeFeatures`
+- **runtime**: `ParachainHost_node_features`
+- **summary**: Get node features. This is a staging method! Do not use on production runtimes!
+ 
 ### onChainVotes(): `Option<ScrapedOnChainVotes>`
 - **interface**: `api.call.parachainHost.onChainVotes`
 - **runtime**: `ParachainHost_on_chain_votes`
 - **summary**: Scrape dispute relevant from on-chain, backing votes and resolved disputes.
+ 
+### paraBackingState(paraId: `ParaId`): `Option<BackingState>`
+- **interface**: `api.call.parachainHost.paraBackingState`
+- **runtime**: `ParachainHost_para_backing_state`
+- **summary**: Returns the state of parachain backing for a given para
  
 ### persistedValidationData(paraId: `ParaId`, assumption: `OccupiedCoreAssumption`): `Option<PersistedValidationData>`
 - **interface**: `api.call.parachainHost.persistedValidationData`
@@ -713,7 +842,7 @@ ___
 - **runtime**: `ParachainHost_unapplied_slashes`
 - **summary**: Returns a list of validators that lost a past session dispute and need to be slashed
  
-### validationCode(paraId: `ParaId`, assumption: `OccupiedCoreAssumption`): `ValidationCode`
+### validationCode(paraId: `ParaId`, assumption: `OccupiedCoreAssumption`): `Option<ValidationCode>`
 - **interface**: `api.call.parachainHost.validationCode`
 - **runtime**: `ParachainHost_validation_code`
 - **summary**: Fetch the validation code used by a para, making the given `OccupiedCoreAssumption`.
@@ -866,9 +995,39 @@ ___
 ___
 
 
+## ValidateStatement
+ 
+### valdateStatement(source: `StatementStoreStatementSource`, statement: `SpStatementStoreStatement`): `Result<StatementStoreValidStatement, StatementStoreInvalidStatement>`
+- **interface**: `api.call.validateStatement.valdateStatement`
+- **runtime**: `ValidateStatement_valdate_statement`
+- **summary**: Validate the statement.
+
+___
+
+
 ## WestendFinalityApi
  
 ### bestFinalized(): `(BlockNumber, Hash)`
 - **interface**: `api.call.westendFinalityApi.bestFinalized`
 - **runtime**: `WestendFinalityApi_best_finalized`
 - **summary**: Returns number and hash of the best finalized header known to the bridge module.
+
+___
+
+
+## XcmPaymentApi
+ 
+### queryAcceptablePaymentAssets(version: `u32`): `Result<Vec<XcmVersionedAssetId>, XcmPaymentApiError>`
+- **interface**: `api.call.xcmPaymentApi.queryAcceptablePaymentAssets`
+- **runtime**: `XcmPaymentApi_query_acceptable_payment_assets`
+- **summary**: The API to query acceptable payment assets
+ 
+### queryWeightToAssetFee(weight: `WeightV2`, asset: `XcmVersionedAssetId`): `Result<u128, XcmPaymentApiError>`
+- **interface**: `api.call.xcmPaymentApi.queryWeightToAssetFee`
+- **runtime**: `XcmPaymentApi_query_weight_to_asset_fee`
+- **summary**: 
+ 
+### queryXcmWeight(message: `XcmVersionedXcm`): `Result<WeightV2, XcmPaymentApiError>`
+- **interface**: `api.call.xcmPaymentApi.queryXcmWeight`
+- **runtime**: `XcmPaymentApi_query_xcm_weight`
+- **summary**: 
