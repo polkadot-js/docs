@@ -12,9 +12,13 @@ The following section contains known runtime calls that may be available on spec
 
 - **[beefyApi](#beefyapi)**
 
+- **[beefyMmrApi](#beefymmrapi)**
+
 - **[blockBuilder](#blockbuilder)**
 
 - **[core](#core)**
+
+- **[genesisBuilder](#genesisbuilder)**
 
 - **[grandpaApi](#grandpaapi)**
 
@@ -122,6 +126,21 @@ ___
 ___
 
 
+## BeefyMmrApi
+ 
+### authoritySetProof(): `BeefyAuthoritySet`
+- **interface**: `api.call.beefyMmrApi.authoritySetProof`
+- **runtime**: `BeefyMmrApi_authority_set_proof`
+- **summary**: Return the currently active BEEFY authority set proof.
+ 
+### nextAuthoritySetProof(): `BeefyNextAuthoritySet`
+- **interface**: `api.call.beefyMmrApi.nextAuthoritySetProof`
+- **runtime**: `BeefyMmrApi_next_authority_set_proof`
+- **summary**: Return the next/queued BEEFY authority set proof.
+
+___
+
+
 ## BlockBuilder
  
 ### applyExtrinsic(extrinsic: `Extrinsic`): `ApplyExtrinsicResult`
@@ -163,6 +182,21 @@ ___
 - **interface**: `api.call.core.version`
 - **runtime**: `Core_version`
 - **summary**: Returns the version of the runtime.
+
+___
+
+
+## GenesisBuilder
+ 
+### buildConfig(json: `Vec<u8>`): `Result<(), GenesisBuildErr>`
+- **interface**: `api.call.genesisBuilder.buildConfig`
+- **runtime**: `GenesisBuilder_build_config`
+- **summary**: Build `RuntimeGenesisConfig` from a JSON blob not using any defaults and store it in the storage.
+ 
+### createDefaultConfig(): `Vec<u8>`
+- **interface**: `api.call.genesisBuilder.createDefaultConfig`
+- **runtime**: `GenesisBuilder_create_default_config`
+- **summary**: Creates the default `RuntimeGenesisConfig` and returns it as a JSON blob.
 
 ___
 
@@ -219,9 +253,14 @@ ___
 - **runtime**: `MmrApi_generate_proof`
 - **summary**: Generate MMR proof for the given block numbers.
  
-### root(): `Result<Hash, MmrError>`
-- **interface**: `api.call.mmrApi.root`
-- **runtime**: `MmrApi_root`
+### mmrLeafCount(): `Result<U64, MmrError>`
+- **interface**: `api.call.mmrApi.mmrLeafCount`
+- **runtime**: `MmrApi_mmr_leaf_count`
+- **summary**: Return the number of MMR blocks in the chain.
+ 
+### mmrRoot(): `Result<Hash, MmrError>`
+- **interface**: `api.call.mmrApi.mmrRoot`
+- **runtime**: `MmrApi_mmr_root`
 - **summary**: Return the on-chain MMR root hash.
  
 ### verifyProof(leaves: `Vec<MmrEncodableOpaqueLeaf>`, proof: `MmrBatchProof`): `Result<(), MmrError>`
@@ -269,10 +308,20 @@ ___
 
 ## ParachainHost
  
+### approvalVotingParams(): `ApprovalVotingParams`
+- **interface**: `api.call.parachainHost.approvalVotingParams`
+- **runtime**: `ParachainHost_approval_voting_params`
+- **summary**: Approval voting configuration parameters
+ 
 ### assumedValidationData(paraId: `ParaId`, hash: `Hash`): `Option<(PersistedValidationData, ValidationCodeHash)>`
 - **interface**: `api.call.parachainHost.assumedValidationData`
 - **runtime**: `ParachainHost_assumed_validation_data`
 - **summary**: Returns the persisted validation data for the given `ParaId` along with the corresponding validation code hash.
+ 
+### asyncBackingParams(): `AsyncBackingParams`
+- **interface**: `api.call.parachainHost.asyncBackingParams`
+- **runtime**: `ParachainHost_async_backing_params`
+- **summary**: Returns candidate's acceptance limitations for asynchronous backing for a relay parent
  
 ### availabilityCores(): `Vec<CoreState>`
 - **interface**: `api.call.parachainHost.availabilityCores`
@@ -294,6 +343,11 @@ ___
 - **runtime**: `ParachainHost_check_validation_outputs`
 - **summary**: Checks if the given validation outputs pass the acceptance criteria.
  
+### disabledValidators(): `ValidatorIndex`
+- **interface**: `api.call.parachainHost.disabledValidators`
+- **runtime**: `ParachainHost_disabled_validators`
+- **summary**: Returns a list of all disabled validators at the given block
+ 
 ### disputes(): `Vec<(SessionIndex, CandidateHash, DisputeState)>`
 - **interface**: `api.call.parachainHost.disputes`
 - **runtime**: `ParachainHost_disputes`
@@ -314,10 +368,25 @@ ___
 - **runtime**: `ParachainHost_key_ownership_proof`
 - **summary**: Returns a merkle proof of a validator session key
  
+### minimumBackingVotes(): `u32`
+- **interface**: `api.call.parachainHost.minimumBackingVotes`
+- **runtime**: `ParachainHost_minimum_backing_votes`
+- **summary**: Get the minimum number of backing votes for a parachain candidate. This is a staging method! Do not use on production runtimes!
+ 
+### nodeFeatures(): `NodeFeatures`
+- **interface**: `api.call.parachainHost.nodeFeatures`
+- **runtime**: `ParachainHost_node_features`
+- **summary**: Get node features. This is a staging method! Do not use on production runtimes!
+ 
 ### onChainVotes(): `Option<ScrapedOnChainVotes>`
 - **interface**: `api.call.parachainHost.onChainVotes`
 - **runtime**: `ParachainHost_on_chain_votes`
 - **summary**: Scrape dispute relevant from on-chain, backing votes and resolved disputes.
+ 
+### paraBackingState(paraId: `ParaId`): `Option<BackingState>`
+- **interface**: `api.call.parachainHost.paraBackingState`
+- **runtime**: `ParachainHost_para_backing_state`
+- **summary**: Returns the state of parachain backing for a given para
  
 ### persistedValidationData(paraId: `ParaId`, assumption: `OccupiedCoreAssumption`): `Option<PersistedValidationData>`
 - **interface**: `api.call.parachainHost.persistedValidationData`
@@ -359,7 +428,7 @@ ___
 - **runtime**: `ParachainHost_unapplied_slashes`
 - **summary**: Returns a list of validators that lost a past session dispute and need to be slashed
  
-### validationCode(paraId: `ParaId`, assumption: `OccupiedCoreAssumption`): `ValidationCode`
+### validationCode(paraId: `ParaId`, assumption: `OccupiedCoreAssumption`): `Option<ValidationCode>`
 - **interface**: `api.call.parachainHost.validationCode`
 - **runtime**: `ParachainHost_validation_code`
 - **summary**: Fetch the validation code used by a para, making the given `OccupiedCoreAssumption`.

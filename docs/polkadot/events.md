@@ -6,6 +6,8 @@ Events are emitted for certain operations on the runtime. The following sections
 
 (NOTE: These were generated from a static/snapshot view of a recent default Polkadot runtime. Some items may not be available in older nodes, or in any customized implementations.)
 
+- **[assetRate](#assetrate)**
+
 - **[auctions](#auctions)**
 
 - **[balances](#balances)**
@@ -29,8 +31,6 @@ Events are emitted for certain operations on the runtime. The following sections
 - **[hrmp](#hrmp)**
 
 - **[identity](#identity)**
-
-- **[imOnline](#imonline)**
 
 - **[indices](#indices)**
 
@@ -64,6 +64,8 @@ Events are emitted for certain operations on the runtime. The following sections
 
 - **[staking](#staking)**
 
+- **[stateTrieMigration](#statetriemigration)**
+
 - **[system](#system)**
 
 - **[transactionPayment](#transactionpayment)**
@@ -80,6 +82,20 @@ Events are emitted for certain operations on the runtime. The following sections
 
 - **[xcmPallet](#xcmpallet)**
 
+
+___
+
+
+## assetRate
+ 
+### AssetRateCreated(`PolkadotRuntimeCommonImplsVersionedLocatableAsset`, `u128`)
+- **interface**: `api.events.assetRate.AssetRateCreated.is`
+ 
+### AssetRateRemoved(`PolkadotRuntimeCommonImplsVersionedLocatableAsset`)
+- **interface**: `api.events.assetRate.AssetRateRemoved.is`
+ 
+### AssetRateUpdated(`PolkadotRuntimeCommonImplsVersionedLocatableAsset`, `u128`, `u128`)
+- **interface**: `api.events.assetRate.AssetRateUpdated.is`
 
 ___
 
@@ -183,6 +199,10 @@ ___
 - **interface**: `api.events.balances.Thawed.is`
 - **summary**:    Some balance was thawed. 
  
+### TotalIssuanceForced(`u128`, `u128`)
+- **interface**: `api.events.balances.TotalIssuanceForced.is`
+- **summary**:    The `TotalIssuance` was forcefully changed. 
+ 
 ### Transfer(`AccountId32`, `AccountId32`, `u128`)
 - **interface**: `api.events.balances.Transfer.is`
 - **summary**:    Transfer succeeded. 
@@ -207,6 +227,10 @@ ___
 
 
 ## bounties
+ 
+### BountyApproved(`u32`)
+- **interface**: `api.events.bounties.BountyApproved.is`
+- **summary**:    A bounty is approved. 
  
 ### BountyAwarded(`u32`, `AccountId32`)
 - **interface**: `api.events.bounties.BountyAwarded.is`
@@ -235,6 +259,18 @@ ___
 ### BountyRejected(`u32`, `u128`)
 - **interface**: `api.events.bounties.BountyRejected.is`
 - **summary**:    A bounty proposal was rejected; funds were slashed. 
+ 
+### CuratorAccepted(`u32`, `AccountId32`)
+- **interface**: `api.events.bounties.CuratorAccepted.is`
+- **summary**:    A bounty curator is accepted. 
+ 
+### CuratorProposed(`u32`, `AccountId32`)
+- **interface**: `api.events.bounties.CuratorProposed.is`
+- **summary**:    A bounty curator is proposed. 
+ 
+### CuratorUnassigned(`u32`)
+- **interface**: `api.events.bounties.CuratorUnassigned.is`
+- **summary**:    A bounty curator is unassigned. 
 
 ___
 
@@ -406,30 +442,50 @@ ___
 
 ## hrmp
  
-### ChannelClosed(`u32`, `PolkadotParachainPrimitivesHrmpChannelId`)
+### ChannelClosed(`u32`, `PolkadotParachainPrimitivesPrimitivesHrmpChannelId`)
 - **interface**: `api.events.hrmp.ChannelClosed.is`
-- **summary**:    HRMP channel closed. `[by_parachain, channel_id]` 
+- **summary**:    HRMP channel closed. 
  
 ### HrmpChannelForceOpened(`u32`, `u32`, `u32`, `u32`)
 - **interface**: `api.events.hrmp.HrmpChannelForceOpened.is`
-- **summary**:    An HRMP channel was opened via Root origin.  `[sender, recipient, proposed_max_capacity, proposed_max_message_size]` 
+- **summary**:    An HRMP channel was opened via Root origin. 
+ 
+### HrmpSystemChannelOpened(`u32`, `u32`, `u32`, `u32`)
+- **interface**: `api.events.hrmp.HrmpSystemChannelOpened.is`
+- **summary**:    An HRMP channel was opened with a system chain. 
  
 ### OpenChannelAccepted(`u32`, `u32`)
 - **interface**: `api.events.hrmp.OpenChannelAccepted.is`
-- **summary**:    Open HRMP channel accepted. `[sender, recipient]` 
+- **summary**:    Open HRMP channel accepted. 
  
-### OpenChannelCanceled(`u32`, `PolkadotParachainPrimitivesHrmpChannelId`)
+### OpenChannelCanceled(`u32`, `PolkadotParachainPrimitivesPrimitivesHrmpChannelId`)
 - **interface**: `api.events.hrmp.OpenChannelCanceled.is`
-- **summary**:    An HRMP channel request sent by the receiver was canceled by either party.  `[by_parachain, channel_id]` 
+- **summary**:    An HRMP channel request sent by the receiver was canceled by either party. 
+ 
+### OpenChannelDepositsUpdated(`u32`, `u32`)
+- **interface**: `api.events.hrmp.OpenChannelDepositsUpdated.is`
+- **summary**:    An HRMP channel's deposits were updated. 
  
 ### OpenChannelRequested(`u32`, `u32`, `u32`, `u32`)
 - **interface**: `api.events.hrmp.OpenChannelRequested.is`
-- **summary**:    Open HRMP channel requested.  `[sender, recipient, proposed_max_capacity, proposed_max_message_size]` 
+- **summary**:    Open HRMP channel requested. 
 
 ___
 
 
 ## identity
+ 
+### AuthorityAdded(`AccountId32`)
+- **interface**: `api.events.identity.AuthorityAdded.is`
+- **summary**:    A username authority was added. 
+ 
+### AuthorityRemoved(`AccountId32`)
+- **interface**: `api.events.identity.AuthorityRemoved.is`
+- **summary**:    A username authority was removed. 
+ 
+### DanglingUsernameRemoved(`AccountId32`, `Bytes`)
+- **interface**: `api.events.identity.DanglingUsernameRemoved.is`
+- **summary**:    A dangling username (as in, a username corresponding to an account that has removed its  identity) has been removed. 
  
 ### IdentityCleared(`AccountId32`, `u128`)
 - **interface**: `api.events.identity.IdentityCleared.is`
@@ -455,6 +511,14 @@ ___
 - **interface**: `api.events.identity.JudgementUnrequested.is`
 - **summary**:    A judgement request was retracted. 
  
+### PreapprovalExpired(`AccountId32`)
+- **interface**: `api.events.identity.PreapprovalExpired.is`
+- **summary**:    A queued username passed its expiration without being claimed and was removed. 
+ 
+### PrimaryUsernameSet(`AccountId32`, `Bytes`)
+- **interface**: `api.events.identity.PrimaryUsernameSet.is`
+- **summary**:    A username was set as a primary and can be looked up from `who`. 
+ 
 ### RegistrarAdded(`u32`)
 - **interface**: `api.events.identity.RegistrarAdded.is`
 - **summary**:    A registrar was added. 
@@ -470,23 +534,14 @@ ___
 ### SubIdentityRevoked(`AccountId32`, `AccountId32`, `u128`)
 - **interface**: `api.events.identity.SubIdentityRevoked.is`
 - **summary**:    A sub-identity was cleared, and the given deposit repatriated from the  main identity account to the sub-identity account. 
-
-___
-
-
-## imOnline
  
-### AllGood()
-- **interface**: `api.events.imOnline.AllGood.is`
-- **summary**:    At the end of the session, no offence was committed. 
+### UsernameQueued(`AccountId32`, `Bytes`, `u32`)
+- **interface**: `api.events.identity.UsernameQueued.is`
+- **summary**:    A username was queued, but `who` must accept it prior to `expiration`. 
  
-### HeartbeatReceived(`PalletImOnlineSr25519AppSr25519Public`)
-- **interface**: `api.events.imOnline.HeartbeatReceived.is`
-- **summary**:    A new heartbeat was received from `AuthorityId`. 
- 
-### SomeOffline(`Vec<(AccountId32,PalletStakingExposure)>`)
-- **interface**: `api.events.imOnline.SomeOffline.is`
-- **summary**:    At the end of the session, at least one validator was found to be offline. 
+### UsernameSet(`AccountId32`, `Bytes`)
+- **interface**: `api.events.identity.UsernameSet.is`
+- **summary**:    A username was set for `who`. 
 
 ___
 
@@ -518,11 +573,11 @@ ___
 - **interface**: `api.events.messageQueue.PageReaped.is`
 - **summary**:    This page was reaped. 
  
-### Processed(`[u8;32]`, `PolkadotRuntimeParachainsInclusionAggregateMessageOrigin`, `SpWeightsWeightV2Weight`, `bool`)
+### Processed(`H256`, `PolkadotRuntimeParachainsInclusionAggregateMessageOrigin`, `SpWeightsWeightV2Weight`, `bool`)
 - **interface**: `api.events.messageQueue.Processed.is`
 - **summary**:    Message is processed. 
  
-### ProcessingFailed(`[u8;32]`, `PolkadotRuntimeParachainsInclusionAggregateMessageOrigin`, `FrameSupportMessagesProcessMessageError`)
+### ProcessingFailed(`H256`, `PolkadotRuntimeParachainsInclusionAggregateMessageOrigin`, `FrameSupportMessagesProcessMessageError`)
 - **interface**: `api.events.messageQueue.ProcessingFailed.is`
 - **summary**:    Message discarded due to an error in the `MessageProcessor` (usually a format error). 
 
@@ -570,6 +625,14 @@ ___
 
    The removal can be voluntary (withdrawn all unbonded funds) or involuntary (kicked). 
  
+### MinBalanceDeficitAdjusted(`u32`, `u128`)
+- **interface**: `api.events.nominationPools.MinBalanceDeficitAdjusted.is`
+- **summary**:    Topped up deficit in frozen ED of the reward pool. 
+ 
+### MinBalanceExcessAdjusted(`u32`, `u128`)
+- **interface**: `api.events.nominationPools.MinBalanceExcessAdjusted.is`
+- **summary**:    Claimed excess frozen ED of af the reward pool. 
+ 
 ### PaidOut(`AccountId32`, `u32`, `u128`)
 - **interface**: `api.events.nominationPools.PaidOut.is`
 - **summary**:    A payout has been made to a member. 
@@ -581,6 +644,10 @@ ___
 ### PoolCommissionClaimed(`u32`, `u128`)
 - **interface**: `api.events.nominationPools.PoolCommissionClaimed.is`
 - **summary**:    Pool commission has been claimed. 
+ 
+### PoolCommissionClaimPermissionUpdated(`u32`, `Option<PalletNominationPoolsCommissionClaimPermission>`)
+- **interface**: `api.events.nominationPools.PoolCommissionClaimPermissionUpdated.is`
+- **summary**:    Pool commission claim permission has been updated. 
  
 ### PoolCommissionUpdated(`u32`, `Option<(Perbill,AccountId32)>`)
 - **interface**: `api.events.nominationPools.PoolCommissionUpdated.is`
@@ -638,15 +705,15 @@ ___
 
 ## paraInclusion
  
-### CandidateBacked(`PolkadotPrimitivesV5CandidateReceipt`, `Bytes`, `u32`, `u32`)
+### CandidateBacked(`PolkadotPrimitivesV6CandidateReceipt`, `Bytes`, `u32`, `u32`)
 - **interface**: `api.events.paraInclusion.CandidateBacked.is`
 - **summary**:    A candidate was backed. `[candidate, head_data]` 
  
-### CandidateIncluded(`PolkadotPrimitivesV5CandidateReceipt`, `Bytes`, `u32`, `u32`)
+### CandidateIncluded(`PolkadotPrimitivesV6CandidateReceipt`, `Bytes`, `u32`, `u32`)
 - **interface**: `api.events.paraInclusion.CandidateIncluded.is`
 - **summary**:    A candidate was included. `[candidate, head_data]` 
  
-### CandidateTimedOut(`PolkadotPrimitivesV5CandidateReceipt`, `Bytes`, `u32`)
+### CandidateTimedOut(`PolkadotPrimitivesV6CandidateReceipt`, `Bytes`, `u32`)
 - **interface**: `api.events.paraInclusion.CandidateTimedOut.is`
 - **summary**:    A candidate timed out. `[candidate, head_data]` 
  
@@ -787,7 +854,7 @@ ___
  
 ### DepositSlashed(`AccountId32`, `u128`)
 - **interface**: `api.events.referenda.DepositSlashed.is`
-- **summary**:    A deposit has been slashaed. 
+- **summary**:    A deposit has been slashed. 
  
 ### Killed(`u32`, `PalletConvictionVotingTally`)
 - **interface**: `api.events.referenda.Killed.is`
@@ -900,6 +967,10 @@ ___
 - **interface**: `api.events.staking.Chilled.is`
 - **summary**:    An account has stopped participating as either a validator or nominator. 
  
+### ControllerBatchDeprecated(`u32`)
+- **interface**: `api.events.staking.ControllerBatchDeprecated.is`
+- **summary**:    Report of a controller batch deprecation. 
+ 
 ### EraPaid(`u32`, `u128`, `u128`)
 - **interface**: `api.events.staking.EraPaid.is`
 - **summary**:    The era payout has been set; the first balance is the validator-payout; the second is  the remainder from the maximum amount of reward. 
@@ -920,9 +991,9 @@ ___
 - **interface**: `api.events.staking.PayoutStarted.is`
 - **summary**:    The stakers' rewards are getting paid. 
  
-### Rewarded(`AccountId32`, `u128`)
+### Rewarded(`AccountId32`, `PalletStakingRewardDestination`, `u128`)
 - **interface**: `api.events.staking.Rewarded.is`
-- **summary**:    The nominator has been rewarded by this amount. 
+- **summary**:    The nominator has been rewarded by this amount to this destination. 
  
 ### Slashed(`AccountId32`, `u128`)
 - **interface**: `api.events.staking.Slashed.is`
@@ -963,6 +1034,27 @@ ___
 ___
 
 
+## stateTrieMigration
+ 
+### AutoMigrationFinished()
+- **interface**: `api.events.stateTrieMigration.AutoMigrationFinished.is`
+- **summary**:    The auto migration task finished. 
+ 
+### Halted(`PalletStateTrieMigrationError`)
+- **interface**: `api.events.stateTrieMigration.Halted.is`
+- **summary**:    Migration got halted due to an error or miss-configuration. 
+ 
+### Migrated(`u32`, `u32`, `PalletStateTrieMigrationMigrationCompute`)
+- **interface**: `api.events.stateTrieMigration.Migrated.is`
+- **summary**:    Given number of `(top, child)` keys were migrated respectively, with the given  `compute`. 
+ 
+### Slashed(`AccountId32`, `u128`)
+- **interface**: `api.events.stateTrieMigration.Slashed.is`
+- **summary**:    Some account got slashed by the given amount. 
+
+___
+
+
 ## system
  
 ### CodeUpdated()
@@ -988,6 +1080,10 @@ ___
 ### Remarked(`AccountId32`, `H256`)
 - **interface**: `api.events.system.Remarked.is`
 - **summary**:    On on-chain remark happened. 
+ 
+### UpgradeAuthorized(`H256`, `bool`)
+- **interface**: `api.events.system.UpgradeAuthorized.is`
+- **summary**:    An upgrade was authorized. 
 
 ___
 
@@ -1003,6 +1099,14 @@ ___
 
 ## treasury
  
+### AssetSpendApproved(`u32`, `PolkadotRuntimeCommonImplsVersionedLocatableAsset`, `u128`, `XcmVersionedLocation`, `u32`, `u32`)
+- **interface**: `api.events.treasury.AssetSpendApproved.is`
+- **summary**:    A new asset spend proposal has been approved. 
+ 
+### AssetSpendVoided(`u32`)
+- **interface**: `api.events.treasury.AssetSpendVoided.is`
+- **summary**:    An approved spend was voided. 
+ 
 ### Awarded(`u32`, `u128`, `AccountId32`)
 - **interface**: `api.events.treasury.Awarded.is`
 - **summary**:    Some funds have been allocated. 
@@ -1014,6 +1118,14 @@ ___
 ### Deposit(`u128`)
 - **interface**: `api.events.treasury.Deposit.is`
 - **summary**:    Some funds have been deposited. 
+ 
+### Paid(`u32`, `u64`)
+- **interface**: `api.events.treasury.Paid.is`
+- **summary**:    A payment happened. 
+ 
+### PaymentFailed(`u32`, `u64`)
+- **interface**: `api.events.treasury.PaymentFailed.is`
+- **summary**:    A payment failed and can be retried. 
  
 ### Proposed(`u32`)
 - **interface**: `api.events.treasury.Proposed.is`
@@ -1034,6 +1146,10 @@ ___
 ### Spending(`u128`)
 - **interface**: `api.events.treasury.Spending.is`
 - **summary**:    We have ended a spend period and will now allocate funds. 
+ 
+### SpendProcessed(`u32`)
+- **interface**: `api.events.treasury.SpendProcessed.is`
+- **summary**:    A spend was processed and removed from the storage. It might have been successfully  paid or it may have expired. 
  
 ### UpdatedInactive(`u128`, `u128`)
 - **interface**: `api.events.treasury.UpdatedInactive.is`
@@ -1113,37 +1229,37 @@ ___
 
 ## xcmPallet
  
-### AssetsClaimed(`H256`, `XcmV3MultiLocation`, `XcmVersionedMultiAssets`)
+### AssetsClaimed(`H256`, `StagingXcmV4Location`, `XcmVersionedAssets`)
 - **interface**: `api.events.xcmPallet.AssetsClaimed.is`
 - **summary**:    Some assets have been claimed from an asset trap 
  
-### AssetsTrapped(`H256`, `XcmV3MultiLocation`, `XcmVersionedMultiAssets`)
+### AssetsTrapped(`H256`, `StagingXcmV4Location`, `XcmVersionedAssets`)
 - **interface**: `api.events.xcmPallet.AssetsTrapped.is`
 - **summary**:    Some assets have been placed in an asset trap. 
  
-### Attempted(`XcmV3TraitsOutcome`)
+### Attempted(`StagingXcmV4TraitsOutcome`)
 - **interface**: `api.events.xcmPallet.Attempted.is`
 - **summary**:    Execution of an XCM message was attempted. 
  
-### FeesPaid(`XcmV3MultiLocation`, `XcmV3MultiassetMultiAssets`)
+### FeesPaid(`StagingXcmV4Location`, `StagingXcmV4AssetAssets`)
 - **interface**: `api.events.xcmPallet.FeesPaid.is`
 - **summary**:    Fees were paid from a location for an operation (often for using `SendXcm`). 
  
-### InvalidQuerier(`XcmV3MultiLocation`, `u64`, `XcmV3MultiLocation`, `Option<XcmV3MultiLocation>`)
+### InvalidQuerier(`StagingXcmV4Location`, `u64`, `StagingXcmV4Location`, `Option<StagingXcmV4Location>`)
 - **interface**: `api.events.xcmPallet.InvalidQuerier.is`
 - **summary**:    Expected query response has been received but the querier location of the response does  not match the expected. The query remains registered for a later, valid, response to  be received and acted upon. 
  
-### InvalidQuerierVersion(`XcmV3MultiLocation`, `u64`)
+### InvalidQuerierVersion(`StagingXcmV4Location`, `u64`)
 - **interface**: `api.events.xcmPallet.InvalidQuerierVersion.is`
 - **summary**:    Expected query response has been received but the expected querier location placed in  storage by this runtime previously cannot be decoded. The query remains registered. 
 
    This is unexpected (since a location placed in storage in a previously executing  runtime should be readable prior to query timeout) and dangerous since the possibly  valid response will be dropped. Manual governance intervention is probably going to be  needed. 
  
-### InvalidResponder(`XcmV3MultiLocation`, `u64`, `Option<XcmV3MultiLocation>`)
+### InvalidResponder(`StagingXcmV4Location`, `u64`, `Option<StagingXcmV4Location>`)
 - **interface**: `api.events.xcmPallet.InvalidResponder.is`
 - **summary**:    Expected query response has been received but the origin location of the response does  not match that expected. The query remains registered for a later, valid, response to  be received and acted upon. 
  
-### InvalidResponderVersion(`XcmV3MultiLocation`, `u64`)
+### InvalidResponderVersion(`StagingXcmV4Location`, `u64`)
 - **interface**: `api.events.xcmPallet.InvalidResponderVersion.is`
 - **summary**:    Expected query response has been received but the expected origin location placed in  storage by this runtime previously cannot be decoded. The query remains registered. 
 
@@ -1165,15 +1281,15 @@ ___
 - **interface**: `api.events.xcmPallet.NotifyOverweight.is`
 - **summary**:    Query response has been received and query is removed. The registered notification  could not be dispatched because the dispatch weight is greater than the maximum weight  originally budgeted by this runtime for the query result. 
  
-### NotifyTargetMigrationFail(`XcmVersionedMultiLocation`, `u64`)
+### NotifyTargetMigrationFail(`XcmVersionedLocation`, `u64`)
 - **interface**: `api.events.xcmPallet.NotifyTargetMigrationFail.is`
 - **summary**:    A given location which had a version change subscription was dropped owing to an error  migrating the location to our new XCM format. 
  
-### NotifyTargetSendFail(`XcmV3MultiLocation`, `u64`, `XcmV3TraitsError`)
+### NotifyTargetSendFail(`StagingXcmV4Location`, `u64`, `XcmV3TraitsError`)
 - **interface**: `api.events.xcmPallet.NotifyTargetSendFail.is`
 - **summary**:    A given location which had a version change subscription was dropped owing to an error  sending the notification to it. 
  
-### ResponseReady(`u64`, `XcmV3Response`)
+### ResponseReady(`u64`, `StagingXcmV4Response`)
 - **interface**: `api.events.xcmPallet.ResponseReady.is`
 - **summary**:    Query response has been received and is ready for taking with `take_response`. There is  no registered notification call. 
  
@@ -1181,32 +1297,36 @@ ___
 - **interface**: `api.events.xcmPallet.ResponseTaken.is`
 - **summary**:    Received query response has been read and removed. 
  
-### Sent(`XcmV3MultiLocation`, `XcmV3MultiLocation`, `XcmV3Xcm`, `[u8;32]`)
+### Sent(`StagingXcmV4Location`, `StagingXcmV4Location`, `StagingXcmV4Xcm`, `[u8;32]`)
 - **interface**: `api.events.xcmPallet.Sent.is`
 - **summary**:    A XCM message was sent. 
  
-### SupportedVersionChanged(`XcmV3MultiLocation`, `u32`)
+### SupportedVersionChanged(`StagingXcmV4Location`, `u32`)
 - **interface**: `api.events.xcmPallet.SupportedVersionChanged.is`
 - **summary**:    The supported version of a location has been changed. This might be through an  automatic notification or a manual intervention. 
  
-### UnexpectedResponse(`XcmV3MultiLocation`, `u64`)
+### UnexpectedResponse(`StagingXcmV4Location`, `u64`)
 - **interface**: `api.events.xcmPallet.UnexpectedResponse.is`
 - **summary**:    Query response received which does not match a registered query. This may be because a  matching query was never registered, it may be because it is a duplicate response, or  because the query timed out. 
  
-### VersionChangeNotified(`XcmV3MultiLocation`, `u32`, `XcmV3MultiassetMultiAssets`, `[u8;32]`)
+### VersionChangeNotified(`StagingXcmV4Location`, `u32`, `StagingXcmV4AssetAssets`, `[u8;32]`)
 - **interface**: `api.events.xcmPallet.VersionChangeNotified.is`
 - **summary**:    An XCM version change notification message has been attempted to be sent. 
 
    The cost of sending it (borne by the chain) is included. 
  
-### VersionNotifyRequested(`XcmV3MultiLocation`, `XcmV3MultiassetMultiAssets`, `[u8;32]`)
+### VersionMigrationFinished(`u32`)
+- **interface**: `api.events.xcmPallet.VersionMigrationFinished.is`
+- **summary**:    A XCM version migration finished. 
+ 
+### VersionNotifyRequested(`StagingXcmV4Location`, `StagingXcmV4AssetAssets`, `[u8;32]`)
 - **interface**: `api.events.xcmPallet.VersionNotifyRequested.is`
 - **summary**:    We have requested that a remote chain send us XCM version change notifications. 
  
-### VersionNotifyStarted(`XcmV3MultiLocation`, `XcmV3MultiassetMultiAssets`, `[u8;32]`)
+### VersionNotifyStarted(`StagingXcmV4Location`, `StagingXcmV4AssetAssets`, `[u8;32]`)
 - **interface**: `api.events.xcmPallet.VersionNotifyStarted.is`
 - **summary**:    A remote has requested XCM version change notification from us and we have honored it.  A version information message is sent to them and its cost is included. 
  
-### VersionNotifyUnrequested(`XcmV3MultiLocation`, `XcmV3MultiassetMultiAssets`, `[u8;32]`)
+### VersionNotifyUnrequested(`StagingXcmV4Location`, `StagingXcmV4AssetAssets`, `[u8;32]`)
 - **interface**: `api.events.xcmPallet.VersionNotifyUnrequested.is`
 - **summary**:    We have requested that a remote chain stops sending us XCM version change  notifications. 

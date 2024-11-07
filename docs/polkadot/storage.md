@@ -6,13 +6,21 @@ The following sections contain Storage methods are part of the default Polkadot 
 
 (NOTE: These were generated from a static/snapshot view of a recent default Polkadot runtime. Some items may not be available in older nodes, or in any customized implementations.)
 
+- **[assetRate](#assetrate)**
+
 - **[auctions](#auctions)**
+
+- **[authorityDiscovery](#authoritydiscovery)**
 
 - **[authorship](#authorship)**
 
 - **[babe](#babe)**
 
 - **[balances](#balances)**
+
+- **[beefy](#beefy)**
+
+- **[beefyMmrLeaf](#beefymmrleaf)**
 
 - **[bounties](#bounties)**
 
@@ -34,17 +42,19 @@ The following sections contain Storage methods are part of the default Polkadot 
 
 - **[grandpa](#grandpa)**
 
+- **[historical](#historical)**
+
 - **[hrmp](#hrmp)**
 
 - **[identity](#identity)**
-
-- **[imOnline](#imonline)**
 
 - **[indices](#indices)**
 
 - **[initializer](#initializer)**
 
 - **[messageQueue](#messagequeue)**
+
+- **[mmr](#mmr)**
 
 - **[multisig](#multisig)**
 
@@ -84,6 +94,8 @@ The following sections contain Storage methods are part of the default Polkadot 
 
 - **[staking](#staking)**
 
+- **[stateTrieMigration](#statetriemigration)**
+
 - **[substrate](#substrate)**
 
 - **[system](#system)**
@@ -102,6 +114,17 @@ The following sections contain Storage methods are part of the default Polkadot 
 
 - **[xcmPallet](#xcmpallet)**
 
+
+___
+
+
+## assetRate
+ 
+### conversionRateToNative(`PolkadotRuntimeCommonImplsVersionedLocatableAsset`): `Option<u128>`
+- **interface**: `api.query.assetRate.conversionRateToNative`
+- **summary**:    Maps an asset to its fixed point representation in the native balance. 
+
+   E.g. `native_amount = asset_amount * ConversionRateToNative::<T>::get(asset_kind)` 
 
 ___
 
@@ -125,6 +148,19 @@ ___
 ### winning(`u32`): `Option<[Option<(AccountId32,u32,u128)>;36]>`
 - **interface**: `api.query.auctions.winning`
 - **summary**:    The winning bids for each of the 10 ranges at each sample in the final Ending Period of  the current auction. The map's key is the 0-based index into the Sample Size. The  first sample of the ending period is 0; the last is `Sample Size - 1`. 
+
+___
+
+
+## authorityDiscovery
+ 
+### keys(): `Vec<SpAuthorityDiscoveryAppPublic>`
+- **interface**: `api.query.authorityDiscovery.keys`
+- **summary**:    Keys of the current authority set. 
+ 
+### nextKeys(): `Vec<SpAuthorityDiscoveryAppPublic>`
+- **interface**: `api.query.authorityDiscovery.nextKeys`
+- **summary**:    Keys of the next authority set. 
 
 ___
 
@@ -243,11 +279,11 @@ ___
 
    But this comes with tradeoffs, storing account balances in the system pallet stores  `frame_system` data alongside the account data contrary to storing account balances in the  `Balances` pallet, which uses a `StorageMap` to store balances data only.  NOTE: This is only used in the case that this pallet is used to store balances. 
  
-### freezes(`AccountId32`): `Vec<PalletBalancesIdAmount>`
+### freezes(`AccountId32`): `Vec<PalletBalancesIdAmountRuntimeFreezeReason>`
 - **interface**: `api.query.balances.freezes`
 - **summary**:    Freeze locks on account balances. 
  
-### holds(`AccountId32`): `Vec<{"id":"PolkadotRuntimeRuntimeHoldReason","amount":"u128"}>`
+### holds(`AccountId32`): `Vec<PalletBalancesIdAmountRuntimeHoldReason>`
 - **interface**: `api.query.balances.holds`
 - **summary**:    Holds on account balances. 
  
@@ -266,6 +302,50 @@ ___
 ### totalIssuance(): `u128`
 - **interface**: `api.query.balances.totalIssuance`
 - **summary**:    The total units issued in the system. 
+
+___
+
+
+## beefy
+ 
+### authorities(): `Vec<SpConsensusBeefyEcdsaCryptoPublic>`
+- **interface**: `api.query.beefy.authorities`
+- **summary**:    The current authorities set 
+ 
+### genesisBlock(): `Option<u32>`
+- **interface**: `api.query.beefy.genesisBlock`
+- **summary**:    Block number where BEEFY consensus is enabled/started.  By changing this (through privileged `set_new_genesis()`), BEEFY consensus is effectively  restarted from the newly set block number. 
+ 
+### nextAuthorities(): `Vec<SpConsensusBeefyEcdsaCryptoPublic>`
+- **interface**: `api.query.beefy.nextAuthorities`
+- **summary**:    Authorities set scheduled to be used with the next session 
+ 
+### setIdSession(`u64`): `Option<u32>`
+- **interface**: `api.query.beefy.setIdSession`
+- **summary**:    A mapping from BEEFY set ID to the index of the *most recent* session for which its  members were responsible. 
+
+   This is only used for validating equivocation proofs. An equivocation proof must  contains a key-ownership proof for a given session, therefore we need a way to tie  together sessions and BEEFY set ids, i.e. we need to validate that a validator  was the owner of a given key on a given session, and what the active set ID was  during that session. 
+
+   TWOX-NOTE: `ValidatorSetId` is not under user control. 
+ 
+### validatorSetId(): `u64`
+- **interface**: `api.query.beefy.validatorSetId`
+- **summary**:    The current validator set id 
+
+___
+
+
+## beefyMmrLeaf
+ 
+### beefyAuthorities(): `SpConsensusBeefyMmrBeefyAuthoritySet`
+- **interface**: `api.query.beefyMmrLeaf.beefyAuthorities`
+- **summary**:    Details of current BEEFY authority set. 
+ 
+### beefyNextAuthorities(): `SpConsensusBeefyMmrBeefyAuthoritySet`
+- **interface**: `api.query.beefyMmrLeaf.beefyNextAuthorities`
+- **summary**:    Details of next BEEFY authority set. 
+
+   This storage entry is used as cache for calls to `update_beefy_next_authority_set`. 
 
 ___
 
@@ -398,7 +478,7 @@ ___
  
 ### deliveryFeeFactor(`u32`): `u128`
 - **interface**: `api.query.dmp.deliveryFeeFactor`
-- **summary**:    The number to multiply the base delivery fee by. 
+- **summary**:    The factor to multiply the base delivery fee by. 
  
 ### downwardMessageQueueHeads(`u32`): `H256`
 - **interface**: `api.query.dmp.downwardMessageQueueHeads`
@@ -429,7 +509,7 @@ ___
 - **interface**: `api.query.electionProviderMultiPhase.desiredTargets`
 - **summary**:    Desired number of targets to elect for this round. 
 
-   Only exists when [`Snapshot`] is present. 
+   Only exists when [`Snapshot`] is present.  Note: This storage type must only be mutated through [`SnapshotWrapper`]. 
  
 ### minimumUntrustedScore(): `Option<SpNposElectionsElectionScore>`
 - **interface**: `api.query.electionProviderMultiPhase.minimumUntrustedScore`
@@ -477,13 +557,13 @@ ___
 - **interface**: `api.query.electionProviderMultiPhase.snapshot`
 - **summary**:    Snapshot data of the round. 
 
-   This is created at the beginning of the signed phase and cleared upon calling `elect`. 
+   This is created at the beginning of the signed phase and cleared upon calling `elect`.  Note: This storage type must only be mutated through [`SnapshotWrapper`]. 
  
 ### snapshotMetadata(): `Option<PalletElectionProviderMultiPhaseSolutionOrSnapshotSize>`
 - **interface**: `api.query.electionProviderMultiPhase.snapshotMetadata`
 - **summary**:    The metadata of the [`RoundSnapshot`] 
 
-   Only exists when [`Snapshot`] is present. 
+   Only exists when [`Snapshot`] is present.  Note: This storage type must only be mutated through [`SnapshotWrapper`]. 
 
 ___
 
@@ -519,6 +599,10 @@ ___
 
 ## grandpa
  
+### authorities(): `Vec<(SpConsensusGrandpaAppPublic,u64)>`
+- **interface**: `api.query.grandpa.authorities`
+- **summary**:    The current list of authorities. 
+ 
 ### currentSetId(): `u64`
 - **interface**: `api.query.grandpa.currentSetId`
 - **summary**:    The number of changes (both in terms of keys and underlying economic responsibilities)  in the "set" of Grandpa validators from genesis. 
@@ -550,13 +634,26 @@ ___
 ___
 
 
+## historical
+ 
+### historicalSessions(`u32`): `Option<(H256,u32)>`
+- **interface**: `api.query.historical.historicalSessions`
+- **summary**:    Mapping from historical session indices to session-data root hash and validator count. 
+ 
+### storedRange(): `Option<(u32,u32)>`
+- **interface**: `api.query.historical.storedRange`
+- **summary**:    The range of historical sessions we store. [first, last) 
+
+___
+
+
 ## hrmp
  
 ### hrmpAcceptedChannelRequestCount(`u32`): `u32`
 - **interface**: `api.query.hrmp.hrmpAcceptedChannelRequestCount`
 - **summary**:    This mapping tracks how many open channel requests were accepted by a given recipient para.  Invariant: `HrmpOpenChannelRequests` should contain the same number of items `(_, X)` with  `confirmed` set to true, as the number of `HrmpAcceptedChannelRequestCount` for `X`. 
  
-### hrmpChannelContents(`PolkadotParachainPrimitivesHrmpChannelId`): `Vec<PolkadotCorePrimitivesInboundHrmpMessage>`
+### hrmpChannelContents(`PolkadotParachainPrimitivesPrimitivesHrmpChannelId`): `Vec<PolkadotCorePrimitivesInboundHrmpMessage>`
 - **interface**: `api.query.hrmp.hrmpChannelContents`
 - **summary**:    Storage for the messages for each channel.  Invariant: cannot be non-empty if the corresponding channel in `HrmpChannels` is `None`. 
  
@@ -570,13 +667,13 @@ ___
 
   - The outer vector is sorted ascending by block number and cannot store two items with the same block number. 
  
-### hrmpChannels(`PolkadotParachainPrimitivesHrmpChannelId`): `Option<PolkadotRuntimeParachainsHrmpHrmpChannel>`
+### hrmpChannels(`PolkadotParachainPrimitivesPrimitivesHrmpChannelId`): `Option<PolkadotRuntimeParachainsHrmpHrmpChannel>`
 - **interface**: `api.query.hrmp.hrmpChannels`
 - **summary**:    HRMP channel data associated with each para.  Invariant: 
 
   - each participant in the channel should satisfy `Paras::is_valid_para(P)` within a session.
  
-### hrmpCloseChannelRequests(`PolkadotParachainPrimitivesHrmpChannelId`): `Option<Null>`
+### hrmpCloseChannelRequests(`PolkadotParachainPrimitivesPrimitivesHrmpChannelId`): `Option<Null>`
 - **interface**: `api.query.hrmp.hrmpCloseChannelRequests`
 - **summary**:    A set of pending HRMP close channel requests that are going to be closed during the session  change. Used for checking if a given channel is registered for closure. 
 
@@ -586,7 +683,7 @@ ___
 
   - There are no channels that exists in list but not in the set and vice versa.
  
-### hrmpCloseChannelRequestsList(): `Vec<PolkadotParachainPrimitivesHrmpChannelId>`
+### hrmpCloseChannelRequestsList(): `Vec<PolkadotParachainPrimitivesPrimitivesHrmpChannelId>`
 - **interface**: `api.query.hrmp.hrmpCloseChannelRequestsList`
  
 ### hrmpEgressChannelsIndex(`u32`): `Vec<u32>`
@@ -612,7 +709,7 @@ ___
 - **interface**: `api.query.hrmp.hrmpOpenChannelRequestCount`
 - **summary**:    This mapping tracks how many open channel requests are initiated by a given sender para.  Invariant: `HrmpOpenChannelRequests` should contain the same number of items that has  `(X, _)` as the number of `HrmpOpenChannelRequestCount` for `X`. 
  
-### hrmpOpenChannelRequests(`PolkadotParachainPrimitivesHrmpChannelId`): `Option<PolkadotRuntimeParachainsHrmpHrmpOpenChannelRequest>`
+### hrmpOpenChannelRequests(`PolkadotParachainPrimitivesPrimitivesHrmpChannelId`): `Option<PolkadotRuntimeParachainsHrmpHrmpOpenChannelRequest>`
 - **interface**: `api.query.hrmp.hrmpOpenChannelRequests`
 - **summary**:    The set of pending HRMP open channel requests. 
 
@@ -622,7 +719,7 @@ ___
 
   - There are no channels that exists in list but not in the set and vice versa.
  
-### hrmpOpenChannelRequestsList(): `Vec<PolkadotParachainPrimitivesHrmpChannelId>`
+### hrmpOpenChannelRequestsList(): `Vec<PolkadotParachainPrimitivesPrimitivesHrmpChannelId>`
 - **interface**: `api.query.hrmp.hrmpOpenChannelRequestsList`
  
 ### hrmpWatermarks(`u32`): `Option<u32>`
@@ -636,11 +733,23 @@ ___
 
 ## identity
  
-### identityOf(`AccountId32`): `Option<PalletIdentityRegistration>`
+### accountOfUsername(`Bytes`): `Option<AccountId32>`
+- **interface**: `api.query.identity.accountOfUsername`
+- **summary**:    Reverse lookup from `username` to the `AccountId` that has registered it. The value should  be a key in the `IdentityOf` map, but it may not if the user has cleared their identity. 
+
+   Multiple usernames may map to the same `AccountId`, but `IdentityOf` will only map to one  primary username. 
+ 
+### identityOf(`AccountId32`): `Option<(PalletIdentityRegistration,Option<Bytes>)>`
 - **interface**: `api.query.identity.identityOf`
-- **summary**:    Information that is pertinent to identify the entity behind an account. 
+- **summary**:    Information that is pertinent to identify the entity behind an account. First item is the  registration, second is the account's primary username. 
 
    TWOX-NOTE: OK ― `AccountId` is a secure hash. 
+ 
+### pendingUsernames(`Bytes`): `Option<(AccountId32,u32)>`
+- **interface**: `api.query.identity.pendingUsernames`
+- **summary**:    Usernames that an authority has granted, but that the account controller has not confirmed  that they want it. Used primarily in cases where the `AccountId` cannot provide a signature  because they are a pure proxy, multisig, etc. In order to confirm it, they should call  [`Call::accept_username`]. 
+
+   First tuple item is the account and second is the acceptance deadline. 
  
 ### registrars(): `Vec<Option<PalletIdentityRegistrarInfo>>`
 - **interface**: `api.query.identity.registrars`
@@ -659,31 +768,10 @@ ___
 ### superOf(`AccountId32`): `Option<(AccountId32,Data)>`
 - **interface**: `api.query.identity.superOf`
 - **summary**:    The super-identity of an alternative "sub" identity together with its name, within that  context. If the account is not some other account's sub-identity, then just `None`. 
-
-___
-
-
-## imOnline
  
-### authoredBlocks(`u32, AccountId32`): `u32`
-- **interface**: `api.query.imOnline.authoredBlocks`
-- **summary**:    For each session index, we keep a mapping of `ValidatorId<T>` to the  number of blocks authored by the given authority. 
- 
-### heartbeatAfter(): `u32`
-- **interface**: `api.query.imOnline.heartbeatAfter`
-- **summary**:    The block number after which it's ok to send heartbeats in the current  session. 
-
-   At the beginning of each session we set this to a value that should fall  roughly in the middle of the session duration. The idea is to first wait for  the validators to produce a block in the current session, so that the  heartbeat later on will not be necessary. 
-
-   This value will only be used as a fallback if we fail to get a proper session  progress estimate from `NextSessionRotation`, as those estimates should be  more accurate then the value we calculate for `HeartbeatAfter`. 
- 
-### keys(): `Vec<PalletImOnlineSr25519AppSr25519Public>`
-- **interface**: `api.query.imOnline.keys`
-- **summary**:    The current set of keys that may issue a heartbeat. 
- 
-### receivedHeartbeats(`u32, u32`): `Option<bool>`
-- **interface**: `api.query.imOnline.receivedHeartbeats`
-- **summary**:    For each session index, we keep a mapping of `SessionIndex` and `AuthIndex`. 
+### usernameAuthorities(`AccountId32`): `Option<PalletIdentityAuthorityProperties>`
+- **interface**: `api.query.identity.usernameAuthorities`
+- **summary**:    A map of the accounts who are authorized to grant usernames. 
 
 ___
 
@@ -731,6 +819,25 @@ ___
 ### serviceHead(): `Option<PolkadotRuntimeParachainsInclusionAggregateMessageOrigin>`
 - **interface**: `api.query.messageQueue.serviceHead`
 - **summary**:    The origin at which we should begin servicing. 
+
+___
+
+
+## mmr
+ 
+### nodes(`u64`): `Option<H256>`
+- **interface**: `api.query.mmr.nodes`
+- **summary**:    Hashes of the nodes in the MMR. 
+
+   Note this collection only contains MMR peaks, the inner nodes (and leaves)  are pruned and only stored in the Offchain DB. 
+ 
+### numberOfLeaves(): `u64`
+- **interface**: `api.query.mmr.numberOfLeaves`
+- **summary**:    Current size of the MMR (number of leaves). 
+ 
+### rootHash(): `H256`
+- **interface**: `api.query.mmr.rootHash`
+- **summary**:    Latest MMR Root hash. 
 
 ___
 
@@ -833,6 +940,12 @@ ___
 ### subPoolsStorage(`u32`): `Option<PalletNominationPoolsSubPools>`
 - **interface**: `api.query.nominationPools.subPoolsStorage`
 - **summary**:    Groups of unbonding pools. Each group of unbonding pools belongs to a  bonded pool, hence the name sub-pools. Keyed by the bonded pools account. 
+ 
+### totalValueLocked(): `u128`
+- **interface**: `api.query.nominationPools.totalValueLocked`
+- **summary**:    The sum of funds across all pools. 
+
+   This might be lower but never higher than the sum of `total_balance` of all [`PoolMembers`]  because calling `pool_withdraw_unbonded` might decrease the total stake of the pool's  `bonded_account` without adjusting the pallet-internal `UnbondingPool`'s. 
 
 ___
 
@@ -860,7 +973,7 @@ ___
 - **interface**: `api.query.paraInclusion.pendingAvailability`
 - **summary**:    Candidates pending availability by `ParaId`. 
  
-### pendingAvailabilityCommitments(`u32`): `Option<PolkadotPrimitivesV5CandidateCommitments>`
+### pendingAvailabilityCommitments(`u32`): `Option<PolkadotPrimitivesV6CandidateCommitments>`
 - **interface**: `api.query.paraInclusion.pendingAvailabilityCommitments`
 - **summary**:    The commitments of candidates pending availability, by `ParaId`. 
 
@@ -877,7 +990,7 @@ ___
 
    If this is `None` at the end of the block, we panic and render the block invalid. 
  
-### onChainVotes(): `Option<PolkadotPrimitivesV5ScrapedOnChainVotes>`
+### onChainVotes(): `Option<PolkadotPrimitivesV6ScrapedOnChainVotes>`
 - **interface**: `api.query.paraInherent.onChainVotes`
 - **summary**:    Scraped on chain data for extracting resolved disputes as well as backing votes. 
 
@@ -978,7 +1091,7 @@ ___
 
    Ordered ascending by block number. 
  
-### upgradeGoAheadSignal(`u32`): `Option<PolkadotPrimitivesV5UpgradeGoAhead>`
+### upgradeGoAheadSignal(`u32`): `Option<PolkadotPrimitivesV6UpgradeGoAhead>`
 - **interface**: `api.query.paras.upgradeGoAheadSignal`
 - **summary**:    This is used by the relay-chain to communicate to a parachain a go-ahead with in the upgrade  procedure. 
 
@@ -986,7 +1099,7 @@ ___
 
    NOTE that this field is used by parachains via merkle storage proofs, therefore changing  the format will require migration of parachains. 
  
-### upgradeRestrictionSignal(`u32`): `Option<PolkadotPrimitivesV5UpgradeRestriction>`
+### upgradeRestrictionSignal(`u32`): `Option<PolkadotPrimitivesV6UpgradeRestriction>`
 - **interface**: `api.query.paras.upgradeRestrictionSignal`
 - **summary**:    This is used by the relay-chain to communicate that there are restrictions for performing  an upgrade for this parachain. 
 
@@ -999,7 +1112,7 @@ ___
 
 ## paraScheduler
  
-### availabilityCores(): `Vec<PolkadotPrimitivesV5CoreOccupied>`
+### availabilityCores(): `Vec<PolkadotRuntimeParachainsSchedulerPalletCoreOccupied>`
 - **interface**: `api.query.paraScheduler.availabilityCores`
 - **summary**:    One entry for each availability core. Entries are `None` if the core is not currently  occupied. Can be temporarily `Some` if scheduled but not occupied.  The i'th parachain belongs to the i'th core, with the remaining cores all being  parathread-multiplexers. 
 
@@ -1009,7 +1122,7 @@ ___
 
   * The number of validators divided by `configuration.max_validators_per_core`.
  
-### claimQueue(): `BTreeMap<u32, Vec<Option<PolkadotPrimitivesV5ParasEntry>>>`
+### claimQueue(): `BTreeMap<u32, Vec<PolkadotRuntimeParachainsSchedulerPalletParasEntry>>`
 - **interface**: `api.query.paraScheduler.claimQueue`
 - **summary**:    One entry for each availability core. The `VecDeque` represents the assignments to be  scheduled on that core. `None` is used to signal to not schedule the next para of the core  as there is one currently being scheduled. Not using `None` here would overwrite the  `CoreState` in the runtime API. The value contained here will not be valid after the end of  a block. Runtime APIs should be used to determine scheduled cores/ for the upcoming block. 
  
@@ -1034,7 +1147,7 @@ ___
 - **interface**: `api.query.parasDisputes.backersOnDisputes`
 - **summary**:    Backing votes stored for each dispute.  This storage is used for slashing. 
  
-### disputes(`u32, H256`): `Option<PolkadotPrimitivesV5DisputeState>`
+### disputes(`u32, H256`): `Option<PolkadotPrimitivesV6DisputeState>`
 - **interface**: `api.query.parasDisputes.disputes`
 - **summary**:    All ongoing or concluded disputes for the last several sessions. 
  
@@ -1059,7 +1172,7 @@ ___
 - **interface**: `api.query.paraSessionInfo.accountKeys`
 - **summary**:    The validator account keys of the validators actively participating in parachain consensus. 
  
-### assignmentKeysUnsafe(): `Vec<PolkadotPrimitivesV5AssignmentAppPublic>`
+### assignmentKeysUnsafe(): `Vec<PolkadotPrimitivesV6AssignmentAppPublic>`
 - **interface**: `api.query.paraSessionInfo.assignmentKeysUnsafe`
 - **summary**:    Assignment keys for the current session.  Note that this API is private due to it being prone to 'off-by-one' at session boundaries.  When in doubt, use `Sessions` API instead. 
  
@@ -1067,11 +1180,11 @@ ___
 - **interface**: `api.query.paraSessionInfo.earliestStoredSession`
 - **summary**:    The earliest session for which previous session info is stored. 
  
-### sessionExecutorParams(`u32`): `Option<PolkadotPrimitivesV5ExecutorParams>`
+### sessionExecutorParams(`u32`): `Option<PolkadotPrimitivesV6ExecutorParams>`
 - **interface**: `api.query.paraSessionInfo.sessionExecutorParams`
 - **summary**:    Executor parameter set for a given session index 
  
-### sessions(`u32`): `Option<PolkadotPrimitivesV5SessionInfo>`
+### sessions(`u32`): `Option<PolkadotPrimitivesV6SessionInfo>`
 - **interface**: `api.query.paraSessionInfo.sessions`
 - **summary**:    Session information in a rolling window.  Should have an entry in range `EarliestStoredSession..=CurrentSessionIndex`.  Does not have any entries before the session index in the first session change notification. 
 
@@ -1084,7 +1197,7 @@ ___
 - **interface**: `api.query.parasShared.activeValidatorIndices`
 - **summary**:    All the validators actively participating in parachain consensus.  Indices are into the broader validator set. 
  
-### activeValidatorKeys(): `Vec<PolkadotPrimitivesV5ValidatorAppPublic>`
+### activeValidatorKeys(): `Vec<PolkadotPrimitivesV6ValidatorAppPublic>`
 - **interface**: `api.query.parasShared.activeValidatorKeys`
 - **summary**:    The parachain attestation keys of the validators actively participating in parachain  consensus. This should be the same length as `ActiveValidatorIndices`. 
  
@@ -1101,7 +1214,7 @@ ___
 
 ## parasSlashing
  
-### unappliedSlashes(`u32, H256`): `Option<PolkadotPrimitivesV5SlashingPendingSlashes>`
+### unappliedSlashes(`u32, H256`): `Option<PolkadotPrimitivesV6SlashingPendingSlashes>`
 - **interface**: `api.query.parasSlashing.unappliedSlashes`
 - **summary**:    Validators pending dispute slashes. 
  
@@ -1117,7 +1230,11 @@ ___
 ### preimageFor(`(H256,u32)`): `Option<Bytes>`
 - **interface**: `api.query.preimage.preimageFor`
  
-### statusFor(`H256`): `Option<PalletPreimageRequestStatus>`
+### requestStatusFor(`H256`): `Option<PalletPreimageRequestStatus>`
+- **interface**: `api.query.preimage.requestStatusFor`
+- **summary**:    The request status of a given hash. 
+ 
+### statusFor(`H256`): `Option<PalletPreimageOldRequestStatus>`
 - **interface**: `api.query.preimage.statusFor`
 - **summary**:    The request status of a given hash. 
 
@@ -1145,7 +1262,7 @@ ___
  
 ### metadataOf(`u32`): `Option<H256>`
 - **interface**: `api.query.referenda.metadataOf`
-- **summary**:    The metadata is a general information concerning the referendum.  The `PreimageHash` refers to the preimage of the `Preimages` provider which can be a JSON  dump or IPFS hash of a JSON file. 
+- **summary**:    The metadata is a general information concerning the referendum.  The `Hash` refers to the preimage of the `Preimages` provider which can be a JSON  dump or IPFS hash of a JSON file. 
 
    Consider a garbage collection for a metadata of finished referendums to `unrequest` (remove)  large preimages. 
  
@@ -1285,6 +1402,14 @@ ___
 - **interface**: `api.query.staking.chillThreshold`
 - **summary**:    The threshold for when users can start calling `chill_other` for other validators /  nominators. The threshold is compared to the actual number of validators / nominators  (`CountFor*`) in the system compared to the configured max (`Max*Count`). 
  
+### claimedRewards(`u32, AccountId32`): `Vec<u32>`
+- **interface**: `api.query.staking.claimedRewards`
+- **summary**:    History of claimed paged rewards by era and validator. 
+
+   This is keyed by era and validator stash which maps to the set of page indexes which have  been claimed. 
+
+   It is removed after [`Config::HistoryDepth`] eras. 
+ 
 ### counterForNominators(): `u32`
 - **interface**: `api.query.staking.counterForNominators`
 - **summary**:    Counter for the related counted storage map 
@@ -1307,35 +1432,59 @@ ___
  
 ### erasRewardPoints(`u32`): `PalletStakingEraRewardPoints`
 - **interface**: `api.query.staking.erasRewardPoints`
-- **summary**:    Rewards for the last `HISTORY_DEPTH` eras.  If reward hasn't been set or has been removed then 0 reward is returned. 
+- **summary**:    Rewards for the last [`Config::HistoryDepth`] eras.  If reward hasn't been set or has been removed then 0 reward is returned. 
  
-### erasStakers(`u32, AccountId32`): `PalletStakingExposure`
+### erasStakers(`u32, AccountId32`): `SpStakingExposure`
 - **interface**: `api.query.staking.erasStakers`
 - **summary**:    Exposure of validator at era. 
 
    This is keyed first by the era index to allow bulk deletion and then the stash account. 
 
-   Is it removed after `HISTORY_DEPTH` eras.  If stakers hasn't been set or has been removed then empty exposure is returned. 
+   Is it removed after [`Config::HistoryDepth`] eras.  If stakers hasn't been set or has been removed then empty exposure is returned. 
+
+   Note: Deprecated since v14. Use `EraInfo` instead to work with exposures. 
  
-### erasStakersClipped(`u32, AccountId32`): `PalletStakingExposure`
+### erasStakersClipped(`u32, AccountId32`): `SpStakingExposure`
 - **interface**: `api.query.staking.erasStakersClipped`
 - **summary**:    Clipped Exposure of validator at era. 
 
-   This is similar to [`ErasStakers`] but number of nominators exposed is reduced to the  `T::MaxNominatorRewardedPerValidator` biggest stakers.  (Note: the field `total` and `own` of the exposure remains unchanged).  This is used to limit the i/o cost for the nominator payout. 
+   Note: This is deprecated, should be used as read-only and will be removed in the future.  New `Exposure`s are stored in a paged manner in `ErasStakersPaged` instead. 
+
+   This is similar to [`ErasStakers`] but number of nominators exposed is reduced to the  `T::MaxExposurePageSize` biggest stakers.  (Note: the field `total` and `own` of the exposure remains unchanged).  This is used to limit the i/o cost for the nominator payout. 
 
    This is keyed fist by the era index to allow bulk deletion and then the stash account. 
 
-   Is it removed after `HISTORY_DEPTH` eras.  If stakers hasn't been set or has been removed then empty exposure is returned. 
+   It is removed after [`Config::HistoryDepth`] eras.  If stakers hasn't been set or has been removed then empty exposure is returned. 
+
+   Note: Deprecated since v14. Use `EraInfo` instead to work with exposures. 
+ 
+### erasStakersOverview(`u32, AccountId32`): `Option<SpStakingPagedExposureMetadata>`
+- **interface**: `api.query.staking.erasStakersOverview`
+- **summary**:    Summary of validator exposure at a given era. 
+
+   This contains the total stake in support of the validator and their own stake. In addition,  it can also be used to get the number of nominators backing this validator and the number of  exposure pages they are divided into. The page count is useful to determine the number of  pages of rewards that needs to be claimed. 
+
+   This is keyed first by the era index to allow bulk deletion and then the stash account.  Should only be accessed through `EraInfo`. 
+
+   Is it removed after [`Config::HistoryDepth`] eras.  If stakers hasn't been set or has been removed then empty overview is returned. 
+ 
+### erasStakersPaged(`u32, AccountId32, u32`): `Option<SpStakingExposurePage>`
+- **interface**: `api.query.staking.erasStakersPaged`
+- **summary**:    Paginated exposure of a validator at given era. 
+
+   This is keyed first by the era index to allow bulk deletion, then stash account and finally  the page. Should only be accessed through `EraInfo`. 
+
+   This is cleared after [`Config::HistoryDepth`] eras. 
  
 ### erasStartSessionIndex(`u32`): `Option<u32>`
 - **interface**: `api.query.staking.erasStartSessionIndex`
-- **summary**:    The session index at which the era start for the last `HISTORY_DEPTH` eras. 
+- **summary**:    The session index at which the era start for the last [`Config::HistoryDepth`] eras. 
 
    Note: This tracks the starting session (i.e. session index when era start being active)  for the eras in `[CurrentEra - HISTORY_DEPTH, CurrentEra]`. 
  
 ### erasTotalStake(`u32`): `u128`
 - **interface**: `api.query.staking.erasTotalStake`
-- **summary**:    The total amount staked for the last `HISTORY_DEPTH` eras.  If total hasn't been set or has been removed then 0 stake is returned. 
+- **summary**:    The total amount staked for the last [`Config::HistoryDepth`] eras.  If total hasn't been set or has been removed then 0 stake is returned. 
  
 ### erasValidatorPrefs(`u32, AccountId32`): `PalletStakingValidatorPrefs`
 - **interface**: `api.query.staking.erasValidatorPrefs`
@@ -1343,11 +1492,11 @@ ___
 
    This is keyed first by the era index to allow bulk deletion and then the stash account. 
 
-   Is it removed after `HISTORY_DEPTH` eras. 
+   Is it removed after [`Config::HistoryDepth`] eras. 
  
 ### erasValidatorReward(`u32`): `Option<u128>`
 - **interface**: `api.query.staking.erasValidatorReward`
-- **summary**:    The total validator era payout for the last `HISTORY_DEPTH` eras. 
+- **summary**:    The total validator era payout for the last [`Config::HistoryDepth`] eras. 
 
    Eras that haven't finished yet or has been removed doesn't have reward. 
  
@@ -1362,6 +1511,8 @@ ___
 ### ledger(`AccountId32`): `Option<PalletStakingStakingLedger>`
 - **interface**: `api.query.staking.ledger`
 - **summary**:    Map from all (unlocked) "controller" accounts to the info regarding the staking. 
+
+   Note: All the reads and mutations to this storage *MUST* be done through the methods exposed  by [`StakingLedger`] to ensure data and lock consistency. 
  
 ### maxNominatorsCount(): `Option<u32>`
 - **interface**: `api.query.staking.maxNominatorsCount`
@@ -1419,7 +1570,7 @@ ___
 
    This value should be a superset of disabled validators since not all offences lead to the  validator being disabled (if there was no slash). This is needed to track the percentage of  validators that have offended in the current era, ensuring a new era is forced if  `OffendingValidatorsThreshold` is reached. The vec is always kept sorted so that we can find  whether a given validator has previously offended using binary search. It gets cleared when  the era ends. 
  
-### payee(`AccountId32`): `PalletStakingRewardDestination`
+### payee(`AccountId32`): `Option<PalletStakingRewardDestination>`
 - **interface**: `api.query.staking.payee`
 - **summary**:    Where the reward payment should be made. Keyed by stash. 
 
@@ -1456,6 +1607,29 @@ ___
 ### validatorSlashInEra(`u32, AccountId32`): `Option<(Perbill,u128)>`
 - **interface**: `api.query.staking.validatorSlashInEra`
 - **summary**:    All slashing events on validators, mapped by era to the highest slash proportion  and slash value of the era. 
+
+___
+
+
+## stateTrieMigration
+ 
+### autoLimits(): `Option<PalletStateTrieMigrationMigrationLimits>`
+- **interface**: `api.query.stateTrieMigration.autoLimits`
+- **summary**:    The limits that are imposed on automatic migrations. 
+
+   If set to None, then no automatic migration happens. 
+ 
+### migrationProcess(): `PalletStateTrieMigrationMigrationTask`
+- **interface**: `api.query.stateTrieMigration.migrationProcess`
+- **summary**:    Migration progress. 
+
+   This stores the snapshot of the last migrated keys. It can be set into motion and move  forward by any of the means provided by this pallet. 
+ 
+### signedMigrationMaxLimits(): `Option<PalletStateTrieMigrationMigrationLimits>`
+- **interface**: `api.query.stateTrieMigration.signedMigrationMaxLimits`
+- **summary**:    The maximum limits that the signed migration could use. 
+
+   If not set, no signed submission is allowed. 
 
 ___
 
@@ -1500,6 +1674,10 @@ ___
 ### allExtrinsicsLen(): `Option<u32>`
 - **interface**: `api.query.system.allExtrinsicsLen`
 - **summary**:    Total length (in bytes) for all extrinsics put together, for the current block. 
+ 
+### authorizedUpgrade(): `Option<FrameSystemCodeUpgradeAuthorization>`
+- **interface**: `api.query.system.authorizedUpgrade`
+- **summary**:    `Some` if a code upgrade has been authorized. 
  
 ### blockHash(`u32`): `H256`
 - **interface**: `api.query.system.blockHash`
@@ -1572,11 +1750,13 @@ ___
  
 ### didUpdate(): `bool`
 - **interface**: `api.query.timestamp.didUpdate`
-- **summary**:    Did the timestamp get updated in this block? 
+- **summary**:    Whether the timestamp has been updated in this block. 
+
+   This value is updated to `true` upon successful submission of a timestamp by a node.  It is then checked at the end of each block execution in the `on_finalize` hook. 
  
 ### now(): `u64`
 - **interface**: `api.query.timestamp.now`
-- **summary**:    Current time for the current block. 
+- **summary**:    The current time for the current block. 
 
 ___
 
@@ -1609,6 +1789,14 @@ ___
 ### proposals(`u32`): `Option<PalletTreasuryProposal>`
 - **interface**: `api.query.treasury.proposals`
 - **summary**:    Proposals that have been made. 
+ 
+### spendCount(): `u32`
+- **interface**: `api.query.treasury.spendCount`
+- **summary**:    The count of spends that have been made. 
+ 
+### spends(`u32`): `Option<PalletTreasurySpendStatus>`
+- **interface**: `api.query.treasury.spends`
+- **summary**:    Spends that have been approved and being processed. 
 
 ___
 
@@ -1663,13 +1851,13 @@ ___
 - **interface**: `api.query.xcmPallet.assetTraps`
 - **summary**:    The existing asset traps. 
 
-   Key is the blake2 256 hash of (origin, versioned `MultiAssets`) pair. Value is the number of  times this pair has been trapped (usually just 1 if it exists at all). 
+   Key is the blake2 256 hash of (origin, versioned `Assets`) pair. Value is the number of  times this pair has been trapped (usually just 1 if it exists at all). 
  
 ### currentMigration(): `Option<PalletXcmVersionMigrationStage>`
 - **interface**: `api.query.xcmPallet.currentMigration`
 - **summary**:    The current migration's stage, if any. 
  
-### lockedFungibles(`AccountId32`): `Option<Vec<(u128,XcmVersionedMultiLocation)>>`
+### lockedFungibles(`AccountId32`): `Option<Vec<(u128,XcmVersionedLocation)>>`
 - **interface**: `api.query.xcmPallet.lockedFungibles`
 - **summary**:    Fungible assets which we know are locked on this chain. 
  
@@ -1689,19 +1877,19 @@ ___
 - **interface**: `api.query.xcmPallet.safeXcmVersion`
 - **summary**:    Default version to encode XCM when latest version of destination is unknown. If `None`,  then the destinations whose XCM version is unknown are considered unreachable. 
  
-### supportedVersion(`u32, XcmVersionedMultiLocation`): `Option<u32>`
+### supportedVersion(`u32, XcmVersionedLocation`): `Option<u32>`
 - **interface**: `api.query.xcmPallet.supportedVersion`
 - **summary**:    The Latest versions that we know various locations support. 
  
-### versionDiscoveryQueue(): `Vec<(XcmVersionedMultiLocation,u32)>`
+### versionDiscoveryQueue(): `Vec<(XcmVersionedLocation,u32)>`
 - **interface**: `api.query.xcmPallet.versionDiscoveryQueue`
 - **summary**:    Destinations whose latest XCM version we would like to know. Duplicates not allowed, and  the `u32` counter is the number of times that a send to the destination has been attempted,  which is used as a prioritization. 
  
-### versionNotifiers(`u32, XcmVersionedMultiLocation`): `Option<u64>`
+### versionNotifiers(`u32, XcmVersionedLocation`): `Option<u64>`
 - **interface**: `api.query.xcmPallet.versionNotifiers`
 - **summary**:    All locations that we have requested version notifications from. 
  
-### versionNotifyTargets(`u32, XcmVersionedMultiLocation`): `Option<(u64,SpWeightsWeightV2Weight,u32)>`
+### versionNotifyTargets(`u32, XcmVersionedLocation`): `Option<(u64,SpWeightsWeightV2Weight,u32)>`
 - **interface**: `api.query.xcmPallet.versionNotifyTargets`
 - **summary**:    The target locations that are subscribed to our version changes, as well as the most recent  of our versions we informed them of. 
  

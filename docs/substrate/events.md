@@ -12,6 +12,8 @@ Events are emitted for certain operations on the runtime. The following sections
 
 - **[assetConversion](#assetconversion)**
 
+- **[assetConversionMigration](#assetconversionmigration)**
+
 - **[assetConversionTxPayment](#assetconversiontxpayment)**
 
 - **[assetRate](#assetrate)**
@@ -58,6 +60,8 @@ Events are emitted for certain operations on the runtime. The following sections
 
 - **[messageQueue](#messagequeue)**
 
+- **[multiBlockMigrations](#multiblockmigrations)**
+
 - **[multisig](#multisig)**
 
 - **[nftFractionalization](#nftfractionalization)**
@@ -69,6 +73,8 @@ Events are emitted for certain operations on the runtime. The following sections
 - **[nominationPools](#nominationpools)**
 
 - **[offences](#offences)**
+
+- **[parameters](#parameters)**
 
 - **[poolAssets](#poolassets)**
 
@@ -232,25 +238,38 @@ ___
 
 ## assetConversion
  
-### LiquidityAdded(`AccountId32`, `AccountId32`, `(PalletAssetConversionNativeOrAssetId,PalletAssetConversionNativeOrAssetId)`, `u128`, `u128`, `u32`, `u128`)
+### LiquidityAdded(`AccountId32`, `AccountId32`, `(FrameSupportTokensFungibleUnionOfNativeOrWithId,FrameSupportTokensFungibleUnionOfNativeOrWithId)`, `u128`, `u128`, `u32`, `u128`)
 - **interface**: `api.events.assetConversion.LiquidityAdded.is`
 - **summary**:    A successful call of the `AddLiquidity` extrinsic will create this event. 
  
-### LiquidityRemoved(`AccountId32`, `AccountId32`, `(PalletAssetConversionNativeOrAssetId,PalletAssetConversionNativeOrAssetId)`, `u128`, `u128`, `u32`, `u128`, `Permill`)
+### LiquidityRemoved(`AccountId32`, `AccountId32`, `(FrameSupportTokensFungibleUnionOfNativeOrWithId,FrameSupportTokensFungibleUnionOfNativeOrWithId)`, `u128`, `u128`, `u32`, `u128`, `Permill`)
 - **interface**: `api.events.assetConversion.LiquidityRemoved.is`
 - **summary**:    A successful call of the `RemoveLiquidity` extrinsic will create this event. 
  
-### PoolCreated(`AccountId32`, `(PalletAssetConversionNativeOrAssetId,PalletAssetConversionNativeOrAssetId)`, `AccountId32`, `u32`)
+### PoolCreated(`AccountId32`, `(FrameSupportTokensFungibleUnionOfNativeOrWithId,FrameSupportTokensFungibleUnionOfNativeOrWithId)`, `AccountId32`, `u32`)
 - **interface**: `api.events.assetConversion.PoolCreated.is`
-- **summary**:    A successful call of the `CretaPool` extrinsic will create this event. 
+- **summary**:    A successful call of the `CreatePool` extrinsic will create this event. 
  
-### SwapExecuted(`AccountId32`, `AccountId32`, `Vec<PalletAssetConversionNativeOrAssetId>`, `u128`, `u128`)
+### SwapCreditExecuted(`u128`, `u128`, `Vec<(FrameSupportTokensFungibleUnionOfNativeOrWithId,u128)>`)
+- **interface**: `api.events.assetConversion.SwapCreditExecuted.is`
+- **summary**:    Assets have been converted from one to another. 
+ 
+### SwapExecuted(`AccountId32`, `AccountId32`, `u128`, `u128`, `Vec<(FrameSupportTokensFungibleUnionOfNativeOrWithId,u128)>`)
 - **interface**: `api.events.assetConversion.SwapExecuted.is`
 - **summary**:    Assets have been converted from one to another. Both `SwapExactTokenForToken`  and `SwapTokenForExactToken` will generate this event. 
  
-### Transfer(`AccountId32`, `AccountId32`, `PalletAssetConversionNativeOrAssetId`, `u128`)
-- **interface**: `api.events.assetConversion.Transfer.is`
-- **summary**:    An amount has been transferred from one account to another. 
+### Touched(`(FrameSupportTokensFungibleUnionOfNativeOrWithId,FrameSupportTokensFungibleUnionOfNativeOrWithId)`, `AccountId32`)
+- **interface**: `api.events.assetConversion.Touched.is`
+- **summary**:    Pool has been touched in order to fulfill operational requirements. 
+
+___
+
+
+## assetConversionMigration
+ 
+### MigratedToNewAccount(`(FrameSupportTokensFungibleUnionOfNativeOrWithId,FrameSupportTokensFungibleUnionOfNativeOrWithId)`, `AccountId32`, `AccountId32`)
+- **interface**: `api.events.assetConversionMigration.MigratedToNewAccount.is`
+- **summary**:    Indicates that a pool has been migrated to the new account ID. 
 
 ___
 
@@ -328,6 +347,10 @@ ___
 - **interface**: `api.events.assets.Created.is`
 - **summary**:    Some asset class was created. 
  
+### Deposited(`u32`, `AccountId32`, `u128`)
+- **interface**: `api.events.assets.Deposited.is`
+- **summary**:    Some assets were deposited (e.g. for transaction fees). 
+ 
 ### Destroyed(`u32`)
 - **interface**: `api.events.assets.Destroyed.is`
 - **summary**:    An asset class was destroyed. 
@@ -379,6 +402,10 @@ ___
 ### TransferredApproved(`u32`, `AccountId32`, `AccountId32`, `AccountId32`, `u128`)
 - **interface**: `api.events.assets.TransferredApproved.is`
 - **summary**:    An `amount` was transferred in its entirety from `owner` to `destination` by  the approved `delegate`. 
+ 
+### Withdrawn(`u32`, `AccountId32`, `u128`)
+- **interface**: `api.events.assets.Withdrawn.is`
+- **summary**:    Some assets were withdrawn from the account (e.g. for transaction fees). 
 
 ___
 
@@ -458,6 +485,10 @@ ___
 - **interface**: `api.events.balances.Thawed.is`
 - **summary**:    Some balance was thawed. 
  
+### TotalIssuanceForced(`u128`, `u128`)
+- **interface**: `api.events.balances.TotalIssuanceForced.is`
+- **summary**:    The `TotalIssuance` was forcefully changed. 
+ 
 ### Transfer(`AccountId32`, `AccountId32`, `u128`)
 - **interface**: `api.events.balances.Transfer.is`
 - **summary**:    Transfer succeeded. 
@@ -532,10 +563,6 @@ ___
 
 ## broker
  
-### AllowedRenewalDropped(`u32`, `u16`)
-- **interface**: `api.events.broker.AllowedRenewalDropped.is`
-- **summary**:    Some historical Instantaneous Core Pool payment record has been dropped. 
- 
 ### Assigned(`PalletBrokerRegionId`, `u32`, `u32`)
 - **interface**: `api.events.broker.Assigned.is`
 - **summary**:    A Region has been assigned to a particular task. 
@@ -596,6 +623,10 @@ ___
 - **interface**: `api.events.broker.Pooled.is`
 - **summary**:    A Region has been added to the Instantaneous Coretime Pool. 
  
+### PotentialRenewalDropped(`u32`, `u16`)
+- **interface**: `api.events.broker.PotentialRenewalDropped.is`
+- **summary**:    Some historical Instantaneous Core Pool payment record has been dropped. 
+ 
 ### Purchased(`AccountId32`, `PalletBrokerRegionId`, `u128`, `u32`)
 - **interface**: `api.events.broker.Purchased.is`
 - **summary**:    A Region of Bulk Coretime has been purchased. 
@@ -640,7 +671,7 @@ ___
 - **interface**: `api.events.broker.SalesStarted.is`
 - **summary**:    The sale rotation has been started and a new sale is imminent. 
  
-### Transferred(`PalletBrokerRegionId`, `u32`, `AccountId32`, `AccountId32`)
+### Transferred(`PalletBrokerRegionId`, `u32`, `Option<AccountId32>`, `Option<AccountId32>`)
 - **interface**: `api.events.broker.Transferred.is`
 - **summary**:    Ownership of a Region has been transferred. 
 
@@ -764,7 +795,7 @@ ___
 - **interface**: `api.events.coreFellowship.Offboarded.is`
 - **summary**:    Member has been removed from being tracked in this pallet (i.e. because rank is now  zero). 
  
-### ParamsChanged(`PalletCoreFellowshipParamsType`)
+### ParamsChanged(`PalletCoreFellowshipParamsTypeU128`)
 - **interface**: `api.events.coreFellowship.ParamsChanged.is`
 - **summary**:    Parameters for the pallet have changed. 
  
@@ -779,6 +810,10 @@ ___
 ### Requested(`AccountId32`, `PalletCoreFellowshipWish`)
 - **interface**: `api.events.coreFellowship.Requested.is`
 - **summary**:    Member has stated evidence of their efforts their request for rank. 
+ 
+### Swapped(`AccountId32`, `AccountId32`)
+- **interface**: `api.events.coreFellowship.Swapped.is`
+- **summary**:    A member had its AccountId swapped. 
 
 ___
 
@@ -864,7 +899,7 @@ ___
  
 ### Seconded(`AccountId32`, `u32`)
 - **interface**: `api.events.democracy.Seconded.is`
-- **summary**:    An account has secconded a proposal 
+- **summary**:    An account has seconded a proposal 
  
 ### Started(`u32`, `PalletDemocracyVoteThreshold`)
 - **interface**: `api.events.democracy.Started.is`
@@ -917,7 +952,7 @@ ___
 - **interface**: `api.events.electionProviderMultiPhase.SolutionStored.is`
 - **summary**:    A solution was stored with the given compute. 
 
-   The `origin` indicates the origin of the solution. If `origin` is `Some(AccountId)`,  the stored solution was submited in the signed phase by a miner with the `AccountId`.  Otherwise, the solution was stored either during the unsigned phase or by  `T::ForceOrigin`. The `bool` is `true` when a previous solution was ejected to make  room for this one. 
+   The `origin` indicates the origin of the solution. If `origin` is `Some(AccountId)`,  the stored solution was submitted in the signed phase by a miner with the `AccountId`.  Otherwise, the solution was stored either during the unsigned phase or by  `T::ForceOrigin`. The `bool` is `true` when a previous solution was ejected to make  room for this one. 
 
 ___
 
@@ -986,6 +1021,10 @@ ___
 
 ## glutton
  
+### BlockLengthLimitSet(`u64`)
+- **interface**: `api.events.glutton.BlockLengthLimitSet.is`
+- **summary**:    The block length limit has been updated. 
+ 
 ### ComputationLimitSet(`u64`)
 - **interface**: `api.events.glutton.ComputationLimitSet.is`
 - **summary**:    The computation limit has been updated. 
@@ -1020,6 +1059,18 @@ ___
 
 ## identity
  
+### AuthorityAdded(`AccountId32`)
+- **interface**: `api.events.identity.AuthorityAdded.is`
+- **summary**:    A username authority was added. 
+ 
+### AuthorityRemoved(`AccountId32`)
+- **interface**: `api.events.identity.AuthorityRemoved.is`
+- **summary**:    A username authority was removed. 
+ 
+### DanglingUsernameRemoved(`AccountId32`, `Bytes`)
+- **interface**: `api.events.identity.DanglingUsernameRemoved.is`
+- **summary**:    A dangling username (as in, a username corresponding to an account that has removed its  identity) has been removed. 
+ 
 ### IdentityCleared(`AccountId32`, `u128`)
 - **interface**: `api.events.identity.IdentityCleared.is`
 - **summary**:    A name was cleared, and the given balance returned. 
@@ -1044,6 +1095,14 @@ ___
 - **interface**: `api.events.identity.JudgementUnrequested.is`
 - **summary**:    A judgement request was retracted. 
  
+### PreapprovalExpired(`AccountId32`)
+- **interface**: `api.events.identity.PreapprovalExpired.is`
+- **summary**:    A queued username passed its expiration without being claimed and was removed. 
+ 
+### PrimaryUsernameSet(`AccountId32`, `Bytes`)
+- **interface**: `api.events.identity.PrimaryUsernameSet.is`
+- **summary**:    A username was set as a primary and can be looked up from `who`. 
+ 
 ### RegistrarAdded(`u32`)
 - **interface**: `api.events.identity.RegistrarAdded.is`
 - **summary**:    A registrar was added. 
@@ -1059,6 +1118,14 @@ ___
 ### SubIdentityRevoked(`AccountId32`, `AccountId32`, `u128`)
 - **interface**: `api.events.identity.SubIdentityRevoked.is`
 - **summary**:    A sub-identity was cleared, and the given deposit repatriated from the  main identity account to the sub-identity account. 
+ 
+### UsernameQueued(`AccountId32`, `Bytes`, `u32`)
+- **interface**: `api.events.identity.UsernameQueued.is`
+- **summary**:    A username was queued, but `who` must accept it prior to `expiration`. 
+ 
+### UsernameSet(`AccountId32`, `Bytes`)
+- **interface**: `api.events.identity.UsernameSet.is`
+- **summary**:    A username was set for `who`. 
 
 ___
 
@@ -1135,6 +1202,51 @@ ___
 ### ProcessingFailed(`H256`, `u32`, `FrameSupportMessagesProcessMessageError`)
 - **interface**: `api.events.messageQueue.ProcessingFailed.is`
 - **summary**:    Message discarded due to an error in the `MessageProcessor` (usually a format error). 
+
+___
+
+
+## multiBlockMigrations
+ 
+### HistoricCleared(`Option<Bytes>`)
+- **interface**: `api.events.multiBlockMigrations.HistoricCleared.is`
+- **summary**:    The set of historical migrations has been cleared. 
+ 
+### MigrationAdvanced(`u32`, `u32`)
+- **interface**: `api.events.multiBlockMigrations.MigrationAdvanced.is`
+- **summary**:    A migration progressed. 
+ 
+### MigrationCompleted(`u32`, `u32`)
+- **interface**: `api.events.multiBlockMigrations.MigrationCompleted.is`
+- **summary**:    A Migration completed. 
+ 
+### MigrationFailed(`u32`, `u32`)
+- **interface**: `api.events.multiBlockMigrations.MigrationFailed.is`
+- **summary**:    A Migration failed. 
+
+   This implies that the whole upgrade failed and governance intervention is required. 
+ 
+### MigrationSkipped(`u32`)
+- **interface**: `api.events.multiBlockMigrations.MigrationSkipped.is`
+- **summary**:    A migration was skipped since it was already executed in the past. 
+ 
+### UpgradeCompleted()
+- **interface**: `api.events.multiBlockMigrations.UpgradeCompleted.is`
+- **summary**:    The current runtime upgrade completed. 
+
+   This implies that all of its migrations completed successfully as well. 
+ 
+### UpgradeFailed()
+- **interface**: `api.events.multiBlockMigrations.UpgradeFailed.is`
+- **summary**:    Runtime upgrade failed. 
+
+   This is very bad and will require governance intervention. 
+ 
+### UpgradeStarted(`u32`)
+- **interface**: `api.events.multiBlockMigrations.UpgradeStarted.is`
+- **summary**:    A Runtime upgrade started. 
+
+   Its end is indicated by `UpgradeCompleted` or `UpgradeFailed`. 
 
 ___
 
@@ -1358,7 +1470,7 @@ ___
  
 ### Transferred(`AccountId32`, `AccountId32`, `u32`)
 - **interface**: `api.events.nis.Transferred.is`
-- **summary**:    A receipt was transfered. 
+- **summary**:    A receipt was transferred. 
 
 ___
 
@@ -1461,6 +1573,17 @@ ___
 ___
 
 
+## parameters
+ 
+### Updated(`KitchensinkRuntimeRuntimeParametersKey`, `Option<KitchensinkRuntimeRuntimeParametersValue>`, `Option<KitchensinkRuntimeRuntimeParametersValue>`)
+- **interface**: `api.events.parameters.Updated.is`
+- **summary**:    A Parameter was set. 
+
+   Is also emitted when the value was not changed. 
+
+___
+
+
 ## poolAssets
  
 ### AccountsDestroyed(`u32`, `u32`, `u32`)
@@ -1506,6 +1629,10 @@ ___
 ### Created(`u32`, `AccountId32`, `AccountId32`)
 - **interface**: `api.events.poolAssets.Created.is`
 - **summary**:    Some asset class was created. 
+ 
+### Deposited(`u32`, `AccountId32`, `u128`)
+- **interface**: `api.events.poolAssets.Deposited.is`
+- **summary**:    Some assets were deposited (e.g. for transaction fees). 
  
 ### Destroyed(`u32`)
 - **interface**: `api.events.poolAssets.Destroyed.is`
@@ -1558,6 +1685,10 @@ ___
 ### TransferredApproved(`u32`, `AccountId32`, `AccountId32`, `AccountId32`, `u128`)
 - **interface**: `api.events.poolAssets.TransferredApproved.is`
 - **summary**:    An `amount` was transferred in its entirety from `owner` to `destination` by  the approved `delegate`. 
+ 
+### Withdrawn(`u32`, `AccountId32`, `u128`)
+- **interface**: `api.events.poolAssets.Withdrawn.is`
+- **summary**:    Some assets were withdrawn from the account (e.g. for transaction fees). 
 
 ___
 
@@ -1617,6 +1748,10 @@ ___
 ### MemberAdded(`AccountId32`)
 - **interface**: `api.events.rankedCollective.MemberAdded.is`
 - **summary**:    A member `who` has been added. 
+ 
+### MemberExchanged(`AccountId32`, `AccountId32`)
+- **interface**: `api.events.rankedCollective.MemberExchanged.is`
+- **summary**:    The member `who` had their `AccountId` changed to `new_who`. 
  
 ### MemberRemoved(`AccountId32`, `u16`)
 - **interface**: `api.events.rankedCollective.MemberRemoved.is`
@@ -1872,6 +2007,10 @@ ___
 ### Registered(`AccountId32`, `u128`)
 - **interface**: `api.events.salary.Registered.is`
 - **summary**:    A member registered for a payout. 
+ 
+### Swapped(`AccountId32`, `AccountId32`)
+- **interface**: `api.events.salary.Swapped.is`
+- **summary**:    A member swapped their account. 
 
 ___
 
@@ -1897,6 +2036,18 @@ ___
 ### PermanentlyOverweight(`(u32,u32)`, `Option<[u8;32]>`)
 - **interface**: `api.events.scheduler.PermanentlyOverweight.is`
 - **summary**:    The given task can never be executed since it is overweight. 
+ 
+### RetryCancelled(`(u32,u32)`, `Option<[u8;32]>`)
+- **interface**: `api.events.scheduler.RetryCancelled.is`
+- **summary**:    Cancel a retry configuration for some task. 
+ 
+### RetryFailed(`(u32,u32)`, `Option<[u8;32]>`)
+- **interface**: `api.events.scheduler.RetryFailed.is`
+- **summary**:    The given task was unable to be retried since the agenda is full at that block or there  was not enough weight to reschedule it. 
+ 
+### RetrySet(`(u32,u32)`, `Option<[u8;32]>`, `u32`, `u8`)
+- **interface**: `api.events.scheduler.RetrySet.is`
+- **summary**:    Set a retry configuration for some task. 
  
 ### Scheduled(`u32`, `u32`)
 - **interface**: `api.events.scheduler.Scheduled.is`
@@ -2007,6 +2158,10 @@ ___
 ### Chilled(`AccountId32`)
 - **interface**: `api.events.staking.Chilled.is`
 - **summary**:    An account has stopped participating as either a validator or nominator. 
+ 
+### ControllerBatchDeprecated(`u32`)
+- **interface**: `api.events.staking.ControllerBatchDeprecated.is`
+- **summary**:    Report of a controller batch deprecation. 
  
 ### EraPaid(`u32`, `u128`, `u128`)
 - **interface**: `api.events.staking.EraPaid.is`
@@ -2148,17 +2303,9 @@ ___
 - **interface**: `api.events.system.Remarked.is`
 - **summary**:    On on-chain remark happened. 
  
-### TaskCompleted(`KitchensinkRuntimeRuntimeTask`)
-- **interface**: `api.events.system.TaskCompleted.is`
-- **summary**:    A [`Task`] has finished executing. 
- 
-### TaskFailed(`KitchensinkRuntimeRuntimeTask`, `SpRuntimeDispatchError`)
-- **interface**: `api.events.system.TaskFailed.is`
-- **summary**:    A [`Task`] failed during execution. 
- 
-### TaskStarted(`KitchensinkRuntimeRuntimeTask`)
-- **interface**: `api.events.system.TaskStarted.is`
-- **summary**:    A [`Task`] has started executing 
+### UpgradeAuthorized(`H256`, `bool`)
+- **interface**: `api.events.system.UpgradeAuthorized.is`
+- **summary**:    An upgrade was authorized. 
 
 ___
 
@@ -2305,14 +2452,6 @@ ___
 ### PaymentFailed(`u32`, `Null`)
 - **interface**: `api.events.treasury.PaymentFailed.is`
 - **summary**:    A payment failed and can be retried. 
- 
-### Proposed(`u32`)
-- **interface**: `api.events.treasury.Proposed.is`
-- **summary**:    New proposal. 
- 
-### Rejected(`u32`, `u128`)
-- **interface**: `api.events.treasury.Rejected.is`
-- **summary**:    A proposal was rejected; funds were slashed. 
  
 ### Rollover(`u128`)
 - **interface**: `api.events.treasury.Rollover.is`

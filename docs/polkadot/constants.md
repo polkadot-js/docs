@@ -12,6 +12,8 @@ The following sections contain the module constants, also known as parameter typ
 
 - **[balances](#balances)**
 
+- **[beefy](#beefy)**
+
 - **[bounties](#bounties)**
 
 - **[childBounties](#childbounties)**
@@ -29,8 +31,6 @@ The following sections contain the module constants, also known as parameter typ
 - **[grandpa](#grandpa)**
 
 - **[identity](#identity)**
-
-- **[imOnline](#imonline)**
 
 - **[indices](#indices)**
 
@@ -53,6 +53,8 @@ The following sections contain the module constants, also known as parameter typ
 - **[slots](#slots)**
 
 - **[staking](#staking)**
+
+- **[stateTrieMigration](#statetriemigration)**
 
 - **[system](#system)**
 
@@ -128,10 +130,6 @@ ___
 - **interface**: `api.consts.balances.maxFreezes`
 - **summary**:    The maximum number of individual freeze locks that can exist on an account at any time. 
  
-### maxHolds: `u32`
-- **interface**: `api.consts.balances.maxHolds`
-- **summary**:    The maximum number of holds that can exist on an account at any time. 
- 
 ### maxLocks: `u32`
 - **interface**: `api.consts.balances.maxLocks`
 - **summary**:    The maximum number of locks that should exist on an account.  Not strictly enforced, but used for weight estimation. 
@@ -139,6 +137,25 @@ ___
 ### maxReserves: `u32`
 - **interface**: `api.consts.balances.maxReserves`
 - **summary**:    The maximum number of named reserves that can exist on an account. 
+
+___
+
+
+## beefy
+ 
+### maxAuthorities: `u32`
+- **interface**: `api.consts.beefy.maxAuthorities`
+- **summary**:    The maximum number of authorities that can be added. 
+ 
+### maxNominators: `u32`
+- **interface**: `api.consts.beefy.maxNominators`
+- **summary**:    The maximum number of nominators for each validator. 
+ 
+### maxSetIdSessionEntries: `u64`
+- **interface**: `api.consts.beefy.maxSetIdSessionEntries`
+- **summary**:    The maximum number of entries to keep in the set id to session index mapping. 
+
+   Since the `SetIdSession` map is only used for validating equivocations this  value should relate to the bonding duration of whatever staking system is  being used (if any). If equivocation handling is not enabled then this value  can be zero. 
 
 ___
 
@@ -249,10 +266,6 @@ ___
 - **interface**: `api.consts.electionProviderMultiPhase.betterSignedThreshold`
 - **summary**:    The minimum amount of improvement to the solution score that defines a solution as  "better" in the Signed phase. 
  
-### betterUnsignedThreshold: `Perbill`
-- **interface**: `api.consts.electionProviderMultiPhase.betterUnsignedThreshold`
-- **summary**:    The minimum amount of improvement to the solution score that defines a solution as  "better" in the Unsigned phase. 
- 
 ### maxWinners: `u32`
 - **interface**: `api.consts.electionProviderMultiPhase.maxWinners`
 - **summary**:    The maximum number of winners that can be elected by this `ElectionProvider`  implementation. 
@@ -280,10 +293,6 @@ ___
 - **summary**:    The repeat threshold of the offchain worker. 
 
    For example, if it is 5, that means that at least 5 blocks will elapse between attempts  to submit the worker's solution. 
- 
-### signedDepositBase: `u128`
-- **interface**: `api.consts.electionProviderMultiPhase.signedDepositBase`
-- **summary**:    Base deposit for a signed solution. 
  
 ### signedDepositByte: `u128`
 - **interface**: `api.consts.electionProviderMultiPhase.signedDepositByte`
@@ -356,15 +365,11 @@ ___
  
 ### basicDeposit: `u128`
 - **interface**: `api.consts.identity.basicDeposit`
-- **summary**:    The amount held on deposit for a registered identity 
+- **summary**:    The amount held on deposit for a registered identity. 
  
-### fieldDeposit: `u128`
-- **interface**: `api.consts.identity.fieldDeposit`
-- **summary**:    The amount held on deposit per additional field for a registered identity. 
- 
-### maxAdditionalFields: `u32`
-- **interface**: `api.consts.identity.maxAdditionalFields`
-- **summary**:    Maximum number of additional fields that may be stored in an ID. Needed to bound the I/O  required to access an identity, but can be pretty high. 
+### byteDeposit: `u128`
+- **interface**: `api.consts.identity.byteDeposit`
+- **summary**:    The amount held on deposit per encoded byte for a registered identity. 
  
 ### maxRegistrars: `u32`
 - **interface**: `api.consts.identity.maxRegistrars`
@@ -374,20 +379,21 @@ ___
 - **interface**: `api.consts.identity.maxSubAccounts`
 - **summary**:    The maximum number of sub-accounts allowed per identified account. 
  
+### maxSuffixLength: `u32`
+- **interface**: `api.consts.identity.maxSuffixLength`
+- **summary**:    The maximum length of a suffix. 
+ 
+### maxUsernameLength: `u32`
+- **interface**: `api.consts.identity.maxUsernameLength`
+- **summary**:    The maximum length of a username, including its suffix and any system-added delimiters. 
+ 
+### pendingUsernameExpiration: `u32`
+- **interface**: `api.consts.identity.pendingUsernameExpiration`
+- **summary**:    The number of blocks within which a username grant must be accepted. 
+ 
 ### subAccountDeposit: `u128`
 - **interface**: `api.consts.identity.subAccountDeposit`
 - **summary**:    The amount held on deposit for a registered subaccount. This should account for the fact  that one storage item's value will increase by the size of an account ID, and there will  be another trie item whose value is the size of an account ID plus 32 bytes. 
-
-___
-
-
-## imOnline
- 
-### unsignedPriority: `u64`
-- **interface**: `api.consts.imOnline.unsignedPriority`
-- **summary**:    A configuration for base priority of unsigned transactions. 
-
-   This is exposed so that it can be tuned for particular runtime, when  multiple pallets send unsigned transactions. 
 
 ___
 
@@ -454,6 +460,10 @@ ___
    Moreover, this relates to the `RewardCounter` type as well, as the arithmetic operations  are a function of number of points, and by setting this value to e.g. 10, you ensure  that the total number of points in the system are at most 10 times the total_issuance of  the chain, in the absolute worse case. 
 
    For a value of 10, the threshold would be a pool points-to-balance ratio of 10:1.  Such a scenario would also be the equivalent of the pool being 90% slashed. 
+ 
+### maxUnbonding: `u32`
+- **interface**: `api.consts.nominationPools.maxUnbonding`
+- **summary**:    The maximum number of simultaneous unbonding chunks that can exist per member. 
  
 ### palletId: `FrameSupportPalletId`
 - **interface**: `api.consts.nominationPools.palletId`
@@ -583,19 +593,23 @@ ___
 - **interface**: `api.consts.staking.historyDepth`
 - **summary**:    Number of eras to keep in history. 
 
-   Following information is kept for eras in `[current_era -  HistoryDepth, current_era]`: `ErasStakers`, `ErasStakersClipped`,  `ErasValidatorPrefs`, `ErasValidatorReward`, `ErasRewardPoints`,  `ErasTotalStake`, `ErasStartSessionIndex`,  `StakingLedger.claimed_rewards`. 
+   Following information is kept for eras in `[current_era -  HistoryDepth, current_era]`: `ErasStakers`, `ErasStakersClipped`,  `ErasValidatorPrefs`, `ErasValidatorReward`, `ErasRewardPoints`,  `ErasTotalStake`, `ErasStartSessionIndex`, `ClaimedRewards`, `ErasStakersPaged`,  `ErasStakersOverview`. 
 
    Must be more than the number of eras delayed by session.  I.e. active era must always be in history. I.e. `active_era >  current_era - history_depth` must be guaranteed. 
 
    If migrating an existing pallet from storage value to config value,  this should be set to same value or greater as in storage. 
 
-   Note: `HistoryDepth` is used as the upper bound for the `BoundedVec`  item `StakingLedger.claimed_rewards`. Setting this value lower than  the existing value can lead to inconsistencies in the  `StakingLedger` and will need to be handled properly in a migration.  The test `reducing_history_depth_abrupt` shows this effect. 
+   Note: `HistoryDepth` is used as the upper bound for the `BoundedVec`  item `StakingLedger.legacy_claimed_rewards`. Setting this value lower than  the existing value can lead to inconsistencies in the  `StakingLedger` and will need to be handled properly in a migration.  The test `reducing_history_depth_abrupt` shows this effect. 
  
-### maxNominatorRewardedPerValidator: `u32`
-- **interface**: `api.consts.staking.maxNominatorRewardedPerValidator`
-- **summary**:    The maximum number of nominators rewarded for each validator. 
+### maxExposurePageSize: `u32`
+- **interface**: `api.consts.staking.maxExposurePageSize`
+- **summary**:    The maximum size of each `T::ExposurePage`. 
 
-   For each validator only the `$MaxNominatorRewardedPerValidator` biggest stakers can  claim their reward. This used to limit the i/o cost for the nominator payout. 
+   An `ExposurePage` is weakly bounded to a maximum of `MaxExposurePageSize`  nominators. 
+
+   For older non-paged exposure, a reward payout was restricted to the top  `MaxExposurePageSize` nominators. This is to limit the i/o cost for the  nominator payout. 
+
+   Note: `MaxExposurePageSize` is used to bound `ClaimedRewards` and is unsafe to reduce  without handling it in a migration. 
  
 ### maxUnlockingChunks: `u32`
 - **interface**: `api.consts.staking.maxUnlockingChunks`
@@ -612,6 +626,31 @@ ___
 - **summary**:    Number of eras that slashes are deferred by, after computation. 
 
    This should be less than the bonding duration. Set to 0 if slashes  should be applied immediately, without opportunity for intervention. 
+
+___
+
+
+## stateTrieMigration
+ 
+### maxKeyLen: `u32`
+- **interface**: `api.consts.stateTrieMigration.maxKeyLen`
+- **summary**:    Maximal number of bytes that a key can have. 
+
+   FRAME itself does not limit the key length.  The concrete value must therefore depend on your storage usage.  A [`frame_support::storage::StorageNMap`] for example can have an arbitrary number of  keys which are then hashed and concatenated, resulting in arbitrarily long keys. 
+
+   Use the *state migration RPC* to retrieve the length of the longest key in your  storage: <https://github.com/paritytech/substrate/issues/11642> 
+
+   The migration will halt with a `Halted` event if this value is too small.  Since there is no real penalty from over-estimating, it is advised to use a large  value. The default is 512 byte. 
+
+   Some key lengths for reference: 
+
+  - [`frame_support::storage::StorageValue`]: 32 byte
+
+  - [`frame_support::storage::StorageMap`]: 64 byte
+
+  - [`frame_support::storage::StorageDoubleMap`]: 96 byte
+
+   For more info see  <https://www.shawntabrizi.com/blog/substrate/querying-substrate-storage-via-rpc/> 
 
 ___
 
@@ -651,7 +690,9 @@ ___
  
 ### minimumPeriod: `u64`
 - **interface**: `api.consts.timestamp.minimumPeriod`
-- **summary**:    The minimum period between blocks. Beware that this is different to the *expected*  period that the block production apparatus provides. Your chosen consensus system will  generally work with this to determine a sensible block time. e.g. For Aura, it will be  double this period on default settings. 
+- **summary**:    The minimum period between blocks. 
+
+   Be aware that this is different to the *expected* period that the block production  apparatus provides. Your chosen consensus system will generally work with this to  determine a sensible block time. For example, in the Aura pallet it will be double this  period on default settings. 
 
 ___
 
@@ -660,9 +701,9 @@ ___
  
 ### operationalFeeMultiplier: `u8`
 - **interface**: `api.consts.transactionPayment.operationalFeeMultiplier`
-- **summary**:    A fee mulitplier for `Operational` extrinsics to compute "virtual tip" to boost their  `priority` 
+- **summary**:    A fee multiplier for `Operational` extrinsics to compute "virtual tip" to boost their  `priority` 
 
-   This value is multipled by the `final_fee` to obtain a "virtual tip" that is later  added to a tip component in regular `priority` calculations.  It means that a `Normal` transaction can front-run a similarly-sized `Operational`  extrinsic (with no tip), by including a tip value greater than the virtual tip. 
+   This value is multiplied by the `final_fee` to obtain a "virtual tip" that is later  added to a tip component in regular `priority` calculations.  It means that a `Normal` transaction can front-run a similarly-sized `Operational`  extrinsic (with no tip), by including a tip value greater than the virtual tip. 
 
    ```rust,ignore  // For `Normal`  let priority = priority_calc(tip); 
 
@@ -688,6 +729,10 @@ ___
 ### palletId: `FrameSupportPalletId`
 - **interface**: `api.consts.treasury.palletId`
 - **summary**:    The treasury's pallet id, used for deriving its sovereign account ID. 
+ 
+### payoutPeriod: `u32`
+- **interface**: `api.consts.treasury.payoutPeriod`
+- **summary**:    The period during which an approved treasury spend has to be claimed. 
  
 ### proposalBond: `Permill`
 - **interface**: `api.consts.treasury.proposalBond`

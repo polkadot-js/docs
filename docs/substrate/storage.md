@@ -24,6 +24,8 @@ The following sections contain Storage methods are part of the default Substrate
 
 - **[balances](#balances)**
 
+- **[beefy](#beefy)**
+
 - **[bounties](#bounties)**
 
 - **[broker](#broker)**
@@ -50,6 +52,8 @@ The following sections contain Storage methods are part of the default Substrate
 
 - **[grandpa](#grandpa)**
 
+- **[historical](#historical)**
+
 - **[identity](#identity)**
 
 - **[imOnline](#imonline)**
@@ -64,6 +68,10 @@ The following sections contain Storage methods are part of the default Substrate
 
 - **[mmr](#mmr)**
 
+- **[mmrLeaf](#mmrleaf)**
+
+- **[multiBlockMigrations](#multiblockmigrations)**
+
 - **[multisig](#multisig)**
 
 - **[nftFractionalization](#nftfractionalization)**
@@ -75,6 +83,10 @@ The following sections contain Storage methods are part of the default Substrate
 - **[nominationPools](#nominationpools)**
 
 - **[offences](#offences)**
+
+- **[palletExampleMbms](#palletexamplembms)**
+
+- **[parameters](#parameters)**
 
 - **[poolAssets](#poolassets)**
 
@@ -185,7 +197,7 @@ ___
  
 ### prime(): `Option<AccountId32>`
 - **interface**: `api.query.allianceMotion.prime`
-- **summary**:    The prime member that helps determine the default vote behavior in case of absentations. 
+- **summary**:    The prime member that helps determine the default vote behavior in case of abstentions. 
  
 ### proposalCount(): `u32`
 - **interface**: `api.query.allianceMotion.proposalCount`
@@ -212,7 +224,7 @@ ___
 - **interface**: `api.query.assetConversion.nextPoolAssetId`
 - **summary**:    Stores the `PoolAssetId` that is going to be used for the next lp token.  This gets incremented whenever a new lp pool is created. 
  
-### pools(`(PalletAssetConversionNativeOrAssetId,PalletAssetConversionNativeOrAssetId)`): `Option<PalletAssetConversionPoolInfo>`
+### pools(`(FrameSupportTokensFungibleUnionOfNativeOrWithId,FrameSupportTokensFungibleUnionOfNativeOrWithId)`): `Option<PalletAssetConversionPoolInfo>`
 - **interface**: `api.query.assetConversion.pools`
 - **summary**:    Map from `PoolAssetId` to `PoolInfo`. This establishes whether a pool has been officially  created rather than people sending tokens directly to a pool's public account. 
 
@@ -247,6 +259,14 @@ ___
 ### metadata(`u32`): `PalletAssetsAssetMetadata`
 - **interface**: `api.query.assets.metadata`
 - **summary**:    Metadata of an asset. 
+ 
+### nextAssetId(): `Option<u32>`
+- **interface**: `api.query.assets.nextAssetId`
+- **summary**:    The asset ID enforced for the next asset creation, if any present. Otherwise, this storage  item has no effect. 
+
+   This can be useful for setting up constraints for IDs of the new assets. For example, by  providing an initial [`NextAssetId`] and using the [`crate::AutoIncAssetId`] callback, an  auto-increment model can be applied to all new asset IDs. 
+
+   The initial next asset ID can be set using the [`GenesisConfig`] or the  [SetNextAssetId](`migration::next_asset_id::SetNextAssetId`) migration. 
 
 ___
 
@@ -378,11 +398,11 @@ ___
 
    But this comes with tradeoffs, storing account balances in the system pallet stores  `frame_system` data alongside the account data contrary to storing account balances in the  `Balances` pallet, which uses a `StorageMap` to store balances data only.  NOTE: This is only used in the case that this pallet is used to store balances. 
  
-### freezes(`AccountId32`): `Vec<PalletBalancesIdAmountRuntimeFreezeReason>`
+### freezes(`AccountId32`): `Vec<FrameSupportTokensMiscIdAmountRuntimeFreezeReason>`
 - **interface**: `api.query.balances.freezes`
 - **summary**:    Freeze locks on account balances. 
  
-### holds(`AccountId32`): `Vec<PalletBalancesIdAmountRuntimeHoldReason>`
+### holds(`AccountId32`): `Vec<FrameSupportTokensMiscIdAmountRuntimeHoldReason>`
 - **interface**: `api.query.balances.holds`
 - **summary**:    Holds on account balances. 
  
@@ -393,14 +413,47 @@ ___
 ### locks(`AccountId32`): `Vec<PalletBalancesBalanceLock>`
 - **interface**: `api.query.balances.locks`
 - **summary**:    Any liquidity locks on some account balances.  NOTE: Should only be accessed when setting, changing and freeing a lock. 
+
+   Use of locks is deprecated in favour of freezes. See `https://github.com/paritytech/substrate/pull/12951/` 
  
 ### reserves(`AccountId32`): `Vec<PalletBalancesReserveData>`
 - **interface**: `api.query.balances.reserves`
 - **summary**:    Named reserves on some account balances. 
+
+   Use of reserves is deprecated in favour of holds. See `https://github.com/paritytech/substrate/pull/12951/` 
  
 ### totalIssuance(): `u128`
 - **interface**: `api.query.balances.totalIssuance`
 - **summary**:    The total units issued in the system. 
+
+___
+
+
+## beefy
+ 
+### authorities(): `Vec<SpConsensusBeefyEcdsaCryptoPublic>`
+- **interface**: `api.query.beefy.authorities`
+- **summary**:    The current authorities set 
+ 
+### genesisBlock(): `Option<u32>`
+- **interface**: `api.query.beefy.genesisBlock`
+- **summary**:    Block number where BEEFY consensus is enabled/started.  By changing this (through privileged `set_new_genesis()`), BEEFY consensus is effectively  restarted from the newly set block number. 
+ 
+### nextAuthorities(): `Vec<SpConsensusBeefyEcdsaCryptoPublic>`
+- **interface**: `api.query.beefy.nextAuthorities`
+- **summary**:    Authorities set scheduled to be used with the next session 
+ 
+### setIdSession(`u64`): `Option<u32>`
+- **interface**: `api.query.beefy.setIdSession`
+- **summary**:    A mapping from BEEFY set ID to the index of the *most recent* session for which its  members were responsible. 
+
+   This is only used for validating equivocation proofs. An equivocation proof must  contains a key-ownership proof for a given session, therefore we need a way to tie  together sessions and BEEFY set ids, i.e. we need to validate that a validator  was the owner of a given key on a given session, and what the active set ID was  during that session. 
+
+   TWOX-NOTE: `ValidatorSetId` is not under user control. 
+ 
+### validatorSetId(): `u64`
+- **interface**: `api.query.beefy.validatorSetId`
+- **summary**:    The current validator set id 
 
 ___
 
@@ -428,13 +481,13 @@ ___
 
 ## broker
  
-### allowedRenewals(`PalletBrokerAllowedRenewalId`): `Option<PalletBrokerAllowedRenewalRecord>`
-- **interface**: `api.query.broker.allowedRenewals`
-- **summary**:    Records of allowed renewals. 
- 
 ### configuration(): `Option<PalletBrokerConfigRecord>`
 - **interface**: `api.query.broker.configuration`
 - **summary**:    The current configuration of this pallet. 
+ 
+### coreCountInbox(): `Option<u16>`
+- **interface**: `api.query.broker.coreCountInbox`
+- **summary**:    Received core count change from the relay chain. 
  
 ### instaPoolContribution(`PalletBrokerRegionId`): `Option<PalletBrokerContributionRecord>`
 - **interface**: `api.query.broker.instaPoolContribution`
@@ -452,13 +505,23 @@ ___
 - **interface**: `api.query.broker.leases`
 - **summary**:    The Polkadot Core legacy leases. 
  
+### potentialRenewals(`PalletBrokerPotentialRenewalId`): `Option<PalletBrokerPotentialRenewalRecord>`
+- **interface**: `api.query.broker.potentialRenewals`
+- **summary**:    Records of potential renewals. 
+
+   Renewals will only actually be allowed if `CompletionStatus` is actually `Complete`. 
+ 
 ### regions(`PalletBrokerRegionId`): `Option<PalletBrokerRegionRecord>`
 - **interface**: `api.query.broker.regions`
-- **summary**:    The current (unassigned) Regions. 
+- **summary**:    The current (unassigned or provisionally assigend) Regions. 
  
 ### reservations(): `Vec<Vec<PalletBrokerScheduleItem>>`
 - **interface**: `api.query.broker.reservations`
 - **summary**:    The Polkadot Core reservations (generally tasked with the maintenance of System Chains). 
+ 
+### revenueInbox(): `Option<PalletBrokerOnDemandRevenueRecord>`
+- **interface**: `api.query.broker.revenueInbox`
+- **summary**:    Received revenue info from the relay chain. 
  
 ### saleInfo(): `Option<PalletBrokerSaleInfoRecord>`
 - **interface**: `api.query.broker.saleInfo`
@@ -574,7 +637,7 @@ ___
 - **interface**: `api.query.coreFellowship.memberEvidence`
 - **summary**:    Some evidence together with the desired outcome for which it was presented. 
  
-### params(): `PalletCoreFellowshipParamsType`
+### params(): `PalletCoreFellowshipParamsTypeU128`
 - **interface**: `api.query.coreFellowship.params`
 - **summary**:    The overall status of the system. 
 
@@ -589,7 +652,7 @@ ___
  
 ### prime(): `Option<AccountId32>`
 - **interface**: `api.query.council.prime`
-- **summary**:    The prime member that helps determine the default vote behavior in case of absentations. 
+- **summary**:    The prime member that helps determine the default vote behavior in case of abstentions. 
  
 ### proposalCount(): `u32`
 - **interface**: `api.query.council.proposalCount`
@@ -685,7 +748,7 @@ ___
 - **interface**: `api.query.electionProviderMultiPhase.desiredTargets`
 - **summary**:    Desired number of targets to elect for this round. 
 
-   Only exists when [`Snapshot`] is present. 
+   Only exists when [`Snapshot`] is present.  Note: This storage type must only be mutated through [`SnapshotWrapper`]. 
  
 ### minimumUntrustedScore(): `Option<SpNposElectionsElectionScore>`
 - **interface**: `api.query.electionProviderMultiPhase.minimumUntrustedScore`
@@ -733,13 +796,13 @@ ___
 - **interface**: `api.query.electionProviderMultiPhase.snapshot`
 - **summary**:    Snapshot data of the round. 
 
-   This is created at the beginning of the signed phase and cleared upon calling `elect`. 
+   This is created at the beginning of the signed phase and cleared upon calling `elect`.  Note: This storage type must only be mutated through [`SnapshotWrapper`]. 
  
 ### snapshotMetadata(): `Option<PalletElectionProviderMultiPhaseSolutionOrSnapshotSize>`
 - **interface**: `api.query.electionProviderMultiPhase.snapshotMetadata`
 - **summary**:    The metadata of the [`RoundSnapshot`] 
 
-   Only exists when [`Snapshot`] is present. 
+   Only exists when [`Snapshot`] is present.  Note: This storage type must only be mutated through [`SnapshotWrapper`]. 
 
 ___
 
@@ -816,6 +879,12 @@ ___
 
    `1.0` is mapped to `100%`. Must be at most [`crate::RESOURCE_HARD_LIMIT`]. Setting this to  over `1.0` could stall the chain. 
  
+### length(): `u64`
+- **interface**: `api.query.glutton.length`
+- **summary**:    The proportion of the `block length` to consume on each block. 
+
+   `1.0` is mapped to `100%`. Must be at most [`crate::RESOURCE_HARD_LIMIT`]. Setting this to  over `1.0` could stall the chain. 
+ 
 ### storage(): `u64`
 - **interface**: `api.query.glutton.storage`
 - **summary**:    The proportion of the remaining `proof_size` to consume during `on_idle`. 
@@ -872,13 +941,38 @@ ___
 ___
 
 
+## historical
+ 
+### historicalSessions(`u32`): `Option<(H256,u32)>`
+- **interface**: `api.query.historical.historicalSessions`
+- **summary**:    Mapping from historical session indices to session-data root hash and validator count. 
+ 
+### storedRange(): `Option<(u32,u32)>`
+- **interface**: `api.query.historical.storedRange`
+- **summary**:    The range of historical sessions we store. [first, last) 
+
+___
+
+
 ## identity
  
-### identityOf(`AccountId32`): `Option<PalletIdentityRegistration>`
+### accountOfUsername(`Bytes`): `Option<AccountId32>`
+- **interface**: `api.query.identity.accountOfUsername`
+- **summary**:    Reverse lookup from `username` to the `AccountId` that has registered it. The value should  be a key in the `IdentityOf` map, but it may not if the user has cleared their identity. 
+
+   Multiple usernames may map to the same `AccountId`, but `IdentityOf` will only map to one  primary username. 
+ 
+### identityOf(`AccountId32`): `Option<(PalletIdentityRegistration,Option<Bytes>)>`
 - **interface**: `api.query.identity.identityOf`
-- **summary**:    Information that is pertinent to identify the entity behind an account. 
+- **summary**:    Information that is pertinent to identify the entity behind an account. First item is the  registration, second is the account's primary username. 
 
    TWOX-NOTE: OK ― `AccountId` is a secure hash. 
+ 
+### pendingUsernames(`Bytes`): `Option<(AccountId32,u32)>`
+- **interface**: `api.query.identity.pendingUsernames`
+- **summary**:    Usernames that an authority has granted, but that the account controller has not confirmed  that they want it. Used primarily in cases where the `AccountId` cannot provide a signature  because they are a pure proxy, multisig, etc. In order to confirm it, they should call  [`Call::accept_username`]. 
+
+   First tuple item is the account and second is the acceptance deadline. 
  
 ### registrars(): `Vec<Option<PalletIdentityRegistrarInfo>>`
 - **interface**: `api.query.identity.registrars`
@@ -897,6 +991,10 @@ ___
 ### superOf(`AccountId32`): `Option<(AccountId32,Data)>`
 - **interface**: `api.query.identity.superOf`
 - **summary**:    The super-identity of an alternative "sub" identity together with its name, within that  context. If the account is not some other account's sub-identity, then just `None`. 
+ 
+### usernameAuthorities(`AccountId32`): `Option<PalletIdentityAuthorityProperties>`
+- **interface**: `api.query.identity.usernameAuthorities`
+- **summary**:    A map of the accounts who are authorized to grant usernames. 
 
 ___
 
@@ -1020,6 +1118,38 @@ ___
 ### rootHash(): `H256`
 - **interface**: `api.query.mmr.rootHash`
 - **summary**:    Latest MMR Root hash. 
+
+___
+
+
+## mmrLeaf
+ 
+### beefyAuthorities(): `SpConsensusBeefyMmrBeefyAuthoritySet`
+- **interface**: `api.query.mmrLeaf.beefyAuthorities`
+- **summary**:    Details of current BEEFY authority set. 
+ 
+### beefyNextAuthorities(): `SpConsensusBeefyMmrBeefyAuthoritySet`
+- **interface**: `api.query.mmrLeaf.beefyNextAuthorities`
+- **summary**:    Details of next BEEFY authority set. 
+
+   This storage entry is used as cache for calls to `update_beefy_next_authority_set`. 
+
+___
+
+
+## multiBlockMigrations
+ 
+### cursor(): `Option<PalletMigrationsMigrationCursor>`
+- **interface**: `api.query.multiBlockMigrations.cursor`
+- **summary**:    The currently active migration to run and its cursor. 
+
+   `None` indicates that no migration is running. 
+ 
+### historic(`Bytes`): `Option<Null>`
+- **interface**: `api.query.multiBlockMigrations.historic`
+- **summary**:    Set of all successfully executed migrations. 
+
+   This is used as blacklist, to not re-execute migrations that have not been removed from the  codebase yet. Governance can regularly clear this out via `clear_historic`. 
 
 ___
 
@@ -1210,11 +1340,11 @@ ___
 - **interface**: `api.query.nominationPools.reversePoolIdLookup`
 - **summary**:    A reverse lookup from the pool's account id to its id. 
 
-   This is only used for slashing. In all other instances, the pool id is used, and the  accounts are deterministically derived from it. 
+   This is only used for slashing and on automatic withdraw update. In all other instances, the  pool id is used, and the accounts are deterministically derived from it. 
  
 ### rewardPools(`u32`): `Option<PalletNominationPoolsRewardPool>`
 - **interface**: `api.query.nominationPools.rewardPools`
-- **summary**:    Reward pools. This is where there rewards for each pool accumulate. When a members payout is  claimed, the balance comes out fo the reward pool. Keyed by the bonded pools account. 
+- **summary**:    Reward pools. This is where there rewards for each pool accumulate. When a members payout is  claimed, the balance comes out of the reward pool. Keyed by the bonded pools account. 
  
 ### subPoolsStorage(`u32`): `Option<PalletNominationPoolsSubPools>`
 - **interface**: `api.query.nominationPools.subPoolsStorage`
@@ -1242,6 +1372,24 @@ ___
 ___
 
 
+## palletExampleMbms
+ 
+### myMap(`u32`): `Option<u64>`
+- **interface**: `api.query.palletExampleMbms.myMap`
+- **summary**:    Define a storage item to illustrate multi-block migrations. 
+
+___
+
+
+## parameters
+ 
+### parameters(`KitchensinkRuntimeRuntimeParametersKey`): `Option<KitchensinkRuntimeRuntimeParametersValue>`
+- **interface**: `api.query.parameters.parameters`
+- **summary**:    Stored parameters. 
+
+___
+
+
 ## poolAssets
  
 ### account(`u32, AccountId32`): `Option<PalletAssetsAssetAccount>`
@@ -1259,6 +1407,14 @@ ___
 ### metadata(`u32`): `PalletAssetsAssetMetadata`
 - **interface**: `api.query.poolAssets.metadata`
 - **summary**:    Metadata of an asset. 
+ 
+### nextAssetId(): `Option<u32>`
+- **interface**: `api.query.poolAssets.nextAssetId`
+- **summary**:    The asset ID enforced for the next asset creation, if any present. Otherwise, this storage  item has no effect. 
+
+   This can be useful for setting up constraints for IDs of the new assets. For example, by  providing an initial [`NextAssetId`] and using the [`crate::AutoIncAssetId`] callback, an  auto-increment model can be applied to all new asset IDs. 
+
+   The initial next asset ID can be set using the [`GenesisConfig`] or the  [SetNextAssetId](`migration::next_asset_id::SetNextAssetId`) migration. 
 
 ___
 
@@ -1500,6 +1656,10 @@ ___
 - **summary**:    Lookup from a name to the block number and index of the task. 
 
    For v3 -> v4 the previously unbounded identities are Blake2-256 hashed to form the v4  identities. 
+ 
+### retries(`(u32,u32)`): `Option<PalletSchedulerRetryConfig>`
+- **interface**: `api.query.scheduler.retries`
+- **summary**:    Retry configurations for items to be executed, indexed by task address. 
 
 ___
 
@@ -1667,6 +1827,10 @@ ___
 - **interface**: `api.query.staking.counterForValidators`
 - **summary**:    Counter for the related counted storage map 
  
+### counterForVirtualStakers(): `u32`
+- **interface**: `api.query.staking.counterForVirtualStakers`
+- **summary**:    Counter for the related counted storage map 
+ 
 ### currentEra(): `Option<u32>`
 - **interface**: `api.query.staking.currentEra`
 - **summary**:    The current era index. 
@@ -1678,6 +1842,12 @@ ___
 - **summary**:    The last planned session scheduled by the session pallet. 
 
    This is basically in sync with the call to [`pallet_session::SessionManager::new_session`]. 
+ 
+### disabledValidators(): `Vec<u32>`
+- **interface**: `api.query.staking.disabledValidators`
+- **summary**:    Indices of validators that have offended in the active era. The offenders are disabled for a  whole era. For this reason they are kept here - only staking pallet knows about eras. The  implementor of [`DisablingStrategy`] defines if a validator should be disabled which  implicitly means that the implementor also controls the max number of disabled validators. 
+
+   The vec is always kept sorted so that we can find whether a given validator has previously  offended using binary search. 
  
 ### erasRewardPoints(`u32`): `PalletStakingEraRewardPoints`
 - **interface**: `api.query.staking.erasRewardPoints`
@@ -1769,6 +1939,10 @@ ___
 
    When this value is not set, no limits are enforced. 
  
+### maxStakedRewards(): `Option<Percent>`
+- **interface**: `api.query.staking.maxStakedRewards`
+- **summary**:    Maximum staked rewards, i.e. the percentage of the era inflation that  is used for stake rewards.  See [Era payout](./index.html#era-payout). 
+ 
 ### maxValidatorsCount(): `Option<u32>`
 - **interface**: `api.query.staking.maxValidatorsCount`
 - **summary**:    The maximum validator count before we stop allowing new validators to join. 
@@ -1813,13 +1987,7 @@ ___
 - **interface**: `api.query.staking.nominatorSlashInEra`
 - **summary**:    All slashing events on nominators, mapped by era to the highest slash value of the era. 
  
-### offendingValidators(): `Vec<(u32,bool)>`
-- **interface**: `api.query.staking.offendingValidators`
-- **summary**:    Indices of validators that have offended in the active era and whether they are currently  disabled. 
-
-   This value should be a superset of disabled validators since not all offences lead to the  validator being disabled (if there was no slash). This is needed to track the percentage of  validators that have offended in the current era, ensuring a new era is forced if  `OffendingValidatorsThreshold` is reached. The vec is always kept sorted so that we can find  whether a given validator has previously offended using binary search. It gets cleared when  the era ends. 
- 
-### payee(`AccountId32`): `PalletStakingRewardDestination`
+### payee(`AccountId32`): `Option<PalletStakingRewardDestination>`
 - **interface**: `api.query.staking.payee`
 - **summary**:    Where the reward payment should be made. Keyed by stash. 
 
@@ -1856,6 +2024,12 @@ ___
 ### validatorSlashInEra(`u32, AccountId32`): `Option<(Perbill,u128)>`
 - **interface**: `api.query.staking.validatorSlashInEra`
 - **summary**:    All slashing events on validators, mapped by era to the highest slash proportion  and slash value of the era. 
+ 
+### virtualStakers(`AccountId32`): `Option<Null>`
+- **interface**: `api.query.staking.virtualStakers`
+- **summary**:    Stakers whose funds are managed by other pallets. 
+
+   This pallet does not apply any locks on them, therefore they are only virtually bonded. They  are expected to be keyless accounts and hence should not be allowed to mutate their ledger  directly via this pallet. Instead, these accounts are managed by other pallets and accessed  via low level apis. We keep track of them to do minimal integrity checks. 
 
 ___
 
@@ -1933,6 +2107,10 @@ ___
 - **interface**: `api.query.system.allExtrinsicsLen`
 - **summary**:    Total length (in bytes) for all extrinsics put together, for the current block. 
  
+### authorizedUpgrade(): `Option<FrameSystemCodeUpgradeAuthorization>`
+- **interface**: `api.query.system.authorizedUpgrade`
+- **summary**:    `Some` if a code upgrade has been authorized. 
+ 
 ### blockHash(`u32`): `H256`
 - **interface**: `api.query.system.blockHash`
 - **summary**:    Map of block numbers to block hashes. 
@@ -1976,6 +2154,10 @@ ___
 ### extrinsicData(`u32`): `Bytes`
 - **interface**: `api.query.system.extrinsicData`
 - **summary**:    Extrinsics data for the current block (maps an extrinsic's index to its data). 
+ 
+### inherentsApplied(): `bool`
+- **interface**: `api.query.system.inherentsApplied`
+- **summary**:    Whether all inherents have been applied. 
  
 ### lastRuntimeUpgrade(): `Option<FrameSystemLastRuntimeUpgradeInfo>`
 - **interface**: `api.query.system.lastRuntimeUpgrade`
@@ -2021,7 +2203,7 @@ ___
  
 ### prime(): `Option<AccountId32>`
 - **interface**: `api.query.technicalCommittee.prime`
-- **summary**:    The prime member that helps determine the default vote behavior in case of absentations. 
+- **summary**:    The prime member that helps determine the default vote behavior in case of abstentions. 
  
 ### proposalCount(): `u32`
 - **interface**: `api.query.technicalCommittee.proposalCount`

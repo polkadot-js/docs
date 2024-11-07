@@ -6,11 +6,15 @@ This page lists the errors that can be encountered in the different modules.
 
 (NOTE: These were generated from a static/snapshot view of a recent default Polkadot runtime. Some items may not be available in older nodes, or in any customized implementations.)
 
+- **[assetRate](#assetrate)**
+
 - **[auctions](#auctions)**
 
 - **[babe](#babe)**
 
 - **[balances](#balances)**
+
+- **[beefy](#beefy)**
 
 - **[bounties](#bounties)**
 
@@ -33,8 +37,6 @@ This page lists the errors that can be encountered in the different modules.
 - **[hrmp](#hrmp)**
 
 - **[identity](#identity)**
-
-- **[imOnline](#imonline)**
 
 - **[indices](#indices)**
 
@@ -70,6 +72,8 @@ This page lists the errors that can be encountered in the different modules.
 
 - **[staking](#staking)**
 
+- **[stateTrieMigration](#statetriemigration)**
+
 - **[system](#system)**
 
 - **[treasury](#treasury)**
@@ -84,6 +88,19 @@ This page lists the errors that can be encountered in the different modules.
 
 - **[xcmPallet](#xcmpallet)**
 
+
+___
+
+
+## assetRate
+ 
+### AlreadyExists
+- **interface**: `api.errors.assetRate.AlreadyExists.is`
+- **summary**:    The given asset ID already has an assigned conversion rate and cannot be re-created. 
+ 
+### UnknownAssetKind
+- **interface**: `api.errors.assetRate.UnknownAssetKind.is`
+- **summary**:    The given asset ID is unknown. 
 
 ___
 
@@ -148,6 +165,10 @@ ___
 - **interface**: `api.errors.balances.DeadAccount.is`
 - **summary**:    Beneficiary account must pre-exist. 
  
+### DeltaZero
+- **interface**: `api.errors.balances.DeltaZero.is`
+- **summary**:    The delta cannot be zero. 
+ 
 ### ExistentialDeposit
 - **interface**: `api.errors.balances.ExistentialDeposit.is`
 - **summary**:    Value too low to create account due to existential deposit. 
@@ -164,6 +185,10 @@ ___
 - **interface**: `api.errors.balances.InsufficientBalance.is`
 - **summary**:    Balance too low to send value. 
  
+### IssuanceDeactivated
+- **interface**: `api.errors.balances.IssuanceDeactivated.is`
+- **summary**:    The issuance cannot be modified since it is already deactivated. 
+ 
 ### LiquidityRestrictions
 - **interface**: `api.errors.balances.LiquidityRestrictions.is`
 - **summary**:    Account liquidity restrictions prevent withdrawal. 
@@ -174,7 +199,7 @@ ___
  
 ### TooManyHolds
 - **interface**: `api.errors.balances.TooManyHolds.is`
-- **summary**:    Number of holds exceed `MaxHolds`. 
+- **summary**:    Number of holds exceed `VariantCountOf<T::RuntimeHoldReason>`. 
  
 ### TooManyReserves
 - **interface**: `api.errors.balances.TooManyReserves.is`
@@ -183,6 +208,27 @@ ___
 ### VestingBalance
 - **interface**: `api.errors.balances.VestingBalance.is`
 - **summary**:    Vesting balance too high to send value. 
+
+___
+
+
+## beefy
+ 
+### DuplicateOffenceReport
+- **interface**: `api.errors.beefy.DuplicateOffenceReport.is`
+- **summary**:    A given equivocation report is valid but already previously reported. 
+ 
+### InvalidConfiguration
+- **interface**: `api.errors.beefy.InvalidConfiguration.is`
+- **summary**:    Submitted configuration is invalid. 
+ 
+### InvalidEquivocationProof
+- **interface**: `api.errors.beefy.InvalidEquivocationProof.is`
+- **summary**:    An equivocation proof provided as part of an equivocation report is invalid. 
+ 
+### InvalidKeyOwnershipProof
+- **interface**: `api.errors.beefy.InvalidKeyOwnershipProof.is`
+- **summary**:    A key ownership proof provided as part of an equivocation report is invalid. 
 
 ___
 
@@ -467,6 +513,10 @@ ___
 - **interface**: `api.errors.electionProviderMultiPhase.OcwCallWrongEra.is`
 - **summary**:    OCW submitted solution for wrong round 
  
+### PreDispatchDifferentRound
+- **interface**: `api.errors.electionProviderMultiPhase.PreDispatchDifferentRound.is`
+- **summary**:    Sumission was prepared for a different round. 
+ 
 ### PreDispatchEarlySubmission
 - **interface**: `api.errors.electionProviderMultiPhase.PreDispatchEarlySubmission.is`
 - **summary**:    Submission was too early. 
@@ -584,6 +634,10 @@ ___
 - **interface**: `api.errors.hrmp.CancelHrmpOpenChannelUnauthorized.is`
 - **summary**:    Canceling is requested by neither the sender nor recipient of the open channel request. 
  
+### ChannelCreationNotAuthorized
+- **interface**: `api.errors.hrmp.ChannelCreationNotAuthorized.is`
+- **summary**:    The channel between these two chains cannot be authorized. 
+ 
 ### CloseHrmpChannelAlreadyUnderway
 - **interface**: `api.errors.hrmp.CloseHrmpChannelAlreadyUnderway.is`
 - **summary**:    The channel close request is already requested. 
@@ -669,9 +723,21 @@ ___
 - **interface**: `api.errors.identity.InvalidJudgement.is`
 - **summary**:    Invalid judgement. 
  
+### InvalidSignature
+- **interface**: `api.errors.identity.InvalidSignature.is`
+- **summary**:    The signature on a username was not valid. 
+ 
+### InvalidSuffix
+- **interface**: `api.errors.identity.InvalidSuffix.is`
+- **summary**:    The provided suffix is too long. 
+ 
 ### InvalidTarget
 - **interface**: `api.errors.identity.InvalidTarget.is`
 - **summary**:    The target is invalid. 
+ 
+### InvalidUsername
+- **interface**: `api.errors.identity.InvalidUsername.is`
+- **summary**:    The username does not meet the requirements. 
  
 ### JudgementForDifferentIdentity
 - **interface**: `api.errors.identity.JudgementForDifferentIdentity.is`
@@ -685,9 +751,17 @@ ___
 - **interface**: `api.errors.identity.JudgementPaymentFailed.is`
 - **summary**:    Error that occurs when there is an issue paying for judgement. 
  
+### NoAllocation
+- **interface**: `api.errors.identity.NoAllocation.is`
+- **summary**:    The authority cannot allocate any more usernames. 
+ 
 ### NoIdentity
 - **interface**: `api.errors.identity.NoIdentity.is`
 - **summary**:    No identity found. 
+ 
+### NotExpired
+- **interface**: `api.errors.identity.NotExpired.is`
+- **summary**:    The username cannot be forcefully removed because it can still be accepted. 
  
 ### NotFound
 - **interface**: `api.errors.identity.NotFound.is`
@@ -705,13 +779,21 @@ ___
 - **interface**: `api.errors.identity.NotSub.is`
 - **summary**:    Sender is not a sub-account. 
  
+### NotUsernameAuthority
+- **interface**: `api.errors.identity.NotUsernameAuthority.is`
+- **summary**:    The sender does not have permission to issue a username. 
+ 
+### NoUsername
+- **interface**: `api.errors.identity.NoUsername.is`
+- **summary**:    The requested username does not exist. 
+ 
+### RequiresSignature
+- **interface**: `api.errors.identity.RequiresSignature.is`
+- **summary**:    Setting this username requires a signature, but none was provided. 
+ 
 ### StickyJudgement
 - **interface**: `api.errors.identity.StickyJudgement.is`
 - **summary**:    Sticky judgement. 
- 
-### TooManyFields
-- **interface**: `api.errors.identity.TooManyFields.is`
-- **summary**:    Too many additional fields. 
  
 ### TooManyRegistrars
 - **interface**: `api.errors.identity.TooManyRegistrars.is`
@@ -720,19 +802,10 @@ ___
 ### TooManySubAccounts
 - **interface**: `api.errors.identity.TooManySubAccounts.is`
 - **summary**:    Too many subs-accounts. 
-
-___
-
-
-## imOnline
  
-### DuplicatedHeartbeat
-- **interface**: `api.errors.imOnline.DuplicatedHeartbeat.is`
-- **summary**:    Duplicated heartbeat. 
- 
-### InvalidKey
-- **interface**: `api.errors.imOnline.InvalidKey.is`
-- **summary**:    Non existent public key. 
+### UsernameTaken
+- **interface**: `api.errors.identity.UsernameTaken.is`
+- **summary**:    The username is already taken. 
 
 ___
 
@@ -793,6 +866,10 @@ ___
 - **summary**:    The queue is paused and no message can be executed from it. 
 
    This can change at any time and may resolve in the future by re-trying. 
+ 
+### RecursiveDisallowed
+- **interface**: `api.errors.messageQueue.RecursiveDisallowed.is`
+- **summary**:    Another call is in progress and needs to finish before this call can happen. 
  
 ### TemporarilyUnprocessable
 - **interface**: `api.errors.messageQueue.TemporarilyUnprocessable.is`
@@ -938,7 +1015,7 @@ ___
 - **interface**: `api.errors.nominationPools.MinimumBondNotMet.is`
 - **summary**:    The amount does not meet the minimum bond to either join or create a pool. 
 
-   The depositor can never unbond to a value less than  `Pallet::depositor_min_bond`. The caller does not have nominating  permissions for the pool. Members can never unbond to a value below `MinJoinBond`. 
+   The depositor can never unbond to a value less than `Pallet::depositor_min_bond`. The  caller does not have nominating permissions for the pool. Members can never unbond to a  value below `MinJoinBond`. 
  
 ### NoCommissionCurrentSet
 - **interface**: `api.errors.nominationPools.NoCommissionCurrentSet.is`
@@ -951,6 +1028,10 @@ ___
 ### NotDestroying
 - **interface**: `api.errors.nominationPools.NotDestroying.is`
 - **summary**:    A pool must be in [`PoolState::Destroying`] in order for the depositor to unbond or for  other members to be permissionlessly unbonded. 
+ 
+### NothingToAdjust
+- **interface**: `api.errors.nominationPools.NothingToAdjust.is`
+- **summary**:    No imbalance in the ED deposit for the pool. 
  
 ### NotKickerOrDestroying
 - **interface**: `api.errors.nominationPools.NotKickerOrDestroying.is`
@@ -1118,6 +1199,14 @@ ___
 
 ## paraInherent
  
+### BackedByDisabled
+- **interface**: `api.errors.paraInherent.BackedByDisabled.is`
+- **summary**:    A candidate was backed by a disabled validator 
+ 
+### BackedOnUnscheduledCore
+- **interface**: `api.errors.paraInherent.BackedOnUnscheduledCore.is`
+- **summary**:    A candidate was backed even though the paraid was not scheduled. 
+ 
 ### CandidateConcludedInvalid
 - **interface**: `api.errors.paraInherent.CandidateConcludedInvalid.is`
 - **summary**:    Disputed candidate that was concluded invalid. 
@@ -1141,6 +1230,10 @@ ___
 ### TooManyInclusionInherents
 - **interface**: `api.errors.paraInherent.TooManyInclusionInherents.is`
 - **summary**:    Inclusion inherent called more than once per block. 
+ 
+### UnscheduledCandidate
+- **interface**: `api.errors.paraInherent.UnscheduledCandidate.is`
+- **summary**:    Too many candidates supplied. 
 
 ___
 
@@ -1293,6 +1386,14 @@ ___
 ### TooBig
 - **interface**: `api.errors.preimage.TooBig.is`
 - **summary**:    Preimage is too large to store on-chain. 
+ 
+### TooFew
+- **interface**: `api.errors.preimage.TooFew.is`
+- **summary**:    Too few hashes were requested to be upgraded (i.e. zero). 
+ 
+### TooMany
+- **interface**: `api.errors.preimage.TooMany.is`
+- **summary**:    More than `MAX_HASH_UPGRADE_BULK_COUNT` hashes were requested to be upgraded at once. 
 
 ___
 
@@ -1545,9 +1646,17 @@ ___
 - **interface**: `api.errors.staking.CannotChillOther.is`
 - **summary**:    The user has enough bond and thus cannot be chilled forcefully by an external person. 
  
+### CannotRestoreLedger
+- **interface**: `api.errors.staking.CannotRestoreLedger.is`
+- **summary**:    Cannot reset a ledger. 
+ 
 ### CommissionTooLow
 - **interface**: `api.errors.staking.CommissionTooLow.is`
 - **summary**:    Commission is too low. Must be at least `MinCommission`. 
+ 
+### ControllerDeprecated
+- **interface**: `api.errors.staking.ControllerDeprecated.is`
+- **summary**:    Used when attempting to use deprecated controller account logic. 
  
 ### DuplicateIndex
 - **interface**: `api.errors.staking.DuplicateIndex.is`
@@ -1580,6 +1689,10 @@ ___
 ### InvalidNumberOfNominations
 - **interface**: `api.errors.staking.InvalidNumberOfNominations.is`
 - **summary**:    Invalid number of nominations. 
+ 
+### InvalidPage
+- **interface**: `api.errors.staking.InvalidPage.is`
+- **summary**:    No nominators exist on this page. 
  
 ### InvalidSlashIndex
 - **interface**: `api.errors.staking.InvalidSlashIndex.is`
@@ -1620,6 +1733,37 @@ ___
 ___
 
 
+## stateTrieMigration
+ 
+### BadChildRoot
+- **interface**: `api.errors.stateTrieMigration.BadChildRoot.is`
+- **summary**:    Bad child root provided. 
+ 
+### BadWitness
+- **interface**: `api.errors.stateTrieMigration.BadWitness.is`
+- **summary**:    Bad witness data provided. 
+ 
+### KeyTooLong
+- **interface**: `api.errors.stateTrieMigration.KeyTooLong.is`
+- **summary**:    A key was longer than the configured maximum. 
+
+   This means that the migration halted at the current [`Progress`] and  can be resumed with a larger [`crate::Config::MaxKeyLen`] value.  Retrying with the same [`crate::Config::MaxKeyLen`] value will not work.  The value should only be increased to avoid a storage migration for the currently  stored [`crate::Progress::LastKey`]. 
+ 
+### MaxSignedLimits
+- **interface**: `api.errors.stateTrieMigration.MaxSignedLimits.is`
+- **summary**:    Max signed limits not respected. 
+ 
+### NotEnoughFunds
+- **interface**: `api.errors.stateTrieMigration.NotEnoughFunds.is`
+- **summary**:    submitter does not have enough funds. 
+ 
+### SignedMigrationNotAllowed
+- **interface**: `api.errors.stateTrieMigration.SignedMigrationNotAllowed.is`
+- **summary**:    Signed migration is not allowed because the maximum limit is not set yet. 
+
+___
+
+
 ## system
  
 ### CallFiltered
@@ -1644,14 +1788,38 @@ ___
 - **interface**: `api.errors.system.NonZeroRefCount.is`
 - **summary**:    There is a non-zero reference count preventing the account from being purged. 
  
+### NothingAuthorized
+- **interface**: `api.errors.system.NothingAuthorized.is`
+- **summary**:    No upgrade authorized. 
+ 
 ### SpecVersionNeedsToIncrease
 - **interface**: `api.errors.system.SpecVersionNeedsToIncrease.is`
 - **summary**:    The specification version is not allowed to decrease between the current runtime  and the new runtime. 
+ 
+### Unauthorized
+- **interface**: `api.errors.system.Unauthorized.is`
+- **summary**:    The submitted code is not authorized. 
 
 ___
 
 
 ## treasury
+ 
+### AlreadyAttempted
+- **interface**: `api.errors.treasury.AlreadyAttempted.is`
+- **summary**:    The payment has already been attempted. 
+ 
+### EarlyPayout
+- **interface**: `api.errors.treasury.EarlyPayout.is`
+- **summary**:    The spend is not yet eligible for payout. 
+ 
+### FailedToConvertBalance
+- **interface**: `api.errors.treasury.FailedToConvertBalance.is`
+- **summary**:    The balance of the asset kind is not convertible to the balance of the native asset. 
+ 
+### Inconclusive
+- **interface**: `api.errors.treasury.Inconclusive.is`
+- **summary**:    The payment has neither failed nor succeeded yet. 
  
 ### InsufficientPermission
 - **interface**: `api.errors.treasury.InsufficientPermission.is`
@@ -1663,11 +1831,23 @@ ___
  
 ### InvalidIndex
 - **interface**: `api.errors.treasury.InvalidIndex.is`
-- **summary**:    No proposal or bounty at that index. 
+- **summary**:    No proposal, bounty or spend at that index. 
+ 
+### NotAttempted
+- **interface**: `api.errors.treasury.NotAttempted.is`
+- **summary**:    The payout was not yet attempted/claimed. 
+ 
+### PayoutError
+- **interface**: `api.errors.treasury.PayoutError.is`
+- **summary**:    There was some issue with the mechanism of payment. 
  
 ### ProposalNotApproved
 - **interface**: `api.errors.treasury.ProposalNotApproved.is`
 - **summary**:    Proposal has not been approved. 
+ 
+### SpendExpired
+- **interface**: `api.errors.treasury.SpendExpired.is`
+- **summary**:    The spend has expired and cannot be claimed. 
  
 ### TooManyApprovals
 - **interface**: `api.errors.treasury.TooManyApprovals.is`
@@ -1762,13 +1942,17 @@ ___
 - **interface**: `api.errors.xcmPallet.BadVersion.is`
 - **summary**:    The version of the `Versioned` value used is not able to be interpreted. 
  
+### CannotCheckOutTeleport
+- **interface**: `api.errors.xcmPallet.CannotCheckOutTeleport.is`
+- **summary**:    Could not check-out the assets for teleportation to the destination chain. 
+ 
 ### CannotReanchor
 - **interface**: `api.errors.xcmPallet.CannotReanchor.is`
 - **summary**:    Could not re-anchor the assets to declare the fees for the destination chain. 
  
 ### DestinationNotInvertible
 - **interface**: `api.errors.xcmPallet.DestinationNotInvertible.is`
-- **summary**:    The destination `MultiLocation` provided cannot be inverted. 
+- **summary**:    The destination `Location` provided cannot be inverted. 
  
 ### Empty
 - **interface**: `api.errors.xcmPallet.Empty.is`
@@ -1786,13 +1970,25 @@ ___
 - **interface**: `api.errors.xcmPallet.InUse.is`
 - **summary**:    The unlock operation cannot succeed because there are still consumers of the lock. 
  
-### InvalidAsset
-- **interface**: `api.errors.xcmPallet.InvalidAsset.is`
-- **summary**:    Invalid asset for the operation. 
+### InvalidAssetNotConcrete
+- **interface**: `api.errors.xcmPallet.InvalidAssetNotConcrete.is`
+- **summary**:    Invalid non-concrete asset. 
+ 
+### InvalidAssetUnknownReserve
+- **interface**: `api.errors.xcmPallet.InvalidAssetUnknownReserve.is`
+- **summary**:    Invalid asset, reserve chain could not be determined for it. 
+ 
+### InvalidAssetUnsupportedReserve
+- **interface**: `api.errors.xcmPallet.InvalidAssetUnsupportedReserve.is`
+- **summary**:    Invalid asset, do not support remote asset reserves with different fees reserves. 
  
 ### InvalidOrigin
 - **interface**: `api.errors.xcmPallet.InvalidOrigin.is`
 - **summary**:    Origin is invalid for sending. 
+ 
+### LocalExecutionIncomplete
+- **interface**: `api.errors.xcmPallet.LocalExecutionIncomplete.is`
+- **summary**:    Local XCM execution incomplete. 
  
 ### LockNotFound
 - **interface**: `api.errors.xcmPallet.LockNotFound.is`
@@ -1817,6 +2013,10 @@ ___
 ### TooManyLocks
 - **interface**: `api.errors.xcmPallet.TooManyLocks.is`
 - **summary**:    The asset owner has too many locks on the asset. 
+ 
+### TooManyReserves
+- **interface**: `api.errors.xcmPallet.TooManyReserves.is`
+- **summary**:    Too many assets with different reserve locations have been attempted for transfer. 
  
 ### Unreachable
 - **interface**: `api.errors.xcmPallet.Unreachable.is`
