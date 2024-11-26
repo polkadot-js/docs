@@ -1,4 +1,4 @@
----
+---https://polkadot.js.org/apps/?rpc=wss%3A%2F%2Facala-polkadot.api.onfinality.io%2Fws%3Fapikey%3D6f4b74b3-2f9c-47b5-a0dd-273339cc5639#/explorer/node
 title: FAQ
 ---
 
