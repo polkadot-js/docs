@@ -1,6 +1,6 @@
      294	Jaco                          	Bump API (#458)
+       8	Tarik Gul                     	Upgrade api to 15.2.1 (#485)
        7	Kevin Veros Hamonangan        	Update ss58.md (#81)
-       7	Tarik Gul                     	Bump yarn to 4.6.0 (#484)
        5	brettkolodny                  	Contract query subscriptions workaround in Contract FAQ (#60)
        5	Jhon                          	Update types.basics.md (#165)
        5	Thibaut Sardan                	Add an exemple to retrieve chain info (#125)
