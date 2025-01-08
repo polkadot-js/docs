@@ -4,7 +4,7 @@ title: TS type generation
 
 This is a sample TypeScript project [with full source & config on GitHub](https://github.com/polkadot-js/docs/tree/master/docs/api/examples/promise/typegen), that uses `@polkadot/typegen` to generate type definitions that can be used to decorate the `@polkadot/api`. It uses both types defined for the specific chain as well as the chain metadata to generate TypeScript interfaces. This means that interfaces such as `api.query.*`, `api.tx.*` and `api.consts.*` will be decorated based on chain-specific information, instead of an un-augmented catch-all definition.
 
-**NOTE** This is built using the updates in the `1.4.0` api track and as such it uses the latest (at the time of writing) `@polkadot/api 1.4.0`. If you want to play on your own, it is also suggested that you use the `1.4+` series since some generation types have moved around internally, making it easier to augment.
+**NOTE** This is built using the updates in the `10.9.1` api track and as such it uses the latest (at the time of writing) `@polkadot/api 10.9.1`.
 
 
 ## Packages
@@ -15,17 +15,17 @@ For the packages we need from the `@polkadot/*` we have added `@polkadot/api` (w
 {
   "scripts": {
     "build": "yarn generate:defs && yarn generate:meta",
-    "generate:defs": "ts-node --skip-project node_modules/.bin/polkadot-types-from-defs --package sample-polkadotjs-typegen/interfaces --input ./src/interfaces --endpoint ./edgeware.json",
-    "generate:meta": "ts-node --skip-project node_modules/.bin/polkadot-types-from-chain --package sample-polkadotjs-typegen/interfaces --endpoint ./edgeware.json --output ./src/interfaces",
+    "generate:defs": "node --experimental-specifier-resolution=node --loader ts-node/esm node_modules/.bin/polkadot-types-from-defs --package  sample-polkadotjs-typegen/interfaces --input ./src/interfaces --endpoint ./edgeware.json",
+    "generate:meta": "node --experimental-specifier-resolution=node --loader ts-node/esm node_modules/.bin/polkadot-types-from-chain --package sample-polkadotjs-typegen/interfaces --endpoint ./edgeware.json --output ./src/interfaces",
     "lint": "tsc --noEmit --pretty"
   },
   "dependencies": {
-    "@polkadot/api": "^2.3.1"
+    "@polkadot/api": "^10.9.1"
   },
   "devDependencies": {
-    "@polkadot/typegen": "^2.3.1",
-    "ts-node": "^8.6.2",
-    "typescript": "^4.0.2"
+    "@polkadot/typegen": "^10.9.1",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.9.5"
   }
 }
 ```
@@ -101,8 +101,8 @@ Now that both the metadata and types setup is completed, we just run the build c
 ```
 > yarn build
 $ yarn generate:defs && yarn generate:meta
-$ ts-node --skip-project \
-  node_modules/.bin/polkadot-types-from-defs \
+$ node --experimental-specifier-resolution=node --loader \
+  ts-node/esm node_modules/.bin/polkadot-types-from-defs \
     --package sample-polkadotjs-typegen/interfaces \
     --input ./src/interfaces
     --endpoint ./edgeware.json
@@ -117,8 +117,8 @@ sample-polkadotjs-typegen/src/interfaces/augment-types.ts
 	Generating
 	Writing
 
-$ ts-node --skip-project \
-  node_modules/.bin/polkadot-types-from-chain \
+$ node --experimental-specifier-resolution=node --loader \
+  ts-node/esm node_modules/.bin/polkadot-types-from-chain \
     --package sample-polkadotjs-typegen/interfaces \
     --endpoint ./edgeware.json \
     --output ./src/interfaces
