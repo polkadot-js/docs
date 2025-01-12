@@ -106,6 +106,8 @@ The following sections contain Storage methods are part of the default Substrate
 
 - **[referenda](#referenda)**
 
+- **[revive](#revive)**
+
 - **[safeMode](#safemode)**
 
 - **[salary](#salary)**
@@ -191,6 +193,12 @@ ___
 
 ## allianceMotion
  
+### costOf(`H256`): `Option<(AccountId32,Null)>`
+- **interface**: `api.query.allianceMotion.costOf`
+- **summary**:    Consideration cost created for publishing and storing a proposal. 
+
+   Determined by [Config::Consideration] and may be not present for certain proposals (e.g. if  the proposal count at the time of creation was below threshold N). 
+ 
 ### members(): `Vec<AccountId32>`
 - **interface**: `api.query.allianceMotion.members`
 - **summary**:    The current members of the collective. This is stored sorted (just by value). 
@@ -233,7 +241,7 @@ ___
 
 ## assetRate
  
-### conversionRateToNative(`u32`): `Option<u128>`
+### conversionRateToNative(`FrameSupportTokensFungibleUnionOfNativeOrWithId`): `Option<u128>`
 - **interface**: `api.query.assetRate.conversionRateToNative`
 - **summary**:    Maps an asset to its fixed point representation in the native balance. 
 
@@ -481,6 +489,12 @@ ___
 
 ## broker
  
+### autoRenewals(): `Vec<PalletBrokerAutoRenewalRecord>`
+- **interface**: `api.query.broker.autoRenewals`
+- **summary**:    Keeping track of cores which have auto-renewal enabled. 
+
+   Sorted by `CoreIndex` to make the removal of cores from auto-renewal more efficient. 
+ 
 ### configuration(): `Option<PalletBrokerConfigRecord>`
 - **interface**: `api.query.broker.configuration`
 - **summary**:    The current configuration of this pallet. 
@@ -550,11 +564,13 @@ ___
  
 ### childBountyCount(): `u32`
 - **interface**: `api.query.childBounties.childBountyCount`
-- **summary**:    Number of total child bounties. 
+- **summary**:    DEPRECATED: Replaced with `ParentTotalChildBounties` storage item keeping dedicated counts  for each parent bounty. Number of total child bounties. Will be removed in May 2025. 
  
-### childBountyDescriptions(`u32`): `Option<Bytes>`
-- **interface**: `api.query.childBounties.childBountyDescriptions`
-- **summary**:    The description of each child-bounty. 
+### childBountyDescriptionsV1(`u32, u32`): `Option<Bytes>`
+- **interface**: `api.query.childBounties.childBountyDescriptionsV1`
+- **summary**:    The description of each child-bounty. Indexed by `(parent_id, child_id)`. 
+
+   This item replaces the `ChildBountyDescriptions` storage item from the V0 storage version. 
  
 ### childrenCuratorFees(`u32`): `u128`
 - **interface**: `api.query.childBounties.childrenCuratorFees`
@@ -562,7 +578,17 @@ ___
  
 ### parentChildBounties(`u32`): `u32`
 - **interface**: `api.query.childBounties.parentChildBounties`
-- **summary**:    Number of child bounties per parent bounty.  Map of parent bounty index to number of child bounties. 
+- **summary**:    Number of active child bounties per parent bounty.  Map of parent bounty index to number of child bounties. 
+ 
+### parentTotalChildBounties(`u32`): `u32`
+- **interface**: `api.query.childBounties.parentTotalChildBounties`
+- **summary**:    Number of total child bounties per parent bounty, including completed bounties. 
+ 
+### v0ToV1ChildBountyIds(`u32`): `Option<(u32,u32)>`
+- **interface**: `api.query.childBounties.v0ToV1ChildBountyIds`
+- **summary**:    The mapping of the child bounty ids from storage version `V0` to the new `V1` version. 
+
+   The `V0` ids based on total child bounty count [`ChildBountyCount`]`. The `V1` version ids  based on the child bounty count per parent bounty [`ParentTotalChildBounties`].  The item intended solely for client convenience and not used in the pallet's core logic. 
 
 ___
 
@@ -645,6 +671,12 @@ ___
 
 
 ## council
+ 
+### costOf(`H256`): `Option<(AccountId32,u128)>`
+- **interface**: `api.query.council.costOf`
+- **summary**:    Consideration cost created for publishing and storing a proposal. 
+
+   Determined by [Config::Consideration] and may be not present for certain proposals (e.g. if  the proposal count at the time of creation was below threshold N). 
  
 ### members(): `Vec<AccountId32>`
 - **interface**: `api.query.council.members`
@@ -956,21 +988,19 @@ ___
 
 ## identity
  
-### accountOfUsername(`Bytes`): `Option<AccountId32>`
-- **interface**: `api.query.identity.accountOfUsername`
-- **summary**:    Reverse lookup from `username` to the `AccountId` that has registered it. The value should  be a key in the `IdentityOf` map, but it may not if the user has cleared their identity. 
-
-   Multiple usernames may map to the same `AccountId`, but `IdentityOf` will only map to one  primary username. 
+### authorityOf(`Bytes`): `Option<PalletIdentityAuthorityProperties>`
+- **interface**: `api.query.identity.authorityOf`
+- **summary**:    A map of the accounts who are authorized to grant usernames. 
  
-### identityOf(`AccountId32`): `Option<(PalletIdentityRegistration,Option<Bytes>)>`
+### identityOf(`AccountId32`): `Option<PalletIdentityRegistration>`
 - **interface**: `api.query.identity.identityOf`
 - **summary**:    Information that is pertinent to identify the entity behind an account. First item is the  registration, second is the account's primary username. 
 
    TWOX-NOTE: OK ― `AccountId` is a secure hash. 
  
-### pendingUsernames(`Bytes`): `Option<(AccountId32,u32)>`
+### pendingUsernames(`Bytes`): `Option<(AccountId32,u32,PalletIdentityProvider)>`
 - **interface**: `api.query.identity.pendingUsernames`
-- **summary**:    Usernames that an authority has granted, but that the account controller has not confirmed  that they want it. Used primarily in cases where the `AccountId` cannot provide a signature  because they are a pure proxy, multisig, etc. In order to confirm it, they should call  [`Call::accept_username`]. 
+- **summary**:    Usernames that an authority has granted, but that the account controller has not confirmed  that they want it. Used primarily in cases where the `AccountId` cannot provide a signature  because they are a pure proxy, multisig, etc. In order to confirm it, they should call  [accept_username](`Call::accept_username`). 
 
    First tuple item is the account and second is the acceptance deadline. 
  
@@ -992,9 +1022,19 @@ ___
 - **interface**: `api.query.identity.superOf`
 - **summary**:    The super-identity of an alternative "sub" identity together with its name, within that  context. If the account is not some other account's sub-identity, then just `None`. 
  
-### usernameAuthorities(`AccountId32`): `Option<PalletIdentityAuthorityProperties>`
-- **interface**: `api.query.identity.usernameAuthorities`
-- **summary**:    A map of the accounts who are authorized to grant usernames. 
+### unbindingUsernames(`Bytes`): `Option<u32>`
+- **interface**: `api.query.identity.unbindingUsernames`
+- **summary**:    Usernames for which the authority that granted them has started the removal process by  unbinding them. Each unbinding username maps to its grace period expiry, which is the first  block in which the username could be deleted through a  [remove_username](`Call::remove_username`) call. 
+ 
+### usernameInfoOf(`Bytes`): `Option<PalletIdentityUsernameInformation>`
+- **interface**: `api.query.identity.usernameInfoOf`
+- **summary**:    Reverse lookup from `username` to the `AccountId` that has registered it and the provider of  the username. The `owner` value should be a key in the `UsernameOf` map, but it may not if  the user has cleared their username or it has been removed. 
+
+   Multiple usernames may map to the same `AccountId`, but `UsernameOf` will only map to one  primary username. 
+ 
+### usernameOf(`AccountId32`): `Option<Bytes>`
+- **interface**: `api.query.identity.usernameOf`
+- **summary**:    Identifies the primary username of an account. 
 
 ___
 
@@ -1610,6 +1650,43 @@ ___
 ___
 
 
+## revive
+ 
+### addressSuffix(`H160`): `Option<[u8;12]>`
+- **interface**: `api.query.revive.addressSuffix`
+- **summary**:    Map a Ethereum address to its original `AccountId32`. 
+
+   Stores the last 12 byte for addresses that were originally an `AccountId32` instead  of an `H160`. Register your `AccountId32` using [`Pallet::map_account`] in order to  use it with this pallet. 
+ 
+### codeInfoOf(`H256`): `Option<PalletReviveWasmCodeInfo>`
+- **interface**: `api.query.revive.codeInfoOf`
+- **summary**:    A mapping from a contract's code hash to its code info. 
+ 
+### contractInfoOf(`H160`): `Option<PalletReviveStorageContractInfo>`
+- **interface**: `api.query.revive.contractInfoOf`
+- **summary**:    The code associated with a given account. 
+ 
+### deletionQueue(`u32`): `Option<Bytes>`
+- **interface**: `api.query.revive.deletionQueue`
+- **summary**:    Evicted contracts that await child trie deletion. 
+
+   Child trie deletion is a heavy operation depending on the amount of storage items  stored in said trie. Therefore this operation is performed lazily in `on_idle`. 
+ 
+### deletionQueueCounter(): `PalletReviveStorageDeletionQueueManager`
+- **interface**: `api.query.revive.deletionQueueCounter`
+- **summary**:    A pair of monotonic counters used to track the latest contract marked for deletion  and the latest deleted contract in queue. 
+ 
+### immutableDataOf(`H160`): `Option<Bytes>`
+- **interface**: `api.query.revive.immutableDataOf`
+- **summary**:    The immutable data associated with a given account. 
+ 
+### pristineCode(`H256`): `Option<Bytes>`
+- **interface**: `api.query.revive.pristineCode`
+- **summary**:    A mapping from a contract's code hash to its code. 
+
+___
+
+
 ## safeMode
  
 ### deposits(`AccountId32, u32`): `Option<u128>`
@@ -2197,6 +2274,12 @@ ___
 
 ## technicalCommittee
  
+### costOf(`H256`): `Option<(AccountId32,Null)>`
+- **interface**: `api.query.technicalCommittee.costOf`
+- **summary**:    Consideration cost created for publishing and storing a proposal. 
+
+   Determined by [Config::Consideration] and may be not present for certain proposals (e.g. if  the proposal count at the time of creation was below threshold N). 
+ 
 ### members(): `Vec<AccountId32>`
 - **interface**: `api.query.technicalCommittee.members`
 - **summary**:    The current members of the collective. This is stored sorted (just by value). 
@@ -2312,19 +2395,29 @@ ___
  
 ### approvals(): `Vec<u32>`
 - **interface**: `api.query.treasury.approvals`
-- **summary**:    Proposal indices that have been approved but not yet awarded. 
+- **summary**:    DEPRECATED: associated with `spend_local` call and will be removed in May 2025.  Refer to <https://github.com/paritytech/polkadot-sdk/pull/5961> for migration to `spend`. 
+
+   Proposal indices that have been approved but not yet awarded. 
  
 ### deactivated(): `u128`
 - **interface**: `api.query.treasury.deactivated`
 - **summary**:    The amount which has been reported as inactive to Currency. 
  
+### lastSpendPeriod(): `Option<u32>`
+- **interface**: `api.query.treasury.lastSpendPeriod`
+- **summary**:    The blocknumber for the last triggered spend period. 
+ 
 ### proposalCount(): `u32`
 - **interface**: `api.query.treasury.proposalCount`
-- **summary**:    Number of proposals that have been made. 
+- **summary**:    DEPRECATED: associated with `spend_local` call and will be removed in May 2025.  Refer to <https://github.com/paritytech/polkadot-sdk/pull/5961> for migration to `spend`. 
+
+   Number of proposals that have been made. 
  
 ### proposals(`u32`): `Option<PalletTreasuryProposal>`
 - **interface**: `api.query.treasury.proposals`
-- **summary**:    Proposals that have been made. 
+- **summary**:    DEPRECATED: associated with `spend_local` call and will be removed in May 2025.  Refer to <https://github.com/paritytech/polkadot-sdk/pull/5961> for migration to `spend`. 
+
+   Proposals that have been made. 
  
 ### spendCount(): `u32`
 - **interface**: `api.query.treasury.spendCount`

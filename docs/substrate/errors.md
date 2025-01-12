@@ -88,6 +88,8 @@ This page lists the errors that can be encountered in the different modules.
 
 - **[remark](#remark)**
 
+- **[revive](#revive)**
+
 - **[safeMode](#safemode)**
 
 - **[salary](#salary)**
@@ -256,6 +258,10 @@ ___
 ### PrimeAccountNotMember
 - **interface**: `api.errors.allianceMotion.PrimeAccountNotMember.is`
 - **summary**:    Prime account is not a member 
+ 
+### ProposalActive
+- **interface**: `api.errors.allianceMotion.ProposalActive.is`
+- **summary**:    Proposal is still active. 
  
 ### ProposalMissing
 - **interface**: `api.errors.allianceMotion.ProposalMissing.is`
@@ -670,6 +676,10 @@ ___
 - **interface**: `api.errors.broker.AlreadyExpired.is`
 - **summary**:    The lease expiry time has already passed. 
  
+### AutoRenewalNotEnabled
+- **interface**: `api.errors.broker.AutoRenewalNotEnabled.is`
+- **summary**:    Attempted to disable auto-renewal for a core that didn't have it enabled. 
+ 
 ### CompletePivot
 - **interface**: `api.errors.broker.CompletePivot.is`
 - **summary**:    The pivot mask for the interlacing is complete (and therefore not a strict subset). 
@@ -697,6 +707,14 @@ ___
 ### NoHistory
 - **interface**: `api.errors.broker.NoHistory.is`
 - **summary**:    The history item does not exist. 
+ 
+### NonTaskAutoRenewal
+- **interface**: `api.errors.broker.NonTaskAutoRenewal.is`
+- **summary**:    Only cores which are assigned to a task can be auto-renewed. 
+ 
+### NoPermission
+- **interface**: `api.errors.broker.NoPermission.is`
+- **summary**:    The caller doesn't have the permission to enable or disable auto-renewal. 
  
 ### NoSales
 - **interface**: `api.errors.broker.NoSales.is`
@@ -730,6 +748,10 @@ ___
 - **interface**: `api.errors.broker.SoldOut.is`
 - **summary**:    The sale limit has been reached. 
  
+### SovereignAccountNotFound
+- **interface**: `api.errors.broker.SovereignAccountNotFound.is`
+- **summary**:    Failed to get the sovereign account of a task. 
+ 
 ### StillValid
 - **interface**: `api.errors.broker.StillValid.is`
 - **summary**:    An item cannot be dropped because it is still valid. 
@@ -737,6 +759,10 @@ ___
 ### TooEarly
 - **interface**: `api.errors.broker.TooEarly.is`
 - **summary**:    The purchase cannot happen yet as the sale period is yet to begin. 
+ 
+### TooManyAutoRenewals
+- **interface**: `api.errors.broker.TooManyAutoRenewals.is`
+- **summary**:    We reached the limit for auto-renewals. 
  
 ### TooManyLeases
 - **interface**: `api.errors.broker.TooManyLeases.is`
@@ -1076,6 +1102,10 @@ ___
 ### PrimeAccountNotMember
 - **interface**: `api.errors.council.PrimeAccountNotMember.is`
 - **summary**:    Prime account is not a member 
+ 
+### ProposalActive
+- **interface**: `api.errors.council.ProposalActive.is`
+- **summary**:    Proposal is still active. 
  
 ### ProposalMissing
 - **interface**: `api.errors.council.ProposalMissing.is`
@@ -1428,6 +1458,10 @@ ___
 - **interface**: `api.errors.identity.AlreadyClaimed.is`
 - **summary**:    Account ID is already named. 
  
+### AlreadyUnbinding
+- **interface**: `api.errors.identity.AlreadyUnbinding.is`
+- **summary**:    The username cannot be unbound because it is already unbinding. 
+ 
 ### EmptyIndex
 - **interface**: `api.errors.identity.EmptyIndex.is`
 - **summary**:    Empty index. 
@@ -1435,6 +1469,10 @@ ___
 ### FeeChanged
 - **interface**: `api.errors.identity.FeeChanged.is`
 - **summary**:    Fee is changed. 
+ 
+### InsufficientPrivileges
+- **interface**: `api.errors.identity.InsufficientPrivileges.is`
+- **summary**:    The action cannot be performed because of insufficient privileges (e.g. authority  trying to unbind a username provided by the system). 
  
 ### InvalidIndex
 - **interface**: `api.errors.identity.InvalidIndex.is`
@@ -1500,6 +1538,10 @@ ___
 - **interface**: `api.errors.identity.NotSub.is`
 - **summary**:    Sender is not a sub-account. 
  
+### NotUnbinding
+- **interface**: `api.errors.identity.NotUnbinding.is`
+- **summary**:    The username cannot be removed because it is not unbinding. 
+ 
 ### NotUsernameAuthority
 - **interface**: `api.errors.identity.NotUsernameAuthority.is`
 - **summary**:    The sender does not have permission to issue a username. 
@@ -1515,6 +1557,10 @@ ___
 ### StickyJudgement
 - **interface**: `api.errors.identity.StickyJudgement.is`
 - **summary**:    Sticky judgement. 
+ 
+### TooEarly
+- **interface**: `api.errors.identity.TooEarly.is`
+- **summary**:    The username cannot be removed because it's still in the grace period. 
  
 ### TooManyRegistrars
 - **interface**: `api.errors.identity.TooManyRegistrars.is`
@@ -2234,10 +2280,6 @@ ___
 - **interface**: `api.errors.preimage.AlreadyNoted.is`
 - **summary**:    Preimage has already been noted on-chain. 
  
-### NoCost
-- **interface**: `api.errors.preimage.NoCost.is`
-- **summary**:    No ticket with a cost was returned by [`Config::Consideration`] to store the preimage. 
- 
 ### NotAuthorized
 - **interface**: `api.errors.preimage.NotAuthorized.is`
 - **summary**:    The user is not authorized to perform this action. 
@@ -2555,6 +2597,189 @@ ___
 ### Empty
 - **interface**: `api.errors.remark.Empty.is`
 - **summary**:    Attempting to store empty data. 
+
+___
+
+
+## revive
+ 
+### AccountAlreadyMapped
+- **interface**: `api.errors.revive.AccountAlreadyMapped.is`
+- **summary**:    Tried to map an account that is already mapped. 
+ 
+### AccountUnmapped
+- **interface**: `api.errors.revive.AccountUnmapped.is`
+- **summary**:    An `AccountID32` account tried to interact with the pallet without having a mapping. 
+
+   Call [`Pallet::map_account`] in order to create a mapping for the account. 
+ 
+### BalanceConversionFailed
+- **interface**: `api.errors.revive.BalanceConversionFailed.is`
+- **summary**:    Failed to convert a U256 to a Balance. 
+ 
+### BasicBlockTooLarge
+- **interface**: `api.errors.revive.BasicBlockTooLarge.is`
+- **summary**:    The program contains a basic block that is larger than allowed. 
+ 
+### BlobTooLarge
+- **interface**: `api.errors.revive.BlobTooLarge.is`
+- **summary**:    The code blob supplied is larger than [`limits::code::BLOB_BYTES`]. 
+ 
+### CannotAddSelfAsDelegateDependency
+- **interface**: `api.errors.revive.CannotAddSelfAsDelegateDependency.is`
+- **summary**:    Can not add a delegate dependency to the code hash of the contract itself. 
+ 
+### CodeInfoNotFound
+- **interface**: `api.errors.revive.CodeInfoNotFound.is`
+- **summary**:    No code info could be found at the supplied code hash. 
+ 
+### CodeInUse
+- **interface**: `api.errors.revive.CodeInUse.is`
+- **summary**:    Code removal was denied because the code is still in use by at least one contract. 
+ 
+### CodeNotFound
+- **interface**: `api.errors.revive.CodeNotFound.is`
+- **summary**:    No code could be found at the supplied code hash. 
+ 
+### CodeRejected
+- **interface**: `api.errors.revive.CodeRejected.is`
+- **summary**:    The contract failed to compile or is missing the correct entry points. 
+
+   A more detailed error can be found on the node console if debug messages are enabled  by supplying `-lruntime::revive=debug`. 
+ 
+### ContractNotFound
+- **interface**: `api.errors.revive.ContractNotFound.is`
+- **summary**:    No contract was found at the specified address. 
+ 
+### ContractReverted
+- **interface**: `api.errors.revive.ContractReverted.is`
+- **summary**:    The contract ran to completion but decided to revert its storage changes.  Please note that this error is only returned from extrinsics. When called directly  or via RPC an `Ok` will be returned. In this case the caller needs to inspect the flags  to determine whether a reversion has taken place. 
+ 
+### ContractTrapped
+- **interface**: `api.errors.revive.ContractTrapped.is`
+- **summary**:    Contract trapped during execution. 
+ 
+### DecodingFailed
+- **interface**: `api.errors.revive.DecodingFailed.is`
+- **summary**:    Input passed to a contract API function failed to decode as expected type. 
+ 
+### DelegateDependencyAlreadyExists
+- **interface**: `api.errors.revive.DelegateDependencyAlreadyExists.is`
+- **summary**:    The contract already depends on the given delegate dependency. 
+ 
+### DelegateDependencyNotFound
+- **interface**: `api.errors.revive.DelegateDependencyNotFound.is`
+- **summary**:    The dependency was not found in the contract's delegate dependencies. 
+ 
+### DuplicateContract
+- **interface**: `api.errors.revive.DuplicateContract.is`
+- **summary**:    A contract with the same AccountId already exists. 
+ 
+### ExecutionFailed
+- **interface**: `api.errors.revive.ExecutionFailed.is`
+- **summary**:    PolkaVM failed during code execution. Probably due to a malformed program. 
+ 
+### InputForwarded
+- **interface**: `api.errors.revive.InputForwarded.is`
+- **summary**:    `seal_call` forwarded this contracts input. It therefore is no longer available. 
+ 
+### InvalidCallFlags
+- **interface**: `api.errors.revive.InvalidCallFlags.is`
+- **summary**:    Invalid combination of flags supplied to `seal_call` or `seal_delegate_call`. 
+ 
+### InvalidImmutableAccess
+- **interface**: `api.errors.revive.InvalidImmutableAccess.is`
+- **summary**:    Immutable data can only be set during deploys and only be read during calls.  Additionally, it is only valid to set the data once and it must not be empty. 
+ 
+### InvalidInstruction
+- **interface**: `api.errors.revive.InvalidInstruction.is`
+- **summary**:    The program contains an invalid instruction. 
+ 
+### InvalidSchedule
+- **interface**: `api.errors.revive.InvalidSchedule.is`
+- **summary**:    Invalid schedule supplied, e.g. with zero weight of a basic operation. 
+ 
+### InvalidStorageFlags
+- **interface**: `api.errors.revive.InvalidStorageFlags.is`
+- **summary**:    Invalid storage flags were passed to one of the storage syscalls. 
+ 
+### InvalidSyscall
+- **interface**: `api.errors.revive.InvalidSyscall.is`
+- **summary**:    The contract tried to call a syscall which does not exist (at its current api level). 
+ 
+### MaxCallDepthReached
+- **interface**: `api.errors.revive.MaxCallDepthReached.is`
+- **summary**:    Performing a call was denied because the calling depth reached the limit  of what is specified in the schedule. 
+ 
+### MaxDelegateDependenciesReached
+- **interface**: `api.errors.revive.MaxDelegateDependenciesReached.is`
+- **summary**:    The contract has reached its maximum number of delegate dependencies. 
+ 
+### NoChainExtension
+- **interface**: `api.errors.revive.NoChainExtension.is`
+- **summary**:    The chain does not provide a chain extension. Calling the chain extension results  in this error. Note that this usually  shouldn't happen as deploying such contracts  is rejected. 
+ 
+### OutOfBounds
+- **interface**: `api.errors.revive.OutOfBounds.is`
+- **summary**:    A buffer outside of sandbox memory was passed to a contract API function. 
+ 
+### OutOfGas
+- **interface**: `api.errors.revive.OutOfGas.is`
+- **summary**:    The executed contract exhausted its gas limit. 
+ 
+### OutOfTransientStorage
+- **interface**: `api.errors.revive.OutOfTransientStorage.is`
+- **summary**:    Can not add more data to transient storage. 
+ 
+### ReenteredPallet
+- **interface**: `api.errors.revive.ReenteredPallet.is`
+- **summary**:    A contract called into the runtime which then called back into this pallet. 
+ 
+### ReentranceDenied
+- **interface**: `api.errors.revive.ReentranceDenied.is`
+- **summary**:    A call tried to invoke a contract that is flagged as non-reentrant. 
+ 
+### StateChangeDenied
+- **interface**: `api.errors.revive.StateChangeDenied.is`
+- **summary**:    A contract attempted to invoke a state modifying API while being in read-only mode. 
+ 
+### StaticMemoryTooLarge
+- **interface**: `api.errors.revive.StaticMemoryTooLarge.is`
+- **summary**:    The static memory consumption of the blob will be larger than  [`limits::code::STATIC_MEMORY_BYTES`]. 
+ 
+### StorageDepositLimitExhausted
+- **interface**: `api.errors.revive.StorageDepositLimitExhausted.is`
+- **summary**:    More storage was created than allowed by the storage deposit limit. 
+ 
+### StorageDepositNotEnoughFunds
+- **interface**: `api.errors.revive.StorageDepositNotEnoughFunds.is`
+- **summary**:    Origin doesn't have enough balance to pay the required storage deposits. 
+ 
+### TerminatedInConstructor
+- **interface**: `api.errors.revive.TerminatedInConstructor.is`
+- **summary**:    A contract self destructed in its constructor. 
+
+   This can be triggered by a call to `seal_terminate`. 
+ 
+### TerminatedWhileReentrant
+- **interface**: `api.errors.revive.TerminatedWhileReentrant.is`
+- **summary**:    Termination of a contract is not allowed while the contract is already  on the call stack. Can be triggered by `seal_terminate`. 
+ 
+### TooManyTopics
+- **interface**: `api.errors.revive.TooManyTopics.is`
+- **summary**:    The amount of topics passed to `seal_deposit_events` exceeds the limit. 
+ 
+### TransferFailed
+- **interface**: `api.errors.revive.TransferFailed.is`
+- **summary**:    Performing the requested transfer failed. Probably because there isn't enough  free balance in the sender's account. 
+ 
+### ValueTooLarge
+- **interface**: `api.errors.revive.ValueTooLarge.is`
+- **summary**:    The size defined in `T::MaxValueSize` was exceeded. 
+ 
+### XCMDecodeFailed
+- **interface**: `api.errors.revive.XCMDecodeFailed.is`
+- **summary**:    Failed to decode the XCM program. 
 
 ___
 
@@ -3077,6 +3302,10 @@ ___
 ### PrimeAccountNotMember
 - **interface**: `api.errors.technicalCommittee.PrimeAccountNotMember.is`
 - **summary**:    Prime account is not a member 
+ 
+### ProposalActive
+- **interface**: `api.errors.technicalCommittee.ProposalActive.is`
+- **summary**:    Proposal is still active. 
  
 ### ProposalMissing
 - **interface**: `api.errors.technicalCommittee.ProposalMissing.is`

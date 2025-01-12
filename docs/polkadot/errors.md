@@ -26,6 +26,10 @@ This page lists the errors that can be encountered in the different modules.
 
 - **[convictionVoting](#convictionvoting)**
 
+- **[coretime](#coretime)**
+
+- **[coretimeAssignmentProvider](#coretimeassignmentprovider)**
+
 - **[crowdloan](#crowdloan)**
 
 - **[electionProviderMultiPhase](#electionprovidermultiphase)**
@@ -36,8 +40,6 @@ This page lists the errors that can be encountered in the different modules.
 
 - **[hrmp](#hrmp)**
 
-- **[identity](#identity)**
-
 - **[indices](#indices)**
 
 - **[messageQueue](#messagequeue)**
@@ -45,6 +47,8 @@ This page lists the errors that can be encountered in the different modules.
 - **[multisig](#multisig)**
 
 - **[nominationPools](#nominationpools)**
+
+- **[onDemand](#ondemand)**
 
 - **[paraInclusion](#parainclusion)**
 
@@ -97,6 +101,10 @@ ___
 ### AlreadyExists
 - **interface**: `api.errors.assetRate.AlreadyExists.is`
 - **summary**:    The given asset ID already has an assigned conversion rate and cannot be re-created. 
+ 
+### Overflow
+- **interface**: `api.errors.assetRate.Overflow.is`
+- **summary**:    Overflow ocurred when calculating the inverse rate. 
  
 ### UnknownAssetKind
 - **interface**: `api.errors.assetRate.UnknownAssetKind.is`
@@ -345,7 +353,7 @@ ___
  
 ### AlreadyVoting
 - **interface**: `api.errors.convictionVoting.AlreadyVoting.is`
-- **summary**:    The account currently has votes attached to it and the operation cannot succeed until  these are removed, either through `unvote` or `reap_vote`. 
+- **summary**:    The account currently has votes attached to it and the operation cannot succeed until  these are removed through `remove_vote`. 
  
 ### BadClass
 - **interface**: `api.errors.convictionVoting.BadClass.is`
@@ -386,6 +394,51 @@ ___
 ### NotVoter
 - **interface**: `api.errors.convictionVoting.NotVoter.is`
 - **summary**:    The given account did not vote on the poll. 
+
+___
+
+
+## coretime
+ 
+### AssetTransferFailed
+- **interface**: `api.errors.coretime.AssetTransferFailed.is`
+- **summary**:    Failed to transfer assets to the coretime chain 
+ 
+### NotBroker
+- **interface**: `api.errors.coretime.NotBroker.is`
+- **summary**:    The paraid making the call is not the coretime brokerage system parachain. 
+ 
+### RequestedFutureRevenue
+- **interface**: `api.errors.coretime.RequestedFutureRevenue.is`
+- **summary**:    Requested revenue information `when` parameter was in the future from the current  block height. 
+
+___
+
+
+## coretimeAssignmentProvider
+ 
+### AssignmentsEmpty
+- **interface**: `api.errors.coretimeAssignmentProvider.AssignmentsEmpty.is`
+ 
+### AssignmentsNotSorted
+- **interface**: `api.errors.coretimeAssignmentProvider.AssignmentsNotSorted.is`
+- **summary**:    Tried to add an unsorted set of assignments 
+ 
+### DisallowedInsert
+- **interface**: `api.errors.coretimeAssignmentProvider.DisallowedInsert.is`
+- **summary**:    assign_core is only allowed to append new assignments at the end of already existing  ones. 
+ 
+### DuplicateInsert
+- **interface**: `api.errors.coretimeAssignmentProvider.DuplicateInsert.is`
+- **summary**:    Tried to insert a schedule for the same core and block number as an existing schedule 
+ 
+### OverScheduled
+- **interface**: `api.errors.coretimeAssignmentProvider.OverScheduled.is`
+- **summary**:    Assignments together exceeded 57600. 
+ 
+### UnderScheduled
+- **interface**: `api.errors.coretimeAssignmentProvider.UnderScheduled.is`
+- **summary**:    Assignments together less than 57600 
 
 ___
 
@@ -515,7 +568,7 @@ ___
  
 ### PreDispatchDifferentRound
 - **interface**: `api.errors.electionProviderMultiPhase.PreDispatchDifferentRound.is`
-- **summary**:    Sumission was prepared for a different round. 
+- **summary**:    Submission was prepared for a different round. 
  
 ### PreDispatchEarlySubmission
 - **interface**: `api.errors.electionProviderMultiPhase.PreDispatchEarlySubmission.is`
@@ -701,115 +754,6 @@ ___
 ___
 
 
-## identity
- 
-### AlreadyClaimed
-- **interface**: `api.errors.identity.AlreadyClaimed.is`
-- **summary**:    Account ID is already named. 
- 
-### EmptyIndex
-- **interface**: `api.errors.identity.EmptyIndex.is`
-- **summary**:    Empty index. 
- 
-### FeeChanged
-- **interface**: `api.errors.identity.FeeChanged.is`
-- **summary**:    Fee is changed. 
- 
-### InvalidIndex
-- **interface**: `api.errors.identity.InvalidIndex.is`
-- **summary**:    The index is invalid. 
- 
-### InvalidJudgement
-- **interface**: `api.errors.identity.InvalidJudgement.is`
-- **summary**:    Invalid judgement. 
- 
-### InvalidSignature
-- **interface**: `api.errors.identity.InvalidSignature.is`
-- **summary**:    The signature on a username was not valid. 
- 
-### InvalidSuffix
-- **interface**: `api.errors.identity.InvalidSuffix.is`
-- **summary**:    The provided suffix is too long. 
- 
-### InvalidTarget
-- **interface**: `api.errors.identity.InvalidTarget.is`
-- **summary**:    The target is invalid. 
- 
-### InvalidUsername
-- **interface**: `api.errors.identity.InvalidUsername.is`
-- **summary**:    The username does not meet the requirements. 
- 
-### JudgementForDifferentIdentity
-- **interface**: `api.errors.identity.JudgementForDifferentIdentity.is`
-- **summary**:    The provided judgement was for a different identity. 
- 
-### JudgementGiven
-- **interface**: `api.errors.identity.JudgementGiven.is`
-- **summary**:    Judgement given. 
- 
-### JudgementPaymentFailed
-- **interface**: `api.errors.identity.JudgementPaymentFailed.is`
-- **summary**:    Error that occurs when there is an issue paying for judgement. 
- 
-### NoAllocation
-- **interface**: `api.errors.identity.NoAllocation.is`
-- **summary**:    The authority cannot allocate any more usernames. 
- 
-### NoIdentity
-- **interface**: `api.errors.identity.NoIdentity.is`
-- **summary**:    No identity found. 
- 
-### NotExpired
-- **interface**: `api.errors.identity.NotExpired.is`
-- **summary**:    The username cannot be forcefully removed because it can still be accepted. 
- 
-### NotFound
-- **interface**: `api.errors.identity.NotFound.is`
-- **summary**:    Account isn't found. 
- 
-### NotNamed
-- **interface**: `api.errors.identity.NotNamed.is`
-- **summary**:    Account isn't named. 
- 
-### NotOwned
-- **interface**: `api.errors.identity.NotOwned.is`
-- **summary**:    Sub-account isn't owned by sender. 
- 
-### NotSub
-- **interface**: `api.errors.identity.NotSub.is`
-- **summary**:    Sender is not a sub-account. 
- 
-### NotUsernameAuthority
-- **interface**: `api.errors.identity.NotUsernameAuthority.is`
-- **summary**:    The sender does not have permission to issue a username. 
- 
-### NoUsername
-- **interface**: `api.errors.identity.NoUsername.is`
-- **summary**:    The requested username does not exist. 
- 
-### RequiresSignature
-- **interface**: `api.errors.identity.RequiresSignature.is`
-- **summary**:    Setting this username requires a signature, but none was provided. 
- 
-### StickyJudgement
-- **interface**: `api.errors.identity.StickyJudgement.is`
-- **summary**:    Sticky judgement. 
- 
-### TooManyRegistrars
-- **interface**: `api.errors.identity.TooManyRegistrars.is`
-- **summary**:    Maximum amount of registrars reached. Cannot add any more. 
- 
-### TooManySubAccounts
-- **interface**: `api.errors.identity.TooManySubAccounts.is`
-- **summary**:    Too many subs-accounts. 
- 
-### UsernameTaken
-- **interface**: `api.errors.identity.UsernameTaken.is`
-- **summary**:    The username is already taken. 
-
-___
-
-
 ## indices
  
 ### InUse
@@ -947,6 +891,10 @@ ___
 - **interface**: `api.errors.nominationPools.AccountBelongsToOtherPool.is`
 - **summary**:    An account is already delegating in another pool. An account may only belong to one  pool at a time. 
  
+### AlreadyMigrated
+- **interface**: `api.errors.nominationPools.AlreadyMigrated.is`
+- **summary**:    The pool or member delegation has already migrated to delegate stake. 
+ 
 ### BondExtraRestricted
 - **interface**: `api.errors.nominationPools.BondExtraRestricted.is`
 - **summary**:    Bonding extra is restricted to the exact pending reward amount. 
@@ -1033,9 +981,17 @@ ___
 - **interface**: `api.errors.nominationPools.NothingToAdjust.is`
 - **summary**:    No imbalance in the ED deposit for the pool. 
  
+### NothingToSlash
+- **interface**: `api.errors.nominationPools.NothingToSlash.is`
+- **summary**:    No slash pending that can be applied to the member. 
+ 
 ### NotKickerOrDestroying
 - **interface**: `api.errors.nominationPools.NotKickerOrDestroying.is`
 - **summary**:    Either a) the caller cannot make a valid kick or b) the pool is not destroying. 
+ 
+### NotMigrated
+- **interface**: `api.errors.nominationPools.NotMigrated.is`
+- **summary**:    The pool or member delegation has not migrated yet to delegate stake. 
  
 ### NotNominator
 - **interface**: `api.errors.nominationPools.NotNominator.is`
@@ -1044,6 +1000,10 @@ ___
 ### NotOpen
 - **interface**: `api.errors.nominationPools.NotOpen.is`
 - **summary**:    The pool is not open to join 
+ 
+### NotSupported
+- **interface**: `api.errors.nominationPools.NotSupported.is`
+- **summary**:    This call is not allowed in the current state of the pallet. 
  
 ### OverflowRisk
 - **interface**: `api.errors.nominationPools.OverflowRisk.is`
@@ -1076,23 +1036,20 @@ ___
 ___
 
 
+## onDemand
+ 
+### QueueFull
+- **interface**: `api.errors.onDemand.QueueFull.is`
+- **summary**:    The order queue is full, `place_order` will not continue. 
+ 
+### SpotPriceHigherThanMaxAmount
+- **interface**: `api.errors.onDemand.SpotPriceHigherThanMaxAmount.is`
+- **summary**:    The current spot price is higher than the max amount specified in the `place_order`  call, making it invalid. 
+
+___
+
+
 ## paraInclusion
- 
-### BitfieldAllZeros
-- **interface**: `api.errors.paraInclusion.BitfieldAllZeros.is`
-- **summary**:    Bitfield consists of zeros only. 
- 
-### BitfieldDuplicateOrUnordered
-- **interface**: `api.errors.paraInclusion.BitfieldDuplicateOrUnordered.is`
-- **summary**:    Multiple bitfields submitted by same validator or validators out of order by index. 
- 
-### BitfieldReferencesFreedCore
-- **interface**: `api.errors.paraInclusion.BitfieldReferencesFreedCore.is`
-- **summary**:    A bitfield that references a freed core,  either intentionally or as part of a concluded  invalid dispute. 
- 
-### CandidateScheduledBeforeParaFree
-- **interface**: `api.errors.paraInclusion.CandidateScheduledBeforeParaFree.is`
-- **summary**:    Candidate scheduled despite pending candidate already existing for the para. 
  
 ### DisallowedRelayParent
 - **interface**: `api.errors.paraInclusion.DisallowedRelayParent.is`
@@ -1121,10 +1078,6 @@ ___
 ### InvalidBacking
 - **interface**: `api.errors.paraInclusion.InvalidBacking.is`
 - **summary**:    Invalid (bad signature, unknown validator, etc.) backing. 
- 
-### InvalidBitfieldSignature
-- **interface**: `api.errors.paraInclusion.InvalidBitfieldSignature.is`
-- **summary**:    Invalid signature 
  
 ### InvalidGroupIndex
 - **interface**: `api.errors.paraInclusion.InvalidGroupIndex.is`
@@ -1158,29 +1111,9 @@ ___
 - **interface**: `api.errors.paraInclusion.PrematureCodeUpgrade.is`
 - **summary**:    Code upgrade prematurely. 
  
-### ScheduledOutOfOrder
-- **interface**: `api.errors.paraInclusion.ScheduledOutOfOrder.is`
-- **summary**:    Scheduled cores out of order. 
- 
-### UnexpectedRelayParent
-- **interface**: `api.errors.paraInclusion.UnexpectedRelayParent.is`
-- **summary**:    A different relay parent was provided compared to the on-chain stored one. 
- 
 ### UnscheduledCandidate
 - **interface**: `api.errors.paraInclusion.UnscheduledCandidate.is`
 - **summary**:    Candidate submitted but para not scheduled. 
- 
-### UnsortedOrDuplicateBackedCandidates
-- **interface**: `api.errors.paraInclusion.UnsortedOrDuplicateBackedCandidates.is`
-- **summary**:    Backed candidates are out of order (core index) or contain duplicates. 
- 
-### UnsortedOrDuplicateDisputeStatementSet
-- **interface**: `api.errors.paraInclusion.UnsortedOrDuplicateDisputeStatementSet.is`
-- **summary**:    Dispute statement sets are out of order or contain duplicates. 
- 
-### UnsortedOrDuplicateValidatorIndices
-- **interface**: `api.errors.paraInclusion.UnsortedOrDuplicateValidatorIndices.is`
-- **summary**:    Validator indices are out of order or contains duplicates. 
  
 ### ValidationDataHashMismatch
 - **interface**: `api.errors.paraInclusion.ValidationDataHashMismatch.is`
@@ -1189,35 +1122,15 @@ ___
 ### ValidatorIndexOutOfBounds
 - **interface**: `api.errors.paraInclusion.ValidatorIndexOutOfBounds.is`
 - **summary**:    Validator index out of bounds. 
- 
-### WrongBitfieldSize
-- **interface**: `api.errors.paraInclusion.WrongBitfieldSize.is`
-- **summary**:    Availability bitfield has unexpected size. 
 
 ___
 
 
 ## paraInherent
  
-### BackedByDisabled
-- **interface**: `api.errors.paraInherent.BackedByDisabled.is`
-- **summary**:    A candidate was backed by a disabled validator 
- 
-### BackedOnUnscheduledCore
-- **interface**: `api.errors.paraInherent.BackedOnUnscheduledCore.is`
-- **summary**:    A candidate was backed even though the paraid was not scheduled. 
- 
-### CandidateConcludedInvalid
-- **interface**: `api.errors.paraInherent.CandidateConcludedInvalid.is`
-- **summary**:    Disputed candidate that was concluded invalid. 
- 
-### DisputeInvalid
-- **interface**: `api.errors.paraInherent.DisputeInvalid.is`
-- **summary**:    A dispute statement was invalid. 
- 
-### DisputeStatementsUnsortedOrDuplicates
-- **interface**: `api.errors.paraInherent.DisputeStatementsUnsortedOrDuplicates.is`
-- **summary**:    The ordering of dispute statements was invalid. 
+### CandidatesFilteredDuringExecution
+- **interface**: `api.errors.paraInherent.CandidatesFilteredDuringExecution.is`
+- **summary**:    A candidate was filtered during inherent execution. This should have only been done  during creation. 
  
 ### InherentOverweight
 - **interface**: `api.errors.paraInherent.InherentOverweight.is`
@@ -1259,6 +1172,10 @@ ___
 ### CannotUpgradeCode
 - **interface**: `api.errors.paras.CannotUpgradeCode.is`
 - **summary**:    Parachain cannot currently schedule a code upgrade. 
+ 
+### InvalidCode
+- **interface**: `api.errors.paras.InvalidCode.is`
+- **summary**:    Invalid validation code size. 
  
 ### NotRegistered
 - **interface**: `api.errors.paras.NotRegistered.is`
@@ -1366,6 +1283,10 @@ ___
 ### AlreadyNoted
 - **interface**: `api.errors.preimage.AlreadyNoted.is`
 - **summary**:    Preimage has already been noted on-chain. 
+ 
+### NoCost
+- **interface**: `api.errors.preimage.NoCost.is`
+- **summary**:    No ticket with a cost was returned by [`Config::Consideration`] to store the preimage. 
  
 ### NotAuthorized
 - **interface**: `api.errors.preimage.NotAuthorized.is`
@@ -1481,6 +1402,10 @@ ___
 - **interface**: `api.errors.referenda.PreimageNotExist.is`
 - **summary**:    The preimage does not exist. 
  
+### PreimageStoredWithDifferentLength
+- **interface**: `api.errors.referenda.PreimageStoredWithDifferentLength.is`
+- **summary**:    The preimage is stored with a different length than the one provided. 
+ 
 ### QueueEmpty
 - **interface**: `api.errors.referenda.QueueEmpty.is`
 - **summary**:    The queue of the track is empty. 
@@ -1518,13 +1443,13 @@ ___
 - **interface**: `api.errors.registrar.CodeTooLarge.is`
 - **summary**:    Invalid para code size. 
  
-### EmptyCode
-- **interface**: `api.errors.registrar.EmptyCode.is`
-- **summary**:    Registering parachain with empty code is not allowed. 
- 
 ### HeadDataTooLarge
 - **interface**: `api.errors.registrar.HeadDataTooLarge.is`
 - **summary**:    Invalid para head data size. 
+ 
+### InvalidCode
+- **interface**: `api.errors.registrar.InvalidCode.is`
+- **summary**:    The validation code is invalid. 
  
 ### NotOwner
 - **interface**: `api.errors.registrar.NotOwner.is`
@@ -1706,6 +1631,10 @@ ___
 - **interface**: `api.errors.staking.NotController.is`
 - **summary**:    Not a controller account. 
  
+### NotEnoughFunds
+- **interface**: `api.errors.staking.NotEnoughFunds.is`
+- **summary**:    Not enough funds available to withdraw. 
+ 
 ### NotSortedAndUnique
 - **interface**: `api.errors.staking.NotSortedAndUnique.is`
 - **summary**:    Items are not sorted and unique. 
@@ -1718,6 +1647,10 @@ ___
 - **interface**: `api.errors.staking.NoUnlockChunk.is`
 - **summary**:    Can not rebond without unlocking chunks. 
  
+### RewardDestinationRestricted
+- **interface**: `api.errors.staking.RewardDestinationRestricted.is`
+- **summary**:    Provided reward destination is not allowed. 
+ 
 ### TooManyNominators
 - **interface**: `api.errors.staking.TooManyNominators.is`
 - **summary**:    There are too many nominators in the system. Governance needs to adjust the staking  settings to keep things safe for the runtime. 
@@ -1729,6 +1662,10 @@ ___
 ### TooManyValidators
 - **interface**: `api.errors.staking.TooManyValidators.is`
 - **summary**:    There are too many validator candidates in the system. Governance needs to adjust the  staking settings to keep things safe for the runtime. 
+ 
+### VirtualStakerNotAllowed
+- **interface**: `api.errors.staking.VirtualStakerNotAllowed.is`
+- **summary**:    Operation not allowed for virtual stakers. 
 
 ___
 
@@ -1780,6 +1717,10 @@ ___
 - **interface**: `api.errors.system.InvalidSpecName.is`
 - **summary**:    The name of specification does not match between the current runtime  and the new runtime. 
  
+### MultiBlockMigrationsOngoing
+- **interface**: `api.errors.system.MultiBlockMigrationsOngoing.is`
+- **summary**:    A multi-block migration is ongoing and prevents the current code from being replaced. 
+ 
 ### NonDefaultComposite
 - **interface**: `api.errors.system.NonDefaultComposite.is`
 - **summary**:    Suicide called when the account has non-default composite data. 
@@ -1824,10 +1765,6 @@ ___
 ### InsufficientPermission
 - **interface**: `api.errors.treasury.InsufficientPermission.is`
 - **summary**:    The spend origin is valid but the amount it is allowed to spend is lower than the  amount to be spent. 
- 
-### InsufficientProposersBalance
-- **interface**: `api.errors.treasury.InsufficientProposersBalance.is`
-- **summary**:    Proposer's balance is too low. 
  
 ### InvalidIndex
 - **interface**: `api.errors.treasury.InvalidIndex.is`
@@ -1969,10 +1906,6 @@ ___
 ### InUse
 - **interface**: `api.errors.xcmPallet.InUse.is`
 - **summary**:    The unlock operation cannot succeed because there are still consumers of the lock. 
- 
-### InvalidAssetNotConcrete
-- **interface**: `api.errors.xcmPallet.InvalidAssetNotConcrete.is`
-- **summary**:    Invalid non-concrete asset. 
  
 ### InvalidAssetUnknownReserve
 - **interface**: `api.errors.xcmPallet.InvalidAssetUnknownReserve.is`
