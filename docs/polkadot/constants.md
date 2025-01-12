@@ -22,6 +22,8 @@ The following sections contain the module constants, also known as parameter typ
 
 - **[convictionVoting](#convictionvoting)**
 
+- **[coretime](#coretime)**
+
 - **[crowdloan](#crowdloan)**
 
 - **[electionProviderMultiPhase](#electionprovidermultiphase)**
@@ -30,8 +32,6 @@ The following sections contain the module constants, also known as parameter typ
 
 - **[grandpa](#grandpa)**
 
-- **[identity](#identity)**
-
 - **[indices](#indices)**
 
 - **[messageQueue](#messagequeue)**
@@ -39,6 +39,8 @@ The following sections contain the module constants, also known as parameter typ
 - **[multisig](#multisig)**
 
 - **[nominationPools](#nominationpools)**
+
+- **[onDemand](#ondemand)**
 
 - **[paras](#paras)**
 
@@ -133,10 +135,14 @@ ___
 ### maxLocks: `u32`
 - **interface**: `api.consts.balances.maxLocks`
 - **summary**:    The maximum number of locks that should exist on an account.  Not strictly enforced, but used for weight estimation. 
+
+   Use of locks is deprecated in favour of freezes. See `https://github.com/paritytech/substrate/pull/12951/` 
  
 ### maxReserves: `u32`
 - **interface**: `api.consts.balances.maxReserves`
 - **summary**:    The maximum number of named reserves that can exist on an account. 
+
+   Use of reserves is deprecated in favour of holds. See `https://github.com/paritytech/substrate/pull/12951/` 
 
 ___
 
@@ -243,6 +249,19 @@ ___
 ___
 
 
+## coretime
+ 
+### brokerId: `u32`
+- **interface**: `api.consts.coretime.brokerId`
+- **summary**:    The ParaId of the coretime chain. 
+ 
+### brokerPotLocation: `StagingXcmV4Junctions`
+- **interface**: `api.consts.coretime.brokerPotLocation`
+- **summary**:    The coretime chain pot location. 
+
+___
+
+
 ## crowdloan
  
 ### minContribution: `u128`
@@ -318,17 +337,9 @@ ___
 
    If [`Config::MinerConfig`] is being implemented to submit signed solutions (outside of  this pallet), then [`MinerConfig::solution_weight`] is used to compare against  this value. 
  
-### signedPhase: `u32`
-- **interface**: `api.consts.electionProviderMultiPhase.signedPhase`
-- **summary**:    Duration of the signed phase. 
- 
 ### signedRewardBase: `u128`
 - **interface**: `api.consts.electionProviderMultiPhase.signedRewardBase`
 - **summary**:    Base reward for a signed solution 
- 
-### unsignedPhase: `u32`
-- **interface**: `api.consts.electionProviderMultiPhase.unsignedPhase`
-- **summary**:    Duration of the unsigned phase. 
 
 ___
 
@@ -361,43 +372,6 @@ ___
 ___
 
 
-## identity
- 
-### basicDeposit: `u128`
-- **interface**: `api.consts.identity.basicDeposit`
-- **summary**:    The amount held on deposit for a registered identity. 
- 
-### byteDeposit: `u128`
-- **interface**: `api.consts.identity.byteDeposit`
-- **summary**:    The amount held on deposit per encoded byte for a registered identity. 
- 
-### maxRegistrars: `u32`
-- **interface**: `api.consts.identity.maxRegistrars`
-- **summary**:    Maxmimum number of registrars allowed in the system. Needed to bound the complexity  of, e.g., updating judgements. 
- 
-### maxSubAccounts: `u32`
-- **interface**: `api.consts.identity.maxSubAccounts`
-- **summary**:    The maximum number of sub-accounts allowed per identified account. 
- 
-### maxSuffixLength: `u32`
-- **interface**: `api.consts.identity.maxSuffixLength`
-- **summary**:    The maximum length of a suffix. 
- 
-### maxUsernameLength: `u32`
-- **interface**: `api.consts.identity.maxUsernameLength`
-- **summary**:    The maximum length of a username, including its suffix and any system-added delimiters. 
- 
-### pendingUsernameExpiration: `u32`
-- **interface**: `api.consts.identity.pendingUsernameExpiration`
-- **summary**:    The number of blocks within which a username grant must be accepted. 
- 
-### subAccountDeposit: `u128`
-- **interface**: `api.consts.identity.subAccountDeposit`
-- **summary**:    The amount held on deposit for a registered subaccount. This should account for the fact  that one storage item's value will increase by the size of an account ID, and there will  be another trie item whose value is the size of an account ID plus 32 bytes. 
-
-___
-
-
 ## indices
  
 ### deposit: `u128`
@@ -415,15 +389,21 @@ ___
 
    A good value depends on the expected message sizes, their weights, the weight that is  available for processing them and the maximal needed message size. The maximal message  size is slightly lower than this as defined by [`MaxMessageLenOf`]. 
  
+### idleMaxServiceWeight: `Option<SpWeightsWeightV2Weight>`
+- **interface**: `api.consts.messageQueue.idleMaxServiceWeight`
+- **summary**:    The maximum amount of weight (if any) to be used from remaining weight `on_idle` which  should be provided to the message queue for servicing enqueued items `on_idle`.  Useful for parachains to process messages at the same block they are received. 
+
+   If `None`, it will not call `ServiceQueues::service_queues` in `on_idle`. 
+ 
 ### maxStale: `u32`
 - **interface**: `api.consts.messageQueue.maxStale`
 - **summary**:    The maximum number of stale pages (i.e. of overweight messages) allowed before culling  can happen. Once there are more stale pages than this, then historical pages may be  dropped, even if they contain unprocessed overweight messages. 
  
 ### serviceWeight: `Option<SpWeightsWeightV2Weight>`
 - **interface**: `api.consts.messageQueue.serviceWeight`
-- **summary**:    The amount of weight (if any) which should be provided to the message queue for  servicing enqueued items. 
+- **summary**:    The amount of weight (if any) which should be provided to the message queue for  servicing enqueued items `on_initialize`. 
 
-   This may be legitimately `None` in the case that you will call  `ServiceQueues::service_queues` manually. 
+   This may be legitimately `None` in the case that you will call  `ServiceQueues::service_queues` manually or set [`Self::IdleMaxServiceWeight`] to have  it run in `on_idle`. 
 
 ___
 
@@ -468,6 +448,23 @@ ___
 ### palletId: `FrameSupportPalletId`
 - **interface**: `api.consts.nominationPools.palletId`
 - **summary**:    The nomination pool's pallet id. 
+
+___
+
+
+## onDemand
+ 
+### maxHistoricalRevenue: `u32`
+- **interface**: `api.consts.onDemand.maxHistoricalRevenue`
+- **summary**:    The maximum number of blocks some historical revenue  information stored for. 
+ 
+### palletId: `FrameSupportPalletId`
+- **interface**: `api.consts.onDemand.palletId`
+- **summary**:    Identifier for the internal revenue balance. 
+ 
+### trafficDefaultValue: `u128`
+- **interface**: `api.consts.onDemand.trafficDefaultValue`
+- **summary**:    The default value for the spot traffic multiplier. 
 
 ___
 
@@ -681,7 +678,7 @@ ___
  
 ### version: `SpVersionRuntimeVersion`
 - **interface**: `api.consts.system.version`
-- **summary**:    Get the chain's current version. 
+- **summary**:    Get the chain's in-code version. 
 
 ___
 
@@ -733,18 +730,6 @@ ___
 ### payoutPeriod: `u32`
 - **interface**: `api.consts.treasury.payoutPeriod`
 - **summary**:    The period during which an approved treasury spend has to be claimed. 
- 
-### proposalBond: `Permill`
-- **interface**: `api.consts.treasury.proposalBond`
-- **summary**:    Fraction of a proposal's value that should be bonded in order to place the proposal.  An accepted proposal gets these back. A rejected proposal does not. 
- 
-### proposalBondMaximum: `Option<u128>`
-- **interface**: `api.consts.treasury.proposalBondMaximum`
-- **summary**:    Maximum amount of funds that should be placed in a deposit for making a proposal. 
- 
-### proposalBondMinimum: `u128`
-- **interface**: `api.consts.treasury.proposalBondMinimum`
-- **summary**:    Minimum amount of funds that should be placed in a deposit for making a proposal. 
  
 ### spendPeriod: `u32`
 - **interface**: `api.consts.treasury.spendPeriod`

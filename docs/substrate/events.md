@@ -20,8 +20,6 @@ Events are emitted for certain operations on the runtime. The following sections
 
 - **[assets](#assets)**
 
-- **[assetTxPayment](#assettxpayment)**
-
 - **[balances](#balances)**
 
 - **[bounties](#bounties)**
@@ -93,6 +91,8 @@ Events are emitted for certain operations on the runtime. The following sections
 - **[referenda](#referenda)**
 
 - **[remark](#remark)**
+
+- **[revive](#revive)**
 
 - **[rootTesting](#roottesting)**
 
@@ -221,9 +221,21 @@ ___
 - **interface**: `api.events.allianceMotion.Executed.is`
 - **summary**:    A motion was executed; result will be `Ok` if it returned without error. 
  
+### Killed(`H256`)
+- **interface**: `api.events.allianceMotion.Killed.is`
+- **summary**:    A proposal was killed. 
+ 
 ### MemberExecuted(`H256`, `Result<Null, SpRuntimeDispatchError>`)
 - **interface**: `api.events.allianceMotion.MemberExecuted.is`
 - **summary**:    A single member did some action; result will be `Ok` if it returned without error. 
+ 
+### ProposalCostBurned(`H256`, `AccountId32`)
+- **interface**: `api.events.allianceMotion.ProposalCostBurned.is`
+- **summary**:    Some cost for storing a proposal was burned. 
+ 
+### ProposalCostReleased(`H256`, `AccountId32`)
+- **interface**: `api.events.allianceMotion.ProposalCostReleased.is`
+- **summary**:    Some cost for storing a proposal was released. 
  
 ### Proposed(`AccountId32`, `u32`, `H256`, `u32`)
 - **interface**: `api.events.allianceMotion.Proposed.is`
@@ -280,7 +292,7 @@ ___
 - **interface**: `api.events.assetConversionTxPayment.AssetRefundFailed.is`
 - **summary**:    A swap of the refund in native currency back to asset failed. 
  
-### AssetTxFeePaid(`AccountId32`, `u128`, `u128`, `u32`)
+### AssetTxFeePaid(`AccountId32`, `u128`, `u128`, `FrameSupportTokensFungibleUnionOfNativeOrWithId`)
 - **interface**: `api.events.assetConversionTxPayment.AssetTxFeePaid.is`
 - **summary**:    A transaction fee `actual_fee`, of which `tip` was added to the minimum inclusion fee,  has been paid by `who` in an asset `asset_id`. 
 
@@ -289,13 +301,13 @@ ___
 
 ## assetRate
  
-### AssetRateCreated(`u32`, `u128`)
+### AssetRateCreated(`FrameSupportTokensFungibleUnionOfNativeOrWithId`, `u128`)
 - **interface**: `api.events.assetRate.AssetRateCreated.is`
  
-### AssetRateRemoved(`u32`)
+### AssetRateRemoved(`FrameSupportTokensFungibleUnionOfNativeOrWithId`)
 - **interface**: `api.events.assetRate.AssetRateRemoved.is`
  
-### AssetRateUpdated(`u32`, `u128`, `u128`)
+### AssetRateUpdated(`FrameSupportTokensFungibleUnionOfNativeOrWithId`, `u128`, `u128`)
 - **interface**: `api.events.assetRate.AssetRateUpdated.is`
 
 ___
@@ -406,15 +418,6 @@ ___
 ### Withdrawn(`u32`, `AccountId32`, `u128`)
 - **interface**: `api.events.assets.Withdrawn.is`
 - **summary**:    Some assets were withdrawn from the account (e.g. for transaction fees). 
-
-___
-
-
-## assetTxPayment
- 
-### AssetTxFeePaid(`AccountId32`, `u128`, `u128`, `Option<u32>`)
-- **interface**: `api.events.assetTxPayment.AssetTxFeePaid.is`
-- **summary**:    A transaction fee `actual_fee`, of which `tip` was added to the minimum inclusion fee,  has been paid by `who` in an asset `asset_id`. 
 
 ___
 
@@ -566,6 +569,22 @@ ___
 ### Assigned(`PalletBrokerRegionId`, `u32`, `u32`)
 - **interface**: `api.events.broker.Assigned.is`
 - **summary**:    A Region has been assigned to a particular task. 
+ 
+### AutoRenewalDisabled(`u16`, `u32`)
+- **interface**: `api.events.broker.AutoRenewalDisabled.is`
+ 
+### AutoRenewalEnabled(`u16`, `u32`)
+- **interface**: `api.events.broker.AutoRenewalEnabled.is`
+ 
+### AutoRenewalFailed(`u16`, `Option<AccountId32>`)
+- **interface**: `api.events.broker.AutoRenewalFailed.is`
+- **summary**:    Failed to auto-renew a core, likely due to the payer account not being sufficiently  funded. 
+ 
+### AutoRenewalLimitReached()
+- **interface**: `api.events.broker.AutoRenewalLimitReached.is`
+- **summary**:    The auto-renewal limit has been reached upon renewing cores. 
+
+   This should never happen, given that enable_auto_renew checks for this before enabling  auto-renewal. 
  
 ### ClaimsReady(`u32`, `u128`, `u128`)
 - **interface**: `api.events.broker.ClaimsReady.is`
@@ -765,6 +784,14 @@ ___
 ### Undelegated(`AccountId32`)
 - **interface**: `api.events.convictionVoting.Undelegated.is`
 - **summary**:    An \[account\] has cancelled a previous delegation operation. 
+ 
+### Voted(`AccountId32`, `PalletConvictionVotingVoteAccountVote`)
+- **interface**: `api.events.convictionVoting.Voted.is`
+- **summary**:    An account that has voted 
+ 
+### VoteRemoved(`AccountId32`, `PalletConvictionVotingVoteAccountVote`)
+- **interface**: `api.events.convictionVoting.VoteRemoved.is`
+- **summary**:    A vote that been removed 
 
 ___
 
@@ -836,9 +863,21 @@ ___
 - **interface**: `api.events.council.Executed.is`
 - **summary**:    A motion was executed; result will be `Ok` if it returned without error. 
  
+### Killed(`H256`)
+- **interface**: `api.events.council.Killed.is`
+- **summary**:    A proposal was killed. 
+ 
 ### MemberExecuted(`H256`, `Result<Null, SpRuntimeDispatchError>`)
 - **interface**: `api.events.council.MemberExecuted.is`
 - **summary**:    A single member did some action; result will be `Ok` if it returned without error. 
+ 
+### ProposalCostBurned(`H256`, `AccountId32`)
+- **interface**: `api.events.council.ProposalCostBurned.is`
+- **summary**:    Some cost for storing a proposal was burned. 
+ 
+### ProposalCostReleased(`H256`, `AccountId32`)
+- **interface**: `api.events.council.ProposalCostReleased.is`
+- **summary**:    Some cost for storing a proposal was released. 
  
 ### Proposed(`AccountId32`, `u32`, `H256`, `u32`)
 - **interface**: `api.events.council.Proposed.is`
@@ -1107,6 +1146,10 @@ ___
 - **interface**: `api.events.identity.RegistrarAdded.is`
 - **summary**:    A registrar was added. 
  
+### SubIdentitiesSet(`AccountId32`, `u32`, `u128`)
+- **interface**: `api.events.identity.SubIdentitiesSet.is`
+- **summary**:    An account's sub-identities were set (in bulk). 
+ 
 ### SubIdentityAdded(`AccountId32`, `AccountId32`, `u128`)
 - **interface**: `api.events.identity.SubIdentityAdded.is`
 - **summary**:    A sub-identity was added to an identity and the deposit paid. 
@@ -1115,17 +1158,33 @@ ___
 - **interface**: `api.events.identity.SubIdentityRemoved.is`
 - **summary**:    A sub-identity was removed from an identity and the deposit freed. 
  
+### SubIdentityRenamed(`AccountId32`, `AccountId32`)
+- **interface**: `api.events.identity.SubIdentityRenamed.is`
+- **summary**:    A given sub-account's associated name was changed by its super-identity. 
+ 
 ### SubIdentityRevoked(`AccountId32`, `AccountId32`, `u128`)
 - **interface**: `api.events.identity.SubIdentityRevoked.is`
 - **summary**:    A sub-identity was cleared, and the given deposit repatriated from the  main identity account to the sub-identity account. 
+ 
+### UsernameKilled(`Bytes`)
+- **interface**: `api.events.identity.UsernameKilled.is`
+- **summary**:    A username has been killed. 
  
 ### UsernameQueued(`AccountId32`, `Bytes`, `u32`)
 - **interface**: `api.events.identity.UsernameQueued.is`
 - **summary**:    A username was queued, but `who` must accept it prior to `expiration`. 
  
+### UsernameRemoved(`Bytes`)
+- **interface**: `api.events.identity.UsernameRemoved.is`
+- **summary**:    A username has been removed. 
+ 
 ### UsernameSet(`AccountId32`, `Bytes`)
 - **interface**: `api.events.identity.UsernameSet.is`
 - **summary**:    A username was set for `who`. 
+ 
+### UsernameUnbound(`Bytes`)
+- **interface**: `api.events.identity.UsernameUnbound.is`
+- **summary**:    A username has been unbound. 
 
 ___
 
@@ -1489,11 +1548,11 @@ ___
 - **interface**: `api.events.nominationPools.Destroyed.is`
 - **summary**:    A pool has been destroyed. 
  
-### MemberRemoved(`u32`, `AccountId32`)
+### MemberRemoved(`u32`, `AccountId32`, `u128`)
 - **interface**: `api.events.nominationPools.MemberRemoved.is`
 - **summary**:    A member has been removed from a pool. 
 
-   The removal can be voluntary (withdrawn all unbonded funds) or involuntary (kicked). 
+   The removal can be voluntary (withdrawn all unbonded funds) or involuntary (kicked).  Any funds that are still delegated (i.e. dangling delegation) are released and are  represented by `released_balance`. 
  
 ### MinBalanceDeficitAdjusted(`u32`, `u128`)
 - **interface**: `api.events.nominationPools.MinBalanceDeficitAdjusted.is`
@@ -1940,6 +1999,63 @@ ___
 ___
 
 
+## revive
+ 
+### Called(`PalletReviveExecOrigin`, `H160`)
+- **interface**: `api.events.revive.Called.is`
+- **summary**:    A contract was called either by a plain account or another contract. 
+
+   #### Note 
+
+   Please keep in mind that like all events this is only emitted for successful  calls. This is because on failure all storage changes including events are  rolled back. 
+ 
+### CodeRemoved(`H256`, `u128`, `H160`)
+- **interface**: `api.events.revive.CodeRemoved.is`
+- **summary**:    A code with the specified hash was removed. 
+ 
+### CodeStored(`H256`, `u128`, `H160`)
+- **interface**: `api.events.revive.CodeStored.is`
+- **summary**:    Code with the specified hash has been stored. 
+ 
+### ContractCodeUpdated(`H160`, `H256`, `H256`)
+- **interface**: `api.events.revive.ContractCodeUpdated.is`
+- **summary**:    A contract's code was updated. 
+ 
+### ContractEmitted(`H160`, `Bytes`, `Vec<H256>`)
+- **interface**: `api.events.revive.ContractEmitted.is`
+- **summary**:    A custom event emitted by the contract. 
+ 
+### DelegateCalled(`H160`, `H256`)
+- **interface**: `api.events.revive.DelegateCalled.is`
+- **summary**:    A contract delegate called a code hash. 
+
+   #### Note 
+
+   Please keep in mind that like all events this is only emitted for successful  calls. This is because on failure all storage changes including events are  rolled back. 
+ 
+### Instantiated(`H160`, `H160`)
+- **interface**: `api.events.revive.Instantiated.is`
+- **summary**:    Contract deployed by address at the specified address. 
+ 
+### StorageDepositTransferredAndHeld(`H160`, `H160`, `u128`)
+- **interface**: `api.events.revive.StorageDepositTransferredAndHeld.is`
+- **summary**:    Some funds have been transferred and held as storage deposit. 
+ 
+### StorageDepositTransferredAndReleased(`H160`, `H160`, `u128`)
+- **interface**: `api.events.revive.StorageDepositTransferredAndReleased.is`
+- **summary**:    Some storage deposit funds have been transferred and released. 
+ 
+### Terminated(`H160`, `H160`)
+- **interface**: `api.events.revive.Terminated.is`
+- **summary**:    Contract has been removed. 
+
+   #### Note 
+
+   The only way for a contract to be removed and emitting this event is by calling  `seal_terminate`. 
+
+___
+
+
 ## rootTesting
  
 ### DefensiveTestCall()
@@ -2067,7 +2183,7 @@ ___
 
 ## skipFeelessPayment
  
-### FeeSkipped(`AccountId32`)
+### FeeSkipped(`KitchensinkRuntimeOriginCaller`)
 - **interface**: `api.events.skipFeelessPayment.FeeSkipped.is`
 - **summary**:    A transaction fee was skipped. 
 
@@ -2179,9 +2295,9 @@ ___
 - **interface**: `api.events.staking.OldSlashingReportDiscarded.is`
 - **summary**:    An old slashing report from a prior era was discarded because it could  not be processed. 
  
-### PayoutStarted(`u32`, `AccountId32`)
+### PayoutStarted(`u32`, `AccountId32`, `u32`, `Option<u32>`)
 - **interface**: `api.events.staking.PayoutStarted.is`
-- **summary**:    The stakers' rewards are getting paid. 
+- **summary**:    A Page of stakers rewards are getting paid. `next` is `None` if all pages are claimed. 
  
 ### Rewarded(`AccountId32`, `PalletStakingRewardDestination`, `u128`)
 - **interface**: `api.events.staking.Rewarded.is`
@@ -2283,11 +2399,11 @@ ___
 - **interface**: `api.events.system.CodeUpdated.is`
 - **summary**:    `:code` was updated. 
  
-### ExtrinsicFailed(`SpRuntimeDispatchError`, `FrameSupportDispatchDispatchInfo`)
+### ExtrinsicFailed(`SpRuntimeDispatchError`, `FrameSystemDispatchEventInfo`)
 - **interface**: `api.events.system.ExtrinsicFailed.is`
 - **summary**:    An extrinsic failed. 
  
-### ExtrinsicSuccess(`FrameSupportDispatchDispatchInfo`)
+### ExtrinsicSuccess(`FrameSystemDispatchEventInfo`)
 - **interface**: `api.events.system.ExtrinsicSuccess.is`
 - **summary**:    An extrinsic completed successfully. 
  
@@ -2328,9 +2444,21 @@ ___
 - **interface**: `api.events.technicalCommittee.Executed.is`
 - **summary**:    A motion was executed; result will be `Ok` if it returned without error. 
  
+### Killed(`H256`)
+- **interface**: `api.events.technicalCommittee.Killed.is`
+- **summary**:    A proposal was killed. 
+ 
 ### MemberExecuted(`H256`, `Result<Null, SpRuntimeDispatchError>`)
 - **interface**: `api.events.technicalCommittee.MemberExecuted.is`
 - **summary**:    A single member did some action; result will be `Ok` if it returned without error. 
+ 
+### ProposalCostBurned(`H256`, `AccountId32`)
+- **interface**: `api.events.technicalCommittee.ProposalCostBurned.is`
+- **summary**:    Some cost for storing a proposal was burned. 
+ 
+### ProposalCostReleased(`H256`, `AccountId32`)
+- **interface**: `api.events.technicalCommittee.ProposalCostReleased.is`
+- **summary**:    Some cost for storing a proposal was released. 
  
 ### Proposed(`AccountId32`, `u32`, `H256`, `u32`)
 - **interface**: `api.events.technicalCommittee.Proposed.is`
@@ -2425,7 +2553,7 @@ ___
 
 ## treasury
  
-### AssetSpendApproved(`u32`, `u32`, `u128`, `AccountId32`, `u32`, `u32`)
+### AssetSpendApproved(`u32`, `FrameSupportTokensFungibleUnionOfNativeOrWithId`, `u128`, `AccountId32`, `u32`, `u32`)
 - **interface**: `api.events.treasury.AssetSpendApproved.is`
 - **summary**:    A new asset spend proposal has been approved. 
  

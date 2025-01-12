@@ -78,6 +78,8 @@ The following sections contain the module constants, also known as parameter typ
 
 - **[referenda](#referenda)**
 
+- **[revive](#revive)**
+
 - **[safeMode](#safemode)**
 
 - **[salary](#salary)**
@@ -335,6 +337,9 @@ ___
 
 
 ## broker
+ 
+### maxAutoRenewals: `u32`
+- **interface**: `api.consts.broker.maxAutoRenewals`
  
 ### maxLeasedCores: `u32`
 - **interface**: `api.consts.broker.maxLeasedCores`
@@ -728,6 +733,14 @@ ___
 ### subAccountDeposit: `u128`
 - **interface**: `api.consts.identity.subAccountDeposit`
 - **summary**:    The amount held on deposit for a registered subaccount. This should account for the fact  that one storage item's value will increase by the size of an account ID, and there will  be another trie item whose value is the size of an account ID plus 32 bytes. 
+ 
+### usernameDeposit: `u128`
+- **interface**: `api.consts.identity.usernameDeposit`
+- **summary**:    The amount held on deposit per registered username. This value should change only in  runtime upgrades with proper migration of existing deposits. 
+ 
+### usernameGracePeriod: `u32`
+- **interface**: `api.consts.identity.usernameGracePeriod`
+- **summary**:    The number of blocks that must pass to enable the permanent deletion of a username by  its respective authority. 
 
 ___
 
@@ -1192,6 +1205,54 @@ ___
 ___
 
 
+## revive
+ 
+### apiVersion: `u16`
+- **interface**: `api.consts.revive.apiVersion`
+ 
+### chainId: `u64`
+- **interface**: `api.consts.revive.chainId`
+- **summary**:    The [EIP-155](https://eips.ethereum.org/EIPS/eip-155) chain ID. 
+
+   This is a unique identifier assigned to each blockchain network,  preventing replay attacks. 
+ 
+### codeHashLockupDepositPercent: `Perbill`
+- **interface**: `api.consts.revive.codeHashLockupDepositPercent`
+- **summary**:    The percentage of the storage deposit that should be held for using a code hash.  Instantiating a contract, or calling [`chain_extension::Ext::lock_delegate_dependency`]  protects the code from being removed. In order to prevent abuse these actions are  protected with a percentage of the code deposit. 
+ 
+### depositPerByte: `u128`
+- **interface**: `api.consts.revive.depositPerByte`
+- **summary**:    The amount of balance a caller has to pay for each byte of storage. 
+
+   #### Note 
+
+   It is safe to change this value on a live chain as all refunds are pro rata. 
+ 
+### depositPerItem: `u128`
+- **interface**: `api.consts.revive.depositPerItem`
+- **summary**:    The amount of balance a caller has to pay for each storage item. 
+
+   #### Note 
+
+   It is safe to change this value on a live chain as all refunds are pro rata. 
+ 
+### nativeToEthRatio: `u32`
+- **interface**: `api.consts.revive.nativeToEthRatio`
+- **summary**:    The ratio between the decimal representation of the native token and the ETH token. 
+ 
+### unsafeUnstableInterface: `bool`
+- **interface**: `api.consts.revive.unsafeUnstableInterface`
+- **summary**:    Make contract callable functions marked as `#[unstable]` available. 
+
+   Contracts that use `#[unstable]` functions won't be able to be uploaded unless  this is set to `true`. This is only meant for testnets and dev nodes in order to  experiment with new features. 
+
+   #### Warning 
+
+   Do **not** set to `true` on productions chains. 
+
+___
+
+
 ## safeMode
  
 ### enterDepositAmount: `Option<u128>`
@@ -1514,7 +1575,9 @@ ___
  
 ### maxApprovals: `u32`
 - **interface**: `api.consts.treasury.maxApprovals`
-- **summary**:    The maximum number of approvals that can wait in the spending queue. 
+- **summary**:    DEPRECATED: associated with `spend_local` call and will be removed in May 2025.  Refer to <https://github.com/paritytech/polkadot-sdk/pull/5961> for migration to `spend`. 
+
+   The maximum number of approvals that can wait in the spending queue. 
 
    NOTE: This parameter is also used within the Bounties Pallet extension if enabled. 
  

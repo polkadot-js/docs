@@ -20,6 +20,8 @@ Events are emitted for certain operations on the runtime. The following sections
 
 - **[convictionVoting](#convictionvoting)**
 
+- **[coretime](#coretime)**
+
 - **[crowdloan](#crowdloan)**
 
 - **[electionProviderMultiPhase](#electionprovidermultiphase)**
@@ -29,8 +31,6 @@ Events are emitted for certain operations on the runtime. The following sections
 - **[grandpa](#grandpa)**
 
 - **[hrmp](#hrmp)**
-
-- **[identity](#identity)**
 
 - **[indices](#indices)**
 
@@ -42,7 +42,11 @@ Events are emitted for certain operations on the runtime. The following sections
 
 - **[offences](#offences)**
 
+- **[onDemand](#ondemand)**
+
 - **[paraInclusion](#parainclusion)**
+
+- **[parameters](#parameters)**
 
 - **[paras](#paras)**
 
@@ -318,6 +322,19 @@ ___
 ___
 
 
+## coretime
+ 
+### CoreAssigned(`u32`)
+- **interface**: `api.events.coretime.CoreAssigned.is`
+- **summary**:    A core has received a new assignment from the broker chain. 
+ 
+### RevenueInfoRequested(`u32`)
+- **interface**: `api.events.coretime.RevenueInfoRequested.is`
+- **summary**:    The broker chain has asked for revenue information for a specific block. 
+
+___
+
+
 ## crowdloan
  
 ### AddedToNewRaise(`u32`)
@@ -391,7 +408,7 @@ ___
 - **interface**: `api.events.electionProviderMultiPhase.SolutionStored.is`
 - **summary**:    A solution was stored with the given compute. 
 
-   The `origin` indicates the origin of the solution. If `origin` is `Some(AccountId)`,  the stored solution was submited in the signed phase by a miner with the `AccountId`.  Otherwise, the solution was stored either during the unsigned phase or by  `T::ForceOrigin`. The `bool` is `true` when a previous solution was ejected to make  room for this one. 
+   The `origin` indicates the origin of the solution. If `origin` is `Some(AccountId)`,  the stored solution was submitted in the signed phase by a miner with the `AccountId`.  Otherwise, the solution was stored either during the unsigned phase or by  `T::ForceOrigin`. The `bool` is `true` when a previous solution was ejected to make  room for this one. 
 
 ___
 
@@ -469,79 +486,6 @@ ___
 ### OpenChannelRequested(`u32`, `u32`, `u32`, `u32`)
 - **interface**: `api.events.hrmp.OpenChannelRequested.is`
 - **summary**:    Open HRMP channel requested. 
-
-___
-
-
-## identity
- 
-### AuthorityAdded(`AccountId32`)
-- **interface**: `api.events.identity.AuthorityAdded.is`
-- **summary**:    A username authority was added. 
- 
-### AuthorityRemoved(`AccountId32`)
-- **interface**: `api.events.identity.AuthorityRemoved.is`
-- **summary**:    A username authority was removed. 
- 
-### DanglingUsernameRemoved(`AccountId32`, `Bytes`)
-- **interface**: `api.events.identity.DanglingUsernameRemoved.is`
-- **summary**:    A dangling username (as in, a username corresponding to an account that has removed its  identity) has been removed. 
- 
-### IdentityCleared(`AccountId32`, `u128`)
-- **interface**: `api.events.identity.IdentityCleared.is`
-- **summary**:    A name was cleared, and the given balance returned. 
- 
-### IdentityKilled(`AccountId32`, `u128`)
-- **interface**: `api.events.identity.IdentityKilled.is`
-- **summary**:    A name was removed and the given balance slashed. 
- 
-### IdentitySet(`AccountId32`)
-- **interface**: `api.events.identity.IdentitySet.is`
-- **summary**:    A name was set or reset (which will remove all judgements). 
- 
-### JudgementGiven(`AccountId32`, `u32`)
-- **interface**: `api.events.identity.JudgementGiven.is`
-- **summary**:    A judgement was given by a registrar. 
- 
-### JudgementRequested(`AccountId32`, `u32`)
-- **interface**: `api.events.identity.JudgementRequested.is`
-- **summary**:    A judgement was asked from a registrar. 
- 
-### JudgementUnrequested(`AccountId32`, `u32`)
-- **interface**: `api.events.identity.JudgementUnrequested.is`
-- **summary**:    A judgement request was retracted. 
- 
-### PreapprovalExpired(`AccountId32`)
-- **interface**: `api.events.identity.PreapprovalExpired.is`
-- **summary**:    A queued username passed its expiration without being claimed and was removed. 
- 
-### PrimaryUsernameSet(`AccountId32`, `Bytes`)
-- **interface**: `api.events.identity.PrimaryUsernameSet.is`
-- **summary**:    A username was set as a primary and can be looked up from `who`. 
- 
-### RegistrarAdded(`u32`)
-- **interface**: `api.events.identity.RegistrarAdded.is`
-- **summary**:    A registrar was added. 
- 
-### SubIdentityAdded(`AccountId32`, `AccountId32`, `u128`)
-- **interface**: `api.events.identity.SubIdentityAdded.is`
-- **summary**:    A sub-identity was added to an identity and the deposit paid. 
- 
-### SubIdentityRemoved(`AccountId32`, `AccountId32`, `u128`)
-- **interface**: `api.events.identity.SubIdentityRemoved.is`
-- **summary**:    A sub-identity was removed from an identity and the deposit freed. 
- 
-### SubIdentityRevoked(`AccountId32`, `AccountId32`, `u128`)
-- **interface**: `api.events.identity.SubIdentityRevoked.is`
-- **summary**:    A sub-identity was cleared, and the given deposit repatriated from the  main identity account to the sub-identity account. 
- 
-### UsernameQueued(`AccountId32`, `Bytes`, `u32`)
-- **interface**: `api.events.identity.UsernameQueued.is`
-- **summary**:    A username was queued, but `who` must accept it prior to `expiration`. 
- 
-### UsernameSet(`AccountId32`, `Bytes`)
-- **interface**: `api.events.identity.UsernameSet.is`
-- **summary**:    A username was set for `who`. 
 
 ___
 
@@ -703,23 +647,47 @@ ___
 ___
 
 
+## onDemand
+ 
+### OnDemandOrderPlaced(`u32`, `u128`, `AccountId32`)
+- **interface**: `api.events.onDemand.OnDemandOrderPlaced.is`
+- **summary**:    An order was placed at some spot price amount by orderer ordered_by 
+ 
+### SpotPriceSet(`u128`)
+- **interface**: `api.events.onDemand.SpotPriceSet.is`
+- **summary**:    The value of the spot price has likely changed 
+
+___
+
+
 ## paraInclusion
  
-### CandidateBacked(`PolkadotPrimitivesV6CandidateReceipt`, `Bytes`, `u32`, `u32`)
+### CandidateBacked(`PolkadotPrimitivesV7CandidateReceipt`, `Bytes`, `u32`, `u32`)
 - **interface**: `api.events.paraInclusion.CandidateBacked.is`
 - **summary**:    A candidate was backed. `[candidate, head_data]` 
  
-### CandidateIncluded(`PolkadotPrimitivesV6CandidateReceipt`, `Bytes`, `u32`, `u32`)
+### CandidateIncluded(`PolkadotPrimitivesV7CandidateReceipt`, `Bytes`, `u32`, `u32`)
 - **interface**: `api.events.paraInclusion.CandidateIncluded.is`
 - **summary**:    A candidate was included. `[candidate, head_data]` 
  
-### CandidateTimedOut(`PolkadotPrimitivesV6CandidateReceipt`, `Bytes`, `u32`)
+### CandidateTimedOut(`PolkadotPrimitivesV7CandidateReceipt`, `Bytes`, `u32`)
 - **interface**: `api.events.paraInclusion.CandidateTimedOut.is`
 - **summary**:    A candidate timed out. `[candidate, head_data]` 
  
 ### UpwardMessagesReceived(`u32`, `u32`)
 - **interface**: `api.events.paraInclusion.UpwardMessagesReceived.is`
 - **summary**:    Some upward messages have been received and will be processed. 
+
+___
+
+
+## parameters
+ 
+### Updated(`PolkadotRuntimeRuntimeParametersKey`, `Option<PolkadotRuntimeRuntimeParametersValue>`, `Option<PolkadotRuntimeRuntimeParametersValue>`)
+- **interface**: `api.events.parameters.Updated.is`
+- **summary**:    A Parameter was set. 
+
+   Is also emitted when the value was not changed. 
 
 ___
 
@@ -926,6 +894,18 @@ ___
 - **interface**: `api.events.scheduler.PermanentlyOverweight.is`
 - **summary**:    The given task can never be executed since it is overweight. 
  
+### RetryCancelled(`(u32,u32)`, `Option<[u8;32]>`)
+- **interface**: `api.events.scheduler.RetryCancelled.is`
+- **summary**:    Cancel a retry configuration for some task. 
+ 
+### RetryFailed(`(u32,u32)`, `Option<[u8;32]>`)
+- **interface**: `api.events.scheduler.RetryFailed.is`
+- **summary**:    The given task was unable to be retried since the agenda is full at that block or there  was not enough weight to reschedule it. 
+ 
+### RetrySet(`(u32,u32)`, `Option<[u8;32]>`, `u32`, `u8`)
+- **interface**: `api.events.scheduler.RetrySet.is`
+- **summary**:    Set a retry configuration for some task. 
+ 
 ### Scheduled(`u32`, `u32`)
 - **interface**: `api.events.scheduler.Scheduled.is`
 - **summary**:    Scheduled some task. 
@@ -1126,14 +1106,6 @@ ___
 ### PaymentFailed(`u32`, `u64`)
 - **interface**: `api.events.treasury.PaymentFailed.is`
 - **summary**:    A payment failed and can be retried. 
- 
-### Proposed(`u32`)
-- **interface**: `api.events.treasury.Proposed.is`
-- **summary**:    New proposal. 
- 
-### Rejected(`u32`, `u128`)
-- **interface**: `api.events.treasury.Rejected.is`
-- **summary**:    A proposal was rejected; funds were slashed. 
  
 ### Rollover(`u128`)
 - **interface**: `api.events.treasury.Rollover.is`

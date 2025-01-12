@@ -32,6 +32,8 @@ The following sections contain Storage methods are part of the default Polkadot 
 
 - **[convictionVoting](#convictionvoting)**
 
+- **[coretimeAssignmentProvider](#coretimeassignmentprovider)**
+
 - **[crowdloan](#crowdloan)**
 
 - **[dmp](#dmp)**
@@ -45,8 +47,6 @@ The following sections contain Storage methods are part of the default Polkadot 
 - **[historical](#historical)**
 
 - **[hrmp](#hrmp)**
-
-- **[identity](#identity)**
 
 - **[indices](#indices)**
 
@@ -62,9 +62,13 @@ The following sections contain Storage methods are part of the default Polkadot 
 
 - **[offences](#offences)**
 
+- **[onDemand](#ondemand)**
+
 - **[paraInclusion](#parainclusion)**
 
 - **[paraInherent](#parainherent)**
+
+- **[parameters](#parameters)**
 
 - **[paras](#paras)**
 
@@ -279,11 +283,11 @@ ___
 
    But this comes with tradeoffs, storing account balances in the system pallet stores  `frame_system` data alongside the account data contrary to storing account balances in the  `Balances` pallet, which uses a `StorageMap` to store balances data only.  NOTE: This is only used in the case that this pallet is used to store balances. 
  
-### freezes(`AccountId32`): `Vec<PalletBalancesIdAmountRuntimeFreezeReason>`
+### freezes(`AccountId32`): `Vec<FrameSupportTokensMiscIdAmountRuntimeFreezeReason>`
 - **interface**: `api.query.balances.freezes`
 - **summary**:    Freeze locks on account balances. 
  
-### holds(`AccountId32`): `Vec<PalletBalancesIdAmountRuntimeHoldReason>`
+### holds(`AccountId32`): `Vec<FrameSupportTokensMiscIdAmountRuntimeHoldReason>`
 - **interface**: `api.query.balances.holds`
 - **summary**:    Holds on account balances. 
  
@@ -294,10 +298,14 @@ ___
 ### locks(`AccountId32`): `Vec<PalletBalancesBalanceLock>`
 - **interface**: `api.query.balances.locks`
 - **summary**:    Any liquidity locks on some account balances.  NOTE: Should only be accessed when setting, changing and freeing a lock. 
+
+   Use of locks is deprecated in favour of freezes. See `https://github.com/paritytech/substrate/pull/12951/` 
  
 ### reserves(`AccountId32`): `Vec<PalletBalancesReserveData>`
 - **interface**: `api.query.balances.reserves`
 - **summary**:    Named reserves on some account balances. 
+
+   Use of reserves is deprecated in favour of holds. See `https://github.com/paritytech/substrate/pull/12951/` 
  
 ### totalIssuance(): `u128`
 - **interface**: `api.query.balances.totalIssuance`
@@ -449,6 +457,23 @@ ___
 ### votingFor(`AccountId32, u16`): `PalletConvictionVotingVoteVoting`
 - **interface**: `api.query.convictionVoting.votingFor`
 - **summary**:    All voting for a particular voter in a particular voting class. We store the balance for the  number of votes that we have recorded. 
+
+___
+
+
+## coretimeAssignmentProvider
+ 
+### coreDescriptors(`u32`): `PolkadotRuntimeParachainsAssignerCoretimeCoreDescriptor`
+- **interface**: `api.query.coretimeAssignmentProvider.coreDescriptors`
+- **summary**:    Assignments which are currently active. 
+
+   They will be picked from `PendingAssignments` once we reach the scheduled block number in  `PendingAssignments`. 
+ 
+### coreSchedules(`(u32,u32)`): `Option<PolkadotRuntimeParachainsAssignerCoretimeSchedule>`
+- **interface**: `api.query.coretimeAssignmentProvider.coreSchedules`
+- **summary**:    Scheduled assignment sets. 
+
+   Assignments as of the given block number. They will go into state once the block number is  reached (and replace whatever was in there before). 
 
 ___
 
@@ -731,51 +756,6 @@ ___
 ___
 
 
-## identity
- 
-### accountOfUsername(`Bytes`): `Option<AccountId32>`
-- **interface**: `api.query.identity.accountOfUsername`
-- **summary**:    Reverse lookup from `username` to the `AccountId` that has registered it. The value should  be a key in the `IdentityOf` map, but it may not if the user has cleared their identity. 
-
-   Multiple usernames may map to the same `AccountId`, but `IdentityOf` will only map to one  primary username. 
- 
-### identityOf(`AccountId32`): `Option<(PalletIdentityRegistration,Option<Bytes>)>`
-- **interface**: `api.query.identity.identityOf`
-- **summary**:    Information that is pertinent to identify the entity behind an account. First item is the  registration, second is the account's primary username. 
-
-   TWOX-NOTE: OK ― `AccountId` is a secure hash. 
- 
-### pendingUsernames(`Bytes`): `Option<(AccountId32,u32)>`
-- **interface**: `api.query.identity.pendingUsernames`
-- **summary**:    Usernames that an authority has granted, but that the account controller has not confirmed  that they want it. Used primarily in cases where the `AccountId` cannot provide a signature  because they are a pure proxy, multisig, etc. In order to confirm it, they should call  [`Call::accept_username`]. 
-
-   First tuple item is the account and second is the acceptance deadline. 
- 
-### registrars(): `Vec<Option<PalletIdentityRegistrarInfo>>`
-- **interface**: `api.query.identity.registrars`
-- **summary**:    The set of registrars. Not expected to get very big as can only be added through a  special origin (likely a council motion). 
-
-   The index into this can be cast to `RegistrarIndex` to get a valid value. 
- 
-### subsOf(`AccountId32`): `(u128,Vec<AccountId32>)`
-- **interface**: `api.query.identity.subsOf`
-- **summary**:    Alternative "sub" identities of this account. 
-
-   The first item is the deposit, the second is a vector of the accounts. 
-
-   TWOX-NOTE: OK ― `AccountId` is a secure hash. 
- 
-### superOf(`AccountId32`): `Option<(AccountId32,Data)>`
-- **interface**: `api.query.identity.superOf`
-- **summary**:    The super-identity of an alternative "sub" identity together with its name, within that  context. If the account is not some other account's sub-identity, then just `None`. 
- 
-### usernameAuthorities(`AccountId32`): `Option<PalletIdentityAuthorityProperties>`
-- **interface**: `api.query.identity.usernameAuthorities`
-- **summary**:    A map of the accounts who are authorized to grant usernames. 
-
-___
-
-
 ## indices
  
 ### accounts(`u32`): `Option<(AccountId32,u128,bool)>`
@@ -931,11 +911,11 @@ ___
 - **interface**: `api.query.nominationPools.reversePoolIdLookup`
 - **summary**:    A reverse lookup from the pool's account id to its id. 
 
-   This is only used for slashing. In all other instances, the pool id is used, and the  accounts are deterministically derived from it. 
+   This is only used for slashing and on automatic withdraw update. In all other instances, the  pool id is used, and the accounts are deterministically derived from it. 
  
 ### rewardPools(`u32`): `Option<PalletNominationPoolsRewardPool>`
 - **interface**: `api.query.nominationPools.rewardPools`
-- **summary**:    Reward pools. This is where there rewards for each pool accumulate. When a members payout is  claimed, the balance comes out fo the reward pool. Keyed by the bonded pools account. 
+- **summary**:    Reward pools. This is where there rewards for each pool accumulate. When a members payout is  claimed, the balance comes out of the reward pool. Keyed by the bonded pools account. 
  
 ### subPoolsStorage(`u32`): `Option<PalletNominationPoolsSubPools>`
 - **interface**: `api.query.nominationPools.subPoolsStorage`
@@ -963,19 +943,36 @@ ___
 ___
 
 
+## onDemand
+ 
+### affinityEntries(`u32`): `BinaryHeapEnqueuedOrder`
+- **interface**: `api.query.onDemand.affinityEntries`
+- **summary**:    Queue entries that are currently bound to a particular core due to core affinity. 
+ 
+### freeEntries(): `BinaryHeapEnqueuedOrder`
+- **interface**: `api.query.onDemand.freeEntries`
+- **summary**:    Priority queue for all orders which don't yet (or not any more) have any core affinity. 
+ 
+### paraIdAffinity(`u32`): `Option<PolkadotRuntimeParachainsAssignerOnDemandTypesCoreAffinityCount>`
+- **interface**: `api.query.onDemand.paraIdAffinity`
+- **summary**:    Maps a `ParaId` to `CoreIndex` and keeps track of how many assignments the scheduler has in  it's lookahead. Keeping track of this affinity prevents parallel execution of the same  `ParaId` on two or more `CoreIndex`es. 
+ 
+### queueStatus(): `PolkadotRuntimeParachainsAssignerOnDemandTypesQueueStatusType`
+- **interface**: `api.query.onDemand.queueStatus`
+- **summary**:    Overall status of queue (both free + affinity entries) 
+ 
+### revenue(): `Vec<u128>`
+- **interface**: `api.query.onDemand.revenue`
+- **summary**:    Keeps track of accumulated revenue from on demand order sales. 
+
+___
+
+
 ## paraInclusion
  
-### availabilityBitfields(`u32`): `Option<PolkadotRuntimeParachainsInclusionAvailabilityBitfieldRecord>`
-- **interface**: `api.query.paraInclusion.availabilityBitfields`
-- **summary**:    The latest bitfield for each validator, referred to by their index in the validator set. 
- 
-### pendingAvailability(`u32`): `Option<PolkadotRuntimeParachainsInclusionCandidatePendingAvailability>`
-- **interface**: `api.query.paraInclusion.pendingAvailability`
-- **summary**:    Candidates pending availability by `ParaId`. 
- 
-### pendingAvailabilityCommitments(`u32`): `Option<PolkadotPrimitivesV6CandidateCommitments>`
-- **interface**: `api.query.paraInclusion.pendingAvailabilityCommitments`
-- **summary**:    The commitments of candidates pending availability, by `ParaId`. 
+### v1(`u32`): `Option<Vec<PolkadotRuntimeParachainsInclusionCandidatePendingAvailability>>`
+- **interface**: `api.query.paraInclusion.v1`
+- **summary**:    Candidates pending availability by `ParaId`. They form a chain starting from the latest  included head of the para.  Use a different prefix post-migration to v1, since the v0 `PendingAvailability` storage  would otherwise have the exact same prefix which could cause undefined behaviour when doing  the migration. 
 
 ___
 
@@ -990,9 +987,18 @@ ___
 
    If this is `None` at the end of the block, we panic and render the block invalid. 
  
-### onChainVotes(): `Option<PolkadotPrimitivesV6ScrapedOnChainVotes>`
+### onChainVotes(): `Option<PolkadotPrimitivesV7ScrapedOnChainVotes>`
 - **interface**: `api.query.paraInherent.onChainVotes`
 - **summary**:    Scraped on chain data for extracting resolved disputes as well as backing votes. 
+
+___
+
+
+## parameters
+ 
+### parameters(`PolkadotRuntimeRuntimeParametersKey`): `Option<PolkadotRuntimeRuntimeParametersValue>`
+- **interface**: `api.query.parameters.parameters`
+- **summary**:    Stored parameters. 
 
 ___
 
@@ -1027,7 +1033,17 @@ ___
  
 ### futureCodeUpgrades(`u32`): `Option<u32>`
 - **interface**: `api.query.paras.futureCodeUpgrades`
-- **summary**:    The block number at which the planned code change is expected for a para.  The change will be applied after the first parablock for this ID included which executes  in the context of a relay chain block with a number >= `expected_at`. 
+- **summary**:    The block number at which the planned code change is expected for a parachain. 
+
+   The change will be applied after the first parablock for this ID included which executes  in the context of a relay chain block with a number >= `expected_at`. 
+ 
+### futureCodeUpgradesAt(): `Vec<(u32,u32)>`
+- **interface**: `api.query.paras.futureCodeUpgradesAt`
+- **summary**:    The list of upcoming future code upgrades. 
+
+   Each item is a pair of the parachain and the expected block at which the upgrade should be  applied. The upgrade will be applied at the given relay chain block. In contrast to  [`FutureCodeUpgrades`] this code upgrade will be applied regardless the parachain making any  progress or not. 
+
+   Ordered ascending by block number. 
  
 ### heads(`u32`): `Option<Bytes>`
 - **interface**: `api.query.paras.heads`
@@ -1081,7 +1097,9 @@ ___
  
 ### upcomingUpgrades(): `Vec<(u32,u32)>`
 - **interface**: `api.query.paras.upcomingUpgrades`
-- **summary**:    The list of upcoming code upgrades. Each item is a pair of which para performs a code  upgrade and at which relay-chain block it is expected at. 
+- **summary**:    The list of upcoming code upgrades. 
+
+   Each item is a pair of which para performs a code upgrade and at which relay-chain block it  is expected at. 
 
    Ordered ascending by block number. 
  
@@ -1091,7 +1109,7 @@ ___
 
    Ordered ascending by block number. 
  
-### upgradeGoAheadSignal(`u32`): `Option<PolkadotPrimitivesV6UpgradeGoAhead>`
+### upgradeGoAheadSignal(`u32`): `Option<PolkadotPrimitivesV7UpgradeGoAhead>`
 - **interface**: `api.query.paras.upgradeGoAheadSignal`
 - **summary**:    This is used by the relay-chain to communicate to a parachain a go-ahead with in the upgrade  procedure. 
 
@@ -1099,7 +1117,7 @@ ___
 
    NOTE that this field is used by parachains via merkle storage proofs, therefore changing  the format will require migration of parachains. 
  
-### upgradeRestrictionSignal(`u32`): `Option<PolkadotPrimitivesV6UpgradeRestriction>`
+### upgradeRestrictionSignal(`u32`): `Option<PolkadotPrimitivesV7UpgradeRestriction>`
 - **interface**: `api.query.paras.upgradeRestrictionSignal`
 - **summary**:    This is used by the relay-chain to communicate that there are restrictions for performing  an upgrade for this parachain. 
 
@@ -1114,7 +1132,7 @@ ___
  
 ### availabilityCores(): `Vec<PolkadotRuntimeParachainsSchedulerPalletCoreOccupied>`
 - **interface**: `api.query.paraScheduler.availabilityCores`
-- **summary**:    One entry for each availability core. Entries are `None` if the core is not currently  occupied. Can be temporarily `Some` if scheduled but not occupied.  The i'th parachain belongs to the i'th core, with the remaining cores all being  parathread-multiplexers. 
+- **summary**:    One entry for each availability core. The i'th parachain belongs to the i'th core, with the  remaining cores all being on demand parachain multiplexers. 
 
    Bounded by the maximum of either of these two values: 
 
@@ -1124,7 +1142,7 @@ ___
  
 ### claimQueue(): `BTreeMap<u32, Vec<PolkadotRuntimeParachainsSchedulerPalletParasEntry>>`
 - **interface**: `api.query.paraScheduler.claimQueue`
-- **summary**:    One entry for each availability core. The `VecDeque` represents the assignments to be  scheduled on that core. `None` is used to signal to not schedule the next para of the core  as there is one currently being scheduled. Not using `None` here would overwrite the  `CoreState` in the runtime API. The value contained here will not be valid after the end of  a block. Runtime APIs should be used to determine scheduled cores/ for the upcoming block. 
+- **summary**:    One entry for each availability core. The `VecDeque` represents the assignments to be  scheduled on that core. The value contained here will not be valid after the end of  a block. Runtime APIs should be used to determine scheduled cores for the upcoming block. 
  
 ### sessionStartBlock(): `u32`
 - **interface**: `api.query.paraScheduler.sessionStartBlock`
@@ -1147,7 +1165,7 @@ ___
 - **interface**: `api.query.parasDisputes.backersOnDisputes`
 - **summary**:    Backing votes stored for each dispute.  This storage is used for slashing. 
  
-### disputes(`u32, H256`): `Option<PolkadotPrimitivesV6DisputeState>`
+### disputes(`u32, H256`): `Option<PolkadotPrimitivesV7DisputeState>`
 - **interface**: `api.query.parasDisputes.disputes`
 - **summary**:    All ongoing or concluded disputes for the last several sessions. 
  
@@ -1172,7 +1190,7 @@ ___
 - **interface**: `api.query.paraSessionInfo.accountKeys`
 - **summary**:    The validator account keys of the validators actively participating in parachain consensus. 
  
-### assignmentKeysUnsafe(): `Vec<PolkadotPrimitivesV6AssignmentAppPublic>`
+### assignmentKeysUnsafe(): `Vec<PolkadotPrimitivesV7AssignmentAppPublic>`
 - **interface**: `api.query.paraSessionInfo.assignmentKeysUnsafe`
 - **summary**:    Assignment keys for the current session.  Note that this API is private due to it being prone to 'off-by-one' at session boundaries.  When in doubt, use `Sessions` API instead. 
  
@@ -1180,11 +1198,11 @@ ___
 - **interface**: `api.query.paraSessionInfo.earliestStoredSession`
 - **summary**:    The earliest session for which previous session info is stored. 
  
-### sessionExecutorParams(`u32`): `Option<PolkadotPrimitivesV6ExecutorParams>`
+### sessionExecutorParams(`u32`): `Option<PolkadotPrimitivesV7ExecutorParams>`
 - **interface**: `api.query.paraSessionInfo.sessionExecutorParams`
 - **summary**:    Executor parameter set for a given session index 
  
-### sessions(`u32`): `Option<PolkadotPrimitivesV6SessionInfo>`
+### sessions(`u32`): `Option<PolkadotPrimitivesV7SessionInfo>`
 - **interface**: `api.query.paraSessionInfo.sessions`
 - **summary**:    Session information in a rolling window.  Should have an entry in range `EarliestStoredSession..=CurrentSessionIndex`.  Does not have any entries before the session index in the first session change notification. 
 
@@ -1197,7 +1215,7 @@ ___
 - **interface**: `api.query.parasShared.activeValidatorIndices`
 - **summary**:    All the validators actively participating in parachain consensus.  Indices are into the broader validator set. 
  
-### activeValidatorKeys(): `Vec<PolkadotPrimitivesV6ValidatorAppPublic>`
+### activeValidatorKeys(): `Vec<PolkadotPrimitivesV7ValidatorAppPublic>`
 - **interface**: `api.query.parasShared.activeValidatorKeys`
 - **summary**:    The parachain attestation keys of the validators actively participating in parachain  consensus. This should be the same length as `ActiveValidatorIndices`. 
  
@@ -1214,7 +1232,7 @@ ___
 
 ## parasSlashing
  
-### unappliedSlashes(`u32, H256`): `Option<PolkadotPrimitivesV6SlashingPendingSlashes>`
+### unappliedSlashes(`u32, H256`): `Option<PolkadotPrimitivesV7SlashingPendingSlashes>`
 - **interface**: `api.query.parasSlashing.unappliedSlashes`
 - **summary**:    Validators pending dispute slashes. 
  
@@ -1316,6 +1334,10 @@ ___
 - **summary**:    Lookup from a name to the block number and index of the task. 
 
    For v3 -> v4 the previously unbounded identities are Blake2-256 hashed to form the v4  identities. 
+ 
+### retries(`(u32,u32)`): `Option<PalletSchedulerRetryConfig>`
+- **interface**: `api.query.scheduler.retries`
+- **summary**:    Retry configurations for items to be executed, indexed by task address. 
 
 ___
 
@@ -1418,6 +1440,10 @@ ___
 - **interface**: `api.query.staking.counterForValidators`
 - **summary**:    Counter for the related counted storage map 
  
+### counterForVirtualStakers(): `u32`
+- **interface**: `api.query.staking.counterForVirtualStakers`
+- **summary**:    Counter for the related counted storage map 
+ 
 ### currentEra(): `Option<u32>`
 - **interface**: `api.query.staking.currentEra`
 - **summary**:    The current era index. 
@@ -1429,6 +1455,12 @@ ___
 - **summary**:    The last planned session scheduled by the session pallet. 
 
    This is basically in sync with the call to [`pallet_session::SessionManager::new_session`]. 
+ 
+### disabledValidators(): `Vec<u32>`
+- **interface**: `api.query.staking.disabledValidators`
+- **summary**:    Indices of validators that have offended in the active era. The offenders are disabled for a  whole era. For this reason they are kept here - only staking pallet knows about eras. The  implementor of [`DisablingStrategy`] defines if a validator should be disabled which  implicitly means that the implementor also controls the max number of disabled validators. 
+
+   The vec is always kept sorted so that we can find whether a given validator has previously  offended using binary search. 
  
 ### erasRewardPoints(`u32`): `PalletStakingEraRewardPoints`
 - **interface**: `api.query.staking.erasRewardPoints`
@@ -1520,6 +1552,10 @@ ___
 
    When this value is not set, no limits are enforced. 
  
+### maxStakedRewards(): `Option<Percent>`
+- **interface**: `api.query.staking.maxStakedRewards`
+- **summary**:    Maximum staked rewards, i.e. the percentage of the era inflation that  is used for stake rewards.  See [Era payout](./index.html#era-payout). 
+ 
 ### maxValidatorsCount(): `Option<u32>`
 - **interface**: `api.query.staking.maxValidatorsCount`
 - **summary**:    The maximum validator count before we stop allowing new validators to join. 
@@ -1564,12 +1600,6 @@ ___
 - **interface**: `api.query.staking.nominatorSlashInEra`
 - **summary**:    All slashing events on nominators, mapped by era to the highest slash value of the era. 
  
-### offendingValidators(): `Vec<(u32,bool)>`
-- **interface**: `api.query.staking.offendingValidators`
-- **summary**:    Indices of validators that have offended in the active era and whether they are currently  disabled. 
-
-   This value should be a superset of disabled validators since not all offences lead to the  validator being disabled (if there was no slash). This is needed to track the percentage of  validators that have offended in the current era, ensuring a new era is forced if  `OffendingValidatorsThreshold` is reached. The vec is always kept sorted so that we can find  whether a given validator has previously offended using binary search. It gets cleared when  the era ends. 
- 
 ### payee(`AccountId32`): `Option<PalletStakingRewardDestination>`
 - **interface**: `api.query.staking.payee`
 - **summary**:    Where the reward payment should be made. Keyed by stash. 
@@ -1607,6 +1637,12 @@ ___
 ### validatorSlashInEra(`u32, AccountId32`): `Option<(Perbill,u128)>`
 - **interface**: `api.query.staking.validatorSlashInEra`
 - **summary**:    All slashing events on validators, mapped by era to the highest slash proportion  and slash value of the era. 
+ 
+### virtualStakers(`AccountId32`): `Option<Null>`
+- **interface**: `api.query.staking.virtualStakers`
+- **summary**:    Stakers whose funds are managed by other pallets. 
+
+   This pallet does not apply any locks on them, therefore they are only virtually bonded. They  are expected to be keyless accounts and hence should not be allowed to mutate their ledger  directly via this pallet. Instead, these accounts are managed by other pallets and accessed  via low level apis. We keep track of them to do minimal integrity checks. 
 
 ___
 
@@ -1722,6 +1758,10 @@ ___
 ### extrinsicData(`u32`): `Bytes`
 - **interface**: `api.query.system.extrinsicData`
 - **summary**:    Extrinsics data for the current block (maps an extrinsic's index to its data). 
+ 
+### inherentsApplied(): `bool`
+- **interface**: `api.query.system.inherentsApplied`
+- **summary**:    Whether all inherents have been applied. 
  
 ### lastRuntimeUpgrade(): `Option<FrameSystemLastRuntimeUpgradeInfo>`
 - **interface**: `api.query.system.lastRuntimeUpgrade`
@@ -1869,6 +1909,12 @@ ___
 - **interface**: `api.query.xcmPallet.queryCounter`
 - **summary**:    The latest available query index. 
  
+### recordedXcm(): `Option<StagingXcmV4Xcm>`
+- **interface**: `api.query.xcmPallet.recordedXcm`
+- **summary**:    If [`ShouldRecordXcm`] is set to true, then the last XCM program executed locally  will be stored here.  Runtime APIs can fetch the XCM that was executed by accessing this value. 
+
+   Only relevant if this pallet is being used as the [`xcm_executor::traits::RecordXcm`]  implementation in the XCM executor configuration. 
+ 
 ### remoteLockedFungibles(`u32, AccountId32, XcmVersionedAssetId`): `Option<PalletXcmRemoteLockedFungibleRecord>`
 - **interface**: `api.query.xcmPallet.remoteLockedFungibles`
 - **summary**:    Fungible assets which we know are locked on a remote chain. 
@@ -1876,6 +1922,12 @@ ___
 ### safeXcmVersion(): `Option<u32>`
 - **interface**: `api.query.xcmPallet.safeXcmVersion`
 - **summary**:    Default version to encode XCM when latest version of destination is unknown. If `None`,  then the destinations whose XCM version is unknown are considered unreachable. 
+ 
+### shouldRecordXcm(): `bool`
+- **interface**: `api.query.xcmPallet.shouldRecordXcm`
+- **summary**:    Whether or not incoming XCMs (both executed locally and received) should be recorded.  Only one XCM program will be recorded at a time.  This is meant to be used in runtime APIs, and it's advised it stays false  for all other use cases, so as to not degrade regular performance. 
+
+   Only relevant if this pallet is being used as the [`xcm_executor::traits::RecordXcm`]  implementation in the XCM executor configuration. 
  
 ### supportedVersion(`u32, XcmVersionedLocation`): `Option<u32>`
 - **interface**: `api.query.xcmPallet.supportedVersion`

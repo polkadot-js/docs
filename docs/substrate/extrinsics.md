@@ -94,6 +94,8 @@ The following sections contain Extrinsics methods are part of the default Substr
 
 - **[remark](#remark)**
 
+- **[revive](#revive)**
+
 - **[rootTesting](#roottesting)**
 
 - **[safeMode](#safemode)**
@@ -285,6 +287,18 @@ ___
 
   - `P` complexity of dispatching `proposal`
  
+### kill(proposal_hash: `H256`)
+- **interface**: `api.tx.allianceMotion.kill`
+- **summary**:    Disapprove the proposal and burn the cost held for storing this proposal. 
+
+   Parameters: 
+
+  - `origin`: must be the `KillOrigin`.
+
+  - `proposal_hash`: The hash of the proposal that should be killed.
+
+   Emits `Killed` and `ProposalCostBurned` if any cost was held for a given proposal. 
+ 
 ### propose(threshold: `Compact<u32>`, proposal: `Call`, length_bound: `Compact<u32>`)
 - **interface**: `api.tx.allianceMotion.propose`
 - **summary**:    Add a new proposal to either be voted on or executed directly. 
@@ -306,6 +320,20 @@ ___
   - `P1` is proposal execution complexity (`threshold < 2`)
 
   - `P2` is proposals-count (code-bounded) (`threshold >= 2`)
+ 
+### releaseProposalCost(proposal_hash: `H256`)
+- **interface**: `api.tx.allianceMotion.releaseProposalCost`
+- **summary**:    Release the cost held for storing a proposal once the given proposal is completed. 
+
+   If there is no associated cost for the given proposal, this call will have no effect. 
+
+   Parameters: 
+
+  - `origin`: must be `Signed` or `Root`.
+
+  - `proposal_hash`: The hash of the proposal.
+
+   Emits `ProposalCostReleased` if any cost held for a given proposal. 
  
 ### setMembers(new_members: `Vec<AccountId32>`, prime: `Option<AccountId32>`, old_count: `u32`)
 - **interface**: `api.tx.allianceMotion.setMembers`
@@ -356,7 +384,7 @@ ___
 
    NOTE: when encountering an incorrect exchange rate and non-withdrawable pool liquidity,  batch an atomic call with [`Pallet::add_liquidity`] and  [`Pallet::swap_exact_tokens_for_tokens`] or [`Pallet::swap_tokens_for_exact_tokens`]  calls to render the liquidity withdrawable and rectify the exchange rate. 
 
-   Once liquidity is added, someone may successfully call  [`Pallet::swap_exact_tokens_for_tokens`] successfully. 
+   Once liquidity is added, someone may successfully call  [`Pallet::swap_exact_tokens_for_tokens`]. 
  
 ### createPool(asset1: `FrameSupportTokensFungibleUnionOfNativeOrWithId`, asset2: `FrameSupportTokensFungibleUnionOfNativeOrWithId`)
 - **interface**: `api.tx.assetConversion.createPool`
@@ -408,7 +436,7 @@ ___
 
 ## assetRate
  
-### create(asset_kind: `u32`, rate: `u128`)
+### create(asset_kind: `FrameSupportTokensFungibleUnionOfNativeOrWithId`, rate: `u128`)
 - **interface**: `api.tx.assetRate.create`
 - **summary**:    Initialize a conversion rate to native balance for the given asset. 
 
@@ -416,7 +444,7 @@ ___
 
   - O(1)
  
-### remove(asset_kind: `u32`)
+### remove(asset_kind: `FrameSupportTokensFungibleUnionOfNativeOrWithId`)
 - **interface**: `api.tx.assetRate.remove`
 - **summary**:    Remove an existing conversion rate to native balance for the given asset. 
 
@@ -424,7 +452,7 @@ ___
 
   - O(1)
  
-### update(asset_kind: `u32`, rate: `u128`)
+### update(asset_kind: `FrameSupportTokensFungibleUnionOfNativeOrWithId`, rate: `u128`)
 - **interface**: `api.tx.assetRate.update`
 - **summary**:    Update the conversion rate to native balance for the given asset. 
 
@@ -816,8 +844,6 @@ ___
    The origin must conform to `ForceOrigin` or must be `Signed` by the asset's `owner`. 
 
    - `id`: The identifier of the asset to be destroyed. This must identify an existing  asset. 
-
-   The asset class must be frozen before calling `start_destroy`. 
  
 ### thaw(id: `Compact<u32>`, who: `MultiAddress`)
 - **interface**: `api.tx.assets.thaw`
@@ -886,6 +912,20 @@ ___
    Emits `Transferred` with the actual amount transferred. If this takes the source balance  to below the minimum for the asset, then the amount transferred is increased to take it  to zero. 
 
    Weight: `O(1)`  Modes: Pre-existence of `target`; Post-existence of sender; Account pre-existence of  `target`. 
+ 
+### transferAll(id: `Compact<u32>`, dest: `MultiAddress`, keep_alive: `bool`)
+- **interface**: `api.tx.assets.transferAll`
+- **summary**:    Transfer the entire transferable balance from the caller asset account. 
+
+   NOTE: This function only attempts to transfer _transferable_ balances. This means that  any held, frozen, or minimum balance (when `keep_alive` is `true`), will not be  transferred by this function. To ensure that this function results in a killed account,  you might need to prepare the account by removing any reference counters, storage  deposits, etc... 
+
+   The dispatch origin of this call must be Signed. 
+
+   - `id`: The identifier of the asset for the account holding a deposit. 
+
+  - `dest`: The recipient of the transfer.
+
+  - `keep_alive`: A boolean to determine if the `transfer_all` operation should send all of the funds the asset account has, causing the sender asset account to be killed  (false), or transfer everything except at least the minimum balance, which will  guarantee to keep the sender asset account alive (true). 
  
 ### transferApproved(id: `Compact<u32>`, owner: `MultiAddress`, destination: `MultiAddress`, amount: `Compact<u128>`)
 - **interface**: `api.tx.assets.transferApproved`
@@ -1044,11 +1084,11 @@ ___
 
    This extrinsic must be called unsigned and it is expected that only  block authors will call it (validated in `ValidateUnsigned`), as such  if the block author is defined it will be defined as the equivocation  reporter. 
  
-### reportForkVoting(equivocation_proof: `SpConsensusBeefyForkVotingProof`, key_owner_proof: `SpSessionMembershipProof`)
+### reportForkVoting(equivocation_proof: `SpConsensusBeefyForkVotingProofAncestryProof`, key_owner_proof: `SpSessionMembershipProof`)
 - **interface**: `api.tx.beefy.reportForkVoting`
 - **summary**:    Report fork voting equivocation. This method will verify the equivocation proof  and validate the given key ownership proof against the extracted offender.  If both are valid, the offence will be reported. 
  
-### reportForkVotingUnsigned(equivocation_proof: `SpConsensusBeefyForkVotingProof`, key_owner_proof: `SpSessionMembershipProof`)
+### reportForkVotingUnsigned(equivocation_proof: `SpConsensusBeefyForkVotingProofAncestryProof`, key_owner_proof: `SpSessionMembershipProof`)
 - **interface**: `api.tx.beefy.reportForkVotingUnsigned`
 - **summary**:    Report fork voting equivocation. This method will verify the equivocation proof  and validate the given key ownership proof against the extracted offender.  If both are valid, the offence will be reported. 
 
@@ -1090,6 +1130,22 @@ ___
 - **summary**:    Approve a bounty proposal. At a later time, the bounty will be funded and become active  and the original deposit will be returned. 
 
    May only be called from `T::SpendOrigin`. 
+
+   #### Complexity 
+
+  - O(1).
+ 
+### approveBountyWithCurator(bounty_id: `Compact<u32>`, curator: `MultiAddress`, fee: `Compact<u128>`)
+- **interface**: `api.tx.bounties.approveBountyWithCurator`
+- **summary**:    Approve bountry and propose a curator simultaneously.  This call is a shortcut to calling `approve_bounty` and `propose_curator` separately. 
+
+   May only be called from `T::SpendOrigin`. 
+
+   - `bounty_id`: Bounty ID to approve. 
+
+  - `curator`: The curator account whom will manage this bounty.
+
+  - `fee`: The curator fee.
 
    #### Complexity 
 
@@ -1224,6 +1280,18 @@ ___
 
   - `config`: The configuration for this pallet.
  
+### disableAutoRenew(core: `u16`, task: `u32`)
+- **interface**: `api.tx.broker.disableAutoRenew`
+- **summary**:    Extrinsic for disabling auto renewal. 
+
+   Callable by the sovereign account of the task on the specified core. 
+
+   - `origin`: Must be the sovereign account of the task. 
+
+  - `core`: The core for which we want to disable auto renewal.
+
+  - `task`: The task for which we want to disable auto renewal.
+ 
 ### dropContribution(region_id: `PalletBrokerRegionId`)
 - **interface**: `api.tx.broker.dropContribution`
 - **summary**:    Drop an expired Instantaneous Pool Contribution record from the chain. 
@@ -1257,6 +1325,20 @@ ___
   - `core`: The core to which the expired renewal refers.
 
   - `when`: The timeslice to which the expired renewal refers. This must have passed.
+ 
+### enableAutoRenew(core: `u16`, task: `u32`, workload_end_hint: `Option<u32>`)
+- **interface**: `api.tx.broker.enableAutoRenew`
+- **summary**:    Extrinsic for enabling auto renewal. 
+
+   Callable by the sovereign account of the task on the specified core. This account  will be charged at the start of every bulk period for renewing core time. 
+
+   - `origin`: Must be the sovereign account of the task 
+
+  - `core`: The core to which the task to be renewed is currently assigned.
+
+  - `task`: The task for which we want to enable auto renewal.
+
+  - `workload_end_hint`: should be used when enabling auto-renewal for a core that is not expiring in the upcoming bulk period (e.g., due to holding a lease) since it would be  inefficient to look up when the core expires to schedule the next renewal. 
  
 ### interlace(region_id: `PalletBrokerRegionId`, pivot: `PalletBrokerCoreMask`)
 - **interface**: `api.tx.broker.interlace`
@@ -1914,6 +1996,18 @@ ___
 
   - `P` complexity of dispatching `proposal`
  
+### kill(proposal_hash: `H256`)
+- **interface**: `api.tx.council.kill`
+- **summary**:    Disapprove the proposal and burn the cost held for storing this proposal. 
+
+   Parameters: 
+
+  - `origin`: must be the `KillOrigin`.
+
+  - `proposal_hash`: The hash of the proposal that should be killed.
+
+   Emits `Killed` and `ProposalCostBurned` if any cost was held for a given proposal. 
+ 
 ### propose(threshold: `Compact<u32>`, proposal: `Call`, length_bound: `Compact<u32>`)
 - **interface**: `api.tx.council.propose`
 - **summary**:    Add a new proposal to either be voted on or executed directly. 
@@ -1935,6 +2029,20 @@ ___
   - `P1` is proposal execution complexity (`threshold < 2`)
 
   - `P2` is proposals-count (code-bounded) (`threshold >= 2`)
+ 
+### releaseProposalCost(proposal_hash: `H256`)
+- **interface**: `api.tx.council.releaseProposalCost`
+- **summary**:    Release the cost held for storing a proposal once the given proposal is completed. 
+
+   If there is no associated cost for the given proposal, this call will have no effect. 
+
+   Parameters: 
+
+  - `origin`: must be `Signed` or `Root`.
+
+  - `proposal_hash`: The hash of the proposal.
+
+   Emits `ProposalCostReleased` if any cost held for a given proposal. 
  
 ### setMembers(new_members: `Vec<AccountId32>`, prime: `Option<AccountId32>`, old_count: `u32`)
 - **interface**: `api.tx.council.setMembers`
@@ -2535,7 +2643,7 @@ ___
 - **interface**: `api.tx.identity.addUsernameAuthority`
 - **summary**:    Add an `AccountId` with permission to grant usernames with a given `suffix` appended. 
 
-   The authority can grant up to `allocation` usernames. To top up their allocation, they  should just issue (or request via governance) a new `add_username_authority` call. 
+   The authority can grant up to `allocation` usernames. To top up the allocation or  change the account used to grant usernames, this call can be used with the updated  parameters to overwrite the existing configuration. 
  
 ### cancelRequest(reg_index: `u32`)
 - **interface**: `api.tx.identity.cancelRequest`
@@ -2571,6 +2679,10 @@ ___
 
    Emits `IdentityKilled` if successful. 
  
+### killUsername(username: `Bytes`)
+- **interface**: `api.tx.identity.killUsername`
+- **summary**:    Call with [ForceOrigin](crate::Config::ForceOrigin) privileges which deletes a username  and slashes any deposit associated with it. 
+ 
 ### provideJudgement(reg_index: `Compact<u32>`, target: `MultiAddress`, judgement: `PalletIdentityJudgement`, identity: `H256`)
 - **interface**: `api.tx.identity.provideJudgement`
 - **summary**:    Provide a judgement for an account's identity. 
@@ -2599,10 +2711,6 @@ ___
 
    NOTE: This should not normally be used, but is provided in the case that the non-  controller of an account is maliciously registered as a sub-account. 
  
-### removeDanglingUsername(username: `Bytes`)
-- **interface**: `api.tx.identity.removeDanglingUsername`
-- **summary**:    Remove a username that corresponds to an account with no identity. Exists when a user  gets a username but then calls `clear_identity`. 
- 
 ### removeExpiredApproval(username: `Bytes`)
 - **interface**: `api.tx.identity.removeExpiredApproval`
 - **summary**:    Remove an expired username approval. The username was approved by an authority but never  accepted by the user and must now be beyond its expiration. The call must include the  full username, as in `username.suffix`. 
@@ -2615,7 +2723,11 @@ ___
 
    The dispatch origin for this call must be _Signed_ and the sender must have a registered  sub identity of `sub`. 
  
-### removeUsernameAuthority(authority: `MultiAddress`)
+### removeUsername(username: `Bytes`)
+- **interface**: `api.tx.identity.removeUsername`
+- **summary**:    Permanently delete a username which has been unbinding for longer than the grace period.  Caller is refunded the fee if the username expired and the removal was successful. 
+ 
+### removeUsernameAuthority(suffix: `Bytes`, authority: `MultiAddress`)
 - **interface**: `api.tx.identity.removeUsernameAuthority`
 - **summary**:    Remove `authority` from the username authorities. 
  
@@ -2637,7 +2749,7 @@ ___
 
   - `max_fee`: The maximum fee that may be paid. This should just be auto-populated as:
 
-   ```nocompile  Self::registrars().get(reg_index).unwrap().fee  ``` 
+   ```nocompile  Registrars::<T>::get().get(reg_index).unwrap().fee  ``` 
 
    Emits `JudgementRequested` if successful. 
  
@@ -2697,17 +2809,23 @@ ___
 
    - `subs`: The identity's (new) sub-accounts. 
  
-### setUsernameFor(who: `MultiAddress`, username: `Bytes`, signature: `Option<SpRuntimeMultiSignature>`)
+### setUsernameFor(who: `MultiAddress`, username: `Bytes`, signature: `Option<SpRuntimeMultiSignature>`, use_allocation: `bool`)
 - **interface**: `api.tx.identity.setUsernameFor`
 - **summary**:    Set the username for `who`. Must be called by a username authority. 
 
-   The authority must have an `allocation`. Users can either pre-sign their usernames or  accept them later. 
+   If `use_allocation` is set, the authority must have a username allocation available to  spend. Otherwise, the authority will need to put up a deposit for registering the  username. 
+
+   Users can either pre-sign their usernames or  accept them later. 
 
    Usernames must: 
 
   - Only contain lowercase ASCII characters or digits.
 
   - When combined with the suffix of the issuing authority be _less than_ the `MaxUsernameLength`. 
+ 
+### unbindUsername(username: `Bytes`)
+- **interface**: `api.tx.identity.unbindUsername`
+- **summary**:    Start the process of removing a username by placing it in the unbinding usernames map.  Once the grace period has passed, the username can be deleted by calling  [remove_username](crate::Call::remove_username). 
 
 ___
 
@@ -3906,7 +4024,9 @@ ___
  
 ### join(amount: `Compact<u128>`, pool_id: `u32`)
 - **interface**: `api.tx.nominationPools.join`
-- **summary**:    Stake funds with a pool. The amount to bond is transferred from the member to the  pools account and immediately increases the pools bond. 
+- **summary**:    Stake funds with a pool. The amount to bond is transferred from the member to the pool  account and immediately increases the pools bond. 
+
+   The method of transferring the amount to the pool account is determined by  [`adapter::StakeStrategyType`]. If the pool is configured to use  [`adapter::StakeStrategyType::Delegate`], the funds remain in the account of  the `origin`, while the pool gains the right to use these funds for staking. 
 
    #### Note 
 
@@ -4477,8 +4597,6 @@ ___
    The origin must conform to `ForceOrigin` or must be `Signed` by the asset's `owner`. 
 
    - `id`: The identifier of the asset to be destroyed. This must identify an existing  asset. 
-
-   The asset class must be frozen before calling `start_destroy`. 
  
 ### thaw(id: `Compact<u32>`, who: `MultiAddress`)
 - **interface**: `api.tx.poolAssets.thaw`
@@ -4547,6 +4665,20 @@ ___
    Emits `Transferred` with the actual amount transferred. If this takes the source balance  to below the minimum for the asset, then the amount transferred is increased to take it  to zero. 
 
    Weight: `O(1)`  Modes: Pre-existence of `target`; Post-existence of sender; Account pre-existence of  `target`. 
+ 
+### transferAll(id: `Compact<u32>`, dest: `MultiAddress`, keep_alive: `bool`)
+- **interface**: `api.tx.poolAssets.transferAll`
+- **summary**:    Transfer the entire transferable balance from the caller asset account. 
+
+   NOTE: This function only attempts to transfer _transferable_ balances. This means that  any held, frozen, or minimum balance (when `keep_alive` is `true`), will not be  transferred by this function. To ensure that this function results in a killed account,  you might need to prepare the account by removing any reference counters, storage  deposits, etc... 
+
+   The dispatch origin of this call must be Signed. 
+
+   - `id`: The identifier of the asset for the account holding a deposit. 
+
+  - `dest`: The recipient of the transfer.
+
+  - `keep_alive`: A boolean to determine if the `transfer_all` operation should send all of the funds the asset account has, causing the sender asset account to be killed  (false), or transfer everything except at least the minimum balance, which will  guarantee to keep the sender asset account alive (true). 
  
 ### transferApproved(id: `Compact<u32>`, owner: `MultiAddress`, destination: `MultiAddress`, amount: `Compact<u128>`)
 - **interface**: `api.tx.poolAssets.transferApproved`
@@ -5211,6 +5343,135 @@ ___
 ### store(remark: `Bytes`)
 - **interface**: `api.tx.remark.store`
 - **summary**:    Index and store data off chain. 
+
+___
+
+
+## revive
+ 
+### call(dest: `H160`, value: `Compact<u128>`, gas_limit: `SpWeightsWeightV2Weight`, storage_deposit_limit: `Compact<u128>`, data: `Bytes`)
+- **interface**: `api.tx.revive.call`
+- **summary**:    Makes a call to an account, optionally transferring some balance. 
+
+   #### Parameters 
+
+   * `dest`: Address of the contract to call. 
+
+  * `value`: The balance to transfer from the `origin` to `dest`.
+
+  * `gas_limit`: The gas limit enforced when executing the constructor.
+
+  * `storage_deposit_limit`: The maximum amount of balance that can be charged from the caller to pay for the storage consumed. 
+
+  * `data`: The input data to pass to the contract.
+
+   * If the account is a smart-contract account, the associated code will be  executed and any value will be transferred. 
+
+  * If the account is a regular account, any value will be transferred.
+
+  * If no account exists and the call value is not less than `existential_deposit`, a regular account will be created and any value will be transferred. 
+ 
+### dispatchAsFallbackAccount(call: `Call`)
+- **interface**: `api.tx.revive.dispatchAsFallbackAccount`
+- **summary**:    Dispatch an `call` with the origin set to the callers fallback address. 
+
+   Every `AccountId32` can control its corresponding fallback account. The fallback account  is the `AccountId20` with the last 12 bytes set to `0xEE`. This is essentially a  recovery function in case an `AccountId20` was used without creating a mapping first. 
+ 
+### ethTransact(payload: `Bytes`, gas_limit: `SpWeightsWeightV2Weight`, storage_deposit_limit: `Compact<u128>`)
+- **interface**: `api.tx.revive.ethTransact`
+- **summary**:    A raw EVM transaction, typically dispatched by an Ethereum JSON-RPC server. 
+
+   #### Parameters 
+
+   * `payload`: The RLP-encoded [`crate::evm::TransactionLegacySigned`]. 
+
+  * `gas_limit`: The gas limit enforced during contract execution.
+
+  * `storage_deposit_limit`: The maximum balance that can be charged to the caller for storage usage. 
+
+   #### Note 
+
+   This call cannot be dispatched directly; attempting to do so will result in a failed  transaction. It serves as a wrapper for an Ethereum transaction. When submitted, the  runtime converts it into a [`sp_runtime::generic::CheckedExtrinsic`] by recovering the  signer and validating the transaction. 
+ 
+### instantiate(value: `Compact<u128>`, gas_limit: `SpWeightsWeightV2Weight`, storage_deposit_limit: `Compact<u128>`, code_hash: `H256`, data: `Bytes`, salt: `Option<[u8;32]>`)
+- **interface**: `api.tx.revive.instantiate`
+- **summary**:    Instantiates a contract from a previously deployed wasm binary. 
+
+   This function is identical to [`Self::instantiate_with_code`] but without the  code deployment step. Instead, the `code_hash` of an on-chain deployed wasm binary  must be supplied. 
+ 
+### instantiateWithCode(value: `Compact<u128>`, gas_limit: `SpWeightsWeightV2Weight`, storage_deposit_limit: `Compact<u128>`, code: `Bytes`, data: `Bytes`, salt: `Option<[u8;32]>`)
+- **interface**: `api.tx.revive.instantiateWithCode`
+- **summary**:    Instantiates a new contract from the supplied `code` optionally transferring  some balance. 
+
+   This dispatchable has the same effect as calling [`Self::upload_code`] +  [`Self::instantiate`]. Bundling them together provides efficiency gains. Please  also check the documentation of [`Self::upload_code`]. 
+
+   #### Parameters 
+
+   * `value`: The balance to transfer from the `origin` to the newly created contract. 
+
+  * `gas_limit`: The gas limit enforced when executing the constructor.
+
+  * `storage_deposit_limit`: The maximum amount of balance that can be charged/reserved from the caller to pay for the storage consumed. 
+
+  * `code`: The contract code to deploy in raw bytes.
+
+  * `data`: The input data to pass to the contract constructor.
+
+  * `salt`: Used for the address derivation. If `Some` is supplied then `CREATE2` semantics are used. If `None` then `CRATE1` is used. 
+
+  
+
+   Instantiation is executed as follows: 
+
+   - The supplied `code` is deployed, and a `code_hash` is created for that code. 
+
+  - If the `code_hash` already exists on the chain the underlying `code` will be shared.
+
+  - The destination address is computed based on the sender, code_hash and the salt.
+
+  - The smart-contract account is created at the computed address.
+
+  - The `value` is transferred to the new account.
+
+  - The `deploy` function is executed in the context of the newly-created account.
+ 
+### mapAccount()
+- **interface**: `api.tx.revive.mapAccount`
+- **summary**:    Register the callers account id so that it can be used in contract interactions. 
+
+   This will error if the origin is already mapped or is a eth native `Address20`. It will  take a deposit that can be released by calling [`Self::unmap_account`]. 
+ 
+### removeCode(code_hash: `H256`)
+- **interface**: `api.tx.revive.removeCode`
+- **summary**:    Remove the code stored under `code_hash` and refund the deposit to its owner. 
+
+   A code can only be removed by its original uploader (its owner) and only if it is  not used by any contract. 
+ 
+### setCode(dest: `H160`, code_hash: `H256`)
+- **interface**: `api.tx.revive.setCode`
+- **summary**:    Privileged function that changes the code of an existing contract. 
+
+   This takes care of updating refcounts and all other necessary operations. Returns  an error if either the `code_hash` or `dest` do not exist. 
+
+   #### Note 
+
+   This does **not** change the address of the contract in question. This means  that the contract address is no longer derived from its code hash after calling  this dispatchable. 
+ 
+### unmapAccount()
+- **interface**: `api.tx.revive.unmapAccount`
+- **summary**:    Unregister the callers account id in order to free the deposit. 
+
+   There is no reason to ever call this function other than freeing up the deposit.  This is only useful when the account should no longer be used. 
+ 
+### uploadCode(code: `Bytes`, storage_deposit_limit: `Compact<u128>`)
+- **interface**: `api.tx.revive.uploadCode`
+- **summary**:    Upload new `code` without instantiating a contract from it. 
+
+   If the code does not already exist a deposit is reserved from the caller  and unreserved only when [`Self::remove_code`] is called. The size of the reserve  depends on the size of the supplied `code`. 
+
+   #### Note 
+
+   Anyone can instantiate a contract from any uploaded code and thus prevent its removal.  To avoid this situation a constructor could employ access control so that it can  only be instantiated by permissioned entities. The same is true when uploading  through [`Self::instantiate_with_code`]. 
 
 ___
 
@@ -5966,7 +6227,7 @@ ___
  
 ### unbond(value: `Compact<u128>`)
 - **interface**: `api.tx.staking.unbond`
-- **summary**:    Schedule a portion of the stash to be unlocked ready for transfer out after the bond  period ends. If this leaves an amount actively bonded less than  T::Currency::minimum_balance(), then it is increased to the full amount. 
+- **summary**:    Schedule a portion of the stash to be unlocked ready for transfer out after the bond  period ends. If this leaves an amount actively bonded less than  [`asset::existential_deposit`], then it is increased to the full amount. 
 
    The dispatch origin for this call must be _Signed_ by the controller, not the stash. 
 
@@ -6222,6 +6483,18 @@ ___
 
   - `P` complexity of dispatching `proposal`
  
+### kill(proposal_hash: `H256`)
+- **interface**: `api.tx.technicalCommittee.kill`
+- **summary**:    Disapprove the proposal and burn the cost held for storing this proposal. 
+
+   Parameters: 
+
+  - `origin`: must be the `KillOrigin`.
+
+  - `proposal_hash`: The hash of the proposal that should be killed.
+
+   Emits `Killed` and `ProposalCostBurned` if any cost was held for a given proposal. 
+ 
 ### propose(threshold: `Compact<u32>`, proposal: `Call`, length_bound: `Compact<u32>`)
 - **interface**: `api.tx.technicalCommittee.propose`
 - **summary**:    Add a new proposal to either be voted on or executed directly. 
@@ -6243,6 +6516,20 @@ ___
   - `P1` is proposal execution complexity (`threshold < 2`)
 
   - `P2` is proposals-count (code-bounded) (`threshold >= 2`)
+ 
+### releaseProposalCost(proposal_hash: `H256`)
+- **interface**: `api.tx.technicalCommittee.releaseProposalCost`
+- **summary**:    Release the cost held for storing a proposal once the given proposal is completed. 
+
+   If there is no associated cost for the given proposal, this call will have no effect. 
+
+   Parameters: 
+
+  - `origin`: must be `Signed` or `Root`.
+
+  - `proposal_hash`: The hash of the proposal.
+
+   Emits `ProposalCostReleased` if any cost held for a given proposal. 
  
 ### setMembers(new_members: `Vec<AccountId32>`, prime: `Option<AccountId32>`, old_count: `u32`)
 - **interface**: `api.tx.technicalCommittee.setMembers`
@@ -6561,7 +6848,7 @@ ___
 
   - [`Error::ProposalNotApproved`]: The `proposal_id` supplied was not found in the approval queue, i.e., the proposal has not been approved. This could also mean the  proposal does not exist altogether, thus there is no way it would have been approved  in the first place. 
  
-### spend(asset_kind: `u32`, amount: `Compact<u128>`, beneficiary: `MultiAddress`, valid_from: `Option<u32>`)
+### spend(asset_kind: `FrameSupportTokensFungibleUnionOfNativeOrWithId`, amount: `Compact<u128>`, beneficiary: `MultiAddress`, valid_from: `Option<u32>`)
 - **interface**: `api.tx.treasury.spend`
 - **summary**:    Propose and approve a spend of treasury funds. 
 
