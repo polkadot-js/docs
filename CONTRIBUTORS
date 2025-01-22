@@ -52,6 +52,7 @@
        1	Olitelkes                     	lowercase to uppercase const ALICE (#399)
        1	omahs                         	fix typos (#449)
        1	Pedro Filho                   	fixing typos on usage FAQ (#387)
+       1	peetzweg/                     	update `Sudid` destructure docs (#465)
        1	Peter Mortensen               	Update intro.md (#333)
        1	Prakhar Sharma                	Typo in the description line (#436)
        1	Przemek Rzad                  	Update broken link in the docs (#446)
