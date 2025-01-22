@@ -9,7 +9,7 @@
   "scripts": {
     "docusaurus": "docusaurus",
     "start": "docusaurus start --port 8080",
-    "build": "yarn polkadot-types-internal-metadata && yarn polkadot-types-internal-metadata --chain Polkadot && yarn polkadot-types-internal-metadata --chain Kusama",
+    "build": "yarn polkadot-types-internal-metadata && yarn polkadot-types-internal-metadata --chain Polkadot && yarn polkadot-types-internal-metadata --chain Kusama && yarn polkadot-types-internal-metadata --chain asset-hub-kusama && yarn polkadot-types-internal-metadata --chain asset-hub-polkadot",
     "build:release": "polkadot-ci-ghact-build --skip-beta && polkadot-ci-ghact-docs",
     "docs": "docusaurus build",
     "lint": "echo \"Skipping lint\"",

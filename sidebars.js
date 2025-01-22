@@ -81,7 +81,27 @@ module.exports = {
           'kusama/extrinsics',
           'kusama/events',
           'kusama/errors'
-        ]
+        ],
+        'Asset Hub Kusama': [
+          'asset-hub-kusama/intro',
+          'asset-hub-kusama/runtime',
+          'asset-hub-kusama/rpc',
+          'asset-hub-kusama/constants',
+          'asset-hub-kusama/storage',
+          'asset-hub-kusama/extrinsics',
+          'asset-hub-kusama/events',
+          'asset-hub-kusama/errors'
+        ],
+        'Asset Hub polkadot': [
+          'asset-hub-polkadot/intro',
+          'asset-hub-polkadot/runtime',
+          'asset-hub-polkadot/rpc',
+          'asset-hub-polkadot/constants',
+          'asset-hub-polkadot/storage',
+          'asset-hub-polkadot/extrinsics',
+          'asset-hub-polkadot/events',
+          'asset-hub-polkadot/errors'
+        ],
       }
     ],
     Keyring: [
