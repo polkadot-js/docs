@@ -1,5 +1,5 @@
      294	Jaco                          	Bump API (#458)
-       9	Tarik Gul                     	Upgrade typegen to 15.3.1, and update docs (#487)
+      10	Tarik Gul                     	Add asset-hub metadata docs (#488)
        7	Kevin Veros Hamonangan        	Update ss58.md (#81)
        5	brettkolodny                  	Contract query subscriptions workaround in Contract FAQ (#60)
        5	Jhon                          	Update types.basics.md (#165)
