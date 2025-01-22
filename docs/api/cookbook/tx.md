@@ -88,20 +88,21 @@ The section above shows you how to listen for the result of a regular extrinsic.
 To properly parse this information, we will follow the steps above, but then specifically peek into the event data to find the final result:
 
 ```js
-const unsub = await api.tx.sudo
+const unsubscribe = await api.tx.sudo
   .sudo(
     api.tx.balances.forceTransfer(user1, user2, amount)
   )
   .signAndSend(sudoPair, ({ status, events }) => {
     if (status.isInBlock || status.isFinalized) {
       events
-        // We know this tx should result in `Sudid` event.
-        .filter(({ event }) =>
-          api.events.sudo.Sudid.is(event)
-        )
-        // We know that `Sudid` returns just a `Result`
-        .forEach(({ event : { data: [result] } }) => {
-          // Now we look to see if the extrinsic was actually successful or not...
+        .forEach(({ event }) => {
+          // We know this tx should result in `Sudid` event, ignore all others.
+          if(!api.events.sudo.Sudid.is(event)) continue;
+
+          // `event` is now typed as Sudid, which has a payload called `sudoResult`
+          const result = event.data.sudoResult
+                // ^? `Result<Null, SpRuntimeDispatchError>`
+
           if (result.isError) {
             let error = result.asError;
             if (error.isModule) {
