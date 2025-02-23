@@ -104,6 +104,7 @@ module.exports = {
         ],
       }
     ],
+    'Api Derives': ['derives/derives'],
     Keyring: [
       'keyring/intro',
       {

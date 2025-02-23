@@ -5903,6 +5903,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"comment-parser@npm:^1.4.1":
+  version: 1.4.1
+  resolution: "comment-parser@npm:1.4.1"
+  checksum: 10/16a3260b5e77819ebd9c99b0b65c7d6723b1ff73487bac9ce2d8f016a2847dd689e8663b88e1fad1444bbea89847c42f785708ac86a2c55f614f7095249bbf6b
+  languageName: node
+  linkType: hard
+
 "commondir@npm:^1.0.1":
   version: 1.0.1
   resolution: "commondir@npm:1.0.1"
@@ -11768,6 +11775,7 @@ __metadata:
     "@polkadot/dev": "npm:^0.78.1"
     "@polkadot/typegen": "npm:^15.3.1"
     clsx: "npm:^1.2.1"
+    comment-parser: "npm:^1.4.1"
     react: "npm:^18.2.0"
     react-dom: "npm:^18.2.0"
   languageName: unknown
