@@ -38,6 +38,8 @@ Events are emitted for certain operations on the runtime. The following sections
 
 - **[system](#system)**
 
+- **[toKusamaXcmRouter](#tokusamaxcmrouter)**
+
 - **[transactionPayment](#transactionpayment)**
 
 - **[uniques](#uniques)**
@@ -974,6 +976,19 @@ ___
 ### UpgradeAuthorized(`H256`, `bool`)
 - **interface**: `api.events.system.UpgradeAuthorized.is`
 - **summary**:    An upgrade was authorized. 
+
+___
+
+
+## toKusamaXcmRouter
+ 
+### DeliveryFeeFactorDecreased(`u128`)
+- **interface**: `api.events.toKusamaXcmRouter.DeliveryFeeFactorDecreased.is`
+- **summary**:    Delivery fee factor has been decreased. 
+ 
+### DeliveryFeeFactorIncreased(`u128`)
+- **interface**: `api.events.toKusamaXcmRouter.DeliveryFeeFactorIncreased.is`
+- **summary**:    Delivery fee factor has been increased. 
 
 ___
 

@@ -62,7 +62,7 @@ ___
 
    NOTE: when encountering an incorrect exchange rate and non-withdrawable pool liquidity,  batch an atomic call with [`Pallet::add_liquidity`] and  [`Pallet::swap_exact_tokens_for_tokens`] or [`Pallet::swap_tokens_for_exact_tokens`]  calls to render the liquidity withdrawable and rectify the exchange rate. 
 
-   Once liquidity is added, someone may successfully call  [`Pallet::swap_exact_tokens_for_tokens`] successfully. 
+   Once liquidity is added, someone may successfully call  [`Pallet::swap_exact_tokens_for_tokens`]. 
  
 ### createPool(asset1: `StagingXcmV4Location`, asset2: `StagingXcmV4Location`)
 - **interface**: `api.tx.assetConversion.createPool`
@@ -482,8 +482,6 @@ ___
    The origin must conform to `ForceOrigin` or must be `Signed` by the asset's `owner`. 
 
    - `id`: The identifier of the asset to be destroyed. This must identify an existing  asset. 
-
-   The asset class must be frozen before calling `start_destroy`. 
  
 ### thaw(id: `Compact<u32>`, who: `MultiAddress`)
 - **interface**: `api.tx.assets.thaw`
@@ -552,6 +550,20 @@ ___
    Emits `Transferred` with the actual amount transferred. If this takes the source balance  to below the minimum for the asset, then the amount transferred is increased to take it  to zero. 
 
    Weight: `O(1)`  Modes: Pre-existence of `target`; Post-existence of sender; Account pre-existence of  `target`. 
+ 
+### transferAll(id: `Compact<u32>`, dest: `MultiAddress`, keep_alive: `bool`)
+- **interface**: `api.tx.assets.transferAll`
+- **summary**:    Transfer the entire transferable balance from the caller asset account. 
+
+   NOTE: This function only attempts to transfer _transferable_ balances. This means that  any held, frozen, or minimum balance (when `keep_alive` is `true`), will not be  transferred by this function. To ensure that this function results in a killed account,  you might need to prepare the account by removing any reference counters, storage  deposits, etc... 
+
+   The dispatch origin of this call must be Signed. 
+
+   - `id`: The identifier of the asset for the account holding a deposit. 
+
+  - `dest`: The recipient of the transfer.
+
+  - `keep_alive`: A boolean to determine if the `transfer_all` operation should send all of the funds the asset account has, causing the sender asset account to be killed  (false), or transfer everything except at least the minimum balance, which will  guarantee to keep the sender asset account alive (true). 
  
 ### transferApproved(id: `Compact<u32>`, owner: `MultiAddress`, destination: `MultiAddress`, amount: `Compact<u128>`)
 - **interface**: `api.tx.assets.transferApproved`
@@ -1134,8 +1146,6 @@ ___
    The origin must conform to `ForceOrigin` or must be `Signed` by the asset's `owner`. 
 
    - `id`: The identifier of the asset to be destroyed. This must identify an existing  asset. 
-
-   The asset class must be frozen before calling `start_destroy`. 
  
 ### thaw(id: `StagingXcmV4Location`, who: `MultiAddress`)
 - **interface**: `api.tx.foreignAssets.thaw`
@@ -1204,6 +1214,20 @@ ___
    Emits `Transferred` with the actual amount transferred. If this takes the source balance  to below the minimum for the asset, then the amount transferred is increased to take it  to zero. 
 
    Weight: `O(1)`  Modes: Pre-existence of `target`; Post-existence of sender; Account pre-existence of  `target`. 
+ 
+### transferAll(id: `StagingXcmV4Location`, dest: `MultiAddress`, keep_alive: `bool`)
+- **interface**: `api.tx.foreignAssets.transferAll`
+- **summary**:    Transfer the entire transferable balance from the caller asset account. 
+
+   NOTE: This function only attempts to transfer _transferable_ balances. This means that  any held, frozen, or minimum balance (when `keep_alive` is `true`), will not be  transferred by this function. To ensure that this function results in a killed account,  you might need to prepare the account by removing any reference counters, storage  deposits, etc... 
+
+   The dispatch origin of this call must be Signed. 
+
+   - `id`: The identifier of the asset for the account holding a deposit. 
+
+  - `dest`: The recipient of the transfer.
+
+  - `keep_alive`: A boolean to determine if the `transfer_all` operation should send all of the funds the asset account has, causing the sender asset account to be killed  (false), or transfer everything except at least the minimum balance, which will  guarantee to keep the sender asset account alive (true). 
  
 ### transferApproved(id: `StagingXcmV4Location`, owner: `MultiAddress`, destination: `MultiAddress`, amount: `Compact<u128>`)
 - **interface**: `api.tx.foreignAssets.transferApproved`
@@ -2074,24 +2098,6 @@ ___
 
 ## parachainSystem
  
-### authorizeUpgrade(code_hash: `H256`, check_version: `bool`)
-- **interface**: `api.tx.parachainSystem.authorizeUpgrade`
-- **summary**:    Authorize an upgrade to a given `code_hash` for the runtime. The runtime can be supplied  later. 
-
-   The `check_version` parameter sets a boolean flag for whether or not the runtime's spec  version and name should be verified on upgrade. Since the authorization only has a hash,  it cannot actually perform the verification. 
-
-   This call requires Root origin. 
- 
-### enactAuthorizedUpgrade(code: `Bytes`)
-- **interface**: `api.tx.parachainSystem.enactAuthorizedUpgrade`
-- **summary**:    Provide the preimage (runtime binary) `code` for an upgrade that has been authorized. 
-
-   If the authorization required a version check, this call will ensure the spec name  remains unchanged and that the spec version has increased. 
-
-   Note that this function will not apply the new `code`, but only attempt to schedule the  upgrade with the Relay Chain. 
-
-   All origins are allowed. 
- 
 ### setValidationData(data: `CumulusPrimitivesParachainInherentParachainInherentData`)
 - **interface**: `api.tx.parachainSystem.setValidationData`
 - **summary**:    Set the current validation data. 
@@ -2709,8 +2715,6 @@ ___
    The origin must conform to `ForceOrigin` or must be `Signed` by the asset's `owner`. 
 
    - `id`: The identifier of the asset to be destroyed. This must identify an existing  asset. 
-
-   The asset class must be frozen before calling `start_destroy`. 
  
 ### thaw(id: `u32`, who: `MultiAddress`)
 - **interface**: `api.tx.poolAssets.thaw`
@@ -2779,6 +2783,20 @@ ___
    Emits `Transferred` with the actual amount transferred. If this takes the source balance  to below the minimum for the asset, then the amount transferred is increased to take it  to zero. 
 
    Weight: `O(1)`  Modes: Pre-existence of `target`; Post-existence of sender; Account pre-existence of  `target`. 
+ 
+### transferAll(id: `u32`, dest: `MultiAddress`, keep_alive: `bool`)
+- **interface**: `api.tx.poolAssets.transferAll`
+- **summary**:    Transfer the entire transferable balance from the caller asset account. 
+
+   NOTE: This function only attempts to transfer _transferable_ balances. This means that  any held, frozen, or minimum balance (when `keep_alive` is `true`), will not be  transferred by this function. To ensure that this function results in a killed account,  you might need to prepare the account by removing any reference counters, storage  deposits, etc... 
+
+   The dispatch origin of this call must be Signed. 
+
+   - `id`: The identifier of the asset for the account holding a deposit. 
+
+  - `dest`: The recipient of the transfer.
+
+  - `keep_alive`: A boolean to determine if the `transfer_all` operation should send all of the funds the asset account has, causing the sender asset account to be killed  (false), or transfer everything except at least the minimum balance, which will  guarantee to keep the sender asset account alive (true). 
  
 ### transferApproved(id: `u32`, owner: `MultiAddress`, destination: `MultiAddress`, amount: `Compact<u128>`)
 - **interface**: `api.tx.poolAssets.transferApproved`
