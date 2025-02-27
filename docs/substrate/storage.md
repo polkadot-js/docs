@@ -2150,6 +2150,10 @@ _These are well-known keys that are always available to the runtime implementati
 - **interface**: `api.query.substrate.code`
 - **summary**:    Wasm code of the runtime. 
  
+### defaultChildStorageKeyPrefix(): `u32`
+- **interface**: `api.query.substrate.defaultChildStorageKeyPrefix`
+- **summary**:    Prefix of the default child storage keys in the top trie. 
+ 
 ### extrinsicIndex(): `u32`
 - **interface**: `api.query.substrate.extrinsicIndex`
 - **summary**:    Current extrinsic index (u32) is stored under this key. 
@@ -2161,6 +2165,14 @@ _These are well-known keys that are always available to the runtime implementati
 ### intrablockEntropy(): `[u8;32]`
 - **interface**: `api.query.substrate.intrablockEntropy`
 - **summary**:    Current intra-block entropy (a universally unique `[u8; 32]` value) is stored here. 
+ 
+### storageVersionStorageKeyPostfix(): `u16`
+- **interface**: `api.query.substrate.storageVersionStorageKeyPostfix`
+- **summary**:    The storage key postfix that is used to store the [`StorageVersion`] per pallet. 
+ 
+### transactionLevelKey(): `u32`
+- **interface**: `api.query.substrate.transactionLevelKey`
+- **summary**:    The key that holds the current number of active layers. 
 
 ___
 
