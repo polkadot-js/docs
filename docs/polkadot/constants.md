@@ -26,6 +26,8 @@ The following sections contain the module constants, also known as parameter typ
 
 - **[crowdloan](#crowdloan)**
 
+- **[delegatedStaking](#delegatedstaking)**
+
 - **[electionProviderMultiPhase](#electionprovidermultiphase)**
 
 - **[fastUnstake](#fastunstake)**
@@ -275,6 +277,19 @@ ___
 ### removeKeysLimit: `u32`
 - **interface**: `api.consts.crowdloan.removeKeysLimit`
 - **summary**:    Max number of storage keys to remove per extrinsic call. 
+
+___
+
+
+## delegatedStaking
+ 
+### palletId: `FrameSupportPalletId`
+- **interface**: `api.consts.delegatedStaking.palletId`
+- **summary**:    Injected identifier for the pallet. 
+ 
+### slashRewardFraction: `Perbill`
+- **interface**: `api.consts.delegatedStaking.slashRewardFraction`
+- **summary**:    Fraction of the slash that is rewarded to the caller of pending slash to the agent. 
 
 ___
 

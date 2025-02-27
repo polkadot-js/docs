@@ -54,8 +54,6 @@ The following sections contain Extrinsics methods are part of the default Polkad
 
 - **[paraInherent](#parainherent)**
 
-- **[parameters](#parameters)**
-
 - **[paras](#paras)**
 
 - **[parasDisputes](#parasdisputes)**
@@ -258,13 +256,33 @@ ___
 
 ## beefy
  
-### reportEquivocation(equivocation_proof: `SpConsensusBeefyDoubleVotingProof`, key_owner_proof: `SpSessionMembershipProof`)
-- **interface**: `api.tx.beefy.reportEquivocation`
+### reportDoubleVoting(equivocation_proof: `SpConsensusBeefyDoubleVotingProof`, key_owner_proof: `SpSessionMembershipProof`)
+- **interface**: `api.tx.beefy.reportDoubleVoting`
 - **summary**:    Report voter equivocation/misbehavior. This method will verify the  equivocation proof and validate the given key ownership proof  against the extracted offender. If both are valid, the offence  will be reported. 
  
-### reportEquivocationUnsigned(equivocation_proof: `SpConsensusBeefyDoubleVotingProof`, key_owner_proof: `SpSessionMembershipProof`)
-- **interface**: `api.tx.beefy.reportEquivocationUnsigned`
+### reportDoubleVotingUnsigned(equivocation_proof: `SpConsensusBeefyDoubleVotingProof`, key_owner_proof: `SpSessionMembershipProof`)
+- **interface**: `api.tx.beefy.reportDoubleVotingUnsigned`
 - **summary**:    Report voter equivocation/misbehavior. This method will verify the  equivocation proof and validate the given key ownership proof  against the extracted offender. If both are valid, the offence  will be reported. 
+
+   This extrinsic must be called unsigned and it is expected that only  block authors will call it (validated in `ValidateUnsigned`), as such  if the block author is defined it will be defined as the equivocation  reporter. 
+ 
+### reportForkVoting(equivocation_proof: `SpConsensusBeefyForkVotingProofAncestryProof`, key_owner_proof: `SpSessionMembershipProof`)
+- **interface**: `api.tx.beefy.reportForkVoting`
+- **summary**:    Report fork voting equivocation. This method will verify the equivocation proof  and validate the given key ownership proof against the extracted offender.  If both are valid, the offence will be reported. 
+ 
+### reportForkVotingUnsigned(equivocation_proof: `SpConsensusBeefyForkVotingProofAncestryProof`, key_owner_proof: `SpSessionMembershipProof`)
+- **interface**: `api.tx.beefy.reportForkVotingUnsigned`
+- **summary**:    Report fork voting equivocation. This method will verify the equivocation proof  and validate the given key ownership proof against the extracted offender.  If both are valid, the offence will be reported. 
+
+   This extrinsic must be called unsigned and it is expected that only  block authors will call it (validated in `ValidateUnsigned`), as such  if the block author is defined it will be defined as the equivocation  reporter. 
+ 
+### reportFutureBlockVoting(equivocation_proof: `SpConsensusBeefyFutureBlockVotingProof`, key_owner_proof: `SpSessionMembershipProof`)
+- **interface**: `api.tx.beefy.reportFutureBlockVoting`
+- **summary**:    Report future block voting equivocation. This method will verify the equivocation proof  and validate the given key ownership proof against the extracted offender.  If both are valid, the offence will be reported. 
+ 
+### reportFutureBlockVotingUnsigned(equivocation_proof: `SpConsensusBeefyFutureBlockVotingProof`, key_owner_proof: `SpSessionMembershipProof`)
+- **interface**: `api.tx.beefy.reportFutureBlockVotingUnsigned`
+- **summary**:    Report future block voting equivocation. This method will verify the equivocation proof  and validate the given key ownership proof against the extracted offender.  If both are valid, the offence will be reported. 
 
    This extrinsic must be called unsigned and it is expected that only  block authors will call it (validated in `ValidateUnsigned`), as such  if the block author is defined it will be defined as the equivocation  reporter. 
  
@@ -611,11 +629,11 @@ ___
 
 ## configuration
  
-### setApprovalVotingParams(new: `PolkadotPrimitivesV7ApprovalVotingParams`)
+### setApprovalVotingParams(new: `PolkadotPrimitivesV8ApprovalVotingParams`)
 - **interface**: `api.tx.configuration.setApprovalVotingParams`
 - **summary**:    Set approval-voting-params. 
  
-### setAsyncBackingParams(new: `PolkadotPrimitivesV7AsyncBackingAsyncBackingParams`)
+### setAsyncBackingParams(new: `PolkadotPrimitivesV8AsyncBackingAsyncBackingParams`)
 - **interface**: `api.tx.configuration.setAsyncBackingParams`
 - **summary**:    Set the asynchronous backing parameters. 
  
@@ -641,7 +659,7 @@ ___
 - **interface**: `api.tx.configuration.setDisputePostConclusionAcceptancePeriod`
 - **summary**:    Set the dispute post conclusion acceptance period. 
  
-### setExecutorParams(new: `PolkadotPrimitivesV7ExecutorParams`)
+### setExecutorParams(new: `PolkadotPrimitivesV8ExecutorParams`)
 - **interface**: `api.tx.configuration.setExecutorParams`
 - **summary**:    Set PVF executor parameters. 
  
@@ -787,7 +805,7 @@ ___
 - **interface**: `api.tx.configuration.setRelayVrfModuloSamples`
 - **summary**:    Set the number of samples to do of the `RelayVRFModulo` approval assignment criterion. 
  
-### setSchedulerParams(new: `PolkadotPrimitivesVstagingSchedulerParams`)
+### setSchedulerParams(new: `PolkadotPrimitivesV8SchedulerParams`)
 - **interface**: `api.tx.configuration.setSchedulerParams`
 - **summary**:    Set scheduler-params. 
  
@@ -1537,7 +1555,7 @@ ___
 
    Fails unless [`crate::pallet::Config::StakeAdapter`] is of strategy type:  [`adapter::StakeStrategyType::Delegate`]. 
 
-   This call can be dispatched permissionlessly (i.e. by any account). If the member has  slash to be applied, caller may be rewarded with the part of the slash. 
+   The pending slash amount of the member must be equal or more than `ExistentialDeposit`.  This call can be dispatched permissionlessly (i.e. by any account). If the execution  is successful, fee is refunded and caller may be rewarded with a part of the slash  based on the [`crate::pallet::Config::StakeAdapter`] configuration. 
  
 ### bondExtra(extra: `PalletNominationPoolsBondExtra`)
 - **interface**: `api.tx.nominationPools.bondExtra`
@@ -1623,7 +1641,9 @@ ___
  
 ### join(amount: `Compact<u128>`, pool_id: `u32`)
 - **interface**: `api.tx.nominationPools.join`
-- **summary**:    Stake funds with a pool. The amount to bond is transferred from the member to the  pools account and immediately increases the pools bond. 
+- **summary**:    Stake funds with a pool. The amount to bond is transferred from the member to the pool  account and immediately increases the pools bond. 
+
+   The method of transferring the amount to the pool account is determined by  [`adapter::StakeStrategyType`]. If the pool is configured to use  [`adapter::StakeStrategyType::Delegate`], the funds remain in the account of  the `origin`, while the pool gains the right to use these funds for staking. 
 
    #### Note 
 
@@ -1862,20 +1882,9 @@ ___
 
 ## paraInherent
  
-### enter(data: `PolkadotPrimitivesV7InherentData`)
+### enter(data: `PolkadotPrimitivesV8InherentData`)
 - **interface**: `api.tx.paraInherent.enter`
 - **summary**:    Enter the paras inherent. This will process bitfields and backed candidates. 
-
-___
-
-
-## parameters
- 
-### setParameter(key_value: `PolkadotRuntimeRuntimeParameters`)
-- **interface**: `api.tx.parameters.setParameter`
-- **summary**:    Set the value of a parameter. 
-
-   The dispatch origin of this call must be `AdminOrigin` for the given `key`. Values be  deleted by setting them to `None`. 
 
 ___
 
@@ -1916,7 +1925,7 @@ ___
 - **interface**: `api.tx.paras.forceSetMostRecentContext`
 - **summary**:    Set the storage for the current parachain head data immediately. 
  
-### includePvfCheckStatement(stmt: `PolkadotPrimitivesV7PvfCheckStatement`, signature: `PolkadotPrimitivesV7ValidatorAppSignature`)
+### includePvfCheckStatement(stmt: `PolkadotPrimitivesV8PvfCheckStatement`, signature: `PolkadotPrimitivesV8ValidatorAppSignature`)
 - **interface**: `api.tx.paras.includePvfCheckStatement`
 - **summary**:    Includes a statement for a PVF pre-checking vote. Potentially, finalizes the vote and  enacts the results if that was the last vote before achieving the supermajority. 
  
@@ -1944,7 +1953,7 @@ ___
 
 ## parasSlashing
  
-### reportDisputeLostUnsigned(dispute_proof: `PolkadotPrimitivesV7SlashingDisputeProof`, key_owner_proof: `SpSessionMembershipProof`)
+### reportDisputeLostUnsigned(dispute_proof: `PolkadotPrimitivesV8SlashingDisputeProof`, key_owner_proof: `SpSessionMembershipProof`)
 - **interface**: `api.tx.parasSlashing.reportDisputeLostUnsigned`
 
 ___

@@ -32,6 +32,8 @@ This page lists the errors that can be encountered in the different modules.
 
 - **[crowdloan](#crowdloan)**
 
+- **[delegatedStaking](#delegatedstaking)**
+
 - **[electionProviderMultiPhase](#electionprovidermultiphase)**
 
 - **[fastUnstake](#fastunstake)**
@@ -230,9 +232,21 @@ ___
 - **interface**: `api.errors.beefy.InvalidConfiguration.is`
 - **summary**:    Submitted configuration is invalid. 
  
-### InvalidEquivocationProof
-- **interface**: `api.errors.beefy.InvalidEquivocationProof.is`
-- **summary**:    An equivocation proof provided as part of an equivocation report is invalid. 
+### InvalidDoubleVotingProof
+- **interface**: `api.errors.beefy.InvalidDoubleVotingProof.is`
+- **summary**:    A double voting proof provided as part of an equivocation report is invalid. 
+ 
+### InvalidEquivocationProofSession
+- **interface**: `api.errors.beefy.InvalidEquivocationProofSession.is`
+- **summary**:    The session of the equivocation proof is invalid 
+ 
+### InvalidForkVotingProof
+- **interface**: `api.errors.beefy.InvalidForkVotingProof.is`
+- **summary**:    A fork voting proof provided as part of an equivocation report is invalid. 
+ 
+### InvalidFutureBlockVotingProof
+- **interface**: `api.errors.beefy.InvalidFutureBlockVotingProof.is`
+- **summary**:    A future block voting proof provided as part of an equivocation report is invalid. 
  
 ### InvalidKeyOwnershipProof
 - **interface**: `api.errors.beefy.InvalidKeyOwnershipProof.is`
@@ -536,6 +550,61 @@ ___
 ### VrfDelayInProgress
 - **interface**: `api.errors.crowdloan.VrfDelayInProgress.is`
 - **summary**:    No contributions allowed during the VRF delay 
+
+___
+
+
+## delegatedStaking
+ 
+### AlreadyStaking
+- **interface**: `api.errors.delegatedStaking.AlreadyStaking.is`
+- **summary**:    An existing staker cannot perform this action. 
+ 
+### BadState
+- **interface**: `api.errors.delegatedStaking.BadState.is`
+- **summary**:    Some corruption in internal state. 
+ 
+### InvalidDelegation
+- **interface**: `api.errors.delegatedStaking.InvalidDelegation.is`
+- **summary**:    Delegation conditions are not met. 
+
+   Possible issues are  1) Cannot delegate to self,  2) Cannot delegate to multiple delegates. 
+ 
+### InvalidRewardDestination
+- **interface**: `api.errors.delegatedStaking.InvalidRewardDestination.is`
+- **summary**:    Reward Destination cannot be same as `Agent` account. 
+ 
+### NotAgent
+- **interface**: `api.errors.delegatedStaking.NotAgent.is`
+- **summary**:    Not an existing `Agent` account. 
+ 
+### NotAllowed
+- **interface**: `api.errors.delegatedStaking.NotAllowed.is`
+- **summary**:    The account cannot perform this operation. 
+ 
+### NotDelegator
+- **interface**: `api.errors.delegatedStaking.NotDelegator.is`
+- **summary**:    Not a Delegator account. 
+ 
+### NotEnoughFunds
+- **interface**: `api.errors.delegatedStaking.NotEnoughFunds.is`
+- **summary**:    The account does not have enough funds to perform the operation. 
+ 
+### NothingToSlash
+- **interface**: `api.errors.delegatedStaking.NothingToSlash.is`
+- **summary**:    `Agent` has no pending slash to be applied. 
+ 
+### NotSupported
+- **interface**: `api.errors.delegatedStaking.NotSupported.is`
+- **summary**:    Operation not supported by this pallet. 
+ 
+### UnappliedSlash
+- **interface**: `api.errors.delegatedStaking.UnappliedSlash.is`
+- **summary**:    Unapplied pending slash restricts operation on `Agent`. 
+ 
+### WithdrawFailed
+- **interface**: `api.errors.delegatedStaking.WithdrawFailed.is`
+- **summary**:    Failed to withdraw amount from Core Staking. 
 
 ___
 
@@ -1029,6 +1098,10 @@ ___
 - **interface**: `api.errors.nominationPools.RewardPoolNotFound.is`
 - **summary**:    A reward pool does not exist. In all cases this is a system logic error. 
  
+### SlashTooLow
+- **interface**: `api.errors.nominationPools.SlashTooLow.is`
+- **summary**:    The slash amount is too low to be applied. 
+ 
 ### SubPoolsNotFound
 - **interface**: `api.errors.nominationPools.SubPoolsNotFound.is`
 - **summary**:    A sub pool does not exist. 
@@ -1098,10 +1171,6 @@ ___
 ### NewCodeTooLarge
 - **interface**: `api.errors.paraInclusion.NewCodeTooLarge.is`
 - **summary**:    Output code is too large 
- 
-### NotCollatorSigned
-- **interface**: `api.errors.paraInclusion.NotCollatorSigned.is`
-- **summary**:    Collator did not sign PoV. 
  
 ### ParaHeadMismatch
 - **interface**: `api.errors.paraInclusion.ParaHeadMismatch.is`
@@ -1283,10 +1352,6 @@ ___
 ### AlreadyNoted
 - **interface**: `api.errors.preimage.AlreadyNoted.is`
 - **summary**:    Preimage has already been noted on-chain. 
- 
-### NoCost
-- **interface**: `api.errors.preimage.NoCost.is`
-- **summary**:    No ticket with a cost was returned by [`Config::Consideration`] to store the preimage. 
  
 ### NotAuthorized
 - **interface**: `api.errors.preimage.NotAuthorized.is`
