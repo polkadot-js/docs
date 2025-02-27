@@ -24,6 +24,8 @@ Events are emitted for certain operations on the runtime. The following sections
 
 - **[crowdloan](#crowdloan)**
 
+- **[delegatedStaking](#delegatedstaking)**
+
 - **[electionProviderMultiPhase](#electionprovidermultiphase)**
 
 - **[fastUnstake](#fastunstake)**
@@ -328,6 +330,14 @@ ___
 ### Undelegated(`AccountId32`)
 - **interface**: `api.events.convictionVoting.Undelegated.is`
 - **summary**:    An \[account\] has cancelled a previous delegation operation. 
+ 
+### Voted(`AccountId32`, `PalletConvictionVotingVoteAccountVote`)
+- **interface**: `api.events.convictionVoting.Voted.is`
+- **summary**:    An account that has voted 
+ 
+### VoteRemoved(`AccountId32`, `PalletConvictionVotingVoteAccountVote`)
+- **interface**: `api.events.convictionVoting.VoteRemoved.is`
+- **summary**:    A vote that been removed 
 
 ___
 
@@ -386,6 +396,27 @@ ___
 ### Withdrew(`AccountId32`, `u32`, `u128`)
 - **interface**: `api.events.crowdloan.Withdrew.is`
 - **summary**:    Withdrew full balance of a contributor. 
+
+___
+
+
+## delegatedStaking
+ 
+### Delegated(`AccountId32`, `AccountId32`, `u128`)
+- **interface**: `api.events.delegatedStaking.Delegated.is`
+- **summary**:    Funds delegated by a delegator. 
+ 
+### MigratedDelegation(`AccountId32`, `AccountId32`, `u128`)
+- **interface**: `api.events.delegatedStaking.MigratedDelegation.is`
+- **summary**:    Unclaimed delegation funds migrated to delegator. 
+ 
+### Released(`AccountId32`, `AccountId32`, `u128`)
+- **interface**: `api.events.delegatedStaking.Released.is`
+- **summary**:    Funds released to a delegator. 
+ 
+### Slashed(`AccountId32`, `AccountId32`, `u128`)
+- **interface**: `api.events.delegatedStaking.Slashed.is`
+- **summary**:    Funds slashed from a delegator. 
 
 ___
 
@@ -791,11 +822,11 @@ ___
 - **interface**: `api.events.nominationPools.Destroyed.is`
 - **summary**:    A pool has been destroyed. 
  
-### MemberRemoved(`u32`, `AccountId32`)
+### MemberRemoved(`u32`, `AccountId32`, `u128`)
 - **interface**: `api.events.nominationPools.MemberRemoved.is`
 - **summary**:    A member has been removed from a pool. 
 
-   The removal can be voluntary (withdrawn all unbonded funds) or involuntary (kicked). 
+   The removal can be voluntary (withdrawn all unbonded funds) or involuntary (kicked).  Any funds that are still delegated (i.e. dangling delegation) are released and are  represented by `released_balance`. 
  
 ### MinBalanceDeficitAdjusted(`u32`, `u128`)
 - **interface**: `api.events.nominationPools.MinBalanceDeficitAdjusted.is`
@@ -890,15 +921,15 @@ ___
 
 ## paraInclusion
  
-### CandidateBacked(`PolkadotPrimitivesV7CandidateReceipt`, `Bytes`, `u32`, `u32`)
+### CandidateBacked(`PolkadotPrimitivesV8CandidateReceipt`, `Bytes`, `u32`, `u32`)
 - **interface**: `api.events.paraInclusion.CandidateBacked.is`
 - **summary**:    A candidate was backed. `[candidate, head_data]` 
  
-### CandidateIncluded(`PolkadotPrimitivesV7CandidateReceipt`, `Bytes`, `u32`, `u32`)
+### CandidateIncluded(`PolkadotPrimitivesV8CandidateReceipt`, `Bytes`, `u32`, `u32`)
 - **interface**: `api.events.paraInclusion.CandidateIncluded.is`
 - **summary**:    A candidate was included. `[candidate, head_data]` 
  
-### CandidateTimedOut(`PolkadotPrimitivesV7CandidateReceipt`, `Bytes`, `u32`)
+### CandidateTimedOut(`PolkadotPrimitivesV8CandidateReceipt`, `Bytes`, `u32`)
 - **interface**: `api.events.paraInclusion.CandidateTimedOut.is`
 - **summary**:    A candidate timed out. `[candidate, head_data]` 
  
