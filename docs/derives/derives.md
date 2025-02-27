@@ -51,16 +51,24 @@ ___
 ## accounts
  
 ### [accountId](#accountId)
-An [[AccountId]]
+Resolves an address (in different formats) to its corresponding `AccountId`.
 - **interface**: `api.derive.accounts.accountId`
 - **params**:
   - address `(Address | AccountId | AccountIndex | string | null)`: An accounts address in various formats.
- 
+
+- **example**: 
+ ```javascript
+ const ALICE = "F7Hs";
+
+ api.derive.accounts.accountId(ALICE, (accountId) => {
+   console.log(`Resolved AccountId: ${accountId}`);
+ });
+ ``` 
 ### [flags](#flags)
-Returns account membership flags
+Retrieves the membership flags for a given account.
 - **interface**: `api.derive.accounts.flags`
 - **params**:
-  - address `(AccountId | Address | string | null)`: 
+  - address `(AccountId | Address | string | null)`: The account identifier.
  
 ### [idAndIndex](#idAndIndex)
 An array containing the [[AccountId]] and [[AccountIndex]] as optional values.
@@ -75,11 +83,11 @@ An array containing the [[AccountId]] and [[AccountIndex]] as optional values.
  });
  ``` 
 ### [idToIndex](#idToIndex)
+Retrieves the corresponding AccountIndex.
 - **interface**: `api.derive.accounts.idToIndex`
 - **params**:
-  - accountId `( AccountId | string )`: - An accounts Id in different formats.
+  - accountId `( AccountId | string )`: An accounts Id in different formats.
 
-- **returns**: Returns the corresponding AccountIndex.
 - **example**: 
  ```javascript
  const ALICE = '5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY';
@@ -88,35 +96,59 @@ An array containing the [[AccountId]] and [[AccountIndex]] as optional values.
  });
  ``` 
 ### [identity](#identity)
-Returns identity info for an account
+Retrieves the on chain identity information for a given account.
 - **interface**: `api.derive.accounts.identity`
 - **params**:
-  - accoutId `(AccountId | Uint8Array | string)`: 
- 
-### [hasIdentity](#hasIdentity)
-- **interface**: `api.derive.accounts.hasIdentity`
-- **params**:
-  - accountId `(AccountId | Uint8Array | string)`: 
- 
-### [hasIdentityMulti](#hasIdentityMulti)
-- **interface**: `api.derive.accounts.hasIdentityMulti`
-- **params**:
-  - accountIds `(AccountId | Uint8Array | string)[]`: 
- 
-### [indexToId](#indexToId)
-- **interface**: `api.derive.accounts.indexToId`
-- **params**:
-  - accountIndex `( AccountIndex | string )`: - An accounts index in different formats.
+  - accoutId `(AccountId | Uint8Array | string)`: The account identifier to query the identity for.
 
-- **returns**: Returns the corresponding AccountId.
 - **example**: 
  ```javascript
- api.derive.accounts.indexToId('F7Hs', (accountId) => {
-   console.log(`The AccountId of F7Hs is ${accountId}`);
+ const ALICE = "13xAUH";
+
+ api.derive.accounts.identity(ALICE, (identity) => {
+   console.log(
+     "Account Identity:",
+     Object.keys(identity).map((key) => `${key}: ${identity[key]}`)
+   );
  });
  ``` 
+### [hasIdentity](#hasIdentity)
+Checks if a specific account has an identity registered on chain.
+- **interface**: `api.derive.accounts.hasIdentity`
+- **params**:
+  - accoutId `(AccountId | Uint8Array | string)`: The account identifier to query.
+
+- **example**: 
+ ```javascript
+ const ALICE = "13AU";
+ console.log(await api.derive.accounts.hasIdentity(ALICE));
+ ``` 
+### [hasIdentityMulti](#hasIdentityMulti)
+Checks whether multiple accounts have on chain identities registered.
+- **interface**: `api.derive.accounts.hasIdentityMulti`
+- **params**:
+  - accountIds `(AccountId | Uint8Array | string)[]`: Array of account identifiers to query.
+
+- **example**: 
+ ```javascript
+ const ALICE = "13AU";
+ const BOB = "16WW";
+ console.log(await api.derive.accounts.hasIdentityMulti([ALICE, BOB]));
+ ``` 
+### [indexToId](#indexToId)
+Resolves an AccountIndex (short address) to the full AccountId.
+- **interface**: `api.derive.accounts.indexToId`
+- **params**:
+  - accountIndex `( AccountIndex | string )`: An accounts index in different formats.
+
+- **example**: 
+ ```javascript
+ const ALICE = "13AU";
+ const id = await api.derive.accounts.indexToId(ALICE);
+ console.log(id);
+ ``` 
 ### [indexes](#indexes)
-This is an unwieldly query since it loops through all of the enumsets and returns all of the values found. This could be up to 32k depending on the number of active accounts in the system
+This is an unwieldly query since it loops through all of the enumsets and returns all of the values found. This could be up to 32k depending on the number of active accounts in the system.
 - **interface**: `api.derive.accounts.indexes`
 - **returns**: Returns all the indexes on the system.
 - **example**: 
@@ -129,8 +161,17 @@ This is an unwieldly query since it loops through all of the enumsets and return
 Returns aux. info with regards to an account, current that includes the accountId, accountIndex, identity and nickname
 - **interface**: `api.derive.accounts.info`
 - **params**:
-  - address `(AccountIndex | AccountId | Address | Uint8Array | string | null)`: 
+  - address `(AccountIndex | AccountId | Address | Uint8Array | string | null)`: An accounts in different formats.
 
+- **example**: 
+ ```javascript
+ const ALICE = "13AU";
+ const info = await api.derive.accounts.info(ALICE);
+ console.log(
+   "Account Info: ",
+   Object.keys(info).map((key) => `${key}: ${info[key]}`)
+ );
+ ```
 ___
 ## alliance
  
@@ -193,37 +234,39 @@ Retrieves the prime member of the "allianceMotion" collective, if one exists.
 ___
 ## bagsList
  
-### [all](#all)
-- **interface**: `api.derive.bagsList.all` 
 ### [get](#get)
+Retrieves a specific bag from the BagsList pallet by its id.
 - **interface**: `api.derive.bagsList.get`
 - **params**:
-  - id `(BN | number)`: 
+  - id `(BN | number)`: The id of the bag to retrieve.
  
 ### [expand](#expand)
+Expands a given bag by retrieving all its nodes (accounts contained within the bag).
 - **interface**: `api.derive.bagsList.expand`
 - **params**:
-  - bag `Bag`: 
+  - bag `Bag`: The bag to be expanded.
  
 ### [getExpanded](#getExpanded)
+Retrieves and expands a specific bag from the BagsList pallet.
 - **interface**: `api.derive.bagsList.getExpanded`
 - **params**:
-  - id `(BN | number)`: 
+  - id `BN | number`: The id of the bag to expand.
  
 ### [listNodes](#listNodes)
+Retrieves the list of nodes (accounts) contained in a specific bag within the BagsList pallet.
 - **interface**: `api.derive.bagsList.listNodes`
 - **params**:
-  - bag `(PalletBagsListListBag | null)`: 
+  - bag `(PalletBagsListListBag | null)`: A reference to a specific bag in the BagsList pallet.
 
 ___
 ## balances
  
 ### [account](#account)
+Retrieves the essential balance details for an account, such as free balance and account nonce.
 - **interface**: `api.derive.balances.account`
 - **params**:
-  - address `( AccountIndex | AccountId | Address | string )`: An accounts Id in different formats.
+  - address `( AccountIndex | AccountId | Address | string )`: An accountsId in different formats.
 
-- **returns**: An object containing the results of various balance queries
 - **example**: 
  ```javascript
  const ALICE = 'F7Hs';
@@ -233,17 +276,20 @@ ___
  });
  ``` 
 ### [all](#all)
+Retrieves the complete balance information for an account, including free balance, locked balance, reserved balance, and more.
 - **interface**: `api.derive.balances.all`
 - **params**:
-  - address `( AccountId | string )`: An accounts Id in different formats.
+  - address `( AccountId | string )`: An accountsId in different formats.
 
-- **returns**: An object containing the results of various balance queries
 - **example**: 
  ```javascript
  const ALICE = 'F7Hs';
 
- api.derive.balances.all(ALICE, ({ accountId, lockedBalance }) => {
-   console.log(`The account ${accountId} has a locked balance ${lockedBalance} units.`);
+ api.derive.balances.account(ALICE, (accountInfo) => {
+   console.log(
+     `${accountInfo.accountId} info:`,
+     Object.keys(accountInfo).map((key) => `${key}: ${accountInfo[key]}`)
+   );
  });
  ``` 
 ### [votingBalance](#votingBalance)
@@ -261,21 +307,32 @@ ___
  });
  ``` 
 ### [votingBalances](#votingBalances)
+Retrieves the balance information for multiple accounts, typically used in governance-related contexts to check voting power.
 - **interface**: `api.derive.balances.votingBalances`
 - **params**:
-  - addresses `(AccountId | AccountIndex | Address | string)[]`: 
+  - addresses `(AccountId | AccountIndex | Address | string)[]`: An array of account identifiers.
 
+- **example**: 
+ ```javascript
+ const addresses = ["5D4b...Zf1", "5HGj...yrV"];
+ const balances = await api.derive.balances.votingBalances(addresses);
+ console.log("Voting Balances:", balances);
+ ```
 ___
 ## bounties
  
 ### [bounties](#bounties)
 - **interface**: `api.derive.bounties.bounties`
+- **example**: 
+ ```javascript
+ const bounties = await api.derive.bounties();
+ console.log("Active bounties:", bounties);
+ ```
 ___
 ## chain
  
 ### [bestNumber](#bestNumber)
 - **interface**: `api.derive.chain.bestNumber`
-- **returns**: The latest block number.
 - **example**: 
  ```javascript
  api.derive.chain.bestNumber((blockNumber) => {
@@ -295,13 +352,7 @@ Get the latest finalized block number.
 ### [bestNumberLag](#bestNumberLag)
 Calculates the lag between finalized head and best head
 - **interface**: `api.derive.chain.bestNumberLag`
-- **returns**: A number of blocks
-- **example**: 
- ```javascript
- api.derive.chain.bestNumberLag((lag) => {
-   console.log(`finalized is ${lag} blocks behind head`);
- });
- ``` 
+- **returns**: A number of blocks 
 ### [getBlock](#getBlock)
 Get a specific block (e.g. rpc.chain.getBlock) and extend it with the author
 - **interface**: `api.derive.chain.getBlock`
@@ -340,8 +391,8 @@ Get a specific block header and extend it with the author
  console.log(`block #${number} was authored by ${author}`);
  ``` 
 ### [subscribeFinalizedBlocks](#subscribeFinalizedBlocks)
+Retrieves the finalized block & events for that block
 - **interface**: `api.derive.chain.subscribeFinalizedBlocks`
-- **returns**: The finalized block & events for that block
 - **example**: 
  ```javascript
  const unsub = await api.derive.chain.subscribeFinalizedBlocks((finalizedBlock) => {
@@ -349,7 +400,7 @@ Get a specific block header and extend it with the author
  });
  ``` 
 ### [subscribeFinalizedHeads](#subscribeFinalizedHeads)
-An observable of the finalized block headers. Unlike the base chain.subscribeFinalizedHeads this does not skip any headers. Since finalization may skip specific blocks (finalization happens in terms of chains), this version of the derive tracks missing headers (since last retrieved) and provides them to the caller
+An observable of the finalized block headers. Unlike the base chain.subscribeFinalizedHeads this does not skip any headers. Since finalization may skip specific blocks (finalization happens in terms of chains), this version of the derive tracks missing headers (since last retrieved) and provides them to the caller.
 - **interface**: `api.derive.chain.subscribeFinalizedHeads`
 - **example**: 
  ```javascript
@@ -367,9 +418,9 @@ An observable of the finalized block headers. Unlike the base chain.subscribeFin
  });
  ``` 
 ### [subscribeNewHeads](#subscribeNewHeads)
-An observable of the current block header and it's author
+An observable of the current block header and it's author.
 - **interface**: `api.derive.chain.subscribeNewHeads`
-- **returns**: A header with the current header (including extracted author)
+- **returns**: A header with the current header (including extracted author).
 - **example**: 
  ```javascript
  api.derive.chain.subscribeNewHeads((header) => {
@@ -448,76 +499,174 @@ Retrieves the prime member of the "council" collective, if one exists.
  console.log(primeMember);
  ``` 
 ### [votes](#votes)
-- **interface**: `api.derive.council.votes` 
+Retrieves the council election votes for all participants.
+- **interface**: `api.derive.council.votes`
+- **example**: 
+ ```javascript
+ const votes = await api.derive.council.votes();
+ ``` 
 ### [votesOf](#votesOf)
+Retrieves the council votes associated with a given account.
 - **interface**: `api.derive.council.votesOf`
 - **params**:
-  - accountId `string | Uint8Array | AccountId`: 
+  - accountId `string | Uint8Array | AccountId`: The accountId to retrieve votes for.
 
+- **returns**: The stake and the list of candidates the account has voted for.
+- **example**: 
+ ```javascript
+ const accountId = "5Gw3s7qQ9Z..."; // Replace with a valid account ID
+ const votes = await api.derive.council.votesOf(accountId);
+ console.log("Account votes:", votes);
+ ```
 ___
 ## crowdloan
  
 ### [childKey](#childKey)
+Retrieves the child storage key for a given parachain’s crowdloan contributions. This key is used to access contribution data stored in a separate child trie of the blockchain’s state.
 - **interface**: `api.derive.crowdloan.childKey`
 - **params**:
-  - paraId `string | number | BN`: 
- 
+  - paraId `string | number | BN`: The parachain ID for which contributions are being queried.
+
+- **example**: 
+ ```javascript
+ const childKey = await api.derive.crowdloan.childKey(3369);
+ console.log("Child Key:", childKey);
+ ``` 
 ### [contributions](#contributions)
+Retrieves all contributions for a given parachain crowdloan.
 - **interface**: `api.derive.crowdloan.contributions`
 - **params**:
-  - paraId `string | number | BN`: 
- 
+  - paraId `string | number | BN`: The parachain ID for which contributions are being queried.
+
+- **example**: 
+ ```javascript
+ const contributions = await api.derive.crowdloan.contributions(3369);
+ console.log("Contributions:", contributions);
+ ``` 
 ### [ownContributions](#ownContributions)
+Retrieves the contribution amounts made by specific accounts (`keys`) to a given parachain crowdloan (`paraId`).
 - **interface**: `api.derive.crowdloan.ownContributions`
 - **params**:
-  - paraId `string | number | BN`: 
-  - keys `string[]`: 
+  - paraId `string | number | BN`: The parachain ID for which contributions are being queried.
+  - keys `string[]`: An array of account addresses whose contributions are to be fetched.
 
+- **example**: 
+ ```javascript
+ const contributions = await api.derive.crowdloan.ownContributions(2000, ['5Ff...PqV', '5Gg...XyZ']);
+ console.log("Own Contributions:", contributions);
+ ```
 ___
 ## democracy
  
 ### [dispatchQueue](#dispatchQueue)
-- **interface**: `api.derive.democracy.dispatchQueue` 
+Retrieves the list of scheduled or pending dispatches in the governance system.
+- **interface**: `api.derive.democracy.dispatchQueue`
+- **example**: 
+ ```javascript
+ const queue = await api.derive.democracy.dispatchQueue();
+ console.log("Dispatch Queue:", queue);
+ ``` 
 ### [locks](#locks)
+Retrieves the democracy voting locks for a given account.
 - **interface**: `api.derive.democracy.locks`
 - **params**:
-  - accountId `string | AccountId`: 
- 
+  - accountId `string | AccountId`: The accountId for which to retrieve democracy voting locks.
+
+- **example**: 
+ ```javascript
+ const locks = await api.derive.democracy.locks('5FfFjX...'); // Replace with an actual accountId
+ console.log("Democracy Locks:", locks);
+ ``` 
 ### [nextExternal](#nextExternal)
-- **interface**: `api.derive.democracy.nextExternal` 
+Retrieves the next external proposal that is scheduled for a referendum.
+- **interface**: `api.derive.democracy.nextExternal`
+- **example**: 
+ ```javascript
+ const nextExternal = await api.derive.democracy.nextExternal();
+ console.log("Next external proposal:", nextExternal);
+ ``` 
 ### [preimages](#preimages)
+Retrieves the full details (preimages) of governance proposals using their on-chain hashes.
 - **interface**: `api.derive.democracy.preimages`
 - **params**:
-  - hashes `(Hash | Uint8Array | string | FrameSupportPreimagesBounded)[]`: 
- 
+  - hashes `(Hash | Uint8Array | string | FrameSupportPreimagesBounded)[]`: An array of hashes representing governance proposals.
+
+- **example**: 
+ ```javascript
+ const preimages = await api.derive.democracy.preimages([HASH1, HASH2]);
+ ``` 
 ### [preimage](#preimage)
+Retrieves the full details (preimage) of a governance proposal using its on-chain hash.
 - **interface**: `api.derive.democracy.preimage`
 - **params**:
-  - hash `Hash | Uint8Array | string | FrameSupportPreimagesBounded`: 
+  - hash `Hash | Uint8Array | string | FrameSupportPreimagesBounded`: Hash that represents governance proposals. * @example ```javascript const preimage = await api.derive.democracy.preimage(HASH); ```
  
 ### [proposals](#proposals)
-- **interface**: `api.derive.democracy.proposals` 
+Retrieves the list of active public proposals in the democracy module, along with their associated preimage data and deposit information.
+- **interface**: `api.derive.democracy.proposals`
+- **example**: 
+ ```javascript
+ const proposals = await api.derive.democracy.proposals();
+ console.log("proposals:", proposals);
+ ``` 
 ### [referendumIds](#referendumIds)
-- **interface**: `api.derive.democracy.referendumIds` 
+Retrieves an array of active referendum IDs.
+- **interface**: `api.derive.democracy.referendumIds`
+- **example**: 
+ ```javascript
+ const referendums = await api.derive.democracy.referendumIds();
+ ``` 
 ### [referendums](#referendums)
-- **interface**: `api.derive.democracy.referendums` 
+Retrieves information about all active referendums, including their details and associated votes.
+- **interface**: `api.derive.democracy.referendums`
+- **example**: 
+ ```javascript
+ const referendums = await api.derive.democracy.referendums();
+ ``` 
 ### [referendumsActive](#referendumsActive)
-- **interface**: `api.derive.democracy.referendumsActive` 
+Retrieves information about active referendums.
+- **interface**: `api.derive.democracy.referendumsActive`
+- **example**: 
+ ```javascript
+ const referendums = await api.derive.democracy.referendumsActive();
+ console.log("Active Referendums:", referendums);
+ ``` 
 ### [referendumsFinished](#referendumsFinished)
-- **interface**: `api.derive.democracy.referendumsFinished` 
-### [referendumsFinished](#referendumsFinished)
+Retrieves information about finished referendums.
 - **interface**: `api.derive.democracy.referendumsFinished`
+- **example**: 
+ ```javascript
+ const referendums = await api.derive.democracy.referendumsFinished();
+ console.log("Finished Referendums:", referendums);
+ ``` 
+### [referendumsInfo](#referendumsInfo)
+Retrieves information about multiple referendums by their IDs.
+- **interface**: `api.derive.democracy.referendumsInfo`
 - **params**:
-  - ids `BN[]`: 
- 
+  - ids `BN[]`: An array of referendum IDs to query.
+
+- **example**: 
+ ```javascript
+ import { BN } from "@polkadot/util";
+
+ const referendumIds = [new BN(1)];
+ const referendums = await api.derive.democracy.referendumsInfo(referendumIds);
+ console.log("Referendums Info:", referendums);
+ ``` 
 ### [sqrtElectorate](#sqrtElectorate)
+Computes the square root of the total token issuance in the network.
 - **interface**: `api.derive.democracy.sqrtElectorate`
+- **example**: 
+ ```javascript
+ let sqrtElectorate = await api.derive.democracy.sqrtElectorate();
+ console.log("Square root of token issuance:", sqrtElectorate);
+ ```
 ___
 ## elections
  
 ### [info](#info)
+An object containing the combined results of the storage queries for all relevant election module properties.
 - **interface**: `api.derive.elections.info`
-- **returns**: An object containing the combined results of the storage queries for all relevant election module properties.
 - **example**: 
  ```javascript
  api.derive.elections.info(({ members, candidates }) => {
@@ -528,8 +677,14 @@ ___
 ## imOnline
  
 ### [receivedHeartbeats](#receivedHeartbeats)
+Return a boolean array indicating whether the passed accounts had received heartbeats in the current session.
 - **interface**: `api.derive.imOnline.receivedHeartbeats`
-- **returns**: Return a boolean array indicating whether the passed accounts had received heartbeats in the current session.
+- **example**: 
+ ```javascript
+ let unsub = await api.derive.imOnline.receivedHeartbeats((heartbeat) => {
+   console.log(heartbeat);
+ });
+ ```
 ___
 ## membership
  
@@ -689,7 +844,7 @@ Retrieves the list of candidates for the society module.
  console.log(societyCandidates);
  ``` 
 ### [info](#info)
-Get the overall info for a society
+Get the overall info for a society.
 - **interface**: `api.derive.society.info`
 - **example**: 
  ```javascript
@@ -697,7 +852,7 @@ Get the overall info for a society
  console.log(societyInfo);
  ``` 
 ### [member](#member)
-Get the member info for a society
+Get the member info for a society.
 - **interface**: `api.derive.society.member`
 - **params**:
   - accountId `AccountId`: 
@@ -708,7 +863,7 @@ Get the member info for a society
  console.log(member);
  ``` 
 ### [members](#members)
-Get the society members
+Get the society members.
 - **interface**: `api.derive.society.members`
 - **example**: 
  ```javascript
@@ -733,11 +888,11 @@ From a list of stashes, fill in all the relevant staking details
  console.log("First account staking info:", accounts[0]);
  ``` 
 ### [account](#account)
-From a stash, retrieve the controllerId and fill in all the relevant staking details
+From a stash, retrieve the controllerId and fill in all the relevant staking details.
 - **interface**: `api.derive.staking.account`
 - **params**:
-  - accountId `(Uint8Array | string)`: AccountId of the stash
-  - opts `StakingQueryFlags`: optional filtering flag
+  - accountId `(Uint8Array | string)`: AccountId of the stash.
+  - opts `StakingQueryFlags`: (Optional) filtering flag.
 
 - **example**: 
  ```javascript
@@ -747,7 +902,7 @@ From a stash, retrieve the controllerId and fill in all the relevant staking det
  console.log(accountStakingData);
  ``` 
 ### [currentPoints](#currentPoints)
-Retrieve the staking overview, including elected and points earned
+Retrieve the staking overview, including elected and points earned.
 - **interface**: `api.derive.staking.currentPoints`
 - **example**: 
  ```javascript
@@ -775,6 +930,372 @@ Retrieves detailed staking information about the next elected validators and the
  );
  console.log("Validator Staking Info:", info);
  ``` 
+### [eraExposure](#eraExposure)
+Retrieves the staking exposure (nominators and total stake) for a specific era.
+- **interface**: `api.derive.staking.eraExposure`
+- **params**:
+  - eras `EraIndex`: The staking era to query.
+
+- **example**: 
+ ```javascript
+ const era = api.createType("EraIndex", 1000);
+ const exposure = await api.derive.staking.eraExposure(era);
+ ``` 
+### [erasExposure](#erasExposure)
+Retrieves staking exposure details for multiple past eras.
+- **interface**: `api.derive.staking.erasExposure`
+- **params**:
+  - withActive? `boolean`: (Optional) Whether to include the active era in the result.
+
+- **example**: 
+ ```javascript
+ const exposure = await api.derive.staking.erasExposure(true);
+ ``` 
+### [erasHistoric](#erasHistoric)
+- **interface**: `api.derive.staking.erasHistoric`
+- **params**:
+  - withActive? `boolean`: (Optional) Whether to include the active era in the result.
+ 
+### [erasPoints](#erasPoints)
+Retrieves historical era points with its validators.
+- **interface**: `api.derive.staking.erasPoints`
+- **params**:
+  - withActive? `boolean`: (Optional) Whether to include the active era in the result.
+
+- **example**: 
+ ```javascript
+ const points = await api.derive.staking.erasPoints(true);
+ console.log(
+   "Validator points:",
+   points.map(({ era, eraPoints }) => `Era: ${era}, points ${eraPoints}`)
+ );
+ ``` 
+### [eraPrefs](#eraPrefs)
+Retrieves the validators commission preferences for a given staking era.
+- **interface**: `api.derive.staking.eraPrefs`
+- **params**:
+  - era `EraIndex`: The staking era to query.
+
+- **example**: 
+ ```javascript
+ const era = api.createType("EraIndex", 1000);
+ const prefs = await api.derive.staking.eraPrefs(era);
+ console.log(JSON.stringify(prefs));
+ ``` 
+### [erasPrefs](#erasPrefs)
+Retrieves validators commission preferences for multiple past staking eras
+- **interface**: `api.derive.staking.erasPrefs`
+- **params**:
+  - withActive? `boolean`: (Optional) Whether to include the active era in the result.
+
+- **example**: 
+ ```javascript
+ const prefs = await api.derive.staking.erasPrefs(true);
+ ``` 
+### [erasRewards](#erasRewards)
+Retrieves rewards for historical eras.
+- **interface**: `api.derive.staking.erasRewards`
+- **params**:
+  - withActive? `boolean`: (Optional) Whether to include the active era in the result.
+
+- **example**: 
+ ```javascript
+ const rewards = await api.derive.staking.erasRewards(true);
+ ``` 
+### [eraSlashes](#eraSlashes)
+Retrieves the slashes for a specific staking era.
+- **interface**: `api.derive.staking.eraSlashes`
+- **params**:
+  - eras `EraIndex`: The staking era to query.
+
+- **example**: 
+ ```javascript
+ const era = api.createType("EraIndex", 1000);
+ const slashes = await api.derive.staking.eraSlashes(era);
+ ``` 
+### [erasSlashes](#erasSlashes)
+Retrieves slashes for historical eras.
+- **interface**: `api.derive.staking.erasSlashes`
+- **params**:
+  - withActive? `boolean`: (Optional) Whether to include the active era in the result.
+
+- **example**: 
+ ```javascript
+ const slashes = await api.derive.staking.erasSlashes(true);
+ ``` 
+### [keys](#keys)
+Retrieves the session keys associated with a given stash account.
+- **interface**: `api.derive.staking.keys`
+- **params**:
+  - stashId `Uint8Array | string`: The stash account ID whose session keys are to be retrieved.
+
+- **example**: 
+ ```javascript
+ const keys = await api.derive.staking.keys(
+   ALICE
+ );
+ console.log(
+   "Session keys:",
+   keys.sessionIds.map((key) => `Key: ${key}`)
+ );
+ ``` 
+### [keysMulti](#keysMulti)
+Retrieves session keys for multiple stash accounts.
+- **interface**: `api.derive.staking.keysMulti`
+- **params**:
+  - stashIds `(Uint8Array | string)[]`: Array of stash account IDs.
+
+- **example**: 
+ ```javascript
+ const keysMulti = await api.derive.staking.keysMulti([ ALICE, BOB ]);
+ keysMulti.forEach((keys) => {
+   console.log(
+     "Session keys:",
+     keys.sessionIds.map((key) => `Key: ${key}`)
+   );
+ });
+ ``` 
+### [overview](#overview)
+Retrieve the staking overview, including elected validators and points earned.
+- **interface**: `api.derive.staking.overview`
+- **example**: 
+ ```javascript
+ const {
+   activeEra,
+   activeEraStart,
+   currentEra,
+   currentIndex,
+   nextElected,
+   validatorCount,
+   validators,
+ } = await api.derive.staking.overview();
+ ``` 
+### [ownExposure](#ownExposure)
+Retrieves the staking exposure of a validator for a specific era, including their own stake.
+- **interface**: `api.derive.staking.ownExposure`
+- **params**:
+  - accountId `Uint8Array | string`: The validator stash account.
+  - era `EraIndex`: The staking era to query.
+  - page? `u32 | AnyNumber`: (Optional) The pagination index.
+
+- **example**: 
+ ```javascript
+ const era = api.createType("EraIndex", 1000);
+ const exposure = await api.derive.staking.ownExposure(
+   "11VR4pF6c7kfBhfmuwwjWY3FodeYBKWx7ix2rsRCU2q6hqJ",
+   era
+ );
+ console.log(JSON.stringify(exposure));
+ ``` 
+### [ownExposures](#ownExposures)
+Retrieves staking exposures for a validator across multiple historical eras.
+- **interface**: `api.derive.staking.ownExposures`
+- **params**:
+  - accountId `Uint8Array | string`: The validator stash account.
+  - withActive `boolean`: Whether to include the active era.
+
+- **example**: 
+ ```javascript
+ const exposures = await api.derive.staking.ownExposures(
+   ALICE,
+   true
+ );
+ ``` 
+### [ownSlash](#ownSlash)
+Retrieves the slashes applied to a specific account in a given era.
+- **interface**: `api.derive.staking.ownSlash`
+- **params**:
+  - accountId `Uint8Array | string`: The validator stash account.
+  - era `EraIndex`: The staking era to query.
+
+- **example**: 
+ ```javascript
+ const era = api.createType("EraIndex", 1000);
+ const slashedAmount = await api.derive.staking.ownSlash(
+   ALICE,
+   era
+ );
+ console.log(`Era: ${slashedAmount.era}, total ${slashedAmount.total}`);
+ ``` 
+### [ownSlashes](#ownSlashes)
+Retrieves the slashes for a specific account across all historic eras.
+- **interface**: `api.derive.staking.ownSlashes`
+- **params**:
+  - accountId `Uint8Array | string`: The validator stash account.
+  - withActive `boolean`: Whether to include the active era.
+
+- **example**: 
+ ```javascript
+ const slashes = await api.derive.staking.ownSlashes(
+   ALICE,
+   true
+ );
+ console.log(slashes);
+ ``` 
+### [query](#query)
+Retrieves staking details for a given stash account.
+- **interface**: `api.derive.staking.query`
+- **params**:
+  - accountId `Uint8Array | string`: The stash account to query.
+  - flags `StakingQueryFlags`: Flags to customize the query.
+  - page `u32`: (Optional) pagination parameter.
+
+- **example**: 
+ ```javascript
+ const stakingInfo = await api.derive.staking.query(
+   ALICE,
+   {}
+ );
+ ``` 
+### [queryMulti](#queryMulti)
+Retrieves staking details for multiple stash accounts.
+- **interface**: `api.derive.staking.queryMulti`
+- **params**:
+  - accountIds `(Uint8Array | string)[]`: List of stash accounts to query.
+  - flags `StakingQueryFlags`: Flags to customize the query.
+  - page `u32`: (Optional) pagination parameter.
+
+- **example**: 
+ ```javascript
+ const stakingInfos = await api.derive.staking.queryMulti([stashId1, stashId2], {});
+ ``` 
+### [stakerExposures](#stakerExposures)
+Retrieves staking exposure for multiple accounts across historical eras.
+- **interface**: `api.derive.staking.stakerExposures`
+- **params**:
+  - accountIds `(Uint8Array | string)[]`: List of validator stash accounts.
+  - withActive `boolean`: Whether to include the active era.
+
+- **example**: 
+ ```javascript
+ const exposure = await api.derive.staking.stakerExposures(
+   [ALICE, BOB],
+   true
+ );
+ ``` 
+### [stakerExposure](#stakerExposure)
+Retrieves staking exposure for a single account across historical eras. Exposure refers to the total stake associated with a validator.
+- **interface**: `api.derive.staking.stakerExposure`
+- **params**:
+  - accountId `Uint8Array | string`: The validator stash account.
+  - withActive `boolean`: Whether to include the active era.
+
+- **example**: 
+ ```javascript
+ const exposure = await api.derive.staking.stakerExposure(
+   ALICE,
+   true
+ );
+ ``` 
+### [stakerPoints](#stakerPoints)
+Retrieves the era reward points earned by a given staker across all eras.
+- **interface**: `api.derive.staking.stakerPoints`
+- **params**:
+  - accountId `Uint8Array | string`: The stakers AccountId.
+  - withActive `boolean`: Whether to include the active era.
+
+- **example**: 
+ ```javascript
+ const points = await api.derive.staking.stakerPoints(
+   ALICE, //Alice accountId
+   false
+ );
+ console.log(
+   'Validator Era Points:',
+   points.map(({ era, points }) => `Era ${era}: ${points.toString()} points`)
+ );
+ ``` 
+### [stakerPrefs](#stakerPrefs)
+Retrieves the validator preferences for a given staker across historical eras.
+- **interface**: `api.derive.staking.stakerPrefs`
+- **params**:
+  - accountId `Uint8Array | string`: The stakers AccountId.
+  - withActive `boolean`: Whether to include the active era.
+
+- **example**: 
+ ```javascript
+ const prefs = await api.derive.staking.stakerPrefs(
+   ALICE, //Alice accountId
+   false
+ );
+ console.log(
+   'Validator Preferences:',
+   prefs.map(
+     ({ era, validatorPrefs }) => `Era ${era}: Commission ${validatorPrefs.commission.toString()}`
+   )
+ );
+ ``` 
+### [stakerRewards](#stakerRewards)
+Staking rewards history for a given staker.
+- **interface**: `api.derive.staking.stakerRewards`
+- **params**:
+  - accountId `Uint8Array | string`: The stakers AccountId.
+  - withActive `boolean`: Whether to include the active era.
+
+- **example**: 
+ ```javascript
+ const rewards = await api.derive.staking.stakerRewards(
+   ALICE, //Alice accountId
+   false
+ );
+ ``` 
+### [stakerRewardsMultiEras](#stakerRewardsMultiEras)
+Staking rewards for multiple stakers over specific eras.
+- **interface**: `api.derive.staking.stakerRewardsMultiEras`
+- **params**:
+  - accountIds `Uint8Array | string`: List of stakers identified by their AccountId.
+  - eras `EraIndex[]`: Eras for which to retrieve the data.
+
+- **example**: 
+ ```javascript
+ const rewards = await api.derive.staking.stakerRewardsMultiEras(
+   [ALICE, BOB, CHARLIER], //accountIds
+   [100,101]  //eras
+ );
+ ``` 
+### [stakerRewardsMulti](#stakerRewardsMulti)
+Staking rewards for multiple stakers.
+- **interface**: `api.derive.staking.stakerRewardsMulti`
+- **params**:
+  - accountIds `Uint8Array | string`: List of stakers identified by their AccountId.
+  - withActive `boolean`: Whether to include the active era.
+
+- **example**: 
+ ```javascript
+ const rewards = await api.derive.staking.stakerRewardsMulti(
+   [ALICE, BOB, CHARLIER], //accountIds
+   true
+ );
+ ``` 
+### [stakerSlashes](#stakerSlashes)
+Retrieve the historical slashes (penalties) for a given staker.
+- **interface**: `api.derive.staking.stakerSlashes`
+- **params**:
+  - accountId `Uint8Array | string`: The stakers AccountId.
+  - withActive `boolean`: Whether to include the active era.
+
+- **example**: 
+ ```javascript
+  const stakerSlashes = await api.derive.staking.stakerSlashes(
+   ALICE, //Alice accountId
+   true
+ );
+ console.log(
+   'Staker Slashes:',
+   stakerSlashes.map(({ era, total }) => `Era ${era}: Slashed ${total.toString()}`)
+ );
+ ``` 
+### [stashes](#stashes)
+Retrieve the list of all validator stashes.
+- **interface**: `api.derive.staking.stashes`
+- **example**: 
+ ```javascript
+ const stashes = await api.derive.staking.stashes();
+ console.log(
+   "Validator Stashes:",
+   stashes.map((s) => s.toString())
+ );
+ ``` 
 ### [nextElected](#nextElected)
 Retrieves the list of accounts that are set to be the next elected validators in the staking system. It provides a preview of who will be validators in the next staking era.
 - **interface**: `api.derive.staking.nextElected`
@@ -787,7 +1308,7 @@ Retrieves the list of accounts that are set to be the next elected validators in
  );
  ``` 
 ### [validators](#validators)
-Retrieve latest list of validators
+Retrieve latest list of validators.
 - **interface**: `api.derive.staking.validators`
 - **example**: 
  ```javascript
