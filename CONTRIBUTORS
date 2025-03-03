@@ -61,6 +61,7 @@
        1	Spaceforce                    	Change order of params to match example (#90)
        1	Stéphane P                    	Fix doc typo (#300)
        1	sulaman                       	Update simple-connect.md (#464)
+       1	Valentin Fernandez            	Add Api Derives docs (#489)
        1	Wil Wade                      	Small fixes for cookbook (#302)
        1	yaohsin                       	Update verify-signature.md (#198)
        1	Zoheb Salam                   	Update Readme with `keysAt()` and `entriesAt()` (#218)

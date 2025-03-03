@@ -58,7 +58,7 @@ Unlike single-shot queries, for subscriptions we are `await`-ing a function, tak
 
 ## Detour into derives
 
-The `api.derive` interfaces will be covered in a follow-up section, but since the above example deals with new head subscriptions, a quick detour is warranted. The derives are just helpers that define certain functions and combine results from multiple sources. For new headers, the following information is useful in certain scenarios -
+The `api.derive` interfaces are explored in greater detail in the [**Api Derives**](/docs/derives/derives.md) section, but since the above example deals with new head subscriptions, a quick detour is warranted. The derives are just helpers that define certain functions and combine results from multiple sources. For new headers, the following information is useful in certain scenarios -
 
 ```js
 ...
