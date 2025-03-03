@@ -40,6 +40,8 @@ Events are emitted for certain operations on the runtime. The following sections
 
 - **[system](#system)**
 
+- **[toPolkadotXcmRouter](#topolkadotxcmrouter)**
+
 - **[transactionPayment](#transactionpayment)**
 
 - **[uniques](#uniques)**
@@ -989,6 +991,19 @@ ___
 ### UpgradeAuthorized(`H256`, `bool`)
 - **interface**: `api.events.system.UpgradeAuthorized.is`
 - **summary**:    An upgrade was authorized. 
+
+___
+
+
+## toPolkadotXcmRouter
+ 
+### DeliveryFeeFactorDecreased(`u128`)
+- **interface**: `api.events.toPolkadotXcmRouter.DeliveryFeeFactorDecreased.is`
+- **summary**:    Delivery fee factor has been decreased. 
+ 
+### DeliveryFeeFactorIncreased(`u128`)
+- **interface**: `api.events.toPolkadotXcmRouter.DeliveryFeeFactorIncreased.is`
+- **summary**:    Delivery fee factor has been increased. 
 
 ___
 

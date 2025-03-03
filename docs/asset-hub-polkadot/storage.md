@@ -371,7 +371,7 @@ ___
 - **interface**: `api.query.parachainSystem.didSetValidationCode`
 - **summary**:    Were the validation data set to notify the relay chain? 
  
-### hostConfiguration(): `Option<PolkadotPrimitivesV7AbridgedHostConfiguration>`
+### hostConfiguration(): `Option<PolkadotPrimitivesV8AbridgedHostConfiguration>`
 - **interface**: `api.query.parachainSystem.hostConfiguration`
 - **summary**:    The parachain host configuration that was obtained from the relay parent. 
 
@@ -461,13 +461,13 @@ ___
 
    The segment length is limited by the capacity returned from the [`ConsensusHook`] configured  in the pallet. 
  
-### upgradeGoAhead(): `Option<PolkadotPrimitivesV7UpgradeGoAhead>`
+### upgradeGoAhead(): `Option<PolkadotPrimitivesV8UpgradeGoAhead>`
 - **interface**: `api.query.parachainSystem.upgradeGoAhead`
 - **summary**:    Optional upgrade go-ahead signal from the relay-chain. 
 
    This storage item is a mirror of the corresponding value for the current parachain from the  relay-chain. This value is ephemeral which means it doesn't hit the storage. This value is  set after the inherent. 
  
-### upgradeRestrictionSignal(): `Option<PolkadotPrimitivesV7UpgradeRestriction>`
+### upgradeRestrictionSignal(): `Option<PolkadotPrimitivesV8UpgradeRestriction>`
 - **interface**: `api.query.parachainSystem.upgradeRestrictionSignal`
 - **summary**:    An option which indicates if the relay-chain restricts signalling a validation code upgrade.  In other words, if this is `Some` and [`NewValidationCode`] is `Some` then the produced  candidate will be invalid. 
 
@@ -483,7 +483,7 @@ ___
 
    This will be cleared in `on_initialize` of each new block. 
  
-### validationData(): `Option<PolkadotPrimitivesV7PersistedValidationData>`
+### validationData(): `Option<PolkadotPrimitivesV8PersistedValidationData>`
 - **interface**: `api.query.parachainSystem.validationData`
 - **summary**:    The [`PersistedValidationData`] set for this block.  This value is expected to be set only once per block and it's never stored  in the trie. 
 
@@ -650,6 +650,10 @@ _These are well-known keys that are always available to the runtime implementati
 - **interface**: `api.query.substrate.code`
 - **summary**:    Wasm code of the runtime. 
  
+### defaultChildStorageKeyPrefix(): `u32`
+- **interface**: `api.query.substrate.defaultChildStorageKeyPrefix`
+- **summary**:    Prefix of the default child storage keys in the top trie. 
+ 
 ### extrinsicIndex(): `u32`
 - **interface**: `api.query.substrate.extrinsicIndex`
 - **summary**:    Current extrinsic index (u32) is stored under this key. 
@@ -661,6 +665,14 @@ _These are well-known keys that are always available to the runtime implementati
 ### intrablockEntropy(): `[u8;32]`
 - **interface**: `api.query.substrate.intrablockEntropy`
 - **summary**:    Current intra-block entropy (a universally unique `[u8; 32]` value) is stored here. 
+ 
+### storageVersionStorageKeyPostfix(): `u16`
+- **interface**: `api.query.substrate.storageVersionStorageKeyPostfix`
+- **summary**:    The storage key postfix that is used to store the [`StorageVersion`] per pallet. 
+ 
+### transactionLevelKey(): `u32`
+- **interface**: `api.query.substrate.transactionLevelKey`
+- **summary**:    The key that holds the current number of active layers. 
 
 ___
 

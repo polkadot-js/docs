@@ -36,6 +36,8 @@ The following sections contain Storage methods are part of the default Kusama ru
 
 - **[crowdloan](#crowdloan)**
 
+- **[delegatedStaking](#delegatedstaking)**
+
 - **[dmp](#dmp)**
 
 - **[electionProviderMultiPhase](#electionprovidermultiphase)**
@@ -505,6 +507,29 @@ ___
 ### nextFundIndex(): `u32`
 - **interface**: `api.query.crowdloan.nextFundIndex`
 - **summary**:    Tracker for the next available fund index 
+
+___
+
+
+## delegatedStaking
+ 
+### agents(`AccountId32`): `Option<PalletDelegatedStakingAgentLedger>`
+- **interface**: `api.query.delegatedStaking.agents`
+- **summary**:    Map of `Agent` to their `Ledger`. 
+ 
+### counterForAgents(): `u32`
+- **interface**: `api.query.delegatedStaking.counterForAgents`
+- **summary**:    Counter for the related counted storage map 
+ 
+### counterForDelegators(): `u32`
+- **interface**: `api.query.delegatedStaking.counterForDelegators`
+- **summary**:    Counter for the related counted storage map 
+ 
+### delegators(`AccountId32`): `Option<PalletDelegatedStakingDelegation>`
+- **interface**: `api.query.delegatedStaking.delegators`
+- **summary**:    Map of Delegators to their `Delegation`. 
+
+   Implementation note: We are not using a double map with `delegator` and `agent` account  as keys since we want to restrict delegators to delegate only to one account at a time. 
 
 ___
 
@@ -1092,11 +1117,11 @@ ___
 - **interface**: `api.query.onDemandAssignmentProvider.freeEntries`
 - **summary**:    Priority queue for all orders which don't yet (or not any more) have any core affinity. 
  
-### paraIdAffinity(`u32`): `Option<PolkadotRuntimeParachainsAssignerOnDemandTypesCoreAffinityCount>`
+### paraIdAffinity(`u32`): `Option<PolkadotRuntimeParachainsOnDemandTypesCoreAffinityCount>`
 - **interface**: `api.query.onDemandAssignmentProvider.paraIdAffinity`
 - **summary**:    Maps a `ParaId` to `CoreIndex` and keeps track of how many assignments the scheduler has in  it's lookahead. Keeping track of this affinity prevents parallel execution of the same  `ParaId` on two or more `CoreIndex`es. 
  
-### queueStatus(): `PolkadotRuntimeParachainsAssignerOnDemandTypesQueueStatusType`
+### queueStatus(): `PolkadotRuntimeParachainsOnDemandTypesQueueStatusType`
 - **interface**: `api.query.onDemandAssignmentProvider.queueStatus`
 - **summary**:    Overall status of queue (both free + affinity entries) 
  
@@ -1126,7 +1151,7 @@ ___
 
    If this is `None` at the end of the block, we panic and render the block invalid. 
  
-### onChainVotes(): `Option<PolkadotPrimitivesV7ScrapedOnChainVotes>`
+### onChainVotes(): `Option<PolkadotPrimitivesV8ScrapedOnChainVotes>`
 - **interface**: `api.query.paraInherent.onChainVotes`
 - **summary**:    Scraped on chain data for extracting resolved disputes as well as backing votes. 
 
@@ -1248,7 +1273,7 @@ ___
 
    Ordered ascending by block number. 
  
-### upgradeGoAheadSignal(`u32`): `Option<PolkadotPrimitivesV7UpgradeGoAhead>`
+### upgradeGoAheadSignal(`u32`): `Option<PolkadotPrimitivesV8UpgradeGoAhead>`
 - **interface**: `api.query.paras.upgradeGoAheadSignal`
 - **summary**:    This is used by the relay-chain to communicate to a parachain a go-ahead with in the upgrade  procedure. 
 
@@ -1256,7 +1281,7 @@ ___
 
    NOTE that this field is used by parachains via merkle storage proofs, therefore changing  the format will require migration of parachains. 
  
-### upgradeRestrictionSignal(`u32`): `Option<PolkadotPrimitivesV7UpgradeRestriction>`
+### upgradeRestrictionSignal(`u32`): `Option<PolkadotPrimitivesV8UpgradeRestriction>`
 - **interface**: `api.query.paras.upgradeRestrictionSignal`
 - **summary**:    This is used by the relay-chain to communicate that there are restrictions for performing  an upgrade for this parachain. 
 
@@ -1304,7 +1329,7 @@ ___
 - **interface**: `api.query.parasDisputes.backersOnDisputes`
 - **summary**:    Backing votes stored for each dispute.  This storage is used for slashing. 
  
-### disputes(`u32, H256`): `Option<PolkadotPrimitivesV7DisputeState>`
+### disputes(`u32, H256`): `Option<PolkadotPrimitivesV8DisputeState>`
 - **interface**: `api.query.parasDisputes.disputes`
 - **summary**:    All ongoing or concluded disputes for the last several sessions. 
  
@@ -1329,7 +1354,7 @@ ___
 - **interface**: `api.query.paraSessionInfo.accountKeys`
 - **summary**:    The validator account keys of the validators actively participating in parachain consensus. 
  
-### assignmentKeysUnsafe(): `Vec<PolkadotPrimitivesV7AssignmentAppPublic>`
+### assignmentKeysUnsafe(): `Vec<PolkadotPrimitivesV8AssignmentAppPublic>`
 - **interface**: `api.query.paraSessionInfo.assignmentKeysUnsafe`
 - **summary**:    Assignment keys for the current session.  Note that this API is private due to it being prone to 'off-by-one' at session boundaries.  When in doubt, use `Sessions` API instead. 
  
@@ -1337,11 +1362,11 @@ ___
 - **interface**: `api.query.paraSessionInfo.earliestStoredSession`
 - **summary**:    The earliest session for which previous session info is stored. 
  
-### sessionExecutorParams(`u32`): `Option<PolkadotPrimitivesV7ExecutorParams>`
+### sessionExecutorParams(`u32`): `Option<PolkadotPrimitivesV8ExecutorParams>`
 - **interface**: `api.query.paraSessionInfo.sessionExecutorParams`
 - **summary**:    Executor parameter set for a given session index 
  
-### sessions(`u32`): `Option<PolkadotPrimitivesV7SessionInfo>`
+### sessions(`u32`): `Option<PolkadotPrimitivesV8SessionInfo>`
 - **interface**: `api.query.paraSessionInfo.sessions`
 - **summary**:    Session information in a rolling window.  Should have an entry in range `EarliestStoredSession..=CurrentSessionIndex`.  Does not have any entries before the session index in the first session change notification. 
 
@@ -1354,7 +1379,7 @@ ___
 - **interface**: `api.query.parasShared.activeValidatorIndices`
 - **summary**:    All the validators actively participating in parachain consensus.  Indices are into the broader validator set. 
  
-### activeValidatorKeys(): `Vec<PolkadotPrimitivesV7ValidatorAppPublic>`
+### activeValidatorKeys(): `Vec<PolkadotPrimitivesV8ValidatorAppPublic>`
 - **interface**: `api.query.parasShared.activeValidatorKeys`
 - **summary**:    The parachain attestation keys of the validators actively participating in parachain  consensus. This should be the same length as `ActiveValidatorIndices`. 
  
@@ -1371,7 +1396,7 @@ ___
 
 ## parasSlashing
  
-### unappliedSlashes(`u32, H256`): `Option<PolkadotPrimitivesV7SlashingPendingSlashes>`
+### unappliedSlashes(`u32, H256`): `Option<PolkadotPrimitivesV8SlashingPendingSlashes>`
 - **interface**: `api.query.parasSlashing.unappliedSlashes`
 - **summary**:    Validators pending dispute slashes. 
  
@@ -1907,6 +1932,10 @@ _These are well-known keys that are always available to the runtime implementati
 - **interface**: `api.query.substrate.code`
 - **summary**:    Wasm code of the runtime. 
  
+### defaultChildStorageKeyPrefix(): `u32`
+- **interface**: `api.query.substrate.defaultChildStorageKeyPrefix`
+- **summary**:    Prefix of the default child storage keys in the top trie. 
+ 
 ### extrinsicIndex(): `u32`
 - **interface**: `api.query.substrate.extrinsicIndex`
 - **summary**:    Current extrinsic index (u32) is stored under this key. 
@@ -1918,6 +1947,14 @@ _These are well-known keys that are always available to the runtime implementati
 ### intrablockEntropy(): `[u8;32]`
 - **interface**: `api.query.substrate.intrablockEntropy`
 - **summary**:    Current intra-block entropy (a universally unique `[u8; 32]` value) is stored here. 
+ 
+### storageVersionStorageKeyPostfix(): `u16`
+- **interface**: `api.query.substrate.storageVersionStorageKeyPostfix`
+- **summary**:    The storage key postfix that is used to store the [`StorageVersion`] per pallet. 
+ 
+### transactionLevelKey(): `u32`
+- **interface**: `api.query.substrate.transactionLevelKey`
+- **summary**:    The key that holds the current number of active layers. 
 
 ___
 

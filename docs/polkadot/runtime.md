@@ -116,15 +116,30 @@ ___
 - **runtime**: `beefyApi_beefy_genesis`
 - **summary**:  Return the block number where BEEFY consensus is enabled/started
  
+### generateAncestryProof(prev_block_number: `u32`, best_known_block_number: `Option<u32>`): `Option<Bytes>`
+- **interface**: `api.call.beefyApi.generateAncestryProof`
+- **runtime**: `beefyApi_generate_ancestry_proof`
+- **summary**:  Generates a proof that the `prev_block_number` is part of the canonical chain at, `best_known_block_number`.
+ 
 ### generateKeyOwnershipProof(set_id: `u64`, authority_id: `SpConsensusBeefyEcdsaCryptoPublic`): `Option<Bytes>`
 - **interface**: `api.call.beefyApi.generateKeyOwnershipProof`
 - **runtime**: `beefyApi_generate_key_ownership_proof`
 - **summary**:  Generates a proof of key ownership for the given authority in the, given set. An example usage of this module is coupled with the, session historical module to prove that a given authority key is, tied to a given staking identity during a specific session. Proofs, of key ownership are necessary for submitting equivocation reports., NOTE: even though the API takes a `set_id` as parameter the current, implementations ignores this parameter and instead relies on this, method being called at the correct block height, i.e. any point at, which the given set id is live on-chain. Future implementations will, instead use indexed data through an offchain worker, not requiring, older states to be available.
  
-### submitReportEquivocationUnsignedExtrinsic(equivocation_proof: `SpConsensusBeefyDoubleVotingProof`, key_owner_proof: `SpRuntimeOpaqueValue`): `Option<Null>`
-- **interface**: `api.call.beefyApi.submitReportEquivocationUnsignedExtrinsic`
-- **runtime**: `beefyApi_submit_report_equivocation_unsigned_extrinsic`
-- **summary**:  Submits an unsigned extrinsic to report an equivocation. The caller, must provide the equivocation proof and a key ownership proof, (should be obtained using `generate_key_ownership_proof`). The, extrinsic will be unsigned and should only be accepted for local, authorship (not to be broadcast to the network). This method returns, `None` when creation of the extrinsic fails, e.g. if equivocation, reporting is disabled for the given runtime (i.e. this method is, hardcoded to return `None`). Only useful in an offchain context.
+### submitReportDoubleVotingUnsignedExtrinsic(equivocation_proof: `SpConsensusBeefyDoubleVotingProof`, key_owner_proof: `SpRuntimeOpaqueValue`): `Option<Null>`
+- **interface**: `api.call.beefyApi.submitReportDoubleVotingUnsignedExtrinsic`
+- **runtime**: `beefyApi_submit_report_double_voting_unsigned_extrinsic`
+- **summary**:  Submits an unsigned extrinsic to report a double voting equivocation. The caller, must provide the double voting proof and a key ownership proof, (should be obtained using `generate_key_ownership_proof`). The, extrinsic will be unsigned and should only be accepted for local, authorship (not to be broadcast to the network). This method returns, `None` when creation of the extrinsic fails, e.g. if equivocation, reporting is disabled for the given runtime (i.e. this method is, hardcoded to return `None`). Only useful in an offchain context.
+ 
+### submitReportForkVotingUnsignedExtrinsic(equivocation_proof: `SpConsensusBeefyForkVotingProofOpaqueValue`, key_owner_proof: `SpRuntimeOpaqueValue`): `Option<Null>`
+- **interface**: `api.call.beefyApi.submitReportForkVotingUnsignedExtrinsic`
+- **runtime**: `beefyApi_submit_report_fork_voting_unsigned_extrinsic`
+- **summary**:  Submits an unsigned extrinsic to report a fork voting equivocation. The caller, must provide the fork voting proof (the ancestry proof should be obtained using, `generate_ancestry_proof`) and a key ownership proof (should be obtained using, `generate_key_ownership_proof`). The extrinsic will be unsigned and should only, be accepted for local authorship (not to be broadcast to the network). This method, returns `None` when creation of the extrinsic fails, e.g. if equivocation, reporting is disabled for the given runtime (i.e. this method is, hardcoded to return `None`). Only useful in an offchain context.
+ 
+### submitReportFutureBlockVotingUnsignedExtrinsic(equivocation_proof: `SpConsensusBeefyFutureBlockVotingProof`, key_owner_proof: `SpRuntimeOpaqueValue`): `Option<Null>`
+- **interface**: `api.call.beefyApi.submitReportFutureBlockVotingUnsignedExtrinsic`
+- **runtime**: `beefyApi_submit_report_future_block_voting_unsigned_extrinsic`
+- **summary**:  Submits an unsigned extrinsic to report a future block voting equivocation. The caller, must provide the future block voting proof and a key ownership proof, (should be obtained using `generate_key_ownership_proof`)., The extrinsic will be unsigned and should only be accepted for local, authorship (not to be broadcast to the network). This method returns, `None` when creation of the extrinsic fails, e.g. if equivocation, reporting is disabled for the given runtime (i.e. this method is, hardcoded to return `None`). Only useful in an offchain context.
  
 ### validatorSet(): `Option<SpConsensusBeefyValidatorSet>`
 - **interface**: `api.call.beefyApi.validatorSet`
@@ -219,7 +234,7 @@ ___
 ### getPreset(id: `Option<Text>`): `Option<Bytes>`
 - **interface**: `api.call.genesisBuilder.getPreset`
 - **runtime**: `genesisBuilder_get_preset`
-- **summary**:  Returns a JSON blob representation of the built-in `RuntimeGenesisConfig` identified by, `id`.,, If `id` is `None` the function returns JSON blob representation of the default, `RuntimeGenesisConfig` struct of the runtime. Implementation must provide default, `RuntimeGenesisConfig`.,, Otherwise function returns a JSON representation of the built-in, named, `RuntimeGenesisConfig` preset identified by `id`, or `None` if such preset does not, exists. Returned `Vec<u8>` contains bytes of JSON blob (patch) which comprises a list of, (potentially nested) key-value pairs that are intended for customizing the default, runtime genesis config. The patch shall be merged (rfc7386) with the JSON representation, of the default `RuntimeGenesisConfig` to create a comprehensive genesis config that can, be used in `build_state` method.
+- **summary**:  Returns a JSON blob representation of the built-in `RuntimeGenesisConfig` identified by, `id`.,, If `id` is `None` the function returns JSON blob representation of the default, `RuntimeGenesisConfig` struct of the runtime. Implementation must provide default, `RuntimeGenesisConfig`.,, Otherwise function returns a JSON representation of the built-in, named, `RuntimeGenesisConfig` preset identified by `id`, or `None` if such preset does not, exist. Returned `Vec<u8>` contains bytes of JSON blob (patch) which comprises a list of, (potentially nested) key-value pairs that are intended for customizing the default, runtime genesis config. The patch shall be merged (rfc7386) with the JSON representation, of the default `RuntimeGenesisConfig` to create a comprehensive genesis config that can, be used in `build_state` method.
  
 ### presetNames(): `Vec<Text>`
 - **interface**: `api.call.genesisBuilder.presetNames`
@@ -339,7 +354,12 @@ ___
 ### memberPendingSlash(member: `SpCoreCryptoAccountId32`): `u128`
 - **interface**: `api.call.nominationPoolsApi.memberPendingSlash`
 - **runtime**: `nominationPoolsApi_member_pending_slash`
-- **summary**:  Returns the pending slash for a given pool member.
+- **summary**:  Returns the pending slash for a given pool member.,, If pending slash of the member exceeds `ExistentialDeposit`, it can be reported on, chain.
+ 
+### memberTotalBalance(who: `SpCoreCryptoAccountId32`): `u128`
+- **interface**: `api.call.nominationPoolsApi.memberTotalBalance`
+- **runtime**: `nominationPoolsApi_member_total_balance`
+- **summary**:  Returns the total contribution of a pool member including any balance that is unbonding.
  
 ### pendingRewards(who: `SpCoreCryptoAccountId32`): `u128`
 - **interface**: `api.call.nominationPoolsApi.pendingRewards`
@@ -350,6 +370,11 @@ ___
 - **interface**: `api.call.nominationPoolsApi.pointsToBalance`
 - **runtime**: `nominationPoolsApi_points_to_balance`
 - **summary**:  Returns the equivalent balance of `points` for a given pool.
+ 
+### poolBalance(pool_id: `u32`): `u128`
+- **interface**: `api.call.nominationPoolsApi.poolBalance`
+- **runtime**: `nominationPoolsApi_pool_balance`
+- **summary**:  Total balance contributed to the pool.
  
 ### poolNeedsDelegateMigration(pool_id: `u32`): `bool`
 - **interface**: `api.call.nominationPoolsApi.poolNeedsDelegateMigration`
@@ -376,42 +401,42 @@ ___
 
 ## parachainHost
  
-### approvalVotingParams(): `PolkadotPrimitivesV7ApprovalVotingParams`
+### approvalVotingParams(): `PolkadotPrimitivesV8ApprovalVotingParams`
 - **interface**: `api.call.parachainHost.approvalVotingParams`
 - **runtime**: `parachainHost_approval_voting_params`
 - **summary**:  Approval voting configuration parameters
  
-### assumedValidationData(para_id: `PolkadotParachainPrimitivesPrimitivesId`, expected_persisted_validation_data_hash: `PrimitiveTypesH256`): `Option<(PolkadotPrimitivesV7PersistedValidationData,H256)>`
+### assumedValidationData(para_id: `PolkadotParachainPrimitivesPrimitivesId`, expected_persisted_validation_data_hash: `PrimitiveTypesH256`): `Option<(PolkadotPrimitivesV8PersistedValidationData,H256)>`
 - **interface**: `api.call.parachainHost.assumedValidationData`
 - **runtime**: `parachainHost_assumed_validation_data`
 - **summary**:  Returns the persisted validation data for the given `ParaId` along with the corresponding, validation code hash. Instead of accepting assumption about the para, matches the validation, data hash against an expected one and yields `None` if they're not equal.
  
-### asyncBackingParams(): `PolkadotPrimitivesV7AsyncBackingAsyncBackingParams`
+### asyncBackingParams(): `PolkadotPrimitivesV8AsyncBackingAsyncBackingParams`
 - **interface**: `api.call.parachainHost.asyncBackingParams`
 - **runtime**: `parachainHost_async_backing_params`
 - **summary**:  Returns candidate's acceptance limitations for asynchronous backing for a relay parent.
  
-### availabilityCores(): `Vec<PolkadotPrimitivesV7CoreState>`
+### availabilityCores(): `Vec<PolkadotPrimitivesV8CoreState>`
 - **interface**: `api.call.parachainHost.availabilityCores`
 - **runtime**: `parachainHost_availability_cores`
 - **summary**:  Yields information on all availability cores as relevant to the child block., Cores are either free or occupied. Free cores can have paras assigned to them.
  
-### candidateEvents(): `Vec<PolkadotPrimitivesV7CandidateEvent>`
+### candidateEvents(): `Vec<PolkadotPrimitivesV8CandidateEvent>`
 - **interface**: `api.call.parachainHost.candidateEvents`
 - **runtime**: `parachainHost_candidate_events`
 - **summary**:  Get a vector of events concerning candidates that occurred within a block.
  
-### candidatePendingAvailability(para_id: `PolkadotParachainPrimitivesPrimitivesId`): `Option<PolkadotPrimitivesV7CommittedCandidateReceipt>`
+### candidatePendingAvailability(para_id: `PolkadotParachainPrimitivesPrimitivesId`): `Option<PolkadotPrimitivesV8CommittedCandidateReceipt>`
 - **interface**: `api.call.parachainHost.candidatePendingAvailability`
 - **runtime**: `parachainHost_candidate_pending_availability`
 - **summary**:  Get the receipt of a candidate pending availability. This returns `Some` for any paras, assigned to occupied cores in `availability_cores` and `None` otherwise.
  
-### candidatesPendingAvailability(para_id: `PolkadotParachainPrimitivesPrimitivesId`): `Vec<PolkadotPrimitivesV7CommittedCandidateReceipt>`
+### candidatesPendingAvailability(para_id: `PolkadotParachainPrimitivesPrimitivesId`): `Vec<PolkadotPrimitivesV8CommittedCandidateReceipt>`
 - **interface**: `api.call.parachainHost.candidatesPendingAvailability`
 - **runtime**: `parachainHost_candidates_pending_availability`
 - **summary**:  Elastic scaling support
  
-### checkValidationOutputs(para_id: `PolkadotParachainPrimitivesPrimitivesId`, outputs: `PolkadotPrimitivesV7CandidateCommitments`): `bool`
+### checkValidationOutputs(para_id: `PolkadotParachainPrimitivesPrimitivesId`, outputs: `PolkadotPrimitivesV8CandidateCommitments`): `bool`
 - **interface**: `api.call.parachainHost.checkValidationOutputs`
 - **runtime**: `parachainHost_check_validation_outputs`
 - **summary**:  Checks if the given validation outputs pass the acceptance criteria.
@@ -426,7 +451,7 @@ ___
 - **runtime**: `parachainHost_disabled_validators`
 - **summary**:  Returns a list of all disabled validators at the given block.
  
-### disputes(): `Vec<(u32,H256,PolkadotPrimitivesV7DisputeState)>`
+### disputes(): `Vec<(u32,H256,PolkadotPrimitivesV8DisputeState)>`
 - **interface**: `api.call.parachainHost.disputes`
 - **runtime**: `parachainHost_disputes`
 - **summary**:  Returns all onchain disputes.
@@ -441,7 +466,7 @@ ___
 - **runtime**: `parachainHost_inbound_hrmp_channels_contents`
 - **summary**:  Get the contents of all channels addressed to the given recipient. Channels that have no, messages in them are also included.
  
-### keyOwnershipProof(validator_id: `PolkadotPrimitivesV7ValidatorAppPublic`): `Option<Bytes>`
+### keyOwnershipProof(validator_id: `PolkadotPrimitivesV8ValidatorAppPublic`): `Option<Bytes>`
 - **interface**: `api.call.parachainHost.keyOwnershipProof`
 - **runtime**: `parachainHost_key_ownership_proof`
 - **summary**:  Returns a merkle proof of a validator session key., NOTE: This function is only available since parachain host version 5.
@@ -456,17 +481,17 @@ ___
 - **runtime**: `parachainHost_node_features`
 - **summary**:  Get node features., This is a staging method! Do not use on production runtimes!
  
-### onChainVotes(): `Option<PolkadotPrimitivesV7ScrapedOnChainVotes>`
+### onChainVotes(): `Option<PolkadotPrimitivesV8ScrapedOnChainVotes>`
 - **interface**: `api.call.parachainHost.onChainVotes`
 - **runtime**: `parachainHost_on_chain_votes`
 - **summary**:  Scrape dispute relevant from on-chain, backing votes and resolved disputes.
  
-### paraBackingState(_: `PolkadotParachainPrimitivesPrimitivesId`): `Option<PolkadotPrimitivesV7AsyncBackingBackingState>`
+### paraBackingState(_: `PolkadotParachainPrimitivesPrimitivesId`): `Option<PolkadotPrimitivesV8AsyncBackingBackingState>`
 - **interface**: `api.call.parachainHost.paraBackingState`
 - **runtime**: `parachainHost_para_backing_state`
 - **summary**:  Returns the state of parachain backing for a given para.
  
-### persistedValidationData(para_id: `PolkadotParachainPrimitivesPrimitivesId`, assumption: `PolkadotPrimitivesV7OccupiedCoreAssumption`): `Option<PolkadotPrimitivesV7PersistedValidationData>`
+### persistedValidationData(para_id: `PolkadotParachainPrimitivesPrimitivesId`, assumption: `PolkadotPrimitivesV8OccupiedCoreAssumption`): `Option<PolkadotPrimitivesV8PersistedValidationData>`
 - **interface**: `api.call.parachainHost.persistedValidationData`
 - **runtime**: `parachainHost_persisted_validation_data`
 - **summary**:  Yields the persisted validation data for the given `ParaId` along with an assumption that, should be used if the para currently occupies a core.,, Returns `None` if either the para is not registered or the assumption is `Freed`, and the para already occupies a core.
@@ -476,7 +501,7 @@ ___
 - **runtime**: `parachainHost_pvfs_require_precheck`
 - **summary**:  Returns code hashes of PVFs that require pre-checking by validators in the active set.,, NOTE: This function is only available since parachain host version 2.
  
-### sessionExecutorParams(session_index: `u32`): `Option<PolkadotPrimitivesV7ExecutorParams>`
+### sessionExecutorParams(session_index: `u32`): `Option<PolkadotPrimitivesV8ExecutorParams>`
 - **interface**: `api.call.parachainHost.sessionExecutorParams`
 - **runtime**: `parachainHost_session_executor_params`
 - **summary**:  Returns execution parameters for the session.
@@ -486,27 +511,27 @@ ___
 - **runtime**: `parachainHost_session_index_for_child`
 - **summary**:  Returns the session index expected at a child of the block.,, This can be used to instantiate a `SigningContext`.
  
-### sessionInfo(index: `u32`): `Option<PolkadotPrimitivesV7SessionInfo>`
+### sessionInfo(index: `u32`): `Option<PolkadotPrimitivesV8SessionInfo>`
 - **interface**: `api.call.parachainHost.sessionInfo`
 - **runtime**: `parachainHost_session_info`
 - **summary**:  Get the session info for the given session, if stored.,, NOTE: This function is only available since parachain host version 2.
  
-### submitPvfCheckStatement(stmt: `PolkadotPrimitivesV7PvfCheckStatement`, signature: `PolkadotPrimitivesV7ValidatorAppSignature`): `Null`
+### submitPvfCheckStatement(stmt: `PolkadotPrimitivesV8PvfCheckStatement`, signature: `PolkadotPrimitivesV8ValidatorAppSignature`): `Null`
 - **interface**: `api.call.parachainHost.submitPvfCheckStatement`
 - **runtime**: `parachainHost_submit_pvf_check_statement`
 - **summary**:  Submits a PVF pre-checking statement into the transaction pool.,, NOTE: This function is only available since parachain host version 2.
  
-### submitReportDisputeLost(dispute_proof: `PolkadotPrimitivesV7SlashingDisputeProof`, key_ownership_proof: `PolkadotPrimitivesV7SlashingOpaqueKeyOwnershipProof`): `Option<Null>`
+### submitReportDisputeLost(dispute_proof: `PolkadotPrimitivesV8SlashingDisputeProof`, key_ownership_proof: `PolkadotPrimitivesV8SlashingOpaqueKeyOwnershipProof`): `Option<Null>`
 - **interface**: `api.call.parachainHost.submitReportDisputeLost`
 - **runtime**: `parachainHost_submit_report_dispute_lost`
 - **summary**:  Submit an unsigned extrinsic to slash validators who lost a dispute about, a candidate of a past session., NOTE: This function is only available since parachain host version 5.
  
-### unappliedSlashes(): `Vec<(u32,H256,PolkadotPrimitivesV7SlashingPendingSlashes)>`
+### unappliedSlashes(): `Vec<(u32,H256,PolkadotPrimitivesV8SlashingPendingSlashes)>`
 - **interface**: `api.call.parachainHost.unappliedSlashes`
 - **runtime**: `parachainHost_unapplied_slashes`
 - **summary**:  Returns a list of validators that lost a past session dispute and need to be slashed., NOTE: This function is only available since parachain host version 5.
  
-### validationCode(para_id: `PolkadotParachainPrimitivesPrimitivesId`, assumption: `PolkadotPrimitivesV7OccupiedCoreAssumption`): `Option<Bytes>`
+### validationCode(para_id: `PolkadotParachainPrimitivesPrimitivesId`, assumption: `PolkadotPrimitivesV8OccupiedCoreAssumption`): `Option<Bytes>`
 - **interface**: `api.call.parachainHost.validationCode`
 - **runtime**: `parachainHost_validation_code`
 - **summary**:  Fetch the validation code used by a para, making the given `OccupiedCoreAssumption`.,, Returns `None` if either the para is not registered or the assumption is `Freed`, and the para already occupies a core.
@@ -516,17 +541,17 @@ ___
 - **runtime**: `parachainHost_validation_code_by_hash`
 - **summary**:  Get the validation code from its hash.
  
-### validationCodeHash(para_id: `PolkadotParachainPrimitivesPrimitivesId`, assumption: `PolkadotPrimitivesV7OccupiedCoreAssumption`): `Option<H256>`
+### validationCodeHash(para_id: `PolkadotParachainPrimitivesPrimitivesId`, assumption: `PolkadotPrimitivesV8OccupiedCoreAssumption`): `Option<H256>`
 - **interface**: `api.call.parachainHost.validationCodeHash`
 - **runtime**: `parachainHost_validation_code_hash`
 - **summary**:  Fetch the hash of the validation code used by a para, making the given `OccupiedCoreAssumption`.,, NOTE: This function is only available since parachain host version 2.
  
-### validatorGroups(): `(Vec<Vec<u32>>,PolkadotPrimitivesV7GroupRotationInfo)`
+### validatorGroups(): `(Vec<Vec<u32>>,PolkadotPrimitivesV8GroupRotationInfo)`
 - **interface**: `api.call.parachainHost.validatorGroups`
 - **runtime**: `parachainHost_validator_groups`
 - **summary**:  Returns the validator groups and rotation info localized based on the hypothetical child,  of a block whose state  this is invoked on. Note that `now` in the `GroupRotationInfo`, should be the successor of the number of the block.
  
-### validators(): `Vec<PolkadotPrimitivesV7ValidatorAppPublic>`
+### validators(): `Vec<PolkadotPrimitivesV8ValidatorAppPublic>`
 - **interface**: `api.call.parachainHost.validators`
 - **runtime**: `parachainHost_validators`
 - **summary**:  Get the current validators.

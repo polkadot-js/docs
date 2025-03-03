@@ -12,6 +12,8 @@ The following sections contain known RPC methods that may be available on specif
 
 - **[dev](#dev)**
 
+- **[engine](#engine)**
+
 - **[offchain](#offchain)**
 
 - **[payment](#payment)**
@@ -158,6 +160,21 @@ ___
 - **jsonrpc**: `dev_getBlockStats`
 - **summary**: Reexecute the specified `block_hash` and gather statistics while doing so
 - **unsafe**: This method is only active with appropriate flags
+
+___
+
+
+## engine
+ 
+### createBlock(createEmpty: `bool`, finalize: `bool`, parentHash?: `BlockHash`): `CreatedBlock`
+- **interface**: `api.rpc.engine.createBlock`
+- **jsonrpc**: `engine_createBlock`
+- **summary**: Instructs the manual-seal authorship task to create a new block
+ 
+### finalizeBlock(hash: `BlockHash`, justification?: `Justification`): `bool`
+- **interface**: `api.rpc.engine.finalizeBlock`
+- **jsonrpc**: `engine_finalizeBlock`
+- **summary**: Instructs the manual-seal authorship task to finalize a block
 
 ___
 
