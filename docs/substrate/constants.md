@@ -12,6 +12,8 @@ The following sections contain the module constants, also known as parameter typ
 
 - **[assetConversion](#assetconversion)**
 
+- **[assetRewards](#assetrewards)**
+
 - **[assets](#assets)**
 
 - **[babe](#babe)**
@@ -33,6 +35,8 @@ The following sections contain the module constants, also known as parameter typ
 - **[coreFellowship](#corefellowship)**
 
 - **[council](#council)**
+
+- **[delegatedStaking](#delegatedstaking)**
 
 - **[democracy](#democracy)**
 
@@ -187,6 +191,17 @@ ___
 ___
 
 
+## assetRewards
+ 
+### palletId: `FrameSupportPalletId`
+- **interface**: `api.consts.assetRewards.palletId`
+- **summary**:    The pallet's unique identifier, used to derive the pool's account ID. 
+
+   The account ID is derived once during pool creation and stored in the storage. 
+
+___
+
+
 ## assets
  
 ### approvalDeposit: `u128`
@@ -303,7 +318,9 @@ ___
  
 ### bountyUpdatePeriod: `u32`
 - **interface**: `api.consts.bounties.bountyUpdatePeriod`
-- **summary**:    Bounty duration in blocks. 
+- **summary**:    The time limit for a curator to act before a bounty expires. 
+
+   The period that starts when a curator is approved, during which they must execute or  update the bounty via `extend_bounty_expiry`. If missed, the bounty expires, and the  curator may be slashed. If `BlockNumberFor::MAX`, bounties stay active indefinitely,  removing the need for `extend_bounty_expiry`. 
  
 ### bountyValueMinimum: `u128`
 - **interface**: `api.consts.bounties.bountyValueMinimum`
@@ -340,6 +357,7 @@ ___
  
 ### maxAutoRenewals: `u32`
 - **interface**: `api.consts.broker.maxAutoRenewals`
+- **summary**:    Given that we are performing all auto-renewals in a single block, it has to be limited. 
  
 ### maxLeasedCores: `u32`
 - **interface**: `api.consts.broker.maxLeasedCores`
@@ -348,6 +366,12 @@ ___
 ### maxReservedCores: `u32`
 - **interface**: `api.consts.broker.maxReservedCores`
 - **summary**:    Maximum number of system cores. 
+ 
+### minimumCreditPurchase: `u128`
+- **interface**: `api.consts.broker.minimumCreditPurchase`
+- **summary**:    The smallest amount of credits a user can purchase. 
+
+   Needed to prevent spam attacks. 
  
 ### palletId: `FrameSupportPalletId`
 - **interface**: `api.consts.broker.palletId`
@@ -487,6 +511,19 @@ ___
 ### maxProposalWeight: `SpWeightsWeightV2Weight`
 - **interface**: `api.consts.council.maxProposalWeight`
 - **summary**:    The maximum weight of a dispatch call that can be proposed and executed. 
+
+___
+
+
+## delegatedStaking
+ 
+### palletId: `FrameSupportPalletId`
+- **interface**: `api.consts.delegatedStaking.palletId`
+- **summary**:    Injected identifier for the pallet. 
+ 
+### slashRewardFraction: `Perbill`
+- **interface**: `api.consts.delegatedStaking.slashRewardFraction`
+- **summary**:    Fraction of the slash that is rewarded to the caller of pending slash to the agent. 
 
 ___
 
@@ -1140,9 +1177,11 @@ ___
 - **interface**: `api.consts.rankedPolls.submissionDeposit`
 - **summary**:    The minimum amount to be used as a deposit for a public referendum proposal. 
  
-### tracks: `Vec<(u16,PalletReferendaTrackInfo)>`
+### tracks: `Vec<(u16,PalletReferendaTrackDetails)>`
 - **interface**: `api.consts.rankedPolls.tracks`
-- **summary**:    Information concerning the different referendum tracks. 
+- **summary**:    A list of tracks. 
+
+   Note: if the tracks are dynamic, the value in the static metadata might be inaccurate. 
  
 ### undecidingTimeout: `u32`
 - **interface**: `api.consts.rankedPolls.undecidingTimeout`
@@ -1194,9 +1233,11 @@ ___
 - **interface**: `api.consts.referenda.submissionDeposit`
 - **summary**:    The minimum amount to be used as a deposit for a public referendum proposal. 
  
-### tracks: `Vec<(u16,PalletReferendaTrackInfo)>`
+### tracks: `Vec<(u16,PalletReferendaTrackDetails)>`
 - **interface**: `api.consts.referenda.tracks`
-- **summary**:    Information concerning the different referendum tracks. 
+- **summary**:    A list of tracks. 
+
+   Note: if the tracks are dynamic, the value in the static metadata might be inaccurate. 
  
 ### undecidingTimeout: `u32`
 - **interface**: `api.consts.referenda.undecidingTimeout`
@@ -1207,9 +1248,6 @@ ___
 
 ## revive
  
-### apiVersion: `u16`
-- **interface**: `api.consts.revive.apiVersion`
- 
 ### chainId: `u64`
 - **interface**: `api.consts.revive.chainId`
 - **summary**:    The [EIP-155](https://eips.ethereum.org/EIPS/eip-155) chain ID. 
@@ -1218,7 +1256,7 @@ ___
  
 ### codeHashLockupDepositPercent: `Perbill`
 - **interface**: `api.consts.revive.codeHashLockupDepositPercent`
-- **summary**:    The percentage of the storage deposit that should be held for using a code hash.  Instantiating a contract, or calling [`chain_extension::Ext::lock_delegate_dependency`]  protects the code from being removed. In order to prevent abuse these actions are  protected with a percentage of the code deposit. 
+- **summary**:    The percentage of the storage deposit that should be held for using a code hash.  Instantiating a contract, protects the code from being removed. In order to prevent  abuse these actions are protected with a percentage of the code deposit. 
  
 ### depositPerByte: `u128`
 - **interface**: `api.consts.revive.depositPerByte`
@@ -1588,6 +1626,10 @@ ___
 ### payoutPeriod: `u32`
 - **interface**: `api.consts.treasury.payoutPeriod`
 - **summary**:    The period during which an approved treasury spend has to be claimed. 
+ 
+### potAccount: `AccountId32`
+- **interface**: `api.consts.treasury.potAccount`
+- **summary**:    Gets this pallet's derived pot account. 
  
 ### spendPeriod: `u32`
 - **interface**: `api.consts.treasury.spendPeriod`

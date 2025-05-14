@@ -8,6 +8,8 @@ The following section contains known runtime calls that may be available on spec
 
 - **[assetConversionApi](#assetconversionapi)**
 
+- **[assetRewards](#assetrewards)**
+
 - **[assetsApi](#assetsapi)**
 
 - **[authorityDiscoveryApi](#authoritydiscoveryapi)**
@@ -39,6 +41,8 @@ The following section contains known runtime calls that may be available on spec
 - **[offchainWorkerApi](#offchainworkerapi)**
 
 - **[reviveApi](#reviveapi)**
+
+- **[runtimeViewFunction](#runtimeviewfunction)**
 
 - **[sessionKeys](#sessionkeys)**
 
@@ -82,6 +86,16 @@ ___
 - **interface**: `api.call.assetConversionApi.quotePriceTokensForExactTokens`
 - **runtime**: `assetConversionApi_quote_price_tokens_for_exact_tokens`
 - **summary**:  Provides a quote for [`Pallet::swap_tokens_for_exact_tokens`].,, Note that the price may have changed by the time the transaction is executed., (Use `amount_in_max` to control slippage.)
+
+___
+
+
+## assetRewards
+ 
+### poolCreationCost(): `u128`
+- **interface**: `api.call.assetRewards.poolCreationCost`
+- **runtime**: `assetRewards_pool_creation_cost`
+- **summary**:  Get the cost of creating a pool.,, This is especially useful when the cost is dynamic.
 
 ___
 
@@ -421,7 +435,7 @@ ___
 ### memberPendingSlash(member: `SpCoreCryptoAccountId32`): `u128`
 - **interface**: `api.call.nominationPoolsApi.memberPendingSlash`
 - **runtime**: `nominationPoolsApi_member_pending_slash`
-- **summary**:  Returns the pending slash for a given pool member.
+- **summary**:  Returns the pending slash for a given pool member.,, If pending slash of the member exceeds `ExistentialDeposit`, it can be reported on, chain.
  
 ### memberTotalBalance(who: `SpCoreCryptoAccountId32`): `u128`
 - **interface**: `api.call.nominationPoolsApi.memberTotalBalance`
@@ -473,20 +487,30 @@ ___
 
 ## reviveApi
  
-### balance(address: `PrimitiveTypesH160`): `u128`
+### balance(address: `PrimitiveTypesH160`): `PrimitiveTypesU256`
 - **interface**: `api.call.reviveApi.balance`
 - **runtime**: `reviveApi_balance`
-- **summary**:  Returns the free balance of the given `[H160]` address.
+- **summary**:  Returns the free balance of the given `[H160]` address, using EVM decimals.
+ 
+### blockGasLimit(): `PrimitiveTypesU256`
+- **interface**: `api.call.reviveApi.blockGasLimit`
+- **runtime**: `reviveApi_block_gas_limit`
+- **summary**:  Returns the block gas limit.
  
 ### call(origin: `SpCoreCryptoAccountId32`, dest: `PrimitiveTypesH160`, value: `u128`, gas_limit: `Option<SpWeightsWeightV2Weight>`, storage_deposit_limit: `Option<u128>`, input_data: `Bytes`): `PalletRevivePrimitivesContractResultExecReturnValue`
 - **interface**: `api.call.reviveApi.call`
 - **runtime**: `reviveApi_call`
 - **summary**:  Perform a call from a specified account to a given contract.,, See [`crate::Pallet::bare_call`].
  
-### ethTransact(origin: `PrimitiveTypesH160`, dest: `Option<H160>`, value: `u128`, input: `Bytes`, gas_limit: `Option<SpWeightsWeightV2Weight>`, storage_deposit_limit: `Option<u128>`): `PalletRevivePrimitivesEthContractResult`
+### ethTransact(tx: `PalletReviveEvmApiRpcTypesGenGenericTransaction`): `Result<PalletRevivePrimitivesEthTransactInfo, PalletRevivePrimitivesEthTransactError>`
 - **interface**: `api.call.reviveApi.ethTransact`
 - **runtime**: `reviveApi_eth_transact`
 - **summary**:  Perform an Ethereum call.,, See [`crate::Pallet::bare_eth_transact`]
+ 
+### gasPrice(): `PrimitiveTypesU256`
+- **interface**: `api.call.reviveApi.gasPrice`
+- **runtime**: `reviveApi_gas_price`
+- **summary**:  Returns the gas price.
  
 ### getStorage(address: `PrimitiveTypesH160`, key: `[u8;32]`): `Result<Option<Bytes>, PalletRevivePrimitivesContractAccessError>`
 - **interface**: `api.call.reviveApi.getStorage`
@@ -503,10 +527,35 @@ ___
 - **runtime**: `reviveApi_nonce`
 - **summary**:  Returns the nonce of the given `[H160]` address.
  
+### traceBlock(block: `SpRuntimeBlock`, config: `PalletReviveEvmApiDebugRpcTypesTracerConfig`): `Vec<(u32,PalletReviveEvmApiDebugRpcTypesCallTrace)>`
+- **interface**: `api.call.reviveApi.traceBlock`
+- **runtime**: `reviveApi_trace_block`
+- **summary**:  Traces the execution of an entire block and returns call traces.,, This is intended to be called through `state_call` to replay the block from the, parent block.,, See eth-rpc `debug_traceBlockByNumber` for usage.
+ 
+### traceCall(tx: `PalletReviveEvmApiRpcTypesGenGenericTransaction`, config: `PalletReviveEvmApiDebugRpcTypesTracerConfig`): `Result<PalletReviveEvmApiDebugRpcTypesCallTrace, PalletRevivePrimitivesEthTransactError>`
+- **interface**: `api.call.reviveApi.traceCall`
+- **runtime**: `reviveApi_trace_call`
+- **summary**:  Dry run and return the trace of the given call.,, See eth-rpc `debug_traceCall` for usage.
+ 
+### traceTx(block: `SpRuntimeBlock`, tx_index: `u32`, config: `PalletReviveEvmApiDebugRpcTypesTracerConfig`): `Option<PalletReviveEvmApiDebugRpcTypesCallTrace>`
+- **interface**: `api.call.reviveApi.traceTx`
+- **runtime**: `reviveApi_trace_tx`
+- **summary**:  Traces the execution of a specific transaction within a block.,, This is intended to be called through `state_call` to replay the block from the, parent hash up to the transaction.,, See eth-rpc `debug_traceTransaction` for usage.
+ 
 ### uploadCode(origin: `SpCoreCryptoAccountId32`, code: `Bytes`, storage_deposit_limit: `Option<u128>`): `Result<PalletRevivePrimitivesCodeUploadReturnValue, SpRuntimeDispatchError>`
 - **interface**: `api.call.reviveApi.uploadCode`
 - **runtime**: `reviveApi_upload_code`
 - **summary**:  Upload new code without instantiating a contract from it.,, See [`crate::Pallet::bare_upload_code`].
+
+___
+
+
+## runtimeViewFunction
+ 
+### executeViewFunction(query_id: `FrameSupportViewFunctionsViewFunctionId`, input: `Bytes`): `Result<Bytes, FrameSupportViewFunctionsViewFunctionDispatchError>`
+- **interface**: `api.call.runtimeViewFunction.executeViewFunction`
+- **runtime**: `runtimeViewFunction_execute_view_function`
+- **summary**:  Execute a view function query.
 
 ___
 

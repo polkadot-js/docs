@@ -16,7 +16,11 @@ This page lists the errors that can be encountered in the different modules.
 
 - **[assetRate](#assetrate)**
 
+- **[assetRewards](#assetrewards)**
+
 - **[assets](#assets)**
+
+- **[assetsFreezer](#assetsfreezer)**
 
 - **[babe](#babe)**
 
@@ -37,6 +41,8 @@ This page lists the errors that can be encountered in the different modules.
 - **[coreFellowship](#corefellowship)**
 
 - **[council](#council)**
+
+- **[delegatedStaking](#delegatedstaking)**
 
 - **[democracy](#democracy)**
 
@@ -59,6 +65,8 @@ This page lists the errors that can be encountered in the different modules.
 - **[lottery](#lottery)**
 
 - **[messageQueue](#messagequeue)**
+
+- **[metaTx](#metatx)**
 
 - **[multiBlockMigrations](#multiblockmigrations)**
 
@@ -425,6 +433,51 @@ ___
 ___
 
 
+## assetRewards
+ 
+### BlockNumberConversionError
+- **interface**: `api.errors.assetRewards.BlockNumberConversionError.is`
+- **summary**:    There was an error converting a block number. 
+ 
+### ExpiryBlockMustBeInTheFuture
+- **interface**: `api.errors.assetRewards.ExpiryBlockMustBeInTheFuture.is`
+- **summary**:    The expiry block must be in the future. 
+ 
+### ExpiryCut
+- **interface**: `api.errors.assetRewards.ExpiryCut.is`
+- **summary**:    The expiry block can be only extended. 
+ 
+### InsufficientFunds
+- **interface**: `api.errors.assetRewards.InsufficientFunds.is`
+- **summary**:    Insufficient funds to create the freeze. 
+ 
+### NonEmptyPool
+- **interface**: `api.errors.assetRewards.NonEmptyPool.is`
+- **summary**:    The pool still has staked tokens or rewards. 
+ 
+### NonExistentAsset
+- **interface**: `api.errors.assetRewards.NonExistentAsset.is`
+- **summary**:    An operation was attempted with a non-existent asset. 
+ 
+### NonExistentPool
+- **interface**: `api.errors.assetRewards.NonExistentPool.is`
+- **summary**:    An operation was attempted on a non-existent pool. 
+ 
+### NonExistentStaker
+- **interface**: `api.errors.assetRewards.NonExistentStaker.is`
+- **summary**:    An operation was attempted for a non-existent staker. 
+ 
+### NotEnoughTokens
+- **interface**: `api.errors.assetRewards.NotEnoughTokens.is`
+- **summary**:    The staker does not have enough tokens to perform the operation. 
+ 
+### RewardRateCut
+- **interface**: `api.errors.assetRewards.RewardRateCut.is`
+- **summary**:    The reward rate per block can be only increased. 
+
+___
+
+
 ## assets
  
 ### AlreadyExists
@@ -454,6 +507,14 @@ ___
 ### CallbackFailed
 - **interface**: `api.errors.assets.CallbackFailed.is`
 - **summary**:    Callback action resulted in error 
+ 
+### ContainsFreezes
+- **interface**: `api.errors.assets.ContainsFreezes.is`
+- **summary**:    The asset cannot be destroyed because some accounts for this asset contain freezes. 
+ 
+### ContainsHolds
+- **interface**: `api.errors.assets.ContainsHolds.is`
+- **summary**:    The asset cannot be destroyed because some accounts for this asset contain holds. 
  
 ### Frozen
 - **interface**: `api.errors.assets.Frozen.is`
@@ -510,6 +571,15 @@ ___
 ### WouldDie
 - **interface**: `api.errors.assets.WouldDie.is`
 - **summary**:    The source account would not survive the transfer and it needs to stay alive. 
+
+___
+
+
+## assetsFreezer
+ 
+### TooManyFreezes
+- **interface**: `api.errors.assetsFreezer.TooManyFreezes.is`
+- **summary**:    Number of freezes on an account would exceed `MaxFreezes`. 
 
 ___
 
@@ -676,6 +746,10 @@ ___
 - **interface**: `api.errors.broker.AlreadyExpired.is`
 - **summary**:    The lease expiry time has already passed. 
  
+### AssignmentNotFound
+- **interface**: `api.errors.broker.AssignmentNotFound.is`
+- **summary**:    Attempted to force remove an assignment that doesn't exist. 
+ 
 ### AutoRenewalNotEnabled
 - **interface**: `api.errors.broker.AutoRenewalNotEnabled.is`
 - **summary**:    Attempted to disable auto-renewal for a core that didn't have it enabled. 
@@ -688,6 +762,10 @@ ___
 - **interface**: `api.errors.broker.CorruptWorkplan.is`
 - **summary**:    The workplan of the pallet's state is invalid. This indicates a state corruption. 
  
+### CreditPurchaseTooSmall
+- **interface**: `api.errors.broker.CreditPurchaseTooSmall.is`
+- **summary**:    Needed to prevent spam attacks.The amount of credits the user attempted to purchase is  below `T::MinimumCreditPurchase`. 
+ 
 ### ExteriorPivot
 - **interface**: `api.errors.broker.ExteriorPivot.is`
 - **summary**:    The pivot mask for the interlacing is not contained within the region's interlace mask. 
@@ -699,6 +777,10 @@ ___
 ### InvalidConfig
 - **interface**: `api.errors.broker.InvalidConfig.is`
 - **summary**:    The configuration could not be applied because it is invalid. 
+ 
+### LeaseNotFound
+- **interface**: `api.errors.broker.LeaseNotFound.is`
+- **summary**:    The lease does not exist. 
  
 ### NoClaimTimeslices
 - **interface**: `api.errors.broker.NoClaimTimeslices.is`
@@ -1130,6 +1212,61 @@ ___
 ### WrongProposalWeight
 - **interface**: `api.errors.council.WrongProposalWeight.is`
 - **summary**:    The given weight bound for the proposal was too low. 
+
+___
+
+
+## delegatedStaking
+ 
+### AlreadyStaking
+- **interface**: `api.errors.delegatedStaking.AlreadyStaking.is`
+- **summary**:    An existing staker cannot perform this action. 
+ 
+### BadState
+- **interface**: `api.errors.delegatedStaking.BadState.is`
+- **summary**:    Some corruption in internal state. 
+ 
+### InvalidDelegation
+- **interface**: `api.errors.delegatedStaking.InvalidDelegation.is`
+- **summary**:    Delegation conditions are not met. 
+
+   Possible issues are  1) Cannot delegate to self,  2) Cannot delegate to multiple delegates. 
+ 
+### InvalidRewardDestination
+- **interface**: `api.errors.delegatedStaking.InvalidRewardDestination.is`
+- **summary**:    Reward Destination cannot be same as `Agent` account. 
+ 
+### NotAgent
+- **interface**: `api.errors.delegatedStaking.NotAgent.is`
+- **summary**:    Not an existing `Agent` account. 
+ 
+### NotAllowed
+- **interface**: `api.errors.delegatedStaking.NotAllowed.is`
+- **summary**:    The account cannot perform this operation. 
+ 
+### NotDelegator
+- **interface**: `api.errors.delegatedStaking.NotDelegator.is`
+- **summary**:    Not a Delegator account. 
+ 
+### NotEnoughFunds
+- **interface**: `api.errors.delegatedStaking.NotEnoughFunds.is`
+- **summary**:    The account does not have enough funds to perform the operation. 
+ 
+### NothingToSlash
+- **interface**: `api.errors.delegatedStaking.NothingToSlash.is`
+- **summary**:    `Agent` has no pending slash to be applied. 
+ 
+### NotSupported
+- **interface**: `api.errors.delegatedStaking.NotSupported.is`
+- **summary**:    Operation not supported by this pallet. 
+ 
+### UnappliedSlash
+- **interface**: `api.errors.delegatedStaking.UnappliedSlash.is`
+- **summary**:    Unapplied pending slash restricts operation on `Agent`. 
+ 
+### WithdrawFailed
+- **interface**: `api.errors.delegatedStaking.WithdrawFailed.is`
+- **summary**:    Failed to withdraw amount from Core Staking. 
 
 ___
 
@@ -1693,6 +1830,35 @@ ___
 ___
 
 
+## metaTx
+ 
+### AncientBirthBlock
+- **interface**: `api.errors.metaTx.AncientBirthBlock.is`
+- **summary**:    The meta transactions's birth block is ancient. 
+ 
+### BadProof
+- **interface**: `api.errors.metaTx.BadProof.is`
+- **summary**:    Invalid proof (e.g. signature). 
+ 
+### Future
+- **interface**: `api.errors.metaTx.Future.is`
+- **summary**:    The meta transaction is not yet valid (e.g. nonce too high). 
+ 
+### Invalid
+- **interface**: `api.errors.metaTx.Invalid.is`
+- **summary**:    The meta transaction is invalid. 
+ 
+### Stale
+- **interface**: `api.errors.metaTx.Stale.is`
+- **summary**:    The meta transaction is outdated (e.g. nonce too low). 
+ 
+### UnknownOrigin
+- **interface**: `api.errors.metaTx.UnknownOrigin.is`
+- **summary**:    The transaction extension did not authorize any origin. 
+
+___
+
+
 ## multiBlockMigrations
  
 ### Ongoing
@@ -1726,7 +1892,7 @@ ___
  
 ### NotFound
 - **interface**: `api.errors.multisig.NotFound.is`
-- **summary**:    Multisig operation not found when attempting to cancel. 
+- **summary**:    Multisig operation not found in storage. 
  
 ### NoTimepoint
 - **interface**: `api.errors.multisig.NoTimepoint.is`
@@ -1734,7 +1900,7 @@ ___
  
 ### NotOwner
 - **interface**: `api.errors.multisig.NotOwner.is`
-- **summary**:    Only the account that originally created the multisig is able to cancel it. 
+- **summary**:    Only the account that originally created the multisig is able to cancel it or update  its deposits. 
  
 ### SenderInSignatories
 - **interface**: `api.errors.multisig.SenderInSignatories.is`
@@ -2174,9 +2340,17 @@ ___
 - **interface**: `api.errors.nominationPools.PoolNotFound.is`
 - **summary**:    A (bonded) pool id does not exist. 
  
+### Restricted
+- **interface**: `api.errors.nominationPools.Restricted.is`
+- **summary**:    Account is restricted from participation in pools. This may happen if the account is  staking in another way already. 
+ 
 ### RewardPoolNotFound
 - **interface**: `api.errors.nominationPools.RewardPoolNotFound.is`
 - **summary**:    A reward pool does not exist. In all cases this is a system logic error. 
+ 
+### SlashTooLow
+- **interface**: `api.errors.nominationPools.SlashTooLow.is`
+- **summary**:    The slash amount is too low to be applied. 
  
 ### SubPoolsNotFound
 - **interface**: `api.errors.nominationPools.SubPoolsNotFound.is`
@@ -2214,6 +2388,14 @@ ___
 ### CallbackFailed
 - **interface**: `api.errors.poolAssets.CallbackFailed.is`
 - **summary**:    Callback action resulted in error 
+ 
+### ContainsFreezes
+- **interface**: `api.errors.poolAssets.ContainsFreezes.is`
+- **summary**:    The asset cannot be destroyed because some accounts for this asset contain freezes. 
+ 
+### ContainsHolds
+- **interface**: `api.errors.poolAssets.ContainsHolds.is`
+- **summary**:    The asset cannot be destroyed because some accounts for this asset contain holds. 
  
 ### Frozen
 - **interface**: `api.errors.poolAssets.Frozen.is`
@@ -2659,6 +2841,10 @@ ___
 - **interface**: `api.errors.revive.ContractTrapped.is`
 - **summary**:    Contract trapped during execution. 
  
+### DecimalPrecisionLoss
+- **interface**: `api.errors.revive.DecimalPrecisionLoss.is`
+- **summary**:    Failed to convert an EVM balance to a native balance. 
+ 
 ### DecodingFailed
 - **interface**: `api.errors.revive.DecodingFailed.is`
 - **summary**:    Input passed to a contract API function failed to decode as expected type. 
@@ -2686,6 +2872,10 @@ ___
 ### InvalidCallFlags
 - **interface**: `api.errors.revive.InvalidCallFlags.is`
 - **summary**:    Invalid combination of flags supplied to `seal_call` or `seal_delegate_call`. 
+ 
+### InvalidGenericTransaction
+- **interface**: `api.errors.revive.InvalidGenericTransaction.is`
+- **summary**:    The transaction used to dry-run a contract is invalid. 
  
 ### InvalidImmutableAccess
 - **interface**: `api.errors.revive.InvalidImmutableAccess.is`
@@ -2731,6 +2921,10 @@ ___
 - **interface**: `api.errors.revive.OutOfTransientStorage.is`
 - **summary**:    Can not add more data to transient storage. 
  
+### PrecompileFailure
+- **interface**: `api.errors.revive.PrecompileFailure.is`
+- **summary**:    Precompile Error 
+ 
 ### ReenteredPallet
 - **interface**: `api.errors.revive.ReenteredPallet.is`
 - **summary**:    A contract called into the runtime which then called back into this pallet. 
@@ -2738,6 +2932,10 @@ ___
 ### ReentranceDenied
 - **interface**: `api.errors.revive.ReentranceDenied.is`
 - **summary**:    A call tried to invoke a contract that is flagged as non-reentrant. 
+ 
+### RefcountOverOrUnderflow
+- **interface**: `api.errors.revive.RefcountOverOrUnderflow.is`
+- **summary**:    The refcount of a code either over or underflowed. 
  
 ### StateChangeDenied
 - **interface**: `api.errors.revive.StateChangeDenied.is`
@@ -2772,6 +2970,10 @@ ___
 ### TransferFailed
 - **interface**: `api.errors.revive.TransferFailed.is`
 - **summary**:    Performing the requested transfer failed. Probably because there isn't enough  free balance in the sender's account. 
+ 
+### UnsupportedPrecompileAddress
+- **interface**: `api.errors.revive.UnsupportedPrecompileAddress.is`
+- **summary**:    Unsupported precompile address 
  
 ### ValueTooLarge
 - **interface**: `api.errors.revive.ValueTooLarge.is`
@@ -3070,6 +3272,10 @@ ___
 - **interface**: `api.errors.staking.AlreadyClaimed.is`
 - **summary**:    Rewards for this era have already been claimed for this validator. 
  
+### AlreadyMigrated
+- **interface**: `api.errors.staking.AlreadyMigrated.is`
+- **summary**:    The stake of this account is already migrated to `Fungible` holds. 
+ 
 ### AlreadyPaired
 - **interface**: `api.errors.staking.AlreadyPaired.is`
 - **summary**:    Controller is already paired. 
@@ -3089,6 +3295,10 @@ ___
 ### CannotChillOther
 - **interface**: `api.errors.staking.CannotChillOther.is`
 - **summary**:    The user has enough bond and thus cannot be chilled forcefully by an external person. 
+ 
+### CannotReapStash
+- **interface**: `api.errors.staking.CannotReapStash.is`
+- **summary**:    Stash could not be reaped as other pallet might depend on it. 
  
 ### CannotRestoreLedger
 - **interface**: `api.errors.staking.CannotRestoreLedger.is`
@@ -3165,6 +3375,10 @@ ___
 ### NoUnlockChunk
 - **interface**: `api.errors.staking.NoUnlockChunk.is`
 - **summary**:    Can not rebond without unlocking chunks. 
+ 
+### Restricted
+- **interface**: `api.errors.staking.Restricted.is`
+- **summary**:    Account is restricted from participation in staking. This may happen if the account is  staking in another way already, such as via pool. 
  
 ### RewardDestinationRestricted
 - **interface**: `api.errors.staking.RewardDestinationRestricted.is`

@@ -257,7 +257,7 @@ ___
 - **interface**: `api.consts.coretime.brokerId`
 - **summary**:    The ParaId of the coretime chain. 
  
-### brokerPotLocation: `StagingXcmV4Junctions`
+### brokerPotLocation: `StagingXcmV5Junctions`
 - **interface**: `api.consts.coretime.brokerPotLocation`
 - **summary**:    The coretime chain pot location. 
 
@@ -734,7 +734,9 @@ ___
  
 ### maxApprovals: `u32`
 - **interface**: `api.consts.treasury.maxApprovals`
-- **summary**:    The maximum number of approvals that can wait in the spending queue. 
+- **summary**:    DEPRECATED: associated with `spend_local` call and will be removed in May 2025.  Refer to <https://github.com/paritytech/polkadot-sdk/pull/5961> for migration to `spend`. 
+
+   The maximum number of approvals that can wait in the spending queue. 
 
    NOTE: This parameter is also used within the Bounties Pallet extension if enabled. 
  

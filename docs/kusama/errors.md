@@ -444,25 +444,9 @@ ___
 ### AssignmentsEmpty
 - **interface**: `api.errors.coretimeAssignmentProvider.AssignmentsEmpty.is`
  
-### AssignmentsNotSorted
-- **interface**: `api.errors.coretimeAssignmentProvider.AssignmentsNotSorted.is`
-- **summary**:    Tried to add an unsorted set of assignments 
- 
 ### DisallowedInsert
 - **interface**: `api.errors.coretimeAssignmentProvider.DisallowedInsert.is`
-- **summary**:    assign_core is only allowed to append new assignments at the end of already existing  ones. 
- 
-### DuplicateInsert
-- **interface**: `api.errors.coretimeAssignmentProvider.DuplicateInsert.is`
-- **summary**:    Tried to insert a schedule for the same core and block number as an existing schedule 
- 
-### OverScheduled
-- **interface**: `api.errors.coretimeAssignmentProvider.OverScheduled.is`
-- **summary**:    Assignments together exceeded 57600. 
- 
-### UnderScheduled
-- **interface**: `api.errors.coretimeAssignmentProvider.UnderScheduled.is`
-- **summary**:    Assignments together less than 57600 
+- **summary**:    assign_core is only allowed to append new assignments at the end of already existing  ones or update the last entry. 
 
 ___
 
@@ -1336,10 +1320,6 @@ ___
 - **interface**: `api.errors.nominationPools.RewardPoolNotFound.is`
 - **summary**:    A reward pool does not exist. In all cases this is a system logic error. 
  
-### SlashTooLow
-- **interface**: `api.errors.nominationPools.SlashTooLow.is`
-- **summary**:    The slash amount is too low to be applied. 
- 
 ### SubPoolsNotFound
 - **interface**: `api.errors.nominationPools.SubPoolsNotFound.is`
 - **summary**:    A sub pool does not exist. 
@@ -1435,13 +1415,9 @@ ___
 
 ## paraInherent
  
-### CandidatesFilteredDuringExecution
-- **interface**: `api.errors.paraInherent.CandidatesFilteredDuringExecution.is`
-- **summary**:    A candidate was filtered during inherent execution. This should have only been done  during creation. 
- 
-### InherentOverweight
-- **interface**: `api.errors.paraInherent.InherentOverweight.is`
-- **summary**:    The data given to the inherent will result in an overweight block. 
+### InherentDataFilteredDuringExecution
+- **interface**: `api.errors.paraInherent.InherentDataFilteredDuringExecution.is`
+- **summary**:    Inherent data was filtered during execution. This should have only been done  during creation. 
  
 ### InvalidParentHeader
 - **interface**: `api.errors.paraInherent.InvalidParentHeader.is`
