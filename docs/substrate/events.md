@@ -18,7 +18,11 @@ Events are emitted for certain operations on the runtime. The following sections
 
 - **[assetRate](#assetrate)**
 
+- **[assetRewards](#assetrewards)**
+
 - **[assets](#assets)**
+
+- **[assetsFreezer](#assetsfreezer)**
 
 - **[balances](#balances)**
 
@@ -35,6 +39,8 @@ Events are emitted for certain operations on the runtime. The following sections
 - **[coreFellowship](#corefellowship)**
 
 - **[council](#council)**
+
+- **[delegatedStaking](#delegatedstaking)**
 
 - **[democracy](#democracy)**
 
@@ -57,6 +63,8 @@ Events are emitted for certain operations on the runtime. The following sections
 - **[lottery](#lottery)**
 
 - **[messageQueue](#messagequeue)**
+
+- **[metaTx](#metatx)**
 
 - **[multiBlockMigrations](#multiblockmigrations)**
 
@@ -313,6 +321,43 @@ ___
 ___
 
 
+## assetRewards
+ 
+### PoolAdminModified(`u32`, `AccountId32`)
+- **interface**: `api.events.assetRewards.PoolAdminModified.is`
+- **summary**:    A pool admin was modified. 
+ 
+### PoolCleanedUp(`u32`)
+- **interface**: `api.events.assetRewards.PoolCleanedUp.is`
+- **summary**:    A pool information was cleared after it's completion. 
+ 
+### PoolCreated(`AccountId32`, `u32`, `FrameSupportTokensFungibleUnionOfNativeOrWithId`, `FrameSupportTokensFungibleUnionOfNativeOrWithId`, `u128`, `u32`, `AccountId32`)
+- **interface**: `api.events.assetRewards.PoolCreated.is`
+- **summary**:    A new reward pool was created. 
+ 
+### PoolExpiryBlockModified(`u32`, `u32`)
+- **interface**: `api.events.assetRewards.PoolExpiryBlockModified.is`
+- **summary**:    A pool expiry block was modified by the admin. 
+ 
+### PoolRewardRateModified(`u32`, `u128`)
+- **interface**: `api.events.assetRewards.PoolRewardRateModified.is`
+- **summary**:    A pool reward rate was modified by the admin. 
+ 
+### RewardsHarvested(`AccountId32`, `AccountId32`, `u32`, `u128`)
+- **interface**: `api.events.assetRewards.RewardsHarvested.is`
+- **summary**:    An account harvested some rewards. 
+ 
+### Staked(`AccountId32`, `u32`, `u128`)
+- **interface**: `api.events.assetRewards.Staked.is`
+- **summary**:    An account staked some tokens in a pool. 
+ 
+### Unstaked(`AccountId32`, `AccountId32`, `u32`, `u128`)
+- **interface**: `api.events.assetRewards.Unstaked.is`
+- **summary**:    An account unstaked some tokens from a pool. 
+
+___
+
+
 ## assets
  
 ### AccountsDestroyed(`u32`, `u32`, `u32`)
@@ -418,6 +463,17 @@ ___
 ### Withdrawn(`u32`, `AccountId32`, `u128`)
 - **interface**: `api.events.assets.Withdrawn.is`
 - **summary**:    Some assets were withdrawn from the account (e.g. for transaction fees). 
+
+___
+
+
+## assetsFreezer
+ 
+### Frozen(`AccountId32`, `u32`, `u128`)
+- **interface**: `api.events.assetsFreezer.Frozen.is`
+ 
+### Thawed(`AccountId32`, `u32`, `u128`)
+- **interface**: `api.events.assetsFreezer.Thawed.is`
 
 ___
 
@@ -570,6 +626,10 @@ ___
 - **interface**: `api.events.broker.Assigned.is`
 - **summary**:    A Region has been assigned to a particular task. 
  
+### AssignmentRemoved(`PalletBrokerRegionId`)
+- **interface**: `api.events.broker.AssignmentRemoved.is`
+- **summary**:    An assignment has been removed from the workplan. 
+ 
 ### AutoRenewalDisabled(`u16`, `u32`)
 - **interface**: `api.events.broker.AutoRenewalDisabled.is`
  
@@ -633,6 +693,10 @@ ___
 ### LeaseEnding(`u32`, `u32`)
 - **interface**: `api.events.broker.LeaseEnding.is`
 - **summary**:    A lease is about to end. 
+ 
+### LeaseRemoved(`u32`)
+- **interface**: `api.events.broker.LeaseRemoved.is`
+- **summary**:    A lease has been removed. 
  
 ### Partitioned(`PalletBrokerRegionId`, `(PalletBrokerRegionId,PalletBrokerRegionId)`)
 - **interface**: `api.events.broker.Partitioned.is`
@@ -787,11 +851,15 @@ ___
  
 ### Voted(`AccountId32`, `PalletConvictionVotingVoteAccountVote`)
 - **interface**: `api.events.convictionVoting.Voted.is`
-- **summary**:    An account that has voted 
+- **summary**:    An account has voted 
  
 ### VoteRemoved(`AccountId32`, `PalletConvictionVotingVoteAccountVote`)
 - **interface**: `api.events.convictionVoting.VoteRemoved.is`
-- **summary**:    A vote that been removed 
+- **summary**:    A vote has been removed 
+ 
+### VoteUnlocked(`AccountId32`, `u16`)
+- **interface**: `api.events.convictionVoting.VoteUnlocked.is`
+- **summary**:    The lockup period of a conviction vote expired, and the funds have been unlocked. 
 
 ___
 
@@ -886,6 +954,27 @@ ___
 ### Voted(`AccountId32`, `H256`, `bool`, `u32`, `u32`)
 - **interface**: `api.events.council.Voted.is`
 - **summary**:    A motion (given hash) has been voted on by given account, leaving  a tally (yes votes and no votes given respectively as `MemberCount`). 
+
+___
+
+
+## delegatedStaking
+ 
+### Delegated(`AccountId32`, `AccountId32`, `u128`)
+- **interface**: `api.events.delegatedStaking.Delegated.is`
+- **summary**:    Funds delegated by a delegator. 
+ 
+### MigratedDelegation(`AccountId32`, `AccountId32`, `u128`)
+- **interface**: `api.events.delegatedStaking.MigratedDelegation.is`
+- **summary**:    Unclaimed delegation funds migrated to delegator. 
+ 
+### Released(`AccountId32`, `AccountId32`, `u128`)
+- **interface**: `api.events.delegatedStaking.Released.is`
+- **summary**:    Funds released to a delegator. 
+ 
+### Slashed(`AccountId32`, `AccountId32`, `u128`)
+- **interface**: `api.events.delegatedStaking.Slashed.is`
+- **summary**:    Funds slashed from a delegator. 
 
 ___
 
@@ -1018,7 +1107,7 @@ ___
  
 ### NewTerm(`Vec<(AccountId32,u128)>`)
 - **interface**: `api.events.elections.NewTerm.is`
-- **summary**:    A new term with new_members. This indicates that enough candidates existed to run  the election, not that enough have has been elected. The inner value must be examined  for this purpose. A `NewTerm(\[\])` indicates that some candidates got their bond  slashed and none were elected, whilst `EmptyTerm` means that no candidates existed to  begin with. 
+- **summary**:    A new term with new_members. This indicates that enough candidates existed to run  the election, not that enough have been elected. The inner value must be examined  for this purpose. A `NewTerm(\[\])` indicates that some candidates got their bond  slashed and none were elected, whilst `EmptyTerm` means that no candidates existed to  begin with. 
  
 ### Renounced(`AccountId32`)
 - **interface**: `api.events.elections.Renounced.is`
@@ -1199,7 +1288,7 @@ ___
 - **interface**: `api.events.imOnline.HeartbeatReceived.is`
 - **summary**:    A new heartbeat was received from `AuthorityId`. 
  
-### SomeOffline(`Vec<(AccountId32,SpStakingExposure)>`)
+### SomeOffline(`Vec<(AccountId32,Null)>`)
 - **interface**: `api.events.imOnline.SomeOffline.is`
 - **summary**:    At the end of the session, at least one validator was found to be offline. 
 
@@ -1207,6 +1296,10 @@ ___
 
 
 ## indices
+ 
+### DepositPoked(`AccountId32`, `u32`, `u128`, `u128`)
+- **interface**: `api.events.indices.DepositPoked.is`
+- **summary**:    A deposit to reserve an index has been poked/reconsidered. 
  
 ### IndexAssigned(`AccountId32`, `u32`)
 - **interface**: `api.events.indices.IndexAssigned.is`
@@ -1265,6 +1358,17 @@ ___
 ___
 
 
+## metaTx
+ 
+### Dispatched(`Result<FrameSupportDispatchPostDispatchInfo, SpRuntimeDispatchErrorWithPostInfo>`)
+- **interface**: `api.events.metaTx.Dispatched.is`
+- **summary**:    A meta transaction has been dispatched. 
+
+   Contains the dispatch result of the meta transaction along with post-dispatch  information. 
+
+___
+
+
 ## multiBlockMigrations
  
 ### HistoricCleared(`Option<Bytes>`)
@@ -1311,6 +1415,10 @@ ___
 
 
 ## multisig
+ 
+### DepositPoked(`AccountId32`, `[u8;32]`, `u128`, `u128`)
+- **interface**: `api.events.multisig.DepositPoked.is`
+- **summary**:    The deposit for a multisig operation has been updated/poked. 
  
 ### MultisigApproval(`AccountId32`, `PalletMultisigTimepoint`, `AccountId32`, `[u8;32]`)
 - **interface**: `api.events.multisig.MultisigApproval.is`
@@ -1548,11 +1656,23 @@ ___
 - **interface**: `api.events.nominationPools.Destroyed.is`
 - **summary**:    A pool has been destroyed. 
  
+### GlobalParamsUpdated(`u128`, `u128`, `Option<u32>`, `Option<u32>`, `Option<u32>`, `Option<Perbill>`)
+- **interface**: `api.events.nominationPools.GlobalParamsUpdated.is`
+- **summary**:    Global parameters regulating nomination pools have been updated. 
+ 
+### MemberClaimPermissionUpdated(`AccountId32`, `PalletNominationPoolsClaimPermission`)
+- **interface**: `api.events.nominationPools.MemberClaimPermissionUpdated.is`
+- **summary**:    A pool member's claim permission has been updated. 
+ 
 ### MemberRemoved(`u32`, `AccountId32`, `u128`)
 - **interface**: `api.events.nominationPools.MemberRemoved.is`
 - **summary**:    A member has been removed from a pool. 
 
    The removal can be voluntary (withdrawn all unbonded funds) or involuntary (kicked).  Any funds that are still delegated (i.e. dangling delegation) are released and are  represented by `released_balance`. 
+ 
+### MetadataUpdated(`u32`, `AccountId32`)
+- **interface**: `api.events.nominationPools.MetadataUpdated.is`
+- **summary**:    A pool's metadata was updated. 
  
 ### MinBalanceDeficitAdjusted(`u32`, `u128`)
 - **interface**: `api.events.nominationPools.MinBalanceDeficitAdjusted.is`
@@ -1585,6 +1705,14 @@ ___
 ### PoolMaxCommissionUpdated(`u32`, `Perbill`)
 - **interface**: `api.events.nominationPools.PoolMaxCommissionUpdated.is`
 - **summary**:    A pool's maximum commission setting has been changed. 
+ 
+### PoolNominationMade(`u32`, `AccountId32`)
+- **interface**: `api.events.nominationPools.PoolNominationMade.is`
+- **summary**:    A pool's nominating account (or the pool's root account) has nominated a validator set  on behalf of the pool. 
+ 
+### PoolNominatorChilled(`u32`, `AccountId32`)
+- **interface**: `api.events.nominationPools.PoolNominatorChilled.is`
+- **summary**:    The pool is chilled i.e. no longer nominating. 
  
 ### PoolSlashed(`u32`, `u128`)
 - **interface**: `api.events.nominationPools.PoolSlashed.is`
@@ -1782,6 +1910,10 @@ ___
 ### Announced(`AccountId32`, `AccountId32`, `H256`)
 - **interface**: `api.events.proxy.Announced.is`
 - **summary**:    An announcement was placed to make a call in the future. 
+ 
+### DepositPoked(`AccountId32`, `PalletProxyDepositKind`, `u128`, `u128`)
+- **interface**: `api.events.proxy.DepositPoked.is`
+- **summary**:    A deposit stored for proxies or announcements was poked / updated. 
  
 ### ProxyAdded(`AccountId32`, `AccountId32`, `KitchensinkRuntimeProxyType`, `u32`)
 - **interface**: `api.events.proxy.ProxyAdded.is`
@@ -2001,57 +2133,9 @@ ___
 
 ## revive
  
-### Called(`PalletReviveExecOrigin`, `H160`)
-- **interface**: `api.events.revive.Called.is`
-- **summary**:    A contract was called either by a plain account or another contract. 
-
-   #### Note 
-
-   Please keep in mind that like all events this is only emitted for successful  calls. This is because on failure all storage changes including events are  rolled back. 
- 
-### CodeRemoved(`H256`, `u128`, `H160`)
-- **interface**: `api.events.revive.CodeRemoved.is`
-- **summary**:    A code with the specified hash was removed. 
- 
-### CodeStored(`H256`, `u128`, `H160`)
-- **interface**: `api.events.revive.CodeStored.is`
-- **summary**:    Code with the specified hash has been stored. 
- 
-### ContractCodeUpdated(`H160`, `H256`, `H256`)
-- **interface**: `api.events.revive.ContractCodeUpdated.is`
-- **summary**:    A contract's code was updated. 
- 
 ### ContractEmitted(`H160`, `Bytes`, `Vec<H256>`)
 - **interface**: `api.events.revive.ContractEmitted.is`
 - **summary**:    A custom event emitted by the contract. 
- 
-### DelegateCalled(`H160`, `H256`)
-- **interface**: `api.events.revive.DelegateCalled.is`
-- **summary**:    A contract delegate called a code hash. 
-
-   #### Note 
-
-   Please keep in mind that like all events this is only emitted for successful  calls. This is because on failure all storage changes including events are  rolled back. 
- 
-### Instantiated(`H160`, `H160`)
-- **interface**: `api.events.revive.Instantiated.is`
-- **summary**:    Contract deployed by address at the specified address. 
- 
-### StorageDepositTransferredAndHeld(`H160`, `H160`, `u128`)
-- **interface**: `api.events.revive.StorageDepositTransferredAndHeld.is`
-- **summary**:    Some funds have been transferred and held as storage deposit. 
- 
-### StorageDepositTransferredAndReleased(`H160`, `H160`, `u128`)
-- **interface**: `api.events.revive.StorageDepositTransferredAndReleased.is`
-- **summary**:    Some storage deposit funds have been transferred and released. 
- 
-### Terminated(`H160`, `H160`)
-- **interface**: `api.events.revive.Terminated.is`
-- **summary**:    Contract has been removed. 
-
-   #### Note 
-
-   The only way for a contract to be removed and emitting this event is by calling  `seal_terminate`. 
 
 ___
 
@@ -2133,6 +2217,10 @@ ___
 
 ## scheduler
  
+### AgendaIncomplete(`u32`)
+- **interface**: `api.events.scheduler.AgendaIncomplete.is`
+- **summary**:    Agenda is incomplete from `when`. 
+ 
 ### CallUnavailable(`(u32,u32)`, `Option<[u8;32]>`)
 - **interface**: `api.events.scheduler.CallUnavailable.is`
 - **summary**:    The call for the provided hash was not found so the task has been aborted. 
@@ -2177,6 +2265,14 @@ ___
 ### NewSession(`u32`)
 - **interface**: `api.events.session.NewSession.is`
 - **summary**:    New session has happened. Note that the argument is the session index, not the  block number as the type might suggest. 
+ 
+### ValidatorDisabled(`AccountId32`)
+- **interface**: `api.events.session.ValidatorDisabled.is`
+- **summary**:    Validator has been disabled. 
+ 
+### ValidatorReenabled(`AccountId32`)
+- **interface**: `api.events.session.ValidatorReenabled.is`
+- **summary**:    Validator has been re-enabled. 
 
 ___
 
@@ -2278,6 +2374,10 @@ ___
 ### ControllerBatchDeprecated(`u32`)
 - **interface**: `api.events.staking.ControllerBatchDeprecated.is`
 - **summary**:    Report of a controller batch deprecation. 
+ 
+### CurrencyMigrated(`AccountId32`, `u128`)
+- **interface**: `api.events.staking.CurrencyMigrated.is`
+- **summary**:    Staking balance migrated from locks to holds, with any balance that could not be held  is force withdrawn. 
  
 ### EraPaid(`u32`, `u128`, `u128`)
 - **interface**: `api.events.staking.EraPaid.is`
@@ -2414,6 +2514,10 @@ ___
 ### NewAccount(`AccountId32`)
 - **interface**: `api.events.system.NewAccount.is`
 - **summary**:    A new account was created. 
+ 
+### RejectedInvalidAuthorizedUpgrade(`H256`, `SpRuntimeDispatchError`)
+- **interface**: `api.events.system.RejectedInvalidAuthorizedUpgrade.is`
+- **summary**:    An invalid authorized upgrade was rejected while trying to apply it. 
  
 ### Remarked(`AccountId32`, `H256`)
 - **interface**: `api.events.system.Remarked.is`
@@ -2747,6 +2851,14 @@ ___
 ### DispatchedAs(`Result<Null, SpRuntimeDispatchError>`)
 - **interface**: `api.events.utility.DispatchedAs.is`
 - **summary**:    A call was dispatched. 
+ 
+### IfElseFallbackCalled(`SpRuntimeDispatchError`)
+- **interface**: `api.events.utility.IfElseFallbackCalled.is`
+- **summary**:    The fallback call was dispatched. 
+ 
+### IfElseMainSuccess()
+- **interface**: `api.events.utility.IfElseMainSuccess.is`
+- **summary**:    Main call was dispatched. 
  
 ### ItemCompleted()
 - **interface**: `api.events.utility.ItemCompleted.is`

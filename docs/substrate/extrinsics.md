@@ -16,6 +16,8 @@ The following sections contain Extrinsics methods are part of the default Substr
 
 - **[assetRate](#assetrate)**
 
+- **[assetRewards](#assetrewards)**
+
 - **[assets](#assets)**
 
 - **[babe](#babe)**
@@ -59,6 +61,8 @@ The following sections contain Extrinsics methods are part of the default Substr
 - **[lottery](#lottery)**
 
 - **[messageQueue](#messagequeue)**
+
+- **[metaTx](#metatx)**
 
 - **[mixnet](#mixnet)**
 
@@ -463,6 +467,99 @@ ___
 ___
 
 
+## assetRewards
+ 
+### cleanupPool(pool_id: `u32`)
+- **interface**: `api.tx.assetRewards.cleanupPool`
+- **summary**:    Cleanup a pool. 
+
+   Origin must be the pool admin. 
+
+   Cleanup storage, release any associated storage cost and return the remaining reward  tokens to the admin. 
+ 
+### createPool(staked_asset_id: `FrameSupportTokensFungibleUnionOfNativeOrWithId`, reward_asset_id: `FrameSupportTokensFungibleUnionOfNativeOrWithId`, reward_rate_per_block: `u128`, expiry: `FrameSupportScheduleDispatchTime`, admin: `Option<AccountId32>`)
+- **interface**: `api.tx.assetRewards.createPool`
+- **summary**:    Create a new reward pool. 
+
+   Parameters: 
+
+  - `origin`: must be `Config::CreatePoolOrigin`;
+
+  - `staked_asset_id`: the asset to be staked in the pool;
+
+  - `reward_asset_id`: the asset to be distributed as rewards;
+
+  - `reward_rate_per_block`: the amount of reward tokens distributed per block;
+
+  - `expiry`: the block number at which the pool will cease to accumulate rewards. The [`DispatchTime::After`] variant evaluated at the execution time. 
+
+  - `admin`: the account allowed to extend the pool expiration, increase the rewards rate and receive the unutilized reward tokens back after the pool completion. If `None`,  the caller is set as an admin. 
+ 
+### depositRewardTokens(pool_id: `u32`, amount: `u128`)
+- **interface**: `api.tx.assetRewards.depositRewardTokens`
+- **summary**:    Convenience method to deposit reward tokens into a pool. 
+
+   This method is not strictly necessary (tokens could be transferred directly to the  pool pot address), but is provided for convenience so manual derivation of the  account id is not required. 
+ 
+### harvestRewards(pool_id: `u32`, staker: `Option<AccountId32>`)
+- **interface**: `api.tx.assetRewards.harvestRewards`
+- **summary**:    Harvest unclaimed pool rewards. 
+
+   Parameters: 
+
+  - origin: must be the `staker` if the pool is still active. Otherwise, any account.
+
+  - pool_id: the pool to harvest from.
+
+  - staker: the account for which to harvest rewards. If `None`, the caller is used.
+ 
+### setPoolAdmin(pool_id: `u32`, new_admin: `AccountId32`)
+- **interface**: `api.tx.assetRewards.setPoolAdmin`
+- **summary**:    Modify a pool admin. 
+
+   Only the pool admin may perform this operation. 
+ 
+### setPoolExpiryBlock(pool_id: `u32`, new_expiry: `FrameSupportScheduleDispatchTime`)
+- **interface**: `api.tx.assetRewards.setPoolExpiryBlock`
+- **summary**:    Set when the pool should expire. 
+
+   Currently the expiry block can only be extended. 
+
+   Only the pool admin may perform this operation. 
+ 
+### setPoolRewardRatePerBlock(pool_id: `u32`, new_reward_rate_per_block: `u128`)
+- **interface**: `api.tx.assetRewards.setPoolRewardRatePerBlock`
+- **summary**:    Modify a pool reward rate. 
+
+   Currently the reward rate can only be increased. 
+
+   Only the pool admin may perform this operation. 
+ 
+### stake(pool_id: `u32`, amount: `u128`)
+- **interface**: `api.tx.assetRewards.stake`
+- **summary**:    Stake additional tokens in a pool. 
+
+   A freeze is placed on the staked tokens. 
+ 
+### unstake(pool_id: `u32`, amount: `u128`, staker: `Option<AccountId32>`)
+- **interface**: `api.tx.assetRewards.unstake`
+- **summary**:    Unstake tokens from a pool. 
+
+   Removes the freeze on the staked tokens. 
+
+   Parameters: 
+
+  - origin: must be the `staker` if the pool is still active. Otherwise, any account.
+
+  - pool_id: the pool to unstake from.
+
+  - amount: the amount of tokens to unstake.
+
+  - staker: the account to unstake from. If `None`, the caller is used.
+
+___
+
+
 ## assets
  
 ### approveTransfer(id: `Compact<u32>`, delegate: `MultiAddress`, amount: `Compact<u128>`)
@@ -769,6 +866,8 @@ ___
 
   - `allow_burn`: If `true` then assets may be destroyed in order to complete the refund.
 
+   It will fail with either [`Error::ContainsHolds`] or [`Error::ContainsFreezes`] if  the asset account contains holds or freezes in place. 
+
    Emits `Refunded` event when successful. 
  
 ### refundOther(id: `Compact<u32>`, who: `MultiAddress`)
@@ -780,6 +879,8 @@ ___
    - `id`: The identifier of the asset for the account holding a deposit. 
 
   - `who`: The account to refund.
+
+   It will fail with either [`Error::ContainsHolds`] or [`Error::ContainsFreezes`] if  the asset account contains holds or freezes in place. 
 
    Emits `Refunded` event when successful. 
  
@@ -844,6 +945,8 @@ ___
    The origin must conform to `ForceOrigin` or must be `Signed` by the asset's `owner`. 
 
    - `id`: The identifier of the asset to be destroyed. This must identify an existing  asset. 
+
+   It will fail with either [`Error::ContainsHolds`] or [`Error::ContainsFreezes`] if  an account contains holds or freezes in place. 
  
 ### thaw(id: `Compact<u32>`, who: `MultiAddress`)
 - **interface**: `api.tx.assets.thaw`
@@ -1340,6 +1443,18 @@ ___
 
   - `workload_end_hint`: should be used when enabling auto-renewal for a core that is not expiring in the upcoming bulk period (e.g., due to holding a lease) since it would be  inefficient to look up when the core expires to schedule the next renewal. 
  
+### forceReserve(workload: `Vec<PalletBrokerScheduleItem>`, core: `u16`)
+- **interface**: `api.tx.broker.forceReserve`
+- **summary**:    Reserve a core for a workload immediately. 
+
+   - `origin`: Must be Root or pass `AdminOrigin`. 
+
+  - `workload`: The workload which should be permanently placed on a core starting immediately. 
+
+  - `core`: The core to which the assignment should be made until the reservation takes effect. It is left to the caller to either add this new core or reassign any other  tasks to this existing core. 
+
+   This reserves the workload and then injects the workload into the Workplan for the next  two sale periods. This overwrites any existing assignments for this core at the start of  the next sale period. 
+ 
 ### interlace(region_id: `PalletBrokerRegionId`, pivot: `PalletBrokerCoreMask`)
 - **interface**: `api.tx.broker.interlace`
 - **summary**:    Split a Bulk Coretime Region into two wholly-overlapping Regions with complementary  interlace masks which together make up the original Region's interlace mask. 
@@ -1394,6 +1509,22 @@ ___
 
   - `beneficiary`: The account on the Relay-chain which controls the credit (generally this will be the collator's hot wallet). 
  
+### removeAssignment(region_id: `PalletBrokerRegionId`)
+- **interface**: `api.tx.broker.removeAssignment`
+- **summary**:    Remove an assignment from the Workplan. 
+
+   - `origin`: Must be Root or pass `AdminOrigin`. 
+
+  - `region_id`: The Region to be removed from the workplan.
+ 
+### removeLease(task: `u32`)
+- **interface**: `api.tx.broker.removeLease`
+- **summary**:    Remove a lease. 
+
+   - `origin`: Must be Root or pass `AdminOrigin`. 
+
+  - `task`: The task id of the lease which should be removed.
+ 
 ### renew(core: `u16`)
 - **interface**: `api.tx.broker.renew`
 - **summary**:    Renew Bulk Coretime in the ongoing Sale or its prior Interlude Period. 
@@ -1413,6 +1544,8 @@ ___
 ### reserve(workload: `Vec<PalletBrokerScheduleItem>`)
 - **interface**: `api.tx.broker.reserve`
 - **summary**:    Reserve a core for a workload. 
+
+   The workload will be given a reservation, but two sale period boundaries must pass  before the core is actually assigned. 
 
    - `origin`: Must be Root or pass `AdminOrigin`. 
 
@@ -1861,11 +1994,23 @@ ___
  
 ### import()
 - **interface**: `api.tx.coreFellowship.import`
-- **summary**:    Introduce an already-ranked individual of the collective into this pallet. The rank may  still be zero. 
+- **summary**:    Introduce an already-ranked individual of the collective into this pallet. 
+
+   The rank may still be zero. This resets `last_proof` to the current block and  `last_promotion` will be set to zero, thereby delaying any automatic demotion but  allowing immediate promotion. 
+
+   - `origin`: A signed origin of a ranked, but not tracked, account. 
+ 
+### importMember(who: `AccountId32`)
+- **interface**: `api.tx.coreFellowship.importMember`
+- **summary**:    Introduce an already-ranked individual of the collective into this pallet. 
+
+   The rank may still be zero. Can be called by anyone on any collective member - including  the sender. 
 
    This resets `last_proof` to the current block and `last_promotion` will be set to zero,  thereby delaying any automatic demotion but allowing immediate promotion. 
 
    - `origin`: A signed origin of a ranked, but not tracked, account. 
+
+  - `who`: The account ID of the collective member to be inducted.
  
 ### induct(who: `AccountId32`)
 - **interface**: `api.tx.coreFellowship.induct`
@@ -2909,6 +3054,18 @@ ___
 
   - `O(1)`.
  
+### pokeDeposit(index: `u32`)
+- **interface**: `api.tx.indices.pokeDeposit`
+- **summary**:    Poke the deposit reserved for an index. 
+
+   The dispatch origin for this call must be _Signed_ and the signing account must have a  non-frozen account `index`. 
+
+   The transaction fees is waived if the deposit is changed after poking/reconsideration. 
+
+   - `index`: the index whose deposit is to be poked/reconsidered. 
+
+   Emits `DepositPoked` if successful. 
+ 
 ### transfer(new: `MultiAddress`, index: `u32`)
 - **interface**: `api.tx.indices.transfer`
 - **summary**:    Assign an index already owned by the sender to another account. The balance reservation  is effectively transferred to the new account. 
@@ -2996,6 +3153,19 @@ ___
 ### reapPage(message_origin: `u32`, page_index: `u32`)
 - **interface**: `api.tx.messageQueue.reapPage`
 - **summary**:    Remove a page which has no more messages remaining to be processed or is stale. 
+
+___
+
+
+## metaTx
+ 
+### dispatch(meta_tx: `PalletMetaTxMetaTx`)
+- **interface**: `api.tx.metaTx.dispatch`
+- **summary**:    Dispatch a given meta transaction. 
+
+   - `_origin`: Can be any kind of origin. 
+
+  - `meta_tx`: Meta Transaction with a target call to be dispatched.
 
 ___
 
@@ -3163,6 +3333,22 @@ ___
   - I/O: 1 read `O(S)`, one remove.
 
   - Storage: removes one item.
+ 
+### pokeDeposit(threshold: `u16`, other_signatories: `Vec<AccountId32>`, call_hash: `[u8;32]`)
+- **interface**: `api.tx.multisig.pokeDeposit`
+- **summary**:    Poke the deposit reserved for an existing multisig operation. 
+
+   The dispatch origin for this call must be _Signed_ and must be the original depositor of  the multisig operation. 
+
+   The transaction fee is waived if the deposit amount has changed. 
+
+   - `threshold`: The total number of approvals needed for this multisig. 
+
+  - `other_signatories`: The accounts (other than the sender) who are part of the multisig. 
+
+  - `call_hash`: The hash of the call this deposit is reserved for.
+
+   Emits `DepositPoked` if successful. 
 
 ___
 
@@ -3938,7 +4124,7 @@ ___
 
    Fails unless [`crate::pallet::Config::StakeAdapter`] is of strategy type:  [`adapter::StakeStrategyType::Delegate`]. 
 
-   This call can be dispatched permissionlessly (i.e. by any account). If the member has  slash to be applied, caller may be rewarded with the part of the slash. 
+   The pending slash amount of the member must be equal or more than `ExistentialDeposit`.  This call can be dispatched permissionlessly (i.e. by any account). If the execution  is successful, fee is refunded and caller may be rewarded with a part of the slash  based on the [`crate::pallet::Config::StakeAdapter`] configuration. 
  
 ### bondExtra(extra: `PalletNominationPoolsBondExtra`)
 - **interface**: `api.tx.nominationPools.bondExtra`
@@ -3962,21 +4148,35 @@ ___
 
    The dispatch origin of this call can be signed by the pool nominator or the pool  root role, same as [`Pallet::nominate`]. 
 
+   This directly forwards the call to an implementation of `StakingInterface` (e.g.,  `pallet-staking`) through [`Config::StakeAdapter`], on behalf of the bonded pool. 
+
    Under certain conditions, this call can be dispatched permissionlessly (i.e. by any  account). 
 
    #### Conditions for a permissionless dispatch: 
 
-  * When pool depositor has less than `MinNominatorBond` staked, otherwise  pool members are unable to unbond. 
+  * When pool depositor has less than `MinNominatorBond` staked, otherwise pool members are unable to unbond. 
 
    #### Conditions for permissioned dispatch: 
 
-  * The caller has a nominator or root role of the pool. This directly forward the call to the staking pallet, on behalf of the pool bonded  account. 
+  * The caller is the pool's nominator or root.
  
 ### claimCommission(pool_id: `u32`)
 - **interface**: `api.tx.nominationPools.claimCommission`
 - **summary**:    Claim pending commission. 
 
-   The dispatch origin of this call must be signed by the `root` role of the pool. Pending  commission is paid out and added to total claimed commission`. Total pending commission  is reset to zero. the current. 
+   The `root` role of the pool is _always_ allowed to claim the pool's commission. 
+
+   If the pool has set `CommissionClaimPermission::Permissionless`, then any account can  trigger the process of claiming the pool's commission. 
+
+   If the pool has set its `CommissionClaimPermission` to `Account(acc)`, then only  accounts 
+
+  * `acc`, and
+
+  * the pool's root account
+
+   may call this extrinsic on behalf of the pool. 
+
+   Pending commissions are paid out and added to the total claimed commission.  The total pending commission is reset to zero. 
  
 ### claimPayout()
 - **interface**: `api.tx.nominationPools.claimPayout`
@@ -4024,7 +4224,7 @@ ___
  
 ### join(amount: `Compact<u128>`, pool_id: `u32`)
 - **interface**: `api.tx.nominationPools.join`
-- **summary**:    Stake funds with a pool. The amount to bond is transferred from the member to the pool  account and immediately increases the pools bond. 
+- **summary**:    Stake funds with a pool. The amount to bond is delegated (or transferred based on  [`adapter::StakeStrategyType`]) from the member to the pool account and immediately  increases the pool's bond. 
 
    The method of transferring the amount to the pool account is determined by  [`adapter::StakeStrategyType`]. If the pool is configured to use  [`adapter::StakeStrategyType::Delegate`], the funds remain in the account of  the `origin`, while the pool gains the right to use these funds for staking. 
 
@@ -4064,11 +4264,11 @@ ___
 
    The dispatch origin of this call must be signed by the pool nominator or the pool  root role. 
 
-   This directly forward the call to the staking pallet, on behalf of the pool bonded  account. 
+   This directly forwards the call to an implementation of `StakingInterface` (e.g.,  `pallet-staking`) through [`Config::StakeAdapter`], on behalf of the bonded pool. 
 
    #### Note 
 
-   In addition to a `root` or `nominator` role of `origin`, pool's depositor needs to have  at least `depositor_min_bond` in the pool to start nominating. 
+   In addition to a `root` or `nominator` role of `origin`, the pool's depositor needs to  have at least `depositor_min_bond` in the pool to start nominating. 
  
 ### poolWithdrawUnbonded(pool_id: `u32`, num_slashing_spans: `u32`)
 - **interface**: `api.tx.nominationPools.poolWithdrawUnbonded`
@@ -4522,6 +4722,8 @@ ___
 
   - `allow_burn`: If `true` then assets may be destroyed in order to complete the refund.
 
+   It will fail with either [`Error::ContainsHolds`] or [`Error::ContainsFreezes`] if  the asset account contains holds or freezes in place. 
+
    Emits `Refunded` event when successful. 
  
 ### refundOther(id: `Compact<u32>`, who: `MultiAddress`)
@@ -4533,6 +4735,8 @@ ___
    - `id`: The identifier of the asset for the account holding a deposit. 
 
   - `who`: The account to refund.
+
+   It will fail with either [`Error::ContainsHolds`] or [`Error::ContainsFreezes`] if  the asset account contains holds or freezes in place. 
 
    Emits `Refunded` event when successful. 
  
@@ -4597,6 +4801,8 @@ ___
    The origin must conform to `ForceOrigin` or must be `Signed` by the asset's `owner`. 
 
    - `id`: The identifier of the asset to be destroyed. This must identify an existing  asset. 
+
+   It will fail with either [`Error::ContainsHolds`] or [`Error::ContainsFreezes`] if  an account contains holds or freezes in place. 
  
 ### thaw(id: `Compact<u32>`, who: `MultiAddress`)
 - **interface**: `api.tx.poolAssets.thaw`
@@ -4748,7 +4954,7 @@ ___
  
 ### ensureUpdated(hashes: `Vec<H256>`)
 - **interface**: `api.tx.preimage.ensureUpdated`
-- **summary**:    Ensure that the a bulk of pre-images is upgraded. 
+- **summary**:    Ensure that the bulk of pre-images is upgraded. 
 
    The caller pays no fee if at least 90% of pre-images were successfully updated. 
  
@@ -4852,6 +5058,16 @@ ___
   - `ext_index`: The extrinsic index in which the call to `pure` was processed.
 
    Fails with `NoPermission` in case the caller is not a previously created pure  account whose `pure` call has corresponding parameters. 
+ 
+### pokeDeposit()
+- **interface**: `api.tx.proxy.pokeDeposit`
+- **summary**:    Poke / Adjust deposits made for proxies and announcements based on current values.  This can be used by accounts to possibly lower their locked amount. 
+
+   The dispatch origin for this call must be _Signed_. 
+
+   The transaction fee is waived if the deposit amount has changed. 
+
+   Emits `DepositPoked` if successful. 
  
 ### proxy(real: `MultiAddress`, force_proxy_type: `Option<KitchensinkRuntimeProxyType>`, call: `Call`)
 - **interface**: `api.tx.proxy.proxy`
@@ -5208,7 +5424,7 @@ ___
  
 ### setRecovered(lost: `MultiAddress`, rescuer: `MultiAddress`)
 - **interface**: `api.tx.recovery.setRecovered`
-- **summary**:    Allow ROOT to bypass the recovery process and set an a rescuer account  for a lost account directly. 
+- **summary**:    Allow ROOT to bypass the recovery process and set a rescuer account  for a lost account directly. 
 
    The dispatch origin for this call must be _ROOT_. 
 
@@ -5377,13 +5593,13 @@ ___
 
    Every `AccountId32` can control its corresponding fallback account. The fallback account  is the `AccountId20` with the last 12 bytes set to `0xEE`. This is essentially a  recovery function in case an `AccountId20` was used without creating a mapping first. 
  
-### ethTransact(payload: `Bytes`, gas_limit: `SpWeightsWeightV2Weight`, storage_deposit_limit: `Compact<u128>`)
+### ethTransact(payload: `Bytes`)
 - **interface**: `api.tx.revive.ethTransact`
 - **summary**:    A raw EVM transaction, typically dispatched by an Ethereum JSON-RPC server. 
 
    #### Parameters 
 
-   * `payload`: The RLP-encoded [`crate::evm::TransactionLegacySigned`]. 
+   * `payload`: The encoded [`crate::evm::TransactionSigned`]. 
 
   * `gas_limit`: The gas limit enforced during contract execution.
 
@@ -6054,6 +6270,42 @@ ___
    - `who`: A list of nominator stash accounts who are nominating this validator which  should no longer be nominating this validator. 
 
    Note: Making this call only makes sense if you first set the validator preferences to  block any further nominations. 
+ 
+### manualSlash(validator_stash: `AccountId32`, era: `u32`, slash_fraction: `Perbill`)
+- **interface**: `api.tx.staking.manualSlash`
+- **summary**:    This function allows governance to manually slash a validator and is a 
+
+  **fallback mechanism**.
+
+   The dispatch origin must be `T::AdminOrigin`. 
+
+   #### Parameters 
+
+  - `validator_stash` - The stash account of the validator to slash.
+
+  - `era` - The era in which the validator was in the active set.
+
+  - `slash_fraction` - The percentage of the stake to slash, expressed as a Perbill.
+
+   #### Behavior 
+
+   The slash will be applied using the standard slashing mechanics, respecting the  configured `SlashDeferDuration`. 
+
+   This means: 
+
+  - If the validator was already slashed by a higher percentage for the same era, this slash will have no additional effect. 
+
+  - If the validator was previously slashed by a lower percentage, only the difference will be applied. 
+
+  - The slash will be deferred by `SlashDeferDuration` eras before being enacted.
+ 
+### migrateCurrency(stash: `AccountId32`)
+- **interface**: `api.tx.staking.migrateCurrency`
+- **summary**:    Removes the legacy Staking locks if they exist. 
+
+   This removes the legacy lock on the stake with [`Config::OldCurrency`] and creates a  hold on it if needed. If all stake cannot be held, the best effort is made to hold as  much as possible. The remaining stake is forced withdrawn from the ledger. 
+
+   The fee is waived if the migration is successful. 
  
 ### nominate(targets: `Vec<MultiAddress>`)
 - **interface**: `api.tx.staking.nominate`
@@ -7439,6 +7691,14 @@ ___
 
   - O(1).
  
+### dispatchAsFallible(as_origin: `KitchensinkRuntimeOriginCaller`, call: `Call`)
+- **interface**: `api.tx.utility.dispatchAsFallible`
+- **summary**:    Dispatches a function call with a provided origin. 
+
+   Almost the same as [`Pallet::dispatch_as`] but forwards any error of the inner call. 
+
+   The dispatch origin for this call must be _Root_. 
+ 
 ### forceBatch(calls: `Vec<Call>`)
 - **interface**: `api.tx.utility.forceBatch`
 - **summary**:    Send a batch of dispatch calls.  Unlike `batch`, it allows errors and won't interrupt. 
@@ -7452,6 +7712,28 @@ ___
    #### Complexity 
 
   - O(C) where C is the number of calls to be batched.
+ 
+### ifElse(main: `Call`, fallback: `Call`)
+- **interface**: `api.tx.utility.ifElse`
+- **summary**:    Dispatch a fallback call in the event the main call fails to execute.  May be called from any origin except `None`. 
+
+   This function first attempts to dispatch the `main` call.  If the `main` call fails, the `fallback` is attemted.  if the fallback is successfully dispatched, the weights of both calls  are accumulated and an event containing the main call error is deposited. 
+
+   In the event of a fallback failure the whole call fails  with the weights returned. 
+
+   - `main`: The main call to be dispatched. This is the primary action to execute. 
+
+  - `fallback`: The fallback call to be dispatched in case the `main` call fails.
+
+   #### Dispatch Logic 
+
+  - If the origin is `root`, both the main and fallback calls are executed without applying any origin filters. 
+
+  - If the origin is not `root`, the origin filter is applied to both the `main` and `fallback` calls. 
+
+   #### Use Case 
+
+  - Some use cases might involve submitting a `batch` type call in either main, fallback or both. 
  
 ### withWeight(call: `Call`, weight: `SpWeightsWeightV2Weight`)
 - **interface**: `api.tx.utility.withWeight`

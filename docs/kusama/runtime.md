@@ -211,10 +211,10 @@ ___
 
 ## dryRunApi
  
-### dryRunCall(origin: `StagingKusamaRuntimeOriginCaller`, call: `StagingKusamaRuntimeRuntimeCall`): `Result<XcmRuntimeApisDryRunCallDryRunEffects, XcmRuntimeApisDryRunError>`
+### dryRunCall(origin: `StagingKusamaRuntimeOriginCaller`, call: `StagingKusamaRuntimeRuntimeCall`, result_xcms_version: `u32`): `Result<XcmRuntimeApisDryRunCallDryRunEffects, XcmRuntimeApisDryRunError>`
 - **interface**: `api.call.dryRunApi.dryRunCall`
 - **runtime**: `dryRunApi_dry_run_call`
-- **summary**:  Dry run call.
+- **summary**:  Dry run call V2.
  
 ### dryRunXcm(origin_location: `XcmVersionedLocation`, xcm: `XcmVersionedXcm`): `Result<XcmRuntimeApisDryRunXcmDryRunEffects, XcmRuntimeApisDryRunError>`
 - **interface**: `api.call.dryRunApi.dryRunXcm`
@@ -229,12 +229,12 @@ ___
 ### buildState(json: `Bytes`): `Result<Null, Text>`
 - **interface**: `api.call.genesisBuilder.buildState`
 - **runtime**: `genesisBuilder_build_state`
-- **summary**:  Build `RuntimeGenesisConfig` from a JSON blob not using any defaults and store it in the, storage.,, In the case of a FRAME-based runtime, this function deserializes the full `RuntimeGenesisConfig` from the given JSON blob and, puts it into the storage. If the provided JSON blob is incorrect or incomplete or the, deserialization fails, an error is returned.,, Please note that provided JSON blob must contain all `RuntimeGenesisConfig` fields, no, defaults will be used.
+- **summary**:  Build `RuntimeGenesisConfig` from a JSON blob not using any defaults and store it in the, storage.,, In the case of a FRAME-based runtime, this function deserializes the full, `RuntimeGenesisConfig` from the given JSON blob and puts it into the storage. If the, provided JSON blob is incorrect or incomplete or the deserialization fails, an error, is returned.,, Please note that provided JSON blob must contain all `RuntimeGenesisConfig` fields, no, defaults will be used.
  
 ### getPreset(id: `Option<Text>`): `Option<Bytes>`
 - **interface**: `api.call.genesisBuilder.getPreset`
 - **runtime**: `genesisBuilder_get_preset`
-- **summary**:  Returns a JSON blob representation of the built-in `RuntimeGenesisConfig` identified by, `id`.,, If `id` is `None` the function returns JSON blob representation of the default, `RuntimeGenesisConfig` struct of the runtime. Implementation must provide default, `RuntimeGenesisConfig`.,, Otherwise function returns a JSON representation of the built-in, named, `RuntimeGenesisConfig` preset identified by `id`, or `None` if such preset does not, exist. Returned `Vec<u8>` contains bytes of JSON blob (patch) which comprises a list of, (potentially nested) key-value pairs that are intended for customizing the default, runtime genesis config. The patch shall be merged (rfc7386) with the JSON representation, of the default `RuntimeGenesisConfig` to create a comprehensive genesis config that can, be used in `build_state` method.
+- **summary**:  Returns a JSON blob representation of the built-in `RuntimeGenesisConfig` identified by, `id`.,, If `id` is `None` the function should return JSON blob representation of the default, `RuntimeGenesisConfig` struct of the runtime. Implementation must provide default, `RuntimeGenesisConfig`.,, Otherwise function returns a JSON representation of the built-in, named, `RuntimeGenesisConfig` preset identified by `id`, or `None` if such preset does not, exist. Returned `Vec<u8>` contains bytes of JSON blob (patch) which comprises a list of, (potentially nested) key-value pairs that are intended for customizing the default, runtime genesis config. The patch shall be merged (rfc7386) with the JSON representation, of the default `RuntimeGenesisConfig` to create a comprehensive genesis config that can, be used in `build_state` method.
  
 ### presetNames(): `Vec<Text>`
 - **interface**: `api.call.genesisBuilder.presetNames`
@@ -354,7 +354,7 @@ ___
 ### memberPendingSlash(member: `SpCoreCryptoAccountId32`): `u128`
 - **interface**: `api.call.nominationPoolsApi.memberPendingSlash`
 - **runtime**: `nominationPoolsApi_member_pending_slash`
-- **summary**:  Returns the pending slash for a given pool member.,, If pending slash of the member exceeds `ExistentialDeposit`, it can be reported on, chain.
+- **summary**:  Returns the pending slash for a given pool member.
  
 ### memberTotalBalance(who: `SpCoreCryptoAccountId32`): `u128`
 - **interface**: `api.call.nominationPoolsApi.memberTotalBalance`
@@ -370,6 +370,11 @@ ___
 - **interface**: `api.call.nominationPoolsApi.pointsToBalance`
 - **runtime**: `nominationPoolsApi_points_to_balance`
 - **summary**:  Returns the equivalent balance of `points` for a given pool.
+ 
+### poolAccounts(pool_id: `u32`): `(AccountId32,AccountId32)`
+- **interface**: `api.call.nominationPoolsApi.poolAccounts`
+- **runtime**: `nominationPoolsApi_pool_accounts`
+- **summary**:  Returns the bonded account and reward account associated with the pool_id.
  
 ### poolBalance(pool_id: `u32`): `u128`
 - **interface**: `api.call.nominationPoolsApi.poolBalance`
@@ -416,22 +421,22 @@ ___
 - **runtime**: `parachainHost_async_backing_params`
 - **summary**:  Returns candidate's acceptance limitations for asynchronous backing for a relay parent.
  
-### availabilityCores(): `Vec<PolkadotPrimitivesV8CoreState>`
+### availabilityCores(): `Vec<PolkadotPrimitivesVstagingCoreState>`
 - **interface**: `api.call.parachainHost.availabilityCores`
 - **runtime**: `parachainHost_availability_cores`
 - **summary**:  Yields information on all availability cores as relevant to the child block., Cores are either free or occupied. Free cores can have paras assigned to them.
  
-### candidateEvents(): `Vec<PolkadotPrimitivesV8CandidateEvent>`
+### candidateEvents(): `Vec<PolkadotPrimitivesVstagingCandidateEvent>`
 - **interface**: `api.call.parachainHost.candidateEvents`
 - **runtime**: `parachainHost_candidate_events`
 - **summary**:  Get a vector of events concerning candidates that occurred within a block.
  
-### candidatePendingAvailability(para_id: `PolkadotParachainPrimitivesPrimitivesId`): `Option<PolkadotPrimitivesV8CommittedCandidateReceipt>`
+### candidatePendingAvailability(para_id: `PolkadotParachainPrimitivesPrimitivesId`): `Option<PolkadotPrimitivesVstagingCommittedCandidateReceiptV2>`
 - **interface**: `api.call.parachainHost.candidatePendingAvailability`
 - **runtime**: `parachainHost_candidate_pending_availability`
 - **summary**:  Get the receipt of a candidate pending availability. This returns `Some` for any paras, assigned to occupied cores in `availability_cores` and `None` otherwise.
  
-### candidatesPendingAvailability(para_id: `PolkadotParachainPrimitivesPrimitivesId`): `Vec<PolkadotPrimitivesV8CommittedCandidateReceipt>`
+### candidatesPendingAvailability(para_id: `PolkadotParachainPrimitivesPrimitivesId`): `Vec<PolkadotPrimitivesVstagingCommittedCandidateReceiptV2>`
 - **interface**: `api.call.parachainHost.candidatesPendingAvailability`
 - **runtime**: `parachainHost_candidates_pending_availability`
 - **summary**:  Elastic scaling support
@@ -481,12 +486,12 @@ ___
 - **runtime**: `parachainHost_node_features`
 - **summary**:  Get node features., This is a staging method! Do not use on production runtimes!
  
-### onChainVotes(): `Option<PolkadotPrimitivesV8ScrapedOnChainVotes>`
+### onChainVotes(): `Option<PolkadotPrimitivesVstagingScrapedOnChainVotes>`
 - **interface**: `api.call.parachainHost.onChainVotes`
 - **runtime**: `parachainHost_on_chain_votes`
 - **summary**:  Scrape dispute relevant from on-chain, backing votes and resolved disputes.
  
-### paraBackingState(_: `PolkadotParachainPrimitivesPrimitivesId`): `Option<PolkadotPrimitivesV8AsyncBackingBackingState>`
+### paraBackingState(__runtime_api_generated_name_0__: `PolkadotParachainPrimitivesPrimitivesId`): `Option<PolkadotPrimitivesVstagingAsyncBackingBackingState>`
 - **interface**: `api.call.parachainHost.paraBackingState`
 - **runtime**: `parachainHost_para_backing_state`
 - **summary**:  Returns the state of parachain backing for a given para.
@@ -535,6 +540,11 @@ ___
 - **interface**: `api.call.parachainHost.validationCode`
 - **runtime**: `parachainHost_validation_code`
 - **summary**:  Fetch the validation code used by a para, making the given `OccupiedCoreAssumption`.,, Returns `None` if either the para is not registered or the assumption is `Freed`, and the para already occupies a core.
+ 
+### validationCodeBombLimit(): `u32`
+- **interface**: `api.call.parachainHost.validationCodeBombLimit`
+- **runtime**: `parachainHost_validation_code_bomb_limit`
+- **summary**:  Retrieve the maximum uncompressed code size.
  
 ### validationCodeByHash(hash: `PolkadotParachainPrimitivesPrimitivesValidationCodeHash`): `Option<Bytes>`
 - **interface**: `api.call.parachainHost.validationCodeByHash`

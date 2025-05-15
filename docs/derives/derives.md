@@ -1423,6 +1423,46 @@ Retrieves the block information alongside its events at a given block hash
  );
  const { events, block } = await api.derive.tx.events(blockHash);
  ``` 
+### [extrinsicInfo](#extrinsicInfo)
+Retrieves the extrinsic information and its events.
+- **interface**: `api.derive.tx.extrinsicInfo`
+- **params**:
+  - at `Hash`: The block hash to query at.
+  - transactionHash `Uint8Array | string`: A transaction hash as U8 array or string.
+
+- **example**: 
+ ```javascript
+ const blockHash = api.registry.createType(
+   'Hash',
+   '0xb772e4949d2f3eb5ba356aa43f885cc4f9097ee9812c5436543f3846a0491729'
+ );
+ const extrinsicInfo = await api.derive.tx.extrinsicInfo(
+   blockHash,
+   '0xcd96520b05e0c4648ea365f3f063f27c5cdd8be10d41a1c44566428c91f37dcb'
+ );
+
+ console.log(extrinsicInfo.extrinsic.toHuman());
+ ``` 
+### [accountExtrinsics](#accountExtrinsics)
+Retrieves information about every extrinsic submitted by an account at a given block.
+- **interface**: `api.derive.tx.accountExtrinsics`
+- **params**:
+  - at `Hash`: The block hash to query at.
+  - accountId `Uint8Array | strings`: The account identifier to query.
+
+- **example**: 
+ ```javascript
+ const blockHash = api.registry.createType(
+  'Hash',
+  '0xb772e4949d2f3eb5ba356aa43f885cc4f9097ee9812c5436543f3846a0491729'
+);
+const extrinsicsInfo = await api.derive.tx.accountExtrinsics(
+  blockHash,
+  '0x21895DdfD4640b4e0aDCa2865b907f2CE6e6B777'
+);
+
+console.log(extrinsicsInfo.extrinsics[0]).extrinsic.toHuman();
+ ``` 
 ### [signingInfo](#signingInfo)
 Retrieves signing-related information for an account, including the nonce, block header, and mortal length.
 - **interface**: `api.derive.tx.signingInfo`

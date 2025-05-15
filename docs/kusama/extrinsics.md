@@ -329,6 +329,22 @@ ___
 
   - O(1).
  
+### approveBountyWithCurator(bounty_id: `Compact<u32>`, curator: `MultiAddress`, fee: `Compact<u128>`)
+- **interface**: `api.tx.bounties.approveBountyWithCurator`
+- **summary**:    Approve bountry and propose a curator simultaneously.  This call is a shortcut to calling `approve_bounty` and `propose_curator` separately. 
+
+   May only be called from `T::SpendOrigin`. 
+
+   - `bounty_id`: Bounty ID to approve. 
+
+  - `curator`: The curator account whom will manage this bounty.
+
+  - `fee`: The curator fee.
+
+   #### Complexity 
+
+  - O(1).
+ 
 ### awardBounty(bounty_id: `Compact<u32>`, beneficiary: `MultiAddress`)
 - **interface**: `api.tx.bounties.awardBounty`
 - **summary**:    Award bounty to a beneficiary account. The beneficiary will be able to claim the funds  after a delay. 
@@ -565,7 +581,7 @@ ___
 - **interface**: `api.tx.claims.attest`
 - **summary**:    Attest to a statement, needed to finalize the claims process. 
 
-   WARNING: Insecure unless your chain includes `PrevalidateAttests` as a  `SignedExtension`. 
+   WARNING: Insecure unless your chain includes `PrevalidateAttests` as a  `TransactionExtension`. 
 
    Unsigned Validation:  A call to attest is deemed valid if the sender has a `Preclaim` registered  and provides a `statement` which is expected for the account. 
 
@@ -715,10 +731,6 @@ ___
 - **interface**: `api.tx.configuration.setHrmpSenderDeposit`
 - **summary**:    Sets the amount of funds that the sender should provide for opening an HRMP channel. 
  
-### setMaxAvailabilityTimeouts(new: `u32`)
-- **interface**: `api.tx.configuration.setMaxAvailabilityTimeouts`
-- **summary**:    Set the max number of times a claim may timeout on a core before it is abandoned 
- 
 ### setMaxCodeSize(new: `u32`)
 - **interface**: `api.tx.configuration.setMaxCodeSize`
 - **summary**:    Set the max validation code size for incoming upgrades. 
@@ -800,10 +812,6 @@ ___
 ### setOnDemandTargetQueueUtilization(new: `Perbill`)
 - **interface**: `api.tx.configuration.setOnDemandTargetQueueUtilization`
 - **summary**:    Set the on demand (parathreads) fee variability. 
- 
-### setOnDemandTtl(new: `u32`)
-- **interface**: `api.tx.configuration.setOnDemandTtl`
-- **summary**:    Set the on demand (parathreads) ttl in the claimqueue. 
  
 ### setParasAvailabilityPeriod(new: `u32`)
 - **interface**: `api.tx.configuration.setParasAvailabilityPeriod`
@@ -1891,7 +1899,7 @@ ___
 
    Fails unless [`crate::pallet::Config::StakeAdapter`] is of strategy type:  [`adapter::StakeStrategyType::Delegate`]. 
 
-   The pending slash amount of the member must be equal or more than `ExistentialDeposit`.  This call can be dispatched permissionlessly (i.e. by any account). If the execution  is successful, fee is refunded and caller may be rewarded with a part of the slash  based on the [`crate::pallet::Config::StakeAdapter`] configuration. 
+   This call can be dispatched permissionlessly (i.e. by any account). If the member has  slash to be applied, caller may be rewarded with the part of the slash. 
  
 ### bondExtra(extra: `PalletNominationPoolsBondExtra`)
 - **interface**: `api.tx.nominationPools.bondExtra`
@@ -2218,7 +2226,7 @@ ___
 
 ## paraInherent
  
-### enter(data: `PolkadotPrimitivesV8InherentData`)
+### enter(data: `PolkadotPrimitivesVstagingInherentData`)
 - **interface**: `api.tx.paraInherent.enter`
 - **summary**:    Enter the paras inherent. This will process bitfields and backed candidates. 
 
@@ -2347,7 +2355,7 @@ ___
 
 ## proxy
  
-### addProxy(delegate: `MultiAddress`, proxy_type: `StagingKusamaRuntimeProxyType`, delay: `u32`)
+### addProxy(delegate: `MultiAddress`, proxy_type: `KusamaRuntimeConstantsProxyProxyType`, delay: `u32`)
 - **interface**: `api.tx.proxy.addProxy`
 - **summary**:    Register a proxy account for the sender that is able to make calls on its behalf. 
 
@@ -2379,7 +2387,7 @@ ___
 
   - `call_hash`: The hash of the call to be made by the `real` account.
  
-### createPure(proxy_type: `StagingKusamaRuntimeProxyType`, delay: `u32`, index: `u16`)
+### createPure(proxy_type: `KusamaRuntimeConstantsProxyProxyType`, delay: `u32`, index: `u16`)
 - **interface**: `api.tx.proxy.createPure`
 - **summary**:    Spawn a fresh new account that is guaranteed to be otherwise inaccessible, and  initialize it with a proxy of `proxy_type` for `origin` sender. 
 
@@ -2395,7 +2403,7 @@ ___
 
    Fails if there are insufficient funds to pay for deposit. 
  
-### killPure(spawner: `MultiAddress`, proxy_type: `StagingKusamaRuntimeProxyType`, index: `u16`, height: `Compact<u32>`, ext_index: `Compact<u32>`)
+### killPure(spawner: `MultiAddress`, proxy_type: `KusamaRuntimeConstantsProxyProxyType`, index: `u16`, height: `Compact<u32>`, ext_index: `Compact<u32>`)
 - **interface**: `api.tx.proxy.killPure`
 - **summary**:    Removes a previously spawned pure proxy. 
 
@@ -2415,7 +2423,7 @@ ___
 
    Fails with `NoPermission` in case the caller is not a previously created pure  account whose `pure` call has corresponding parameters. 
  
-### proxy(real: `MultiAddress`, force_proxy_type: `Option<StagingKusamaRuntimeProxyType>`, call: `Call`)
+### proxy(real: `MultiAddress`, force_proxy_type: `Option<KusamaRuntimeConstantsProxyProxyType>`, call: `Call`)
 - **interface**: `api.tx.proxy.proxy`
 - **summary**:    Dispatch the given `call` from an account that the sender is authorised for through  `add_proxy`. 
 
@@ -2429,7 +2437,7 @@ ___
 
   - `call`: The call to be made by the `real` account.
  
-### proxyAnnounced(delegate: `MultiAddress`, real: `MultiAddress`, force_proxy_type: `Option<StagingKusamaRuntimeProxyType>`, call: `Call`)
+### proxyAnnounced(delegate: `MultiAddress`, real: `MultiAddress`, force_proxy_type: `Option<KusamaRuntimeConstantsProxyProxyType>`, call: `Call`)
 - **interface**: `api.tx.proxy.proxyAnnounced`
 - **summary**:    Dispatch the given `call` from an account that the sender is authorized for through  `add_proxy`. 
 
@@ -2481,7 +2489,7 @@ ___
 
    WARNING: This may be called on accounts created by `pure`, however if done, then  the unreserved fees will be inaccessible. **All access to this account will be lost.** 
  
-### removeProxy(delegate: `MultiAddress`, proxy_type: `StagingKusamaRuntimeProxyType`, delay: `u32`)
+### removeProxy(delegate: `MultiAddress`, proxy_type: `KusamaRuntimeConstantsProxyProxyType`, delay: `u32`)
 - **interface**: `api.tx.proxy.removeProxy`
 - **summary**:    Unregister a proxy account for the sender. 
 
@@ -3441,7 +3449,7 @@ ___
  
 ### unbond(value: `Compact<u128>`)
 - **interface**: `api.tx.staking.unbond`
-- **summary**:    Schedule a portion of the stash to be unlocked ready for transfer out after the bond  period ends. If this leaves an amount actively bonded less than  T::Currency::minimum_balance(), then it is increased to the full amount. 
+- **summary**:    Schedule a portion of the stash to be unlocked ready for transfer out after the bond  period ends. If this leaves an amount actively bonded less than  [`asset::existential_deposit`], then it is increased to the full amount. 
 
    The dispatch origin for this call must be _Signed_ by the controller, not the stash. 
 
@@ -3470,6 +3478,12 @@ ___
    Effects will be felt at the beginning of the next era. 
 
    The dispatch origin for this call must be _Signed_ by the controller, not the stash. 
+ 
+### withdrawOverstake(stash: `AccountId32`)
+- **interface**: `api.tx.staking.withdrawOverstake`
+- **summary**:    Adjusts the staking ledger by withdrawing any excess staked amount. 
+
+   This function corrects cases where a user's recorded stake in the ledger  exceeds their actual staked funds. This situation can arise due to cases such as  external slashing by another pallet, leading to an inconsistency between the ledger  and the actual stake. 
  
 ### withdrawUnbonded(num_slashing_spans: `u32`)
 - **interface**: `api.tx.staking.withdrawUnbonded`
@@ -3999,7 +4013,7 @@ ___
 
   - `location`: The location to which we are currently subscribed for XCM version notifications which we no longer desire. 
  
-### forceXcmVersion(location: `StagingXcmV4Location`, version: `u32`)
+### forceXcmVersion(location: `StagingXcmV5Location`, version: `u32`)
 - **interface**: `api.tx.xcmPallet.forceXcmVersion`
 - **summary**:    Extoll that a particular destination can be communicated with through a particular  version of XCM. 
 

@@ -921,15 +921,15 @@ ___
 
 ## paraInclusion
  
-### CandidateBacked(`PolkadotPrimitivesV8CandidateReceipt`, `Bytes`, `u32`, `u32`)
+### CandidateBacked(`PolkadotPrimitivesVstagingCandidateReceiptV2`, `Bytes`, `u32`, `u32`)
 - **interface**: `api.events.paraInclusion.CandidateBacked.is`
 - **summary**:    A candidate was backed. `[candidate, head_data]` 
  
-### CandidateIncluded(`PolkadotPrimitivesV8CandidateReceipt`, `Bytes`, `u32`, `u32`)
+### CandidateIncluded(`PolkadotPrimitivesVstagingCandidateReceiptV2`, `Bytes`, `u32`, `u32`)
 - **interface**: `api.events.paraInclusion.CandidateIncluded.is`
 - **summary**:    A candidate was included. `[candidate, head_data]` 
  
-### CandidateTimedOut(`PolkadotPrimitivesV8CandidateReceipt`, `Bytes`, `u32`)
+### CandidateTimedOut(`PolkadotPrimitivesVstagingCandidateReceiptV2`, `Bytes`, `u32`)
 - **interface**: `api.events.paraInclusion.CandidateTimedOut.is`
 - **summary**:    A candidate timed out. `[candidate, head_data]` 
  
@@ -1028,7 +1028,7 @@ ___
 - **interface**: `api.events.proxy.Announced.is`
 - **summary**:    An announcement was placed to make a call in the future. 
  
-### ProxyAdded(`AccountId32`, `AccountId32`, `StagingKusamaRuntimeProxyType`, `u32`)
+### ProxyAdded(`AccountId32`, `AccountId32`, `KusamaRuntimeConstantsProxyProxyType`, `u32`)
 - **interface**: `api.events.proxy.ProxyAdded.is`
 - **summary**:    A proxy was added. 
  
@@ -1036,11 +1036,11 @@ ___
 - **interface**: `api.events.proxy.ProxyExecuted.is`
 - **summary**:    A proxy was executed correctly, with the given. 
  
-### ProxyRemoved(`AccountId32`, `AccountId32`, `StagingKusamaRuntimeProxyType`, `u32`)
+### ProxyRemoved(`AccountId32`, `AccountId32`, `KusamaRuntimeConstantsProxyProxyType`, `u32`)
 - **interface**: `api.events.proxy.ProxyRemoved.is`
 - **summary**:    A proxy was removed. 
  
-### PureCreated(`AccountId32`, `AccountId32`, `StagingKusamaRuntimeProxyType`, `u16`)
+### PureCreated(`AccountId32`, `AccountId32`, `KusamaRuntimeConstantsProxyProxyType`, `u16`)
 - **interface**: `api.events.proxy.PureCreated.is`
 - **summary**:    A pure account has been created by new proxy with given  disambiguation index and proxy type. 
 
@@ -1328,9 +1328,9 @@ ___
 - **interface**: `api.events.staking.OldSlashingReportDiscarded.is`
 - **summary**:    An old slashing report from a prior era was discarded because it could  not be processed. 
  
-### PayoutStarted(`u32`, `AccountId32`)
+### PayoutStarted(`u32`, `AccountId32`, `u32`, `Option<u32>`)
 - **interface**: `api.events.staking.PayoutStarted.is`
-- **summary**:    The stakers' rewards are getting paid. 
+- **summary**:    A Page of stakers rewards are getting paid. `next` is `None` if all pages are claimed. 
  
 ### Rewarded(`AccountId32`, `PalletStakingRewardDestination`, `u128`)
 - **interface**: `api.events.staking.Rewarded.is`
@@ -1381,11 +1381,11 @@ ___
 - **interface**: `api.events.system.CodeUpdated.is`
 - **summary**:    `:code` was updated. 
  
-### ExtrinsicFailed(`SpRuntimeDispatchError`, `FrameSupportDispatchDispatchInfo`)
+### ExtrinsicFailed(`SpRuntimeDispatchError`, `FrameSystemDispatchEventInfo`)
 - **interface**: `api.events.system.ExtrinsicFailed.is`
 - **summary**:    An extrinsic failed. 
  
-### ExtrinsicSuccess(`FrameSupportDispatchDispatchInfo`)
+### ExtrinsicSuccess(`FrameSystemDispatchEventInfo`)
 - **interface**: `api.events.system.ExtrinsicSuccess.is`
 - **summary**:    An extrinsic completed successfully. 
  
@@ -1541,37 +1541,37 @@ ___
 
 ## xcmPallet
  
-### AssetsClaimed(`H256`, `StagingXcmV4Location`, `XcmVersionedAssets`)
+### AssetsClaimed(`H256`, `StagingXcmV5Location`, `XcmVersionedAssets`)
 - **interface**: `api.events.xcmPallet.AssetsClaimed.is`
 - **summary**:    Some assets have been claimed from an asset trap 
  
-### AssetsTrapped(`H256`, `StagingXcmV4Location`, `XcmVersionedAssets`)
+### AssetsTrapped(`H256`, `StagingXcmV5Location`, `XcmVersionedAssets`)
 - **interface**: `api.events.xcmPallet.AssetsTrapped.is`
 - **summary**:    Some assets have been placed in an asset trap. 
  
-### Attempted(`StagingXcmV4TraitsOutcome`)
+### Attempted(`StagingXcmV5TraitsOutcome`)
 - **interface**: `api.events.xcmPallet.Attempted.is`
 - **summary**:    Execution of an XCM message was attempted. 
  
-### FeesPaid(`StagingXcmV4Location`, `StagingXcmV4AssetAssets`)
+### FeesPaid(`StagingXcmV5Location`, `StagingXcmV5AssetAssets`)
 - **interface**: `api.events.xcmPallet.FeesPaid.is`
 - **summary**:    Fees were paid from a location for an operation (often for using `SendXcm`). 
  
-### InvalidQuerier(`StagingXcmV4Location`, `u64`, `StagingXcmV4Location`, `Option<StagingXcmV4Location>`)
+### InvalidQuerier(`StagingXcmV5Location`, `u64`, `StagingXcmV5Location`, `Option<StagingXcmV5Location>`)
 - **interface**: `api.events.xcmPallet.InvalidQuerier.is`
 - **summary**:    Expected query response has been received but the querier location of the response does  not match the expected. The query remains registered for a later, valid, response to  be received and acted upon. 
  
-### InvalidQuerierVersion(`StagingXcmV4Location`, `u64`)
+### InvalidQuerierVersion(`StagingXcmV5Location`, `u64`)
 - **interface**: `api.events.xcmPallet.InvalidQuerierVersion.is`
 - **summary**:    Expected query response has been received but the expected querier location placed in  storage by this runtime previously cannot be decoded. The query remains registered. 
 
    This is unexpected (since a location placed in storage in a previously executing  runtime should be readable prior to query timeout) and dangerous since the possibly  valid response will be dropped. Manual governance intervention is probably going to be  needed. 
  
-### InvalidResponder(`StagingXcmV4Location`, `u64`, `Option<StagingXcmV4Location>`)
+### InvalidResponder(`StagingXcmV5Location`, `u64`, `Option<StagingXcmV5Location>`)
 - **interface**: `api.events.xcmPallet.InvalidResponder.is`
 - **summary**:    Expected query response has been received but the origin location of the response does  not match that expected. The query remains registered for a later, valid, response to  be received and acted upon. 
  
-### InvalidResponderVersion(`StagingXcmV4Location`, `u64`)
+### InvalidResponderVersion(`StagingXcmV5Location`, `u64`)
 - **interface**: `api.events.xcmPallet.InvalidResponderVersion.is`
 - **summary**:    Expected query response has been received but the expected origin location placed in  storage by this runtime previously cannot be decoded. The query remains registered. 
 
@@ -1597,11 +1597,11 @@ ___
 - **interface**: `api.events.xcmPallet.NotifyTargetMigrationFail.is`
 - **summary**:    A given location which had a version change subscription was dropped owing to an error  migrating the location to our new XCM format. 
  
-### NotifyTargetSendFail(`StagingXcmV4Location`, `u64`, `XcmV3TraitsError`)
+### NotifyTargetSendFail(`StagingXcmV5Location`, `u64`, `XcmV5TraitsError`)
 - **interface**: `api.events.xcmPallet.NotifyTargetSendFail.is`
 - **summary**:    A given location which had a version change subscription was dropped owing to an error  sending the notification to it. 
  
-### ResponseReady(`u64`, `StagingXcmV4Response`)
+### ResponseReady(`u64`, `StagingXcmV5Response`)
 - **interface**: `api.events.xcmPallet.ResponseReady.is`
 - **summary**:    Query response has been received and is ready for taking with `take_response`. There is  no registered notification call. 
  
@@ -1609,19 +1609,19 @@ ___
 - **interface**: `api.events.xcmPallet.ResponseTaken.is`
 - **summary**:    Received query response has been read and removed. 
  
-### Sent(`StagingXcmV4Location`, `StagingXcmV4Location`, `StagingXcmV4Xcm`, `[u8;32]`)
+### Sent(`StagingXcmV5Location`, `StagingXcmV5Location`, `StagingXcmV5Xcm`, `[u8;32]`)
 - **interface**: `api.events.xcmPallet.Sent.is`
 - **summary**:    A XCM message was sent. 
  
-### SupportedVersionChanged(`StagingXcmV4Location`, `u32`)
+### SupportedVersionChanged(`StagingXcmV5Location`, `u32`)
 - **interface**: `api.events.xcmPallet.SupportedVersionChanged.is`
 - **summary**:    The supported version of a location has been changed. This might be through an  automatic notification or a manual intervention. 
  
-### UnexpectedResponse(`StagingXcmV4Location`, `u64`)
+### UnexpectedResponse(`StagingXcmV5Location`, `u64`)
 - **interface**: `api.events.xcmPallet.UnexpectedResponse.is`
 - **summary**:    Query response received which does not match a registered query. This may be because a  matching query was never registered, it may be because it is a duplicate response, or  because the query timed out. 
  
-### VersionChangeNotified(`StagingXcmV4Location`, `u32`, `StagingXcmV4AssetAssets`, `[u8;32]`)
+### VersionChangeNotified(`StagingXcmV5Location`, `u32`, `StagingXcmV5AssetAssets`, `[u8;32]`)
 - **interface**: `api.events.xcmPallet.VersionChangeNotified.is`
 - **summary**:    An XCM version change notification message has been attempted to be sent. 
 
@@ -1631,14 +1631,14 @@ ___
 - **interface**: `api.events.xcmPallet.VersionMigrationFinished.is`
 - **summary**:    A XCM version migration finished. 
  
-### VersionNotifyRequested(`StagingXcmV4Location`, `StagingXcmV4AssetAssets`, `[u8;32]`)
+### VersionNotifyRequested(`StagingXcmV5Location`, `StagingXcmV5AssetAssets`, `[u8;32]`)
 - **interface**: `api.events.xcmPallet.VersionNotifyRequested.is`
 - **summary**:    We have requested that a remote chain send us XCM version change notifications. 
  
-### VersionNotifyStarted(`StagingXcmV4Location`, `StagingXcmV4AssetAssets`, `[u8;32]`)
+### VersionNotifyStarted(`StagingXcmV5Location`, `StagingXcmV5AssetAssets`, `[u8;32]`)
 - **interface**: `api.events.xcmPallet.VersionNotifyStarted.is`
 - **summary**:    A remote has requested XCM version change notification from us and we have honored it.  A version information message is sent to them and its cost is included. 
  
-### VersionNotifyUnrequested(`StagingXcmV4Location`, `StagingXcmV4AssetAssets`, `[u8;32]`)
+### VersionNotifyUnrequested(`StagingXcmV5Location`, `StagingXcmV5AssetAssets`, `[u8;32]`)
 - **interface**: `api.events.xcmPallet.VersionNotifyUnrequested.is`
 - **summary**:    We have requested that a remote chain stops sending us XCM version change  notifications. 

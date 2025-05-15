@@ -14,7 +14,11 @@ The following sections contain Storage methods are part of the default Substrate
 
 - **[assetRate](#assetrate)**
 
+- **[assetRewards](#assetrewards)**
+
 - **[assets](#assets)**
+
+- **[assetsFreezer](#assetsfreezer)**
 
 - **[authorityDiscovery](#authoritydiscovery)**
 
@@ -39,6 +43,8 @@ The following sections contain Storage methods are part of the default Substrate
 - **[coreFellowship](#corefellowship)**
 
 - **[council](#council)**
+
+- **[delegatedStaking](#delegatedstaking)**
 
 - **[democracy](#democracy)**
 
@@ -250,6 +256,31 @@ ___
 ___
 
 
+## assetRewards
+ 
+### nextPoolId(): `u32`
+- **interface**: `api.query.assetRewards.nextPoolId`
+- **summary**:    Stores the [`PoolId`] to use for the next pool. 
+
+   Incremented when a new pool is created. 
+ 
+### poolCost(`u32`): `Option<(AccountId32,u128)>`
+- **interface**: `api.query.assetRewards.poolCost`
+- **summary**:    The cost associated with storing pool information on-chain which was incurred by the pool  creator. 
+
+   This cost may be [`None`], as determined by [`Config::Consideration`]. 
+ 
+### pools(`u32`): `Option<PalletAssetRewardsPoolInfo>`
+- **interface**: `api.query.assetRewards.pools`
+- **summary**:    State and configuration of each staking pool. 
+ 
+### poolStakers(`u32, AccountId32`): `Option<PalletAssetRewardsPoolStakerInfo>`
+- **interface**: `api.query.assetRewards.poolStakers`
+- **summary**:    State of pool stakers. 
+
+___
+
+
 ## assets
  
 ### account(`u32, AccountId32`): `Option<PalletAssetsAssetAccount>`
@@ -275,6 +306,19 @@ ___
    This can be useful for setting up constraints for IDs of the new assets. For example, by  providing an initial [`NextAssetId`] and using the [`crate::AutoIncAssetId`] callback, an  auto-increment model can be applied to all new asset IDs. 
 
    The initial next asset ID can be set using the [`GenesisConfig`] or the  [SetNextAssetId](`migration::next_asset_id::SetNextAssetId`) migration. 
+
+___
+
+
+## assetsFreezer
+ 
+### freezes(`u32, AccountId32`): `Vec<FrameSupportTokensMiscIdAmountRuntimeFreezeReason>`
+- **interface**: `api.query.assetsFreezer.freezes`
+- **summary**:    A map that stores freezes applied on an account for a given AssetId. 
+ 
+### frozenBalances(`u32, AccountId32`): `Option<u128>`
+- **interface**: `api.query.assetsFreezer.frozenBalances`
+- **summary**:    A map that stores the current total frozen balance for every account on a given AssetId. 
 
 ___
 
@@ -701,6 +745,29 @@ ___
 ### voting(`H256`): `Option<PalletCollectiveVotes>`
 - **interface**: `api.query.council.voting`
 - **summary**:    Votes on a given proposal, if it is ongoing. 
+
+___
+
+
+## delegatedStaking
+ 
+### agents(`AccountId32`): `Option<PalletDelegatedStakingAgentLedger>`
+- **interface**: `api.query.delegatedStaking.agents`
+- **summary**:    Map of `Agent` to their `Ledger`. 
+ 
+### counterForAgents(): `u32`
+- **interface**: `api.query.delegatedStaking.counterForAgents`
+- **summary**:    Counter for the related counted storage map 
+ 
+### counterForDelegators(): `u32`
+- **interface**: `api.query.delegatedStaking.counterForDelegators`
+- **summary**:    Counter for the related counted storage map 
+ 
+### delegators(`AccountId32`): `Option<PalletDelegatedStakingDelegation>`
+- **interface**: `api.query.delegatedStaking.delegators`
+- **summary**:    Map of Delegators to their `Delegation`. 
+
+   Implementation note: We are not using a double map with `delegator` and `agent` account  as keys since we want to restrict delegators to delegate only to one account at a time. 
 
 ___
 
@@ -1652,12 +1719,6 @@ ___
 
 ## revive
  
-### addressSuffix(`H160`): `Option<[u8;12]>`
-- **interface**: `api.query.revive.addressSuffix`
-- **summary**:    Map a Ethereum address to its original `AccountId32`. 
-
-   Stores the last 12 byte for addresses that were originally an `AccountId32` instead  of an `H160`. Register your `AccountId32` using [`Pallet::map_account`] in order to  use it with this pallet. 
- 
 ### codeInfoOf(`H256`): `Option<PalletReviveWasmCodeInfo>`
 - **interface**: `api.query.revive.codeInfoOf`
 - **summary**:    A mapping from a contract's code hash to its code info. 
@@ -1679,6 +1740,12 @@ ___
 ### immutableDataOf(`H160`): `Option<Bytes>`
 - **interface**: `api.query.revive.immutableDataOf`
 - **summary**:    The immutable data associated with a given account. 
+ 
+### originalAccount(`H160`): `Option<AccountId32>`
+- **interface**: `api.query.revive.originalAccount`
+- **summary**:    Map a Ethereum address to its original `AccountId32`. 
+
+   When deriving a `H160` from an `AccountId32` we use a hash function. In order to  reconstruct the original account we need to store the reverse mapping here.  Register your `AccountId32` using [`Pallet::map_account`] in order to  use it with this pallet. 
  
 ### pristineCode(`H256`): `Option<Bytes>`
 - **interface**: `api.query.revive.pristineCode`
@@ -1727,6 +1794,7 @@ ___
  
 ### incompleteSince(): `Option<u32>`
 - **interface**: `api.query.scheduler.incompleteSince`
+- **summary**:    Block number at which the agenda began incomplete execution. 
  
 ### lookup(`[u8;32]`): `Option<(u32,u32)>`
 - **interface**: `api.query.scheduler.lookup`
@@ -1747,7 +1815,7 @@ ___
 - **interface**: `api.query.session.currentIndex`
 - **summary**:    Current index of the session. 
  
-### disabledValidators(): `Vec<u32>`
+### disabledValidators(): `Vec<(u32,Perbill)>`
 - **interface**: `api.query.session.disabledValidators`
 - **summary**:    Indices of disabled validators. 
 
@@ -1919,12 +1987,6 @@ ___
 - **summary**:    The last planned session scheduled by the session pallet. 
 
    This is basically in sync with the call to [`pallet_session::SessionManager::new_session`]. 
- 
-### disabledValidators(): `Vec<u32>`
-- **interface**: `api.query.staking.disabledValidators`
-- **summary**:    Indices of validators that have offended in the active era. The offenders are disabled for a  whole era. For this reason they are kept here - only staking pallet knows about eras. The  implementor of [`DisablingStrategy`] defines if a validator should be disabled which  implicitly means that the implementor also controls the max number of disabled validators. 
-
-   The vec is always kept sorted so that we can find whether a given validator has previously  offended using binary search. 
  
 ### erasRewardPoints(`u32`): `PalletStakingEraRewardPoints`
 - **interface**: `api.query.staking.erasRewardPoints`
@@ -2243,6 +2305,14 @@ ___
 ### extrinsicData(`u32`): `Bytes`
 - **interface**: `api.query.system.extrinsicData`
 - **summary**:    Extrinsics data for the current block (maps an extrinsic's index to its data). 
+ 
+### extrinsicWeightReclaimed(): `SpWeightsWeightV2Weight`
+- **interface**: `api.query.system.extrinsicWeightReclaimed`
+- **summary**:    The weight reclaimed for the extrinsic. 
+
+   This information is available until the end of the extrinsic execution.  More precisely this information is removed in `note_applied_extrinsic`. 
+
+   Logic doing some post dispatch weight reduction must update this storage to avoid duplicate  reduction. 
  
 ### inherentsApplied(): `bool`
 - **interface**: `api.query.system.inherentsApplied`

@@ -399,11 +399,13 @@ ___
  
 ### childBountyCount(): `u32`
 - **interface**: `api.query.childBounties.childBountyCount`
-- **summary**:    Number of total child bounties. 
+- **summary**:    DEPRECATED: Replaced with `ParentTotalChildBounties` storage item keeping dedicated counts  for each parent bounty. Number of total child bounties. Will be removed in May 2025. 
  
-### childBountyDescriptions(`u32`): `Option<Bytes>`
-- **interface**: `api.query.childBounties.childBountyDescriptions`
-- **summary**:    The description of each child-bounty. 
+### childBountyDescriptionsV1(`u32, u32`): `Option<Bytes>`
+- **interface**: `api.query.childBounties.childBountyDescriptionsV1`
+- **summary**:    The description of each child-bounty. Indexed by `(parent_id, child_id)`. 
+
+   This item replaces the `ChildBountyDescriptions` storage item from the V0 storage version. 
  
 ### childrenCuratorFees(`u32`): `u128`
 - **interface**: `api.query.childBounties.childrenCuratorFees`
@@ -411,7 +413,17 @@ ___
  
 ### parentChildBounties(`u32`): `u32`
 - **interface**: `api.query.childBounties.parentChildBounties`
-- **summary**:    Number of child bounties per parent bounty.  Map of parent bounty index to number of child bounties. 
+- **summary**:    Number of active child bounties per parent bounty.  Map of parent bounty index to number of child bounties. 
+ 
+### parentTotalChildBounties(`u32`): `u32`
+- **interface**: `api.query.childBounties.parentTotalChildBounties`
+- **summary**:    Number of total child bounties per parent bounty, including completed bounties. 
+ 
+### v0ToV1ChildBountyIds(`u32`): `Option<(u32,u32)>`
+- **interface**: `api.query.childBounties.v0ToV1ChildBountyIds`
+- **summary**:    The mapping of the child bounty ids from storage version `V0` to the new `V1` version. 
+
+   The `V0` ids based on total child bounty count [`ChildBountyCount`]`. The `V1` version ids  based on the child bounty count per parent bounty [`ParentTotalChildBounties`].  The item intended solely for client convenience and not used in the pallet's core logic. 
 
 ___
 
@@ -861,7 +873,7 @@ ___
  
 ### bufferedSessionChanges(): `Vec<PolkadotRuntimeParachainsInitializerBufferedSessionChange>`
 - **interface**: `api.query.initializer.bufferedSessionChanges`
-- **summary**:    Buffered session changes along with the block number at which they should be applied. 
+- **summary**:    Buffered session changes. 
 
    Typically this will be empty or one element long. Apart from that this item never hits  the storage. 
 
@@ -1151,7 +1163,7 @@ ___
 
    If this is `None` at the end of the block, we panic and render the block invalid. 
  
-### onChainVotes(): `Option<PolkadotPrimitivesV8ScrapedOnChainVotes>`
+### onChainVotes(): `Option<PolkadotPrimitivesVstagingScrapedOnChainVotes>`
 - **interface**: `api.query.paraInherent.onChainVotes`
 - **summary**:    Scraped on chain data for extracting resolved disputes as well as backing votes. 
 
@@ -1294,19 +1306,9 @@ ___
 
 ## paraScheduler
  
-### availabilityCores(): `Vec<PolkadotRuntimeParachainsSchedulerPalletCoreOccupied>`
-- **interface**: `api.query.paraScheduler.availabilityCores`
-- **summary**:    One entry for each availability core. The i'th parachain belongs to the i'th core, with the  remaining cores all being on demand parachain multiplexers. 
-
-   Bounded by the maximum of either of these two values: 
-
-  * The number of parachains and parathread multiplexers
-
-  * The number of validators divided by `configuration.max_validators_per_core`.
- 
-### claimQueue(): `BTreeMap<u32, Vec<PolkadotRuntimeParachainsSchedulerPalletParasEntry>>`
+### claimQueue(): `BTreeMap<u32, Vec<PolkadotRuntimeParachainsSchedulerCommonAssignment>>`
 - **interface**: `api.query.paraScheduler.claimQueue`
-- **summary**:    One entry for each availability core. The `VecDeque` represents the assignments to be  scheduled on that core. The value contained here will not be valid after the end of  a block. Runtime APIs should be used to determine scheduled cores for the upcoming block. 
+- **summary**:    One entry for each availability core. The `VecDeque` represents the assignments to be  scheduled on that core. 
  
 ### sessionStartBlock(): `u32`
 - **interface**: `api.query.paraScheduler.sessionStartBlock`
@@ -2074,19 +2076,29 @@ ___
  
 ### approvals(): `Vec<u32>`
 - **interface**: `api.query.treasury.approvals`
-- **summary**:    Proposal indices that have been approved but not yet awarded. 
+- **summary**:    DEPRECATED: associated with `spend_local` call and will be removed in May 2025.  Refer to <https://github.com/paritytech/polkadot-sdk/pull/5961> for migration to `spend`. 
+
+   Proposal indices that have been approved but not yet awarded. 
  
 ### deactivated(): `u128`
 - **interface**: `api.query.treasury.deactivated`
 - **summary**:    The amount which has been reported as inactive to Currency. 
  
+### lastSpendPeriod(): `Option<u32>`
+- **interface**: `api.query.treasury.lastSpendPeriod`
+- **summary**:    The blocknumber for the last triggered spend period. 
+ 
 ### proposalCount(): `u32`
 - **interface**: `api.query.treasury.proposalCount`
-- **summary**:    Number of proposals that have been made. 
+- **summary**:    DEPRECATED: associated with `spend_local` call and will be removed in May 2025.  Refer to <https://github.com/paritytech/polkadot-sdk/pull/5961> for migration to `spend`. 
+
+   Number of proposals that have been made. 
  
 ### proposals(`u32`): `Option<PalletTreasuryProposal>`
 - **interface**: `api.query.treasury.proposals`
-- **summary**:    Proposals that have been made. 
+- **summary**:    DEPRECATED: associated with `spend_local` call and will be removed in May 2025.  Refer to <https://github.com/paritytech/polkadot-sdk/pull/5961> for migration to `spend`. 
+
+   Proposals that have been made. 
  
 ### spendCount(): `u32`
 - **interface**: `api.query.treasury.spendCount`
@@ -2167,7 +2179,7 @@ ___
 - **interface**: `api.query.xcmPallet.queryCounter`
 - **summary**:    The latest available query index. 
  
-### recordedXcm(): `Option<StagingXcmV4Xcm>`
+### recordedXcm(): `Option<StagingXcmV5Xcm>`
 - **interface**: `api.query.xcmPallet.recordedXcm`
 - **summary**:    If [`ShouldRecordXcm`] is set to true, then the last XCM program executed locally  will be stored here.  Runtime APIs can fetch the XCM that was executed by accessing this value. 
 
