@@ -17,11 +17,20 @@ to mention any new website.
 To add a new language, you can submit a PR to the [extension's repository](https://github.com/polkadot-js/extension).
 Start by creating a new directory in `extension/packages/extension/public/locales/` named after the language code you
 wish to add (e.g "es", for spanish).  
-Copy the file `translation.json` [from the english directory](https://github.com/polkadot-js/extension/blob/master/packages/extension/public/locales/en/translation.json) to the newly created directory and fill in the blanks.
+Copy the file [translation.json](cci:7://file:///Users/luke/code/clones/github/ltfschoen/extension/packages/extension/public/locales/bn/translation.json:0:0-0:0) [from the english directory](https://github.com/polkadot-js/extension/blob/master/packages/extension/public/locales/en/translation.json) to the newly created directory and fill in the blanks.
 Take a look at the other translation files to see how it works.  
 Finally, add the new language in the selection menu by adding its name and code to the array returned by the
 [getLanguageOptions](https://github.com/polkadot-js/extension/blob/master/packages/extension-ui/src/util/getLanguageOptions.ts#L12-L27).  
 Once your PR is submitted and approved, the new language will be available in the next release of the extension.
+
+## Why can't I authorize any more accounts to connect to dApps and its generating "Resource::kQuotaBytes quota exceeded" errors.
+The extension stores authorization data in Chrome's local storage, which has size limitations. If your total authorizations count across all dApps exceeds the storage quota limit (~287) then you might reach the storage quota limit.
+
+When this happens, you'll see the error message "Resource::kQuotaBytes quota exceeded" in the Chrome developer console of the window entitled "Account connection request" and when you try to click the button labelled `Connect <amount of accounts> account(s)` you won't be able to authorize additional accounts.
+
+**Current workaround:** Revoke access permissions for at least one dApp for one or more accounts to free up storage space. This will allow you to add new authorizations for the same or different accounts/dApps.
+
+**Note:** Future versions of the extension may address this issue by implementing a chunking mechanism as mentioned [here](https://github.com/polkadot-js/extension/pull/1564#issuecomment-3010599765) that processes authorizations in smaller batches, preventing quota errors while ensuring all authorized accounts are properly displayed in the UI.
 
 ## I want to send funds directly from the extension.
 The extension is not meant to be a full wallet replacement. It tries to focus on pure account management
@@ -41,13 +50,13 @@ via the "Options" screen.
 ## What does it mean to derive an account?
 We can imagine that accounts are stored as a tree. It allows us to structure accounts by our own needs.
 The root account is created at first and all the new ones will be its children by default. If we want to
-derive from other accounts, it can be done by selecting Derive New Account option in the parent account’s
+derive from other accounts, it can be done by selecting Derive New Account option in the parent account's
 context menu. Before deriving an account, the
 [HDKD derivation path](https://github.com/paritytech/parity-signer/wiki/HDKD-on-Parity-Signer#the-form-of-path)
 can be provided - it is a great tool that could be used for further account structuring.
 
 The format of a derivation path is `//<hard>/<soft>///<password>` where
-* `//hard` means that the connection between accounts is not “visible” for public addresses.
+* `//hard` means that the connection between accounts is not "visible" for public addresses.
 * `/soft` connects accounts in a manner that can be proven.
 * `///password` provides an additional (optional) encryption.
 
