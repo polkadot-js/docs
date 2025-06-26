@@ -17,7 +17,7 @@ to mention any new website.
 To add a new language, you can submit a PR to the [extension's repository](https://github.com/polkadot-js/extension).
 Start by creating a new directory in `extension/packages/extension/public/locales/` named after the language code you
 wish to add (e.g "es", for spanish).  
-Copy the file [translation.json](cci:7://file:///Users/luke/code/clones/github/ltfschoen/extension/packages/extension/public/locales/bn/translation.json:0:0-0:0) [from the english directory](https://github.com/polkadot-js/extension/blob/master/packages/extension/public/locales/en/translation.json) to the newly created directory and fill in the blanks.
+Copy the file `translation.json` [from the english directory](https://github.com/polkadot-js/extension/blob/master/packages/extension/public/locales/en/translation.json) to the newly created directory and fill in the blanks.
 Take a look at the other translation files to see how it works.  
 Finally, add the new language in the selection menu by adding its name and code to the array returned by the
 [getLanguageOptions](https://github.com/polkadot-js/extension/blob/master/packages/extension-ui/src/util/getLanguageOptions.ts#L12-L27).  
