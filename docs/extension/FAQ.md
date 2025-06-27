@@ -26,11 +26,11 @@ Once your PR is submitted and approved, the new language will be available in th
 ## Why can't I authorize any more accounts to connect to dApps and its generating "Resource::kQuotaBytes quota exceeded" errors.
 The extension stores authorization data in Chrome's local storage, which has size limitations. If your total authorizations count across all dApps exceeds the storage quota limit (~287) then you might reach the storage quota limit.
 
-When this happens, you'll see the error message "Resource::kQuotaBytes quota exceeded" in the Chrome developer console of the window entitled "Account connection request" and when you try to click the button labelled `Connect <amount of accounts> account(s)` you won't be able to authorize additional accounts.
+When this happens, you might see the error message "Resource::kQuotaBytes quota exceeded" in the Chrome developer console of the window entitled "Account connection request" and when you try to click the button labelled `Connect <amount of accounts> account(s)` when 1 or more accounts are selected then that button won't work and you won't be able to authorize additional accounts.
 
-**Current workaround:** Revoke access permissions for at least one dApp for one or more accounts to free up storage space. This will allow you to add new authorizations for the same or different accounts/dApps.
+**Current workaround:** Revoke access permissions for at least one dApp for one or more accounts to free up storage space but unchecking checkboxes associated with those accounts in the `Accounts connected to <your dApp domain>` window. This will allow you to add new authorizations for the same or different accounts/dApps.
 
-**Note:** Future versions of the extension may address this issue by implementing a chunking mechanism as mentioned [here](https://github.com/polkadot-js/extension/pull/1564#issuecomment-3010599765) that processes authorizations in smaller batches, preventing quota errors while ensuring all authorized accounts are properly displayed in the UI.
+**Note:** Future versions of the extension may address this issue by implementing a viable solution. So far a chunking mechanism has been proposed as mentioned [here](https://github.com/polkadot-js/extension/pull/1564#issuecomment-3010599765). It processes authorizations in smaller batches, which may prevent quota errors, but that's unlikely since it appears the error is due to an upper limit that is the storage quota limit previously mentioned, plus that solution currently has a bug in that not all authorized accounts (only 10 for each dApp) are being displayed in the UI.
 
 ## I want to send funds directly from the extension.
 The extension is not meant to be a full wallet replacement. It tries to focus on pure account management
