@@ -2,7 +2,7 @@
 title: Extending types
 ---
 
-Circling back to metadata, by default the metadata information (at this point in time), only returns the type names as they apply to any section, be it a call, event or query. As an example, this means that transfers are defined as `balances.transfer(AccountId, Balance)` with no details as to the mapping of the `Balance` type to a `u128`. (The underlying Polkadot/Substrate default)
+Circling back to metadata, by default the metadata information (at this point in time), only returns the type names as they apply to any section, be it a call, event or query. As an example, this means that transfers are defined as `balances.transferKeepAlive(AccountId, Balance)` with no details as to the mapping of the `Balance` type to a `u128`. (The underlying Polkadot/Substrate default)
 
 Therefore to cater for all types, a mapping is done in the [@polkadot/types library](https://github.com/polkadot-js/api/tree/master/packages/types/src/interfaces) to define each of the types and align with their underlying structures as it maps to a default Polkadot or Substrate chain.
 
@@ -237,7 +237,7 @@ const api = await ApiPromise.create({
 });
 ```
 
-Always look at customization and understand the impacts, replicating these changes between the node and the API. For the above the `Address` type is used in the construction of the `UncheckedExtrinsic` type, while the lookup type is applicable on transactions such as `balances.transfer(to: LookupSource, value: Balance)`
+Always look at customization and understand the impacts, replicating these changes between the node and the API. For the above the `Address` type is used in the construction of the `UncheckedExtrinsic` type, while the lookup type is applicable on transactions such as `balances.transferKeepAlive(to: LookupSource, value: Balance)`
 
 
 ## Custom RPC

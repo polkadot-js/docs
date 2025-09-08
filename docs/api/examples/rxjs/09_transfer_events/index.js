@@ -36,7 +36,7 @@ async function main () {
   // Create a extrinsic, transferring 12345 units to Bob.
   api.tx.balances
     // Do the transfer
-    .transfer(recipient, AMOUNT)
+    .transferKeepAlive(recipient, AMOUNT)
     // Sign and send it
     .signAndSend(alicePair)
     // And subscribe to the actual status

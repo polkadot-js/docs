@@ -14,14 +14,14 @@ To start off, let's make a balance transfer from Alice to Bob.
 
 // Sign and send a transfer from Alice to Bob
 const txHash = await api.tx.balances
-  .transfer(BOB, 12345)
+  .transferKeepAlive(BOB, 12345)
   .signAndSend(alice);
 
 // Show the hash
 console.log(`Submitted with hash ${txHash}`);
 ```
 
-We have already become familiar with the `Promise` syntax that is used throughout the API, in this case it is no different. We construct a transaction by calling `balances.transfer(<accountId>, <value>)` with the required params and then as a next step we submit it to the node.
+We have already become familiar with the `Promise` syntax that is used throughout the API, in this case it is no different. We construct a transaction by calling `balances.transferKeepAlive(<accountId>, <value>)` with the required params and then as a next step we submit it to the node.
 
 As with all other API operations, the `to` params just needs to be "account-like" and the value params needs to be "number-like", the API will take care of encoding and conversion into the correct format.
 

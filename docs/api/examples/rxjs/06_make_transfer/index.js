@@ -22,7 +22,7 @@ async function main () {
   // Create a extrinsic, transferring 12345 units to Bob.
   const subscription = api.tx.balances
     // create transfer
-    .transfer(BOB, 12345)
+    .transferKeepAlive(BOB, 12345)
     // Sign and send the transcation
     .signAndSend(alice)
     // Subscribe to the status updates of the transfer

@@ -17,7 +17,7 @@ const alice = keyring.addFromUri('//Alice');
 
 // Make a transfer from Alice to BOB, waiting for inclusion
 const unsub = await api.tx.balances
-  .transfer(BOB, 12345)
+  .transferKeepAlive(BOB, 12345)
   .signAndSend(alice, (result) => {
     console.log(`Current status is ${result.status}`);
 
@@ -47,7 +47,7 @@ To display or act on these events, we can do the following -
 ...
 // Make a transfer from Alice to BOB, waiting for inclusion
 const unsub = await api.tx.balances
-  .transfer(BOB, 12345)
+  .transferKeepAlive(BOB, 12345)
   .signAndSend(alice, ({ events = [], status, txHash }) => {
     console.log(`Current status is ${status.type}`);
 
@@ -74,7 +74,7 @@ The Polkadot/Substrate RPC endpoints exposes weight/payment information that tak
 
 ```js
 // construct a transaction
-const transfer = api.tx.balances.transfer(BOB, 12345);
+const transfer = api.tx.balances.transferKeepAlive(BOB, 12345);
 
 // retrieve the payment info
 const { partialFee, weight } = await transfer.paymentInfo(alice);
