@@ -23,6 +23,19 @@ Finally, add the new language in the selection menu by adding its name and code 
 [getLanguageOptions](https://github.com/polkadot-js/extension/blob/master/packages/extension-ui/src/util/getLanguageOptions.ts#L12-L27).  
 Once your PR is submitted and approved, the new language will be available in the next release of the extension.
 
+## Why can't I authorize any more accounts to connect to dApps and its generating "Resource::kQuotaBytes quota exceeded" errors.
+The extension stores authorization data in Chrome's local storage, which has size limitations. If your total authorizations count across all dApps exceeds the storage quota limit (~287) then you might reach the storage quota limit.
+
+When this happens, you might see the error message "Resource::kQuotaBytes quota exceeded" in the Chrome developer console of the window entitled "Account connection request" and when you try to click the button labelled `Connect <amount of accounts> account(s)` when 1 or more accounts are selected then that button won't work and you won't be able to authorize additional accounts.
+
+**Current workaround:** Revoke access permissions for at least one dApp for one or more accounts to free up storage space but unchecking checkboxes associated with those accounts in the `Accounts connected to <your dApp domain>` window. This will allow you to add new authorizations for the same or different accounts/dApps.
+
+**Note:** Future versions of the extension may address this issue by implementing a viable solution. So far a chunking mechanism has been proposed as mentioned [here](https://github.com/polkadot-js/extension/pull/1564#issuecomment-3010599765). It processes authorizations in smaller batches, which may prevent quota errors, but that's unlikely since it appears the error is due to an upper limit that is the storage quota limit previously mentioned, plus that solution currently has a bug in that not all authorized accounts (only 10 for each dApp) are being displayed in the UI.
+It appears that the chunking solution may only addresses the quota error during a single operation without solving the fundamental issue of hitting Chrome's overall storage limits, where Chrome storage has both per-key and total extension storage limits, so if the current extension is storaging all dapps and associated accounts under the same key then a potential solution could be to store each dApp as a separate key in Chrome storage.
+
+## Why can't I authorize any more accounts to connect to a dApp at https://localhost:3000
+When building and debugging a dApp locally using HTTPS and self-signed certificates that interact with the Polkadot.js Extension when you first load the dApp the Polkadot.js Extension popup window may appear asking you which accounts to grant access to the dApp, but after connecting them you might find that you can't later update that list in the Manage Website Access section, so another workaround is to click the icon to delete that dApp in the Manage Website Access section and then reload the dApp so the popup window appears again so you're able to grant it permissions from scratch again.
+
 ## I want to send funds directly from the extension.
 The extension is not meant to be a full wallet replacement. It tries to focus on pure account management
 while making this as smooth as possible. The extension simply makes the stored/imported accounts available
@@ -41,13 +54,13 @@ via the "Options" screen.
 ## What does it mean to derive an account?
 We can imagine that accounts are stored as a tree. It allows us to structure accounts by our own needs.
 The root account is created at first and all the new ones will be its children by default. If we want to
-derive from other accounts, it can be done by selecting Derive New Account option in the parent account’s
+derive from other accounts, it can be done by selecting Derive New Account option in the parent account's
 context menu. Before deriving an account, the
 [HDKD derivation path](https://github.com/paritytech/parity-signer/wiki/HDKD-on-Parity-Signer#the-form-of-path)
 can be provided - it is a great tool that could be used for further account structuring.
 
 The format of a derivation path is `//<hard>/<soft>///<password>` where
-* `//hard` means that the connection between accounts is not “visible” for public addresses.
+* `//hard` means that the connection between accounts is not "visible" for public addresses.
 * `/soft` connects accounts in a manner that can be proven.
 * `///password` provides an additional (optional) encryption.
 
