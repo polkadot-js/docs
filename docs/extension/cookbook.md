@@ -70,7 +70,7 @@ The api is able to retrieve the signer when `signAndSend` is called with the add
 const account = allAccounts[0];
 
 // here we use the api to create a balance transfer to some account of a value of 12344
-const transferExtrinsic = api.tx.balances.transfer('5C5555yEXUcmEJ5kkcCMvdZjUo7NGJiQJMS7vZXEeoMhj3VQ', 123456)
+const transferExtrinsic = api.tx.balances.transferKeepAlive('5C5555yEXUcmEJ5kkcCMvdZjUo7NGJiQJMS7vZXEeoMhj3VQ', 123456)
 
 // to be able to retrieve the signer interface from this account
 // we can use web3FromSource which will return an InjectedExtension type

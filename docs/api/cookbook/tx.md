@@ -14,7 +14,7 @@ In addition to the `signAndSend` helper on transactions, `.paymentInfo` (with th
 // address or locked/unlocked keypair) (When overrides are applied, e.g
 //  nonce, the format would be `paymentInfo(sender, { nonce })`)
 const info = await api.tx.balances
-  .transfer(recipient, 123)
+  .transferKeepAlive(recipient, 123)
   .paymentInfo(sender);
 
 // log relevant info, partialFee is Balance, estimated for current
@@ -32,7 +32,7 @@ Assuming you are sending a tx via `.signAndSend`, the callback yields informatio
 
 ```js
 api.tx.balances
-  .transfer(recipient, 123)
+  .transferKeepAlive(recipient, 123)
   .signAndSend(sender, ({ status, events }) => {
     if (status.isInBlock || status.isFinalized) {
       events
@@ -62,7 +62,7 @@ As of the `@polkadot/api` 2.3.1 additional result fields are exposed. Firstly th
 
 ```js
 api.tx.balances
-  .transfer(recipient, 123)
+  .transferKeepAlive(recipient, 123)
   .signAndSend(sender, ({ status, events, dispatchError }) => {
     // status would still be set, but in the case of error we can shortcut
     // to just check it (so an error would indicate InBlock or Finalized)
@@ -150,8 +150,8 @@ Polkadot/Substrate provides a `utility.batch` method that can be used to send a 
 ```js
 // construct a list of transactions we want to batch
 const txs = [
-  api.tx.balances.transfer(addrBob, 12345),
-  api.tx.balances.transfer(addrEve, 12345),
+  api.tx.balances.transferKeepAlive(addrBob, 12345),
+  api.tx.balances.transferKeepAlive(addrEve, 12345),
   api.tx.staking.unbond(12345)
 ];
 
@@ -178,7 +178,7 @@ for (let i = 0; i < 10; i++) {
 
   // send, just retrieving the hash, not waiting on status
   const txhash = await api.tx.balances
-    .transfer(recipient, 123)
+    .transferKeepAlive(recipient, 123)
     .signAndSend(sender, { nonce });
 }
 ```
@@ -188,7 +188,7 @@ As a convenience function, the `accountNextIndex` can be omitted by specifying a
 ```js
 for (let i = 0; i < 10; i++) {
   const txhash = await api.tx.balances
-    .transfer(recipient, 123)
+    .transferKeepAlive(recipient, 123)
     .signAndSend(sender, { nonce: -1 });
 }
 ```

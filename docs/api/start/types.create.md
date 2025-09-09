@@ -6,7 +6,7 @@ Circling back to metadata. There are two important things to remember when using
 
 1. The functionality available, e.g. exposed on `api.query.*` is not hard-coded in the API, rather this is decorated from the chain metadata. So the metadata lets the API know which endpoints are available and what the type for those endpoints are.
 
-2. When you supply a value to the API, internally it will convert that value to the correct type as expected by the chain, i.e. as determined by the metadata. This means that a function such as `balances.transfer(address: Address, value: Balance)` can take at least the following inputs, which are all converted to the correct types -
+2. When you supply a value to the API, internally it will convert that value to the correct type as expected by the chain, i.e. as determined by the metadata. This means that a function such as `balances.transferKeepAlive(address: Address, value: Balance)` can take at least the following inputs, which are all converted to the correct types -
 
    - `address` can be an `Address`, an `AccountId`, an `Uint8Array` publicKey, a hex publicKey or an ss58 formatted address;
    - `value` can be a `Balance`, a value encoded in hex, a `BN` object, a base-10 string, a JS `number`, a JS `BigInt` or even a SCALE-encoded `Uint8Array`
@@ -131,7 +131,7 @@ console.log(three.asThree.isNone);  // true
 You may want to construct a `Call` type given a specific tx. Using create type is unneecessary `createType`, and it can be achieved by simply using the `method` key attached to a `tx`.
 
 ```js
-const tx = await api.tx.balances.transfer(BOB, 12345);
+const tx = await api.tx.balances.transferKeepAlive(BOB, 12345);
 console.log('Hex = ', tx.method.toHex())
 ```
 

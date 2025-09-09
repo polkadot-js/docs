@@ -13,7 +13,7 @@ When the API connects to a node, one of the first things it does is to retrieve 
 
 - [consts](../../substrate/constants.md) - All runtime constants, e.g. `api.consts.balances.existentialDeposit`. These are not functions, rather accessing the endpoint immediately yields the result as defined.
 - [query](../../substrate/storage.md) - All chain state, e.g. `api.query.system.account(<accountId>)`.
-- [tx](../../substrate/extrinsics.md) - All extrinsics, e.g. `api.tx.balances.transfer(<accountId>, <value>)`.
+- [tx](../../substrate/extrinsics.md) - All extrinsics, e.g. `api.tx.balances.transferKeepAlive(<accountId>, <value>)`.
 
 Additionally the metadata also provides information on [events](../../substrate/events.md), these are query-able via the `api.query.system.events()` interface and also appear on transactions... both these cases are detailed later.
 

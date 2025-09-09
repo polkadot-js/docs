@@ -16,8 +16,8 @@ console.log(api.consts.babe.epochDuration.toNumber());
 // The amount required to create a new account
 console.log(api.consts.balances.existentialDeposit.toNumber());
 
-// The amount required per byte on an extrinsic
-console.log(api.consts.transactionPayment.transactionByteFee.toNumber());
+// Multiplier applied to operational extrinsic fees to add a "virtual tip" and boost their priority
+console.log(api.consts.transactionPayment.operationalFeeMultiplier.toString());
 ```
 
 Since these are constants and defined by the metadata, it is not a call, but rather the values immediately available - as you'll see in subsequent sections, there is no need for `await` on these, it immediately returns the type and value for you to work with.
