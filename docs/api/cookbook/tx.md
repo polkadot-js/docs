@@ -194,3 +194,30 @@ for (let i = 0; i < 10; i++) {
 ```
 
 The latter form is preferred since it dispatches the RPC calls for nonce and blockHash (used for mortality) in parallel and therefore will yield a better throughput, especially with the above bulk example.
+
+## How do I send a priority transaction?
+
+Polkadot/Substrate allows you to increase the **priority** of your transaction in the transaction pool by attaching a **tip**. The higher the tip, the more attractive it becomes for block producers to include it early. This is the recommended way for regular users and dApps to prioritize their transactions.  
+
+```js
+// construct a transfer transaction
+const tx = api.tx.balances.transferKeepAlive(recipient, 12345);
+
+// sign and send with a tip to increase priority
+tx.signAndSend(sender, { tip: 1_000_000_000 }, ({ status }) => {
+  if (status.isInBlock) {
+    console.log(`included in ${status.asInBlock}`);
+  }
+});
+```
+
+The `tip` is specified in the smallest unit of the token. By offering a higher tip, you effectively “bribe” the block producer to include your transaction before others.
+
+You can also use `.paymentInfo` to simulate and estimate the total fee including the tip:
+
+```js
+const info = await tx.paymentInfo(sender, { tip: 1_000_000_000 });
+console.log(`Estimated fee: ${info.partialFee.toHuman()}`);
+```
+
+⚠️ Some extrinsics in the runtime may be marked as **operational**. These transactions already receive a higher priority internally via the `operationalFeeMultiplier`. However, this classification is determined by the runtime and cannot be set from the API. For normal users, attaching a tip is the practical way to prioritize transactions.
