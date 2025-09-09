@@ -40,6 +40,8 @@ The following sections contain Storage methods are part of the default asset-hub
 
 - **[session](#session)**
 
+- **[stateTrieMigration](#statetriemigration)**
+
 - **[substrate](#substrate)**
 
 - **[system](#system)**
@@ -125,11 +127,11 @@ ___
 
    The authorities in AuRa are overwritten in `on_initialize` when we switch to a new session,  but we require the old authorities to verify the seal when validating a PoV. This will  always be updated to the latest AuRa authorities in `on_finalize`. 
  
-### slotInfo(): `Option<(u64,u32)>`
-- **interface**: `api.query.auraExt.slotInfo`
-- **summary**:    Current slot paired with a number of authored blocks. 
+### relaySlotInfo(): `Option<(u64,u32)>`
+- **interface**: `api.query.auraExt.relaySlotInfo`
+- **summary**:    Current relay chain slot paired with a number of authored blocks. 
 
-   Updated on each block initialization. 
+   This is updated in [`FixedVelocityConsensusHook::on_state_proof`] with the current relay  chain slot as provided by the relay chain state proof. 
 
 ___
 
@@ -498,6 +500,10 @@ ___
 
    Key is the blake2 256 hash of (origin, versioned `Assets`) pair. Value is the number of  times this pair has been trapped (usually just 1 if it exists at all). 
  
+### authorizedAliases(`XcmVersionedLocation`): `Option<PalletXcmAuthorizedAliasesEntry>`
+- **interface**: `api.query.polkadotXcm.authorizedAliases`
+- **summary**:    Map of authorized aliasers of local origins. Each local location can authorize a list of  other locations to alias into it. Each aliaser is only valid until its inner `expiry`  block number. 
+ 
 ### currentMigration(): `Option<PalletXcmVersionMigrationStage>`
 - **interface**: `api.query.polkadotXcm.currentMigration`
 - **summary**:    The current migration's stage, if any. 
@@ -514,7 +520,7 @@ ___
 - **interface**: `api.query.polkadotXcm.queryCounter`
 - **summary**:    The latest available query index. 
  
-### recordedXcm(): `Option<StagingXcmV4Xcm>`
+### recordedXcm(): `Option<StagingXcmV5Xcm>`
 - **interface**: `api.query.polkadotXcm.recordedXcm`
 - **summary**:    If [`ShouldRecordXcm`] is set to true, then the last XCM program executed locally  will be stored here.  Runtime APIs can fetch the XCM that was executed by accessing this value. 
 
@@ -605,7 +611,7 @@ ___
 - **interface**: `api.query.session.currentIndex`
 - **summary**:    Current index of the session. 
  
-### disabledValidators(): `Vec<u32>`
+### disabledValidators(): `Vec<(u32,Perbill)>`
 - **interface**: `api.query.session.disabledValidators`
 - **summary**:    Indices of disabled validators. 
 
@@ -630,6 +636,29 @@ ___
 ### validators(): `Vec<AccountId32>`
 - **interface**: `api.query.session.validators`
 - **summary**:    The current set of validators. 
+
+___
+
+
+## stateTrieMigration
+ 
+### autoLimits(): `Option<PalletStateTrieMigrationMigrationLimits>`
+- **interface**: `api.query.stateTrieMigration.autoLimits`
+- **summary**:    The limits that are imposed on automatic migrations. 
+
+   If set to None, then no automatic migration happens. 
+ 
+### migrationProcess(): `PalletStateTrieMigrationMigrationTask`
+- **interface**: `api.query.stateTrieMigration.migrationProcess`
+- **summary**:    Migration progress. 
+
+   This stores the snapshot of the last migrated keys. It can be set into motion and move  forward by any of the means provided by this pallet. 
+ 
+### signedMigrationMaxLimits(): `Option<PalletStateTrieMigrationMigrationLimits>`
+- **interface**: `api.query.stateTrieMigration.signedMigrationMaxLimits`
+- **summary**:    The maximum limits that the signed migration could use. 
+
+   If not set, no signed submission is allowed. 
 
 ___
 
@@ -734,6 +763,14 @@ ___
 ### extrinsicData(`u32`): `Bytes`
 - **interface**: `api.query.system.extrinsicData`
 - **summary**:    Extrinsics data for the current block (maps an extrinsic's index to its data). 
+ 
+### extrinsicWeightReclaimed(): `SpWeightsWeightV2Weight`
+- **interface**: `api.query.system.extrinsicWeightReclaimed`
+- **summary**:    The weight reclaimed for the extrinsic. 
+
+   This information is available until the end of the extrinsic execution.  More precisely this information is removed in `note_applied_extrinsic`. 
+
+   Logic doing some post dispatch weight reduction must update this storage to avoid duplicate  reduction. 
  
 ### inherentsApplied(): `bool`
 - **interface**: `api.query.system.inherentsApplied`

@@ -10,7 +10,7 @@ Instead of manually fetching and processing blockchain data, developers can use 
 
 - **[alliance](#alliance)**
 
-- **[bagsList](#bagslist)**
+- **[bagsList](#bagsList)**
 
 - **[balances](#balances)**
 
@@ -28,7 +28,7 @@ Instead of manually fetching and processing blockchain data, developers can use 
 
 - **[elections](#elections)**
 
-- **[imOnline](#imonline)**
+- **[imOnline](#imOnline)**
 
 - **[membership](#membership)**
 
@@ -40,7 +40,7 @@ Instead of manually fetching and processing blockchain data, developers can use 
 
 - **[staking](#staking)**
 
-- **[technicalCommittee](#technicalcommittee)**
+- **[technicalCommittee](#technicalCommittee)**
 
 - **[treasury](#treasury)**
 

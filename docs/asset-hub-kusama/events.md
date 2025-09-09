@@ -36,7 +36,11 @@ Events are emitted for certain operations on the runtime. The following sections
 
 - **[proxy](#proxy)**
 
+- **[revive](#revive)**
+
 - **[session](#session)**
+
+- **[stateTrieMigration](#statetriemigration)**
 
 - **[system](#system)**
 
@@ -347,7 +351,7 @@ ___
 
 ## cumulusXcm
  
-### ExecutedDownward(`[u8;32]`, `StagingXcmV4TraitsOutcome`)
+### ExecutedDownward(`[u8;32]`, `StagingXcmV5TraitsOutcome`)
 - **interface**: `api.events.cumulusXcm.ExecutedDownward.is`
 - **summary**:    Downward message executed with the given outcome.  \[ id, outcome \] 
  
@@ -493,6 +497,10 @@ ___
 
 
 ## multisig
+ 
+### DepositPoked(`AccountId32`, `[u8;32]`, `u128`, `u128`)
+- **interface**: `api.events.multisig.DepositPoked.is`
+- **summary**:    The deposit for a multisig operation has been updated/poked. 
  
 ### MultisigApproval(`AccountId32`, `PalletMultisigTimepoint`, `AccountId32`, `[u8;32]`)
 - **interface**: `api.events.multisig.MultisigApproval.is`
@@ -714,37 +722,49 @@ ___
 
 ## polkadotXcm
  
-### AssetsClaimed(`H256`, `StagingXcmV4Location`, `XcmVersionedAssets`)
+### AliasAuthorizationRemoved(`StagingXcmV5Location`, `StagingXcmV5Location`)
+- **interface**: `api.events.polkadotXcm.AliasAuthorizationRemoved.is`
+- **summary**:    `target` removed alias authorization for `aliaser`. 
+ 
+### AliasAuthorized(`StagingXcmV5Location`, `StagingXcmV5Location`, `Option<u64>`)
+- **interface**: `api.events.polkadotXcm.AliasAuthorized.is`
+- **summary**:    An `aliaser` location was authorized by `target` to alias it, authorization valid until  `expiry` block number. 
+ 
+### AliasesAuthorizationsRemoved(`StagingXcmV5Location`)
+- **interface**: `api.events.polkadotXcm.AliasesAuthorizationsRemoved.is`
+- **summary**:    `target` removed all alias authorizations. 
+ 
+### AssetsClaimed(`H256`, `StagingXcmV5Location`, `XcmVersionedAssets`)
 - **interface**: `api.events.polkadotXcm.AssetsClaimed.is`
 - **summary**:    Some assets have been claimed from an asset trap 
  
-### AssetsTrapped(`H256`, `StagingXcmV4Location`, `XcmVersionedAssets`)
+### AssetsTrapped(`H256`, `StagingXcmV5Location`, `XcmVersionedAssets`)
 - **interface**: `api.events.polkadotXcm.AssetsTrapped.is`
 - **summary**:    Some assets have been placed in an asset trap. 
  
-### Attempted(`StagingXcmV4TraitsOutcome`)
+### Attempted(`StagingXcmV5TraitsOutcome`)
 - **interface**: `api.events.polkadotXcm.Attempted.is`
 - **summary**:    Execution of an XCM message was attempted. 
  
-### FeesPaid(`StagingXcmV4Location`, `StagingXcmV4AssetAssets`)
+### FeesPaid(`StagingXcmV5Location`, `StagingXcmV5AssetAssets`)
 - **interface**: `api.events.polkadotXcm.FeesPaid.is`
 - **summary**:    Fees were paid from a location for an operation (often for using `SendXcm`). 
  
-### InvalidQuerier(`StagingXcmV4Location`, `u64`, `StagingXcmV4Location`, `Option<StagingXcmV4Location>`)
+### InvalidQuerier(`StagingXcmV5Location`, `u64`, `StagingXcmV5Location`, `Option<StagingXcmV5Location>`)
 - **interface**: `api.events.polkadotXcm.InvalidQuerier.is`
 - **summary**:    Expected query response has been received but the querier location of the response does  not match the expected. The query remains registered for a later, valid, response to  be received and acted upon. 
  
-### InvalidQuerierVersion(`StagingXcmV4Location`, `u64`)
+### InvalidQuerierVersion(`StagingXcmV5Location`, `u64`)
 - **interface**: `api.events.polkadotXcm.InvalidQuerierVersion.is`
 - **summary**:    Expected query response has been received but the expected querier location placed in  storage by this runtime previously cannot be decoded. The query remains registered. 
 
    This is unexpected (since a location placed in storage in a previously executing  runtime should be readable prior to query timeout) and dangerous since the possibly  valid response will be dropped. Manual governance intervention is probably going to be  needed. 
  
-### InvalidResponder(`StagingXcmV4Location`, `u64`, `Option<StagingXcmV4Location>`)
+### InvalidResponder(`StagingXcmV5Location`, `u64`, `Option<StagingXcmV5Location>`)
 - **interface**: `api.events.polkadotXcm.InvalidResponder.is`
 - **summary**:    Expected query response has been received but the origin location of the response does  not match that expected. The query remains registered for a later, valid, response to  be received and acted upon. 
  
-### InvalidResponderVersion(`StagingXcmV4Location`, `u64`)
+### InvalidResponderVersion(`StagingXcmV5Location`, `u64`)
 - **interface**: `api.events.polkadotXcm.InvalidResponderVersion.is`
 - **summary**:    Expected query response has been received but the expected origin location placed in  storage by this runtime previously cannot be decoded. The query remains registered. 
 
@@ -770,11 +790,15 @@ ___
 - **interface**: `api.events.polkadotXcm.NotifyTargetMigrationFail.is`
 - **summary**:    A given location which had a version change subscription was dropped owing to an error  migrating the location to our new XCM format. 
  
-### NotifyTargetSendFail(`StagingXcmV4Location`, `u64`, `XcmV3TraitsError`)
+### NotifyTargetSendFail(`StagingXcmV5Location`, `u64`, `XcmV5TraitsError`)
 - **interface**: `api.events.polkadotXcm.NotifyTargetSendFail.is`
 - **summary**:    A given location which had a version change subscription was dropped owing to an error  sending the notification to it. 
  
-### ResponseReady(`u64`, `StagingXcmV4Response`)
+### ProcessXcmError(`StagingXcmV5Location`, `XcmV5TraitsError`, `[u8;32]`)
+- **interface**: `api.events.polkadotXcm.ProcessXcmError.is`
+- **summary**:    An XCM message failed to process. 
+ 
+### ResponseReady(`u64`, `StagingXcmV5Response`)
 - **interface**: `api.events.polkadotXcm.ResponseReady.is`
 - **summary**:    Query response has been received and is ready for taking with `take_response`. There is  no registered notification call. 
  
@@ -782,19 +806,23 @@ ___
 - **interface**: `api.events.polkadotXcm.ResponseTaken.is`
 - **summary**:    Received query response has been read and removed. 
  
-### Sent(`StagingXcmV4Location`, `StagingXcmV4Location`, `StagingXcmV4Xcm`, `[u8;32]`)
-- **interface**: `api.events.polkadotXcm.Sent.is`
-- **summary**:    A XCM message was sent. 
+### SendFailed(`StagingXcmV5Location`, `StagingXcmV5Location`, `XcmV3TraitsSendError`, `[u8;32]`)
+- **interface**: `api.events.polkadotXcm.SendFailed.is`
+- **summary**:    An XCM message failed to send. 
  
-### SupportedVersionChanged(`StagingXcmV4Location`, `u32`)
+### Sent(`StagingXcmV5Location`, `StagingXcmV5Location`, `StagingXcmV5Xcm`, `[u8;32]`)
+- **interface**: `api.events.polkadotXcm.Sent.is`
+- **summary**:    An XCM message was sent. 
+ 
+### SupportedVersionChanged(`StagingXcmV5Location`, `u32`)
 - **interface**: `api.events.polkadotXcm.SupportedVersionChanged.is`
 - **summary**:    The supported version of a location has been changed. This might be through an  automatic notification or a manual intervention. 
  
-### UnexpectedResponse(`StagingXcmV4Location`, `u64`)
+### UnexpectedResponse(`StagingXcmV5Location`, `u64`)
 - **interface**: `api.events.polkadotXcm.UnexpectedResponse.is`
 - **summary**:    Query response received which does not match a registered query. This may be because a  matching query was never registered, it may be because it is a duplicate response, or  because the query timed out. 
  
-### VersionChangeNotified(`StagingXcmV4Location`, `u32`, `StagingXcmV4AssetAssets`, `[u8;32]`)
+### VersionChangeNotified(`StagingXcmV5Location`, `u32`, `StagingXcmV5AssetAssets`, `[u8;32]`)
 - **interface**: `api.events.polkadotXcm.VersionChangeNotified.is`
 - **summary**:    An XCM version change notification message has been attempted to be sent. 
 
@@ -804,15 +832,15 @@ ___
 - **interface**: `api.events.polkadotXcm.VersionMigrationFinished.is`
 - **summary**:    A XCM version migration finished. 
  
-### VersionNotifyRequested(`StagingXcmV4Location`, `StagingXcmV4AssetAssets`, `[u8;32]`)
+### VersionNotifyRequested(`StagingXcmV5Location`, `StagingXcmV5AssetAssets`, `[u8;32]`)
 - **interface**: `api.events.polkadotXcm.VersionNotifyRequested.is`
 - **summary**:    We have requested that a remote chain send us XCM version change notifications. 
  
-### VersionNotifyStarted(`StagingXcmV4Location`, `StagingXcmV4AssetAssets`, `[u8;32]`)
+### VersionNotifyStarted(`StagingXcmV5Location`, `StagingXcmV5AssetAssets`, `[u8;32]`)
 - **interface**: `api.events.polkadotXcm.VersionNotifyStarted.is`
 - **summary**:    A remote has requested XCM version change notification from us and we have honored it.  A version information message is sent to them and its cost is included. 
  
-### VersionNotifyUnrequested(`StagingXcmV4Location`, `StagingXcmV4AssetAssets`, `[u8;32]`)
+### VersionNotifyUnrequested(`StagingXcmV5Location`, `StagingXcmV5AssetAssets`, `[u8;32]`)
 - **interface**: `api.events.polkadotXcm.VersionNotifyUnrequested.is`
 - **summary**:    We have requested that a remote chain stops sending us XCM version change  notifications. 
 
@@ -934,6 +962,10 @@ ___
 - **interface**: `api.events.proxy.Announced.is`
 - **summary**:    An announcement was placed to make a call in the future. 
  
+### DepositPoked(`AccountId32`, `PalletProxyDepositKind`, `u128`, `u128`)
+- **interface**: `api.events.proxy.DepositPoked.is`
+- **summary**:    A deposit stored for proxies or announcements was poked / updated. 
+ 
 ### ProxyAdded(`AccountId32`, `AccountId32`, `AssetHubKusamaRuntimeProxyType`, `u32`)
 - **interface**: `api.events.proxy.ProxyAdded.is`
 - **summary**:    A proxy was added. 
@@ -953,11 +985,49 @@ ___
 ___
 
 
+## revive
+ 
+### ContractEmitted(`H160`, `Bytes`, `Vec<H256>`)
+- **interface**: `api.events.revive.ContractEmitted.is`
+- **summary**:    A custom event emitted by the contract. 
+
+___
+
+
 ## session
  
 ### NewSession(`u32`)
 - **interface**: `api.events.session.NewSession.is`
 - **summary**:    New session has happened. Note that the argument is the session index, not the  block number as the type might suggest. 
+ 
+### ValidatorDisabled(`AccountId32`)
+- **interface**: `api.events.session.ValidatorDisabled.is`
+- **summary**:    Validator has been disabled. 
+ 
+### ValidatorReenabled(`AccountId32`)
+- **interface**: `api.events.session.ValidatorReenabled.is`
+- **summary**:    Validator has been re-enabled. 
+
+___
+
+
+## stateTrieMigration
+ 
+### AutoMigrationFinished()
+- **interface**: `api.events.stateTrieMigration.AutoMigrationFinished.is`
+- **summary**:    The auto migration task finished. 
+ 
+### Halted(`PalletStateTrieMigrationError`)
+- **interface**: `api.events.stateTrieMigration.Halted.is`
+- **summary**:    Migration got halted due to an error or miss-configuration. 
+ 
+### Migrated(`u32`, `u32`, `PalletStateTrieMigrationMigrationCompute`)
+- **interface**: `api.events.stateTrieMigration.Migrated.is`
+- **summary**:    Given number of `(top, child)` keys were migrated respectively, with the given  `compute`. 
+ 
+### Slashed(`AccountId32`, `u128`)
+- **interface**: `api.events.stateTrieMigration.Slashed.is`
+- **summary**:    Some account got slashed by the given amount. 
 
 ___
 
@@ -968,11 +1038,11 @@ ___
 - **interface**: `api.events.system.CodeUpdated.is`
 - **summary**:    `:code` was updated. 
  
-### ExtrinsicFailed(`SpRuntimeDispatchError`, `FrameSupportDispatchDispatchInfo`)
+### ExtrinsicFailed(`SpRuntimeDispatchError`, `FrameSystemDispatchEventInfo`)
 - **interface**: `api.events.system.ExtrinsicFailed.is`
 - **summary**:    An extrinsic failed. 
  
-### ExtrinsicSuccess(`FrameSupportDispatchDispatchInfo`)
+### ExtrinsicSuccess(`FrameSystemDispatchEventInfo`)
 - **interface**: `api.events.system.ExtrinsicSuccess.is`
 - **summary**:    An extrinsic completed successfully. 
  
@@ -983,6 +1053,10 @@ ___
 ### NewAccount(`AccountId32`)
 - **interface**: `api.events.system.NewAccount.is`
 - **summary**:    A new account was created. 
+ 
+### RejectedInvalidAuthorizedUpgrade(`H256`, `SpRuntimeDispatchError`)
+- **interface**: `api.events.system.RejectedInvalidAuthorizedUpgrade.is`
+- **summary**:    An invalid authorized upgrade was rejected while trying to apply it. 
  
 ### Remarked(`AccountId32`, `H256`)
 - **interface**: `api.events.system.Remarked.is`
@@ -1147,6 +1221,14 @@ ___
 ### DispatchedAs(`Result<Null, SpRuntimeDispatchError>`)
 - **interface**: `api.events.utility.DispatchedAs.is`
 - **summary**:    A call was dispatched. 
+ 
+### IfElseFallbackCalled(`SpRuntimeDispatchError`)
+- **interface**: `api.events.utility.IfElseFallbackCalled.is`
+- **summary**:    The fallback call was dispatched. 
+ 
+### IfElseMainSuccess()
+- **interface**: `api.events.utility.IfElseMainSuccess.is`
+- **summary**:    Main call was dispatched. 
  
 ### ItemCompleted()
 - **interface**: `api.events.utility.ItemCompleted.is`

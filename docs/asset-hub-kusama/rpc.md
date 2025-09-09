@@ -181,6 +181,12 @@ ___
 
 ## offchain
  
+### localStorageClear(kind: `StorageKind`, key: `Bytes`): `Null`
+- **interface**: `api.rpc.offchain.localStorageClear`
+- **jsonrpc**: `offchain_localStorageClear`
+- **summary**: Clear offchain local storage under given key and prefix
+- **unsafe**: This method is only active with appropriate flags
+ 
 ### localStorageGet(kind: `StorageKind`, key: `Bytes`): `Option<Bytes>`
 - **interface**: `api.rpc.offchain.localStorageGet`
 - **jsonrpc**: `offchain_localStorageGet`

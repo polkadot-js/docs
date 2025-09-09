@@ -354,7 +354,7 @@ ___
 ### memberPendingSlash(member: `SpCoreCryptoAccountId32`): `u128`
 - **interface**: `api.call.nominationPoolsApi.memberPendingSlash`
 - **runtime**: `nominationPoolsApi_member_pending_slash`
-- **summary**:  Returns the pending slash for a given pool member.
+- **summary**:  Returns the pending slash for a given pool member.,, If pending slash of the member exceeds `ExistentialDeposit`, it can be reported on, chain.
  
 ### memberTotalBalance(who: `SpCoreCryptoAccountId32`): `u128`
 - **interface**: `api.call.nominationPoolsApi.memberTotalBalance`
@@ -425,6 +425,11 @@ ___
 - **interface**: `api.call.parachainHost.availabilityCores`
 - **runtime**: `parachainHost_availability_cores`
 - **summary**:  Yields information on all availability cores as relevant to the child block., Cores are either free or occupied. Free cores can have paras assigned to them.
+ 
+### backingConstraints(para_id: `PolkadotParachainPrimitivesPrimitivesId`): `Option<PolkadotPrimitivesVstagingAsyncBackingConstraints>`
+- **interface**: `api.call.parachainHost.backingConstraints`
+- **runtime**: `parachainHost_backing_constraints`
+- **summary**:  Returns the constraints on the actions that can be taken by a new parachain, block.
  
 ### candidateEvents(): `Vec<PolkadotPrimitivesVstagingCandidateEvent>`
 - **interface**: `api.call.parachainHost.candidateEvents`
@@ -505,6 +510,11 @@ ___
 - **interface**: `api.call.parachainHost.pvfsRequirePrecheck`
 - **runtime**: `parachainHost_pvfs_require_precheck`
 - **summary**:  Returns code hashes of PVFs that require pre-checking by validators in the active set.,, NOTE: This function is only available since parachain host version 2.
+ 
+### schedulingLookahead(): `u32`
+- **interface**: `api.call.parachainHost.schedulingLookahead`
+- **runtime**: `parachainHost_scheduling_lookahead`
+- **summary**:  Retrieve the scheduling lookahead
  
 ### sessionExecutorParams(session_index: `u32`): `Option<PolkadotPrimitivesV8ExecutorParams>`
 - **interface**: `api.call.parachainHost.sessionExecutorParams`

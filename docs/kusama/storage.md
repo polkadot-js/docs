@@ -1125,6 +1125,10 @@ ___
 - **interface**: `api.query.onDemandAssignmentProvider.affinityEntries`
 - **summary**:    Queue entries that are currently bound to a particular core due to core affinity. 
  
+### credits(`AccountId32`): `u128`
+- **interface**: `api.query.onDemandAssignmentProvider.credits`
+- **summary**:    Keeps track of credits owned by each account. 
+ 
 ### freeEntries(): `BinaryHeapEnqueuedOrder`
 - **interface**: `api.query.onDemandAssignmentProvider.freeEntries`
 - **summary**:    Priority queue for all orders which don't yet (or not any more) have any core affinity. 
@@ -1515,6 +1519,7 @@ ___
  
 ### incompleteSince(): `Option<u32>`
 - **interface**: `api.query.scheduler.incompleteSince`
+- **summary**:    Block number at which the agenda began incomplete execution. 
  
 ### lookup(`[u8;32]`): `Option<(u32,u32)>`
 - **interface**: `api.query.scheduler.lookup`
@@ -1535,7 +1540,7 @@ ___
 - **interface**: `api.query.session.currentIndex`
 - **summary**:    Current index of the session. 
  
-### disabledValidators(): `Vec<u32>`
+### disabledValidators(): `Vec<(u32,Perbill)>`
 - **interface**: `api.query.session.disabledValidators`
 - **summary**:    Indices of disabled validators. 
 
@@ -1726,12 +1731,6 @@ ___
 - **summary**:    The last planned session scheduled by the session pallet. 
 
    This is basically in sync with the call to [`pallet_session::SessionManager::new_session`]. 
- 
-### disabledValidators(): `Vec<u32>`
-- **interface**: `api.query.staking.disabledValidators`
-- **summary**:    Indices of validators that have offended in the active era. The offenders are disabled for a  whole era. For this reason they are kept here - only staking pallet knows about eras. The  implementor of [`DisablingStrategy`] defines if a validator should be disabled which  implicitly means that the implementor also controls the max number of disabled validators. 
-
-   The vec is always kept sorted so that we can find whether a given validator has previously  offended using binary search. 
  
 ### erasRewardPoints(`u32`): `PalletStakingEraRewardPoints`
 - **interface**: `api.query.staking.erasRewardPoints`
@@ -2019,6 +2018,14 @@ ___
 - **interface**: `api.query.system.extrinsicData`
 - **summary**:    Extrinsics data for the current block (maps an extrinsic's index to its data). 
  
+### extrinsicWeightReclaimed(): `SpWeightsWeightV2Weight`
+- **interface**: `api.query.system.extrinsicWeightReclaimed`
+- **summary**:    The weight reclaimed for the extrinsic. 
+
+   This information is available until the end of the extrinsic execution.  More precisely this information is removed in `note_applied_extrinsic`. 
+
+   Logic doing some post dispatch weight reduction must update this storage to avoid duplicate  reduction. 
+ 
 ### inherentsApplied(): `bool`
 - **interface**: `api.query.system.inherentsApplied`
 - **summary**:    Whether all inherents have been applied. 
@@ -2162,6 +2169,10 @@ ___
 - **summary**:    The existing asset traps. 
 
    Key is the blake2 256 hash of (origin, versioned `Assets`) pair. Value is the number of  times this pair has been trapped (usually just 1 if it exists at all). 
+ 
+### authorizedAliases(`XcmVersionedLocation`): `Option<PalletXcmAuthorizedAliasesEntry>`
+- **interface**: `api.query.xcmPallet.authorizedAliases`
+- **summary**:    Map of authorized aliasers of local origins. Each local location can authorize a list of  other locations to alias into it. Each aliaser is only valid until its inner `expiry`  block number. 
  
 ### currentMigration(): `Option<PalletXcmVersionMigrationStage>`
 - **interface**: `api.query.xcmPallet.currentMigration`

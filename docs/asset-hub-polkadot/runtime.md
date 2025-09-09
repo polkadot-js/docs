@@ -94,7 +94,7 @@ ___
 ### canBuildUpon(included_hash: `PrimitiveTypesH256`, slot: `SpConsensusSlotsSlot`): `bool`
 - **interface**: `api.call.auraUnincludedSegmentApi.canBuildUpon`
 - **runtime**: `auraUnincludedSegmentApi_can_build_upon`
-- **summary**:  Whether it is legal to extend the chain, assuming the given block is the most, recently included one as-of the relay parent that will be built against, and, the given slot.,, This should be consistent with the logic the runtime uses when validating blocks to, avoid issues.,, When the unincluded segment is empty, i.e. `included_hash == at`, where at is the block, whose state we are querying against, this must always return `true` as long as the slot, is more recent than the included block itself.
+- **summary**:  Whether it is legal to extend the chain, assuming the given block is the most, recently included one as-of the relay parent that will be built against, and, the given relay chain slot.,, This should be consistent with the logic the runtime uses when validating blocks to, avoid issues.,, When the unincluded segment is empty, i.e. `included_hash == at`, where at is the block, whose state we are querying against, this must always return `true` as long as the slot, is more recent than the included block itself.
 
 ___
 
@@ -156,10 +156,10 @@ ___
 
 ## dryRunApi
  
-### dryRunCall(origin: `AssetHubPolkadotRuntimeOriginCaller`, call: `AssetHubPolkadotRuntimeRuntimeCall`): `Result<XcmRuntimeApisDryRunCallDryRunEffects, XcmRuntimeApisDryRunError>`
+### dryRunCall(origin: `AssetHubPolkadotRuntimeOriginCaller`, call: `AssetHubPolkadotRuntimeRuntimeCall`, result_xcms_version: `u32`): `Result<XcmRuntimeApisDryRunCallDryRunEffects, XcmRuntimeApisDryRunError>`
 - **interface**: `api.call.dryRunApi.dryRunCall`
 - **runtime**: `dryRunApi_dry_run_call`
-- **summary**:  Dry run call.
+- **summary**:  Dry run call V2.
  
 ### dryRunXcm(origin_location: `XcmVersionedLocation`, xcm: `XcmVersionedXcm`): `Result<XcmRuntimeApisDryRunXcmDryRunEffects, XcmRuntimeApisDryRunError>`
 - **interface**: `api.call.dryRunApi.dryRunXcm`
@@ -184,12 +184,12 @@ ___
 ### buildState(json: `Bytes`): `Result<Null, Text>`
 - **interface**: `api.call.genesisBuilder.buildState`
 - **runtime**: `genesisBuilder_build_state`
-- **summary**:  Build `RuntimeGenesisConfig` from a JSON blob not using any defaults and store it in the, storage.,, In the case of a FRAME-based runtime, this function deserializes the full `RuntimeGenesisConfig` from the given JSON blob and, puts it into the storage. If the provided JSON blob is incorrect or incomplete or the, deserialization fails, an error is returned.,, Please note that provided JSON blob must contain all `RuntimeGenesisConfig` fields, no, defaults will be used.
+- **summary**:  Build `RuntimeGenesisConfig` from a JSON blob not using any defaults and store it in the, storage.,, In the case of a FRAME-based runtime, this function deserializes the full, `RuntimeGenesisConfig` from the given JSON blob and puts it into the storage. If the, provided JSON blob is incorrect or incomplete or the deserialization fails, an error, is returned.,, Please note that provided JSON blob must contain all `RuntimeGenesisConfig` fields, no, defaults will be used.
  
 ### getPreset(id: `Option<Text>`): `Option<Bytes>`
 - **interface**: `api.call.genesisBuilder.getPreset`
 - **runtime**: `genesisBuilder_get_preset`
-- **summary**:  Returns a JSON blob representation of the built-in `RuntimeGenesisConfig` identified by, `id`.,, If `id` is `None` the function returns JSON blob representation of the default, `RuntimeGenesisConfig` struct of the runtime. Implementation must provide default, `RuntimeGenesisConfig`.,, Otherwise function returns a JSON representation of the built-in, named, `RuntimeGenesisConfig` preset identified by `id`, or `None` if such preset does not, exist. Returned `Vec<u8>` contains bytes of JSON blob (patch) which comprises a list of, (potentially nested) key-value pairs that are intended for customizing the default, runtime genesis config. The patch shall be merged (rfc7386) with the JSON representation, of the default `RuntimeGenesisConfig` to create a comprehensive genesis config that can, be used in `build_state` method.
+- **summary**:  Returns a JSON blob representation of the built-in `RuntimeGenesisConfig` identified by, `id`.,, If `id` is `None` the function should return JSON blob representation of the default, `RuntimeGenesisConfig` struct of the runtime. Implementation must provide default, `RuntimeGenesisConfig`.,, Otherwise function returns a JSON representation of the built-in, named, `RuntimeGenesisConfig` preset identified by `id`, or `None` if such preset does not, exist. Returned `Vec<u8>` contains bytes of JSON blob (patch) which comprises a list of, (potentially nested) key-value pairs that are intended for customizing the default, runtime genesis config. The patch shall be merged (rfc7386) with the JSON representation, of the default `RuntimeGenesisConfig` to create a comprehensive genesis config that can, be used in `build_state` method.
  
 ### presetNames(): `Vec<Text>`
 - **interface**: `api.call.genesisBuilder.presetNames`

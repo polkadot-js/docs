@@ -901,7 +901,7 @@ ___
  
 ### NotFound
 - **interface**: `api.errors.multisig.NotFound.is`
-- **summary**:    Multisig operation not found when attempting to cancel. 
+- **summary**:    Multisig operation not found in storage. 
  
 ### NoTimepoint
 - **interface**: `api.errors.multisig.NoTimepoint.is`
@@ -909,7 +909,7 @@ ___
  
 ### NotOwner
 - **interface**: `api.errors.multisig.NotOwner.is`
-- **summary**:    Only the account that originally created the multisig is able to cancel it. 
+- **summary**:    Only the account that originally created the multisig is able to cancel it or update  its deposits. 
  
 ### SenderInSignatories
 - **interface**: `api.errors.multisig.SenderInSignatories.is`
@@ -1078,9 +1078,17 @@ ___
 - **interface**: `api.errors.nominationPools.PoolNotFound.is`
 - **summary**:    A (bonded) pool id does not exist. 
  
+### Restricted
+- **interface**: `api.errors.nominationPools.Restricted.is`
+- **summary**:    Account is restricted from participation in pools. This may happen if the account is  staking in another way already. 
+ 
 ### RewardPoolNotFound
 - **interface**: `api.errors.nominationPools.RewardPoolNotFound.is`
 - **summary**:    A reward pool does not exist. In all cases this is a system logic error. 
+ 
+### SlashTooLow
+- **interface**: `api.errors.nominationPools.SlashTooLow.is`
+- **summary**:    The slash amount is too low to be applied. 
  
 ### SubPoolsNotFound
 - **interface**: `api.errors.nominationPools.SubPoolsNotFound.is`
@@ -1090,6 +1098,10 @@ ___
 
 
 ## onDemand
+ 
+### InsufficientCredits
+- **interface**: `api.errors.onDemand.InsufficientCredits.is`
+- **summary**:    The account doesn't have enough credits to purchase on-demand coretime. 
  
 ### QueueFull
 - **interface**: `api.errors.onDemand.QueueFull.is`
@@ -1592,6 +1604,10 @@ ___
 - **interface**: `api.errors.staking.AlreadyClaimed.is`
 - **summary**:    Rewards for this era have already been claimed for this validator. 
  
+### AlreadyMigrated
+- **interface**: `api.errors.staking.AlreadyMigrated.is`
+- **summary**:    The stake of this account is already migrated to `Fungible` holds. 
+ 
 ### AlreadyPaired
 - **interface**: `api.errors.staking.AlreadyPaired.is`
 - **summary**:    Controller is already paired. 
@@ -1611,6 +1627,10 @@ ___
 ### CannotChillOther
 - **interface**: `api.errors.staking.CannotChillOther.is`
 - **summary**:    The user has enough bond and thus cannot be chilled forcefully by an external person. 
+ 
+### CannotReapStash
+- **interface**: `api.errors.staking.CannotReapStash.is`
+- **summary**:    Stash could not be reaped as other pallet might depend on it. 
  
 ### CannotRestoreLedger
 - **interface**: `api.errors.staking.CannotRestoreLedger.is`
@@ -1687,6 +1707,10 @@ ___
 ### NoUnlockChunk
 - **interface**: `api.errors.staking.NoUnlockChunk.is`
 - **summary**:    Can not rebond without unlocking chunks. 
+ 
+### Restricted
+- **interface**: `api.errors.staking.Restricted.is`
+- **summary**:    Account is restricted from participation in staking. This may happen if the account is  staking in another way already, such as via pool. 
  
 ### RewardDestinationRestricted
 - **interface**: `api.errors.staking.RewardDestinationRestricted.is`
@@ -1908,6 +1932,10 @@ ___
 - **interface**: `api.errors.xcmPallet.AccountNotSovereign.is`
 - **summary**:    The given account is not an identifiable sovereign account for any location. 
  
+### AliasNotFound
+- **interface**: `api.errors.xcmPallet.AliasNotFound.is`
+- **summary**:    The alias to remove authorization for was not found. 
+ 
 ### AlreadySubscribed
 - **interface**: `api.errors.xcmPallet.AlreadySubscribed.is`
 - **summary**:    The location is invalid since it already has a subscription from us. 
@@ -1935,6 +1963,10 @@ ___
 ### Empty
 - **interface**: `api.errors.xcmPallet.Empty.is`
 - **summary**:    The assets to be sent are empty. 
+ 
+### ExpiresInPast
+- **interface**: `api.errors.xcmPallet.ExpiresInPast.is`
+- **summary**:    Expiry block number is in the past. 
  
 ### FeesNotMet
 - **interface**: `api.errors.xcmPallet.FeesNotMet.is`
@@ -1983,6 +2015,10 @@ ___
 ### TooManyAssets
 - **interface**: `api.errors.xcmPallet.TooManyAssets.is`
 - **summary**:    Too many assets have been attempted for transfer. 
+ 
+### TooManyAuthorizedAliases
+- **interface**: `api.errors.xcmPallet.TooManyAuthorizedAliases.is`
+- **summary**:    Too many locations authorized to alias origin. 
  
 ### TooManyLocks
 - **interface**: `api.errors.xcmPallet.TooManyLocks.is`

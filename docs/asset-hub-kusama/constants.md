@@ -14,6 +14,8 @@ The following sections contain the module constants, also known as parameter typ
 
 - **[balances](#balances)**
 
+- **[collatorSelection](#collatorselection)**
+
 - **[foreignAssets](#foreignassets)**
 
 - **[messageQueue](#messagequeue)**
@@ -26,9 +28,15 @@ The following sections contain the module constants, also known as parameter typ
 
 - **[parachainSystem](#parachainsystem)**
 
+- **[polkadotXcm](#polkadotxcm)**
+
 - **[poolAssets](#poolassets)**
 
 - **[proxy](#proxy)**
+
+- **[revive](#revive)**
+
+- **[stateTrieMigration](#statetriemigration)**
 
 - **[system](#system)**
 
@@ -152,6 +160,36 @@ ___
 - **summary**:    The maximum number of named reserves that can exist on an account. 
 
    Use of reserves is deprecated in favour of holds. See `https://github.com/paritytech/substrate/pull/12951/` 
+
+___
+
+
+## collatorSelection
+ 
+### kickThreshold: `u32`
+- **interface**: `api.consts.collatorSelection.kickThreshold`
+ 
+### maxCandidates: `u32`
+- **interface**: `api.consts.collatorSelection.maxCandidates`
+- **summary**:    Maximum number of candidates that we should have. 
+
+   This does not take into account the invulnerables. 
+ 
+### maxInvulnerables: `u32`
+- **interface**: `api.consts.collatorSelection.maxInvulnerables`
+- **summary**:    Maximum number of invulnerables. 
+ 
+### minEligibleCollators: `u32`
+- **interface**: `api.consts.collatorSelection.minEligibleCollators`
+- **summary**:    Minimum number eligible collators. Should always be greater than zero. This includes  Invulnerable collators. This ensures that there will always be one collator who can  produce a block. 
+ 
+### potAccount: `AccountId32`
+- **interface**: `api.consts.collatorSelection.potAccount`
+- **summary**:    Gets this pallet's derived pot account. 
+ 
+### potId: `FrameSupportPalletId`
+- **interface**: `api.consts.collatorSelection.potId`
+- **summary**:    Account Identifier from which the internal Pot is generated. 
 
 ___
 
@@ -334,6 +372,15 @@ ___
 ___
 
 
+## polkadotXcm
+ 
+### advertisedXcmVersion: `u32`
+- **interface**: `api.consts.polkadotXcm.advertisedXcmVersion`
+- **summary**:    The latest supported version that we advertise. Generally just set it to  `pallet_xcm::CurrentXcmVersion`. 
+
+___
+
+
 ## poolAssets
  
 ### approvalDeposit: `u128`
@@ -402,6 +449,76 @@ ___
 - **summary**:    The amount of currency needed per proxy added. 
 
    This is held for adding 32 bytes plus an instance of `ProxyType` more into a  pre-existing storage value. Thus, when configuring `ProxyDepositFactor` one should take  into account `32 + proxy_type.encode().len()` bytes of data. 
+
+___
+
+
+## revive
+ 
+### chainId: `u64`
+- **interface**: `api.consts.revive.chainId`
+- **summary**:    The [EIP-155](https://eips.ethereum.org/EIPS/eip-155) chain ID. 
+
+   This is a unique identifier assigned to each blockchain network,  preventing replay attacks. 
+ 
+### codeHashLockupDepositPercent: `Perbill`
+- **interface**: `api.consts.revive.codeHashLockupDepositPercent`
+- **summary**:    The percentage of the storage deposit that should be held for using a code hash.  Instantiating a contract, protects the code from being removed. In order to prevent  abuse these actions are protected with a percentage of the code deposit. 
+ 
+### depositPerByte: `u128`
+- **interface**: `api.consts.revive.depositPerByte`
+- **summary**:    The amount of balance a caller has to pay for each byte of storage. 
+
+   #### Note 
+
+   It is safe to change this value on a live chain as all refunds are pro rata. 
+ 
+### depositPerItem: `u128`
+- **interface**: `api.consts.revive.depositPerItem`
+- **summary**:    The amount of balance a caller has to pay for each storage item. 
+
+   #### Note 
+
+   It is safe to change this value on a live chain as all refunds are pro rata. 
+ 
+### nativeToEthRatio: `u32`
+- **interface**: `api.consts.revive.nativeToEthRatio`
+- **summary**:    The ratio between the decimal representation of the native token and the ETH token. 
+ 
+### unsafeUnstableInterface: `bool`
+- **interface**: `api.consts.revive.unsafeUnstableInterface`
+- **summary**:    Make contract callable functions marked as `#[unstable]` available. 
+
+   Contracts that use `#[unstable]` functions won't be able to be uploaded unless  this is set to `true`. This is only meant for testnets and dev nodes in order to  experiment with new features. 
+
+   #### Warning 
+
+   Do **not** set to `true` on productions chains. 
+
+___
+
+
+## stateTrieMigration
+ 
+### maxKeyLen: `u32`
+- **interface**: `api.consts.stateTrieMigration.maxKeyLen`
+- **summary**:    Maximal number of bytes that a key can have. 
+
+   FRAME itself does not limit the key length.  The concrete value must therefore depend on your storage usage.  A [`frame_support::storage::StorageNMap`] for example can have an arbitrary number of  keys which are then hashed and concatenated, resulting in arbitrarily long keys. 
+
+   Use the *state migration RPC* to retrieve the length of the longest key in your  storage: <https://github.com/paritytech/substrate/issues/11642> 
+
+   The migration will halt with a `Halted` event if this value is too small.  Since there is no real penalty from over-estimating, it is advised to use a large  value. The default is 512 byte. 
+
+   Some key lengths for reference: 
+
+  - [`frame_support::storage::StorageValue`]: 32 byte
+
+  - [`frame_support::storage::StorageMap`]: 64 byte
+
+  - [`frame_support::storage::StorageDoubleMap`]: 96 byte
+
+   For more info see  <https://www.shawntabrizi.com/blog/substrate/querying-substrate-storage-via-rpc/> 
 
 ___
 

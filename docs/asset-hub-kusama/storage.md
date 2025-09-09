@@ -40,7 +40,13 @@ The following sections contain Storage methods are part of the default asset-hub
 
 - **[proxy](#proxy)**
 
+- **[remoteProxyRelayChain](#remoteproxyrelaychain)**
+
+- **[revive](#revive)**
+
 - **[session](#session)**
+
+- **[stateTrieMigration](#statetriemigration)**
 
 - **[substrate](#substrate)**
 
@@ -127,11 +133,11 @@ ___
 
    The authorities in AuRa are overwritten in `on_initialize` when we switch to a new session,  but we require the old authorities to verify the seal when validating a PoV. This will  always be updated to the latest AuRa authorities in `on_finalize`. 
  
-### slotInfo(): `Option<(u64,u32)>`
-- **interface**: `api.query.auraExt.slotInfo`
-- **summary**:    Current slot paired with a number of authored blocks. 
+### relaySlotInfo(): `Option<(u64,u32)>`
+- **interface**: `api.query.auraExt.relaySlotInfo`
+- **summary**:    Current relay chain slot paired with a number of authored blocks. 
 
-   Updated on each block initialization. 
+   This is updated in [`FixedVelocityConsensusHook::on_state_proof`] with the current relay  chain slot as provided by the relay chain state proof. 
 
 ___
 
@@ -509,6 +515,10 @@ ___
 
    Key is the blake2 256 hash of (origin, versioned `Assets`) pair. Value is the number of  times this pair has been trapped (usually just 1 if it exists at all). 
  
+### authorizedAliases(`XcmVersionedLocation`): `Option<PalletXcmAuthorizedAliasesEntry>`
+- **interface**: `api.query.polkadotXcm.authorizedAliases`
+- **summary**:    Map of authorized aliasers of local origins. Each local location can authorize a list of  other locations to alias into it. Each aliaser is only valid until its inner `expiry`  block number. 
+ 
 ### currentMigration(): `Option<PalletXcmVersionMigrationStage>`
 - **interface**: `api.query.polkadotXcm.currentMigration`
 - **summary**:    The current migration's stage, if any. 
@@ -525,7 +535,7 @@ ___
 - **interface**: `api.query.polkadotXcm.queryCounter`
 - **summary**:    The latest available query index. 
  
-### recordedXcm(): `Option<StagingXcmV4Xcm>`
+### recordedXcm(): `Option<StagingXcmV5Xcm>`
 - **interface**: `api.query.polkadotXcm.recordedXcm`
 - **summary**:    If [`ShouldRecordXcm`] is set to true, then the last XCM program executed locally  will be stored here.  Runtime APIs can fetch the XCM that was executed by accessing this value. 
 
@@ -610,13 +620,59 @@ ___
 ___
 
 
+## remoteProxyRelayChain
+ 
+### blockToRoot(): `Vec<(u32,H256)>`
+- **interface**: `api.query.remoteProxyRelayChain.blockToRoot`
+- **summary**:    Stores the last [`Config::MaxStorageRootsToKeep`] block to storage root mappings of the  target chain. 
+
+___
+
+
+## revive
+ 
+### codeInfoOf(`H256`): `Option<PalletReviveWasmCodeInfo>`
+- **interface**: `api.query.revive.codeInfoOf`
+- **summary**:    A mapping from a contract's code hash to its code info. 
+ 
+### contractInfoOf(`H160`): `Option<PalletReviveStorageContractInfo>`
+- **interface**: `api.query.revive.contractInfoOf`
+- **summary**:    The code associated with a given account. 
+ 
+### deletionQueue(`u32`): `Option<Bytes>`
+- **interface**: `api.query.revive.deletionQueue`
+- **summary**:    Evicted contracts that await child trie deletion. 
+
+   Child trie deletion is a heavy operation depending on the amount of storage items  stored in said trie. Therefore this operation is performed lazily in `on_idle`. 
+ 
+### deletionQueueCounter(): `PalletReviveStorageDeletionQueueManager`
+- **interface**: `api.query.revive.deletionQueueCounter`
+- **summary**:    A pair of monotonic counters used to track the latest contract marked for deletion  and the latest deleted contract in queue. 
+ 
+### immutableDataOf(`H160`): `Option<Bytes>`
+- **interface**: `api.query.revive.immutableDataOf`
+- **summary**:    The immutable data associated with a given account. 
+ 
+### originalAccount(`H160`): `Option<AccountId32>`
+- **interface**: `api.query.revive.originalAccount`
+- **summary**:    Map a Ethereum address to its original `AccountId32`. 
+
+   When deriving a `H160` from an `AccountId32` we use a hash function. In order to  reconstruct the original account we need to store the reverse mapping here.  Register your `AccountId32` using [`Pallet::map_account`] in order to  use it with this pallet. 
+ 
+### pristineCode(`H256`): `Option<Bytes>`
+- **interface**: `api.query.revive.pristineCode`
+- **summary**:    A mapping from a contract's code hash to its code. 
+
+___
+
+
 ## session
  
 ### currentIndex(): `u32`
 - **interface**: `api.query.session.currentIndex`
 - **summary**:    Current index of the session. 
  
-### disabledValidators(): `Vec<u32>`
+### disabledValidators(): `Vec<(u32,Perbill)>`
 - **interface**: `api.query.session.disabledValidators`
 - **summary**:    Indices of disabled validators. 
 
@@ -641,6 +697,29 @@ ___
 ### validators(): `Vec<AccountId32>`
 - **interface**: `api.query.session.validators`
 - **summary**:    The current set of validators. 
+
+___
+
+
+## stateTrieMigration
+ 
+### autoLimits(): `Option<PalletStateTrieMigrationMigrationLimits>`
+- **interface**: `api.query.stateTrieMigration.autoLimits`
+- **summary**:    The limits that are imposed on automatic migrations. 
+
+   If set to None, then no automatic migration happens. 
+ 
+### migrationProcess(): `PalletStateTrieMigrationMigrationTask`
+- **interface**: `api.query.stateTrieMigration.migrationProcess`
+- **summary**:    Migration progress. 
+
+   This stores the snapshot of the last migrated keys. It can be set into motion and move  forward by any of the means provided by this pallet. 
+ 
+### signedMigrationMaxLimits(): `Option<PalletStateTrieMigrationMigrationLimits>`
+- **interface**: `api.query.stateTrieMigration.signedMigrationMaxLimits`
+- **summary**:    The maximum limits that the signed migration could use. 
+
+   If not set, no signed submission is allowed. 
 
 ___
 
@@ -745,6 +824,14 @@ ___
 ### extrinsicData(`u32`): `Bytes`
 - **interface**: `api.query.system.extrinsicData`
 - **summary**:    Extrinsics data for the current block (maps an extrinsic's index to its data). 
+ 
+### extrinsicWeightReclaimed(): `SpWeightsWeightV2Weight`
+- **interface**: `api.query.system.extrinsicWeightReclaimed`
+- **summary**:    The weight reclaimed for the extrinsic. 
+
+   This information is available until the end of the extrinsic execution.  More precisely this information is removed in `note_applied_extrinsic`. 
+
+   Logic doing some post dispatch weight reduction must update this storage to avoid duplicate  reduction. 
  
 ### inherentsApplied(): `bool`
 - **interface**: `api.query.system.inherentsApplied`

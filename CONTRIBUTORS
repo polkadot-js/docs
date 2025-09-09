@@ -20,6 +20,7 @@
        1	Andrzej                       	Fix typo in api.query.multi.md (#126)
        1	angdiam                       	Update api.query.other.md (#181)
        1	Antonio Savage                	Adding specifics to the Intro API (#140)
+       1	Arjun Porwal                  	Docs Maintenance: Bump dependencies & minor fixes (#494)
        1	behnam izadi                  	Update basics.md (#261)
        1	benjichat                     	formats 'Get chain information' example in-line with others (#283)
        1	Daniel Bastos                 	Fix broken keyring intro link (#253)

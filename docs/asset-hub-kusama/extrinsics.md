@@ -36,7 +36,13 @@ The following sections contain Extrinsics methods are part of the default asset-
 
 - **[proxy](#proxy)**
 
+- **[remoteProxyRelayChain](#remoteproxyrelaychain)**
+
+- **[revive](#revive)**
+
 - **[session](#session)**
+
+- **[stateTrieMigration](#statetriemigration)**
 
 - **[system](#system)**
 
@@ -409,6 +415,8 @@ ___
 
   - `allow_burn`: If `true` then assets may be destroyed in order to complete the refund.
 
+   It will fail with either [`Error::ContainsHolds`] or [`Error::ContainsFreezes`] if  the asset account contains holds or freezes in place. 
+
    Emits `Refunded` event when successful. 
  
 ### refundOther(id: `Compact<u32>`, who: `MultiAddress`)
@@ -420,6 +428,8 @@ ___
    - `id`: The identifier of the asset for the account holding a deposit. 
 
   - `who`: The account to refund.
+
+   It will fail with either [`Error::ContainsHolds`] or [`Error::ContainsFreezes`] if  the asset account contains holds or freezes in place. 
 
    Emits `Refunded` event when successful. 
  
@@ -484,6 +494,8 @@ ___
    The origin must conform to `ForceOrigin` or must be `Signed` by the asset's `owner`. 
 
    - `id`: The identifier of the asset to be destroyed. This must identify an existing  asset. 
+
+   It will fail with either [`Error::ContainsHolds`] or [`Error::ContainsFreezes`] if  an account contains holds or freezes in place. 
  
 ### thaw(id: `Compact<u32>`, who: `MultiAddress`)
 - **interface**: `api.tx.assets.thaw`
@@ -1073,6 +1085,8 @@ ___
 
   - `allow_burn`: If `true` then assets may be destroyed in order to complete the refund.
 
+   It will fail with either [`Error::ContainsHolds`] or [`Error::ContainsFreezes`] if  the asset account contains holds or freezes in place. 
+
    Emits `Refunded` event when successful. 
  
 ### refundOther(id: `StagingXcmV4Location`, who: `MultiAddress`)
@@ -1084,6 +1098,8 @@ ___
    - `id`: The identifier of the asset for the account holding a deposit. 
 
   - `who`: The account to refund.
+
+   It will fail with either [`Error::ContainsHolds`] or [`Error::ContainsFreezes`] if  the asset account contains holds or freezes in place. 
 
    Emits `Refunded` event when successful. 
  
@@ -1148,6 +1164,8 @@ ___
    The origin must conform to `ForceOrigin` or must be `Signed` by the asset's `owner`. 
 
    - `id`: The identifier of the asset to be destroyed. This must identify an existing  asset. 
+
+   It will fail with either [`Error::ContainsHolds`] or [`Error::ContainsFreezes`] if  an account contains holds or freezes in place. 
  
 ### thaw(id: `StagingXcmV4Location`, who: `MultiAddress`)
 - **interface**: `api.tx.foreignAssets.thaw`
@@ -1436,6 +1454,22 @@ ___
   - I/O: 1 read `O(S)`, one remove.
 
   - Storage: removes one item.
+ 
+### pokeDeposit(threshold: `u16`, other_signatories: `Vec<AccountId32>`, call_hash: `[u8;32]`)
+- **interface**: `api.tx.multisig.pokeDeposit`
+- **summary**:    Poke the deposit reserved for an existing multisig operation. 
+
+   The dispatch origin for this call must be _Signed_ and must be the original depositor of  the multisig operation. 
+
+   The transaction fee is waived if the deposit amount has changed. 
+
+   - `threshold`: The total number of approvals needed for this multisig. 
+
+  - `other_signatories`: The accounts (other than the sender) who are part of the multisig. 
+
+  - `call_hash`: The hash of the call this deposit is reserved for.
+
+   Emits `DepositPoked` if successful. 
 
 ___
 
@@ -2161,6 +2195,14 @@ ___
 
 ## polkadotXcm
  
+### addAuthorizedAlias(aliaser: `XcmVersionedLocation`, expires: `Option<u64>`)
+- **interface**: `api.tx.polkadotXcm.addAuthorizedAlias`
+- **summary**:    Authorize another `aliaser` location to alias into the local `origin` making this call.  The `aliaser` is only authorized until the provided `expiry` block number.  The call can also be used for a previously authorized alias in order to update its  `expiry` block number. 
+
+   Usually useful to allow your local account to be aliased into from a remote location  also under your control (like your account on another chain). 
+
+   WARNING: make sure the caller `origin` (you) trusts the `aliaser` location to act in  their/your name. Once authorized using this call, the `aliaser` can freely impersonate  `origin` in XCM programs executed on the local chain. 
+ 
 ### claimAssets(assets: `XcmVersionedAssets`, beneficiary: `XcmVersionedLocation`)
 - **interface**: `api.tx.polkadotXcm.claimAssets`
 - **summary**:    Claims assets trapped on this pallet because of leftover assets during XCM execution. 
@@ -2211,7 +2253,7 @@ ___
 
   - `location`: The location to which we are currently subscribed for XCM version notifications which we no longer desire. 
  
-### forceXcmVersion(location: `StagingXcmV4Location`, version: `u32`)
+### forceXcmVersion(location: `StagingXcmV5Location`, version: `u32`)
 - **interface**: `api.tx.polkadotXcm.forceXcmVersion`
 - **summary**:    Extoll that a particular destination can be communicated with through a particular  version of XCM. 
 
@@ -2264,6 +2306,14 @@ ___
   - `fee_asset_item`: The index into `assets` of the item which should be used to pay fees. 
 
   - `weight_limit`: The remote-side weight limit, if any, for the XCM fee purchase.
+ 
+### removeAllAuthorizedAliases()
+- **interface**: `api.tx.polkadotXcm.removeAllAuthorizedAliases`
+- **summary**:    Remove all previously authorized `aliaser`s that can alias into the local `origin`  making this call. 
+ 
+### removeAuthorizedAlias(aliaser: `XcmVersionedLocation`)
+- **interface**: `api.tx.polkadotXcm.removeAuthorizedAlias`
+- **summary**:    Remove a previously authorized `aliaser` from the list of locations that can alias into  the local `origin` making this call. 
  
 ### reserveTransferAssets(dest: `XcmVersionedLocation`, beneficiary: `XcmVersionedLocation`, assets: `XcmVersionedAssets`, fee_asset_item: `u32`)
 - **interface**: `api.tx.polkadotXcm.reserveTransferAssets`
@@ -2685,6 +2735,8 @@ ___
 
   - `allow_burn`: If `true` then assets may be destroyed in order to complete the refund.
 
+   It will fail with either [`Error::ContainsHolds`] or [`Error::ContainsFreezes`] if  the asset account contains holds or freezes in place. 
+
    Emits `Refunded` event when successful. 
  
 ### refundOther(id: `u32`, who: `MultiAddress`)
@@ -2696,6 +2748,8 @@ ___
    - `id`: The identifier of the asset for the account holding a deposit. 
 
   - `who`: The account to refund.
+
+   It will fail with either [`Error::ContainsHolds`] or [`Error::ContainsFreezes`] if  the asset account contains holds or freezes in place. 
 
    Emits `Refunded` event when successful. 
  
@@ -2760,6 +2814,8 @@ ___
    The origin must conform to `ForceOrigin` or must be `Signed` by the asset's `owner`. 
 
    - `id`: The identifier of the asset to be destroyed. This must identify an existing  asset. 
+
+   It will fail with either [`Error::ContainsHolds`] or [`Error::ContainsFreezes`] if  an account contains holds or freezes in place. 
  
 ### thaw(id: `u32`, who: `MultiAddress`)
 - **interface**: `api.tx.poolAssets.thaw`
@@ -2966,6 +3022,16 @@ ___
 
    Fails with `NoPermission` in case the caller is not a previously created pure  account whose `pure` call has corresponding parameters. 
  
+### pokeDeposit()
+- **interface**: `api.tx.proxy.pokeDeposit`
+- **summary**:    Poke / Adjust deposits made for proxies and announcements based on current values.  This can be used by accounts to possibly lower their locked amount. 
+
+   The dispatch origin for this call must be _Signed_. 
+
+   The transaction fee is waived if the deposit amount has changed. 
+
+   Emits `DepositPoked` if successful. 
+ 
 ### proxy(real: `MultiAddress`, force_proxy_type: `Option<AssetHubKusamaRuntimeProxyType>`, call: `Call`)
 - **interface**: `api.tx.proxy.proxy`
 - **summary**:    Dispatch the given `call` from an account that the sender is authorised for through  `add_proxy`. 
@@ -3047,6 +3113,186 @@ ___
 ___
 
 
+## remoteProxyRelayChain
+ 
+### registerRemoteProxyProof(proof: `PalletRemoteProxyRemoteProxyProof`)
+- **interface**: `api.tx.remoteProxyRelayChain.registerRemoteProxyProof`
+- **summary**:    Register a given remote proxy proof in the current [`dispatch_context`]. 
+
+   The registered remote proof can then be used later in the same context to execute a  remote proxy call. This is for example useful when having a multisig operation. The  multisig call can use [`Self::remote_proxy_with_registered_proof`] to get an approval by  the members of the multisig. The final execution of the multisig call should be at least  a batch of `register_remote_proxy_proof` and the multisig call that uses  `remote_proxy_with_registered_proof`. This way the final approver can use a recent proof  to prove the existence of the remote proxy. Otherwise it would require the multisig  members to approve the call in [`Config::MaxStorageRootsToKeep`] amount of time. 
+
+   It is supported to register multiple proofs, but the proofs need to be consumed in the  reverse order as they were registered. Basically this means last in, first out. 
+
+   The [`dispatch_context`] spans the entire lifetime of a transaction and every call in  the transaction gets access to the same context. 
+
+   #### Example 
+
+   ```ignore  batch([  register_remote_proxy_proof,  as_multisig(remote_proxy_with_registered_proof(transfer))  ])  ``` 
+
+   As `proofs` can not be verified indefinitely (the time the storage roots are stored is  limited) this function provides the possibility to provide a "fresh proof" at time of  dispatch. As in the example above, this could be useful for multisig operation that  depend on multiple members to approve a certain action, which can take multiple days. 
+ 
+### remoteProxy(real: `MultiAddress`, force_proxy_type: `Option<AssetHubKusamaRuntimeProxyType>`, call: `Call`, proof: `PalletRemoteProxyRemoteProxyProof`)
+- **interface**: `api.tx.remoteProxyRelayChain.remoteProxy`
+- **summary**:    Dispatch the given `call` from an account that the sender is authorised on a remote  chain. 
+
+   The dispatch origin for this call must be _Signed_. 
+
+   Parameters: 
+
+  - `real`: The account that the proxy will make a call on behalf of.
+
+  - `force_proxy_type`: Specify the exact proxy type to be used and checked for this call.
+
+  - `call`: The call to be made by the `real` account.
+
+  - `proof`: The proof from the remote chain about the existence of the proxy.
+ 
+### remoteProxyWithRegisteredProof(real: `MultiAddress`, force_proxy_type: `Option<AssetHubKusamaRuntimeProxyType>`, call: `Call`)
+- **interface**: `api.tx.remoteProxyRelayChain.remoteProxyWithRegisteredProof`
+- **summary**:    Dispatch the given `call` from an account that the sender is authorised on a remote  chain. 
+
+   The dispatch origin for this call must be _Signed_. The difference to  [`Self::remote_proxy`] is that the proof nees to registered before using  [`Self::register_remote_proxy_proof`] (see for more information). 
+
+   Parameters: 
+
+  - `real`: The account that the proxy will make a call on behalf of.
+
+  - `force_proxy_type`: Specify the exact proxy type to be used and checked for this call.
+
+  - `call`: The call to be made by the `real` account.
+
+___
+
+
+## revive
+ 
+### call(dest: `H160`, value: `Compact<u128>`, gas_limit: `SpWeightsWeightV2Weight`, storage_deposit_limit: `Compact<u128>`, data: `Bytes`)
+- **interface**: `api.tx.revive.call`
+- **summary**:    Makes a call to an account, optionally transferring some balance. 
+
+   #### Parameters 
+
+   * `dest`: Address of the contract to call. 
+
+  * `value`: The balance to transfer from the `origin` to `dest`.
+
+  * `gas_limit`: The gas limit enforced when executing the constructor.
+
+  * `storage_deposit_limit`: The maximum amount of balance that can be charged from the caller to pay for the storage consumed. 
+
+  * `data`: The input data to pass to the contract.
+
+   * If the account is a smart-contract account, the associated code will be  executed and any value will be transferred. 
+
+  * If the account is a regular account, any value will be transferred.
+
+  * If no account exists and the call value is not less than `existential_deposit`, a regular account will be created and any value will be transferred. 
+ 
+### dispatchAsFallbackAccount(call: `Call`)
+- **interface**: `api.tx.revive.dispatchAsFallbackAccount`
+- **summary**:    Dispatch an `call` with the origin set to the callers fallback address. 
+
+   Every `AccountId32` can control its corresponding fallback account. The fallback account  is the `AccountId20` with the last 12 bytes set to `0xEE`. This is essentially a  recovery function in case an `AccountId20` was used without creating a mapping first. 
+ 
+### ethTransact(payload: `Bytes`)
+- **interface**: `api.tx.revive.ethTransact`
+- **summary**:    A raw EVM transaction, typically dispatched by an Ethereum JSON-RPC server. 
+
+   #### Parameters 
+
+   * `payload`: The encoded [`crate::evm::TransactionSigned`]. 
+
+  * `gas_limit`: The gas limit enforced during contract execution.
+
+  * `storage_deposit_limit`: The maximum balance that can be charged to the caller for storage usage. 
+
+   #### Note 
+
+   This call cannot be dispatched directly; attempting to do so will result in a failed  transaction. It serves as a wrapper for an Ethereum transaction. When submitted, the  runtime converts it into a [`sp_runtime::generic::CheckedExtrinsic`] by recovering the  signer and validating the transaction. 
+ 
+### instantiate(value: `Compact<u128>`, gas_limit: `SpWeightsWeightV2Weight`, storage_deposit_limit: `Compact<u128>`, code_hash: `H256`, data: `Bytes`, salt: `Option<[u8;32]>`)
+- **interface**: `api.tx.revive.instantiate`
+- **summary**:    Instantiates a contract from a previously deployed wasm binary. 
+
+   This function is identical to [`Self::instantiate_with_code`] but without the  code deployment step. Instead, the `code_hash` of an on-chain deployed wasm binary  must be supplied. 
+ 
+### instantiateWithCode(value: `Compact<u128>`, gas_limit: `SpWeightsWeightV2Weight`, storage_deposit_limit: `Compact<u128>`, code: `Bytes`, data: `Bytes`, salt: `Option<[u8;32]>`)
+- **interface**: `api.tx.revive.instantiateWithCode`
+- **summary**:    Instantiates a new contract from the supplied `code` optionally transferring  some balance. 
+
+   This dispatchable has the same effect as calling [`Self::upload_code`] +  [`Self::instantiate`]. Bundling them together provides efficiency gains. Please  also check the documentation of [`Self::upload_code`]. 
+
+   #### Parameters 
+
+   * `value`: The balance to transfer from the `origin` to the newly created contract. 
+
+  * `gas_limit`: The gas limit enforced when executing the constructor.
+
+  * `storage_deposit_limit`: The maximum amount of balance that can be charged/reserved from the caller to pay for the storage consumed. 
+
+  * `code`: The contract code to deploy in raw bytes.
+
+  * `data`: The input data to pass to the contract constructor.
+
+  * `salt`: Used for the address derivation. If `Some` is supplied then `CREATE2` semantics are used. If `None` then `CRATE1` is used. 
+
+  
+
+   Instantiation is executed as follows: 
+
+   - The supplied `code` is deployed, and a `code_hash` is created for that code. 
+
+  - If the `code_hash` already exists on the chain the underlying `code` will be shared.
+
+  - The destination address is computed based on the sender, code_hash and the salt.
+
+  - The smart-contract account is created at the computed address.
+
+  - The `value` is transferred to the new account.
+
+  - The `deploy` function is executed in the context of the newly-created account.
+ 
+### mapAccount()
+- **interface**: `api.tx.revive.mapAccount`
+- **summary**:    Register the callers account id so that it can be used in contract interactions. 
+
+   This will error if the origin is already mapped or is a eth native `Address20`. It will  take a deposit that can be released by calling [`Self::unmap_account`]. 
+ 
+### removeCode(code_hash: `H256`)
+- **interface**: `api.tx.revive.removeCode`
+- **summary**:    Remove the code stored under `code_hash` and refund the deposit to its owner. 
+
+   A code can only be removed by its original uploader (its owner) and only if it is  not used by any contract. 
+ 
+### setCode(dest: `H160`, code_hash: `H256`)
+- **interface**: `api.tx.revive.setCode`
+- **summary**:    Privileged function that changes the code of an existing contract. 
+
+   This takes care of updating refcounts and all other necessary operations. Returns  an error if either the `code_hash` or `dest` do not exist. 
+
+   #### Note 
+
+   This does **not** change the address of the contract in question. This means  that the contract address is no longer derived from its code hash after calling  this dispatchable. 
+ 
+### unmapAccount()
+- **interface**: `api.tx.revive.unmapAccount`
+- **summary**:    Unregister the callers account id in order to free the deposit. 
+
+   There is no reason to ever call this function other than freeing up the deposit.  This is only useful when the account should no longer be used. 
+ 
+### uploadCode(code: `Bytes`, storage_deposit_limit: `Compact<u128>`)
+- **interface**: `api.tx.revive.uploadCode`
+- **summary**:    Upload new `code` without instantiating a contract from it. 
+
+   If the code does not already exist a deposit is reserved from the caller  and unreserved only when [`Self::remove_code`] is called. The size of the reserve  depends on the size of the supplied `code`. 
+
+   #### Note 
+
+   Anyone can instantiate a contract from any uploaded code and thus prevent its removal.  To avoid this situation a constructor could employ access control so that it can  only be instantiated by permissioned entities. The same is true when uploading  through [`Self::instantiate_with_code`]. 
+
+___
+
+
 ## session
  
 ### purgeKeys()
@@ -3070,6 +3316,57 @@ ___
    #### Complexity 
 
   - `O(1)`. Actual cost depends on the number of length of `T::Keys::key_ids()` which is fixed. 
+
+___
+
+
+## stateTrieMigration
+ 
+### continueMigrate(limits: `PalletStateTrieMigrationMigrationLimits`, real_size_upper: `u32`, witness_task: `PalletStateTrieMigrationMigrationTask`)
+- **interface**: `api.tx.stateTrieMigration.continueMigrate`
+- **summary**:    Continue the migration for the given `limits`. 
+
+   The dispatch origin of this call can be any signed account. 
+
+   This transaction has NO MONETARY INCENTIVES. calling it will not reward anyone. Albeit,  Upon successful execution, the transaction fee is returned. 
+
+   The (potentially over-estimated) of the byte length of all the data read must be  provided for up-front fee-payment and weighing. In essence, the caller is guaranteeing  that executing the current `MigrationTask` with the given `limits` will not exceed  `real_size_upper` bytes of read data. 
+
+   The `witness_task` is merely a helper to prevent the caller from being slashed or  generally trigger a migration that they do not intend. This parameter is just a message  from caller, saying that they believed `witness_task` was the last state of the  migration, and they only wish for their transaction to do anything, if this assumption  holds. In case `witness_task` does not match, the transaction fails. 
+
+   Based on the documentation of [`MigrationTask::migrate_until_exhaustion`], the  recommended way of doing this is to pass a `limit` that only bounds `count`, as the  `size` limit can always be overwritten. 
+ 
+### controlAutoMigration(maybe_config: `Option<PalletStateTrieMigrationMigrationLimits>`)
+- **interface**: `api.tx.stateTrieMigration.controlAutoMigration`
+- **summary**:    Control the automatic migration. 
+
+   The dispatch origin of this call must be [`Config::ControlOrigin`]. 
+ 
+### forceSetProgress(progress_top: `PalletStateTrieMigrationProgress`, progress_child: `PalletStateTrieMigrationProgress`)
+- **interface**: `api.tx.stateTrieMigration.forceSetProgress`
+- **summary**:    Forcefully set the progress the running migration. 
+
+   This is only useful in one case: the next key to migrate is too big to be migrated with  a signed account, in a parachain context, and we simply want to skip it. A reasonable  example of this would be `:code:`, which is both very expensive to migrate, and commonly  used, so probably it is already migrated. 
+
+   In case you mess things up, you can also, in principle, use this to reset the migration  process. 
+ 
+### migrateCustomChild(root: `Bytes`, child_keys: `Vec<Bytes>`, total_size: `u32`)
+- **interface**: `api.tx.stateTrieMigration.migrateCustomChild`
+- **summary**:    Migrate the list of child keys by iterating each of them one by one. 
+
+   All of the given child keys must be present under one `child_root`. 
+
+   This does not affect the global migration process tracker ([`MigrationProcess`]), and  should only be used in case any keys are leftover due to a bug. 
+ 
+### migrateCustomTop(keys: `Vec<Bytes>`, witness_size: `u32`)
+- **interface**: `api.tx.stateTrieMigration.migrateCustomTop`
+- **summary**:    Migrate the list of top keys by iterating each of them one by one. 
+
+   This does not affect the global migration process tracker ([`MigrationProcess`]), and  should only be used in case any keys are leftover due to a bug. 
+ 
+### setSignedMaxLimits(limits: `PalletStateTrieMigrationMigrationLimits`)
+- **interface**: `api.tx.stateTrieMigration.setSignedMaxLimits`
+- **summary**:    Set the maximum limit of the signed migration. 
 
 ___
 
@@ -3680,6 +3977,14 @@ ___
 
   - O(1).
  
+### dispatchAsFallible(as_origin: `AssetHubKusamaRuntimeOriginCaller`, call: `Call`)
+- **interface**: `api.tx.utility.dispatchAsFallible`
+- **summary**:    Dispatches a function call with a provided origin. 
+
+   Almost the same as [`Pallet::dispatch_as`] but forwards any error of the inner call. 
+
+   The dispatch origin for this call must be _Root_. 
+ 
 ### forceBatch(calls: `Vec<Call>`)
 - **interface**: `api.tx.utility.forceBatch`
 - **summary**:    Send a batch of dispatch calls.  Unlike `batch`, it allows errors and won't interrupt. 
@@ -3693,6 +3998,28 @@ ___
    #### Complexity 
 
   - O(C) where C is the number of calls to be batched.
+ 
+### ifElse(main: `Call`, fallback: `Call`)
+- **interface**: `api.tx.utility.ifElse`
+- **summary**:    Dispatch a fallback call in the event the main call fails to execute.  May be called from any origin except `None`. 
+
+   This function first attempts to dispatch the `main` call.  If the `main` call fails, the `fallback` is attemted.  if the fallback is successfully dispatched, the weights of both calls  are accumulated and an event containing the main call error is deposited. 
+
+   In the event of a fallback failure the whole call fails  with the weights returned. 
+
+   - `main`: The main call to be dispatched. This is the primary action to execute. 
+
+  - `fallback`: The fallback call to be dispatched in case the `main` call fails.
+
+   #### Dispatch Logic 
+
+  - If the origin is `root`, both the main and fallback calls are executed without applying any origin filters. 
+
+  - If the origin is not `root`, the origin filter is applied to both the `main` and `fallback` calls. 
+
+   #### Use Case 
+
+  - Some use cases might involve submitting a `batch` type call in either main, fallback or both. 
  
 ### withWeight(call: `Call`, weight: `SpWeightsWeightV2Weight`)
 - **interface**: `api.tx.utility.withWeight`

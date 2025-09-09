@@ -32,6 +32,8 @@ This page lists the errors that can be encountered in the different modules.
 
 - **[session](#session)**
 
+- **[stateTrieMigration](#statetriemigration)**
+
 - **[system](#system)**
 
 - **[uniques](#uniques)**
@@ -172,6 +174,14 @@ ___
 ### CallbackFailed
 - **interface**: `api.errors.assets.CallbackFailed.is`
 - **summary**:    Callback action resulted in error 
+ 
+### ContainsFreezes
+- **interface**: `api.errors.assets.ContainsFreezes.is`
+- **summary**:    The asset cannot be destroyed because some accounts for this asset contain freezes. 
+ 
+### ContainsHolds
+- **interface**: `api.errors.assets.ContainsHolds.is`
+- **summary**:    The asset cannot be destroyed because some accounts for this asset contain holds. 
  
 ### Frozen
 - **interface**: `api.errors.assets.Frozen.is`
@@ -388,6 +398,14 @@ ___
 - **interface**: `api.errors.foreignAssets.CallbackFailed.is`
 - **summary**:    Callback action resulted in error 
  
+### ContainsFreezes
+- **interface**: `api.errors.foreignAssets.ContainsFreezes.is`
+- **summary**:    The asset cannot be destroyed because some accounts for this asset contain freezes. 
+ 
+### ContainsHolds
+- **interface**: `api.errors.foreignAssets.ContainsHolds.is`
+- **summary**:    The asset cannot be destroyed because some accounts for this asset contain holds. 
+ 
 ### Frozen
 - **interface**: `api.errors.foreignAssets.Frozen.is`
 - **summary**:    The origin account is frozen. 
@@ -516,7 +534,7 @@ ___
  
 ### NotFound
 - **interface**: `api.errors.multisig.NotFound.is`
-- **summary**:    Multisig operation not found when attempting to cancel. 
+- **summary**:    Multisig operation not found in storage. 
  
 ### NoTimepoint
 - **interface**: `api.errors.multisig.NoTimepoint.is`
@@ -524,7 +542,7 @@ ___
  
 ### NotOwner
 - **interface**: `api.errors.multisig.NotOwner.is`
-- **summary**:    Only the account that originally created the multisig is able to cancel it. 
+- **summary**:    Only the account that originally created the multisig is able to cancel it or update  its deposits. 
  
 ### SenderInSignatories
 - **interface**: `api.errors.multisig.SenderInSignatories.is`
@@ -744,10 +762,6 @@ ___
 - **interface**: `api.errors.parachainSystem.HostConfigurationNotAvailable.is`
 - **summary**:    The inherent which supplies the host configuration did not run this block. 
  
-### NothingAuthorized
-- **interface**: `api.errors.parachainSystem.NothingAuthorized.is`
-- **summary**:    No code upgrade has been authorized. 
- 
 ### NotScheduled
 - **interface**: `api.errors.parachainSystem.NotScheduled.is`
 - **summary**:    No validation function upgrade is currently scheduled. 
@@ -764,10 +778,6 @@ ___
 - **interface**: `api.errors.parachainSystem.TooBig.is`
 - **summary**:    The supplied validation function has compiled into a blob larger than Polkadot is  willing to run. 
  
-### Unauthorized
-- **interface**: `api.errors.parachainSystem.Unauthorized.is`
-- **summary**:    The given code upgrade has not been authorized. 
- 
 ### ValidationDataNotAvailable
 - **interface**: `api.errors.parachainSystem.ValidationDataNotAvailable.is`
 - **summary**:    The inherent which supplies the validation data did not run this block. 
@@ -780,6 +790,10 @@ ___
 ### AccountNotSovereign
 - **interface**: `api.errors.polkadotXcm.AccountNotSovereign.is`
 - **summary**:    The given account is not an identifiable sovereign account for any location. 
+ 
+### AliasNotFound
+- **interface**: `api.errors.polkadotXcm.AliasNotFound.is`
+- **summary**:    The alias to remove authorization for was not found. 
  
 ### AlreadySubscribed
 - **interface**: `api.errors.polkadotXcm.AlreadySubscribed.is`
@@ -808,6 +822,10 @@ ___
 ### Empty
 - **interface**: `api.errors.polkadotXcm.Empty.is`
 - **summary**:    The assets to be sent are empty. 
+ 
+### ExpiresInPast
+- **interface**: `api.errors.polkadotXcm.ExpiresInPast.is`
+- **summary**:    Expiry block number is in the past. 
  
 ### FeesNotMet
 - **interface**: `api.errors.polkadotXcm.FeesNotMet.is`
@@ -857,6 +875,10 @@ ___
 - **interface**: `api.errors.polkadotXcm.TooManyAssets.is`
 - **summary**:    Too many assets have been attempted for transfer. 
  
+### TooManyAuthorizedAliases
+- **interface**: `api.errors.polkadotXcm.TooManyAuthorizedAliases.is`
+- **summary**:    Too many locations authorized to alias origin. 
+ 
 ### TooManyLocks
 - **interface**: `api.errors.polkadotXcm.TooManyLocks.is`
 - **summary**:    The asset owner has too many locks on the asset. 
@@ -905,6 +927,14 @@ ___
 ### CallbackFailed
 - **interface**: `api.errors.poolAssets.CallbackFailed.is`
 - **summary**:    Callback action resulted in error 
+ 
+### ContainsFreezes
+- **interface**: `api.errors.poolAssets.ContainsFreezes.is`
+- **summary**:    The asset cannot be destroyed because some accounts for this asset contain freezes. 
+ 
+### ContainsHolds
+- **interface**: `api.errors.poolAssets.ContainsHolds.is`
+- **summary**:    The asset cannot be destroyed because some accounts for this asset contain holds. 
  
 ### Frozen
 - **interface**: `api.errors.poolAssets.Frozen.is`
@@ -1023,6 +1053,37 @@ ___
 ### NoKeys
 - **interface**: `api.errors.session.NoKeys.is`
 - **summary**:    No keys are associated with this account. 
+
+___
+
+
+## stateTrieMigration
+ 
+### BadChildRoot
+- **interface**: `api.errors.stateTrieMigration.BadChildRoot.is`
+- **summary**:    Bad child root provided. 
+ 
+### BadWitness
+- **interface**: `api.errors.stateTrieMigration.BadWitness.is`
+- **summary**:    Bad witness data provided. 
+ 
+### KeyTooLong
+- **interface**: `api.errors.stateTrieMigration.KeyTooLong.is`
+- **summary**:    A key was longer than the configured maximum. 
+
+   This means that the migration halted at the current [`Progress`] and  can be resumed with a larger [`crate::Config::MaxKeyLen`] value.  Retrying with the same [`crate::Config::MaxKeyLen`] value will not work.  The value should only be increased to avoid a storage migration for the currently  stored [`crate::Progress::LastKey`]. 
+ 
+### MaxSignedLimits
+- **interface**: `api.errors.stateTrieMigration.MaxSignedLimits.is`
+- **summary**:    Max signed limits not respected. 
+ 
+### NotEnoughFunds
+- **interface**: `api.errors.stateTrieMigration.NotEnoughFunds.is`
+- **summary**:    submitter does not have enough funds. 
+ 
+### SignedMigrationNotAllowed
+- **interface**: `api.errors.stateTrieMigration.SignedMigrationNotAllowed.is`
+- **summary**:    Signed migration is not allowed because the maximum limit is not set yet. 
 
 ___
 

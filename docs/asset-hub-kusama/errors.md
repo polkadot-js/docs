@@ -32,7 +32,13 @@ This page lists the errors that can be encountered in the different modules.
 
 - **[proxy](#proxy)**
 
+- **[remoteProxyRelayChain](#remoteproxyrelaychain)**
+
+- **[revive](#revive)**
+
 - **[session](#session)**
+
+- **[stateTrieMigration](#statetriemigration)**
 
 - **[system](#system)**
 
@@ -174,6 +180,14 @@ ___
 ### CallbackFailed
 - **interface**: `api.errors.assets.CallbackFailed.is`
 - **summary**:    Callback action resulted in error 
+ 
+### ContainsFreezes
+- **interface**: `api.errors.assets.ContainsFreezes.is`
+- **summary**:    The asset cannot be destroyed because some accounts for this asset contain freezes. 
+ 
+### ContainsHolds
+- **interface**: `api.errors.assets.ContainsHolds.is`
+- **summary**:    The asset cannot be destroyed because some accounts for this asset contain holds. 
  
 ### Frozen
 - **interface**: `api.errors.assets.Frozen.is`
@@ -390,6 +404,14 @@ ___
 - **interface**: `api.errors.foreignAssets.CallbackFailed.is`
 - **summary**:    Callback action resulted in error 
  
+### ContainsFreezes
+- **interface**: `api.errors.foreignAssets.ContainsFreezes.is`
+- **summary**:    The asset cannot be destroyed because some accounts for this asset contain freezes. 
+ 
+### ContainsHolds
+- **interface**: `api.errors.foreignAssets.ContainsHolds.is`
+- **summary**:    The asset cannot be destroyed because some accounts for this asset contain holds. 
+ 
 ### Frozen
 - **interface**: `api.errors.foreignAssets.Frozen.is`
 - **summary**:    The origin account is frozen. 
@@ -518,7 +540,7 @@ ___
  
 ### NotFound
 - **interface**: `api.errors.multisig.NotFound.is`
-- **summary**:    Multisig operation not found when attempting to cancel. 
+- **summary**:    Multisig operation not found in storage. 
  
 ### NoTimepoint
 - **interface**: `api.errors.multisig.NoTimepoint.is`
@@ -526,7 +548,7 @@ ___
  
 ### NotOwner
 - **interface**: `api.errors.multisig.NotOwner.is`
-- **summary**:    Only the account that originally created the multisig is able to cancel it. 
+- **summary**:    Only the account that originally created the multisig is able to cancel it or update  its deposits. 
  
 ### SenderInSignatories
 - **interface**: `api.errors.multisig.SenderInSignatories.is`
@@ -767,10 +789,6 @@ ___
 - **interface**: `api.errors.parachainSystem.HostConfigurationNotAvailable.is`
 - **summary**:    The inherent which supplies the host configuration did not run this block. 
  
-### NothingAuthorized
-- **interface**: `api.errors.parachainSystem.NothingAuthorized.is`
-- **summary**:    No code upgrade has been authorized. 
- 
 ### NotScheduled
 - **interface**: `api.errors.parachainSystem.NotScheduled.is`
 - **summary**:    No validation function upgrade is currently scheduled. 
@@ -787,10 +805,6 @@ ___
 - **interface**: `api.errors.parachainSystem.TooBig.is`
 - **summary**:    The supplied validation function has compiled into a blob larger than Polkadot is  willing to run. 
  
-### Unauthorized
-- **interface**: `api.errors.parachainSystem.Unauthorized.is`
-- **summary**:    The given code upgrade has not been authorized. 
- 
 ### ValidationDataNotAvailable
 - **interface**: `api.errors.parachainSystem.ValidationDataNotAvailable.is`
 - **summary**:    The inherent which supplies the validation data did not run this block. 
@@ -803,6 +817,10 @@ ___
 ### AccountNotSovereign
 - **interface**: `api.errors.polkadotXcm.AccountNotSovereign.is`
 - **summary**:    The given account is not an identifiable sovereign account for any location. 
+ 
+### AliasNotFound
+- **interface**: `api.errors.polkadotXcm.AliasNotFound.is`
+- **summary**:    The alias to remove authorization for was not found. 
  
 ### AlreadySubscribed
 - **interface**: `api.errors.polkadotXcm.AlreadySubscribed.is`
@@ -831,6 +849,10 @@ ___
 ### Empty
 - **interface**: `api.errors.polkadotXcm.Empty.is`
 - **summary**:    The assets to be sent are empty. 
+ 
+### ExpiresInPast
+- **interface**: `api.errors.polkadotXcm.ExpiresInPast.is`
+- **summary**:    Expiry block number is in the past. 
  
 ### FeesNotMet
 - **interface**: `api.errors.polkadotXcm.FeesNotMet.is`
@@ -880,6 +902,10 @@ ___
 - **interface**: `api.errors.polkadotXcm.TooManyAssets.is`
 - **summary**:    Too many assets have been attempted for transfer. 
  
+### TooManyAuthorizedAliases
+- **interface**: `api.errors.polkadotXcm.TooManyAuthorizedAliases.is`
+- **summary**:    Too many locations authorized to alias origin. 
+ 
 ### TooManyLocks
 - **interface**: `api.errors.polkadotXcm.TooManyLocks.is`
 - **summary**:    The asset owner has too many locks on the asset. 
@@ -928,6 +954,14 @@ ___
 ### CallbackFailed
 - **interface**: `api.errors.poolAssets.CallbackFailed.is`
 - **summary**:    Callback action resulted in error 
+ 
+### ContainsFreezes
+- **interface**: `api.errors.poolAssets.ContainsFreezes.is`
+- **summary**:    The asset cannot be destroyed because some accounts for this asset contain freezes. 
+ 
+### ContainsHolds
+- **interface**: `api.errors.poolAssets.ContainsHolds.is`
+- **summary**:    The asset cannot be destroyed because some accounts for this asset contain holds. 
  
 ### Frozen
 - **interface**: `api.errors.poolAssets.Frozen.is`
@@ -1025,6 +1059,242 @@ ___
 ___
 
 
+## remoteProxyRelayChain
+ 
+### CouldNotConvertLocalToRemoteAccountId
+- **interface**: `api.errors.remoteProxyRelayChain.CouldNotConvertLocalToRemoteAccountId.is`
+- **summary**:    The local account id could not converted to the remote account id. 
+ 
+### DidNotFindMatchingProxyDefinition
+- **interface**: `api.errors.remoteProxyRelayChain.DidNotFindMatchingProxyDefinition.is`
+- **summary**:    Could not find any matching proxy definition in the proof. 
+ 
+### InvalidProof
+- **interface**: `api.errors.remoteProxyRelayChain.InvalidProof.is`
+- **summary**:    The proxy definition could not be found in the proof. 
+ 
+### ProxyDefinitionDecodingFailed
+- **interface**: `api.errors.remoteProxyRelayChain.ProxyDefinitionDecodingFailed.is`
+- **summary**:    Failed to decode the remote proxy definition from the proof. 
+ 
+### ProxyProofNotRegistered
+- **interface**: `api.errors.remoteProxyRelayChain.ProxyProofNotRegistered.is`
+- **summary**:    Proxy proof not registered. 
+ 
+### Unannounced
+- **interface**: `api.errors.remoteProxyRelayChain.Unannounced.is`
+- **summary**:    Announcement, if made at all, was made too recently. 
+ 
+### UnknownProofAnchorBlock
+- **interface**: `api.errors.remoteProxyRelayChain.UnknownProofAnchorBlock.is`
+- **summary**:    The anchor block of the remote proof is unknown. 
+
+___
+
+
+## revive
+ 
+### AccountAlreadyMapped
+- **interface**: `api.errors.revive.AccountAlreadyMapped.is`
+- **summary**:    Tried to map an account that is already mapped. 
+ 
+### AccountUnmapped
+- **interface**: `api.errors.revive.AccountUnmapped.is`
+- **summary**:    An `AccountID32` account tried to interact with the pallet without having a mapping. 
+
+   Call [`Pallet::map_account`] in order to create a mapping for the account. 
+ 
+### BalanceConversionFailed
+- **interface**: `api.errors.revive.BalanceConversionFailed.is`
+- **summary**:    Failed to convert a U256 to a Balance. 
+ 
+### BasicBlockTooLarge
+- **interface**: `api.errors.revive.BasicBlockTooLarge.is`
+- **summary**:    The program contains a basic block that is larger than allowed. 
+ 
+### BlobTooLarge
+- **interface**: `api.errors.revive.BlobTooLarge.is`
+- **summary**:    The code blob supplied is larger than [`limits::code::BLOB_BYTES`]. 
+ 
+### CannotAddSelfAsDelegateDependency
+- **interface**: `api.errors.revive.CannotAddSelfAsDelegateDependency.is`
+- **summary**:    Can not add a delegate dependency to the code hash of the contract itself. 
+ 
+### CodeInfoNotFound
+- **interface**: `api.errors.revive.CodeInfoNotFound.is`
+- **summary**:    No code info could be found at the supplied code hash. 
+ 
+### CodeInUse
+- **interface**: `api.errors.revive.CodeInUse.is`
+- **summary**:    Code removal was denied because the code is still in use by at least one contract. 
+ 
+### CodeNotFound
+- **interface**: `api.errors.revive.CodeNotFound.is`
+- **summary**:    No code could be found at the supplied code hash. 
+ 
+### CodeRejected
+- **interface**: `api.errors.revive.CodeRejected.is`
+- **summary**:    The contract failed to compile or is missing the correct entry points. 
+
+   A more detailed error can be found on the node console if debug messages are enabled  by supplying `-lruntime::revive=debug`. 
+ 
+### ContractNotFound
+- **interface**: `api.errors.revive.ContractNotFound.is`
+- **summary**:    No contract was found at the specified address. 
+ 
+### ContractReverted
+- **interface**: `api.errors.revive.ContractReverted.is`
+- **summary**:    The contract ran to completion but decided to revert its storage changes.  Please note that this error is only returned from extrinsics. When called directly  or via RPC an `Ok` will be returned. In this case the caller needs to inspect the flags  to determine whether a reversion has taken place. 
+ 
+### ContractTrapped
+- **interface**: `api.errors.revive.ContractTrapped.is`
+- **summary**:    Contract trapped during execution. 
+ 
+### DecimalPrecisionLoss
+- **interface**: `api.errors.revive.DecimalPrecisionLoss.is`
+- **summary**:    Failed to convert an EVM balance to a native balance. 
+ 
+### DecodingFailed
+- **interface**: `api.errors.revive.DecodingFailed.is`
+- **summary**:    Input passed to a contract API function failed to decode as expected type. 
+ 
+### DelegateDependencyAlreadyExists
+- **interface**: `api.errors.revive.DelegateDependencyAlreadyExists.is`
+- **summary**:    The contract already depends on the given delegate dependency. 
+ 
+### DelegateDependencyNotFound
+- **interface**: `api.errors.revive.DelegateDependencyNotFound.is`
+- **summary**:    The dependency was not found in the contract's delegate dependencies. 
+ 
+### DuplicateContract
+- **interface**: `api.errors.revive.DuplicateContract.is`
+- **summary**:    A contract with the same AccountId already exists. 
+ 
+### ExecutionFailed
+- **interface**: `api.errors.revive.ExecutionFailed.is`
+- **summary**:    PolkaVM failed during code execution. Probably due to a malformed program. 
+ 
+### InputForwarded
+- **interface**: `api.errors.revive.InputForwarded.is`
+- **summary**:    `seal_call` forwarded this contracts input. It therefore is no longer available. 
+ 
+### InvalidCallFlags
+- **interface**: `api.errors.revive.InvalidCallFlags.is`
+- **summary**:    Invalid combination of flags supplied to `seal_call` or `seal_delegate_call`. 
+ 
+### InvalidGenericTransaction
+- **interface**: `api.errors.revive.InvalidGenericTransaction.is`
+- **summary**:    The transaction used to dry-run a contract is invalid. 
+ 
+### InvalidImmutableAccess
+- **interface**: `api.errors.revive.InvalidImmutableAccess.is`
+- **summary**:    Immutable data can only be set during deploys and only be read during calls.  Additionally, it is only valid to set the data once and it must not be empty. 
+ 
+### InvalidInstruction
+- **interface**: `api.errors.revive.InvalidInstruction.is`
+- **summary**:    The program contains an invalid instruction. 
+ 
+### InvalidSchedule
+- **interface**: `api.errors.revive.InvalidSchedule.is`
+- **summary**:    Invalid schedule supplied, e.g. with zero weight of a basic operation. 
+ 
+### InvalidStorageFlags
+- **interface**: `api.errors.revive.InvalidStorageFlags.is`
+- **summary**:    Invalid storage flags were passed to one of the storage syscalls. 
+ 
+### InvalidSyscall
+- **interface**: `api.errors.revive.InvalidSyscall.is`
+- **summary**:    The contract tried to call a syscall which does not exist (at its current api level). 
+ 
+### MaxCallDepthReached
+- **interface**: `api.errors.revive.MaxCallDepthReached.is`
+- **summary**:    Performing a call was denied because the calling depth reached the limit  of what is specified in the schedule. 
+ 
+### MaxDelegateDependenciesReached
+- **interface**: `api.errors.revive.MaxDelegateDependenciesReached.is`
+- **summary**:    The contract has reached its maximum number of delegate dependencies. 
+ 
+### NoChainExtension
+- **interface**: `api.errors.revive.NoChainExtension.is`
+- **summary**:    The chain does not provide a chain extension. Calling the chain extension results  in this error. Note that this usually  shouldn't happen as deploying such contracts  is rejected. 
+ 
+### OutOfBounds
+- **interface**: `api.errors.revive.OutOfBounds.is`
+- **summary**:    A buffer outside of sandbox memory was passed to a contract API function. 
+ 
+### OutOfGas
+- **interface**: `api.errors.revive.OutOfGas.is`
+- **summary**:    The executed contract exhausted its gas limit. 
+ 
+### OutOfTransientStorage
+- **interface**: `api.errors.revive.OutOfTransientStorage.is`
+- **summary**:    Can not add more data to transient storage. 
+ 
+### PrecompileFailure
+- **interface**: `api.errors.revive.PrecompileFailure.is`
+- **summary**:    Precompile Error 
+ 
+### ReenteredPallet
+- **interface**: `api.errors.revive.ReenteredPallet.is`
+- **summary**:    A contract called into the runtime which then called back into this pallet. 
+ 
+### ReentranceDenied
+- **interface**: `api.errors.revive.ReentranceDenied.is`
+- **summary**:    A call tried to invoke a contract that is flagged as non-reentrant. 
+ 
+### RefcountOverOrUnderflow
+- **interface**: `api.errors.revive.RefcountOverOrUnderflow.is`
+- **summary**:    The refcount of a code either over or underflowed. 
+ 
+### StateChangeDenied
+- **interface**: `api.errors.revive.StateChangeDenied.is`
+- **summary**:    A contract attempted to invoke a state modifying API while being in read-only mode. 
+ 
+### StaticMemoryTooLarge
+- **interface**: `api.errors.revive.StaticMemoryTooLarge.is`
+- **summary**:    The static memory consumption of the blob will be larger than  [`limits::code::STATIC_MEMORY_BYTES`]. 
+ 
+### StorageDepositLimitExhausted
+- **interface**: `api.errors.revive.StorageDepositLimitExhausted.is`
+- **summary**:    More storage was created than allowed by the storage deposit limit. 
+ 
+### StorageDepositNotEnoughFunds
+- **interface**: `api.errors.revive.StorageDepositNotEnoughFunds.is`
+- **summary**:    Origin doesn't have enough balance to pay the required storage deposits. 
+ 
+### TerminatedInConstructor
+- **interface**: `api.errors.revive.TerminatedInConstructor.is`
+- **summary**:    A contract self destructed in its constructor. 
+
+   This can be triggered by a call to `seal_terminate`. 
+ 
+### TerminatedWhileReentrant
+- **interface**: `api.errors.revive.TerminatedWhileReentrant.is`
+- **summary**:    Termination of a contract is not allowed while the contract is already  on the call stack. Can be triggered by `seal_terminate`. 
+ 
+### TooManyTopics
+- **interface**: `api.errors.revive.TooManyTopics.is`
+- **summary**:    The amount of topics passed to `seal_deposit_events` exceeds the limit. 
+ 
+### TransferFailed
+- **interface**: `api.errors.revive.TransferFailed.is`
+- **summary**:    Performing the requested transfer failed. Probably because there isn't enough  free balance in the sender's account. 
+ 
+### UnsupportedPrecompileAddress
+- **interface**: `api.errors.revive.UnsupportedPrecompileAddress.is`
+- **summary**:    Unsupported precompile address 
+ 
+### ValueTooLarge
+- **interface**: `api.errors.revive.ValueTooLarge.is`
+- **summary**:    The size defined in `T::MaxValueSize` was exceeded. 
+ 
+### XCMDecodeFailed
+- **interface**: `api.errors.revive.XCMDecodeFailed.is`
+- **summary**:    Failed to decode the XCM program. 
+
+___
+
+
 ## session
  
 ### DuplicatedKey
@@ -1046,6 +1316,37 @@ ___
 ### NoKeys
 - **interface**: `api.errors.session.NoKeys.is`
 - **summary**:    No keys are associated with this account. 
+
+___
+
+
+## stateTrieMigration
+ 
+### BadChildRoot
+- **interface**: `api.errors.stateTrieMigration.BadChildRoot.is`
+- **summary**:    Bad child root provided. 
+ 
+### BadWitness
+- **interface**: `api.errors.stateTrieMigration.BadWitness.is`
+- **summary**:    Bad witness data provided. 
+ 
+### KeyTooLong
+- **interface**: `api.errors.stateTrieMigration.KeyTooLong.is`
+- **summary**:    A key was longer than the configured maximum. 
+
+   This means that the migration halted at the current [`Progress`] and  can be resumed with a larger [`crate::Config::MaxKeyLen`] value.  Retrying with the same [`crate::Config::MaxKeyLen`] value will not work.  The value should only be increased to avoid a storage migration for the currently  stored [`crate::Progress::LastKey`]. 
+ 
+### MaxSignedLimits
+- **interface**: `api.errors.stateTrieMigration.MaxSignedLimits.is`
+- **summary**:    Max signed limits not respected. 
+ 
+### NotEnoughFunds
+- **interface**: `api.errors.stateTrieMigration.NotEnoughFunds.is`
+- **summary**:    submitter does not have enough funds. 
+ 
+### SignedMigrationNotAllowed
+- **interface**: `api.errors.stateTrieMigration.SignedMigrationNotAllowed.is`
+- **summary**:    Signed migration is not allowed because the maximum limit is not set yet. 
 
 ___
 

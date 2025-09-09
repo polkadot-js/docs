@@ -333,11 +333,15 @@ ___
  
 ### Voted(`AccountId32`, `PalletConvictionVotingVoteAccountVote`)
 - **interface**: `api.events.convictionVoting.Voted.is`
-- **summary**:    An account that has voted 
+- **summary**:    An account has voted 
  
 ### VoteRemoved(`AccountId32`, `PalletConvictionVotingVoteAccountVote`)
 - **interface**: `api.events.convictionVoting.VoteRemoved.is`
-- **summary**:    A vote that been removed 
+- **summary**:    A vote has been removed 
+ 
+### VoteUnlocked(`AccountId32`, `u16`)
+- **interface**: `api.events.convictionVoting.VoteUnlocked.is`
+- **summary**:    The lockup period of a conviction vote expired, and the funds have been unlocked. 
 
 ___
 
@@ -625,6 +629,10 @@ ___
 
 ## indices
  
+### DepositPoked(`AccountId32`, `u32`, `u128`, `u128`)
+- **interface**: `api.events.indices.DepositPoked.is`
+- **summary**:    A deposit to reserve an index has been poked/reconsidered. 
+ 
 ### IndexAssigned(`AccountId32`, `u32`)
 - **interface**: `api.events.indices.IndexAssigned.is`
 - **summary**:    A account index was assigned. 
@@ -662,6 +670,10 @@ ___
 
 
 ## multisig
+ 
+### DepositPoked(`AccountId32`, `[u8;32]`, `u128`, `u128`)
+- **interface**: `api.events.multisig.DepositPoked.is`
+- **summary**:    The deposit for a multisig operation has been updated/poked. 
  
 ### MultisigApproval(`AccountId32`, `PalletMultisigTimepoint`, `AccountId32`, `[u8;32]`)
 - **interface**: `api.events.multisig.MultisigApproval.is`
@@ -822,11 +834,23 @@ ___
 - **interface**: `api.events.nominationPools.Destroyed.is`
 - **summary**:    A pool has been destroyed. 
  
+### GlobalParamsUpdated(`u128`, `u128`, `Option<u32>`, `Option<u32>`, `Option<u32>`, `Option<Perbill>`)
+- **interface**: `api.events.nominationPools.GlobalParamsUpdated.is`
+- **summary**:    Global parameters regulating nomination pools have been updated. 
+ 
+### MemberClaimPermissionUpdated(`AccountId32`, `PalletNominationPoolsClaimPermission`)
+- **interface**: `api.events.nominationPools.MemberClaimPermissionUpdated.is`
+- **summary**:    A pool member's claim permission has been updated. 
+ 
 ### MemberRemoved(`u32`, `AccountId32`, `u128`)
 - **interface**: `api.events.nominationPools.MemberRemoved.is`
 - **summary**:    A member has been removed from a pool. 
 
    The removal can be voluntary (withdrawn all unbonded funds) or involuntary (kicked).  Any funds that are still delegated (i.e. dangling delegation) are released and are  represented by `released_balance`. 
+ 
+### MetadataUpdated(`u32`, `AccountId32`)
+- **interface**: `api.events.nominationPools.MetadataUpdated.is`
+- **summary**:    A pool's metadata was updated. 
  
 ### MinBalanceDeficitAdjusted(`u32`, `u128`)
 - **interface**: `api.events.nominationPools.MinBalanceDeficitAdjusted.is`
@@ -859,6 +883,14 @@ ___
 ### PoolMaxCommissionUpdated(`u32`, `Perbill`)
 - **interface**: `api.events.nominationPools.PoolMaxCommissionUpdated.is`
 - **summary**:    A pool's maximum commission setting has been changed. 
+ 
+### PoolNominationMade(`u32`, `AccountId32`)
+- **interface**: `api.events.nominationPools.PoolNominationMade.is`
+- **summary**:    A pool's nominating account (or the pool's root account) has nominated a validator set  on behalf of the pool. 
+ 
+### PoolNominatorChilled(`u32`, `AccountId32`)
+- **interface**: `api.events.nominationPools.PoolNominatorChilled.is`
+- **summary**:    The pool is chilled i.e. no longer nominating. 
  
 ### PoolSlashed(`u32`, `u128`)
 - **interface**: `api.events.nominationPools.PoolSlashed.is`
@@ -907,6 +939,10 @@ ___
 
 
 ## onDemandAssignmentProvider
+ 
+### AccountCredited(`AccountId32`, `u128`)
+- **interface**: `api.events.onDemandAssignmentProvider.AccountCredited.is`
+- **summary**:    An account was given credits. 
  
 ### OnDemandOrderPlaced(`u32`, `u128`, `AccountId32`)
 - **interface**: `api.events.onDemandAssignmentProvider.OnDemandOrderPlaced.is`
@@ -1027,6 +1063,10 @@ ___
 ### Announced(`AccountId32`, `AccountId32`, `H256`)
 - **interface**: `api.events.proxy.Announced.is`
 - **summary**:    An announcement was placed to make a call in the future. 
+ 
+### DepositPoked(`AccountId32`, `PalletProxyDepositKind`, `u128`, `u128`)
+- **interface**: `api.events.proxy.DepositPoked.is`
+- **summary**:    A deposit stored for proxies or announcements was poked / updated. 
  
 ### ProxyAdded(`AccountId32`, `AccountId32`, `KusamaRuntimeConstantsProxyProxyType`, `u32`)
 - **interface**: `api.events.proxy.ProxyAdded.is`
@@ -1162,6 +1202,10 @@ ___
 
 ## scheduler
  
+### AgendaIncomplete(`u32`)
+- **interface**: `api.events.scheduler.AgendaIncomplete.is`
+- **summary**:    Agenda is incomplete from `when`. 
+ 
 ### CallUnavailable(`(u32,u32)`, `Option<[u8;32]>`)
 - **interface**: `api.events.scheduler.CallUnavailable.is`
 - **summary**:    The call for the provided hash was not found so the task has been aborted. 
@@ -1206,6 +1250,14 @@ ___
 ### NewSession(`u32`)
 - **interface**: `api.events.session.NewSession.is`
 - **summary**:    New session has happened. Note that the argument is the session index, not the  block number as the type might suggest. 
+ 
+### ValidatorDisabled(`AccountId32`)
+- **interface**: `api.events.session.ValidatorDisabled.is`
+- **summary**:    Validator has been disabled. 
+ 
+### ValidatorReenabled(`AccountId32`)
+- **interface**: `api.events.session.ValidatorReenabled.is`
+- **summary**:    Validator has been re-enabled. 
 
 ___
 
@@ -1312,6 +1364,10 @@ ___
 - **interface**: `api.events.staking.ControllerBatchDeprecated.is`
 - **summary**:    Report of a controller batch deprecation. 
  
+### CurrencyMigrated(`AccountId32`, `u128`)
+- **interface**: `api.events.staking.CurrencyMigrated.is`
+- **summary**:    Staking balance migrated from locks to holds, with any balance that could not be held  is force withdrawn. 
+ 
 ### EraPaid(`u32`, `u128`, `u128`)
 - **interface**: `api.events.staking.EraPaid.is`
 - **summary**:    The era payout has been set; the first balance is the validator-payout; the second is  the remainder from the maximum amount of reward. 
@@ -1396,6 +1452,10 @@ ___
 ### NewAccount(`AccountId32`)
 - **interface**: `api.events.system.NewAccount.is`
 - **summary**:    A new account was created. 
+ 
+### RejectedInvalidAuthorizedUpgrade(`H256`, `SpRuntimeDispatchError`)
+- **interface**: `api.events.system.RejectedInvalidAuthorizedUpgrade.is`
+- **summary**:    An invalid authorized upgrade was rejected while trying to apply it. 
  
 ### Remarked(`AccountId32`, `H256`)
 - **interface**: `api.events.system.Remarked.is`
@@ -1488,6 +1548,14 @@ ___
 - **interface**: `api.events.utility.DispatchedAs.is`
 - **summary**:    A call was dispatched. 
  
+### IfElseFallbackCalled(`SpRuntimeDispatchError`)
+- **interface**: `api.events.utility.IfElseFallbackCalled.is`
+- **summary**:    The fallback call was dispatched. 
+ 
+### IfElseMainSuccess()
+- **interface**: `api.events.utility.IfElseMainSuccess.is`
+- **summary**:    Main call was dispatched. 
+ 
 ### ItemCompleted()
 - **interface**: `api.events.utility.ItemCompleted.is`
 - **summary**:    A single item within a Batch of dispatches has completed with no error. 
@@ -1540,6 +1608,18 @@ ___
 
 
 ## xcmPallet
+ 
+### AliasAuthorizationRemoved(`StagingXcmV5Location`, `StagingXcmV5Location`)
+- **interface**: `api.events.xcmPallet.AliasAuthorizationRemoved.is`
+- **summary**:    `target` removed alias authorization for `aliaser`. 
+ 
+### AliasAuthorized(`StagingXcmV5Location`, `StagingXcmV5Location`, `Option<u64>`)
+- **interface**: `api.events.xcmPallet.AliasAuthorized.is`
+- **summary**:    An `aliaser` location was authorized by `target` to alias it, authorization valid until  `expiry` block number. 
+ 
+### AliasesAuthorizationsRemoved(`StagingXcmV5Location`)
+- **interface**: `api.events.xcmPallet.AliasesAuthorizationsRemoved.is`
+- **summary**:    `target` removed all alias authorizations. 
  
 ### AssetsClaimed(`H256`, `StagingXcmV5Location`, `XcmVersionedAssets`)
 - **interface**: `api.events.xcmPallet.AssetsClaimed.is`
@@ -1601,6 +1681,10 @@ ___
 - **interface**: `api.events.xcmPallet.NotifyTargetSendFail.is`
 - **summary**:    A given location which had a version change subscription was dropped owing to an error  sending the notification to it. 
  
+### ProcessXcmError(`StagingXcmV5Location`, `XcmV5TraitsError`, `[u8;32]`)
+- **interface**: `api.events.xcmPallet.ProcessXcmError.is`
+- **summary**:    An XCM message failed to process. 
+ 
 ### ResponseReady(`u64`, `StagingXcmV5Response`)
 - **interface**: `api.events.xcmPallet.ResponseReady.is`
 - **summary**:    Query response has been received and is ready for taking with `take_response`. There is  no registered notification call. 
@@ -1609,9 +1693,13 @@ ___
 - **interface**: `api.events.xcmPallet.ResponseTaken.is`
 - **summary**:    Received query response has been read and removed. 
  
+### SendFailed(`StagingXcmV5Location`, `StagingXcmV5Location`, `XcmV3TraitsSendError`, `[u8;32]`)
+- **interface**: `api.events.xcmPallet.SendFailed.is`
+- **summary**:    An XCM message failed to send. 
+ 
 ### Sent(`StagingXcmV5Location`, `StagingXcmV5Location`, `StagingXcmV5Xcm`, `[u8;32]`)
 - **interface**: `api.events.xcmPallet.Sent.is`
-- **summary**:    A XCM message was sent. 
+- **summary**:    An XCM message was sent. 
  
 ### SupportedVersionChanged(`StagingXcmV5Location`, `u32`)
 - **interface**: `api.events.xcmPallet.SupportedVersionChanged.is`

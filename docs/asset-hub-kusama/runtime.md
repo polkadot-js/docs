@@ -30,6 +30,8 @@ The following section contains known runtime calls that may be available on spec
 
 - **[offchainWorkerApi](#offchainworkerapi)**
 
+- **[reviveApi](#reviveapi)**
+
 - **[sessionKeys](#sessionkeys)**
 
 - **[taggedTransactionQueue](#taggedtransactionqueue)**
@@ -94,7 +96,7 @@ ___
 ### canBuildUpon(included_hash: `PrimitiveTypesH256`, slot: `SpConsensusSlotsSlot`): `bool`
 - **interface**: `api.call.auraUnincludedSegmentApi.canBuildUpon`
 - **runtime**: `auraUnincludedSegmentApi_can_build_upon`
-- **summary**:  Whether it is legal to extend the chain, assuming the given block is the most, recently included one as-of the relay parent that will be built against, and, the given slot.,, This should be consistent with the logic the runtime uses when validating blocks to, avoid issues.,, When the unincluded segment is empty, i.e. `included_hash == at`, where at is the block, whose state we are querying against, this must always return `true` as long as the slot, is more recent than the included block itself.
+- **summary**:  Whether it is legal to extend the chain, assuming the given block is the most, recently included one as-of the relay parent that will be built against, and, the given relay chain slot.,, This should be consistent with the logic the runtime uses when validating blocks to, avoid issues.,, When the unincluded segment is empty, i.e. `included_hash == at`, where at is the block, whose state we are querying against, this must always return `true` as long as the slot, is more recent than the included block itself.
 
 ___
 
@@ -156,10 +158,10 @@ ___
 
 ## dryRunApi
  
-### dryRunCall(origin: `AssetHubKusamaRuntimeOriginCaller`, call: `AssetHubKusamaRuntimeRuntimeCall`): `Result<XcmRuntimeApisDryRunCallDryRunEffects, XcmRuntimeApisDryRunError>`
+### dryRunCall(origin: `AssetHubKusamaRuntimeOriginCaller`, call: `AssetHubKusamaRuntimeRuntimeCall`, result_xcms_version: `u32`): `Result<XcmRuntimeApisDryRunCallDryRunEffects, XcmRuntimeApisDryRunError>`
 - **interface**: `api.call.dryRunApi.dryRunCall`
 - **runtime**: `dryRunApi_dry_run_call`
-- **summary**:  Dry run call.
+- **summary**:  Dry run call V2.
  
 ### dryRunXcm(origin_location: `XcmVersionedLocation`, xcm: `XcmVersionedXcm`): `Result<XcmRuntimeApisDryRunXcmDryRunEffects, XcmRuntimeApisDryRunError>`
 - **interface**: `api.call.dryRunApi.dryRunXcm`
@@ -184,12 +186,12 @@ ___
 ### buildState(json: `Bytes`): `Result<Null, Text>`
 - **interface**: `api.call.genesisBuilder.buildState`
 - **runtime**: `genesisBuilder_build_state`
-- **summary**:  Build `RuntimeGenesisConfig` from a JSON blob not using any defaults and store it in the, storage.,, In the case of a FRAME-based runtime, this function deserializes the full `RuntimeGenesisConfig` from the given JSON blob and, puts it into the storage. If the provided JSON blob is incorrect or incomplete or the, deserialization fails, an error is returned.,, Please note that provided JSON blob must contain all `RuntimeGenesisConfig` fields, no, defaults will be used.
+- **summary**:  Build `RuntimeGenesisConfig` from a JSON blob not using any defaults and store it in the, storage.,, In the case of a FRAME-based runtime, this function deserializes the full, `RuntimeGenesisConfig` from the given JSON blob and puts it into the storage. If the, provided JSON blob is incorrect or incomplete or the deserialization fails, an error, is returned.,, Please note that provided JSON blob must contain all `RuntimeGenesisConfig` fields, no, defaults will be used.
  
 ### getPreset(id: `Option<Text>`): `Option<Bytes>`
 - **interface**: `api.call.genesisBuilder.getPreset`
 - **runtime**: `genesisBuilder_get_preset`
-- **summary**:  Returns a JSON blob representation of the built-in `RuntimeGenesisConfig` identified by, `id`.,, If `id` is `None` the function returns JSON blob representation of the default, `RuntimeGenesisConfig` struct of the runtime. Implementation must provide default, `RuntimeGenesisConfig`.,, Otherwise function returns a JSON representation of the built-in, named, `RuntimeGenesisConfig` preset identified by `id`, or `None` if such preset does not, exist. Returned `Vec<u8>` contains bytes of JSON blob (patch) which comprises a list of, (potentially nested) key-value pairs that are intended for customizing the default, runtime genesis config. The patch shall be merged (rfc7386) with the JSON representation, of the default `RuntimeGenesisConfig` to create a comprehensive genesis config that can, be used in `build_state` method.
+- **summary**:  Returns a JSON blob representation of the built-in `RuntimeGenesisConfig` identified by, `id`.,, If `id` is `None` the function should return JSON blob representation of the default, `RuntimeGenesisConfig` struct of the runtime. Implementation must provide default, `RuntimeGenesisConfig`.,, Otherwise function returns a JSON representation of the built-in, named, `RuntimeGenesisConfig` preset identified by `id`, or `None` if such preset does not, exist. Returned `Vec<u8>` contains bytes of JSON blob (patch) which comprises a list of, (potentially nested) key-value pairs that are intended for customizing the default, runtime genesis config. The patch shall be merged (rfc7386) with the JSON representation, of the default `RuntimeGenesisConfig` to create a comprehensive genesis config that can, be used in `build_state` method.
  
 ### presetNames(): `Vec<Text>`
 - **interface**: `api.call.genesisBuilder.presetNames`
@@ -235,6 +237,71 @@ ___
 - **interface**: `api.call.offchainWorkerApi.offchainWorker`
 - **runtime**: `offchainWorkerApi_offchain_worker`
 - **summary**:  Starts the off-chain task for given block header.
+
+___
+
+
+## reviveApi
+ 
+### balance(address: `PrimitiveTypesH160`): `PrimitiveTypesU256`
+- **interface**: `api.call.reviveApi.balance`
+- **runtime**: `reviveApi_balance`
+- **summary**:  Returns the free balance of the given `[H160]` address, using EVM decimals.
+ 
+### blockGasLimit(): `PrimitiveTypesU256`
+- **interface**: `api.call.reviveApi.blockGasLimit`
+- **runtime**: `reviveApi_block_gas_limit`
+- **summary**:  Returns the block gas limit.
+ 
+### call(origin: `SpCoreCryptoAccountId32`, dest: `PrimitiveTypesH160`, value: `u128`, gas_limit: `Option<SpWeightsWeightV2Weight>`, storage_deposit_limit: `Option<u128>`, input_data: `Bytes`): `PalletRevivePrimitivesContractResultExecReturnValue`
+- **interface**: `api.call.reviveApi.call`
+- **runtime**: `reviveApi_call`
+- **summary**:  Perform a call from a specified account to a given contract.,, See [`crate::Pallet::bare_call`].
+ 
+### ethTransact(tx: `PalletReviveEvmApiRpcTypesGenGenericTransaction`): `Result<PalletRevivePrimitivesEthTransactInfo, PalletRevivePrimitivesEthTransactError>`
+- **interface**: `api.call.reviveApi.ethTransact`
+- **runtime**: `reviveApi_eth_transact`
+- **summary**:  Perform an Ethereum call.,, See [`crate::Pallet::bare_eth_transact`]
+ 
+### gasPrice(): `PrimitiveTypesU256`
+- **interface**: `api.call.reviveApi.gasPrice`
+- **runtime**: `reviveApi_gas_price`
+- **summary**:  Returns the gas price.
+ 
+### getStorage(address: `PrimitiveTypesH160`, key: `[u8;32]`): `Result<Option<Bytes>, PalletRevivePrimitivesContractAccessError>`
+- **interface**: `api.call.reviveApi.getStorage`
+- **runtime**: `reviveApi_get_storage`
+- **summary**:  Query a given storage key in a given contract.,, Returns `Ok(Some(Vec<u8>))` if the storage value exists under the given key in the, specified account and `Ok(None)` if it doesn't. If the account specified by the address, doesn't exist, or doesn't have a contract then `Err` is returned.
+ 
+### instantiate(origin: `SpCoreCryptoAccountId32`, value: `u128`, gas_limit: `Option<SpWeightsWeightV2Weight>`, storage_deposit_limit: `Option<u128>`, code: `PalletRevivePrimitivesCode`, data: `Bytes`, salt: `Option<[u8;32]>`): `PalletRevivePrimitivesContractResultInstantiateReturnValue`
+- **interface**: `api.call.reviveApi.instantiate`
+- **runtime**: `reviveApi_instantiate`
+- **summary**:  Instantiate a new contract.,, See `[crate::Pallet::bare_instantiate]`.
+ 
+### nonce(address: `PrimitiveTypesH160`): `u32`
+- **interface**: `api.call.reviveApi.nonce`
+- **runtime**: `reviveApi_nonce`
+- **summary**:  Returns the nonce of the given `[H160]` address.
+ 
+### traceBlock(block: `SpRuntimeBlock`, config: `PalletReviveEvmApiDebugRpcTypesTracerType`): `Vec<(u32,PalletReviveEvmApiDebugRpcTypesTrace)>`
+- **interface**: `api.call.reviveApi.traceBlock`
+- **runtime**: `reviveApi_trace_block`
+- **summary**:  Traces the execution of an entire block and returns call traces.,, This is intended to be called through `state_call` to replay the block from the, parent block.,, See eth-rpc `debug_traceBlockByNumber` for usage.
+ 
+### traceCall(tx: `PalletReviveEvmApiRpcTypesGenGenericTransaction`, config: `PalletReviveEvmApiDebugRpcTypesTracerType`): `Result<PalletReviveEvmApiDebugRpcTypesTrace, PalletRevivePrimitivesEthTransactError>`
+- **interface**: `api.call.reviveApi.traceCall`
+- **runtime**: `reviveApi_trace_call`
+- **summary**:  Dry run and return the trace of the given call.,, See eth-rpc `debug_traceCall` for usage.
+ 
+### traceTx(block: `SpRuntimeBlock`, tx_index: `u32`, config: `PalletReviveEvmApiDebugRpcTypesTracerType`): `Option<PalletReviveEvmApiDebugRpcTypesTrace>`
+- **interface**: `api.call.reviveApi.traceTx`
+- **runtime**: `reviveApi_trace_tx`
+- **summary**:  Traces the execution of a specific transaction within a block.,, This is intended to be called through `state_call` to replay the block from the, parent hash up to the transaction.,, See eth-rpc `debug_traceTransaction` for usage.
+ 
+### uploadCode(origin: `SpCoreCryptoAccountId32`, code: `Bytes`, storage_deposit_limit: `Option<u128>`): `Result<PalletRevivePrimitivesCodeUploadReturnValue, SpRuntimeDispatchError>`
+- **interface**: `api.call.reviveApi.uploadCode`
+- **runtime**: `reviveApi_upload_code`
+- **summary**:  Upload new code without instantiating a contract from it.,, See [`crate::Pallet::bare_upload_code`].
 
 ___
 

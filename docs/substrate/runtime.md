@@ -527,17 +527,17 @@ ___
 - **runtime**: `reviveApi_nonce`
 - **summary**:  Returns the nonce of the given `[H160]` address.
  
-### traceBlock(block: `SpRuntimeBlock`, config: `PalletReviveEvmApiDebugRpcTypesTracerConfig`): `Vec<(u32,PalletReviveEvmApiDebugRpcTypesCallTrace)>`
+### traceBlock(block: `SpRuntimeBlock`, config: `PalletReviveEvmApiDebugRpcTypesTracerType`): `Vec<(u32,PalletReviveEvmApiDebugRpcTypesTrace)>`
 - **interface**: `api.call.reviveApi.traceBlock`
 - **runtime**: `reviveApi_trace_block`
 - **summary**:  Traces the execution of an entire block and returns call traces.,, This is intended to be called through `state_call` to replay the block from the, parent block.,, See eth-rpc `debug_traceBlockByNumber` for usage.
  
-### traceCall(tx: `PalletReviveEvmApiRpcTypesGenGenericTransaction`, config: `PalletReviveEvmApiDebugRpcTypesTracerConfig`): `Result<PalletReviveEvmApiDebugRpcTypesCallTrace, PalletRevivePrimitivesEthTransactError>`
+### traceCall(tx: `PalletReviveEvmApiRpcTypesGenGenericTransaction`, config: `PalletReviveEvmApiDebugRpcTypesTracerType`): `Result<PalletReviveEvmApiDebugRpcTypesTrace, PalletRevivePrimitivesEthTransactError>`
 - **interface**: `api.call.reviveApi.traceCall`
 - **runtime**: `reviveApi_trace_call`
 - **summary**:  Dry run and return the trace of the given call.,, See eth-rpc `debug_traceCall` for usage.
  
-### traceTx(block: `SpRuntimeBlock`, tx_index: `u32`, config: `PalletReviveEvmApiDebugRpcTypesTracerConfig`): `Option<PalletReviveEvmApiDebugRpcTypesCallTrace>`
+### traceTx(block: `SpRuntimeBlock`, tx_index: `u32`, config: `PalletReviveEvmApiDebugRpcTypesTracerType`): `Option<PalletReviveEvmApiDebugRpcTypesTrace>`
 - **interface**: `api.call.reviveApi.traceTx`
 - **runtime**: `reviveApi_trace_tx`
 - **summary**:  Traces the execution of a specific transaction within a block.,, This is intended to be called through `state_call` to replay the block from the, parent hash up to the transaction.,, See eth-rpc `debug_traceTransaction` for usage.
