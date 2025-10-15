@@ -194,3 +194,174 @@ for (let i = 0; i < 10; i++) {
 ```
 
 The latter form is preferred since it dispatches the RPC calls for nonce and blockHash (used for mortality) in parallel and therefore will yield a better throughput, especially with the above bulk example.
+
+## How do I send a priority transaction?
+
+Polkadot/Substrate allows you to increase the **priority** of your transaction in the transaction pool by attaching a **tip**. The higher the tip, the more attractive it becomes for block producers to include it early. This is the recommended way for regular users and dApps to prioritize their transactions.  
+
+```js
+// construct a transfer transaction
+const tx = api.tx.balances.transferKeepAlive(recipient, 12345);
+
+// sign and send with a tip to increase priority
+tx.signAndSend(sender, { tip: 1_000_000_000 }, ({ status }) => {
+  if (status.isInBlock) {
+    console.log(`included in ${status.asInBlock}`);
+  }
+});
+```
+
+The `tip` is specified in the smallest unit of the token. By offering a higher tip, you effectively “bribe” the block producer to include your transaction before others.
+
+You can also use `.paymentInfo` to simulate and estimate the total fee including the tip:
+
+```js
+const info = await tx.paymentInfo(sender, { tip: 1_000_000_000 });
+console.log(`Estimated fee: ${info.partialFee.toHuman()}`);
+```
+
+⚠️ Some extrinsics in the runtime may be marked as **operational**. These transactions already receive a higher priority internally via the `operationalFeeMultiplier`. However, this classification is determined by the runtime and cannot be set from the API. For normal users, attaching a tip is the practical way to prioritize transactions.
+
+
+## How do proxy accounts work in Polkadot?
+
+In Polkadot, a **proxy** account allows one account (the *delegate*) to perform actions on behalf of another account (the *delegator*).  
+This is useful when you want to separate responsibilities, delegate actions securely, or manage accounts with reduced risk of exposing main private keys.  
+
+### Add Proxy
+
+The following example demonstrates how to add a proxy using the Polkadot.js API.  
+Here, `//Alice` is the main account, and `//Bob` is added as its proxy with the `Any` proxy type:
+
+- `Any` means Bob can perform any type of transaction on behalf of Alice.  
+- The `0` is the *delay* parameter, representing how many blocks to wait before the proxy action is effective (set to `0` for immediate effect).  
+
+```js
+import { ApiPromise, Keyring, WsProvider } from "@polkadot/api";
+import { cryptoWaitReady } from "@polkadot/util-crypto";
+
+const keyring = new Keyring({ type: "sr25519", ss58Format: 2 });
+
+const MAIN_MNEMONIC = "//Alice";
+const PROXY_MNEMONIC = "//Bob";
+
+const main = async () => {
+  await cryptoWaitReady();
+
+  const api = await ApiPromise.create({
+    provider: new WsProvider("ws://127.0.0.1:8000"),
+  });
+
+  await api.isReadyOrError;
+
+  const mainKeyring = keyring.addFromMnemonic(MAIN_MNEMONIC);
+  const proxyKeyring = keyring.addFromMnemonic(PROXY_MNEMONIC);
+
+  // Add proxy for main account
+  const tx = api.tx.proxy.addProxy(proxyKeyring.address, "Any", 0);
+
+  await tx.signAndSend(mainKeyring);
+
+  await api.disconnect();
+};
+
+main()
+  .catch((e) => console.log("Something went wrong!", e))
+  .finally(() => process.exit(0));
+```
+
+### Remove Proxy
+
+To remove a proxy from an account, you need to call the `proxy.removeProxy` method with the same parameters used when it was added:  
+
+- **proxy account address** → the delegate you want to remove (in this case, `//Bob`)  
+- **proxy type** → the type of permissions the proxy had (e.g., `"Any"`)  
+- **delay** → must match the delay specified when adding the proxy (here `0`)  
+
+The following code removes Bob as a proxy for Alice:
+
+```js
+import { ApiPromise, Keyring, WsProvider } from "@polkadot/api";
+import { cryptoWaitReady } from "@polkadot/util-crypto";
+
+const keyring = new Keyring({ type: "sr25519", ss58Format: 2 });
+
+const MAIN_MNEMONIC = "//Alice";
+const PROXY_MNEMONIC = "//Bob";
+
+const main = async () => {
+  await cryptoWaitReady();
+
+  const api = await ApiPromise.create({
+    provider: new WsProvider("ws://127.0.0.1:8000"),
+  });
+
+  await api.isReadyOrError;
+
+  const mainKeyring = keyring.addFromMnemonic(MAIN_MNEMONIC);
+  const proxyKeyring = keyring.addFromMnemonic(PROXY_MNEMONIC);
+
+  // Remove proxy for main account
+  const tx = api.tx.proxy.removeProxy(proxyKeyring.address, "Any", 0);
+
+  await tx.signAndSend(mainKeyring);
+
+  await api.disconnect();
+};
+
+main()
+  .catch((e) => console.log("Something went wrong!", e))
+  .finally(() => process.exit(0));
+```
+
+### Submit a transaction through a proxy account
+
+Once a proxy relationship is established, the proxy account can submit transactions on behalf of the main account.  
+This is done using the `proxy.proxy` method, where:  
+
+- **real (main account address)** → the account on whose behalf the action is performed (e.g., Alice).  
+- **proxy type** → the type of proxy to use (set `null` to automatically pick the correct one).  
+- **call/extrinsic** → the actual transaction to execute (e.g., a balance transfer).  
+
+In the example below, Bob (proxy) submits a **balance transfer** transaction on behalf of Alice (main):
+
+```js
+import { ApiPromise, Keyring, WsProvider } from "@polkadot/api";
+import { cryptoWaitReady } from "@polkadot/util-crypto";
+
+const keyring = new Keyring({ type: "sr25519", ss58Format: 2 });
+
+const MAIN_MNEMONIC = "//Alice";
+const PROXY_MNEMONIC = "//Bob";
+
+const main = async () => {
+  await cryptoWaitReady();
+
+  const api = await ApiPromise.create({
+    provider: new WsProvider("ws://127.0.0.1:8000"),
+  });
+
+  await api.isReadyOrError;
+
+  const mainKeyring = keyring.addFromMnemonic(MAIN_MNEMONIC);
+  const proxyKeyring = keyring.addFromMnemonic(PROXY_MNEMONIC);
+
+  // Transfer balance extrinsic
+  const extrinsic = api.tx.balances.transferKeepAlive(
+    "JKoqczssDdwKAhKhxEcZarY268RrfwhFxe1tRFxkwscWPhM",
+    10_000_000_000_000
+  );
+
+  // Sign extrinsic on behalf on main account
+  const tx = api.tx.proxy.proxy(mainKeyring.address, null, extrinsic);
+
+  // Sign with proxy account
+  await tx.signAndSend(proxyKeyring);
+
+  await api.disconnect();
+};
+
+main()
+  .catch((e) => console.log("Something went wrong!", e))
+  .finally(() => process.exit(0));
+```
