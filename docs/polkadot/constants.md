@@ -54,6 +54,8 @@ The following sections contain the module constants, also known as parameter typ
 
 - **[scheduler](#scheduler)**
 
+- **[session](#session)**
+
 - **[slots](#slots)**
 
 - **[staking](#staking)**
@@ -304,9 +306,15 @@ ___
 - **interface**: `api.consts.electionProviderMultiPhase.betterSignedThreshold`
 - **summary**:    The minimum amount of improvement to the solution score that defines a solution as  "better" in the Signed phase. 
  
+### maxBackersPerWinner: `u32`
+- **interface**: `api.consts.electionProviderMultiPhase.maxBackersPerWinner`
+- **summary**:    Maximum number of voters that can support a winner in an election solution. 
+
+   This is needed to ensure election computation is bounded. 
+ 
 ### maxWinners: `u32`
 - **interface**: `api.consts.electionProviderMultiPhase.maxWinners`
-- **summary**:    The maximum number of winners that can be elected by this `ElectionProvider`  implementation. 
+- **summary**:    Maximum number of winners that an election supports. 
 
    Note: This must always be greater or equal to `T::DataProvider::desired_targets()`. 
  
@@ -588,6 +596,15 @@ ___
 ___
 
 
+## session
+ 
+### keyDeposit: `u128`
+- **interface**: `api.consts.session.keyDeposit`
+- **summary**:    The amount to be held when setting keys. 
+
+___
+
+
 ## slots
  
 ### leaseOffset: `u32`
@@ -634,6 +651,10 @@ ___
 - **summary**:    The maximum number of `unlocking` chunks a [`StakingLedger`] can  have. Effectively determines how many unique eras a staker may be  unbonding in. 
 
    Note: `MaxUnlockingChunks` is used as the upper bound for the  `BoundedVec` item `StakingLedger.unlocking`. Setting this value  lower than the existing value can lead to inconsistencies in the  `StakingLedger` and will need to be handled properly in a runtime  migration. The test `reducing_max_unlocking_chunks_abrupt` shows  this effect. 
+ 
+### maxValidatorSet: `u32`
+- **interface**: `api.consts.staking.maxValidatorSet`
+- **summary**:    The absolute maximum of winner validators this pallet should return. 
  
 ### sessionsPerEra: `u32`
 - **interface**: `api.consts.staking.sessionsPerEra`
@@ -821,6 +842,12 @@ ___
    #### Migration 
 
    In the event that this list ever changes, a copy of the old bags list must be retained.  With that `List::migrate` can be called, which will perform the appropriate migration. 
+ 
+### maxAutoRebagPerBlock: `u32`
+- **interface**: `api.consts.voterList.maxAutoRebagPerBlock`
+- **summary**:    Maximum number of accounts that may be re-bagged automatically in `on_idle`. 
+
+   A value of `0` (obtained by configuring `type MaxAutoRebagPerBlock = ();`) disables  the feature. 
 
 ___
 
@@ -830,3 +857,15 @@ ___
 ### advertisedXcmVersion: `u32`
 - **interface**: `api.consts.xcmPallet.advertisedXcmVersion`
 - **summary**:    The latest supported version that we advertise. Generally just set it to  `pallet_xcm::CurrentXcmVersion`. 
+ 
+### maxLockers: `u32`
+- **interface**: `api.consts.xcmPallet.maxLockers`
+- **summary**:    The maximum number of local XCM locks that a single account may have. 
+ 
+### maxRemoteLockConsumers: `u32`
+- **interface**: `api.consts.xcmPallet.maxRemoteLockConsumers`
+- **summary**:    The maximum number of consumers a single remote lock may have. 
+ 
+### universalLocation: `StagingXcmV5Junctions`
+- **interface**: `api.consts.xcmPallet.universalLocation`
+- **summary**:    This chain's Universal Location. 
