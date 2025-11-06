@@ -66,8 +66,6 @@ This page lists the errors that can be encountered in the different modules.
 
 - **[proxy](#proxy)**
 
-- **[rcMigrator](#rcmigrator)**
-
 - **[referenda](#referenda)**
 
 - **[registrar](#registrar)**
@@ -79,8 +77,6 @@ This page lists the errors that can be encountered in the different modules.
 - **[slots](#slots)**
 
 - **[staking](#staking)**
-
-- **[stakingAhClient](#stakingahclient)**
 
 - **[stateTrieMigration](#statetriemigration)**
 
@@ -280,10 +276,6 @@ ___
 ### InvalidValue
 - **interface**: `api.errors.bounties.InvalidValue.is`
 - **summary**:    Invalid bounty value. 
- 
-### NotProposer
-- **interface**: `api.errors.bounties.NotProposer.is`
-- **summary**:    User is not the proposer of the bounty. 
  
 ### PendingPayout
 - **interface**: `api.errors.bounties.PendingPayout.is`
@@ -1238,17 +1230,9 @@ ___
 - **interface**: `api.errors.paras.CannotUpgradeCode.is`
 - **summary**:    Parachain cannot currently schedule a code upgrade. 
  
-### InvalidBlockNumber
-- **interface**: `api.errors.paras.InvalidBlockNumber.is`
-- **summary**:    Invalid block number. 
- 
 ### InvalidCode
 - **interface**: `api.errors.paras.InvalidCode.is`
 - **summary**:    Invalid validation code size. 
- 
-### NothingAuthorized
-- **interface**: `api.errors.paras.NothingAuthorized.is`
-- **summary**:    No upgrade authorized. 
  
 ### NotRegistered
 - **interface**: `api.errors.paras.NotRegistered.is`
@@ -1277,10 +1261,6 @@ ___
 ### PvfCheckValidatorIndexOutOfBounds
 - **interface**: `api.errors.paras.PvfCheckValidatorIndexOutOfBounds.is`
 - **summary**:    Claimed validator index is out of bounds. 
- 
-### Unauthorized
-- **interface**: `api.errors.paras.Unauthorized.is`
-- **summary**:    The submitted code is not authorized. 
 
 ___
 
@@ -1425,87 +1405,6 @@ ___
 ### Unproxyable
 - **interface**: `api.errors.proxy.Unproxyable.is`
 - **summary**:    A call which is incompatible with the proxy type's filter was attempted. 
-
-___
-
-
-## rcMigrator
- 
-### AccountReferenced
-- **interface**: `api.errors.rcMigrator.AccountReferenced.is`
-- **summary**:    The account is referenced by some other pallet. It might have freezes or holds. 
- 
-### AhUmpQueuePriorityAlreadySet
-- **interface**: `api.errors.rcMigrator.AhUmpQueuePriorityAlreadySet.is`
-- **summary**:    The AH UMP queue priority configuration is already set. 
- 
-### BadXcmVersion
-- **interface**: `api.errors.rcMigrator.BadXcmVersion.is`
-- **summary**:    The XCM version is invalid. 
- 
-### BalanceOverflow
-- **interface**: `api.errors.rcMigrator.BalanceOverflow.is`
-- **summary**:    Balance accounting overflow. 
- 
-### BalanceUnderflow
-- **interface**: `api.errors.rcMigrator.BalanceUnderflow.is`
-- **summary**:    Balance accounting underflow. 
- 
-### EraEndsTooSoon
-- **interface**: `api.errors.rcMigrator.EraEndsTooSoon.is`
-- **summary**:    Indicates that there is not enough time for staking to lock. 
-
-   Schedule the migration at least two sessions before the current era ends. 
- 
-### FailedToWithdrawAccount
-- **interface**: `api.errors.rcMigrator.FailedToWithdrawAccount.is`
-- **summary**:    Failed to withdraw account from RC for migration to AH. 
- 
-### InvalidOrigin
-- **interface**: `api.errors.rcMigrator.InvalidOrigin.is`
-- **summary**:    The origin is invalid. 
- 
-### InvalidParameter
-- **interface**: `api.errors.rcMigrator.InvalidParameter.is`
-- **summary**:    Invalid parameter. 
- 
-### InvalidQueryResponse
-- **interface**: `api.errors.rcMigrator.InvalidQueryResponse.is`
-- **summary**:    The query response is invalid. 
- 
-### InvalidStageTransition
-- **interface**: `api.errors.rcMigrator.InvalidStageTransition.is`
-- **summary**:    The stage transition is invalid. 
- 
-### OutOfWeight
-- **interface**: `api.errors.rcMigrator.OutOfWeight.is`
- 
-### PastBlockNumber
-- **interface**: `api.errors.rcMigrator.PastBlockNumber.is`
-- **summary**:    Indicates that the specified block number is in the past. 
- 
-### QueryNotFound
-- **interface**: `api.errors.rcMigrator.QueryNotFound.is`
-- **summary**:    The xcm query was not found. 
- 
-### Unreachable
-- **interface**: `api.errors.rcMigrator.Unreachable.is`
- 
-### UnreachableStage
-- **interface**: `api.errors.rcMigrator.UnreachableStage.is`
-- **summary**:    The migration stage is not reachable from the current stage. 
- 
-### UnsignedValidationFailed
-- **interface**: `api.errors.rcMigrator.UnsignedValidationFailed.is`
-- **summary**:    Unsigned validation failed. 
- 
-### XcmError
-- **interface**: `api.errors.rcMigrator.XcmError.is`
-- **summary**:    Failed to send XCM message to AH. 
- 
-### XcmSendError
-- **interface**: `api.errors.rcMigrator.XcmSendError.is`
-- **summary**:    Failed to send XCM message. 
 
 ___
 
@@ -1836,15 +1735,6 @@ ___
 ___
 
 
-## stakingAhClient
- 
-### Blocked
-- **interface**: `api.errors.stakingAhClient.Blocked.is`
-- **summary**:    Could not process incoming message because incoming messages are blocked. 
-
-___
-
-
 ## stateTrieMigration
  
 ### BadChildRoot
@@ -2007,10 +1897,6 @@ ___
 ### List
 - **interface**: `api.errors.voterList.List.is`
 - **summary**:    A error in the list interface implementation. 
- 
-### Locked
-- **interface**: `api.errors.voterList.Locked.is`
-- **summary**:    Could not update a node, because the pallet is locked. 
 
 ___
 
@@ -2109,10 +1995,6 @@ ___
 ### LocalExecutionIncomplete
 - **interface**: `api.errors.xcmPallet.LocalExecutionIncomplete.is`
 - **summary**:    Local XCM execution incomplete. 
- 
-### LocalExecutionIncompleteWithError
-- **interface**: `api.errors.xcmPallet.LocalExecutionIncompleteWithError.is`
-- **summary**:    Local XCM execution incomplete with the actual XCM error and the index of the  instruction that caused the error. 
  
 ### LockNotFound
 - **interface**: `api.errors.xcmPallet.LockNotFound.is`

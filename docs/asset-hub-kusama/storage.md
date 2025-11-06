@@ -6,13 +6,7 @@ The following sections contain Storage methods are part of the default asset-hub
 
 (NOTE: These were generated from a static/snapshot view of a recent default asset-hub-kusama runtime. Some items may not be available in older nodes, or in any customized implementations.)
 
-- **[ahMigrator](#ahmigrator)**
-
-- **[ahOps](#ahops)**
-
 - **[assetConversion](#assetconversion)**
-
-- **[assetRate](#assetrate)**
 
 - **[assets](#assets)**
 
@@ -24,31 +18,11 @@ The following sections contain Storage methods are part of the default asset-hub
 
 - **[balances](#balances)**
 
-- **[bounties](#bounties)**
-
-- **[childBounties](#childbounties)**
-
-- **[claims](#claims)**
-
 - **[collatorSelection](#collatorselection)**
-
-- **[convictionVoting](#convictionvoting)**
-
-- **[delegatedStaking](#delegatedstaking)**
 
 - **[foreignAssets](#foreignassets)**
 
-- **[indices](#indices)**
-
 - **[messageQueue](#messagequeue)**
-
-- **[multiBlockElection](#multiblockelection)**
-
-- **[multiBlockElectionSigned](#multiblockelectionsigned)**
-
-- **[multiBlockElectionVerifier](#multiblockelectionverifier)**
-
-- **[multiBlockMigrations](#multiblockmigrations)**
 
 - **[multisig](#multisig)**
 
@@ -56,39 +30,21 @@ The following sections contain Storage methods are part of the default asset-hub
 
 - **[nfts](#nfts)**
 
-- **[nominationPools](#nominationpools)**
-
 - **[parachainInfo](#parachaininfo)**
 
 - **[parachainSystem](#parachainsystem)**
-
-- **[parameters](#parameters)**
 
 - **[polkadotXcm](#polkadotxcm)**
 
 - **[poolAssets](#poolassets)**
 
-- **[preimage](#preimage)**
-
 - **[proxy](#proxy)**
-
-- **[recovery](#recovery)**
-
-- **[referenda](#referenda)**
 
 - **[remoteProxyRelayChain](#remoteproxyrelaychain)**
 
 - **[revive](#revive)**
 
-- **[scheduler](#scheduler)**
-
 - **[session](#session)**
-
-- **[society](#society)**
-
-- **[staking](#staking)**
-
-- **[stakingRcClient](#stakingrcclient)**
 
 - **[stateTrieMigration](#statetriemigration)**
 
@@ -102,114 +58,12 @@ The following sections contain Storage methods are part of the default asset-hub
 
 - **[transactionPayment](#transactionpayment)**
 
-- **[treasury](#treasury)**
-
 - **[uniques](#uniques)**
 
 - **[vesting](#vesting)**
 
-- **[voterList](#voterlist)**
-
-- **[whitelist](#whitelist)**
-
 - **[xcmpQueue](#xcmpqueue)**
 
-
-___
-
-
-## ahMigrator
- 
-### ahBalancesBefore(): `PalletAhMigratorBalancesBefore`
-- **interface**: `api.query.ahMigrator.ahBalancesBefore`
-- **summary**:    Helper storage item to store the total balance / total issuance of native token at the start  of the migration. Since teleports are disabled during migration, the total issuance will not  change for other reason than the migration itself. 
- 
-### ahMigrationStage(): `PalletAhMigratorMigrationStage`
-- **interface**: `api.query.ahMigrator.ahMigrationStage`
-- **summary**:    The Asset Hub migration state. 
- 
-### dmpQueuePriorityConfig(): `PalletRcMigratorQueuePriority`
-- **interface**: `api.query.ahMigrator.dmpQueuePriorityConfig`
-- **summary**:    The priority of the DMP queue during migration. 
-
-   Controls how the DMP (Downward Message Passing) queue is processed relative to other queues  during the migration process. This helps ensure timely processing of migration messages.  The default priority pattern is defined in the pallet configuration, but can be overridden  by a storage value of this type. 
- 
-### manager(): `Option<AccountId32>`
-- **interface**: `api.query.ahMigrator.manager`
-- **summary**:    An optional account id of a manager. 
-
-   This account id has similar privileges to [`Config::AdminOrigin`] except that it  can not set the manager account id via `set_manager` call. 
- 
-### migrationEndBlock(): `Option<u32>`
-- **interface**: `api.query.ahMigrator.migrationEndBlock`
-- **summary**:    Block number when migration finished and extrinsics were unlocked. 
-
-   This is set when entering the `MigrationDone` stage hence when  `RcMigrationStage::is_finished()` becomes `true`. 
- 
-### migrationStartBlock(): `Option<u32>`
-- **interface**: `api.query.ahMigrator.migrationStartBlock`
-- **summary**:    The block number at which the migration began and the pallet's extrinsics were locked. 
-
-   This value is set when entering the `WaitingForAh` stage, i.e., when  `RcMigrationStage::is_ongoing()` becomes `true`. 
- 
-### rcAccounts(`AccountId32`): `Option<PalletRcMigratorAccountsAccount>`
-- **interface**: `api.query.ahMigrator.rcAccounts`
-- **summary**:    RC accounts that failed to migrate when were received on the Asset Hub. 
-
-   This is unlikely to happen, since we dry run the migration, but we keep it for completeness. 
-
-___
-
-
-## ahOps
- 
-### rcCrowdloanContribution(`u32, u32, AccountId32`): `Option<(AccountId32,u128)>`
-- **interface**: `api.query.ahOps.rcCrowdloanContribution`
-- **summary**:    Amount of balance that a contributor made towards a crowdloan. 
-
-   `withdraw_crowdloan_contribution` can be permissionlessly called once the block number  passed to unlock the balance for a specific account. 
-
-   The keys are as follows: 
-
-  - Block number after which the balance can be unlocked.
-
-  - The para_id of the crowdloan.
-
-  - The account that made the contribution.
-
-   The value is (fund_pot, balance). The contribution pot is the second key in the  `RcCrowdloanContribution` storage. 
- 
-### rcCrowdloanReserve(`u32, u32, AccountId32`): `Option<u128>`
-- **interface**: `api.query.ahOps.rcCrowdloanReserve`
-- **summary**:    The reserve that was taken to create a crowdloan. 
-
-   This is normally 500 DOT and can be refunded as last step after all  `RcCrowdloanContribution`s of this loan have been withdrawn. 
-
-   Keys: 
-
-  - Block number after which this can be unreserved
-
-  - The para_id of the crowdloan
-
-  - The account that will have the balance unreserved
- 
-### rcLeaseReserve(`u32, u32, AccountId32`): `Option<u128>`
-- **interface**: `api.query.ahOps.rcLeaseReserve`
-- **summary**:    Amount of balance that was reserved for winning a lease auction. 
-
-   `unreserve_lease_deposit` can be permissionlessly called once the block number passed to  unreserve the deposit. It is implicitly called by `withdraw_crowdloan_contribution`. 
-
-   The account here can either be a crowdloan account or a solo bidder. If it is a crowdloan  account, then the summed up contributions for it in the contributions map will equate the  reserved balance here. 
-
-   The keys are as follows: 
-
-  - Block number after which the deposit can be unreserved.
-
-  - The para_id of the lease slot.
-
-  - The account that will have the balance unreserved.
-
-  - The balance to be unreserved.
 
 ___
 
@@ -220,20 +74,9 @@ ___
 - **interface**: `api.query.assetConversion.nextPoolAssetId`
 - **summary**:    Stores the `PoolAssetId` that is going to be used for the next lp token.  This gets incremented whenever a new lp pool is created. 
  
-### pools(`(StagingXcmV5Location,StagingXcmV5Location)`): `Option<PalletAssetConversionPoolInfo>`
+### pools(`(StagingXcmV4Location,StagingXcmV4Location)`): `Option<PalletAssetConversionPoolInfo>`
 - **interface**: `api.query.assetConversion.pools`
 - **summary**:    Map from `PoolAssetId` to `PoolInfo`. This establishes whether a pool has been officially  created rather than people sending tokens directly to a pool's public account. 
-
-___
-
-
-## assetRate
- 
-### conversionRateToNative(`PolkadotRuntimeCommonImplsVersionedLocatableAsset`): `Option<u128>`
-- **interface**: `api.query.assetRate.conversionRateToNative`
-- **summary**:    Maps an asset to its fixed point representation in the native balance. 
-
-   E.g. `native_amount = asset_amount * ConversionRateToNative::<T>::get(asset_kind)` 
 
 ___
 
@@ -326,11 +169,11 @@ ___
 
    But this comes with tradeoffs, storing account balances in the system pallet stores  `frame_system` data alongside the account data contrary to storing account balances in the  `Balances` pallet, which uses a `StorageMap` to store balances data only.  NOTE: This is only used in the case that this pallet is used to store balances. 
  
-### freezes(`AccountId32`): `Vec<FrameSupportTokensMiscIdAmountRuntimeFreezeReason>`
+### freezes(`AccountId32`): `Vec<FrameSupportTokensMiscIdAmount>`
 - **interface**: `api.query.balances.freezes`
 - **summary**:    Freeze locks on account balances. 
  
-### holds(`AccountId32`): `Vec<FrameSupportTokensMiscIdAmountRuntimeHoldReason>`
+### holds(`AccountId32`): `Vec<{"id":"AssetHubKusamaRuntimeRuntimeHoldReason","amount":"u128"}>`
 - **interface**: `api.query.balances.holds`
 - **summary**:    Holds on account balances. 
  
@@ -353,87 +196,6 @@ ___
 ### totalIssuance(): `u128`
 - **interface**: `api.query.balances.totalIssuance`
 - **summary**:    The total units issued in the system. 
-
-___
-
-
-## bounties
- 
-### bounties(`u32`): `Option<PalletBountiesBounty>`
-- **interface**: `api.query.bounties.bounties`
-- **summary**:    Bounties that have been made. 
- 
-### bountyApprovals(): `Vec<u32>`
-- **interface**: `api.query.bounties.bountyApprovals`
-- **summary**:    Bounty indices that have been approved but not yet funded. 
- 
-### bountyCount(): `u32`
-- **interface**: `api.query.bounties.bountyCount`
-- **summary**:    Number of bounty proposals that have been made. 
- 
-### bountyDescriptions(`u32`): `Option<Bytes>`
-- **interface**: `api.query.bounties.bountyDescriptions`
-- **summary**:    The description of each bounty. 
-
-___
-
-
-## childBounties
- 
-### childBounties(`u32, u32`): `Option<PalletChildBountiesChildBounty>`
-- **interface**: `api.query.childBounties.childBounties`
-- **summary**:    Child bounties that have been added. 
- 
-### childBountyCount(): `u32`
-- **interface**: `api.query.childBounties.childBountyCount`
-- **summary**:    DEPRECATED: Replaced with `ParentTotalChildBounties` storage item keeping dedicated counts  for each parent bounty. Number of total child bounties. Will be removed in May 2025. 
- 
-### childBountyDescriptionsV1(`u32, u32`): `Option<Bytes>`
-- **interface**: `api.query.childBounties.childBountyDescriptionsV1`
-- **summary**:    The description of each child-bounty. Indexed by `(parent_id, child_id)`. 
-
-   This item replaces the `ChildBountyDescriptions` storage item from the V0 storage version. 
- 
-### childrenCuratorFees(`u32`): `u128`
-- **interface**: `api.query.childBounties.childrenCuratorFees`
-- **summary**:    The cumulative child-bounty curator fee for each parent bounty. 
- 
-### parentChildBounties(`u32`): `u32`
-- **interface**: `api.query.childBounties.parentChildBounties`
-- **summary**:    Number of active child bounties per parent bounty.  Map of parent bounty index to number of child bounties. 
- 
-### parentTotalChildBounties(`u32`): `u32`
-- **interface**: `api.query.childBounties.parentTotalChildBounties`
-- **summary**:    Number of total child bounties per parent bounty, including completed bounties. 
- 
-### v0ToV1ChildBountyIds(`u32`): `Option<(u32,u32)>`
-- **interface**: `api.query.childBounties.v0ToV1ChildBountyIds`
-- **summary**:    The mapping of the child bounty ids from storage version `V0` to the new `V1` version. 
-
-   The `V0` ids based on total child bounty count [`ChildBountyCount`]`. The `V1` version ids  based on the child bounty count per parent bounty [`ParentTotalChildBounties`].  The item intended solely for client convenience and not used in the pallet's core logic. 
-
-___
-
-
-## claims
- 
-### claims(`EthereumAddress`): `Option<u128>`
-- **interface**: `api.query.claims.claims`
- 
-### preclaims(`AccountId32`): `Option<EthereumAddress>`
-- **interface**: `api.query.claims.preclaims`
-- **summary**:    Pre-claimed Ethereum accounts, by the Account ID that they are claimed to. 
- 
-### signing(`EthereumAddress`): `Option<PolkadotRuntimeCommonClaimsStatementKind>`
-- **interface**: `api.query.claims.signing`
-- **summary**:    The statement kind that must be signed, if any. 
- 
-### total(): `u128`
-- **interface**: `api.query.claims.total`
- 
-### vesting(`EthereumAddress`): `Option<(u128,u128,u32)>`
-- **interface**: `api.query.claims.vesting`
-- **summary**:    Vesting schedule for a claim.  First balance is the total amount that should be held for vesting.  Second balance is how much should be unlocked per block.  The block number is when the vesting should start. 
 
 ___
 
@@ -469,76 +231,31 @@ ___
 ___
 
 
-## convictionVoting
- 
-### classLocksFor(`AccountId32`): `Vec<(u16,u128)>`
-- **interface**: `api.query.convictionVoting.classLocksFor`
-- **summary**:    The voting classes which have a non-zero lock requirement and the lock amounts which they  require. The actual amount locked on behalf of this pallet should always be the maximum of  this list. 
- 
-### votingFor(`AccountId32, u16`): `PalletConvictionVotingVoteVoting`
-- **interface**: `api.query.convictionVoting.votingFor`
-- **summary**:    All voting for a particular voter in a particular voting class. We store the balance for the  number of votes that we have recorded. 
-
-___
-
-
-## delegatedStaking
- 
-### agents(`AccountId32`): `Option<PalletDelegatedStakingAgentLedger>`
-- **interface**: `api.query.delegatedStaking.agents`
-- **summary**:    Map of `Agent` to their `Ledger`. 
- 
-### counterForAgents(): `u32`
-- **interface**: `api.query.delegatedStaking.counterForAgents`
-- **summary**:    Counter for the related counted storage map 
- 
-### counterForDelegators(): `u32`
-- **interface**: `api.query.delegatedStaking.counterForDelegators`
-- **summary**:    Counter for the related counted storage map 
- 
-### delegators(`AccountId32`): `Option<PalletDelegatedStakingDelegation>`
-- **interface**: `api.query.delegatedStaking.delegators`
-- **summary**:    Map of Delegators to their `Delegation`. 
-
-   Implementation note: We are not using a double map with `delegator` and `agent` account  as keys since we want to restrict delegators to delegate only to one account at a time. 
-
-___
-
-
 ## foreignAssets
  
-### account(`StagingXcmV5Location, AccountId32`): `Option<PalletAssetsAssetAccount>`
+### account(`StagingXcmV4Location, AccountId32`): `Option<PalletAssetsAssetAccount>`
 - **interface**: `api.query.foreignAssets.account`
 - **summary**:    The holdings of a specific account for a specific asset. 
  
-### approvals(`StagingXcmV5Location, AccountId32, AccountId32`): `Option<PalletAssetsApproval>`
+### approvals(`StagingXcmV4Location, AccountId32, AccountId32`): `Option<PalletAssetsApproval>`
 - **interface**: `api.query.foreignAssets.approvals`
 - **summary**:    Approved balance transfers. First balance is the amount approved for transfer. Second  is the amount of `T::Currency` reserved for storing this.  First key is the asset ID, second key is the owner and third key is the delegate. 
  
-### asset(`StagingXcmV5Location`): `Option<PalletAssetsAssetDetails>`
+### asset(`StagingXcmV4Location`): `Option<PalletAssetsAssetDetails>`
 - **interface**: `api.query.foreignAssets.asset`
 - **summary**:    Details of an asset. 
  
-### metadata(`StagingXcmV5Location`): `{"deposit":"u128","name":"Bytes","symbol":"Bytes","decimals":"u8","isFrozen":"bool"}`
+### metadata(`StagingXcmV4Location`): `{"deposit":"u128","name":"Bytes","symbol":"Bytes","decimals":"u8","isFrozen":"bool"}`
 - **interface**: `api.query.foreignAssets.metadata`
 - **summary**:    Metadata of an asset. 
  
-### nextAssetId(): `Option<StagingXcmV5Location>`
+### nextAssetId(): `Option<StagingXcmV4Location>`
 - **interface**: `api.query.foreignAssets.nextAssetId`
 - **summary**:    The asset ID enforced for the next asset creation, if any present. Otherwise, this storage  item has no effect. 
 
    This can be useful for setting up constraints for IDs of the new assets. For example, by  providing an initial [`NextAssetId`] and using the [`crate::AutoIncAssetId`] callback, an  auto-increment model can be applied to all new asset IDs. 
 
    The initial next asset ID can be set using the [`GenesisConfig`] or the  [SetNextAssetId](`migration::next_asset_id::SetNextAssetId`) migration. 
-
-___
-
-
-## indices
- 
-### accounts(`u32`): `Option<(AccountId32,u128,bool)>`
-- **interface**: `api.query.indices.accounts`
-- **summary**:    The lookup from index to account. 
 
 ___
 
@@ -556,137 +273,6 @@ ___
 ### serviceHead(): `Option<CumulusPrimitivesCoreAggregateMessageOrigin>`
 - **interface**: `api.query.messageQueue.serviceHead`
 - **summary**:    The origin at which we should begin servicing. 
-
-___
-
-
-## multiBlockElection
- 
-### currentPhase(): `PalletElectionProviderMultiBlockPhase`
-- **interface**: `api.query.multiBlockElection.currentPhase`
-- **summary**:    Current phase. 
- 
-### desiredTargets(`u32`): `Option<u32>`
-- **interface**: `api.query.multiBlockElection.desiredTargets`
-- **summary**:    Desired number of targets to elect for this round. 
- 
-### pagedTargetSnapshot(`u32, u32`): `Option<Vec<AccountId32>>`
-- **interface**: `api.query.multiBlockElection.pagedTargetSnapshot`
-- **summary**:    Paginated target snapshot. 
-
-   For the time being, since we assume one pages of targets, at most ONE key will exist. 
- 
-### pagedTargetSnapshotHash(`u32, u32`): `Option<H256>`
-- **interface**: `api.query.multiBlockElection.pagedTargetSnapshotHash`
-- **summary**:    Same as [`PagedTargetSnapshot`], but it will store the hash of the snapshot. 
-
-   The hash is generated using [`frame_system::Config::Hashing`]. 
- 
-### pagedVoterSnapshot(`u32, u32`): `Option<Vec<(AccountId32,u64,Vec<AccountId32>)>>`
-- **interface**: `api.query.multiBlockElection.pagedVoterSnapshot`
-- **summary**:    Paginated voter snapshot. At most [`T::Pages`] keys will exist. 
- 
-### pagedVoterSnapshotHash(`u32, u32`): `Option<H256>`
-- **interface**: `api.query.multiBlockElection.pagedVoterSnapshotHash`
-- **summary**:    Same as [`PagedVoterSnapshot`], but it will store the hash of the snapshot. 
-
-   The hash is generated using [`frame_system::Config::Hashing`]. 
- 
-### round(): `u32`
-- **interface**: `api.query.multiBlockElection.round`
-- **summary**:    Internal counter for the number of rounds. 
-
-   This is useful for de-duplication of transactions submitted to the pool, and general  diagnostics of the pallet. 
-
-   This is merely incremented once per every time that an upstream `elect` is called. 
-
-___
-
-
-## multiBlockElectionSigned
- 
-### invulnerables(): `Vec<AccountId32>`
-- **interface**: `api.query.multiBlockElectionSigned.invulnerables`
-- **summary**:    Accounts whitelisted by governance to always submit their solutions. 
-
-   They are different in that: 
-
-   * They always pay a fixed deposit for submission, specified by  [`Config::InvulnerableDeposit`]. They pay no page deposit. 
-
-  * If _ejected_ by better solution from [`SortedScores`], they will get their full deposit back. 
-
-  * They always get their tx-fee back even if they are _discarded_.
- 
-### sortedScores(`u32`): `Vec<(AccountId32,SpNposElectionsElectionScore)>`
-- **interface**: `api.query.multiBlockElectionSigned.sortedScores`
- 
-### submissionMetadataStorage(`u32, AccountId32`): `Option<PalletElectionProviderMultiBlockSignedSubmissionMetadata>`
-- **interface**: `api.query.multiBlockElectionSigned.submissionMetadataStorage`
-- **summary**:    Map from account to the metadata of their submission. 
-
-   invariant: for any Key1 of type `AccountId` in [`Submissions`], this storage map also has a  value. 
- 
-### submissionStorage(`u32, AccountId32, u32`): `Option<AssetHubKusamaRuntimeStakingNposCompactSolution24>`
-- **interface**: `api.query.multiBlockElectionSigned.submissionStorage`
-- **summary**:    Triple map from (round, account, page) to a solution page. 
-
-___
-
-
-## multiBlockElectionVerifier
- 
-### minimumScore(): `Option<SpNposElectionsElectionScore>`
-- **interface**: `api.query.multiBlockElectionVerifier.minimumScore`
-- **summary**:    The minimum score that each solution must attain in order to be considered feasible. 
- 
-### queuedSolutionBackings(`u32, u32`): `Option<Vec<(AccountId32,PalletElectionProviderMultiBlockVerifierImplsPartialBackings)>>`
-- **interface**: `api.query.multiBlockElectionVerifier.queuedSolutionBackings`
-- **summary**:    The `(amount, count)` of backings, divided per page. 
-
-   This is stored because in the last block of verification we need them to compute the score,  and check `MaxBackersPerWinnerFinal`. 
-
-   This can only ever live for the invalid variant of the solution. Once it is valid, we don't  need this information anymore; the score is already computed once in  [`QueuedSolutionScore`], and the backing counts are checked. 
- 
-### queuedSolutionScore(`u32`): `Option<SpNposElectionsElectionScore>`
-- **interface**: `api.query.multiBlockElectionVerifier.queuedSolutionScore`
-- **summary**:    The score of the valid variant of [`QueuedSolution`]. 
-
-   This only ever lives for the `valid` variant. 
- 
-### queuedSolutionX(`u32, u32`): `Option<FrameElectionProviderSupportBoundedSupports>`
-- **interface**: `api.query.multiBlockElectionVerifier.queuedSolutionX`
-- **summary**:    The `X` variant of the current queued solution. Might be the valid one or not. 
-
-   The two variants of this storage item is to avoid the need of copying. Recall that once a  `VerifyingSolution` is being processed, it needs to write its partial supports *somewhere*.  Writing theses supports on top of a *good* queued supports is wrong, since we might bail.  Writing them to a bugger and copying at the ned is slightly better, but expensive. This flag  system is best of both worlds. 
- 
-### queuedSolutionY(`u32, u32`): `Option<FrameElectionProviderSupportBoundedSupports>`
-- **interface**: `api.query.multiBlockElectionVerifier.queuedSolutionY`
-- **summary**:    The `Y` variant of the current queued solution. Might be the valid one or not. 
- 
-### queuedValidVariant(`u32`): `PalletElectionProviderMultiBlockVerifierImplsValidSolution`
-- **interface**: `api.query.multiBlockElectionVerifier.queuedValidVariant`
-- **summary**:    Pointer to the variant of [`QueuedSolutionX`] or [`QueuedSolutionY`] that is currently  valid. 
- 
-### statusStorage(): `PalletElectionProviderMultiBlockVerifierImplsStatus`
-- **interface**: `api.query.multiBlockElectionVerifier.statusStorage`
-- **summary**:    Storage item for [`Status`]. 
-
-___
-
-
-## multiBlockMigrations
- 
-### cursor(): `Option<PalletMigrationsMigrationCursor>`
-- **interface**: `api.query.multiBlockMigrations.cursor`
-- **summary**:    The currently active migration to run and its cursor. 
-
-   `None` indicates that no migration is running. 
- 
-### historic(`Bytes`): `Option<Null>`
-- **interface**: `api.query.multiBlockMigrations.historic`
-- **summary**:    Set of all successfully executed migrations. 
-
-   This is used as blacklist, to not re-execute migrations that have not been removed from the  codebase yet. Governance can regularly clear this out via `clear_historic`. 
 
 ___
 
@@ -774,105 +360,6 @@ ___
 ___
 
 
-## nominationPools
- 
-### bondedPools(`u32`): `Option<PalletNominationPoolsBondedPoolInner>`
-- **interface**: `api.query.nominationPools.bondedPools`
-- **summary**:    Storage for bonded pools. 
- 
-### claimPermissions(`AccountId32`): `PalletNominationPoolsClaimPermission`
-- **interface**: `api.query.nominationPools.claimPermissions`
-- **summary**:    Map from a pool member account to their opted claim permission. 
- 
-### counterForBondedPools(): `u32`
-- **interface**: `api.query.nominationPools.counterForBondedPools`
-- **summary**:    Counter for the related counted storage map 
- 
-### counterForMetadata(): `u32`
-- **interface**: `api.query.nominationPools.counterForMetadata`
-- **summary**:    Counter for the related counted storage map 
- 
-### counterForPoolMembers(): `u32`
-- **interface**: `api.query.nominationPools.counterForPoolMembers`
-- **summary**:    Counter for the related counted storage map 
- 
-### counterForReversePoolIdLookup(): `u32`
-- **interface**: `api.query.nominationPools.counterForReversePoolIdLookup`
-- **summary**:    Counter for the related counted storage map 
- 
-### counterForRewardPools(): `u32`
-- **interface**: `api.query.nominationPools.counterForRewardPools`
-- **summary**:    Counter for the related counted storage map 
- 
-### counterForSubPoolsStorage(): `u32`
-- **interface**: `api.query.nominationPools.counterForSubPoolsStorage`
-- **summary**:    Counter for the related counted storage map 
- 
-### globalMaxCommission(): `Option<Perbill>`
-- **interface**: `api.query.nominationPools.globalMaxCommission`
-- **summary**:    The maximum commission that can be charged by a pool. Used on commission payouts to bound  pool commissions that are > `GlobalMaxCommission`, necessary if a future  `GlobalMaxCommission` is lower than some current pool commissions. 
- 
-### lastPoolId(): `u32`
-- **interface**: `api.query.nominationPools.lastPoolId`
-- **summary**:    Ever increasing number of all pools created so far. 
- 
-### maxPoolMembers(): `Option<u32>`
-- **interface**: `api.query.nominationPools.maxPoolMembers`
-- **summary**:    Maximum number of members that can exist in the system. If `None`, then the count  members are not bound on a system wide basis. 
- 
-### maxPoolMembersPerPool(): `Option<u32>`
-- **interface**: `api.query.nominationPools.maxPoolMembersPerPool`
-- **summary**:    Maximum number of members that may belong to pool. If `None`, then the count of  members is not bound on a per pool basis. 
- 
-### maxPools(): `Option<u32>`
-- **interface**: `api.query.nominationPools.maxPools`
-- **summary**:    Maximum number of nomination pools that can exist. If `None`, then an unbounded number of  pools can exist. 
- 
-### metadata(`u32`): `Bytes`
-- **interface**: `api.query.nominationPools.metadata`
-- **summary**:    Metadata for the pool. 
- 
-### minCreateBond(): `u128`
-- **interface**: `api.query.nominationPools.minCreateBond`
-- **summary**:    Minimum bond required to create a pool. 
-
-   This is the amount that the depositor must put as their initial stake in the pool, as an  indication of "skin in the game". 
-
-   This is the value that will always exist in the staking ledger of the pool bonded account  while all other accounts leave. 
- 
-### minJoinBond(): `u128`
-- **interface**: `api.query.nominationPools.minJoinBond`
-- **summary**:    Minimum amount to bond to join a pool. 
- 
-### poolMembers(`AccountId32`): `Option<PalletNominationPoolsPoolMember>`
-- **interface**: `api.query.nominationPools.poolMembers`
-- **summary**:    Active members. 
-
-   TWOX-NOTE: SAFE since `AccountId` is a secure hash. 
- 
-### reversePoolIdLookup(`AccountId32`): `Option<u32>`
-- **interface**: `api.query.nominationPools.reversePoolIdLookup`
-- **summary**:    A reverse lookup from the pool's account id to its id. 
-
-   This is only used for slashing and on automatic withdraw update. In all other instances, the  pool id is used, and the accounts are deterministically derived from it. 
- 
-### rewardPools(`u32`): `Option<PalletNominationPoolsRewardPool>`
-- **interface**: `api.query.nominationPools.rewardPools`
-- **summary**:    Reward pools. This is where there rewards for each pool accumulate. When a members payout is  claimed, the balance comes out of the reward pool. Keyed by the bonded pools account. 
- 
-### subPoolsStorage(`u32`): `Option<PalletNominationPoolsSubPools>`
-- **interface**: `api.query.nominationPools.subPoolsStorage`
-- **summary**:    Groups of unbonding pools. Each group of unbonding pools belongs to a  bonded pool, hence the name sub-pools. Keyed by the bonded pools account. 
- 
-### totalValueLocked(): `u128`
-- **interface**: `api.query.nominationPools.totalValueLocked`
-- **summary**:    The sum of funds across all pools. 
-
-   This might be lower but never higher than the sum of `total_balance` of all [`PoolMembers`]  because calling `pool_withdraw_unbonded` might decrease the total stake of the pool's  `bonded_account` without adjusting the pallet-internal `UnbondingPool`'s. 
-
-___
-
-
 ## parachainInfo
  
 ### parachainId(): `u32`
@@ -918,6 +405,8 @@ ___
 ### hrmpWatermark(): `u32`
 - **interface**: `api.query.parachainSystem.hrmpWatermark`
 - **summary**:    HRMP watermark that was set in a block. 
+
+   This will be cleared in `on_initialize` of each new block. 
  
 ### lastDmqMqcHead(): `H256`
 - **interface**: `api.query.parachainSystem.lastDmqMqcHead`
@@ -930,18 +419,6 @@ ___
 - **summary**:    The message queue chain heads we have observed per each channel incoming channel. 
 
    This value is loaded before and saved after processing inbound downward messages carried  by the system inherent. 
- 
-### lastProcessedDownwardMessage(): `Option<CumulusPalletParachainSystemParachainInherentInboundMessageId>`
-- **interface**: `api.query.parachainSystem.lastProcessedDownwardMessage`
-- **summary**:    The last processed downward message. 
-
-   We need to keep track of this to filter the messages that have been already processed. 
- 
-### lastProcessedHrmpMessage(): `Option<CumulusPalletParachainSystemParachainInherentInboundMessageId>`
-- **interface**: `api.query.parachainSystem.lastProcessedHrmpMessage`
-- **summary**:    The last processed HRMP message. 
-
-   We need to keep track of this to filter the messages that have been already processed. 
  
 ### lastRelayChainBlockNumber(): `u32`
 - **interface**: `api.query.parachainSystem.lastRelayChainBlockNumber`
@@ -1026,15 +503,6 @@ ___
 ### validationData(): `Option<PolkadotPrimitivesV8PersistedValidationData>`
 - **interface**: `api.query.parachainSystem.validationData`
 - **summary**:    The [`PersistedValidationData`] set for this block.  This value is expected to be set only once per block and it's never stored  in the trie. 
-
-___
-
-
-## parameters
- 
-### parameters(`AssetHubKusamaRuntimeRuntimeParametersKey`): `Option<AssetHubKusamaRuntimeRuntimeParametersValue>`
-- **interface**: `api.query.parameters.parameters`
-- **summary**:    Stored parameters. 
 
 ___
 
@@ -1139,81 +607,15 @@ ___
 ___
 
 
-## preimage
- 
-### preimageFor(`(H256,u32)`): `Option<Bytes>`
-- **interface**: `api.query.preimage.preimageFor`
- 
-### requestStatusFor(`H256`): `Option<PalletPreimageRequestStatus>`
-- **interface**: `api.query.preimage.requestStatusFor`
-- **summary**:    The request status of a given hash. 
- 
-### statusFor(`H256`): `Option<PalletPreimageOldRequestStatus>`
-- **interface**: `api.query.preimage.statusFor`
-- **summary**:    The request status of a given hash. 
-
-___
-
-
 ## proxy
  
 ### announcements(`AccountId32`): `(Vec<PalletProxyAnnouncement>,u128)`
 - **interface**: `api.query.proxy.announcements`
 - **summary**:    The announcements made by the proxy (key). 
  
-### proxies(`AccountId32`): `(Vec<PalletProxyProxyDefinitionAssetHubKusamaRuntimeProxyType>,u128)`
+### proxies(`AccountId32`): `(Vec<PalletProxyProxyDefinition>,u128)`
 - **interface**: `api.query.proxy.proxies`
 - **summary**:    The set of account proxies. Maps the account which has delegated to the accounts  which are being delegated to, together with the amount held on deposit. 
-
-___
-
-
-## recovery
- 
-### activeRecoveries(`AccountId32, AccountId32`): `Option<PalletRecoveryActiveRecovery>`
-- **interface**: `api.query.recovery.activeRecoveries`
-- **summary**:    Active recovery attempts. 
-
-   First account is the account to be recovered, and the second account  is the user trying to recover the account. 
- 
-### proxy(`AccountId32`): `Option<AccountId32>`
-- **interface**: `api.query.recovery.proxy`
-- **summary**:    The list of allowed proxy accounts. 
-
-   Map from the user who can access it to the recovered account. 
- 
-### recoverable(`AccountId32`): `Option<PalletRecoveryRecoveryConfig>`
-- **interface**: `api.query.recovery.recoverable`
-- **summary**:    The set of recoverable accounts and their recovery configuration. 
-
-___
-
-
-## referenda
- 
-### decidingCount(`u16`): `u32`
-- **interface**: `api.query.referenda.decidingCount`
-- **summary**:    The number of referenda being decided currently. 
- 
-### metadataOf(`u32`): `Option<H256>`
-- **interface**: `api.query.referenda.metadataOf`
-- **summary**:    The metadata is a general information concerning the referendum.  The `Hash` refers to the preimage of the `Preimages` provider which can be a JSON  dump or IPFS hash of a JSON file. 
-
-   Consider a garbage collection for a metadata of finished referendums to `unrequest` (remove)  large preimages. 
- 
-### referendumCount(): `u32`
-- **interface**: `api.query.referenda.referendumCount`
-- **summary**:    The next free referendum index, aka the number of referenda started so far. 
- 
-### referendumInfoFor(`u32`): `Option<PalletReferendaReferendumInfoOriginCaller>`
-- **interface**: `api.query.referenda.referendumInfoFor`
-- **summary**:    Information concerning any given referendum. 
- 
-### trackQueue(`u16`): `Vec<(u32,u128)>`
-- **interface**: `api.query.referenda.trackQueue`
-- **summary**:    The sorted list of referenda ready to be decided but not yet being decided, ordered by  conviction-weighted approvals. 
-
-   This should be empty if `DecidingCount` is less than `TrackInfo::max_deciding`. 
 
 ___
 
@@ -1229,13 +631,13 @@ ___
 
 ## revive
  
-### accountInfoOf(`H160`): `Option<PalletReviveStorageAccountInfo>`
-- **interface**: `api.query.revive.accountInfoOf`
-- **summary**:    The data associated to a contract or externally owned account. 
- 
-### codeInfoOf(`H256`): `Option<PalletReviveVmCodeInfo>`
+### codeInfoOf(`H256`): `Option<PalletReviveWasmCodeInfo>`
 - **interface**: `api.query.revive.codeInfoOf`
 - **summary**:    A mapping from a contract's code hash to its code info. 
+ 
+### contractInfoOf(`H160`): `Option<PalletReviveStorageContractInfo>`
+- **interface**: `api.query.revive.contractInfoOf`
+- **summary**:    The code associated with a given account. 
  
 ### deletionQueue(`u32`): `Option<Bytes>`
 - **interface**: `api.query.revive.deletionQueue`
@@ -1260,29 +662,6 @@ ___
 ### pristineCode(`H256`): `Option<Bytes>`
 - **interface**: `api.query.revive.pristineCode`
 - **summary**:    A mapping from a contract's code hash to its code. 
-
-___
-
-
-## scheduler
- 
-### agenda(`u32`): `Vec<Option<PalletSchedulerScheduled>>`
-- **interface**: `api.query.scheduler.agenda`
-- **summary**:    Items to be executed, indexed by the block number that they should be executed on. 
- 
-### incompleteSince(): `Option<u32>`
-- **interface**: `api.query.scheduler.incompleteSince`
-- **summary**:    Block number at which the agenda began incomplete execution. 
- 
-### lookup(`[u8;32]`): `Option<(u32,u32)>`
-- **interface**: `api.query.scheduler.lookup`
-- **summary**:    Lookup from a name to the block number and index of the task. 
-
-   For v3 -> v4 the previously unbounded identities are Blake2-256 hashed to form the v4  identities. 
- 
-### retries(`(u32,u32)`): `Option<PalletSchedulerRetryConfig>`
-- **interface**: `api.query.scheduler.retries`
-- **summary**:    Retry configurations for items to be executed, indexed by task address. 
 
 ___
 
@@ -1318,378 +697,6 @@ ___
 ### validators(): `Vec<AccountId32>`
 - **interface**: `api.query.session.validators`
 - **summary**:    The current set of validators. 
-
-___
-
-
-## society
- 
-### bids(): `Vec<PalletSocietyBid>`
-- **interface**: `api.query.society.bids`
-- **summary**:    The current bids, stored ordered by the value of the bid. 
- 
-### candidates(`AccountId32`): `Option<PalletSocietyCandidacy>`
-- **interface**: `api.query.society.candidates`
- 
-### challengeRoundCount(): `u32`
-- **interface**: `api.query.society.challengeRoundCount`
-- **summary**:    The number of challenge rounds there have been. Used to identify stale DefenderVotes. 
- 
-### defenderVotes(`u32, AccountId32`): `Option<PalletSocietyVote>`
-- **interface**: `api.query.society.defenderVotes`
-- **summary**:    Votes for the defender, keyed by challenge round. 
- 
-### defending(): `Option<(AccountId32,AccountId32,PalletSocietyTally)>`
-- **interface**: `api.query.society.defending`
-- **summary**:    The defending member currently being challenged, along with a running tally of votes. 
- 
-### founder(): `Option<AccountId32>`
-- **interface**: `api.query.society.founder`
-- **summary**:    The first member. 
- 
-### head(): `Option<AccountId32>`
-- **interface**: `api.query.society.head`
-- **summary**:    The most primary from the most recently approved rank 0 members in the society. 
- 
-### memberByIndex(`u32`): `Option<AccountId32>`
-- **interface**: `api.query.society.memberByIndex`
-- **summary**:    The current items in `Members` keyed by their unique index. Keys are densely populated  `0..MemberCount` (does not include `MemberCount`). 
- 
-### memberCount(): `u32`
-- **interface**: `api.query.society.memberCount`
-- **summary**:    The number of items in `Members` currently. (Doesn't include `SuspendedMembers`.) 
- 
-### members(`AccountId32`): `Option<PalletSocietyMemberRecord>`
-- **interface**: `api.query.society.members`
-- **summary**:    The current members and their rank. Doesn't include `SuspendedMembers`. 
- 
-### nextChallengeAt(): `Option<u32>`
-- **interface**: `api.query.society.nextChallengeAt`
-- **summary**:    Next challenge rotation scheduled with [Config::BlockNumberProvider]. 
- 
-### nextHead(): `Option<PalletSocietyIntakeRecord>`
-- **interface**: `api.query.society.nextHead`
-- **summary**:    At the end of the claim period, this contains the most recently approved members (along with  their bid and round ID) who is from the most recent round with the lowest bid. They will  become the new `Head`. 
- 
-### nextIntakeAt(): `Option<u32>`
-- **interface**: `api.query.society.nextIntakeAt`
-- **summary**:    Next intake rotation scheduled with [Config::BlockNumberProvider]. 
- 
-### parameters(): `Option<PalletSocietyGroupParams>`
-- **interface**: `api.query.society.parameters`
-- **summary**:    The max number of members for the society at one time. 
- 
-### payouts(`AccountId32`): `PalletSocietyPayoutRecord`
-- **interface**: `api.query.society.payouts`
-- **summary**:    Information regarding rank-0 payouts, past and future. 
- 
-### pot(): `u128`
-- **interface**: `api.query.society.pot`
-- **summary**:    Amount of our account balance that is specifically for the next round's bid(s). 
- 
-### roundCount(): `u32`
-- **interface**: `api.query.society.roundCount`
-- **summary**:    The number of rounds which have passed. 
- 
-### rules(): `Option<H256>`
-- **interface**: `api.query.society.rules`
-- **summary**:    A hash of the rules of this society concerning membership. Can only be set once and  only by the founder. 
- 
-### skeptic(): `Option<AccountId32>`
-- **interface**: `api.query.society.skeptic`
-- **summary**:    The current skeptic. 
- 
-### suspendedMembers(`AccountId32`): `Option<PalletSocietyMemberRecord>`
-- **interface**: `api.query.society.suspendedMembers`
-- **summary**:    The set of suspended members, with their old membership record. 
- 
-### voteClearCursor(`AccountId32`): `Option<Bytes>`
-- **interface**: `api.query.society.voteClearCursor`
-- **summary**:    Clear-cursor for Vote, map from Candidate -> (Maybe) Cursor. 
- 
-### votes(`AccountId32, AccountId32`): `Option<PalletSocietyVote>`
-- **interface**: `api.query.society.votes`
-- **summary**:    Double map from Candidate -> Voter -> (Maybe) Vote. 
-
-___
-
-
-## staking
- 
-### activeEra(): `Option<PalletStakingAsyncActiveEraInfo>`
-- **interface**: `api.query.staking.activeEra`
-- **summary**:    The active era information, it holds index and start. 
-
-   The active era is the era being currently rewarded. Validator set of this era must be  equal to what is RC's session pallet. 
- 
-### bonded(`AccountId32`): `Option<AccountId32>`
-- **interface**: `api.query.staking.bonded`
-- **summary**:    Map from all locked "stash" accounts to the controller account. 
-
-   TWOX-NOTE: SAFE since `AccountId` is a secure hash. 
- 
-### bondedEras(): `Vec<(u32,u32)>`
-- **interface**: `api.query.staking.bondedEras`
-- **summary**:    A mapping from still-bonded eras to the first session index of that era. 
-
-   Must contains information for eras for the range:  `[active_era - bounding_duration; active_era]` 
- 
-### canceledSlashPayout(): `u128`
-- **interface**: `api.query.staking.canceledSlashPayout`
-- **summary**:    The amount of currency given to reporters of a slash event which was  canceled by extraordinary circumstances (e.g. governance). 
- 
-### cancelledSlashes(`u32`): `Vec<(AccountId32,Perbill)>`
-- **interface**: `api.query.staking.cancelledSlashes`
-- **summary**:    Cancelled slashes by era and validator with maximum slash fraction to be cancelled. 
-
-   When slashes are cancelled by governance, this stores the era and the validators  whose slashes should be cancelled, along with the maximum slash fraction that should  be cancelled for each validator. 
- 
-### chillThreshold(): `Option<Percent>`
-- **interface**: `api.query.staking.chillThreshold`
-- **summary**:    The threshold for when users can start calling `chill_other` for other validators /  nominators. The threshold is compared to the actual number of validators / nominators  (`CountFor*`) in the system compared to the configured max (`Max*Count`). 
- 
-### claimedRewards(`u32, AccountId32`): `Vec<u32>`
-- **interface**: `api.query.staking.claimedRewards`
-- **summary**:    History of claimed paged rewards by era and validator. 
-
-   This is keyed by era and validator stash which maps to the set of page indexes which have  been claimed. 
-
-   It is removed after [`Config::HistoryDepth`] eras. 
- 
-### counterForNominators(): `u32`
-- **interface**: `api.query.staking.counterForNominators`
-- **summary**:    Counter for the related counted storage map 
- 
-### counterForValidators(): `u32`
-- **interface**: `api.query.staking.counterForValidators`
-- **summary**:    Counter for the related counted storage map 
- 
-### counterForVirtualStakers(): `u32`
-- **interface**: `api.query.staking.counterForVirtualStakers`
-- **summary**:    Counter for the related counted storage map 
- 
-### currentEra(): `Option<u32>`
-- **interface**: `api.query.staking.currentEra`
-- **summary**:    The current planned era index. 
-
-   This is the latest planned era, depending on how the Session pallet queues the validator  set, it might be active or not. 
- 
-### electableStashes(): `BTreeSet<AccountId32>`
-- **interface**: `api.query.staking.electableStashes`
-- **summary**:    A bounded list of the "electable" stashes that resulted from a successful election. 
- 
-### eraPruningState(`u32`): `Option<PalletStakingAsyncPalletPruningStep>`
-- **interface**: `api.query.staking.eraPruningState`
-- **summary**:    Tracks the current step of era pruning process for each era being lazily pruned. 
- 
-### erasRewardPoints(`u32`): `PalletStakingAsyncEraRewardPoints`
-- **interface**: `api.query.staking.erasRewardPoints`
-- **summary**:    Rewards for the last [`Config::HistoryDepth`] eras.  If reward hasn't been set or has been removed then 0 reward is returned. 
- 
-### erasStakersOverview(`u32, AccountId32`): `Option<SpStakingPagedExposureMetadata>`
-- **interface**: `api.query.staking.erasStakersOverview`
-- **summary**:    Summary of validator exposure at a given era. 
-
-   This contains the total stake in support of the validator and their own stake. In addition,  it can also be used to get the number of nominators backing this validator and the number of  exposure pages they are divided into. The page count is useful to determine the number of  pages of rewards that needs to be claimed. 
-
-   This is keyed first by the era index to allow bulk deletion and then the stash account.  Should only be accessed through `Eras`. 
-
-   Is it removed after [`Config::HistoryDepth`] eras.  If stakers hasn't been set or has been removed then empty overview is returned. 
- 
-### erasStakersPaged(`u32, AccountId32, u32`): `Option<PalletStakingAsyncPalletBoundedExposurePage>`
-- **interface**: `api.query.staking.erasStakersPaged`
-- **summary**:    Paginated exposure of a validator at given era. 
-
-   This is keyed first by the era index to allow bulk deletion, then stash account and finally  the page. Should only be accessed through `Eras`. 
-
-   This is cleared after [`Config::HistoryDepth`] eras. 
- 
-### erasTotalStake(`u32`): `u128`
-- **interface**: `api.query.staking.erasTotalStake`
-- **summary**:    The total amount staked for the last [`Config::HistoryDepth`] eras.  If total hasn't been set or has been removed then 0 stake is returned. 
- 
-### erasValidatorPrefs(`u32, AccountId32`): `PalletStakingAsyncValidatorPrefs`
-- **interface**: `api.query.staking.erasValidatorPrefs`
-- **summary**:    Exposure of validator at era with the preferences of validators. 
-
-   This is keyed first by the era index to allow bulk deletion and then the stash account. 
-
-   Is it removed after [`Config::HistoryDepth`] eras. 
- 
-### erasValidatorReward(`u32`): `Option<u128>`
-- **interface**: `api.query.staking.erasValidatorReward`
-- **summary**:    The total validator era payout for the last [`Config::HistoryDepth`] eras. 
-
-   Eras that haven't finished yet or has been removed doesn't have reward. 
- 
-### forceEra(): `PalletStakingAsyncForcing`
-- **interface**: `api.query.staking.forceEra`
-- **summary**:    Mode of era forcing. 
- 
-### invulnerables(): `Vec<AccountId32>`
-- **interface**: `api.query.staking.invulnerables`
-- **summary**:    Any validators that may never be slashed or forcibly kicked. It's a Vec since they're  easy to initialize and the performance hit is minimal (we expect no more than four  invulnerables) and restricted to testnets. 
- 
-### ledger(`AccountId32`): `Option<PalletStakingAsyncLedgerStakingLedger>`
-- **interface**: `api.query.staking.ledger`
-- **summary**:    Map from all (unlocked) "controller" accounts to the info regarding the staking. 
-
-   Note: All the reads and mutations to this storage *MUST* be done through the methods exposed  by [`StakingLedger`] to ensure data and lock consistency. 
- 
-### maxNominatorsCount(): `Option<u32>`
-- **interface**: `api.query.staking.maxNominatorsCount`
-- **summary**:    The maximum nominator count before we stop allowing new validators to join. 
-
-   When this value is not set, no limits are enforced. 
- 
-### maxStakedRewards(): `Option<Percent>`
-- **interface**: `api.query.staking.maxStakedRewards`
-- **summary**:    Maximum staked rewards, i.e. the percentage of the era inflation that  is used for stake rewards.  See [Era payout](./index.html#era-payout). 
- 
-### maxValidatorsCount(): `Option<u32>`
-- **interface**: `api.query.staking.maxValidatorsCount`
-- **summary**:    The maximum validator count before we stop allowing new validators to join. 
-
-   When this value is not set, no limits are enforced. 
- 
-### minCommission(): `Perbill`
-- **interface**: `api.query.staking.minCommission`
-- **summary**:    The minimum amount of commission that validators can set. 
-
-   If set to `0`, no limit exists. 
- 
-### minimumActiveStake(): `u128`
-- **interface**: `api.query.staking.minimumActiveStake`
-- **summary**:    The minimum active nominator stake of the last successful election. 
- 
-### minNominatorBond(): `u128`
-- **interface**: `api.query.staking.minNominatorBond`
-- **summary**:    The minimum active bond to become and maintain the role of a nominator. 
- 
-### minValidatorBond(): `u128`
-- **interface**: `api.query.staking.minValidatorBond`
-- **summary**:    The minimum active bond to become and maintain the role of a validator. 
- 
-### nextElectionPage(): `Option<u32>`
-- **interface**: `api.query.staking.nextElectionPage`
-- **summary**:    Keeps track of an ongoing multi-page election solution request. 
-
-   If `Some(_)``, it is the next page that we intend to elect. If `None`, we are not in the  election process. 
-
-   This is only set in multi-block elections. Should always be `None` otherwise. 
- 
-### nominators(`AccountId32`): `Option<PalletStakingAsyncNominations>`
-- **interface**: `api.query.staking.nominators`
-- **summary**:    The map from nominator stash key to their nomination preferences, namely the validators that  they wish to support. 
-
-   Note that the keys of this storage map might become non-decodable in case the  account's [`NominationsQuota::MaxNominations`] configuration is decreased.  In this rare case, these nominators  are still existent in storage, their key is correct and retrievable (i.e. `contains_key`  indicates that they exist), but their value cannot be decoded. Therefore, the non-decodable  nominators will effectively not-exist, until they re-submit their preferences such that it  is within the bounds of the newly set `Config::MaxNominations`. 
-
-   This implies that `::iter_keys().count()` and `::iter().count()` might return different  values for this map. Moreover, the main `::count()` is aligned with the former, namely the  number of keys that exist. 
-
-   Lastly, if any of the nominators become non-decodable, they can be chilled immediately via  [`Call::chill_other`] dispatchable by anyone. 
-
-   TWOX-NOTE: SAFE since `AccountId` is a secure hash. 
- 
-### offenceQueue(`u32, AccountId32`): `Option<PalletStakingAsyncSlashingOffenceRecord>`
-- **interface**: `api.query.staking.offenceQueue`
-- **summary**:    Stores reported offences in a queue until they are processed in subsequent blocks. 
-
-   Each offence is recorded under the corresponding era index and the offending validator's  account. If an offence spans multiple pages, only one page is processed at a time. Offences  are handled sequentially, with their associated slashes computed and stored in  `UnappliedSlashes`. These slashes are then applied in a future era as determined by  `SlashDeferDuration`. 
-
-   Any offences tied to an era older than `BondingDuration` are automatically dropped.  Processing always prioritizes the oldest era first. 
- 
-### offenceQueueEras(): `Option<Vec<u32>>`
-- **interface**: `api.query.staking.offenceQueueEras`
-- **summary**:    Tracks the eras that contain offences in `OffenceQueue`, sorted from **earliest to latest**. 
-
-   - This ensures efficient retrieval of the oldest offence without iterating through  `OffenceQueue`. 
-
-  - When a new offence is added to `OffenceQueue`, its era is **inserted in sorted order** if not already present. 
-
-  - When all offences for an era are processed, it is **removed** from this list.
-
-  - The maximum length of this vector is bounded by `BondingDuration`.
-
-   This eliminates the need for expensive iteration and sorting when fetching the next offence  to process. 
- 
-### payee(`AccountId32`): `Option<PalletStakingAsyncRewardDestination>`
-- **interface**: `api.query.staking.payee`
-- **summary**:    Where the reward payment should be made. Keyed by stash. 
-
-   TWOX-NOTE: SAFE since `AccountId` is a secure hash. 
- 
-### processingOffence(): `Option<(u32,AccountId32,PalletStakingAsyncSlashingOffenceRecord)>`
-- **interface**: `api.query.staking.processingOffence`
-- **summary**:    Tracks the currently processed offence record from the `OffenceQueue`. 
-
-   - When processing offences, an offence record is **popped** from the oldest era in  `OffenceQueue` and stored here. 
-
-  - The function `process_offence` reads from this storage, processing one page of exposure at a time. 
-
-  - After processing a page, the `exposure_page` count is **decremented** until it reaches zero. 
-
-  - Once fully processed, the offence record is removed from this storage.
-
-   This ensures that offences are processed incrementally, preventing excessive computation  in a single block while maintaining correct slashing behavior. 
- 
-### slashRewardFraction(): `Perbill`
-- **interface**: `api.query.staking.slashRewardFraction`
-- **summary**:    The percentage of the slash that is distributed to reporters. 
-
-   The rest of the slashed value is handled by the `Slash`. 
- 
-### unappliedSlashes(`u32, (AccountId32,Perbill,u32)`): `Option<PalletStakingAsyncUnappliedSlash>`
-- **interface**: `api.query.staking.unappliedSlashes`
-- **summary**:    All unapplied slashes that are queued for later. 
- 
-### validatorCount(): `u32`
-- **interface**: `api.query.staking.validatorCount`
-- **summary**:    The ideal number of active validators. 
- 
-### validators(`AccountId32`): `PalletStakingAsyncValidatorPrefs`
-- **interface**: `api.query.staking.validators`
-- **summary**:    The map from (wannabe) validator stash key to the preferences of that validator. 
-
-   TWOX-NOTE: SAFE since `AccountId` is a secure hash. 
- 
-### validatorSlashInEra(`u32, AccountId32`): `Option<(Perbill,u128)>`
-- **interface**: `api.query.staking.validatorSlashInEra`
-- **summary**:    All slashing events on validators, mapped by era to the highest slash proportion  and slash value of the era. 
- 
-### virtualStakers(`AccountId32`): `Option<Null>`
-- **interface**: `api.query.staking.virtualStakers`
-- **summary**:    Stakers whose funds are managed by other pallets. 
-
-   This pallet does not apply any locks on them, therefore they are only virtually bonded. They  are expected to be keyless accounts and hence should not be allowed to mutate their ledger  directly via this pallet. Instead, these accounts are managed by other pallets and accessed  via low level apis. We keep track of them to do minimal integrity checks. 
- 
-### voterSnapshotStatus(): `PalletStakingAsyncSnapshotStatus`
-- **interface**: `api.query.staking.voterSnapshotStatus`
-- **summary**:    Voter snapshot progress status. 
-
-   If the status is `Ongoing`, it keeps a cursor of the last voter retrieved to proceed when  creating the next snapshot page. 
-
-___
-
-
-## stakingRcClient
- 
-### incompleteSessionReport(): `Option<PalletStakingAsyncRcClientSessionReport>`
-- **interface**: `api.query.stakingRcClient.incompleteSessionReport`
-- **summary**:    An incomplete incoming session report that we have not acted upon yet. 
- 
-### lastSessionReportEndingIndex(): `Option<u32>`
-- **interface**: `api.query.stakingRcClient.lastSessionReportEndingIndex`
-- **summary**:    The last session report's `end_index` that we have acted upon. 
-
-   This allows this pallet to ensure a sequentially increasing sequence of session reports  passed to staking. 
-
-   Note that with the XCM being the backbone of communication, we have a guarantee on the  ordering of messages. As long as the RC sends session reports in order, we _eventually_  receive them in the same correct order as well. 
- 
-### outgoingValidatorSet(): `Option<(PalletStakingAsyncRcClientValidatorSetReport,u32)>`
-- **interface**: `api.query.stakingRcClient.outgoingValidatorSet`
-- **summary**:    A validator set that is outgoing, and should be sent. 
-
-   This will be attempted to be sent, possibly on every `on_initialize` call, until it is sent,  or the second value reaches zero, at which point we drop it. 
 
 ___
 
@@ -1890,45 +897,6 @@ ___
 ___
 
 
-## treasury
- 
-### approvals(): `Vec<u32>`
-- **interface**: `api.query.treasury.approvals`
-- **summary**:    DEPRECATED: associated with `spend_local` call and will be removed in May 2025.  Refer to <https://github.com/paritytech/polkadot-sdk/pull/5961> for migration to `spend`. 
-
-   Proposal indices that have been approved but not yet awarded. 
- 
-### deactivated(): `u128`
-- **interface**: `api.query.treasury.deactivated`
-- **summary**:    The amount which has been reported as inactive to Currency. 
- 
-### lastSpendPeriod(): `Option<u32>`
-- **interface**: `api.query.treasury.lastSpendPeriod`
-- **summary**:    The blocknumber for the last triggered spend period. 
- 
-### proposalCount(): `u32`
-- **interface**: `api.query.treasury.proposalCount`
-- **summary**:    DEPRECATED: associated with `spend_local` call and will be removed in May 2025.  Refer to <https://github.com/paritytech/polkadot-sdk/pull/5961> for migration to `spend`. 
-
-   Number of proposals that have been made. 
- 
-### proposals(`u32`): `Option<PalletTreasuryProposal>`
-- **interface**: `api.query.treasury.proposals`
-- **summary**:    DEPRECATED: associated with `spend_local` call and will be removed in May 2025.  Refer to <https://github.com/paritytech/polkadot-sdk/pull/5961> for migration to `spend`. 
-
-   Proposals that have been made. 
- 
-### spendCount(): `u32`
-- **interface**: `api.query.treasury.spendCount`
-- **summary**:    The count of spends that have been made. 
- 
-### spends(`u32`): `Option<PalletTreasurySpendStatus>`
-- **interface**: `api.query.treasury.spends`
-- **summary**:    Spends that have been approved and being processed. 
-
-___
-
-
 ## uniques
  
 ### account(`AccountId32, u32, u32`): `Option<Null>`
@@ -1985,45 +953,6 @@ ___
 ### vesting(`AccountId32`): `Option<Vec<PalletVestingVestingInfo>>`
 - **interface**: `api.query.vesting.vesting`
 - **summary**:    Information regarding the vesting of a given account. 
-
-___
-
-
-## voterList
- 
-### counterForListNodes(): `u32`
-- **interface**: `api.query.voterList.counterForListNodes`
-- **summary**:    Counter for the related counted storage map 
- 
-### listBags(`u64`): `Option<PalletBagsListListBag>`
-- **interface**: `api.query.voterList.listBags`
-- **summary**:    A bag stored in storage. 
-
-   Stores a `Bag` struct, which stores head and tail pointers to itself. 
- 
-### listNodes(`AccountId32`): `Option<PalletBagsListListNode>`
-- **interface**: `api.query.voterList.listNodes`
-- **summary**:    A single node, within some bag. 
-
-   Nodes store links forward and back within their respective bags. 
- 
-### lock(): `Option<Null>`
-- **interface**: `api.query.voterList.lock`
-- **summary**:    Lock all updates to this pallet. 
-
-   If any nodes needs updating, removal or addition due to a temporary lock, the  [`Call::rebag`] can be used. 
- 
-### nextNodeAutoRebagged(): `Option<AccountId32>`
-- **interface**: `api.query.voterList.nextNodeAutoRebagged`
-- **summary**:    Pointer that remembers the next node that will be auto-rebagged.  When `None`, the next scan will start from the list head again. 
-
-___
-
-
-## whitelist
- 
-### whitelistedCall(`H256`): `Option<Null>`
-- **interface**: `api.query.whitelist.whitelistedCall`
 
 ___
 

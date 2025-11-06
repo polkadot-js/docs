@@ -6,45 +6,19 @@ The following sections contain Extrinsics methods are part of the default asset-
 
 (NOTE: These were generated from a static/snapshot view of a recent default asset-hub-kusama runtime. Some items may not be available in older nodes, or in any customized implementations.)
 
-- **[ahMigrator](#ahmigrator)**
-
-- **[ahOps](#ahops)**
-
 - **[assetConversion](#assetconversion)**
-
-- **[assetRate](#assetrate)**
 
 - **[assets](#assets)**
 
 - **[balances](#balances)**
 
-- **[bounties](#bounties)**
-
-- **[childBounties](#childbounties)**
-
-- **[claims](#claims)**
-
 - **[collatorSelection](#collatorselection)**
-
-- **[convictionVoting](#convictionvoting)**
 
 - **[cumulusXcm](#cumulusxcm)**
 
 - **[foreignAssets](#foreignassets)**
 
-- **[indices](#indices)**
-
 - **[messageQueue](#messagequeue)**
-
-- **[multiBlockElection](#multiblockelection)**
-
-- **[multiBlockElectionSigned](#multiblockelectionsigned)**
-
-- **[multiBlockElectionUnsigned](#multiblockelectionunsigned)**
-
-- **[multiBlockElectionVerifier](#multiblockelectionverifier)**
-
-- **[multiBlockMigrations](#multiblockmigrations)**
 
 - **[multisig](#multisig)**
 
@@ -52,39 +26,21 @@ The following sections contain Extrinsics methods are part of the default asset-
 
 - **[nfts](#nfts)**
 
-- **[nominationPools](#nominationpools)**
-
 - **[parachainInfo](#parachaininfo)**
 
 - **[parachainSystem](#parachainsystem)**
-
-- **[parameters](#parameters)**
 
 - **[polkadotXcm](#polkadotxcm)**
 
 - **[poolAssets](#poolassets)**
 
-- **[preimage](#preimage)**
-
 - **[proxy](#proxy)**
-
-- **[recovery](#recovery)**
-
-- **[referenda](#referenda)**
 
 - **[remoteProxyRelayChain](#remoteproxyrelaychain)**
 
 - **[revive](#revive)**
 
-- **[scheduler](#scheduler)**
-
 - **[session](#session)**
-
-- **[society](#society)**
-
-- **[staking](#staking)**
-
-- **[stakingRcClient](#stakingrcclient)**
 
 - **[stateTrieMigration](#statetriemigration)**
 
@@ -94,17 +50,11 @@ The following sections contain Extrinsics methods are part of the default asset-
 
 - **[toPolkadotXcmRouter](#topolkadotxcmrouter)**
 
-- **[treasury](#treasury)**
-
 - **[uniques](#uniques)**
 
 - **[utility](#utility)**
 
 - **[vesting](#vesting)**
-
-- **[voterList](#voterlist)**
-
-- **[whitelist](#whitelist)**
 
 - **[xcmpQueue](#xcmpqueue)**
 
@@ -112,184 +62,9 @@ The following sections contain Extrinsics methods are part of the default asset-
 ___
 
 
-## ahMigrator
- 
-### finishMigration(data: `Option<PalletRcMigratorMigrationFinishedData>`)
-- **interface**: `api.tx.ahMigrator.finishMigration`
-- **summary**:    Finish the migration. 
-
-   This is typically called by the Relay Chain to signal the migration has finished. 
-
-   The `data` parameter might be `None` if we are running the migration for a second time  for some pallets and have already performed the checking account balance correction,  so we do not need to do it this time. 
- 
-### forceSetStage(stage: `PalletAhMigratorMigrationStage`)
-- **interface**: `api.tx.ahMigrator.forceSetStage`
-- **summary**:    Set the migration stage. 
-
-   This call is intended for emergency use only and is guarded by the  [`Config::AdminOrigin`]. 
- 
-### receiveAccounts(accounts: `Vec<PalletRcMigratorAccountsAccount>`)
-- **interface**: `api.tx.ahMigrator.receiveAccounts`
-- **summary**:    Receive accounts from the Relay Chain. 
-
-   The accounts sent with `pallet_rc_migrator::Pallet::migrate_accounts` function. 
- 
-### receiveAssetRates(rates: `Vec<(PolkadotRuntimeCommonImplsVersionedLocatableAsset,u128)>`)
-- **interface**: `api.tx.ahMigrator.receiveAssetRates`
- 
-### receiveBagsListMessages(messages: `Vec<PalletRcMigratorStakingBagsListPortableBagsListMessage>`)
-- **interface**: `api.tx.ahMigrator.receiveBagsListMessages`
- 
-### receiveBountiesMessages(messages: `Vec<PalletRcMigratorBountiesRcBountiesMessage>`)
-- **interface**: `api.tx.ahMigrator.receiveBountiesMessages`
- 
-### receiveChildBountiesMessages(messages: `Vec<PalletRcMigratorChildBountiesPortableChildBountiesMessage>`)
-- **interface**: `api.tx.ahMigrator.receiveChildBountiesMessages`
- 
-### receiveClaims(messages: `Vec<PalletRcMigratorClaimsRcClaimsMessage>`)
-- **interface**: `api.tx.ahMigrator.receiveClaims`
- 
-### receiveConvictionVotingMessages(messages: `Vec<PalletRcMigratorConvictionVotingRcConvictionVotingMessage>`)
-- **interface**: `api.tx.ahMigrator.receiveConvictionVotingMessages`
- 
-### receiveCrowdloanMessages(messages: `Vec<PalletRcMigratorCrowdloanRcCrowdloanMessage>`)
-- **interface**: `api.tx.ahMigrator.receiveCrowdloanMessages`
- 
-### receiveDelegatedStakingMessages(messages: `Vec<PalletRcMigratorStakingDelegatedStakingPortableDelegatedStakingMessage>`)
-- **interface**: `api.tx.ahMigrator.receiveDelegatedStakingMessages`
- 
-### receiveIndices(indices: `Vec<PalletRcMigratorIndicesRcIndicesIndex>`)
-- **interface**: `api.tx.ahMigrator.receiveIndices`
- 
-### receiveMultisigs(accounts: `Vec<PalletRcMigratorMultisigRcMultisig>`)
-- **interface**: `api.tx.ahMigrator.receiveMultisigs`
-- **summary**:    Receive multisigs from the Relay Chain. 
-
-   This will be called from an XCM `Transact` inside a DMP from the relay chain. The  multisigs were prepared by  `pallet_rc_migrator::multisig::MultisigMigrator::migrate_many`. 
- 
-### receiveNomPoolsMessages(messages: `Vec<PalletRcMigratorStakingNomPoolsRcNomPoolsMessage>`)
-- **interface**: `api.tx.ahMigrator.receiveNomPoolsMessages`
- 
-### receivePreimageChunks(chunks: `Vec<PalletRcMigratorPreimageChunksRcPreimageChunk>`)
-- **interface**: `api.tx.ahMigrator.receivePreimageChunks`
- 
-### receivePreimageLegacyStatus(legacy_status: `Vec<PalletRcMigratorPreimageLegacyRequestStatusRcPreimageLegacyStatus>`)
-- **interface**: `api.tx.ahMigrator.receivePreimageLegacyStatus`
- 
-### receivePreimageRequestStatus(request_status: `Vec<PalletRcMigratorPreimageRequestStatusPortableRequestStatus>`)
-- **interface**: `api.tx.ahMigrator.receivePreimageRequestStatus`
- 
-### receiveProxyAnnouncements(announcements: `Vec<PalletRcMigratorProxyRcProxyAnnouncement>`)
-- **interface**: `api.tx.ahMigrator.receiveProxyAnnouncements`
-- **summary**:    Receive proxy announcements from the Relay Chain. 
- 
-### receiveProxyProxies(proxies: `Vec<PalletRcMigratorProxyRcProxy>`)
-- **interface**: `api.tx.ahMigrator.receiveProxyProxies`
-- **summary**:    Receive proxies from the Relay Chain. 
- 
-### receiveRecoveryMessages(messages: `Vec<PalletRcMigratorRecoveryPortableRecoveryMessage>`)
-- **interface**: `api.tx.ahMigrator.receiveRecoveryMessages`
- 
-### receiveReferendaMetadata(metadata: `Vec<(u32,H256)>`)
-- **interface**: `api.tx.ahMigrator.receiveReferendaMetadata`
- 
-### receiveReferendaValues(values: `Vec<PalletRcMigratorReferendaReferendaMessage>`)
-- **interface**: `api.tx.ahMigrator.receiveReferendaValues`
-- **summary**:    Receive referendum counts, deciding counts, votes for the track queue. 
- 
-### receiveReferendums(referendums: `Vec<(u32,PalletReferendaReferendumInfoRcPalletsOrigin)>`)
-- **interface**: `api.tx.ahMigrator.receiveReferendums`
-- **summary**:    Receive referendums from the Relay Chain. 
- 
-### receiveSchedulerAgendaMessages(messages: `Vec<PalletRcMigratorSchedulerSchedulerAgendaMessage>`)
-- **interface**: `api.tx.ahMigrator.receiveSchedulerAgendaMessages`
- 
-### receiveSchedulerMessages(messages: `Vec<PalletRcMigratorSchedulerRcSchedulerMessage>`)
-- **interface**: `api.tx.ahMigrator.receiveSchedulerMessages`
- 
-### receiveSocietyMessages(messages: `Vec<PalletRcMigratorSocietyPortableSocietyMessage>`)
-- **interface**: `api.tx.ahMigrator.receiveSocietyMessages`
- 
-### receiveStakingMessages(messages: `Vec<PalletRcMigratorStakingMessagePortableStakingMessage>`)
-- **interface**: `api.tx.ahMigrator.receiveStakingMessages`
- 
-### receiveTreasuryMessages(messages: `Vec<PalletRcMigratorTreasuryPortableTreasuryMessage>`)
-- **interface**: `api.tx.ahMigrator.receiveTreasuryMessages`
- 
-### receiveVestingSchedules(schedules: `Vec<PalletRcMigratorVestingRcVestingSchedule>`)
-- **interface**: `api.tx.ahMigrator.receiveVestingSchedules`
- 
-### sendXcmMessage(dest: `XcmVersionedLocation`, message: `XcmVersionedXcm`)
-- **interface**: `api.tx.ahMigrator.sendXcmMessage`
-- **summary**:    XCM send call identical to the [`pallet_xcm::Pallet::send`] call but with the  [Config::SendXcm] router which will be able to send messages to the Relay Chain during  the migration. 
- 
-### setDmpQueuePriority(new: `PalletRcMigratorQueuePriority`)
-- **interface**: `api.tx.ahMigrator.setDmpQueuePriority`
-- **summary**:    Set the DMP queue priority configuration. 
-
-   Can only be called by the `AdminOrigin`. 
- 
-### setManager(new: `Option<AccountId32>`)
-- **interface**: `api.tx.ahMigrator.setManager`
-- **summary**:    Set the manager account id. 
-
-   The manager has the similar to [`Config::AdminOrigin`] privileges except that it  can not set the manager account id via `set_manager` call. 
- 
-### startMigration()
-- **interface**: `api.tx.ahMigrator.startMigration`
-- **summary**:    Start the data migration. 
-
-   This is typically called by the Relay Chain to start the migration on the Asset Hub and  receive a handshake message indicating the Asset Hub's readiness. 
-
-___
-
-
-## ahOps
- 
-### transferToPostMigrationTreasury(asset_id: `StagingXcmV5Location`)
-- **interface**: `api.tx.ahOps.transferToPostMigrationTreasury`
-- **summary**:    Transfer the balance from the pre-migration treasury account to the post-migration  treasury account. 
-
-   This call can only be called after the migration is completed. 
- 
-### unreserveCrowdloanReserve(block: `u32`, depositor: `Option<AccountId32>`, para_id: `u32`)
-- **interface**: `api.tx.ahOps.unreserveCrowdloanReserve`
-- **summary**:    Unreserve the deposit that was taken for creating a crowdloan. 
-
-   This can be called once either: 
-
-  - The crowdloan failed to win an auction and timed out
-
-  - Won an auction, all leases expired and all contributions are withdrawn
-
-   Can be called by any signed origin. The condition that all contributions are withdrawn  is in place since the reserve acts as a storage deposit. 
- 
-### unreserveLeaseDeposit(block: `u32`, depositor: `Option<AccountId32>`, para_id: `u32`)
-- **interface**: `api.tx.ahOps.unreserveLeaseDeposit`
-- **summary**:    Unreserve the deposit that was taken for creating a crowdloan. 
-
-   This can be called by any signed origin. It unreserves the lease deposit on the account  that won the lease auction. It can be unreserved once all leases expired. Note that it  will be called automatically from `withdraw_crowdloan_contribution` for the matching  crowdloan account. 
-
-   Solo bidder accounts that won lease auctions can use this to unreserve their amount. 
- 
-### withdrawCrowdloanContribution(block: `u32`, depositor: `Option<AccountId32>`, para_id: `u32`)
-- **interface**: `api.tx.ahOps.withdrawCrowdloanContribution`
-- **summary**:    Withdraw the contribution of a finished crowdloan. 
-
-   A crowdloan contribution can be withdrawn if either: 
-
-  - The crowdloan failed to in an auction and timed out
-
-  - Won an auction and all leases expired
-
-   Can be called by any signed origin. 
-
-___
-
-
 ## assetConversion
  
-### addLiquidity(asset1: `StagingXcmV5Location`, asset2: `StagingXcmV5Location`, amount1_desired: `u128`, amount2_desired: `u128`, amount1_min: `u128`, amount2_min: `u128`, mint_to: `AccountId32`)
+### addLiquidity(asset1: `StagingXcmV4Location`, asset2: `StagingXcmV4Location`, amount1_desired: `u128`, amount2_desired: `u128`, amount1_min: `u128`, amount2_min: `u128`, mint_to: `AccountId32`)
 - **interface**: `api.tx.assetConversion.addLiquidity`
 - **summary**:    Provide liquidity into the pool of `asset1` and `asset2`.  NOTE: an optimal amount of asset1 and asset2 will be calculated and  might be different than the provided `amount1_desired`/`amount2_desired`  thus you should provide the min amount you're happy to provide.  Params `amount1_min`/`amount2_min` represent that.  `mint_to` will be sent the liquidity tokens that represent this share of the pool. 
 
@@ -297,29 +72,29 @@ ___
 
    Once liquidity is added, someone may successfully call  [`Pallet::swap_exact_tokens_for_tokens`]. 
  
-### createPool(asset1: `StagingXcmV5Location`, asset2: `StagingXcmV5Location`)
+### createPool(asset1: `StagingXcmV4Location`, asset2: `StagingXcmV4Location`)
 - **interface**: `api.tx.assetConversion.createPool`
 - **summary**:    Creates an empty liquidity pool and an associated new `lp_token` asset  (the id of which is returned in the `Event::PoolCreated` event). 
 
    Once a pool is created, someone may [`Pallet::add_liquidity`] to it. 
  
-### removeLiquidity(asset1: `StagingXcmV5Location`, asset2: `StagingXcmV5Location`, lp_token_burn: `u128`, amount1_min_receive: `u128`, amount2_min_receive: `u128`, withdraw_to: `AccountId32`)
+### removeLiquidity(asset1: `StagingXcmV4Location`, asset2: `StagingXcmV4Location`, lp_token_burn: `u128`, amount1_min_receive: `u128`, amount2_min_receive: `u128`, withdraw_to: `AccountId32`)
 - **interface**: `api.tx.assetConversion.removeLiquidity`
 - **summary**:    Allows you to remove liquidity by providing the `lp_token_burn` tokens that will be  burned in the process. With the usage of `amount1_min_receive`/`amount2_min_receive`  it's possible to control the min amount of returned tokens you're happy with. 
  
-### swapExactTokensForTokens(path: `Vec<StagingXcmV5Location>`, amount_in: `u128`, amount_out_min: `u128`, send_to: `AccountId32`, keep_alive: `bool`)
+### swapExactTokensForTokens(path: `Vec<StagingXcmV4Location>`, amount_in: `u128`, amount_out_min: `u128`, send_to: `AccountId32`, keep_alive: `bool`)
 - **interface**: `api.tx.assetConversion.swapExactTokensForTokens`
 - **summary**:    Swap the exact amount of `asset1` into `asset2`.  `amount_out_min` param allows you to specify the min amount of the `asset2`  you're happy to receive. 
 
    [`AssetConversionApi::quote_price_exact_tokens_for_tokens`] runtime call can be called  for a quote. 
  
-### swapTokensForExactTokens(path: `Vec<StagingXcmV5Location>`, amount_out: `u128`, amount_in_max: `u128`, send_to: `AccountId32`, keep_alive: `bool`)
+### swapTokensForExactTokens(path: `Vec<StagingXcmV4Location>`, amount_out: `u128`, amount_in_max: `u128`, send_to: `AccountId32`, keep_alive: `bool`)
 - **interface**: `api.tx.assetConversion.swapTokensForExactTokens`
 - **summary**:    Swap any amount of `asset1` to get the exact amount of `asset2`.  `amount_in_max` param allows to specify the max amount of the `asset1`  you're happy to provide. 
 
    [`AssetConversionApi::quote_price_tokens_for_exact_tokens`] runtime call can be called  for a quote. 
  
-### touch(asset1: `StagingXcmV5Location`, asset2: `StagingXcmV5Location`)
+### touch(asset1: `StagingXcmV4Location`, asset2: `StagingXcmV4Location`)
 - **interface**: `api.tx.assetConversion.touch`
 - **summary**:    Touch an existing pool to fulfill prerequisites before providing liquidity, such as  ensuring that the pool's accounts are in place. It is typically useful when a pool  creator removes the pool's accounts and does not provide a liquidity. This action may  involve holding assets from the caller as a deposit for creating the pool's accounts. 
 
@@ -330,35 +105,6 @@ ___
   - `asset2`: The asset ID of an existing pool with a pair (asset1, asset2).
 
    Emits `Touched` event when successful. 
-
-___
-
-
-## assetRate
- 
-### create(asset_kind: `PolkadotRuntimeCommonImplsVersionedLocatableAsset`, rate: `u128`)
-- **interface**: `api.tx.assetRate.create`
-- **summary**:    Initialize a conversion rate to native balance for the given asset. 
-
-   #### Complexity 
-
-  - O(1)
- 
-### remove(asset_kind: `PolkadotRuntimeCommonImplsVersionedLocatableAsset`)
-- **interface**: `api.tx.assetRate.remove`
-- **summary**:    Remove an existing conversion rate to native balance for the given asset. 
-
-   #### Complexity 
-
-  - O(1)
- 
-### update(asset_kind: `PolkadotRuntimeCommonImplsVersionedLocatableAsset`, rate: `u128`)
-- **interface**: `api.tx.assetRate.update`
-- **summary**:    Update the conversion rate to native balance for the given asset. 
-
-   #### Complexity 
-
-  - O(1)
 
 ___
 
@@ -961,372 +707,6 @@ ___
 ___
 
 
-## bounties
- 
-### acceptCurator(bounty_id: `Compact<u32>`)
-- **interface**: `api.tx.bounties.acceptCurator`
-- **summary**:    Accept the curator role for a bounty.  A deposit will be reserved from curator and refund upon successful payout. 
-
-   May only be called from the curator. 
-
-   #### Complexity 
-
-  - O(1).
- 
-### approveBounty(bounty_id: `Compact<u32>`)
-- **interface**: `api.tx.bounties.approveBounty`
-- **summary**:    Approve a bounty proposal. At a later time, the bounty will be funded and become active  and the original deposit will be returned. 
-
-   May only be called from `T::SpendOrigin`. 
-
-   #### Complexity 
-
-  - O(1).
- 
-### approveBountyWithCurator(bounty_id: `Compact<u32>`, curator: `MultiAddress`, fee: `Compact<u128>`)
-- **interface**: `api.tx.bounties.approveBountyWithCurator`
-- **summary**:    Approve bountry and propose a curator simultaneously.  This call is a shortcut to calling `approve_bounty` and `propose_curator` separately. 
-
-   May only be called from `T::SpendOrigin`. 
-
-   - `bounty_id`: Bounty ID to approve. 
-
-  - `curator`: The curator account whom will manage this bounty.
-
-  - `fee`: The curator fee.
-
-   #### Complexity 
-
-  - O(1).
- 
-### awardBounty(bounty_id: `Compact<u32>`, beneficiary: `MultiAddress`)
-- **interface**: `api.tx.bounties.awardBounty`
-- **summary**:    Award bounty to a beneficiary account. The beneficiary will be able to claim the funds  after a delay. 
-
-   The dispatch origin for this call must be the curator of this bounty. 
-
-   - `bounty_id`: Bounty ID to award. 
-
-  - `beneficiary`: The beneficiary account whom will receive the payout.
-
-   #### Complexity 
-
-  - O(1).
- 
-### claimBounty(bounty_id: `Compact<u32>`)
-- **interface**: `api.tx.bounties.claimBounty`
-- **summary**:    Claim the payout from an awarded bounty after payout delay. 
-
-   The dispatch origin for this call must be the beneficiary of this bounty. 
-
-   - `bounty_id`: Bounty ID to claim. 
-
-   #### Complexity 
-
-  - O(1).
- 
-### closeBounty(bounty_id: `Compact<u32>`)
-- **interface**: `api.tx.bounties.closeBounty`
-- **summary**:    Cancel a proposed or active bounty. All the funds will be sent to treasury and  the curator deposit will be unreserved if possible. 
-
-   Only `T::RejectOrigin` is able to cancel a bounty. 
-
-   - `bounty_id`: Bounty ID to cancel. 
-
-   #### Complexity 
-
-  - O(1).
- 
-### extendBountyExpiry(bounty_id: `Compact<u32>`, remark: `Bytes`)
-- **interface**: `api.tx.bounties.extendBountyExpiry`
-- **summary**:    Extend the expiry time of an active bounty. 
-
-   The dispatch origin for this call must be the curator of this bounty. 
-
-   - `bounty_id`: Bounty ID to extend. 
-
-  - `remark`: additional information.
-
-   #### Complexity 
-
-  - O(1).
- 
-### pokeDeposit(bounty_id: `Compact<u32>`)
-- **interface**: `api.tx.bounties.pokeDeposit`
-- **summary**:    Poke the deposit reserved for creating a bounty proposal. 
-
-   This can be used by accounts to update their reserved amount. 
-
-   The dispatch origin for this call must be _Signed_. 
-
-   Parameters: 
-
-  - `bounty_id`: The bounty id for which to adjust the deposit.
-
-   If the deposit is updated, the difference will be reserved/unreserved from the  proposer's account. 
-
-   The transaction is made free if the deposit is updated and paid otherwise. 
-
-   Emits `DepositPoked` if the deposit is updated. 
- 
-### proposeBounty(value: `Compact<u128>`, description: `Bytes`)
-- **interface**: `api.tx.bounties.proposeBounty`
-- **summary**:    Propose a new bounty. 
-
-   The dispatch origin for this call must be _Signed_. 
-
-   Payment: `TipReportDepositBase` will be reserved from the origin account, as well as  `DataDepositPerByte` for each byte in `reason`. It will be unreserved upon approval,  or slashed when rejected. 
-
-   - `curator`: The curator account whom will manage this bounty. 
-
-  - `fee`: The curator fee.
-
-  - `value`: The total payment amount of this bounty, curator fee included.
-
-  - `description`: The description of this bounty.
- 
-### proposeCurator(bounty_id: `Compact<u32>`, curator: `MultiAddress`, fee: `Compact<u128>`)
-- **interface**: `api.tx.bounties.proposeCurator`
-- **summary**:    Propose a curator to a funded bounty. 
-
-   May only be called from `T::SpendOrigin`. 
-
-   #### Complexity 
-
-  - O(1).
- 
-### unassignCurator(bounty_id: `Compact<u32>`)
-- **interface**: `api.tx.bounties.unassignCurator`
-- **summary**:    Unassign curator from a bounty. 
-
-   This function can only be called by the `RejectOrigin` a signed origin. 
-
-   If this function is called by the `RejectOrigin`, we assume that the curator is  malicious or inactive. As a result, we will slash the curator when possible. 
-
-   If the origin is the curator, we take this as a sign they are unable to do their job and  they willingly give up. We could slash them, but for now we allow them to recover their  deposit and exit without issue. (We may want to change this if it is abused.) 
-
-   Finally, the origin can be anyone if and only if the curator is "inactive". This allows  anyone in the community to call out that a curator is not doing their due diligence, and  we should pick a new curator. In this case the curator should also be slashed. 
-
-   #### Complexity 
-
-  - O(1).
-
-___
-
-
-## childBounties
- 
-### acceptCurator(parent_bounty_id: `Compact<u32>`, child_bounty_id: `Compact<u32>`)
-- **interface**: `api.tx.childBounties.acceptCurator`
-- **summary**:    Accept the curator role for the child-bounty. 
-
-   The dispatch origin for this call must be the curator of this  child-bounty. 
-
-   A deposit will be reserved from the curator and refund upon  successful payout or cancellation. 
-
-   Fee for curator is deducted from curator fee of parent bounty. 
-
-   Parent bounty must be in active state, for this child-bounty call to  work. 
-
-   Child-bounty must be in "CuratorProposed" state, for processing the  call. And state of child-bounty is moved to "Active" on successful  call completion. 
-
-   - `parent_bounty_id`: Index of parent bounty. 
-
-  - `child_bounty_id`: Index of child bounty.
- 
-### addChildBounty(parent_bounty_id: `Compact<u32>`, value: `Compact<u128>`, description: `Bytes`)
-- **interface**: `api.tx.childBounties.addChildBounty`
-- **summary**:    Add a new child-bounty. 
-
-   The dispatch origin for this call must be the curator of parent  bounty and the parent bounty must be in "active" state. 
-
-   Child-bounty gets added successfully & fund gets transferred from  parent bounty to child-bounty account, if parent bounty has enough  funds, else the call fails. 
-
-   Upper bound to maximum number of active  child bounties that can be  added are managed via runtime trait config  [`Config::MaxActiveChildBountyCount`]. 
-
-   If the call is success, the status of child-bounty is updated to  "Added". 
-
-   - `parent_bounty_id`: Index of parent bounty for which child-bounty is being added. 
-
-  - `value`: Value for executing the proposal.
-
-  - `description`: Text description for the child-bounty.
- 
-### awardChildBounty(parent_bounty_id: `Compact<u32>`, child_bounty_id: `Compact<u32>`, beneficiary: `MultiAddress`)
-- **interface**: `api.tx.childBounties.awardChildBounty`
-- **summary**:    Award child-bounty to a beneficiary. 
-
-   The beneficiary will be able to claim the funds after a delay. 
-
-   The dispatch origin for this call must be the parent curator or  curator of this child-bounty. 
-
-   Parent bounty must be in active state, for this child-bounty call to  work. 
-
-   Child-bounty must be in active state, for processing the call. And  state of child-bounty is moved to "PendingPayout" on successful call  completion. 
-
-   - `parent_bounty_id`: Index of parent bounty. 
-
-  - `child_bounty_id`: Index of child bounty.
-
-  - `beneficiary`: Beneficiary account.
- 
-### claimChildBounty(parent_bounty_id: `Compact<u32>`, child_bounty_id: `Compact<u32>`)
-- **interface**: `api.tx.childBounties.claimChildBounty`
-- **summary**:    Claim the payout from an awarded child-bounty after payout delay. 
-
-   The dispatch origin for this call may be any signed origin. 
-
-   Call works independent of parent bounty state, No need for parent  bounty to be in active state. 
-
-   The Beneficiary is paid out with agreed bounty value. Curator fee is  paid & curator deposit is unreserved. 
-
-   Child-bounty must be in "PendingPayout" state, for processing the  call. And instance of child-bounty is removed from the state on  successful call completion. 
-
-   - `parent_bounty_id`: Index of parent bounty. 
-
-  - `child_bounty_id`: Index of child bounty.
- 
-### closeChildBounty(parent_bounty_id: `Compact<u32>`, child_bounty_id: `Compact<u32>`)
-- **interface**: `api.tx.childBounties.closeChildBounty`
-- **summary**:    Cancel a proposed or active child-bounty. Child-bounty account funds  are transferred to parent bounty account. The child-bounty curator  deposit may be unreserved if possible. 
-
-   The dispatch origin for this call must be either parent curator or  `T::RejectOrigin`. 
-
-   If the state of child-bounty is `Active`, curator deposit is  unreserved. 
-
-   If the state of child-bounty is `PendingPayout`, call fails &  returns `PendingPayout` error. 
-
-   For the origin other than T::RejectOrigin, parent bounty must be in  active state, for this child-bounty call to work. For origin  T::RejectOrigin execution is forced. 
-
-   Instance of child-bounty is removed from the state on successful  call completion. 
-
-   - `parent_bounty_id`: Index of parent bounty. 
-
-  - `child_bounty_id`: Index of child bounty.
- 
-### proposeCurator(parent_bounty_id: `Compact<u32>`, child_bounty_id: `Compact<u32>`, curator: `MultiAddress`, fee: `Compact<u128>`)
-- **interface**: `api.tx.childBounties.proposeCurator`
-- **summary**:    Propose curator for funded child-bounty. 
-
-   The dispatch origin for this call must be curator of parent bounty. 
-
-   Parent bounty must be in active state, for this child-bounty call to  work. 
-
-   Child-bounty must be in "Added" state, for processing the call. And  state of child-bounty is moved to "CuratorProposed" on successful  call completion. 
-
-   - `parent_bounty_id`: Index of parent bounty. 
-
-  - `child_bounty_id`: Index of child bounty.
-
-  - `curator`: Address of child-bounty curator.
-
-  - `fee`: payment fee to child-bounty curator for execution.
- 
-### unassignCurator(parent_bounty_id: `Compact<u32>`, child_bounty_id: `Compact<u32>`)
-- **interface**: `api.tx.childBounties.unassignCurator`
-- **summary**:    Unassign curator from a child-bounty. 
-
-   The dispatch origin for this call can be either `RejectOrigin`, or  the curator of the parent bounty, or any signed origin. 
-
-   For the origin other than T::RejectOrigin and the child-bounty  curator, parent bounty must be in active state, for this call to  work. We allow child-bounty curator and T::RejectOrigin to execute  this call irrespective of the parent bounty state. 
-
-   If this function is called by the `RejectOrigin` or the  parent bounty curator, we assume that the child-bounty curator is  malicious or inactive. As a result, child-bounty curator deposit is  slashed. 
-
-   If the origin is the child-bounty curator, we take this as a sign  that they are unable to do their job, and are willingly giving up.  We could slash the deposit, but for now we allow them to unreserve  their deposit and exit without issue. (We may want to change this if  it is abused.) 
-
-   Finally, the origin can be anyone iff the child-bounty curator is  "inactive". Expiry update due of parent bounty is used to estimate  inactive state of child-bounty curator. 
-
-   This allows anyone in the community to call out that a child-bounty  curator is not doing their due diligence, and we should pick a new  one. In this case the child-bounty curator deposit is slashed. 
-
-   State of child-bounty is moved to Added state on successful call  completion. 
-
-   - `parent_bounty_id`: Index of parent bounty. 
-
-  - `child_bounty_id`: Index of child bounty.
-
-___
-
-
-## claims
- 
-### attest(statement: `Bytes`)
-- **interface**: `api.tx.claims.attest`
-- **summary**:    Attest to a statement, needed to finalize the claims process. 
-
-   WARNING: Insecure unless your chain includes `PrevalidateAttests` as a  `TransactionExtension`. 
-
-   Unsigned Validation:  A call to attest is deemed valid if the sender has a `Preclaim` registered  and provides a `statement` which is expected for the account. 
-
-   Parameters: 
-
-  - `statement`: The identity of the statement which is being attested to in the signature. 
-
-    
- 
-### claim(dest: `AccountId32`, ethereum_signature: `PolkadotRuntimeCommonClaimsEcdsaSignature`)
-- **interface**: `api.tx.claims.claim`
-- **summary**:    Make a claim to collect your DOTs. 
-
-   The dispatch origin for this call must be _None_. 
-
-   Unsigned Validation:  A call to claim is deemed valid if the signature provided matches  the expected signed message of: 
-
-   > Ethereum Signed Message:  > (configured prefix string)(address) 
-
-   and `address` matches the `dest` account. 
-
-   Parameters: 
-
-  - `dest`: The destination account to payout the claim.
-
-  - `ethereum_signature`: The signature of an ethereum signed message matching the format described above. 
-
-    
- 
-### claimAttest(dest: `AccountId32`, ethereum_signature: `PolkadotRuntimeCommonClaimsEcdsaSignature`, statement: `Bytes`)
-- **interface**: `api.tx.claims.claimAttest`
-- **summary**:    Make a claim to collect your DOTs by signing a statement. 
-
-   The dispatch origin for this call must be _None_. 
-
-   Unsigned Validation:  A call to `claim_attest` is deemed valid if the signature provided matches  the expected signed message of: 
-
-   > Ethereum Signed Message:  > (configured prefix string)(address)(statement) 
-
-   and `address` matches the `dest` account; the `statement` must match that which is  expected according to your purchase arrangement. 
-
-   Parameters: 
-
-  - `dest`: The destination account to payout the claim.
-
-  - `ethereum_signature`: The signature of an ethereum signed message matching the format described above. 
-
-  - `statement`: The identity of the statement which is being attested to in the signature. 
-
-    
- 
-### mintClaim(who: `EthereumAddress`, value: `u128`, vesting_schedule: `Option<(u128,u128,u32)>`, statement: `Option<PolkadotRuntimeCommonClaimsStatementKind>`)
-- **interface**: `api.tx.claims.mintClaim`
-- **summary**:    Mint a new claim to collect DOTs. 
-
-   The dispatch origin for this call must be _Root_. 
-
-   Parameters: 
-
-  - `who`: The Ethereum address allowed to collect this claim.
-
-  - `value`: The number of DOTs that will be claimed.
-
-  - `vesting_schedule`: An optional vesting schedule for these DOTs.
-
-    
- 
-### moveClaim(old: `EthereumAddress`, new: `EthereumAddress`, maybe_preclaim: `Option<AccountId32>`)
-- **interface**: `api.tx.claims.moveClaim`
-
-___
-
-
 ## collatorSelection
  
 ### addInvulnerable(who: `AccountId32`)
@@ -1394,125 +774,6 @@ ___
 ___
 
 
-## convictionVoting
- 
-### delegate(class: `u16`, to: `MultiAddress`, conviction: `PalletConvictionVotingConviction`, balance: `u128`)
-- **interface**: `api.tx.convictionVoting.delegate`
-- **summary**:    Delegate the voting power (with some given conviction) of the sending account for a  particular class of polls. 
-
-   The balance delegated is locked for as long as it's delegated, and thereafter for the  time appropriate for the conviction's lock period. 
-
-   The dispatch origin of this call must be _Signed_, and the signing account must either: 
-
-  - be delegating already; or
-
-  - have no voting activity (if there is, then it will need to be removed through `remove_vote`). 
-
-   - `to`: The account whose voting the `target` account's voting power will follow. 
-
-  - `class`: The class of polls to delegate. To delegate multiple classes, multiple calls to this function are required. 
-
-  - `conviction`: The conviction that will be attached to the delegated votes. When the account is undelegated, the funds will be locked for the corresponding period. 
-
-  - `balance`: The amount of the account's balance to be used in delegating. This must not be more than the account's current balance. 
-
-   Emits `Delegated`. 
-
-   Weight: `O(R)` where R is the number of polls the voter delegating to has  voted on. Weight is initially charged as if maximum votes, but is refunded later. 
- 
-### removeOtherVote(target: `MultiAddress`, class: `u16`, index: `u32`)
-- **interface**: `api.tx.convictionVoting.removeOtherVote`
-- **summary**:    Remove a vote for a poll. 
-
-   If the `target` is equal to the signer, then this function is exactly equivalent to  `remove_vote`. If not equal to the signer, then the vote must have expired,  either because the poll was cancelled, because the voter lost the poll or  because the conviction period is over. 
-
-   The dispatch origin of this call must be _Signed_. 
-
-   - `target`: The account of the vote to be removed; this account must have voted for poll  `index`. 
-
-  - `index`: The index of poll of the vote to be removed.
-
-  - `class`: The class of the poll.
-
-   Weight: `O(R + log R)` where R is the number of polls that `target` has voted on.  Weight is calculated for the maximum number of vote. 
- 
-### removeVote(class: `Option<u16>`, index: `u32`)
-- **interface**: `api.tx.convictionVoting.removeVote`
-- **summary**:    Remove a vote for a poll. 
-
-   If: 
-
-  - the poll was cancelled, or
-
-  - the poll is ongoing, or
-
-  - the poll has ended such that
-
-  - the vote of the account was in opposition to the result; or
-
-  - there was no conviction to the account's vote; or
-
-  - the account made a split vote ...then the vote is removed cleanly and a following call to `unlock` may result in more  funds being available. 
-
-   If, however, the poll has ended and: 
-
-  - it finished corresponding to the vote of the account, and
-
-  - the account made a standard vote with conviction, and
-
-  - the lock period of the conviction is not over ...then the lock will be aggregated into the overall account's lock, which may involve 
-
-  *overlocking* (where the two locks are combined into a single lock that is the maximum of both the amount locked and the time is it locked for). 
-
-   The dispatch origin of this call must be _Signed_, and the signer must have a vote  registered for poll `index`. 
-
-   - `index`: The index of poll of the vote to be removed. 
-
-  - `class`: Optional parameter, if given it indicates the class of the poll. For polls which have finished or are cancelled, this must be `Some`. 
-
-   Weight: `O(R + log R)` where R is the number of polls that `target` has voted on.  Weight is calculated for the maximum number of vote. 
- 
-### undelegate(class: `u16`)
-- **interface**: `api.tx.convictionVoting.undelegate`
-- **summary**:    Undelegate the voting power of the sending account for a particular class of polls. 
-
-   Tokens may be unlocked following once an amount of time consistent with the lock period  of the conviction with which the delegation was issued has passed. 
-
-   The dispatch origin of this call must be _Signed_ and the signing account must be  currently delegating. 
-
-   - `class`: The class of polls to remove the delegation from. 
-
-   Emits `Undelegated`. 
-
-   Weight: `O(R)` where R is the number of polls the voter delegating to has  voted on. Weight is initially charged as if maximum votes, but is refunded later. 
- 
-### unlock(class: `u16`, target: `MultiAddress`)
-- **interface**: `api.tx.convictionVoting.unlock`
-- **summary**:    Remove the lock caused by prior voting/delegating which has expired within a particular  class. 
-
-   The dispatch origin of this call must be _Signed_. 
-
-   - `class`: The class of polls to unlock. 
-
-  - `target`: The account to remove the lock on.
-
-   Weight: `O(R)` with R number of vote of target. 
- 
-### vote(poll_index: `Compact<u32>`, vote: `PalletConvictionVotingVoteAccountVote`)
-- **interface**: `api.tx.convictionVoting.vote`
-- **summary**:    Vote in a poll. If `vote.is_aye()`, the vote is to enact the proposal;  otherwise it is a vote to keep the status quo. 
-
-   The dispatch origin of this call must be _Signed_. 
-
-   - `poll_index`: The index of the poll to vote for. 
-
-  - `vote`: The vote configuration.
-
-   Weight: `O(R)` where R is the number of polls the voter has voted on. 
-
-___
-
-
 ## cumulusXcm
 
 ___
@@ -1520,7 +781,7 @@ ___
 
 ## foreignAssets
  
-### approveTransfer(id: `StagingXcmV5Location`, delegate: `MultiAddress`, amount: `Compact<u128>`)
+### approveTransfer(id: `StagingXcmV4Location`, delegate: `MultiAddress`, amount: `Compact<u128>`)
 - **interface**: `api.tx.foreignAssets.approveTransfer`
 - **summary**:    Approve an amount of asset for transfer by a delegated third-party account. 
 
@@ -1540,7 +801,7 @@ ___
 
    Weight: `O(1)` 
  
-### block(id: `StagingXcmV5Location`, who: `MultiAddress`)
+### block(id: `StagingXcmV4Location`, who: `MultiAddress`)
 - **interface**: `api.tx.foreignAssets.block`
 - **summary**:    Disallow further unprivileged transfers of an asset `id` to and from an account `who`. 
 
@@ -1554,7 +815,7 @@ ___
 
    Weight: `O(1)` 
  
-### burn(id: `StagingXcmV5Location`, who: `MultiAddress`, amount: `Compact<u128>`)
+### burn(id: `StagingXcmV4Location`, who: `MultiAddress`, amount: `Compact<u128>`)
 - **interface**: `api.tx.foreignAssets.burn`
 - **summary**:    Reduce the balance of `who` by as much as possible up to `amount` assets of `id`. 
 
@@ -1572,7 +833,7 @@ ___
 
    Weight: `O(1)`  Modes: Post-existence of `who`; Pre & post Zombie-status of `who`. 
  
-### cancelApproval(id: `StagingXcmV5Location`, delegate: `MultiAddress`)
+### cancelApproval(id: `StagingXcmV4Location`, delegate: `MultiAddress`)
 - **interface**: `api.tx.foreignAssets.cancelApproval`
 - **summary**:    Cancel all of some asset approved for delegated transfer by a third-party account. 
 
@@ -1588,7 +849,7 @@ ___
 
    Weight: `O(1)` 
  
-### clearMetadata(id: `StagingXcmV5Location`)
+### clearMetadata(id: `StagingXcmV4Location`)
 - **interface**: `api.tx.foreignAssets.clearMetadata`
 - **summary**:    Clear the metadata for an asset. 
 
@@ -1602,7 +863,7 @@ ___
 
    Weight: `O(1)` 
  
-### create(id: `StagingXcmV5Location`, admin: `MultiAddress`, min_balance: `u128`)
+### create(id: `StagingXcmV4Location`, admin: `MultiAddress`, min_balance: `u128`)
 - **interface**: `api.tx.foreignAssets.create`
 - **summary**:    Issue a new class of fungible assets from a public origin. 
 
@@ -1624,7 +885,7 @@ ___
 
    Weight: `O(1)` 
  
-### destroyAccounts(id: `StagingXcmV5Location`)
+### destroyAccounts(id: `StagingXcmV4Location`)
 - **interface**: `api.tx.foreignAssets.destroyAccounts`
 - **summary**:    Destroy all accounts associated with a given asset. 
 
@@ -1636,7 +897,7 @@ ___
 
    Each call emits the `Event::DestroyedAccounts` event. 
  
-### destroyApprovals(id: `StagingXcmV5Location`)
+### destroyApprovals(id: `StagingXcmV4Location`)
 - **interface**: `api.tx.foreignAssets.destroyApprovals`
 - **summary**:    Destroy all approvals associated with a given asset up to the max (T::RemoveItemsLimit). 
 
@@ -1648,7 +909,7 @@ ___
 
    Each call emits the `Event::DestroyedApprovals` event. 
  
-### finishDestroy(id: `StagingXcmV5Location`)
+### finishDestroy(id: `StagingXcmV4Location`)
 - **interface**: `api.tx.foreignAssets.finishDestroy`
 - **summary**:    Complete destroying asset and unreserve currency. 
 
@@ -1658,7 +919,7 @@ ___
 
    Each successful call emits the `Event::Destroyed` event. 
  
-### forceAssetStatus(id: `StagingXcmV5Location`, owner: `MultiAddress`, issuer: `MultiAddress`, admin: `MultiAddress`, freezer: `MultiAddress`, min_balance: `Compact<u128>`, is_sufficient: `bool`, is_frozen: `bool`)
+### forceAssetStatus(id: `StagingXcmV4Location`, owner: `MultiAddress`, issuer: `MultiAddress`, admin: `MultiAddress`, freezer: `MultiAddress`, min_balance: `Compact<u128>`, is_sufficient: `bool`, is_frozen: `bool`)
 - **interface**: `api.tx.foreignAssets.forceAssetStatus`
 - **summary**:    Alter the attributes of a given asset. 
 
@@ -1684,7 +945,7 @@ ___
 
    Weight: `O(1)` 
  
-### forceCancelApproval(id: `StagingXcmV5Location`, owner: `MultiAddress`, delegate: `MultiAddress`)
+### forceCancelApproval(id: `StagingXcmV4Location`, owner: `MultiAddress`, delegate: `MultiAddress`)
 - **interface**: `api.tx.foreignAssets.forceCancelApproval`
 - **summary**:    Cancel all of some asset approved for delegated transfer by a third-party account. 
 
@@ -1700,7 +961,7 @@ ___
 
    Weight: `O(1)` 
  
-### forceClearMetadata(id: `StagingXcmV5Location`)
+### forceClearMetadata(id: `StagingXcmV4Location`)
 - **interface**: `api.tx.foreignAssets.forceClearMetadata`
 - **summary**:    Clear the metadata for an asset. 
 
@@ -1714,7 +975,7 @@ ___
 
    Weight: `O(1)` 
  
-### forceCreate(id: `StagingXcmV5Location`, owner: `MultiAddress`, is_sufficient: `bool`, min_balance: `Compact<u128>`)
+### forceCreate(id: `StagingXcmV4Location`, owner: `MultiAddress`, is_sufficient: `bool`, min_balance: `Compact<u128>`)
 - **interface**: `api.tx.foreignAssets.forceCreate`
 - **summary**:    Issue a new class of fungible assets from a privileged origin. 
 
@@ -1734,7 +995,7 @@ ___
 
    Weight: `O(1)` 
  
-### forceSetMetadata(id: `StagingXcmV5Location`, name: `Bytes`, symbol: `Bytes`, decimals: `u8`, is_frozen: `bool`)
+### forceSetMetadata(id: `StagingXcmV4Location`, name: `Bytes`, symbol: `Bytes`, decimals: `u8`, is_frozen: `bool`)
 - **interface**: `api.tx.foreignAssets.forceSetMetadata`
 - **summary**:    Force the metadata for an asset to some value. 
 
@@ -1754,7 +1015,7 @@ ___
 
    Weight: `O(N + S)` where N and S are the length of the name and symbol respectively. 
  
-### forceTransfer(id: `StagingXcmV5Location`, source: `MultiAddress`, dest: `MultiAddress`, amount: `Compact<u128>`)
+### forceTransfer(id: `StagingXcmV4Location`, source: `MultiAddress`, dest: `MultiAddress`, amount: `Compact<u128>`)
 - **interface**: `api.tx.foreignAssets.forceTransfer`
 - **summary**:    Move some assets from one account to another. 
 
@@ -1772,7 +1033,7 @@ ___
 
    Weight: `O(1)`  Modes: Pre-existence of `dest`; Post-existence of `source`; Account pre-existence of  `dest`. 
  
-### freeze(id: `StagingXcmV5Location`, who: `MultiAddress`)
+### freeze(id: `StagingXcmV4Location`, who: `MultiAddress`)
 - **interface**: `api.tx.foreignAssets.freeze`
 - **summary**:    Disallow further unprivileged transfers of an asset `id` from an account `who`. `who`  must already exist as an entry in `Account`s of the asset. If you want to freeze an  account that does not have an entry, use `touch_other` first. 
 
@@ -1786,7 +1047,7 @@ ___
 
    Weight: `O(1)` 
  
-### freezeAsset(id: `StagingXcmV5Location`)
+### freezeAsset(id: `StagingXcmV4Location`)
 - **interface**: `api.tx.foreignAssets.freezeAsset`
 - **summary**:    Disallow further unprivileged transfers for the asset class. 
 
@@ -1798,7 +1059,7 @@ ___
 
    Weight: `O(1)` 
  
-### mint(id: `StagingXcmV5Location`, beneficiary: `MultiAddress`, amount: `Compact<u128>`)
+### mint(id: `StagingXcmV4Location`, beneficiary: `MultiAddress`, amount: `Compact<u128>`)
 - **interface**: `api.tx.foreignAssets.mint`
 - **summary**:    Mint assets of a particular class. 
 
@@ -1814,7 +1075,7 @@ ___
 
    Weight: `O(1)`  Modes: Pre-existing balance of `beneficiary`; Account pre-existence of `beneficiary`. 
  
-### refund(id: `StagingXcmV5Location`, allow_burn: `bool`)
+### refund(id: `StagingXcmV4Location`, allow_burn: `bool`)
 - **interface**: `api.tx.foreignAssets.refund`
 - **summary**:    Return the deposit (if any) of an asset account or a consumer reference (if any) of an  account. 
 
@@ -1828,7 +1089,7 @@ ___
 
    Emits `Refunded` event when successful. 
  
-### refundOther(id: `StagingXcmV5Location`, who: `MultiAddress`)
+### refundOther(id: `StagingXcmV4Location`, who: `MultiAddress`)
 - **interface**: `api.tx.foreignAssets.refundOther`
 - **summary**:    Return the deposit (if any) of a target asset account. Useful if you are the depositor. 
 
@@ -1842,7 +1103,7 @@ ___
 
    Emits `Refunded` event when successful. 
  
-### setMetadata(id: `StagingXcmV5Location`, name: `Bytes`, symbol: `Bytes`, decimals: `u8`)
+### setMetadata(id: `StagingXcmV4Location`, name: `Bytes`, symbol: `Bytes`, decimals: `u8`)
 - **interface**: `api.tx.foreignAssets.setMetadata`
 - **summary**:    Set the metadata for an asset. 
 
@@ -1862,7 +1123,7 @@ ___
 
    Weight: `O(1)` 
  
-### setMinBalance(id: `StagingXcmV5Location`, min_balance: `u128`)
+### setMinBalance(id: `StagingXcmV4Location`, min_balance: `u128`)
 - **interface**: `api.tx.foreignAssets.setMinBalance`
 - **summary**:    Sets the minimum balance of an asset. 
 
@@ -1876,7 +1137,7 @@ ___
 
    Emits `AssetMinBalanceChanged` event when successful. 
  
-### setTeam(id: `StagingXcmV5Location`, issuer: `MultiAddress`, admin: `MultiAddress`, freezer: `MultiAddress`)
+### setTeam(id: `StagingXcmV4Location`, issuer: `MultiAddress`, admin: `MultiAddress`, freezer: `MultiAddress`)
 - **interface**: `api.tx.foreignAssets.setTeam`
 - **summary**:    Change the Issuer, Admin and Freezer of an asset. 
 
@@ -1894,7 +1155,7 @@ ___
 
    Weight: `O(1)` 
  
-### startDestroy(id: `StagingXcmV5Location`)
+### startDestroy(id: `StagingXcmV4Location`)
 - **interface**: `api.tx.foreignAssets.startDestroy`
 - **summary**:    Start the process of destroying a fungible asset class. 
 
@@ -1906,7 +1167,7 @@ ___
 
    It will fail with either [`Error::ContainsHolds`] or [`Error::ContainsFreezes`] if  an account contains holds or freezes in place. 
  
-### thaw(id: `StagingXcmV5Location`, who: `MultiAddress`)
+### thaw(id: `StagingXcmV4Location`, who: `MultiAddress`)
 - **interface**: `api.tx.foreignAssets.thaw`
 - **summary**:    Allow unprivileged transfers to and from an account again. 
 
@@ -1920,7 +1181,7 @@ ___
 
    Weight: `O(1)` 
  
-### thawAsset(id: `StagingXcmV5Location`)
+### thawAsset(id: `StagingXcmV4Location`)
 - **interface**: `api.tx.foreignAssets.thawAsset`
 - **summary**:    Allow unprivileged transfers for the asset again. 
 
@@ -1932,7 +1193,7 @@ ___
 
    Weight: `O(1)` 
  
-### touch(id: `StagingXcmV5Location`)
+### touch(id: `StagingXcmV4Location`)
 - **interface**: `api.tx.foreignAssets.touch`
 - **summary**:    Create an asset account for non-provider assets. 
 
@@ -1944,7 +1205,7 @@ ___
 
    Emits `Touched` event when successful. 
  
-### touchOther(id: `StagingXcmV5Location`, who: `MultiAddress`)
+### touchOther(id: `StagingXcmV4Location`, who: `MultiAddress`)
 - **interface**: `api.tx.foreignAssets.touchOther`
 - **summary**:    Create an asset account for `who`. 
 
@@ -1958,7 +1219,7 @@ ___
 
    Emits `Touched` event when successful. 
  
-### transfer(id: `StagingXcmV5Location`, target: `MultiAddress`, amount: `Compact<u128>`)
+### transfer(id: `StagingXcmV4Location`, target: `MultiAddress`, amount: `Compact<u128>`)
 - **interface**: `api.tx.foreignAssets.transfer`
 - **summary**:    Move some assets from the sender account to another. 
 
@@ -1974,7 +1235,7 @@ ___
 
    Weight: `O(1)`  Modes: Pre-existence of `target`; Post-existence of sender; Account pre-existence of  `target`. 
  
-### transferAll(id: `StagingXcmV5Location`, dest: `MultiAddress`, keep_alive: `bool`)
+### transferAll(id: `StagingXcmV4Location`, dest: `MultiAddress`, keep_alive: `bool`)
 - **interface**: `api.tx.foreignAssets.transferAll`
 - **summary**:    Transfer the entire transferable balance from the caller asset account. 
 
@@ -1988,7 +1249,7 @@ ___
 
   - `keep_alive`: A boolean to determine if the `transfer_all` operation should send all of the funds the asset account has, causing the sender asset account to be killed  (false), or transfer everything except at least the minimum balance, which will  guarantee to keep the sender asset account alive (true). 
  
-### transferApproved(id: `StagingXcmV5Location`, owner: `MultiAddress`, destination: `MultiAddress`, amount: `Compact<u128>`)
+### transferApproved(id: `StagingXcmV4Location`, owner: `MultiAddress`, destination: `MultiAddress`, amount: `Compact<u128>`)
 - **interface**: `api.tx.foreignAssets.transferApproved`
 - **summary**:    Transfer some asset balance from a previously delegated account to some third-party  account. 
 
@@ -2008,7 +1269,7 @@ ___
 
    Weight: `O(1)` 
  
-### transferKeepAlive(id: `StagingXcmV5Location`, target: `MultiAddress`, amount: `Compact<u128>`)
+### transferKeepAlive(id: `StagingXcmV4Location`, target: `MultiAddress`, amount: `Compact<u128>`)
 - **interface**: `api.tx.foreignAssets.transferKeepAlive`
 - **summary**:    Move some assets from the sender account to another, keeping the sender account alive. 
 
@@ -2024,7 +1285,7 @@ ___
 
    Weight: `O(1)`  Modes: Pre-existence of `target`; Post-existence of sender; Account pre-existence of  `target`. 
  
-### transferOwnership(id: `StagingXcmV5Location`, owner: `MultiAddress`)
+### transferOwnership(id: `StagingXcmV4Location`, owner: `MultiAddress`)
 - **interface**: `api.tx.foreignAssets.transferOwnership`
 - **summary**:    Change the Owner of an asset. 
 
@@ -2037,103 +1298,6 @@ ___
    Emits `OwnerChanged`. 
 
    Weight: `O(1)` 
-
-___
-
-
-## indices
- 
-### claim(index: `u32`)
-- **interface**: `api.tx.indices.claim`
-- **summary**:    Assign an previously unassigned index. 
-
-   Payment: `Deposit` is reserved from the sender account. 
-
-   The dispatch origin for this call must be _Signed_. 
-
-   - `index`: the index to be claimed. This must not be in use. 
-
-   Emits `IndexAssigned` if successful. 
-
-   #### Complexity 
-
-  - `O(1)`.
- 
-### forceTransfer(new: `MultiAddress`, index: `u32`, freeze: `bool`)
-- **interface**: `api.tx.indices.forceTransfer`
-- **summary**:    Force an index to an account. This doesn't require a deposit. If the index is already  held, then any deposit is reimbursed to its current owner. 
-
-   The dispatch origin for this call must be _Root_. 
-
-   - `index`: the index to be (re-)assigned. 
-
-  - `new`: the new owner of the index. This function is a no-op if it is equal to sender.
-
-  - `freeze`: if set to `true`, will freeze the index so it cannot be transferred.
-
-   Emits `IndexAssigned` if successful. 
-
-   #### Complexity 
-
-  - `O(1)`.
- 
-### free(index: `u32`)
-- **interface**: `api.tx.indices.free`
-- **summary**:    Free up an index owned by the sender. 
-
-   Payment: Any previous deposit placed for the index is unreserved in the sender account. 
-
-   The dispatch origin for this call must be _Signed_ and the sender must own the index. 
-
-   - `index`: the index to be freed. This must be owned by the sender. 
-
-   Emits `IndexFreed` if successful. 
-
-   #### Complexity 
-
-  - `O(1)`.
- 
-### freeze(index: `u32`)
-- **interface**: `api.tx.indices.freeze`
-- **summary**:    Freeze an index so it will always point to the sender account. This consumes the  deposit. 
-
-   The dispatch origin for this call must be _Signed_ and the signing account must have a  non-frozen account `index`. 
-
-   - `index`: the index to be frozen in place. 
-
-   Emits `IndexFrozen` if successful. 
-
-   #### Complexity 
-
-  - `O(1)`.
- 
-### pokeDeposit(index: `u32`)
-- **interface**: `api.tx.indices.pokeDeposit`
-- **summary**:    Poke the deposit reserved for an index. 
-
-   The dispatch origin for this call must be _Signed_ and the signing account must have a  non-frozen account `index`. 
-
-   The transaction fees is waived if the deposit is changed after poking/reconsideration. 
-
-   - `index`: the index whose deposit is to be poked/reconsidered. 
-
-   Emits `DepositPoked` if successful. 
- 
-### transfer(new: `MultiAddress`, index: `u32`)
-- **interface**: `api.tx.indices.transfer`
-- **summary**:    Assign an index already owned by the sender to another account. The balance reservation  is effectively transferred to the new account. 
-
-   The dispatch origin for this call must be _Signed_. 
-
-   - `index`: the index to be re-assigned. This must be owned by the sender. 
-
-  - `new`: the new owner of the index. This function is a no-op if it is equal to sender.
-
-   Emits `IndexAssigned` if successful. 
-
-   #### Complexity 
-
-  - `O(1)`.
 
 ___
 
@@ -2161,111 +1325,6 @@ ___
 ### reapPage(message_origin: `CumulusPrimitivesCoreAggregateMessageOrigin`, page_index: `u32`)
 - **interface**: `api.tx.messageQueue.reapPage`
 - **summary**:    Remove a page which has no more messages remaining to be processed or is stale. 
-
-___
-
-
-## multiBlockElection
- 
-### manage(op: `PalletElectionProviderMultiBlockAdminOperation`)
-- **interface**: `api.tx.multiBlockElection.manage`
-- **summary**:    Manage this pallet. 
-
-   The origin of this call must be [`Config::AdminOrigin`]. 
-
-   See [`AdminOperation`] for various operations that are possible. 
-
-___
-
-
-## multiBlockElectionSigned
- 
-### bail()
-- **interface**: `api.tx.multiBlockElectionSigned.bail`
-- **summary**:    Retract a submission. 
-
-   A portion of the deposit may be returned, based on the [`Config::BailoutGraceRatio`]. 
-
-   This will fully remove the solution from storage. 
- 
-### clearOldRoundData(round: `u32`, witness_pages: `u32`)
-- **interface**: `api.tx.multiBlockElectionSigned.clearOldRoundData`
-- **summary**:    Clear the data of a submitter form an old round. 
-
-   The dispatch origin of this call must be signed, and the original submitter. 
-
-   This can only be called for submissions that end up being discarded, as in they are not  processed and they end up lingering in the queue. 
- 
-### register(claimed_score: `SpNposElectionsElectionScore`)
-- **interface**: `api.tx.multiBlockElectionSigned.register`
-- **summary**:    Register oneself for an upcoming signed election. 
- 
-### setInvulnerables(inv: `Vec<AccountId32>`)
-- **interface**: `api.tx.multiBlockElectionSigned.setInvulnerables`
-- **summary**:    Set the invulnerable list. 
-
-   Dispatch origin must the the same as [`crate::Config::AdminOrigin`]. 
- 
-### submitPage(page: `u32`, maybe_solution: `Option<AssetHubKusamaRuntimeStakingNposCompactSolution24>`)
-- **interface**: `api.tx.multiBlockElectionSigned.submitPage`
-- **summary**:    Submit a single page of a solution. 
-
-   Must always come after [`Pallet::register`]. 
-
-   `maybe_solution` can be set to `None` to erase the page. 
-
-   Collects deposits from the signed origin based on [`Config::DepositBase`] and  [`Config::DepositPerPage`]. 
-
-___
-
-
-## multiBlockElectionUnsigned
- 
-### submitUnsigned(paged_solution: `PalletElectionProviderMultiBlockPagedRawSolution`)
-- **interface**: `api.tx.multiBlockElectionUnsigned.submitUnsigned`
-- **summary**:    Submit an unsigned solution. 
-
-   This works very much like an inherent, as only the validators are permitted to submit  anything. By default validators will compute this call in their `offchain_worker` hook  and try and submit it back. 
-
-   This is different from signed page submission mainly in that the solution page is  verified on the fly. 
-
-   The `paged_solution` may contain at most [`Config::MinerPages`] pages. They are  interpreted as msp -> lsp, as per [`crate::Pallet::msp_range_for`]. 
-
-   For example, if `Pages = 4`, and `MinerPages = 2`, our full snapshot range would be [0,  1, 2, 3], with 3 being msp. But, in this case, then the `paged_raw_solution.pages` is  expected to correspond to `[snapshot(2), snapshot(3)]`. 
-
-___
-
-
-## multiBlockElectionVerifier
-
-___
-
-
-## multiBlockMigrations
- 
-### clearHistoric(selector: `PalletMigrationsHistoricCleanupSelector`)
-- **interface**: `api.tx.multiBlockMigrations.clearHistoric`
-- **summary**:    Clears the `Historic` set. 
-
-   `map_cursor` must be set to the last value that was returned by the  `HistoricCleared` event. The first time `None` can be used. `limit` must be chosen in a  way that will result in a sensible weight. 
- 
-### forceOnboardMbms()
-- **interface**: `api.tx.multiBlockMigrations.forceOnboardMbms`
-- **summary**:    Forces the onboarding of the migrations. 
-
-   This process happens automatically on a runtime upgrade. It is in place as an emergency  measurement. The cursor needs to be `None` for this to succeed. 
- 
-### forceSetActiveCursor(index: `u32`, inner_cursor: `Option<Bytes>`, started_at: `Option<u32>`)
-- **interface**: `api.tx.multiBlockMigrations.forceSetActiveCursor`
-- **summary**:    Allows root to set an active cursor to forcefully start/forward the migration process. 
-
-   This is an edge-case version of [`Self::force_set_cursor`] that allows to set the  `started_at` value to the next block number. Otherwise this would not be possible, since  `force_set_cursor` takes an absolute block number. Setting `started_at` to `None`  indicates that the current block number plus one should be used. 
- 
-### forceSetCursor(cursor: `Option<PalletMigrationsMigrationCursor>`)
-- **interface**: `api.tx.multiBlockMigrations.forceSetCursor`
-- **summary**:    Allows root to set a cursor to forcefully start, stop or forward the migration process. 
-
-   Should normally not be needed and is only in place as emergency measure. Note that  restarting the migration process in this manner will not call the  [`MigrationStatusHandler::started`] hook or emit an `UpgradeStarted` event. 
 
 ___
 
@@ -3111,301 +2170,6 @@ ___
 ___
 
 
-## nominationPools
- 
-### adjustPoolDeposit(pool_id: `u32`)
-- **interface**: `api.tx.nominationPools.adjustPoolDeposit`
-- **summary**:    Top up the deficit or withdraw the excess ED from the pool. 
-
-   When a pool is created, the pool depositor transfers ED to the reward account of the  pool. ED is subject to change and over time, the deposit in the reward account may be  insufficient to cover the ED deficit of the pool or vice-versa where there is excess  deposit to the pool. This call allows anyone to adjust the ED deposit of the  pool by either topping up the deficit or claiming the excess. 
- 
-### applySlash(member_account: `MultiAddress`)
-- **interface**: `api.tx.nominationPools.applySlash`
-- **summary**:    Apply a pending slash on a member. 
-
-   Fails unless [`crate::pallet::Config::StakeAdapter`] is of strategy type:  [`adapter::StakeStrategyType::Delegate`]. 
-
-   The pending slash amount of the member must be equal or more than `ExistentialDeposit`.  This call can be dispatched permissionlessly (i.e. by any account). If the execution  is successful, fee is refunded and caller may be rewarded with a part of the slash  based on the [`crate::pallet::Config::StakeAdapter`] configuration. 
- 
-### bondExtra(extra: `PalletNominationPoolsBondExtra`)
-- **interface**: `api.tx.nominationPools.bondExtra`
-- **summary**:    Bond `extra` more funds from `origin` into the pool to which they already belong. 
-
-   Additional funds can come from either the free balance of the account, of from the  accumulated rewards, see [`BondExtra`]. 
-
-   Bonding extra funds implies an automatic payout of all pending rewards as well.  See `bond_extra_other` to bond pending rewards of `other` members. 
- 
-### bondExtraOther(member: `MultiAddress`, extra: `PalletNominationPoolsBondExtra`)
-- **interface**: `api.tx.nominationPools.bondExtraOther`
-- **summary**:    `origin` bonds funds from `extra` for some pool member `member` into their respective  pools. 
-
-   `origin` can bond extra funds from free balance or pending rewards when `origin ==  other`. 
-
-   In the case of `origin != other`, `origin` can only bond extra pending rewards of  `other` members assuming set_claim_permission for the given member is  `PermissionlessCompound` or `PermissionlessAll`. 
- 
-### chill(pool_id: `u32`)
-- **interface**: `api.tx.nominationPools.chill`
-- **summary**:    Chill on behalf of the pool. 
-
-   The dispatch origin of this call can be signed by the pool nominator or the pool  root role, same as [`Pallet::nominate`]. 
-
-   This directly forwards the call to an implementation of `StakingInterface` (e.g.,  `pallet-staking`) through [`Config::StakeAdapter`], on behalf of the bonded pool. 
-
-   Under certain conditions, this call can be dispatched permissionlessly (i.e. by any  account). 
-
-   #### Conditions for a permissionless dispatch: 
-
-  * When pool depositor has less than `MinNominatorBond` staked, otherwise pool members are unable to unbond. 
-
-   #### Conditions for permissioned dispatch: 
-
-  * The caller is the pool's nominator or root.
- 
-### claimCommission(pool_id: `u32`)
-- **interface**: `api.tx.nominationPools.claimCommission`
-- **summary**:    Claim pending commission. 
-
-   The `root` role of the pool is _always_ allowed to claim the pool's commission. 
-
-   If the pool has set `CommissionClaimPermission::Permissionless`, then any account can  trigger the process of claiming the pool's commission. 
-
-   If the pool has set its `CommissionClaimPermission` to `Account(acc)`, then only  accounts 
-
-  * `acc`, and
-
-  * the pool's root account
-
-   may call this extrinsic on behalf of the pool. 
-
-   Pending commissions are paid out and added to the total claimed commission.  The total pending commission is reset to zero. 
- 
-### claimPayout()
-- **interface**: `api.tx.nominationPools.claimPayout`
-- **summary**:    A bonded member can use this to claim their payout based on the rewards that the pool  has accumulated since their last claimed payout (OR since joining if this is their first  time claiming rewards). The payout will be transferred to the member's account. 
-
-   The member will earn rewards pro rata based on the members stake vs the sum of the  members in the pools stake. Rewards do not "expire". 
-
-   See `claim_payout_other` to claim rewards on behalf of some `other` pool member. 
- 
-### claimPayoutOther(other: `AccountId32`)
-- **interface**: `api.tx.nominationPools.claimPayoutOther`
-- **summary**:    `origin` can claim payouts on some pool member `other`'s behalf. 
-
-   Pool member `other` must have a `PermissionlessWithdraw` or `PermissionlessAll` claim  permission for this call to be successful. 
- 
-### create(amount: `Compact<u128>`, root: `MultiAddress`, nominator: `MultiAddress`, bouncer: `MultiAddress`)
-- **interface**: `api.tx.nominationPools.create`
-- **summary**:    Create a new delegation pool. 
-
-   #### Arguments 
-
-   * `amount` - The amount of funds to delegate to the pool. This also acts of a sort of  deposit since the pools creator cannot fully unbond funds until the pool is being  destroyed. 
-
-  * `index` - A disambiguation index for creating the account. Likely only useful when creating multiple pools in the same extrinsic. 
-
-  * `root` - The account to set as [`PoolRoles::root`].
-
-  * `nominator` - The account to set as the [`PoolRoles::nominator`].
-
-  * `bouncer` - The account to set as the [`PoolRoles::bouncer`].
-
-   #### Note 
-
-   In addition to `amount`, the caller will transfer the existential deposit; so the caller  needs at have at least `amount + existential_deposit` transferable. 
- 
-### createWithPoolId(amount: `Compact<u128>`, root: `MultiAddress`, nominator: `MultiAddress`, bouncer: `MultiAddress`, pool_id: `u32`)
-- **interface**: `api.tx.nominationPools.createWithPoolId`
-- **summary**:    Create a new delegation pool with a previously used pool id 
-
-   #### Arguments 
-
-   same as `create` with the inclusion of 
-
-  * `pool_id` - `A valid PoolId.
- 
-### join(amount: `Compact<u128>`, pool_id: `u32`)
-- **interface**: `api.tx.nominationPools.join`
-- **summary**:    Stake funds with a pool. The amount to bond is delegated (or transferred based on  [`adapter::StakeStrategyType`]) from the member to the pool account and immediately  increases the pool's bond. 
-
-   The method of transferring the amount to the pool account is determined by  [`adapter::StakeStrategyType`]. If the pool is configured to use  [`adapter::StakeStrategyType::Delegate`], the funds remain in the account of  the `origin`, while the pool gains the right to use these funds for staking. 
-
-   #### Note 
-
-   * An account can only be a member of a single pool. 
-
-  * An account cannot join the same pool multiple times.
-
-  * This call will *not* dust the member account, so the member must have at least `existential deposit + amount` in their account. 
-
-  * Only a pool with [`PoolState::Open`] can be joined
- 
-### migrateDelegation(member_account: `MultiAddress`)
-- **interface**: `api.tx.nominationPools.migrateDelegation`
-- **summary**:    Migrates delegated funds from the pool account to the `member_account`. 
-
-   Fails unless [`crate::pallet::Config::StakeAdapter`] is of strategy type:  [`adapter::StakeStrategyType::Delegate`]. 
-
-   This is a permission-less call and refunds any fee if claim is successful. 
-
-   If the pool has migrated to delegation based staking, the staked tokens of pool members  can be moved and held in their own account. See [`adapter::DelegateStake`] 
- 
-### migratePoolToDelegateStake(pool_id: `u32`)
-- **interface**: `api.tx.nominationPools.migratePoolToDelegateStake`
-- **summary**:    Migrate pool from [`adapter::StakeStrategyType::Transfer`] to  [`adapter::StakeStrategyType::Delegate`]. 
-
-   Fails unless [`crate::pallet::Config::StakeAdapter`] is of strategy type:  [`adapter::StakeStrategyType::Delegate`]. 
-
-   This call can be dispatched permissionlessly, and refunds any fee if successful. 
-
-   If the pool has already migrated to delegation based staking, this call will fail. 
- 
-### nominate(pool_id: `u32`, validators: `Vec<AccountId32>`)
-- **interface**: `api.tx.nominationPools.nominate`
-- **summary**:    Nominate on behalf of the pool. 
-
-   The dispatch origin of this call must be signed by the pool nominator or the pool  root role. 
-
-   This directly forwards the call to an implementation of `StakingInterface` (e.g.,  `pallet-staking`) through [`Config::StakeAdapter`], on behalf of the bonded pool. 
-
-   #### Note 
-
-   In addition to a `root` or `nominator` role of `origin`, the pool's depositor needs to  have at least `depositor_min_bond` in the pool to start nominating. 
- 
-### poolWithdrawUnbonded(pool_id: `u32`, num_slashing_spans: `u32`)
-- **interface**: `api.tx.nominationPools.poolWithdrawUnbonded`
-- **summary**:    Call `withdraw_unbonded` for the pools account. This call can be made by any account. 
-
-   This is useful if there are too many unlocking chunks to call `unbond`, and some  can be cleared by withdrawing. In the case there are too many unlocking chunks, the user  would probably see an error like `NoMoreChunks` emitted from the staking system when  they attempt to unbond. 
- 
-### setClaimPermission(permission: `PalletNominationPoolsClaimPermission`)
-- **interface**: `api.tx.nominationPools.setClaimPermission`
-- **summary**:    Allows a pool member to set a claim permission to allow or disallow permissionless  bonding and withdrawing. 
-
-   #### Arguments 
-
-   * `origin` - Member of a pool. 
-
-  * `permission` - The permission to be applied.
- 
-### setCommission(pool_id: `u32`, new_commission: `Option<(Perbill,AccountId32)>`)
-- **interface**: `api.tx.nominationPools.setCommission`
-- **summary**:    Set the commission of a pool.  Both a commission percentage and a commission payee must be provided in the `current`  tuple. Where a `current` of `None` is provided, any current commission will be removed. 
-
-   - If a `None` is supplied to `new_commission`, existing commission will be removed. 
- 
-### setCommissionChangeRate(pool_id: `u32`, change_rate: `PalletNominationPoolsCommissionChangeRate`)
-- **interface**: `api.tx.nominationPools.setCommissionChangeRate`
-- **summary**:    Set the commission change rate for a pool. 
-
-   Initial change rate is not bounded, whereas subsequent updates can only be more  restrictive than the current. 
- 
-### setCommissionClaimPermission(pool_id: `u32`, permission: `Option<PalletNominationPoolsCommissionClaimPermission>`)
-- **interface**: `api.tx.nominationPools.setCommissionClaimPermission`
-- **summary**:    Set or remove a pool's commission claim permission. 
-
-   Determines who can claim the pool's pending commission. Only the `Root` role of the pool  is able to configure commission claim permissions. 
- 
-### setCommissionMax(pool_id: `u32`, max_commission: `Perbill`)
-- **interface**: `api.tx.nominationPools.setCommissionMax`
-- **summary**:    Set the maximum commission of a pool. 
-
-   - Initial max can be set to any `Perbill`, and only smaller values thereafter. 
-
-  - Current commission will be lowered in the event it is higher than a new max commission. 
- 
-### setConfigs(min_join_bond: `PalletNominationPoolsConfigOpU128`, min_create_bond: `PalletNominationPoolsConfigOpU128`, max_pools: `PalletNominationPoolsConfigOpU32`, max_members: `PalletNominationPoolsConfigOpU32`, max_members_per_pool: `PalletNominationPoolsConfigOpU32`, global_max_commission: `PalletNominationPoolsConfigOpPerbill`)
-- **interface**: `api.tx.nominationPools.setConfigs`
-- **summary**:    Update configurations for the nomination pools. The origin for this call must be  [`Config::AdminOrigin`]. 
-
-   #### Arguments 
-
-   * `min_join_bond` - Set [`MinJoinBond`]. 
-
-  * `min_create_bond` - Set [`MinCreateBond`].
-
-  * `max_pools` - Set [`MaxPools`].
-
-  * `max_members` - Set [`MaxPoolMembers`].
-
-  * `max_members_per_pool` - Set [`MaxPoolMembersPerPool`].
-
-  * `global_max_commission` - Set [`GlobalMaxCommission`].
- 
-### setMetadata(pool_id: `u32`, metadata: `Bytes`)
-- **interface**: `api.tx.nominationPools.setMetadata`
-- **summary**:    Set a new metadata for the pool. 
-
-   The dispatch origin of this call must be signed by the bouncer, or the root role of the  pool. 
- 
-### setState(pool_id: `u32`, state: `PalletNominationPoolsPoolState`)
-- **interface**: `api.tx.nominationPools.setState`
-- **summary**:    Set a new state for the pool. 
-
-   If a pool is already in the `Destroying` state, then under no condition can its state  change again. 
-
-   The dispatch origin of this call must be either: 
-
-   1. signed by the bouncer, or the root role of the pool,  2. if the pool conditions to be open are NOT met (as described by `ok_to_be_open`), and  then the state of the pool can be permissionlessly changed to `Destroying`. 
- 
-### unbond(member_account: `MultiAddress`, unbonding_points: `Compact<u128>`)
-- **interface**: `api.tx.nominationPools.unbond`
-- **summary**:    Unbond up to `unbonding_points` of the `member_account`'s funds from the pool. It  implicitly collects the rewards one last time, since not doing so would mean some  rewards would be forfeited. 
-
-   Under certain conditions, this call can be dispatched permissionlessly (i.e. by any  account). 
-
-   #### Conditions for a permissionless dispatch. 
-
-   * The pool is blocked and the caller is either the root or bouncer. This is refereed to  as a kick. 
-
-  * The pool is destroying and the member is not the depositor.
-
-  * The pool is destroying, the member is the depositor and no other members are in the pool. 
-
-   #### Conditions for permissioned dispatch (i.e. the caller is also the  `member_account`): 
-
-   * The caller is not the depositor. 
-
-  * The caller is the depositor, the pool is destroying and no other members are in the pool. 
-
-   #### Note 
-
-   If there are too many unlocking chunks to unbond with the pool account,  [`Call::pool_withdraw_unbonded`] can be called to try and minimize unlocking chunks.  The [`StakingInterface::unbond`] will implicitly call [`Call::pool_withdraw_unbonded`]  to try to free chunks if necessary (ie. if unbound was called and no unlocking chunks  are available). However, it may not be possible to release the current unlocking chunks,  in which case, the result of this call will likely be the `NoMoreChunks` error from the  staking system. 
- 
-### updateRoles(pool_id: `u32`, new_root: `PalletNominationPoolsConfigOpAccountId32`, new_nominator: `PalletNominationPoolsConfigOpAccountId32`, new_bouncer: `PalletNominationPoolsConfigOpAccountId32`)
-- **interface**: `api.tx.nominationPools.updateRoles`
-- **summary**:    Update the roles of the pool. 
-
-   The root is the only entity that can change any of the roles, including itself,  excluding the depositor, who can never change. 
-
-   It emits an event, notifying UIs of the role change. This event is quite relevant to  most pool members and they should be informed of changes to pool roles. 
- 
-### withdrawUnbonded(member_account: `MultiAddress`, num_slashing_spans: `u32`)
-- **interface**: `api.tx.nominationPools.withdrawUnbonded`
-- **summary**:    Withdraw unbonded funds from `member_account`. If no bonded funds can be unbonded, an  error is returned. 
-
-   Under certain conditions, this call can be dispatched permissionlessly (i.e. by any  account). 
-
-   #### Conditions for a permissionless dispatch 
-
-   * The pool is in destroy mode and the target is not the depositor. 
-
-  * The target is the depositor and they are the only member in the sub pools.
-
-  * The pool is blocked and the caller is either the root or bouncer.
-
-   #### Conditions for permissioned dispatch 
-
-   * The caller is the target and they are not the depositor. 
-
-   #### Note 
-
-   - If the target is the depositor, the pool will be destroyed. 
-
-  - If the pool has any pending slash, we also try to slash the member before letting them withdraw. This calculation adds some weight overhead and is only defensive. In reality,  pool slashes must have been already applied via permissionless [`Call::apply_slash`]. 
-
-___
-
-
 ## parachainInfo
 
 ___
@@ -3413,7 +2177,7 @@ ___
 
 ## parachainSystem
  
-### setValidationData(data: `CumulusPalletParachainSystemParachainInherentBasicParachainInherentData`, inbound_messages_data: `CumulusPalletParachainSystemParachainInherentInboundMessagesData`)
+### setValidationData(data: `CumulusPrimitivesParachainInherentParachainInherentData`)
 - **interface**: `api.tx.parachainSystem.setValidationData`
 - **summary**:    Set the current validation data. 
 
@@ -3425,17 +2189,6 @@ ___
  
 ### sudoSendUpwardMessage(message: `Bytes`)
 - **interface**: `api.tx.parachainSystem.sudoSendUpwardMessage`
-
-___
-
-
-## parameters
- 
-### setParameter(key_value: `AssetHubKusamaRuntimeRuntimeParameters`)
-- **interface**: `api.tx.parameters.setParameter`
-- **summary**:    Set the value of a parameter. 
-
-   The dispatch origin of this call must be `AdminOrigin` for the given `key`. Values be  deleted by setting them to `None`. 
 
 ___
 
@@ -4199,45 +2952,6 @@ ___
 ___
 
 
-## preimage
- 
-### ensureUpdated(hashes: `Vec<H256>`)
-- **interface**: `api.tx.preimage.ensureUpdated`
-- **summary**:    Ensure that the bulk of pre-images is upgraded. 
-
-   The caller pays no fee if at least 90% of pre-images were successfully updated. 
- 
-### notePreimage(bytes: `Bytes`)
-- **interface**: `api.tx.preimage.notePreimage`
-- **summary**:    Register a preimage on-chain. 
-
-   If the preimage was previously requested, no fees or deposits are taken for providing  the preimage. Otherwise, a deposit is taken proportional to the size of the preimage. 
- 
-### requestPreimage(hash: `H256`)
-- **interface**: `api.tx.preimage.requestPreimage`
-- **summary**:    Request a preimage be uploaded to the chain without paying any fees or deposits. 
-
-   If the preimage requests has already been provided on-chain, we unreserve any deposit  a user may have paid, and take the control of the preimage out of their hands. 
- 
-### unnotePreimage(hash: `H256`)
-- **interface**: `api.tx.preimage.unnotePreimage`
-- **summary**:    Clear an unrequested preimage from the runtime storage. 
-
-   If `len` is provided, then it will be a much cheaper operation. 
-
-   - `hash`: The hash of the preimage to be removed from the store. 
-
-  - `len`: The length of the preimage of `hash`.
- 
-### unrequestPreimage(hash: `H256`)
-- **interface**: `api.tx.preimage.unrequestPreimage`
-- **summary**:    Clear a previously made request for a preimage. 
-
-   NOTE: THIS MUST NOT BE CALLED ON `hash` MORE TIMES THAN `request_preimage`. 
-
-___
-
-
 ## proxy
  
 ### addProxy(delegate: `MultiAddress`, proxy_type: `AssetHubKusamaRuntimeProxyType`, delay: `u32`)
@@ -4294,19 +3008,19 @@ ___
 
    WARNING: **All access to this account will be lost.** Any funds held in it will be  inaccessible. 
 
-   Requires a `Signed` origin, and the sender account must have been created by a call to  `create_pure` with corresponding parameters. 
+   Requires a `Signed` origin, and the sender account must have been created by a call to  `pure` with corresponding parameters. 
 
-   - `spawner`: The account that originally called `create_pure` to create this account. 
+   - `spawner`: The account that originally called `pure` to create this account. 
 
-  - `index`: The disambiguation index originally passed to `create_pure`. Probably `0`.
+  - `index`: The disambiguation index originally passed to `pure`. Probably `0`.
 
-  - `proxy_type`: The proxy type originally passed to `create_pure`.
+  - `proxy_type`: The proxy type originally passed to `pure`.
 
-  - `height`: The height of the chain when the call to `create_pure` was processed.
+  - `height`: The height of the chain when the call to `pure` was processed.
 
-  - `ext_index`: The extrinsic index in which the call to `create_pure` was processed.
+  - `ext_index`: The extrinsic index in which the call to `pure` was processed.
 
-   Fails with `NoPermission` in case the caller is not a previously created pure  account whose `create_pure` call has corresponding parameters. 
+   Fails with `NoPermission` in case the caller is not a previously created pure  account whose `pure` call has corresponding parameters. 
  
 ### pokeDeposit()
 - **interface**: `api.tx.proxy.pokeDeposit`
@@ -4382,7 +3096,7 @@ ___
 
    The dispatch origin for this call must be _Signed_. 
 
-   WARNING: This may be called on accounts created by `create_pure`, however if done, then  the unreserved fees will be inaccessible. **All access to this account will be lost.** 
+   WARNING: This may be called on accounts created by `pure`, however if done, then  the unreserved fees will be inaccessible. **All access to this account will be lost.** 
  
 ### removeProxy(delegate: `MultiAddress`, proxy_type: `AssetHubKusamaRuntimeProxyType`, delay: `u32`)
 - **interface**: `api.tx.proxy.removeProxy`
@@ -4395,246 +3109,6 @@ ___
   - `proxy`: The account that the `caller` would like to remove as a proxy.
 
   - `proxy_type`: The permissions currently enabled for the removed proxy account.
-
-___
-
-
-## recovery
- 
-### asRecovered(account: `MultiAddress`, call: `Call`)
-- **interface**: `api.tx.recovery.asRecovered`
-- **summary**:    Send a call through a recovered account. 
-
-   The dispatch origin for this call must be _Signed_ and registered to  be able to make calls on behalf of the recovered account. 
-
-   Parameters: 
-
-  - `account`: The recovered account you want to make a call on-behalf-of.
-
-  - `call`: The call you want to make with the recovered account.
- 
-### cancelRecovered(account: `MultiAddress`)
-- **interface**: `api.tx.recovery.cancelRecovered`
-- **summary**:    Cancel the ability to use `as_recovered` for `account`. 
-
-   The dispatch origin for this call must be _Signed_ and registered to  be able to make calls on behalf of the recovered account. 
-
-   Parameters: 
-
-  - `account`: The recovered account you are able to call on-behalf-of.
- 
-### claimRecovery(account: `MultiAddress`)
-- **interface**: `api.tx.recovery.claimRecovery`
-- **summary**:    Allow a successful rescuer to claim their recovered account. 
-
-   The dispatch origin for this call must be _Signed_ and must be a "rescuer"  who has successfully completed the account recovery process: collected  `threshold` or more vouches, waited `delay_period` blocks since initiation. 
-
-   Parameters: 
-
-  - `account`: The lost account that you want to claim has been successfully recovered by you. 
- 
-### closeRecovery(rescuer: `MultiAddress`)
-- **interface**: `api.tx.recovery.closeRecovery`
-- **summary**:    As the controller of a recoverable account, close an active recovery  process for your account. 
-
-   Payment: By calling this function, the recoverable account will receive  the recovery deposit `RecoveryDeposit` placed by the rescuer. 
-
-   The dispatch origin for this call must be _Signed_ and must be a  recoverable account with an active recovery process for it. 
-
-   Parameters: 
-
-  - `rescuer`: The account trying to rescue this recoverable account.
- 
-### createRecovery(friends: `Vec<AccountId32>`, threshold: `u16`, delay_period: `u32`)
-- **interface**: `api.tx.recovery.createRecovery`
-- **summary**:    Create a recovery configuration for your account. This makes your account recoverable. 
-
-   Payment: `ConfigDepositBase` + `FriendDepositFactor` * #_of_friends balance  will be reserved for storing the recovery configuration. This deposit is returned  in full when the user calls `remove_recovery`. 
-
-   The dispatch origin for this call must be _Signed_. 
-
-   Parameters: 
-
-  - `friends`: A list of friends you trust to vouch for recovery attempts. Should be ordered and contain no duplicate values. 
-
-  - `threshold`: The number of friends that must vouch for a recovery attempt before the account can be recovered. Should be less than or equal to the length of the list of  friends. 
-
-  - `delay_period`: The number of blocks after a recovery attempt is initialized that needs to pass before the account can be recovered. 
- 
-### initiateRecovery(account: `MultiAddress`)
-- **interface**: `api.tx.recovery.initiateRecovery`
-- **summary**:    Initiate the process for recovering a recoverable account. 
-
-   Payment: `RecoveryDeposit` balance will be reserved for initiating the  recovery process. This deposit will always be repatriated to the account  trying to be recovered. See `close_recovery`. 
-
-   The dispatch origin for this call must be _Signed_. 
-
-   Parameters: 
-
-  - `account`: The lost account that you want to recover. This account needs to be recoverable (i.e. have a recovery configuration). 
- 
-### pokeDeposit(maybe_account: `Option<MultiAddress>`)
-- **interface**: `api.tx.recovery.pokeDeposit`
-- **summary**:    Poke deposits for recovery configurations and / or active recoveries. 
-
-   This can be used by accounts to possibly lower their locked amount. 
-
-   The dispatch origin for this call must be _Signed_. 
-
-   Parameters: 
-
-  - `maybe_account`: Optional recoverable account for which you have an active recovery and want to adjust the deposit for the active recovery. 
-
-   This function checks both recovery configuration deposit and active recovery deposits  of the caller: 
-
-  - If the caller has created a recovery configuration, checks and adjusts its deposit
-
-  - If the caller has initiated any active recoveries, and provides the account in `maybe_account`, checks and adjusts those deposits 
-
-   If any deposit is updated, the difference will be reserved/unreserved from the caller's  account. 
-
-   The transaction is made free if any deposit is updated and paid otherwise. 
-
-   Emits `DepositPoked` if any deposit is updated.  Multiple events may be emitted in case both types of deposits are updated. 
- 
-### removeRecovery()
-- **interface**: `api.tx.recovery.removeRecovery`
-- **summary**:    Remove the recovery process for your account. Recovered accounts are still accessible. 
-
-   NOTE: The user must make sure to call `close_recovery` on all active  recovery attempts before calling this function else it will fail. 
-
-   Payment: By calling this function the recoverable account will unreserve  their recovery configuration deposit.  (`ConfigDepositBase` + `FriendDepositFactor` * #_of_friends) 
-
-   The dispatch origin for this call must be _Signed_ and must be a  recoverable account (i.e. has a recovery configuration). 
- 
-### setRecovered(lost: `MultiAddress`, rescuer: `MultiAddress`)
-- **interface**: `api.tx.recovery.setRecovered`
-- **summary**:    Allow ROOT to bypass the recovery process and set a rescuer account  for a lost account directly. 
-
-   The dispatch origin for this call must be _ROOT_. 
-
-   Parameters: 
-
-  - `lost`: The "lost account" to be recovered.
-
-  - `rescuer`: The "rescuer account" which can call as the lost account.
- 
-### vouchRecovery(lost: `MultiAddress`, rescuer: `MultiAddress`)
-- **interface**: `api.tx.recovery.vouchRecovery`
-- **summary**:    Allow a "friend" of a recoverable account to vouch for an active recovery  process for that account. 
-
-   The dispatch origin for this call must be _Signed_ and must be a "friend"  for the recoverable account. 
-
-   Parameters: 
-
-  - `lost`: The lost account that you want to recover.
-
-  - `rescuer`: The account trying to rescue the lost account that you want to vouch for.
-
-   The combination of these two parameters must point to an active recovery  process. 
-
-___
-
-
-## referenda
- 
-### cancel(index: `u32`)
-- **interface**: `api.tx.referenda.cancel`
-- **summary**:    Cancel an ongoing referendum. 
-
-   - `origin`: must be the `CancelOrigin`. 
-
-  - `index`: The index of the referendum to be cancelled.
-
-   Emits `Cancelled`. 
- 
-### kill(index: `u32`)
-- **interface**: `api.tx.referenda.kill`
-- **summary**:    Cancel an ongoing referendum and slash the deposits. 
-
-   - `origin`: must be the `KillOrigin`. 
-
-  - `index`: The index of the referendum to be cancelled.
-
-   Emits `Killed` and `DepositSlashed`. 
- 
-### nudgeReferendum(index: `u32`)
-- **interface**: `api.tx.referenda.nudgeReferendum`
-- **summary**:    Advance a referendum onto its next logical state. Only used internally. 
-
-   - `origin`: must be `Root`. 
-
-  - `index`: the referendum to be advanced.
- 
-### oneFewerDeciding(track: `u16`)
-- **interface**: `api.tx.referenda.oneFewerDeciding`
-- **summary**:    Advance a track onto its next logical state. Only used internally. 
-
-   - `origin`: must be `Root`. 
-
-  - `track`: the track to be advanced.
-
-   Action item for when there is now one fewer referendum in the deciding phase and the  `DecidingCount` is not yet updated. This means that we should either: 
-
-  - begin deciding another referendum (and leave `DecidingCount` alone); or
-
-  - decrement `DecidingCount`.
- 
-### placeDecisionDeposit(index: `u32`)
-- **interface**: `api.tx.referenda.placeDecisionDeposit`
-- **summary**:    Post the Decision Deposit for a referendum. 
-
-   - `origin`: must be `Signed` and the account must have funds available for the  referendum's track's Decision Deposit. 
-
-  - `index`: The index of the submitted referendum whose Decision Deposit is yet to be posted. 
-
-   Emits `DecisionDepositPlaced`. 
- 
-### refundDecisionDeposit(index: `u32`)
-- **interface**: `api.tx.referenda.refundDecisionDeposit`
-- **summary**:    Refund the Decision Deposit for a closed referendum back to the depositor. 
-
-   - `origin`: must be `Signed` or `Root`. 
-
-  - `index`: The index of a closed referendum whose Decision Deposit has not yet been refunded. 
-
-   Emits `DecisionDepositRefunded`. 
- 
-### refundSubmissionDeposit(index: `u32`)
-- **interface**: `api.tx.referenda.refundSubmissionDeposit`
-- **summary**:    Refund the Submission Deposit for a closed referendum back to the depositor. 
-
-   - `origin`: must be `Signed` or `Root`. 
-
-  - `index`: The index of a closed referendum whose Submission Deposit has not yet been refunded. 
-
-   Emits `SubmissionDepositRefunded`. 
- 
-### setMetadata(index: `u32`, maybe_hash: `Option<H256>`)
-- **interface**: `api.tx.referenda.setMetadata`
-- **summary**:    Set or clear metadata of a referendum. 
-
-   Parameters: 
-
-  - `origin`: Must be `Signed` by a creator of a referendum or by anyone to clear a metadata of a finished referendum. 
-
-  - `index`:  The index of a referendum to set or clear metadata for.
-
-  - `maybe_hash`: The hash of an on-chain stored preimage. `None` to clear a metadata.
- 
-### submit(proposal_origin: `AssetHubKusamaRuntimeOriginCaller`, proposal: `FrameSupportPreimagesBounded`, enactment_moment: `FrameSupportScheduleDispatchTime`)
-- **interface**: `api.tx.referenda.submit`
-- **summary**:    Propose a referendum on a privileged action. 
-
-   - `origin`: must be `SubmitOrigin` and the account must have `SubmissionDeposit` funds  available. 
-
-  - `proposal_origin`: The origin from which the proposal should be executed.
-
-  - `proposal`: The proposal.
-
-  - `enactment_moment`: The moment that the proposal should be enacted.
-
-   Emits `Submitted`. 
 
 ___
 
@@ -4720,16 +3194,6 @@ ___
 
    Every `AccountId32` can control its corresponding fallback account. The fallback account  is the `AccountId20` with the last 12 bytes set to `0xEE`. This is essentially a  recovery function in case an `AccountId20` was used without creating a mapping first. 
  
-### ethCall(dest: `H160`, value: `U256`, gas_limit: `SpWeightsWeightV2Weight`, storage_deposit_limit: `Compact<u128>`, data: `Bytes`)
-- **interface**: `api.tx.revive.ethCall`
-- **summary**:    Same as [`Self::call`], but intended to be dispatched **only**  by an EVM transaction through the EVM compatibility layer. 
- 
-### ethInstantiateWithCode(value: `U256`, gas_limit: `SpWeightsWeightV2Weight`, storage_deposit_limit: `Compact<u128>`, code: `Bytes`, data: `Bytes`)
-- **interface**: `api.tx.revive.ethInstantiateWithCode`
-- **summary**:    Same as [`Self::instantiate_with_code`], but intended to be dispatched **only**  by an EVM transaction through the EVM compatibility layer. 
-
-   Calling this dispatchable ensures that the origin's nonce is bumped only once,  via the `CheckNonce` transaction extension. In contrast, [`Self::instantiate_with_code`]  also bumps the nonce after contract instantiation, since it may be invoked multiple  times within a batch call transaction. 
- 
 ### ethTransact(payload: `Bytes`)
 - **interface**: `api.tx.revive.ethTransact`
 - **summary**:    A raw EVM transaction, typically dispatched by an Ethereum JSON-RPC server. 
@@ -4748,9 +3212,9 @@ ___
  
 ### instantiate(value: `Compact<u128>`, gas_limit: `SpWeightsWeightV2Weight`, storage_deposit_limit: `Compact<u128>`, code_hash: `H256`, data: `Bytes`, salt: `Option<[u8;32]>`)
 - **interface**: `api.tx.revive.instantiate`
-- **summary**:    Instantiates a contract from a previously deployed vm binary. 
+- **summary**:    Instantiates a contract from a previously deployed wasm binary. 
 
-   This function is identical to [`Self::instantiate_with_code`] but without the  code deployment step. Instead, the `code_hash` of an on-chain deployed vm binary  must be supplied. 
+   This function is identical to [`Self::instantiate_with_code`] but without the  code deployment step. Instead, the `code_hash` of an on-chain deployed wasm binary  must be supplied. 
  
 ### instantiateWithCode(value: `Compact<u128>`, gas_limit: `SpWeightsWeightV2Weight`, storage_deposit_limit: `Compact<u128>`, code: `Bytes`, data: `Bytes`, salt: `Option<[u8;32]>`)
 - **interface**: `api.tx.revive.instantiateWithCode`
@@ -4829,59 +3293,6 @@ ___
 ___
 
 
-## scheduler
- 
-### cancel(when: `u32`, index: `u32`)
-- **interface**: `api.tx.scheduler.cancel`
-- **summary**:    Cancel an anonymously scheduled task. 
- 
-### cancelNamed(id: `[u8;32]`)
-- **interface**: `api.tx.scheduler.cancelNamed`
-- **summary**:    Cancel a named scheduled task. 
- 
-### cancelRetry(task: `(u32,u32)`)
-- **interface**: `api.tx.scheduler.cancelRetry`
-- **summary**:    Removes the retry configuration of a task. 
- 
-### cancelRetryNamed(id: `[u8;32]`)
-- **interface**: `api.tx.scheduler.cancelRetryNamed`
-- **summary**:    Cancel the retry configuration of a named task. 
- 
-### schedule(when: `u32`, maybe_periodic: `Option<(u32,u32)>`, priority: `u8`, call: `Call`)
-- **interface**: `api.tx.scheduler.schedule`
-- **summary**:    Anonymously schedule a task. 
- 
-### scheduleAfter(after: `u32`, maybe_periodic: `Option<(u32,u32)>`, priority: `u8`, call: `Call`)
-- **interface**: `api.tx.scheduler.scheduleAfter`
-- **summary**:    Anonymously schedule a task after a delay. 
- 
-### scheduleNamed(id: `[u8;32]`, when: `u32`, maybe_periodic: `Option<(u32,u32)>`, priority: `u8`, call: `Call`)
-- **interface**: `api.tx.scheduler.scheduleNamed`
-- **summary**:    Schedule a named task. 
- 
-### scheduleNamedAfter(id: `[u8;32]`, after: `u32`, maybe_periodic: `Option<(u32,u32)>`, priority: `u8`, call: `Call`)
-- **interface**: `api.tx.scheduler.scheduleNamedAfter`
-- **summary**:    Schedule a named task after a delay. 
- 
-### setRetry(task: `(u32,u32)`, retries: `u8`, period: `u32`)
-- **interface**: `api.tx.scheduler.setRetry`
-- **summary**:    Set a retry configuration for a task so that, in case its scheduled run fails, it will  be retried after `period` blocks, for a total amount of `retries` retries or until it  succeeds. 
-
-   Tasks which need to be scheduled for a retry are still subject to weight metering and  agenda space, same as a regular task. If a periodic task fails, it will be scheduled  normally while the task is retrying. 
-
-   Tasks scheduled as a result of a retry for a periodic task are unnamed, non-periodic  clones of the original task. Their retry configuration will be derived from the  original task's configuration, but will have a lower value for `remaining` than the  original `total_retries`. 
- 
-### setRetryNamed(id: `[u8;32]`, retries: `u8`, period: `u32`)
-- **interface**: `api.tx.scheduler.setRetryNamed`
-- **summary**:    Set a retry configuration for a named task so that, in case its scheduled run fails, it  will be retried after `period` blocks, for a total amount of `retries` retries or until  it succeeds. 
-
-   Tasks which need to be scheduled for a retry are still subject to weight metering and  agenda space, same as a regular task. If a periodic task fails, it will be scheduled  normally while the task is retrying. 
-
-   Tasks scheduled as a result of a retry for a periodic task are unnamed, non-periodic  clones of the original task. Their retry configuration will be derived from the  original task's configuration, but will have a lower value for `remaining` than the  original `total_retries`. 
-
-___
-
-
 ## session
  
 ### purgeKeys()
@@ -4905,608 +3316,6 @@ ___
    #### Complexity 
 
   - `O(1)`. Actual cost depends on the number of length of `T::Keys::key_ids()` which is fixed. 
-
-___
-
-
-## society
- 
-### bestowMembership(candidate: `AccountId32`)
-- **interface**: `api.tx.society.bestowMembership`
-- **summary**:    Transform an approved candidate into a member. Callable only by the Signed origin of the  Founder, only after the period for voting has ended and only when the candidate is not  clearly rejected. 
- 
-### bid(value: `u128`)
-- **interface**: `api.tx.society.bid`
-- **summary**:    A user outside of the society can make a bid for entry. 
-
-   Payment: The group's Candidate Deposit will be reserved for making a bid. It is returned  when the bid becomes a member, or if the bid calls `unbid`. 
-
-   The dispatch origin for this call must be _Signed_. 
-
-   Parameters: 
-
-  - `value`: A one time payment the bid would like to receive when joining the society.
- 
-### claimMembership()
-- **interface**: `api.tx.society.claimMembership`
-- **summary**:    Transform an approved candidate into a member. Callable only by the  the candidate, and only after the period for voting has ended. 
- 
-### cleanupCandidacy(candidate: `AccountId32`, max: `u32`)
-- **interface**: `api.tx.society.cleanupCandidacy`
-- **summary**:    Remove up to `max` stale votes for the given `candidate`. 
-
-   May be called by any Signed origin, but only after the candidate's candidacy is ended. 
- 
-### cleanupChallenge(challenge_round: `u32`, max: `u32`)
-- **interface**: `api.tx.society.cleanupChallenge`
-- **summary**:    Remove up to `max` stale votes for the defender in the given `challenge_round`. 
-
-   May be called by any Signed origin, but only after the challenge round is ended. 
- 
-### defenderVote(approve: `bool`)
-- **interface**: `api.tx.society.defenderVote`
-- **summary**:    As a member, vote on the defender. 
-
-   The dispatch origin for this call must be _Signed_ and a member. 
-
-   Parameters: 
-
-  - `approve`: A boolean which says if the candidate should be approved (`true`) or rejected (`false`). 
- 
-### dissolve()
-- **interface**: `api.tx.society.dissolve`
-- **summary**:    Dissolve the society and remove all members. 
-
-   The dispatch origin for this call must be Signed, and the signing account must be both  the `Founder` and the `Head`. This implies that it may only be done when there is one  member. 
- 
-### dropCandidate(candidate: `AccountId32`)
-- **interface**: `api.tx.society.dropCandidate`
-- **summary**:    Remove a `candidate`'s failed application from the society. Callable by any  signed origin but only at the end of the subsequent round and only for  a candidate with more rejections than approvals. 
-
-   The bid deposit is lost and the voucher is banned. 
- 
-### foundSociety(founder: `MultiAddress`, max_members: `u32`, max_intake: `u32`, max_strikes: `u32`, candidate_deposit: `u128`, rules: `Bytes`)
-- **interface**: `api.tx.society.foundSociety`
-- **summary**:    Found the society. 
-
-   This is done as a discrete action in order to allow for the  pallet to be included into a running chain and can only be done once. 
-
-   The dispatch origin for this call must be from the _FounderSetOrigin_. 
-
-   Parameters: 
-
-  - `founder` - The first member and head of the newly founded society.
-
-  - `max_members` - The initial max number of members for the society.
-
-  - `max_intake` - The maximum number of candidates per intake period.
-
-  - `max_strikes`: The maximum number of strikes a member may get before they become suspended and may only be reinstated by the founder. 
-
-  - `candidate_deposit`: The deposit required to make a bid for membership of the group.
-
-  - `rules` - The rules of this society concerning membership.
-
-   Complexity: O(1) 
- 
-### judgeSuspendedMember(who: `MultiAddress`, forgive: `bool`)
-- **interface**: `api.tx.society.judgeSuspendedMember`
-- **summary**:    Allow suspension judgement origin to make judgement on a suspended member. 
-
-   If a suspended member is forgiven, we simply add them back as a member, not affecting  any of the existing storage items for that member. 
-
-   If a suspended member is rejected, remove all associated storage items, including  their payouts, and remove any vouched bids they currently have. 
-
-   The dispatch origin for this call must be Signed from the Founder. 
-
-   Parameters: 
-
-  - `who` - The suspended member to be judged.
-
-  - `forgive` - A boolean representing whether the suspension judgement origin forgives (`true`) or rejects (`false`) a suspended member. 
- 
-### kickCandidate(candidate: `AccountId32`)
-- **interface**: `api.tx.society.kickCandidate`
-- **summary**:    Remove the candidate's application from the society. Callable only by the Signed origin  of the Founder, only after the period for voting has ended, and only when they do not  have a clear approval. 
-
-   Any bid deposit is lost and voucher is banned. 
- 
-### payout()
-- **interface**: `api.tx.society.payout`
-- **summary**:    Transfer the first matured payout for the sender and remove it from the records. 
-
-   NOTE: This extrinsic needs to be called multiple times to claim multiple matured  payouts. 
-
-   Payment: The member will receive a payment equal to their first matured  payout to their free balance. 
-
-   The dispatch origin for this call must be _Signed_ and a member with  payouts remaining. 
- 
-### pokeDeposit()
-- **interface**: `api.tx.society.pokeDeposit`
-- **summary**:    Poke the deposit reserved when bidding. 
-
-   The dispatch origin for this call must be _Signed_ and must be the bidder. 
-
-   The transaction fee is waived if the deposit is changed after poking/reconsideration. 
-
-   Emits `DepositPoked` if successful. 
- 
-### punishSkeptic()
-- **interface**: `api.tx.society.punishSkeptic`
-- **summary**:    Punish the skeptic with a strike if they did not vote on a candidate. Callable by the  candidate. 
- 
-### resignCandidacy()
-- **interface**: `api.tx.society.resignCandidacy`
-- **summary**:    Remove the candidate's application from the society. Callable only by the candidate. 
-
-   Any bid deposit is lost and voucher is banned. 
- 
-### setParameters(max_members: `u32`, max_intake: `u32`, max_strikes: `u32`, candidate_deposit: `u128`)
-- **interface**: `api.tx.society.setParameters`
-- **summary**:    Change the maximum number of members in society and the maximum number of new candidates  in a single intake period. 
-
-   The dispatch origin for this call must be Signed by the Founder. 
-
-   Parameters: 
-
-  - `max_members` - The maximum number of members for the society. This must be no less than the current number of members. 
-
-  - `max_intake` - The maximum number of candidates per intake period.
-
-  - `max_strikes`: The maximum number of strikes a member may get before they become suspended and may only be reinstated by the founder. 
-
-  - `candidate_deposit`: The deposit required to make a bid for membership of the group.
- 
-### unbid()
-- **interface**: `api.tx.society.unbid`
-- **summary**:    A bidder can remove their bid for entry into society.  By doing so, they will have their candidate deposit returned or  they will unvouch their voucher. 
-
-   Payment: The bid deposit is unreserved if the user made a bid. 
-
-   The dispatch origin for this call must be _Signed_ and a bidder. 
- 
-### unvouch()
-- **interface**: `api.tx.society.unvouch`
-- **summary**:    As a vouching member, unvouch a bid. This only works while vouched user is  only a bidder (and not a candidate). 
-
-   The dispatch origin for this call must be _Signed_ and a vouching member. 
-
-   Parameters: 
-
-  - `pos`: Position in the `Bids` vector of the bid who should be unvouched.
- 
-### vote(candidate: `MultiAddress`, approve: `bool`)
-- **interface**: `api.tx.society.vote`
-- **summary**:    As a member, vote on a candidate. 
-
-   The dispatch origin for this call must be _Signed_ and a member. 
-
-   Parameters: 
-
-  - `candidate`: The candidate that the member would like to bid on.
-
-  - `approve`: A boolean which says if the candidate should be approved (`true`) or rejected (`false`). 
- 
-### vouch(who: `MultiAddress`, value: `u128`, tip: `u128`)
-- **interface**: `api.tx.society.vouch`
-- **summary**:    As a member, vouch for someone to join society by placing a bid on their behalf. 
-
-   There is no deposit required to vouch for a new bid, but a member can only vouch for  one bid at a time. If the bid becomes a suspended candidate and ultimately rejected by  the suspension judgement origin, the member will be banned from vouching again. 
-
-   As a vouching member, you can claim a tip if the candidate is accepted. This tip will  be paid as a portion of the reward the member will receive for joining the society. 
-
-   The dispatch origin for this call must be _Signed_ and a member. 
-
-   Parameters: 
-
-  - `who`: The user who you would like to vouch for.
-
-  - `value`: The total reward to be paid between you and the candidate if they become a member in the society. 
-
-  - `tip`: Your cut of the total `value` payout when the candidate is inducted into the society. Tips larger than `value` will be saturated upon payout. 
- 
-### waiveRepay(amount: `u128`)
-- **interface**: `api.tx.society.waiveRepay`
-- **summary**:    Repay the payment previously given to the member with the signed origin, remove any  pending payments, and elevate them from rank 0 to rank 1. 
-
-___
-
-
-## staking
- 
-### applySlash(slash_era: `u32`, slash_key: `(AccountId32,Perbill,u32)`)
-- **interface**: `api.tx.staking.applySlash`
-- **summary**:    Manually and permissionlessly applies a deferred slash for a given era. 
-
-   Normally, slashes are automatically applied shortly after the start of the `slash_era`.  The automatic application of slashes is handled by the pallet's internal logic, and it  tries to apply one slash page per block of the era.  If for some reason, one era is not enough for applying all slash pages, the remaining  slashes need to be manually (permissionlessly) applied. 
-
-   For a given era x, if at era x+1, slashes are still unapplied, all withdrawals get  blocked, and these need to be manually applied by calling this function.  This function exists as a **fallback mechanism** for this extreme situation, but we  never expect to encounter this in normal scenarios. 
-
-   The parameters for this call can be queried by looking at the `UnappliedSlashes` storage  for eras older than the active era. 
-
-   #### Parameters 
-
-  - `slash_era`: The staking era in which the slash was originally scheduled.
-
-  - `slash_key`: A unique identifier for the slash, represented as a tuple:
-
-  - `stash`: The stash account of the validator being slashed.
-
-  - `slash_fraction`: The fraction of the stake that was slashed.
-
-  - `page_index`: The index of the exposure page being processed.
-
-   #### Behavior 
-
-  - The function is **permissionless**—anyone can call it.
-
-  - The `slash_era` **must be the current era or a past era**. If it is in the future, the  call fails with `EraNotStarted`. 
-
-  - The fee is waived if the slash is successfully applied.
-
-   #### Future Improvement 
-
-  - Implement an **off-chain worker (OCW) task** to automatically apply slashes when there is unused block space, improving efficiency. 
- 
-### bond(value: `Compact<u128>`, payee: `PalletStakingAsyncRewardDestination`)
-- **interface**: `api.tx.staking.bond`
-- **summary**:    Take the origin account as a stash and lock up `value` of its balance. `controller` will  be the account that controls it. 
-
-   `value` must be more than the `minimum_balance` specified by `T::Currency`. 
-
-   The dispatch origin for this call must be _Signed_ by the stash account. 
-
-   Emits `Bonded`. 
-
-   NOTE: Two of the storage writes (`Self::bonded`, `Self::payee`) are _never_ cleaned  unless the `origin` falls below _existential deposit_ (or equal to 0) and gets removed  as dust. 
- 
-### bondExtra(max_additional: `Compact<u128>`)
-- **interface**: `api.tx.staking.bondExtra`
-- **summary**:    Add some extra amount that have appeared in the stash `free_balance` into the balance up  for staking. 
-
-   The dispatch origin for this call must be _Signed_ by the stash, not the controller. 
-
-   Use this if there are additional funds in your stash account that you wish to bond.  Unlike [`bond`](Self::bond) or [`unbond`](Self::unbond) this function does not impose  any limitation on the amount that can be added. 
-
-   Emits `Bonded`. 
- 
-### cancelDeferredSlash(era: `u32`, validator_slashes: `Vec<(AccountId32,Perbill)>`)
-- **interface**: `api.tx.staking.cancelDeferredSlash`
-- **summary**:    Cancels scheduled slashes for a given era before they are applied. 
-
-   This function allows `T::AdminOrigin` to cancel pending slashes for specified validators  in a given era. The cancelled slashes are stored and will be checked when applying  slashes. 
-
-   #### Parameters 
-
-  - `era`: The staking era for which slashes should be cancelled. This is the era where the slash would be applied, not the era in which the offence was committed. 
-
-  - `validator_slashes`: A list of validator stash accounts and their slash fractions to be cancelled. 
- 
-### chill()
-- **interface**: `api.tx.staking.chill`
-- **summary**:    Declare no desire to either validate or nominate. 
-
-   Effects will be felt at the beginning of the next era. 
-
-   The dispatch origin for this call must be _Signed_ by the controller, not the stash. 
-
-   #### Complexity 
-
-  - Independent of the arguments. Insignificant complexity.
-
-  - Contains one read.
-
-  - Writes are limited to the `origin` account key.
- 
-### chillOther(stash: `AccountId32`)
-- **interface**: `api.tx.staking.chillOther`
-- **summary**:    Declare a `controller` to stop participating as either a validator or nominator. 
-
-   Effects will be felt at the beginning of the next era. 
-
-   The dispatch origin for this call must be _Signed_, but can be called by anyone. 
-
-   If the caller is the same as the controller being targeted, then no further checks are  enforced, and this function behaves just like `chill`. 
-
-   If the caller is different than the controller being targeted, the following conditions  must be met: 
-
-   * `controller` must belong to a nominator who has become non-decodable, 
-
-   Or: 
-
-   * A `ChillThreshold` must be set and checked which defines how close to the max  nominators or validators we must reach before users can start chilling one-another. 
-
-  * A `MaxNominatorCount` and `MaxValidatorCount` must be set which is used to determine how close we are to the threshold. 
-
-  * A `MinNominatorBond` and `MinValidatorBond` must be set and checked, which determines if this is a person that should be chilled because they have not met the threshold  bond required. 
-
-   This can be helpful if bond requirements are updated, and we need to remove old users  who do not satisfy these requirements. 
- 
-### deprecateControllerBatch(controllers: `Vec<AccountId32>`)
-- **interface**: `api.tx.staking.deprecateControllerBatch`
-- **summary**:    Updates a batch of controller accounts to their corresponding stash account if they are  not the same. Ignores any controller accounts that do not exist, and does not operate if  the stash and controller are already the same. 
-
-   Effects will be felt instantly (as soon as this function is completed successfully). 
-
-   The dispatch origin must be `T::AdminOrigin`. 
- 
-### forceApplyMinCommission(validator_stash: `AccountId32`)
-- **interface**: `api.tx.staking.forceApplyMinCommission`
-- **summary**:    Force a validator to have at least the minimum commission. This will not affect a  validator who already has a commission greater than or equal to the minimum. Any account  can call this. 
- 
-### forceNewEra()
-- **interface**: `api.tx.staking.forceNewEra`
-- **summary**:    Force there to be a new era at the end of the next session. After this, it will be  reset to normal (non-forced) behaviour. 
-
-   The dispatch origin must be Root. 
-
-   #### Warning 
-
-   The election process starts multiple blocks before the end of the era.  If this is called just before a new era is triggered, the election process may not  have enough blocks to get a result. 
- 
-### forceNewEraAlways()
-- **interface**: `api.tx.staking.forceNewEraAlways`
-- **summary**:    Force there to be a new era at the end of sessions indefinitely. 
-
-   The dispatch origin must be Root. 
-
-   #### Warning 
-
-   The election process starts multiple blocks before the end of the era.  If this is called just before a new era is triggered, the election process may not  have enough blocks to get a result. 
- 
-### forceNoEras()
-- **interface**: `api.tx.staking.forceNoEras`
-- **summary**:    Force there to be no new eras indefinitely. 
-
-   The dispatch origin must be Root. 
-
-   #### Warning 
-
-   The election process starts multiple blocks before the end of the era.  Thus the election process may be ongoing when this is called. In this case the  election will continue until the next era is triggered. 
- 
-### forceUnstake(stash: `AccountId32`, num_slashing_spans: `u32`)
-- **interface**: `api.tx.staking.forceUnstake`
-- **summary**:    Force a current staker to become completely unstaked, immediately. 
-
-   The dispatch origin must be Root.  #### Parameters 
-
-   - `stash`: The stash account to be unstaked. 
-
-  - `num_slashing_spans`: **Deprecated**. This parameter is retained for backward compatibility. It no longer has any effect. 
- 
-### increaseValidatorCount(additional: `Compact<u32>`)
-- **interface**: `api.tx.staking.increaseValidatorCount`
-- **summary**:    Increments the ideal number of validators up to maximum of  `T::MaxValidatorSet`. 
-
-   The dispatch origin must be Root. 
- 
-### kick(who: `Vec<MultiAddress>`)
-- **interface**: `api.tx.staking.kick`
-- **summary**:    Remove the given nominations from the calling validator. 
-
-   Effects will be felt at the beginning of the next era. 
-
-   The dispatch origin for this call must be _Signed_ by the controller, not the stash. 
-
-   - `who`: A list of nominator stash accounts who are nominating this validator which  should no longer be nominating this validator. 
-
-   Note: Making this call only makes sense if you first set the validator preferences to  block any further nominations. 
- 
-### migrateCurrency(stash: `AccountId32`)
-- **interface**: `api.tx.staking.migrateCurrency`
-- **summary**:    Migrates permissionlessly a stash from locks to holds. 
-
-   This removes the old lock on the stake and creates a hold on it atomically. If all  stake cannot be held, the best effort is made to hold as much as possible. The remaining  stake is removed from the ledger. 
-
-   The fee is waived if the migration is successful. 
- 
-### nominate(targets: `Vec<MultiAddress>`)
-- **interface**: `api.tx.staking.nominate`
-- **summary**:    Declare the desire to nominate `targets` for the origin controller. 
-
-   Effects will be felt at the beginning of the next era. 
-
-   The dispatch origin for this call must be _Signed_ by the controller, not the stash. 
- 
-### payoutStakers(validator_stash: `AccountId32`, era: `u32`)
-- **interface**: `api.tx.staking.payoutStakers`
-- **summary**:    Pay out next page of the stakers behind a validator for the given era. 
-
-   - `validator_stash` is the stash account of the validator. 
-
-  - `era` may be any era between `[current_era - history_depth; current_era]`.
-
-   The origin of this call must be _Signed_. Any account can call this function, even if  it is not one of the stakers. 
-
-   The reward payout could be paged in case there are too many nominators backing the  `validator_stash`. This call will payout unpaid pages in an ascending order. To claim a  specific page, use `payout_stakers_by_page`.` 
-
-   If all pages are claimed, it returns an error `InvalidPage`. 
- 
-### payoutStakersByPage(validator_stash: `AccountId32`, era: `u32`, page: `u32`)
-- **interface**: `api.tx.staking.payoutStakersByPage`
-- **summary**:    Pay out a page of the stakers behind a validator for the given era and page. 
-
-   - `validator_stash` is the stash account of the validator. 
-
-  - `era` may be any era between `[current_era - history_depth; current_era]`.
-
-  - `page` is the page index of nominators to pay out with value between 0 and `num_nominators / T::MaxExposurePageSize`. 
-
-   The origin of this call must be _Signed_. Any account can call this function, even if  it is not one of the stakers. 
-
-   If a validator has more than [`Config::MaxExposurePageSize`] nominators backing  them, then the list of nominators is paged, with each page being capped at  [`Config::MaxExposurePageSize`.] If a validator has more than one page of nominators,  the call needs to be made for each page separately in order for all the nominators  backing a validator to receive the reward. The nominators are not sorted across pages  and so it should not be assumed the highest staker would be on the topmost page and vice  versa. If rewards are not claimed in [`Config::HistoryDepth`] eras, they are lost. 
- 
-### pruneEraStep(era: `u32`)
-- **interface**: `api.tx.staking.pruneEraStep`
-- **summary**:    Perform one step of era pruning to prevent PoV size exhaustion from unbounded deletions. 
-
-   This extrinsic enables permissionless lazy pruning of era data by performing  incremental deletion of storage items. Each call processes a limited number  of items based on available block weight to avoid exceeding block limits. 
-
-   Returns `Pays::No` when work is performed to incentivize regular maintenance.  Anyone can call this to help maintain the chain's storage health. 
-
-   The era must be eligible for pruning (older than HistoryDepth + 1).  Check `EraPruningState` storage to see if an era needs pruning before calling. 
- 
-### reapStash(stash: `AccountId32`, num_slashing_spans: `u32`)
-- **interface**: `api.tx.staking.reapStash`
-- **summary**:    Remove all data structures concerning a staker/stash once it is at a state where it can  be considered `dust` in the staking system. The requirements are: 
-
-   1. the `total_balance` of the stash is below `min_chilled_bond` or is zero.  2. or, the `ledger.total` of the stash is below `min_chilled_bond` or is zero. 
-
-   The former can happen in cases like a slash; the latter when a fully unbonded account  is still receiving staking rewards in `RewardDestination::Staked`. 
-
-   It can be called by anyone, as long as `stash` meets the above requirements. 
-
-   Refunds the transaction fees upon successful execution. 
-
-   #### Parameters 
-
-   - `stash`: The stash account to be reaped. 
-
-  - `num_slashing_spans`: **Deprecated**. This parameter is retained for backward compatibility. It no longer has any effect. 
- 
-### rebond(value: `Compact<u128>`)
-- **interface**: `api.tx.staking.rebond`
-- **summary**:    Rebond a portion of the stash scheduled to be unlocked. 
-
-   The dispatch origin must be signed by the controller. 
- 
-### restoreLedger(stash: `AccountId32`, maybe_controller: `Option<AccountId32>`, maybe_total: `Option<u128>`, maybe_unlocking: `Option<Vec<PalletStakingAsyncLedgerUnlockChunk>>`)
-- **interface**: `api.tx.staking.restoreLedger`
-- **summary**:    Restores the state of a ledger which is in an inconsistent state. 
-
-   The requirements to restore a ledger are the following: 
-
-  * The stash is bonded; or
-
-  * The stash is not bonded but it has a staking lock left behind; or
-
-  * If the stash has an associated ledger and its state is inconsistent; or
-
-  * If the ledger is not corrupted *but* its staking lock is out of sync.
-
-   The `maybe_*` input parameters will overwrite the corresponding data and metadata of the  ledger associated with the stash. If the input parameters are not set, the ledger will  be reset values from on-chain state. 
- 
-### scaleValidatorCount(factor: `Percent`)
-- **interface**: `api.tx.staking.scaleValidatorCount`
-- **summary**:    Scale up the ideal number of validators by a factor up to maximum of  `T::MaxValidatorSet`. 
-
-   The dispatch origin must be Root. 
- 
-### setController()
-- **interface**: `api.tx.staking.setController`
-- **summary**:    (Re-)sets the controller of a stash to the stash itself. This function previously  accepted a `controller` argument to set the controller to an account other than the  stash itself. This functionality has now been removed, now only setting the controller  to the stash, if it is not already. 
-
-   Effects will be felt instantly (as soon as this function is completed successfully). 
-
-   The dispatch origin for this call must be _Signed_ by the stash, not the controller. 
- 
-### setInvulnerables(invulnerables: `Vec<AccountId32>`)
-- **interface**: `api.tx.staking.setInvulnerables`
-- **summary**:    Set the validators who cannot be slashed (if any). 
-
-   The dispatch origin must be Root. 
- 
-### setMinCommission(new: `Perbill`)
-- **interface**: `api.tx.staking.setMinCommission`
-- **summary**:    Sets the minimum amount of commission that each validators must maintain. 
-
-   This call has lower privilege requirements than `set_staking_config` and can be called  by the `T::AdminOrigin`. Root can always call this. 
- 
-### setPayee(payee: `PalletStakingAsyncRewardDestination`)
-- **interface**: `api.tx.staking.setPayee`
-- **summary**:    (Re-)set the payment target for a controller. 
-
-   Effects will be felt instantly (as soon as this function is completed successfully). 
-
-   The dispatch origin for this call must be _Signed_ by the controller, not the stash. 
- 
-### setStakingConfigs(min_nominator_bond: `PalletStakingAsyncPalletConfigOpU128`, min_validator_bond: `PalletStakingAsyncPalletConfigOpU128`, max_nominator_count: `PalletStakingAsyncPalletConfigOpU32`, max_validator_count: `PalletStakingAsyncPalletConfigOpU32`, chill_threshold: `PalletStakingAsyncPalletConfigOpPercent`, min_commission: `PalletStakingAsyncPalletConfigOpPerbill`, max_staked_rewards: `PalletStakingAsyncPalletConfigOpPercent`)
-- **interface**: `api.tx.staking.setStakingConfigs`
-- **summary**:    Update the various staking configurations . 
-
-   * `min_nominator_bond`: The minimum active bond needed to be a nominator. 
-
-  * `min_validator_bond`: The minimum active bond needed to be a validator.
-
-  * `max_nominator_count`: The max number of users who can be a nominator at once. When set to `None`, no limit is enforced. 
-
-  * `max_validator_count`: The max number of users who can be a validator at once. When set to `None`, no limit is enforced. 
-
-  * `chill_threshold`: The ratio of `max_nominator_count` or `max_validator_count` which should be filled in order for the `chill_other` transaction to work. 
-
-  * `min_commission`: The minimum amount of commission that each validators must maintain. This is checked only upon calling `validate`. Existing validators are not affected. 
-
-   RuntimeOrigin must be Root to call this function. 
-
-   NOTE: Existing nominators and validators will not be affected by this update.  to kick people under the new limits, `chill_other` should be called. 
- 
-### setValidatorCount(new: `Compact<u32>`)
-- **interface**: `api.tx.staking.setValidatorCount`
-- **summary**:    Sets the ideal number of validators. 
-
-   The dispatch origin must be Root. 
- 
-### unbond(value: `Compact<u128>`)
-- **interface**: `api.tx.staking.unbond`
-- **summary**:    Schedule a portion of the stash to be unlocked ready for transfer out after the bond  period ends. If this leaves an amount actively bonded less than  [`asset::existential_deposit`], then it is increased to the full amount. 
-
-   The dispatch origin for this call must be _Signed_ by the controller, not the stash. 
-
-   Once the unlock period is done, you can call `withdraw_unbonded` to actually move  the funds out of management ready for transfer. 
-
-   No more than a limited number of unlocking chunks (see `MaxUnlockingChunks`)  can co-exists at the same time. If there are no unlocking chunks slots available  [`Call::withdraw_unbonded`] is called to remove some of the chunks (if possible). 
-
-   If a user encounters the `InsufficientBond` error when calling this extrinsic,  they should call `chill` first in order to free up their bonded funds. 
-
-   Emits `Unbonded`. 
-
-   See also [`Call::withdraw_unbonded`]. 
- 
-### updatePayee(controller: `AccountId32`)
-- **interface**: `api.tx.staking.updatePayee`
-- **summary**:    Migrates an account's `RewardDestination::Controller` to  `RewardDestination::Account(controller)`. 
-
-   Effects will be felt instantly (as soon as this function is completed successfully). 
-
-   This will waive the transaction fee if the `payee` is successfully migrated. 
- 
-### validate(prefs: `PalletStakingAsyncValidatorPrefs`)
-- **interface**: `api.tx.staking.validate`
-- **summary**:    Declare the desire to validate for the origin controller. 
-
-   Effects will be felt at the beginning of the next era. 
-
-   The dispatch origin for this call must be _Signed_ by the controller, not the stash. 
- 
-### withdrawUnbonded(num_slashing_spans: `u32`)
-- **interface**: `api.tx.staking.withdrawUnbonded`
-- **summary**:    Remove any stake that has been fully unbonded and is ready for withdrawal. 
-
-   Stake is considered fully unbonded once [`Config::BondingDuration`] has elapsed since  the unbonding was initiated. In rare cases—such as when offences for the unbonded era  have been reported but not yet processed—withdrawal is restricted to eras for which  all offences have been processed. 
-
-   The unlocked stake will be returned as free balance in the stash account. 
-
-   The dispatch origin for this call must be _Signed_ by the controller. 
-
-   Emits `Withdrawn`. 
-
-   See also [`Call::unbond`]. 
-
-   #### Parameters 
-
-   - `num_slashing_spans`: **Deprecated**. Retained only for backward compatibility; this  parameter has no effect. 
-
-___
-
-
-## stakingRcClient
- 
-### relayNewOffencePaged(offences: `Vec<(u32,PalletStakingAsyncRcClientOffence)>`)
-- **interface**: `api.tx.stakingRcClient.relayNewOffencePaged`
- 
-### relaySessionReport(report: `PalletStakingAsyncRcClientSessionReport`)
-- **interface**: `api.tx.stakingRcClient.relaySessionReport`
-- **summary**:    Called to indicate the start of a new session on the relay chain. 
 
 ___
 
@@ -5588,9 +3397,6 @@ ___
 
    This call requires Root origin. 
  
-### doTask(task: `AssetHubKusamaRuntimeRuntimeTask`)
-- **interface**: `api.tx.system.doTask`
- 
 ### killPrefix(prefix: `Bytes`, subkeys: `u32`)
 - **interface**: `api.tx.system.killPrefix`
 - **summary**:    Kill all storage items with a key that starts with the given prefix. 
@@ -5662,141 +3468,6 @@ ___
 ### reportBridgeStatus(bridge_id: `H256`, is_congested: `bool`)
 - **interface**: `api.tx.toPolkadotXcmRouter.reportBridgeStatus`
 - **summary**:    Notification about congested bridge queue. 
-
-___
-
-
-## treasury
- 
-### checkStatus(index: `u32`)
-- **interface**: `api.tx.treasury.checkStatus`
-- **summary**:    Check the status of the spend and remove it from the storage if processed. 
-
-   #### Dispatch Origin 
-
-   Must be signed. 
-
-   #### Details 
-
-   The status check is a prerequisite for retrying a failed payout.  If a spend has either succeeded or expired, it is removed from the storage by this  function. In such instances, transaction fees are refunded. 
-
-   #### Parameters 
-
-  - `index`: The spend index.
-
-   #### Events 
-
-   Emits [`Event::PaymentFailed`] if the spend payout has failed.  Emits [`Event::SpendProcessed`] if the spend payout has succeed. 
- 
-### payout(index: `u32`)
-- **interface**: `api.tx.treasury.payout`
-- **summary**:    Claim a spend. 
-
-   #### Dispatch Origin 
-
-   Must be signed 
-
-   #### Details 
-
-   Spends must be claimed within some temporal bounds. A spend may be claimed within one  [`Config::PayoutPeriod`] from the `valid_from` block.  In case of a payout failure, the spend status must be updated with the `check_status`  dispatchable before retrying with the current function. 
-
-   #### Parameters 
-
-  - `index`: The spend index.
-
-   #### Events 
-
-   Emits [`Event::Paid`] if successful. 
- 
-### removeApproval(proposal_id: `Compact<u32>`)
-- **interface**: `api.tx.treasury.removeApproval`
-- **summary**:    Force a previously approved proposal to be removed from the approval queue. 
-
-   #### Dispatch Origin 
-
-   Must be [`Config::RejectOrigin`]. 
-
-   #### Details 
-
-   The original deposit will no longer be returned. 
-
-   #### Parameters 
-
-  - `proposal_id`: The index of a proposal
-
-   #### Complexity 
-
-  - O(A) where `A` is the number of approvals
-
-   #### Errors 
-
-  - [`Error::ProposalNotApproved`]: The `proposal_id` supplied was not found in the approval queue, i.e., the proposal has not been approved. This could also mean the  proposal does not exist altogether, thus there is no way it would have been approved  in the first place. 
- 
-### spend(asset_kind: `PolkadotRuntimeCommonImplsVersionedLocatableAsset`, amount: `Compact<u128>`, beneficiary: `ParachainsCommonPayVersionedLocatableAccount`, valid_from: `Option<u32>`)
-- **interface**: `api.tx.treasury.spend`
-- **summary**:    Propose and approve a spend of treasury funds. 
-
-   #### Dispatch Origin 
-
-   Must be [`Config::SpendOrigin`] with the `Success` value being at least  `amount` of `asset_kind` in the native asset. The amount of `asset_kind` is converted  for assertion using the [`Config::BalanceConverter`]. 
-
-   #### Details 
-
-   Create an approved spend for transferring a specific `amount` of `asset_kind` to a  designated beneficiary. The spend must be claimed using the `payout` dispatchable within  the [`Config::PayoutPeriod`]. 
-
-   #### Parameters 
-
-  - `asset_kind`: An indicator of the specific asset class to be spent.
-
-  - `amount`: The amount to be transferred from the treasury to the `beneficiary`.
-
-  - `beneficiary`: The beneficiary of the spend.
-
-  - `valid_from`: The block number from which the spend can be claimed. It can refer to the past if the resulting spend has not yet expired according to the  [`Config::PayoutPeriod`]. If `None`, the spend can be claimed immediately after  approval. 
-
-   #### Events 
-
-   Emits [`Event::AssetSpendApproved`] if successful. 
- 
-### spendLocal(amount: `Compact<u128>`, beneficiary: `MultiAddress`)
-- **interface**: `api.tx.treasury.spendLocal`
-- **summary**:    Propose and approve a spend of treasury funds. 
-
-   #### Dispatch Origin 
-
-   Must be [`Config::SpendOrigin`] with the `Success` value being at least `amount`. 
-
-   #### Details  NOTE: For record-keeping purposes, the proposer is deemed to be equivalent to the  beneficiary. 
-
-   #### Parameters 
-
-  - `amount`: The amount to be transferred from the treasury to the `beneficiary`.
-
-  - `beneficiary`: The destination account for the transfer.
-
-   #### Events 
-
-   Emits [`Event::SpendApproved`] if successful. 
- 
-### voidSpend(index: `u32`)
-- **interface**: `api.tx.treasury.voidSpend`
-- **summary**:    Void previously approved spend. 
-
-   #### Dispatch Origin 
-
-   Must be [`Config::RejectOrigin`]. 
-
-   #### Details 
-
-   A spend void is only possible if the payout has not been attempted yet. 
-
-   #### Parameters 
-
-  - `index`: The spend index.
-
-   #### Events 
-
-   Emits [`Event::AssetSpendVoided`] if successful. 
 
 ___
 
@@ -6456,56 +4127,6 @@ ___
    #### Complexity 
 
   - `O(1)`.
-
-___
-
-
-## voterList
- 
-### putInFrontOf(lighter: `MultiAddress`)
-- **interface**: `api.tx.voterList.putInFrontOf`
-- **summary**:    Move the caller's Id directly in front of `lighter`. 
-
-   The dispatch origin for this call must be _Signed_ and can only be called by the Id of  the account going in front of `lighter`. Fee is payed by the origin under all  circumstances. 
-
-   Only works if: 
-
-   - both nodes are within the same bag, 
-
-  - and `origin` has a greater `Score` than `lighter`.
- 
-### putInFrontOfOther(heavier: `MultiAddress`, lighter: `MultiAddress`)
-- **interface**: `api.tx.voterList.putInFrontOfOther`
-- **summary**:    Same as [`Pallet::put_in_front_of`], but it can be called by anyone. 
-
-   Fee is paid by the origin under all circumstances. 
- 
-### rebag(dislocated: `MultiAddress`)
-- **interface**: `api.tx.voterList.rebag`
-- **summary**:    Declare that some `dislocated` account has, through rewards or penalties, sufficiently  changed its score that it should properly fall into a different bag than its current  one. 
-
-   Anyone can call this function about any potentially dislocated account. 
-
-   Will always update the stored score of `dislocated` to the correct score, based on  `ScoreProvider`. 
-
-   If `dislocated` does not exists, it returns an error. 
-
-___
-
-
-## whitelist
- 
-### dispatchWhitelistedCall(call_hash: `H256`, call_encoded_len: `u32`, call_weight_witness: `SpWeightsWeightV2Weight`)
-- **interface**: `api.tx.whitelist.dispatchWhitelistedCall`
- 
-### dispatchWhitelistedCallWithPreimage(call: `Call`)
-- **interface**: `api.tx.whitelist.dispatchWhitelistedCallWithPreimage`
- 
-### removeWhitelistedCall(call_hash: `H256`)
-- **interface**: `api.tx.whitelist.removeWhitelistedCall`
- 
-### whitelistCall(call_hash: `H256`)
-- **interface**: `api.tx.whitelist.whitelistCall`
 
 ___
 

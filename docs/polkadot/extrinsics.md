@@ -66,8 +66,6 @@ The following sections contain Extrinsics methods are part of the default Polkad
 
 - **[proxy](#proxy)**
 
-- **[rcMigrator](#rcmigrator)**
-
 - **[referenda](#referenda)**
 
 - **[registrar](#registrar)**
@@ -79,8 +77,6 @@ The following sections contain Extrinsics methods are part of the default Polkad
 - **[slots](#slots)**
 
 - **[staking](#staking)**
-
-- **[stakingAhClient](#stakingahclient)**
 
 - **[stateTrieMigration](#statetriemigration)**
 
@@ -388,24 +384,6 @@ ___
    #### Complexity 
 
   - O(1).
- 
-### pokeDeposit(bounty_id: `Compact<u32>`)
-- **interface**: `api.tx.bounties.pokeDeposit`
-- **summary**:    Poke the deposit reserved for creating a bounty proposal. 
-
-   This can be used by accounts to update their reserved amount. 
-
-   The dispatch origin for this call must be _Signed_. 
-
-   Parameters: 
-
-  - `bounty_id`: The bounty id for which to adjust the deposit.
-
-   If the deposit is updated, the difference will be reserved/unreserved from the  proposer's account. 
-
-   The transaction is made free if the deposit is updated and paid otherwise. 
-
-   Emits `DepositPoked` if the deposit is updated. 
  
 ### proposeBounty(value: `Compact<u128>`, description: `Bytes`)
 - **interface**: `api.tx.bounties.proposeBounty`
@@ -1086,7 +1064,7 @@ ___
 
 ## electionProviderMultiPhase
  
-### governanceFallback()
+### governanceFallback(maybe_max_voters: `Option<u32>`, maybe_max_targets: `Option<u32>`)
 - **interface**: `api.tx.electionProviderMultiPhase.governanceFallback`
 - **summary**:    Trigger the governance fallback. 
 
@@ -2000,20 +1978,6 @@ ___
 
    This function is mainly meant to be used for upgrading parachains that do not follow  the go-ahead signal while the PVF pre-checking feature is enabled. 
  
-### applyAuthorizedForceSetCurrentCode(para: `u32`, new_code: `Bytes`)
-- **interface**: `api.tx.paras.applyAuthorizedForceSetCurrentCode`
-- **summary**:    Applies the already authorized current code for the parachain,  triggering the same functionality as `force_set_current_code`. 
- 
-### authorizeForceSetCurrentCodeHash(para: `u32`, new_code_hash: `H256`, valid_period: `u32`)
-- **interface**: `api.tx.paras.authorizeForceSetCurrentCodeHash`
-- **summary**:    Sets the storage for the authorized current code hash of the parachain.  If not applied, it will be removed at the `System::block_number() + valid_period` block. 
-
-   This can be useful, when triggering `Paras::force_set_current_code(para, code)`  from a different chain than the one where the `Paras` pallet is deployed. 
-
-   The main purpose is to avoid transferring the entire `code` Wasm blob between chains.  Instead, we authorize `code_hash` with `root`, which can later be applied by  `Paras::apply_authorized_force_set_current_code(para, code)` by anyone. 
-
-   Authorizations are stored in an **overwriting manner**. 
- 
 ### forceNoteNewHead(para: `u32`, new_head: `Bytes`)
 - **interface**: `api.tx.paras.forceNoteNewHead`
 - **summary**:    Note a new block head for para within the context of the current block. 
@@ -2047,12 +2011,6 @@ ___
 - **summary**:    Remove the validation code from the storage iff the reference count is 0. 
 
    This is better than removing the storage directly, because it will not remove the code  that was suddenly got used by some parachain while this dispatchable was pending  dispatching. 
- 
-### removeUpgradeCooldown(para: `u32`)
-- **interface**: `api.tx.paras.removeUpgradeCooldown`
-- **summary**:    Remove an upgrade cooldown for a parachain. 
-
-   The cost for removing the cooldown earlier depends on the time left for the cooldown  multiplied by [`Config::CooldownRemovalMultiplier`]. The paid tokens are burned. 
 
 ___
 
@@ -2072,7 +2030,7 @@ ___
 
 ## parasSlashing
  
-### reportDisputeLostUnsigned(dispute_proof: `PolkadotPrimitivesVstagingDisputeProof`, key_owner_proof: `SpSessionMembershipProof`)
+### reportDisputeLostUnsigned(dispute_proof: `PolkadotPrimitivesV8SlashingDisputeProof`, key_owner_proof: `SpSessionMembershipProof`)
 - **interface**: `api.tx.parasSlashing.reportDisputeLostUnsigned`
 
 ___
@@ -2173,19 +2131,19 @@ ___
 
    WARNING: **All access to this account will be lost.** Any funds held in it will be  inaccessible. 
 
-   Requires a `Signed` origin, and the sender account must have been created by a call to  `create_pure` with corresponding parameters. 
+   Requires a `Signed` origin, and the sender account must have been created by a call to  `pure` with corresponding parameters. 
 
-   - `spawner`: The account that originally called `create_pure` to create this account. 
+   - `spawner`: The account that originally called `pure` to create this account. 
 
-  - `index`: The disambiguation index originally passed to `create_pure`. Probably `0`.
+  - `index`: The disambiguation index originally passed to `pure`. Probably `0`.
 
-  - `proxy_type`: The proxy type originally passed to `create_pure`.
+  - `proxy_type`: The proxy type originally passed to `pure`.
 
-  - `height`: The height of the chain when the call to `create_pure` was processed.
+  - `height`: The height of the chain when the call to `pure` was processed.
 
-  - `ext_index`: The extrinsic index in which the call to `create_pure` was processed.
+  - `ext_index`: The extrinsic index in which the call to `pure` was processed.
 
-   Fails with `NoPermission` in case the caller is not a previously created pure  account whose `create_pure` call has corresponding parameters. 
+   Fails with `NoPermission` in case the caller is not a previously created pure  account whose `pure` call has corresponding parameters. 
  
 ### pokeDeposit()
 - **interface**: `api.tx.proxy.pokeDeposit`
@@ -2261,7 +2219,7 @@ ___
 
    The dispatch origin for this call must be _Signed_. 
 
-   WARNING: This may be called on accounts created by `create_pure`, however if done, then  the unreserved fees will be inaccessible. **All access to this account will be lost.** 
+   WARNING: This may be called on accounts created by `pure`, however if done, then  the unreserved fees will be inaccessible. **All access to this account will be lost.** 
  
 ### removeProxy(delegate: `MultiAddress`, proxy_type: `PolkadotRuntimeConstantsProxyProxyType`, delay: `u32`)
 - **interface**: `api.tx.proxy.removeProxy`
@@ -2274,107 +2232,6 @@ ___
   - `proxy`: The account that the `caller` would like to remove as a proxy.
 
   - `proxy_type`: The permissions currently enabled for the removed proxy account.
-
-___
-
-
-## rcMigrator
- 
-### cancelMigration()
-- **interface**: `api.tx.rcMigrator.cancelMigration`
-- **summary**:    Cancel the migration. 
-
-   Migration can only be cancelled if it is in the [`MigrationStage::Scheduled`] state. 
- 
-### forceSetStage(stage: `PalletRcMigratorMigrationStage`)
-- **interface**: `api.tx.rcMigrator.forceSetStage`
-- **summary**:    Set the migration stage. 
-
-   This call is intended for emergency use only and is guarded by the  [`Config::AdminOrigin`]. 
- 
-### pauseMigration()
-- **interface**: `api.tx.rcMigrator.pauseMigration`
-- **summary**:    Pause the migration. 
- 
-### preserveAccounts(accounts: `Vec<AccountId32>`)
-- **interface**: `api.tx.rcMigrator.preserveAccounts`
-- **summary**:    Set the accounts to be preserved on Relay Chain during the migration. 
-
-   The accounts must have no consumers references. 
- 
-### receiveQueryResponse(query_id: `u64`, response: `StagingXcmV5Response`)
-- **interface**: `api.tx.rcMigrator.receiveQueryResponse`
-- **summary**:    Receive a query response from the Asset Hub for a previously sent xcm message. 
- 
-### resendXcm(query_id: `u64`)
-- **interface**: `api.tx.rcMigrator.resendXcm`
-- **summary**:    Resend a previously sent and unconfirmed XCM message. 
- 
-### scheduleMigration(start: `FrameSupportScheduleDispatchTime`, warm_up: `FrameSupportScheduleDispatchTime`, cool_off: `FrameSupportScheduleDispatchTime`, unsafe_ignore_staking_lock_check: `bool`)
-- **interface**: `api.tx.rcMigrator.scheduleMigration`
-- **summary**:    Schedule the migration to start at a given moment. 
-
-   #### Parameters: 
-
-  - `start`: The block number at which the migration will start. `DispatchTime` calculated at the moment of the extrinsic execution. 
-
-  - `warm_up`: Duration or timepoint that will be used to prepare for the migration. Calls are filtered during this period. It is intended to give enough time for UMP and DMP  queues to empty. `DispatchTime` calculated at the moment of the transition to the  warm-up stage. 
-
-  - `cool_off`: The block number at which the post migration cool-off period will end. The `DispatchTime` calculated at the moment of the transition to the cool-off stage. 
-
-  - `unsafe_ignore_staking_lock_check`: ONLY FOR TESTING. Ignore the check whether the scheduled time point is far enough in the future. 
-
-   Note: If the staking election for next era is already complete, and the next  validator set is queued in `pallet-session`, we want to avoid starting the data  migration at this point as it can lead to some missed validator rewards. To address  this, we stop staking election at the start of migration and must wait atleast 1  session (set via warm_up) before starting the data migration. 
-
-   Read [`MigrationStage::Scheduled`] documentation for more details. 
- 
-### sendXcmMessage(dest: `XcmVersionedLocation`, message: `XcmVersionedXcm`)
-- **interface**: `api.tx.rcMigrator.sendXcmMessage`
-- **summary**:    XCM send call identical to the [`pallet_xcm::Pallet::send`] call but with the  [Config::SendXcm] router which will be able to send messages to the Asset Hub during  the migration. 
- 
-### setAhUmpQueuePriority(new: `PalletRcMigratorQueuePriority`)
-- **interface**: `api.tx.rcMigrator.setAhUmpQueuePriority`
-- **summary**:    Set the AH UMP queue priority configuration. 
-
-   Can only be called by the `AdminOrigin`. 
- 
-### setCanceller(new: `Option<AccountId32>`)
-- **interface**: `api.tx.rcMigrator.setCanceller`
-- **summary**:    Set the canceller account id. 
-
-   The canceller can only stop scheduled migration. 
- 
-### setManager(new: `Option<AccountId32>`)
-- **interface**: `api.tx.rcMigrator.setManager`
-- **summary**:    Set the manager account id. 
-
-   The manager has the similar to [`Config::AdminOrigin`] privileges except that it  can not set the manager account id via `set_manager` call. 
- 
-### setSettings(settings: `Option<PalletRcMigratorMigrationSettings>`)
-- **interface**: `api.tx.rcMigrator.setSettings`
-- **summary**:    Set the migration settings. Can only be done by admin or manager. 
- 
-### setUnprocessedMsgBuffer(new: `Option<u32>`)
-- **interface**: `api.tx.rcMigrator.setUnprocessedMsgBuffer`
-- **summary**:    Set the unprocessed message buffer size. 
-
-   `None` means to use the configuration value. 
- 
-### startDataMigration()
-- **interface**: `api.tx.rcMigrator.startDataMigration`
-- **summary**:    Start the data migration. 
-
-   This is typically called by the Asset Hub to indicate it's readiness to receive the  migration data. 
- 
-### voteManagerMultisig(payload: `PalletRcMigratorManagerMultisigVote`, sig: `SpRuntimeMultiSignature`)
-- **interface**: `api.tx.rcMigrator.voteManagerMultisig`
-- **summary**:    Vote on behalf of any of the members in `MultisigMembers`. 
-
-   Unsigned extrinsic, requiring the `payload` to be signed. 
-
-   Upon each call, a new entry is created in `ManagerMultisigs` map the `payload.call` to  be dispatched. Once `MultisigThreshold` is reached, the entire map is deleted, and we  move on to the next round. 
-
-   The round system ensures that signatures from older round cannot be reused. 
 
 ___
 
@@ -2720,7 +2577,7 @@ ___
 
    Can be called by the `T::AdminOrigin`. 
 
-   Parameters: era and indices of the slashes for that era to kill.  They **must** be sorted in ascending order, *and* unique. 
+   Parameters: era and indices of the slashes for that era to kill. 
  
 ### chill()
 - **interface**: `api.tx.staking.chill`
@@ -3056,8 +2913,6 @@ ___
 - **interface**: `api.tx.staking.unbond`
 - **summary**:    Schedule a portion of the stash to be unlocked ready for transfer out after the bond  period ends. If this leaves an amount actively bonded less than  [`asset::existential_deposit`], then it is increased to the full amount. 
 
-   The stash may be chilled if the ledger total amount falls to 0 after unbonding. 
-
    The dispatch origin for this call must be _Signed_ by the controller, not the stash. 
 
    Once the unlock period is done, you can call `withdraw_unbonded` to actually move  the funds out of management ready for transfer. 
@@ -3103,22 +2958,6 @@ ___
    - `num_slashing_spans` indicates the number of metadata slashing spans to clear when  this call results in a complete removal of all the data related to the stash account.  In this case, the `num_slashing_spans` must be larger or equal to the number of  slashing spans associated with the stash account in the [`SlashingSpans`] storage type,  otherwise the call will fail. The call weight is directly proportional to  `num_slashing_spans`. 
 
    #### Complexity  O(S) where S is the number of slashing spans to remove  NOTE: Weight annotation is the kill scenario, we refund otherwise. 
-
-___
-
-
-## stakingAhClient
- 
-### forceOnMigrationEnd()
-- **interface**: `api.tx.stakingAhClient.forceOnMigrationEnd`
-- **summary**:    manually do what this pallet was meant to do at the end of the migration. 
- 
-### setMode(mode: `PalletStakingAsyncAhClientOperatingMode`)
-- **interface**: `api.tx.stakingAhClient.setMode`
-- **summary**:    Allows governance to force set the operating mode of the pallet. 
- 
-### validatorSet(report: `PalletStakingAsyncRcClientValidatorSetReport`)
-- **interface**: `api.tx.stakingAhClient.validatorSet`
 
 ___
 

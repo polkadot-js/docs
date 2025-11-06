@@ -50,6 +50,10 @@ The following sections contain Extrinsics methods are part of the default Kusama
 
 - **[multisig](#multisig)**
 
+- **[nis](#nis)**
+
+- **[nisCounterpartBalances](#niscounterpartbalances)**
+
 - **[nominationPools](#nominationpools)**
 
 - **[onDemandAssignmentProvider](#ondemandassignmentprovider)**
@@ -72,8 +76,6 @@ The following sections contain Extrinsics methods are part of the default Kusama
 
 - **[proxy](#proxy)**
 
-- **[rcMigrator](#rcmigrator)**
-
 - **[recovery](#recovery)**
 
 - **[referenda](#referenda)**
@@ -89,8 +91,6 @@ The following sections contain Extrinsics methods are part of the default Kusama
 - **[society](#society)**
 
 - **[staking](#staking)**
-
-- **[stakingAhClient](#stakingahclient)**
 
 - **[system](#system)**
 
@@ -396,24 +396,6 @@ ___
    #### Complexity 
 
   - O(1).
- 
-### pokeDeposit(bounty_id: `Compact<u32>`)
-- **interface**: `api.tx.bounties.pokeDeposit`
-- **summary**:    Poke the deposit reserved for creating a bounty proposal. 
-
-   This can be used by accounts to update their reserved amount. 
-
-   The dispatch origin for this call must be _Signed_. 
-
-   Parameters: 
-
-  - `bounty_id`: The bounty id for which to adjust the deposit.
-
-   If the deposit is updated, the difference will be reserved/unreserved from the  proposer's account. 
-
-   The transaction is made free if the deposit is updated and paid otherwise. 
-
-   Emits `DepositPoked` if the deposit is updated. 
  
 ### proposeBounty(value: `Compact<u128>`, description: `Bytes`)
 - **interface**: `api.tx.bounties.proposeBounty`
@@ -1094,7 +1076,7 @@ ___
 
 ## electionProviderMultiPhase
  
-### governanceFallback()
+### governanceFallback(maybe_max_voters: `Option<u32>`, maybe_max_targets: `Option<u32>`)
 - **interface**: `api.tx.electionProviderMultiPhase.governanceFallback`
 - **summary**:    Trigger the governance fallback. 
 
@@ -1798,6 +1780,142 @@ ___
 ___
 
 
+## nis
+ 
+### communify(index: `Compact<u32>`)
+- **interface**: `api.tx.nis.communify`
+- **summary**:    Make a private receipt communal and create fungible counterparts for its owner. 
+ 
+### fundDeficit()
+- **interface**: `api.tx.nis.fundDeficit`
+- **summary**:    Ensure we have sufficient funding for all potential payouts. 
+
+   - `origin`: Must be accepted by `FundOrigin`. 
+ 
+### placeBid(amount: `Compact<u128>`, duration: `u32`)
+- **interface**: `api.tx.nis.placeBid`
+- **summary**:    Place a bid. 
+
+   Origin must be Signed, and account must have at least `amount` in free balance. 
+
+   - `amount`: The amount of the bid; these funds will be reserved, and if/when  consolidated, removed. Must be at least `MinBid`. 
+
+  - `duration`: The number of periods before which the newly consolidated bid may be thawed. Must be greater than 1 and no more than `QueueCount`. 
+
+   Complexities: 
+
+  - `Queues[duration].len()` (just take max).
+ 
+### privatize(index: `Compact<u32>`)
+- **interface**: `api.tx.nis.privatize`
+- **summary**:    Make a communal receipt private and burn fungible counterparts from its owner. 
+ 
+### retractBid(amount: `Compact<u128>`, duration: `u32`)
+- **interface**: `api.tx.nis.retractBid`
+- **summary**:    Retract a previously placed bid. 
+
+   Origin must be Signed, and the account should have previously issued a still-active bid  of `amount` for `duration`. 
+
+   - `amount`: The amount of the previous bid. 
+
+  - `duration`: The duration of the previous bid.
+ 
+### thawCommunal(index: `Compact<u32>`)
+- **interface**: `api.tx.nis.thawCommunal`
+- **summary**:    Reduce or remove an outstanding receipt, placing the according proportion of funds into  the account of the owner. 
+
+   - `origin`: Must be Signed and the account must be the owner of the fungible counterpart  for receipt `index`. 
+
+  - `index`: The index of the receipt.
+ 
+### thawPrivate(index: `Compact<u32>`, maybe_proportion: `Option<Perquintill>`)
+- **interface**: `api.tx.nis.thawPrivate`
+- **summary**:    Reduce or remove an outstanding receipt, placing the according proportion of funds into  the account of the owner. 
+
+   - `origin`: Must be Signed and the account must be the owner of the receipt `index` as  well as any fungible counterpart. 
+
+  - `index`: The index of the receipt.
+
+  - `portion`: If `Some`, then only the given portion of the receipt should be thawed. If `None`, then all of it should be. 
+
+___
+
+
+## nisCounterpartBalances
+ 
+### burn(value: `Compact<u128>`, keep_alive: `bool`)
+- **interface**: `api.tx.nisCounterpartBalances.burn`
+- **summary**:    Burn the specified liquid free balance from the origin account. 
+
+   If the origin's account ends up below the existential deposit as a result  of the burn and `keep_alive` is false, the account will be reaped. 
+
+   Unlike sending funds to a _burn_ address, which merely makes the funds inaccessible,  this `burn` operation will reduce total issuance by the amount _burned_. 
+ 
+### forceAdjustTotalIssuance(direction: `PalletBalancesAdjustmentDirection`, delta: `Compact<u128>`)
+- **interface**: `api.tx.nisCounterpartBalances.forceAdjustTotalIssuance`
+- **summary**:    Adjust the total issuance in a saturating way. 
+
+   Can only be called by root and always needs a positive `delta`. 
+
+   #### Example 
+ 
+### forceSetBalance(who: `MultiAddress`, new_free: `Compact<u128>`)
+- **interface**: `api.tx.nisCounterpartBalances.forceSetBalance`
+- **summary**:    Set the regular balance of a given account. 
+
+   The dispatch origin for this call is `root`. 
+ 
+### forceTransfer(source: `MultiAddress`, dest: `MultiAddress`, value: `Compact<u128>`)
+- **interface**: `api.tx.nisCounterpartBalances.forceTransfer`
+- **summary**:    Exactly as `transfer_allow_death`, except the origin must be root and the source account  may be specified. 
+ 
+### forceUnreserve(who: `MultiAddress`, amount: `u128`)
+- **interface**: `api.tx.nisCounterpartBalances.forceUnreserve`
+- **summary**:    Unreserve some balance from a user by force. 
+
+   Can only be called by ROOT. 
+ 
+### transferAll(dest: `MultiAddress`, keep_alive: `bool`)
+- **interface**: `api.tx.nisCounterpartBalances.transferAll`
+- **summary**:    Transfer the entire transferable balance from the caller account. 
+
+   NOTE: This function only attempts to transfer _transferable_ balances. This means that  any locked, reserved, or existential deposits (when `keep_alive` is `true`), will not be  transferred by this function. To ensure that this function results in a killed account,  you might need to prepare the account by removing any reference counters, storage  deposits, etc... 
+
+   The dispatch origin of this call must be Signed. 
+
+   - `dest`: The recipient of the transfer. 
+
+  - `keep_alive`: A boolean to determine if the `transfer_all` operation should send all of the funds the account has, causing the sender account to be killed (false), or  transfer everything except at least the existential deposit, which will guarantee to  keep the sender account alive (true). 
+ 
+### transferAllowDeath(dest: `MultiAddress`, value: `Compact<u128>`)
+- **interface**: `api.tx.nisCounterpartBalances.transferAllowDeath`
+- **summary**:    Transfer some liquid free balance to another account. 
+
+   `transfer_allow_death` will set the `FreeBalance` of the sender and receiver.  If the sender's account is below the existential deposit as a result  of the transfer, the account will be reaped. 
+
+   The dispatch origin for this call must be `Signed` by the transactor. 
+ 
+### transferKeepAlive(dest: `MultiAddress`, value: `Compact<u128>`)
+- **interface**: `api.tx.nisCounterpartBalances.transferKeepAlive`
+- **summary**:    Same as the [`transfer_allow_death`] call, but with a check that the transfer will not  kill the origin account. 
+
+   99% of the time you want [`transfer_allow_death`] instead. 
+
+   [`transfer_allow_death`]: struct.Pallet.html#method.transfer 
+ 
+### upgradeAccounts(who: `Vec<AccountId32>`)
+- **interface**: `api.tx.nisCounterpartBalances.upgradeAccounts`
+- **summary**:    Upgrade a specified account. 
+
+   - `origin`: Must be `Signed`. 
+
+  - `who`: The account to be upgraded.
+
+   This will waive the transaction fee if at least all but 10% of the accounts needed to  be upgraded. (We let some not have to be upgraded just in order to allow for the  possibility of churn). 
+
+___
+
+
 ## nominationPools
  
 ### adjustPoolDeposit(pool_id: `u32`)
@@ -2207,20 +2325,6 @@ ___
 
    This function is mainly meant to be used for upgrading parachains that do not follow  the go-ahead signal while the PVF pre-checking feature is enabled. 
  
-### applyAuthorizedForceSetCurrentCode(para: `u32`, new_code: `Bytes`)
-- **interface**: `api.tx.paras.applyAuthorizedForceSetCurrentCode`
-- **summary**:    Applies the already authorized current code for the parachain,  triggering the same functionality as `force_set_current_code`. 
- 
-### authorizeForceSetCurrentCodeHash(para: `u32`, new_code_hash: `H256`, valid_period: `u32`)
-- **interface**: `api.tx.paras.authorizeForceSetCurrentCodeHash`
-- **summary**:    Sets the storage for the authorized current code hash of the parachain.  If not applied, it will be removed at the `System::block_number() + valid_period` block. 
-
-   This can be useful, when triggering `Paras::force_set_current_code(para, code)`  from a different chain than the one where the `Paras` pallet is deployed. 
-
-   The main purpose is to avoid transferring the entire `code` Wasm blob between chains.  Instead, we authorize `code_hash` with `root`, which can later be applied by  `Paras::apply_authorized_force_set_current_code(para, code)` by anyone. 
-
-   Authorizations are stored in an **overwriting manner**. 
- 
 ### forceNoteNewHead(para: `u32`, new_head: `Bytes`)
 - **interface**: `api.tx.paras.forceNoteNewHead`
 - **summary**:    Note a new block head for para within the context of the current block. 
@@ -2254,12 +2358,6 @@ ___
 - **summary**:    Remove the validation code from the storage iff the reference count is 0. 
 
    This is better than removing the storage directly, because it will not remove the code  that was suddenly got used by some parachain while this dispatchable was pending  dispatching. 
- 
-### removeUpgradeCooldown(para: `u32`)
-- **interface**: `api.tx.paras.removeUpgradeCooldown`
-- **summary**:    Remove an upgrade cooldown for a parachain. 
-
-   The cost for removing the cooldown earlier depends on the time left for the cooldown  multiplied by [`Config::CooldownRemovalMultiplier`]. The paid tokens are burned. 
 
 ___
 
@@ -2279,7 +2377,7 @@ ___
 
 ## parasSlashing
  
-### reportDisputeLostUnsigned(dispute_proof: `PolkadotPrimitivesVstagingDisputeProof`, key_owner_proof: `SpSessionMembershipProof`)
+### reportDisputeLostUnsigned(dispute_proof: `PolkadotPrimitivesV8SlashingDisputeProof`, key_owner_proof: `SpSessionMembershipProof`)
 - **interface**: `api.tx.parasSlashing.reportDisputeLostUnsigned`
 
 ___
@@ -2380,19 +2478,19 @@ ___
 
    WARNING: **All access to this account will be lost.** Any funds held in it will be  inaccessible. 
 
-   Requires a `Signed` origin, and the sender account must have been created by a call to  `create_pure` with corresponding parameters. 
+   Requires a `Signed` origin, and the sender account must have been created by a call to  `pure` with corresponding parameters. 
 
-   - `spawner`: The account that originally called `create_pure` to create this account. 
+   - `spawner`: The account that originally called `pure` to create this account. 
 
-  - `index`: The disambiguation index originally passed to `create_pure`. Probably `0`.
+  - `index`: The disambiguation index originally passed to `pure`. Probably `0`.
 
-  - `proxy_type`: The proxy type originally passed to `create_pure`.
+  - `proxy_type`: The proxy type originally passed to `pure`.
 
-  - `height`: The height of the chain when the call to `create_pure` was processed.
+  - `height`: The height of the chain when the call to `pure` was processed.
 
-  - `ext_index`: The extrinsic index in which the call to `create_pure` was processed.
+  - `ext_index`: The extrinsic index in which the call to `pure` was processed.
 
-   Fails with `NoPermission` in case the caller is not a previously created pure  account whose `create_pure` call has corresponding parameters. 
+   Fails with `NoPermission` in case the caller is not a previously created pure  account whose `pure` call has corresponding parameters. 
  
 ### pokeDeposit()
 - **interface**: `api.tx.proxy.pokeDeposit`
@@ -2468,7 +2566,7 @@ ___
 
    The dispatch origin for this call must be _Signed_. 
 
-   WARNING: This may be called on accounts created by `create_pure`, however if done, then  the unreserved fees will be inaccessible. **All access to this account will be lost.** 
+   WARNING: This may be called on accounts created by `pure`, however if done, then  the unreserved fees will be inaccessible. **All access to this account will be lost.** 
  
 ### removeProxy(delegate: `MultiAddress`, proxy_type: `KusamaRuntimeConstantsProxyProxyType`, delay: `u32`)
 - **interface**: `api.tx.proxy.removeProxy`
@@ -2481,103 +2579,6 @@ ___
   - `proxy`: The account that the `caller` would like to remove as a proxy.
 
   - `proxy_type`: The permissions currently enabled for the removed proxy account.
-
-___
-
-
-## rcMigrator
- 
-### cancelMigration()
-- **interface**: `api.tx.rcMigrator.cancelMigration`
-- **summary**:    Cancel the migration. 
-
-   Migration can only be cancelled if it is in the [`MigrationStage::Scheduled`] state. 
- 
-### forceSetStage(stage: `PalletRcMigratorMigrationStage`)
-- **interface**: `api.tx.rcMigrator.forceSetStage`
-- **summary**:    Set the migration stage. 
-
-   This call is intended for emergency use only and is guarded by the  [`Config::AdminOrigin`]. 
- 
-### pauseMigration()
-- **interface**: `api.tx.rcMigrator.pauseMigration`
-- **summary**:    Pause the migration. 
- 
-### preserveAccounts(accounts: `Vec<AccountId32>`)
-- **interface**: `api.tx.rcMigrator.preserveAccounts`
-- **summary**:    Set the accounts to be preserved on Relay Chain during the migration. 
-
-   The accounts must have no consumers references. 
- 
-### receiveQueryResponse(query_id: `u64`, response: `StagingXcmV5Response`)
-- **interface**: `api.tx.rcMigrator.receiveQueryResponse`
-- **summary**:    Receive a query response from the Asset Hub for a previously sent xcm message. 
- 
-### resendXcm(query_id: `u64`)
-- **interface**: `api.tx.rcMigrator.resendXcm`
-- **summary**:    Resend a previously sent and unconfirmed XCM message. 
- 
-### scheduleMigration(start: `FrameSupportScheduleDispatchTime`, warm_up: `FrameSupportScheduleDispatchTime`, cool_off: `FrameSupportScheduleDispatchTime`, unsafe_ignore_staking_lock_check: `bool`)
-- **interface**: `api.tx.rcMigrator.scheduleMigration`
-- **summary**:    Schedule the migration to start at a given moment. 
-
-   #### Parameters: 
-
-  - `start`: The block number at which the migration will start. `DispatchTime` calculated at the moment of the extrinsic execution. 
-
-  - `warm_up`: Duration or timepoint that will be used to prepare for the migration. Calls are filtered during this period. It is intended to give enough time for UMP and DMP  queues to empty. `DispatchTime` calculated at the moment of the transition to the  warm-up stage. 
-
-  - `cool_off`: The block number at which the post migration cool-off period will end. The `DispatchTime` calculated at the moment of the transition to the cool-off stage. 
-
-  - `unsafe_ignore_staking_lock_check`: ONLY FOR TESTING. Ignore the check whether the scheduled time point is far enough in the future. 
-
-   Note: If the staking election for next era is already complete, and the next  validator set is queued in `pallet-session`, we want to avoid starting the data  migration at this point as it can lead to some missed validator rewards. To address  this, we stop staking election at the start of migration and must wait atleast 1  session (set via warm_up) before starting the data migration. 
-
-   Read [`MigrationStage::Scheduled`] documentation for more details. 
- 
-### sendXcmMessage(dest: `XcmVersionedLocation`, message: `XcmVersionedXcm`)
-- **interface**: `api.tx.rcMigrator.sendXcmMessage`
-- **summary**:    XCM send call identical to the [`pallet_xcm::Pallet::send`] call but with the  [Config::SendXcm] router which will be able to send messages to the Asset Hub during  the migration. 
- 
-### setAhUmpQueuePriority(new: `PalletRcMigratorQueuePriority`)
-- **interface**: `api.tx.rcMigrator.setAhUmpQueuePriority`
-- **summary**:    Set the AH UMP queue priority configuration. 
-
-   Can only be called by the `AdminOrigin`. 
- 
-### setCanceller(new: `Option<AccountId32>`)
-- **interface**: `api.tx.rcMigrator.setCanceller`
-- **summary**:    Set the canceller account id. 
-
-   The canceller can only stop scheduled migration. 
- 
-### setManager(new: `Option<AccountId32>`)
-- **interface**: `api.tx.rcMigrator.setManager`
-- **summary**:    Set the manager account id. 
-
-   The manager has the similar to [`Config::AdminOrigin`] privileges except that it  can not set the manager account id via `set_manager` call. 
- 
-### setUnprocessedMsgBuffer(new: `Option<u32>`)
-- **interface**: `api.tx.rcMigrator.setUnprocessedMsgBuffer`
-- **summary**:    Set the unprocessed message buffer size. 
-
-   `None` means to use the configuration value. 
- 
-### startDataMigration()
-- **interface**: `api.tx.rcMigrator.startDataMigration`
-- **summary**:    Start the data migration. 
-
-   This is typically called by the Asset Hub to indicate it's readiness to receive the  migration data. 
- 
-### voteManagerMultisig(payload: `PalletRcMigratorManagerMultisigVote`, sig: `SpRuntimeMultiSignature`)
-- **interface**: `api.tx.rcMigrator.voteManagerMultisig`
-- **summary**:    Vote on behalf of any of the members in `MultisigMembers`. 
-
-   Unsigned extrinsic, requiring the `payload` to be signed. 
-
-   Upon each call, a new entry is created in `ManagerMultisigs` map the `payload.call` to  be dispatched. Once `MultisigThreshold` is reached, the entire map is deleted, and we  move on to the next round. 
-
-   The round system ensures that signatures from older round cannot be reused. 
 
 ___
 
@@ -2655,30 +2656,6 @@ ___
    Parameters: 
 
   - `account`: The lost account that you want to recover. This account needs to be recoverable (i.e. have a recovery configuration). 
- 
-### pokeDeposit(maybe_account: `Option<MultiAddress>`)
-- **interface**: `api.tx.recovery.pokeDeposit`
-- **summary**:    Poke deposits for recovery configurations and / or active recoveries. 
-
-   This can be used by accounts to possibly lower their locked amount. 
-
-   The dispatch origin for this call must be _Signed_. 
-
-   Parameters: 
-
-  - `maybe_account`: Optional recoverable account for which you have an active recovery and want to adjust the deposit for the active recovery. 
-
-   This function checks both recovery configuration deposit and active recovery deposits  of the caller: 
-
-  - If the caller has created a recovery configuration, checks and adjusts its deposit
-
-  - If the caller has initiated any active recoveries, and provides the account in `maybe_account`, checks and adjusts those deposits 
-
-   If any deposit is updated, the difference will be reserved/unreserved from the caller's  account. 
-
-   The transaction is made free if any deposit is updated and paid otherwise. 
-
-   Emits `DepositPoked` if any deposit is updated.  Multiple events may be emitted in case both types of deposits are updated. 
  
 ### removeRecovery()
 - **interface**: `api.tx.recovery.removeRecovery`
@@ -3130,16 +3107,6 @@ ___
 
    The dispatch origin for this call must be _Signed_ and a member with  payouts remaining. 
  
-### pokeDeposit()
-- **interface**: `api.tx.society.pokeDeposit`
-- **summary**:    Poke the deposit reserved when bidding. 
-
-   The dispatch origin for this call must be _Signed_ and must be the bidder. 
-
-   The transaction fee is waived if the deposit is changed after poking/reconsideration. 
-
-   Emits `DepositPoked` if successful. 
- 
 ### punishSkeptic()
 - **interface**: `api.tx.society.punishSkeptic`
 - **summary**:    Punish the skeptic with a strike if they did not vote on a candidate. Callable by the  candidate. 
@@ -3263,7 +3230,7 @@ ___
 
    Can be called by the `T::AdminOrigin`. 
 
-   Parameters: era and indices of the slashes for that era to kill.  They **must** be sorted in ascending order, *and* unique. 
+   Parameters: era and indices of the slashes for that era to kill. 
  
 ### chill()
 - **interface**: `api.tx.staking.chill`
@@ -3599,8 +3566,6 @@ ___
 - **interface**: `api.tx.staking.unbond`
 - **summary**:    Schedule a portion of the stash to be unlocked ready for transfer out after the bond  period ends. If this leaves an amount actively bonded less than  [`asset::existential_deposit`], then it is increased to the full amount. 
 
-   The stash may be chilled if the ledger total amount falls to 0 after unbonding. 
-
    The dispatch origin for this call must be _Signed_ by the controller, not the stash. 
 
    Once the unlock period is done, you can call `withdraw_unbonded` to actually move  the funds out of management ready for transfer. 
@@ -3646,22 +3611,6 @@ ___
    - `num_slashing_spans` indicates the number of metadata slashing spans to clear when  this call results in a complete removal of all the data related to the stash account.  In this case, the `num_slashing_spans` must be larger or equal to the number of  slashing spans associated with the stash account in the [`SlashingSpans`] storage type,  otherwise the call will fail. The call weight is directly proportional to  `num_slashing_spans`. 
 
    #### Complexity  O(S) where S is the number of slashing spans to remove  NOTE: Weight annotation is the kill scenario, we refund otherwise. 
-
-___
-
-
-## stakingAhClient
- 
-### forceOnMigrationEnd()
-- **interface**: `api.tx.stakingAhClient.forceOnMigrationEnd`
-- **summary**:    manually do what this pallet was meant to do at the end of the migration. 
- 
-### setMode(mode: `PalletStakingAsyncAhClientOperatingMode`)
-- **interface**: `api.tx.stakingAhClient.setMode`
-- **summary**:    Allows governance to force set the operating mode of the pallet. 
- 
-### validatorSet(report: `PalletStakingAsyncRcClientValidatorSetReport`)
-- **interface**: `api.tx.stakingAhClient.validatorSet`
 
 ___
 

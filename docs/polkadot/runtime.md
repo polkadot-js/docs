@@ -38,8 +38,6 @@ The following section contains known runtime calls that may be available on spec
 
 - **[parachainHost](#parachainhost)**
 
-- **[runtimeViewFunction](#runtimeviewfunction)**
-
 - **[sessionKeys](#sessionkeys)**
 
 - **[stakingApi](#stakingapi)**
@@ -577,16 +575,6 @@ ___
 - **interface**: `api.call.parachainHost.validators`
 - **runtime**: `parachainHost_validators`
 - **summary**:  Get the current validators.
-
-___
-
-
-## runtimeViewFunction
- 
-### executeViewFunction(query_id: `FrameSupportViewFunctionsViewFunctionId`, input: `Bytes`): `Result<Bytes, FrameSupportViewFunctionsViewFunctionDispatchError>`
-- **interface**: `api.call.runtimeViewFunction.executeViewFunction`
-- **runtime**: `runtimeViewFunction_execute_view_function`
-- **summary**:  Execute a view function query.
 
 ___
 
