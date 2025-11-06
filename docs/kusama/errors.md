@@ -52,10 +52,6 @@ This page lists the errors that can be encountered in the different modules.
 
 - **[multisig](#multisig)**
 
-- **[nis](#nis)**
-
-- **[nisCounterpartBalances](#niscounterpartbalances)**
-
 - **[nominationPools](#nominationpools)**
 
 - **[onDemandAssignmentProvider](#ondemandassignmentprovider)**
@@ -74,6 +70,8 @@ This page lists the errors that can be encountered in the different modules.
 
 - **[proxy](#proxy)**
 
+- **[rcMigrator](#rcmigrator)**
+
 - **[recovery](#recovery)**
 
 - **[referenda](#referenda)**
@@ -89,6 +87,8 @@ This page lists the errors that can be encountered in the different modules.
 - **[society](#society)**
 
 - **[staking](#staking)**
+
+- **[stakingAhClient](#stakingahclient)**
 
 - **[system](#system)**
 
@@ -286,6 +286,10 @@ ___
 ### InvalidValue
 - **interface**: `api.errors.bounties.InvalidValue.is`
 - **summary**:    Invalid bounty value. 
+ 
+### NotProposer
+- **interface**: `api.errors.bounties.NotProposer.is`
+- **summary**:    User is not the proposer of the bounty. 
  
 ### PendingPayout
 - **interface**: `api.errors.bounties.PendingPayout.is`
@@ -1058,124 +1062,6 @@ ___
 ___
 
 
-## nis
- 
-### AlreadyCommunal
-- **interface**: `api.errors.nis.AlreadyCommunal.is`
-- **summary**:    The receipt is already communal. 
- 
-### AlreadyFunded
-- **interface**: `api.errors.nis.AlreadyFunded.is`
-- **summary**:    There are enough funds for what is required. 
- 
-### AlreadyPrivate
-- **interface**: `api.errors.nis.AlreadyPrivate.is`
-- **summary**:    The receipt is already private. 
- 
-### AmountTooSmall
-- **interface**: `api.errors.nis.AmountTooSmall.is`
-- **summary**:    The amount of the bid is less than the minimum allowed. 
- 
-### BidTooLow
-- **interface**: `api.errors.nis.BidTooLow.is`
-- **summary**:    The queue for the bid's duration is full and the amount bid is too low to get in  through replacing an existing bid. 
- 
-### DurationTooBig
-- **interface**: `api.errors.nis.DurationTooBig.is`
-- **summary**:    The duration is the bid is greater than the number of queues. 
- 
-### DurationTooSmall
-- **interface**: `api.errors.nis.DurationTooSmall.is`
-- **summary**:    The duration of the bid is less than one. 
- 
-### MakesDust
-- **interface**: `api.errors.nis.MakesDust.is`
-- **summary**:    The operation would result in a receipt worth an insignificant value. 
- 
-### NotExpired
-- **interface**: `api.errors.nis.NotExpired.is`
-- **summary**:    Bond not yet at expiry date. 
- 
-### NotOwner
-- **interface**: `api.errors.nis.NotOwner.is`
-- **summary**:    Not the owner of the receipt. 
- 
-### PortionTooBig
-- **interface**: `api.errors.nis.PortionTooBig.is`
-- **summary**:    The portion supplied is beyond the value of the receipt. 
- 
-### Throttled
-- **interface**: `api.errors.nis.Throttled.is`
-- **summary**:    The thaw throttle has been reached for this period. 
- 
-### Unfunded
-- **interface**: `api.errors.nis.Unfunded.is`
-- **summary**:    Not enough funds are held to pay out. 
- 
-### UnknownBid
-- **interface**: `api.errors.nis.UnknownBid.is`
-- **summary**:    The given bid for retraction is not found. 
- 
-### UnknownReceipt
-- **interface**: `api.errors.nis.UnknownReceipt.is`
-- **summary**:    Receipt index is unknown. 
-
-___
-
-
-## nisCounterpartBalances
- 
-### DeadAccount
-- **interface**: `api.errors.nisCounterpartBalances.DeadAccount.is`
-- **summary**:    Beneficiary account must pre-exist. 
- 
-### DeltaZero
-- **interface**: `api.errors.nisCounterpartBalances.DeltaZero.is`
-- **summary**:    The delta cannot be zero. 
- 
-### ExistentialDeposit
-- **interface**: `api.errors.nisCounterpartBalances.ExistentialDeposit.is`
-- **summary**:    Value too low to create account due to existential deposit. 
- 
-### ExistingVestingSchedule
-- **interface**: `api.errors.nisCounterpartBalances.ExistingVestingSchedule.is`
-- **summary**:    A vesting schedule already exists for this account. 
- 
-### Expendability
-- **interface**: `api.errors.nisCounterpartBalances.Expendability.is`
-- **summary**:    Transfer/payment would kill account. 
- 
-### InsufficientBalance
-- **interface**: `api.errors.nisCounterpartBalances.InsufficientBalance.is`
-- **summary**:    Balance too low to send value. 
- 
-### IssuanceDeactivated
-- **interface**: `api.errors.nisCounterpartBalances.IssuanceDeactivated.is`
-- **summary**:    The issuance cannot be modified since it is already deactivated. 
- 
-### LiquidityRestrictions
-- **interface**: `api.errors.nisCounterpartBalances.LiquidityRestrictions.is`
-- **summary**:    Account liquidity restrictions prevent withdrawal. 
- 
-### TooManyFreezes
-- **interface**: `api.errors.nisCounterpartBalances.TooManyFreezes.is`
-- **summary**:    Number of freezes exceed `MaxFreezes`. 
- 
-### TooManyHolds
-- **interface**: `api.errors.nisCounterpartBalances.TooManyHolds.is`
-- **summary**:    Number of holds exceed `VariantCountOf<T::RuntimeHoldReason>`. 
- 
-### TooManyReserves
-- **interface**: `api.errors.nisCounterpartBalances.TooManyReserves.is`
-- **summary**:    Number of named reserves exceed `MaxReserves`. 
- 
-### VestingBalance
-- **interface**: `api.errors.nisCounterpartBalances.VestingBalance.is`
-- **summary**:    Vesting balance too high to send value. 
-
-___
-
-
 ## nominationPools
  
 ### AccountBelongsToOtherPool
@@ -1468,9 +1354,17 @@ ___
 - **interface**: `api.errors.paras.CannotUpgradeCode.is`
 - **summary**:    Parachain cannot currently schedule a code upgrade. 
  
+### InvalidBlockNumber
+- **interface**: `api.errors.paras.InvalidBlockNumber.is`
+- **summary**:    Invalid block number. 
+ 
 ### InvalidCode
 - **interface**: `api.errors.paras.InvalidCode.is`
 - **summary**:    Invalid validation code size. 
+ 
+### NothingAuthorized
+- **interface**: `api.errors.paras.NothingAuthorized.is`
+- **summary**:    No upgrade authorized. 
  
 ### NotRegistered
 - **interface**: `api.errors.paras.NotRegistered.is`
@@ -1499,6 +1393,10 @@ ___
 ### PvfCheckValidatorIndexOutOfBounds
 - **interface**: `api.errors.paras.PvfCheckValidatorIndexOutOfBounds.is`
 - **summary**:    Claimed validator index is out of bounds. 
+ 
+### Unauthorized
+- **interface**: `api.errors.paras.Unauthorized.is`
+- **summary**:    The submitted code is not authorized. 
 
 ___
 
@@ -1643,6 +1541,83 @@ ___
 ### Unproxyable
 - **interface**: `api.errors.proxy.Unproxyable.is`
 - **summary**:    A call which is incompatible with the proxy type's filter was attempted. 
+
+___
+
+
+## rcMigrator
+ 
+### AccountReferenced
+- **interface**: `api.errors.rcMigrator.AccountReferenced.is`
+- **summary**:    The account is referenced by some other pallet. It might have freezes or holds. 
+ 
+### AhUmpQueuePriorityAlreadySet
+- **interface**: `api.errors.rcMigrator.AhUmpQueuePriorityAlreadySet.is`
+- **summary**:    The AH UMP queue priority configuration is already set. 
+ 
+### BadXcmVersion
+- **interface**: `api.errors.rcMigrator.BadXcmVersion.is`
+- **summary**:    The XCM version is invalid. 
+ 
+### BalanceOverflow
+- **interface**: `api.errors.rcMigrator.BalanceOverflow.is`
+- **summary**:    Balance accounting overflow. 
+ 
+### BalanceUnderflow
+- **interface**: `api.errors.rcMigrator.BalanceUnderflow.is`
+- **summary**:    Balance accounting underflow. 
+ 
+### EraEndsTooSoon
+- **interface**: `api.errors.rcMigrator.EraEndsTooSoon.is`
+- **summary**:    Indicates that there is not enough time for staking to lock. 
+
+   Schedule the migration at least two sessions before the current era ends. 
+ 
+### FailedToWithdrawAccount
+- **interface**: `api.errors.rcMigrator.FailedToWithdrawAccount.is`
+- **summary**:    Failed to withdraw account from RC for migration to AH. 
+ 
+### InvalidOrigin
+- **interface**: `api.errors.rcMigrator.InvalidOrigin.is`
+- **summary**:    The origin is invalid. 
+ 
+### InvalidParameter
+- **interface**: `api.errors.rcMigrator.InvalidParameter.is`
+- **summary**:    Invalid parameter. 
+ 
+### InvalidQueryResponse
+- **interface**: `api.errors.rcMigrator.InvalidQueryResponse.is`
+- **summary**:    The query response is invalid. 
+ 
+### InvalidStageTransition
+- **interface**: `api.errors.rcMigrator.InvalidStageTransition.is`
+- **summary**:    The stage transition is invalid. 
+ 
+### OutOfWeight
+- **interface**: `api.errors.rcMigrator.OutOfWeight.is`
+ 
+### PastBlockNumber
+- **interface**: `api.errors.rcMigrator.PastBlockNumber.is`
+- **summary**:    Indicates that the specified block number is in the past. 
+ 
+### QueryNotFound
+- **interface**: `api.errors.rcMigrator.QueryNotFound.is`
+- **summary**:    The xcm query was not found. 
+ 
+### Unreachable
+- **interface**: `api.errors.rcMigrator.Unreachable.is`
+ 
+### UnreachableStage
+- **interface**: `api.errors.rcMigrator.UnreachableStage.is`
+- **summary**:    The migration stage is not reachable from the current stage. 
+ 
+### XcmError
+- **interface**: `api.errors.rcMigrator.XcmError.is`
+- **summary**:    Failed to send XCM message to AH. 
+ 
+### XcmSendError
+- **interface**: `api.errors.rcMigrator.XcmSendError.is`
+- **summary**:    Failed to send XCM message. 
 
 ___
 
@@ -1967,6 +1942,10 @@ ___
 - **interface**: `api.errors.society.NoDefender.is`
 - **summary**:    There is no defender currently. 
  
+### NoDeposit
+- **interface**: `api.errors.society.NoDeposit.is`
+- **summary**:    There is no deposit associated with a bid. 
+ 
 ### NoPayout
 - **interface**: `api.errors.society.NoPayout.is`
 - **summary**:    Nothing to payout. 
@@ -2175,6 +2154,15 @@ ___
 ___
 
 
+## stakingAhClient
+ 
+### Blocked
+- **interface**: `api.errors.stakingAhClient.Blocked.is`
+- **summary**:    Could not process incoming message because incoming messages are blocked. 
+
+___
+
+
 ## system
  
 ### CallFiltered
@@ -2306,6 +2294,10 @@ ___
 ### List
 - **interface**: `api.errors.voterList.List.is`
 - **summary**:    A error in the list interface implementation. 
+ 
+### Locked
+- **interface**: `api.errors.voterList.Locked.is`
+- **summary**:    Could not update a node, because the pallet is locked. 
 
 ___
 
@@ -2404,6 +2396,10 @@ ___
 ### LocalExecutionIncomplete
 - **interface**: `api.errors.xcmPallet.LocalExecutionIncomplete.is`
 - **summary**:    Local XCM execution incomplete. 
+ 
+### LocalExecutionIncompleteWithError
+- **interface**: `api.errors.xcmPallet.LocalExecutionIncompleteWithError.is`
+- **summary**:    Local XCM execution incomplete with the actual XCM error and the index of the  instruction that caused the error. 
  
 ### LockNotFound
 - **interface**: `api.errors.xcmPallet.LockNotFound.is`
