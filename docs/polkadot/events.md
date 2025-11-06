@@ -32,6 +32,8 @@ Events are emitted for certain operations on the runtime. The following sections
 
 - **[grandpa](#grandpa)**
 
+- **[historical](#historical)**
+
 - **[hrmp](#hrmp)**
 
 - **[indices](#indices)**
@@ -56,6 +58,8 @@ Events are emitted for certain operations on the runtime. The following sections
 
 - **[proxy](#proxy)**
 
+- **[rcMigrator](#rcmigrator)**
+
 - **[referenda](#referenda)**
 
 - **[registrar](#registrar)**
@@ -67,6 +71,8 @@ Events are emitted for certain operations on the runtime. The following sections
 - **[slots](#slots)**
 
 - **[staking](#staking)**
+
+- **[stakingAhClient](#stakingahclient)**
 
 - **[stateTrieMigration](#statetriemigration)**
 
@@ -211,6 +217,10 @@ ___
 - **interface**: `api.events.balances.Transfer.is`
 - **summary**:    Transfer succeeded. 
  
+### Unexpected(`PalletBalancesUnexpectedKind`)
+- **interface**: `api.events.balances.Unexpected.is`
+- **summary**:    An unexpected/defensive event was triggered. 
+ 
 ### Unlocked(`AccountId32`, `u128`)
 - **interface**: `api.events.balances.Unlocked.is`
 - **summary**:    Some balance was unlocked. 
@@ -275,6 +285,10 @@ ___
 ### CuratorUnassigned(`u32`)
 - **interface**: `api.events.bounties.CuratorUnassigned.is`
 - **summary**:    A bounty curator is unassigned. 
+ 
+### DepositPoked(`u32`, `AccountId32`, `u128`, `u128`)
+- **interface**: `api.events.bounties.DepositPoked.is`
+- **summary**:    A bounty deposit has been poked. 
 
 ___
 
@@ -486,6 +500,19 @@ ___
 ### Resumed()
 - **interface**: `api.events.grandpa.Resumed.is`
 - **summary**:    Current authority set has been resumed. 
+
+___
+
+
+## historical
+ 
+### RootsPruned(`u32`)
+- **interface**: `api.events.historical.RootsPruned.is`
+- **summary**:    The merkle roots of up to this session index were pruned 
+ 
+### RootStored(`u32`)
+- **interface**: `api.events.historical.RootStored.is`
+- **summary**:    The merkle root of the validators of the said session were stored 
 
 ___
 
@@ -752,6 +779,10 @@ ___
 - **interface**: `api.events.paras.ActionQueued.is`
 - **summary**:    A para has been queued to execute pending actions. `para_id` 
  
+### CodeAuthorized(`u32`, `H256`, `u32`)
+- **interface**: `api.events.paras.CodeAuthorized.is`
+- **summary**:    A new code hash has been authorized for a Para. 
+ 
 ### CodeUpgradeScheduled(`u32`)
 - **interface**: `api.events.paras.CodeUpgradeScheduled.is`
 - **summary**:    A code upgrade has been scheduled for a Para. `para_id` 
@@ -779,6 +810,10 @@ ___
 ### PvfCheckStarted(`H256`, `u32`)
 - **interface**: `api.events.paras.PvfCheckStarted.is`
 - **summary**:    The given para either initiated or subscribed to a PVF check for the given validation  code. `code_hash` `para_id` 
+ 
+### UpgradeCooldownRemoved(`u32`)
+- **interface**: `api.events.paras.UpgradeCooldownRemoved.is`
+- **summary**:    The upgrade cooldown was removed. 
 
 ___
 
@@ -842,6 +877,103 @@ ___
 ### PureCreated(`AccountId32`, `AccountId32`, `PolkadotRuntimeConstantsProxyProxyType`, `u16`)
 - **interface**: `api.events.proxy.PureCreated.is`
 - **summary**:    A pure account has been created by new proxy with given  disambiguation index and proxy type. 
+ 
+### PureKilled(`AccountId32`, `AccountId32`, `PolkadotRuntimeConstantsProxyProxyType`, `u16`)
+- **interface**: `api.events.proxy.PureKilled.is`
+- **summary**:    A pure proxy was killed by its spawner. 
+
+___
+
+
+## rcMigrator
+ 
+### AccountsPreserved(`Vec<AccountId32>`)
+- **interface**: `api.events.rcMigrator.AccountsPreserved.is`
+- **summary**:    The accounts to be preserved on Relay Chain were set. 
+ 
+### AhUmpQueuePriorityConfigSet(`PalletRcMigratorQueuePriority`, `PalletRcMigratorQueuePriority`)
+- **interface**: `api.events.rcMigrator.AhUmpQueuePriorityConfigSet.is`
+- **summary**:    The AH UMP queue priority config was set. 
+ 
+### AhUmpQueuePrioritySet(`bool`, `u32`, `u32`)
+- **interface**: `api.events.rcMigrator.AhUmpQueuePrioritySet.is`
+- **summary**:    Whether the AH UMP queue was prioritized for the next block. 
+ 
+### AssetHubMigrationFinished()
+- **interface**: `api.events.rcMigrator.AssetHubMigrationFinished.is`
+- **summary**:    The Asset Hub Migration finished. 
+
+   This event is equivalent to `StageTransition { new: MigrationDone, .. }` but is easier  to understand. The finishing is immediate and affects all events happening  afterwards. 
+ 
+### AssetHubMigrationStarted()
+- **interface**: `api.events.rcMigrator.AssetHubMigrationStarted.is`
+- **summary**:    The Asset Hub Migration started and is active until `AssetHubMigrationFinished` is  emitted. 
+
+   This event is equivalent to `StageTransition { new: Initializing, .. }` but is easier  to understand. The activation is immediate and affects all events happening  afterwards. 
+ 
+### CancellerSet(`Option<AccountId32>`, `Option<AccountId32>`)
+- **interface**: `api.events.rcMigrator.CancellerSet.is`
+- **summary**:    The canceller account id was set. 
+ 
+### ManagerMultisigDispatched(`Result<Null, SpRuntimeDispatchError>`)
+- **interface**: `api.events.rcMigrator.ManagerMultisigDispatched.is`
+- **summary**:    The manager multisig dispatched something. 
+ 
+### ManagerMultisigVoted(`u32`)
+- **interface**: `api.events.rcMigrator.ManagerMultisigVoted.is`
+- **summary**:    The manager multisig received a vote. 
+ 
+### ManagerSet(`Option<AccountId32>`, `Option<AccountId32>`)
+- **interface**: `api.events.rcMigrator.ManagerSet.is`
+- **summary**:    The manager account id was set. 
+ 
+### MigratedBalanceConsumed(`u128`, `u128`)
+- **interface**: `api.events.rcMigrator.MigratedBalanceConsumed.is`
+- **summary**:    The RC kept balance was consumed. 
+ 
+### MigratedBalanceRecordSet(`u128`, `u128`)
+- **interface**: `api.events.rcMigrator.MigratedBalanceRecordSet.is`
+- **summary**:    The total issuance was recorded. 
+ 
+### MigrationCancelled()
+- **interface**: `api.events.rcMigrator.MigrationCancelled.is`
+- **summary**:    The migration was cancelled. 
+ 
+### MigrationPaused(`PalletRcMigratorMigrationStage`)
+- **interface**: `api.events.rcMigrator.MigrationPaused.is`
+- **summary**:    The migration was paused. 
+ 
+### MigrationSettingsSet(`Option<PalletRcMigratorMigrationSettings>`, `Option<PalletRcMigratorMigrationSettings>`)
+- **interface**: `api.events.rcMigrator.MigrationSettingsSet.is`
+- **summary**:    The migration settings were set. 
+ 
+### PureAccountsIndexed(`u32`)
+- **interface**: `api.events.rcMigrator.PureAccountsIndexed.is`
+- **summary**:    Some pure accounts were indexed for possibly receiving free `Any` proxies. 
+ 
+### QueryResponseReceived(`u64`, `XcmV3MaybeErrorCode`)
+- **interface**: `api.events.rcMigrator.QueryResponseReceived.is`
+- **summary**:    A query response has been received. 
+ 
+### StageTransition(`PalletRcMigratorMigrationStage`, `PalletRcMigratorMigrationStage`)
+- **interface**: `api.events.rcMigrator.StageTransition.is`
+- **summary**:    A stage transition has occurred. 
+ 
+### StakingElectionsPaused()
+- **interface**: `api.events.rcMigrator.StakingElectionsPaused.is`
+- **summary**:    The staking elections were paused. 
+ 
+### UnprocessedMsgBufferSet(`u32`, `u32`)
+- **interface**: `api.events.rcMigrator.UnprocessedMsgBufferSet.is`
+- **summary**:    The unprocessed message buffer size has been set. 
+ 
+### XcmResendAttempt(`u64`, `Option<XcmV3TraitsSendError>`)
+- **interface**: `api.events.rcMigrator.XcmResendAttempt.is`
+- **summary**:    A XCM message has been resent. 
+ 
+### XcmSent(`StagingXcmV5Location`, `StagingXcmV5Location`, `StagingXcmV5Xcm`, `[u8;32]`)
+- **interface**: `api.events.rcMigrator.XcmSent.is`
+- **summary**:    An XCM message was sent. 
 
 ___
 
@@ -977,6 +1109,10 @@ ___
 
 ## session
  
+### NewQueued()
+- **interface**: `api.events.session.NewQueued.is`
+- **summary**:    The `NewSession` event in the current block also implies a new validator set to be  queued. 
+ 
 ### NewSession(`u32`)
 - **interface**: `api.events.session.NewSession.is`
 - **summary**:    New session has happened. Note that the argument is the session index, not the  block number as the type might suggest. 
@@ -1084,6 +1220,29 @@ ___
 ### Withdrawn(`AccountId32`, `u128`)
 - **interface**: `api.events.staking.Withdrawn.is`
 - **summary**:    An account has called `withdraw_unbonded` and removed unbonding chunks worth `Balance`  from the unlocking queue. 
+
+___
+
+
+## stakingAhClient
+ 
+### CouldNotMergeAndDropped()
+- **interface**: `api.events.stakingAhClient.CouldNotMergeAndDropped.is`
+- **summary**:    We could not merge, and therefore dropped a buffered message. 
+
+   Note that this event is more resembling an error, but we use an event because in this  pallet we need to mutate storage upon some failures. 
+ 
+### SetTooSmallAndDropped()
+- **interface**: `api.events.stakingAhClient.SetTooSmallAndDropped.is`
+- **summary**:    The validator set received is way too small, as per  [`Config::MinimumValidatorSetSize`]. 
+ 
+### Unexpected(`PalletStakingAsyncAhClientUnexpectedKind`)
+- **interface**: `api.events.stakingAhClient.Unexpected.is`
+- **summary**:    Something occurred that should never happen under normal operation. Logged as an event  for fail-safe observability. 
+ 
+### ValidatorSetReceived(`u32`, `u32`, `Option<u32>`, `bool`)
+- **interface**: `api.events.stakingAhClient.ValidatorSetReceived.is`
+- **summary**:    A new validator set has been received. 
 
 ___
 
@@ -1250,6 +1409,10 @@ ___
 ### VestingCompleted(`AccountId32`)
 - **interface**: `api.events.vesting.VestingCompleted.is`
 - **summary**:    An \[account\] has become fully vested. 
+ 
+### VestingCreated(`AccountId32`, `u32`)
+- **interface**: `api.events.vesting.VestingCreated.is`
+- **summary**:    A vesting schedule has been created. 
  
 ### VestingUpdated(`AccountId32`, `u128`)
 - **interface**: `api.events.vesting.VestingUpdated.is`

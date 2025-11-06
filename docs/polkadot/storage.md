@@ -86,6 +86,8 @@ The following sections contain Storage methods are part of the default Polkadot 
 
 - **[proxy](#proxy)**
 
+- **[rcMigrator](#rcmigrator)**
+
 - **[referenda](#referenda)**
 
 - **[registrar](#registrar)**
@@ -97,6 +99,8 @@ The following sections contain Storage methods are part of the default Polkadot 
 - **[slots](#slots)**
 
 - **[staking](#staking)**
+
+- **[stakingAhClient](#stakingahclient)**
 
 - **[stateTrieMigration](#statetriemigration)**
 
@@ -1039,6 +1043,10 @@ ___
 - **interface**: `api.query.paras.actionsQueue`
 - **summary**:    The actions to perform during the start of a specific session index. 
  
+### authorizedCodeHash(`u32`): `Option<PolkadotRuntimeParachainsParasAuthorizedCodeHashAndExpiry>`
+- **interface**: `api.query.paras.authorizedCodeHash`
+- **summary**:    The code hash authorizations for a para which will expire `expire_at` `BlockNumberFor<T>`. 
+ 
 ### codeByHash(`H256`): `Option<Bytes>`
 - **interface**: `api.query.paras.codeByHash`
 - **summary**:    Validation code stored by its hash. 
@@ -1252,7 +1260,7 @@ ___
 
 ## parasSlashing
  
-### unappliedSlashes(`u32, H256`): `Option<PolkadotPrimitivesV8SlashingPendingSlashes>`
+### unappliedSlashes(`u32, H256`): `Option<PolkadotPrimitivesVstagingPendingSlashes>`
 - **interface**: `api.query.parasSlashing.unappliedSlashes`
 - **summary**:    Validators pending dispute slashes. 
  
@@ -1288,6 +1296,123 @@ ___
 ### proxies(`AccountId32`): `(Vec<PalletProxyProxyDefinition>,u128)`
 - **interface**: `api.query.proxy.proxies`
 - **summary**:    The set of account proxies. Maps the account which has delegated to the accounts  which are being delegated to, together with the amount held on deposit. 
+
+___
+
+
+## rcMigrator
+ 
+### ahUmpQueuePriorityConfig(): `PalletRcMigratorQueuePriority`
+- **interface**: `api.query.rcMigrator.ahUmpQueuePriorityConfig`
+- **summary**:    The priority of the Asset Hub UMP queue during migration. 
+
+   Controls how the Asset Hub UMP (Upward Message Passing) queue is processed relative to other  queues during the migration process. This helps ensure timely processing of migration  messages. The default priority pattern is defined in the pallet configuration, but can be  overridden by a storage value of this type. 
+ 
+### canceller(): `Option<AccountId32>`
+- **interface**: `api.query.rcMigrator.canceller`
+- **summary**:    An optional account id of a canceller. 
+
+   This account id can only stop scheduled migration. 
+ 
+### coolOffPeriod(): `Option<FrameSupportScheduleDispatchTime>`
+- **interface**: `api.query.rcMigrator.coolOffPeriod`
+- **summary**:    The duration of the post migration cool-off period. 
+
+   This is the duration of the cool-off period after the data migration is finished. During  this period, the migration will be still in ongoing state and the concerned extrinsics will  be locked. 
+ 
+### counterForPendingXcmMessages(): `u32`
+- **interface**: `api.query.rcMigrator.counterForPendingXcmMessages`
+- **summary**:    Counter for the related counted storage map 
+ 
+### counterForRcAccounts(): `u32`
+- **interface**: `api.query.rcMigrator.counterForRcAccounts`
+- **summary**:    Counter for the related counted storage map 
+ 
+### manager(): `Option<AccountId32>`
+- **interface**: `api.query.rcMigrator.manager`
+- **summary**:    An optional account id of a manager. 
+
+   This account id has similar privileges to [`Config::AdminOrigin`] except that it  can not set the manager account id via `set_manager` call. 
+ 
+### managerMultisigRound(): `u32`
+- **interface**: `api.query.rcMigrator.managerMultisigRound`
+- **summary**:    The current round of the multisig voting. 
+
+   Votes are only valid for the current round. 
+ 
+### managerMultisigs(`Call`): `Vec<AccountId32>`
+- **interface**: `api.query.rcMigrator.managerMultisigs`
+- **summary**:    The multisig AccountIDs that votes to execute a specific call. 
+ 
+### managerVotesInCurrentRound(`AccountId32`): `u32`
+- **interface**: `api.query.rcMigrator.managerVotesInCurrentRound`
+- **summary**:    How often each participant voted in the current round. 
+
+   Will be cleared at the end of each round. 
+ 
+### migrationEndBlock(): `Option<u32>`
+- **interface**: `api.query.rcMigrator.migrationEndBlock`
+- **summary**:    Block number when migration finished and extrinsics were unlocked. 
+
+   This is set when entering the `MigrationDone` stage hence when  `RcMigrationStage::is_finished()` becomes `true`. 
+ 
+### migrationStartBlock(): `Option<u32>`
+- **interface**: `api.query.rcMigrator.migrationStartBlock`
+- **summary**:    The block number at which the migration began and the pallet's extrinsics were locked. 
+
+   This value is set when entering the `WaitingForAh` stage, i.e., when  `RcMigrationStage::is_ongoing()` becomes `true`. 
+ 
+### pendingXcmMessages(`(u64,H256)`): `Option<StagingXcmV5Xcm>`
+- **interface**: `api.query.rcMigrator.pendingXcmMessages`
+- **summary**:    The pending XCM messages. 
+
+   Contains data messages that have been sent to the Asset Hub but not yet confirmed. 
+
+   Unconfirmed messages can be resent by calling the [`Pallet::resend_xcm`] function. 
+ 
+### pendingXcmQueries(`u64`): `Option<H256>`
+- **interface**: `api.query.rcMigrator.pendingXcmQueries`
+- **summary**:    The pending XCM response queries and their XCM hash referencing the message in the  [`PendingXcmMessages`] storage. 
+
+   The `QueryId` is the identifier from the [`pallet_xcm`] query handler registry. The XCM  pallet will notify about the status of the message by calling the  [`Pallet::receive_query_response`] function with the `QueryId` and the  response. 
+ 
+### pureProxyCandidatesMigrated(`AccountId32`): `Option<bool>`
+- **interface**: `api.query.rcMigrator.pureProxyCandidatesMigrated`
+- **summary**:    Accounts that use the proxy pallet to delegate permissions and have no nonce. 
+
+   Boolean value is whether they have been migrated to the Asset Hub. Needed for idempotency. 
+ 
+### rcAccounts(`AccountId32`): `Option<PalletRcMigratorAccountsAccountState>`
+- **interface**: `api.query.rcMigrator.rcAccounts`
+- **summary**:    Helper storage item to obtain and store the known accounts that should be kept partially or  fully on Relay Chain. 
+ 
+### rcMigratedBalance(): `PalletRcMigratorAccountsMigratedBalances`
+- **interface**: `api.query.rcMigrator.rcMigratedBalance`
+- **summary**:    Helper storage item to store the total balance that should be kept on Relay Chain. 
+ 
+### rcMigratedBalanceArchive(): `PalletRcMigratorAccountsMigratedBalances`
+- **interface**: `api.query.rcMigrator.rcMigratedBalanceArchive`
+- **summary**:    Helper storage item to store the total balance that should be kept on Relay Chain after  it is consumed from the `RcMigratedBalance` storage item and sent to the Asset Hub. 
+
+   This let us to take the value from the `RcMigratedBalance` storage item and keep the  `SignalMigrationFinish` stage to be idempotent while preserving these values for tests and  later discoveries. 
+ 
+### rcMigrationStage(): `PalletRcMigratorMigrationStage`
+- **interface**: `api.query.rcMigrator.rcMigrationStage`
+- **summary**:    The Relay Chain migration state. 
+ 
+### settings(): `Option<PalletRcMigratorMigrationSettings>`
+- **interface**: `api.query.rcMigrator.settings`
+- **summary**:    The migration settings. 
+ 
+### unprocessedMsgBuffer(): `Option<u32>`
+- **interface**: `api.query.rcMigrator.unprocessedMsgBuffer`
+- **summary**:    Manual override for `type UnprocessedMsgBuffer: Get<u32>`. Look there for docs. 
+ 
+### warmUpPeriod(): `Option<FrameSupportScheduleDispatchTime>`
+- **interface**: `api.query.rcMigrator.warmUpPeriod`
+- **summary**:    The duration of the pre migration warm-up period. 
+
+   This is the duration of the warm-up period before the data migration starts. During this  period, the migration will be in ongoing state and the concerned extrinsics will be locked. 
 
 ___
 
@@ -1662,6 +1787,61 @@ ___
 ___
 
 
+## stakingAhClient
+ 
+### incompleteValidatorSetReport(): `Option<PalletStakingAsyncRcClientValidatorSetReport>`
+- **interface**: `api.query.stakingAhClient.incompleteValidatorSetReport`
+- **summary**:    An incomplete validator set report. 
+ 
+### mode(): `PalletStakingAsyncAhClientOperatingMode`
+- **interface**: `api.query.stakingAhClient.mode`
+- **summary**:    Indicates the current operating mode of the pallet. 
+
+   This value determines how the pallet behaves in response to incoming and outgoing messages,  particularly whether it should execute logic directly, defer it, or delegate it entirely. 
+ 
+### nextSessionChangesValidators(): `Option<u32>`
+- **interface**: `api.query.stakingAhClient.nextSessionChangesValidators`
+- **summary**:    A storage value that is set when a `new_session` gives a new validator set to the session  pallet, and is cleared on the next call. 
+
+   The inner u32 is the id of the said activated validator set. While not relevant here, good  to know this is the planning era index of staking-async on AH. 
+
+   Once cleared, we know a validator set has been activated, and therefore we can send a  timestamp to AH. 
+ 
+### offenceSendQueueCursor(): `u32`
+- **interface**: `api.query.stakingAhClient.offenceSendQueueCursor`
+- **summary**:    Internal storage item of [`OffenceSendQueue`]. Should not be used manually. 
+ 
+### offenceSendQueueOffences(`u32`): `Vec<(u32,PalletStakingAsyncRcClientOffence)>`
+- **interface**: `api.query.stakingAhClient.offenceSendQueueOffences`
+- **summary**:    Internal storage item of [`OffenceSendQueue`]. Should not be used manually. 
+ 
+### outgoingSessionReport(): `Option<(PalletStakingAsyncRcClientSessionReport,u32)>`
+- **interface**: `api.query.stakingAhClient.outgoingSessionReport`
+- **summary**:    A session report that is outgoing, and should be sent. 
+
+   This will be attempted to be sent, possibly on every `on_initialize` call, until it is sent,  or the second value reaches zero, at which point we drop it. 
+ 
+### validatorPoints(`AccountId32`): `u32`
+- **interface**: `api.query.stakingAhClient.validatorPoints`
+- **summary**:    All of the points of the validators. 
+
+   This is populated during a session, and is flushed and sent over via [`SendToAssetHub`]  at each session end. 
+ 
+### validatorSet(): `Option<(u32,Vec<AccountId32>)>`
+- **interface**: `api.query.stakingAhClient.validatorSet`
+- **summary**:    The queued validator sets for a given planning session index. 
+
+   This is received via a call from AssetHub. 
+ 
+### validatorSetAppliedAt(): `Option<u32>`
+- **interface**: `api.query.stakingAhClient.validatorSetAppliedAt`
+- **summary**:    The session index at which the latest elected validator set was applied. 
+
+   This is used to determine if an offence, given a session index, is in the current active era  or not. 
+
+___
+
+
 ## stateTrieMigration
  
 ### autoLimits(): `Option<PalletStateTrieMigrationMigrationLimits>`
@@ -1918,6 +2098,16 @@ ___
 - **summary**:    A single node, within some bag. 
 
    Nodes store links forward and back within their respective bags. 
+ 
+### lock(): `Option<Null>`
+- **interface**: `api.query.voterList.lock`
+- **summary**:    Lock all updates to this pallet. 
+
+   If any nodes needs updating, removal or addition due to a temporary lock, the  [`Call::rebag`] can be used. 
+ 
+### nextNodeAutoRebagged(): `Option<AccountId32>`
+- **interface**: `api.query.voterList.nextNodeAutoRebagged`
+- **summary**:    Pointer that remembers the next node that will be auto-rebagged.  When `None`, the next scan will start from the list head again. 
 
 ___
 

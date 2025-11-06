@@ -12,6 +12,8 @@ The following section contains known runtime calls that may be available on spec
 
 - **[auraUnincludedSegmentApi](#auraunincludedsegmentapi)**
 
+- **[authorizedAliasersApi](#authorizedaliasersapi)**
+
 - **[blockBuilder](#blockbuilder)**
 
 - **[collectCollationInfo](#collectcollationinfo)**
@@ -24,19 +26,31 @@ The following section contains known runtime calls that may be available on spec
 
 - **[genesisBuilder](#genesisbuilder)**
 
+- **[getParachainInfo](#getparachaininfo)**
+
 - **[locationToAccountApi](#locationtoaccountapi)**
 
 - **[metadata](#metadata)**
 
+- **[nominationPoolsApi](#nominationpoolsapi)**
+
 - **[offchainWorkerApi](#offchainworkerapi)**
 
+- **[relayParentOffsetApi](#relayparentoffsetapi)**
+
+- **[runtimeViewFunction](#runtimeviewfunction)**
+
 - **[sessionKeys](#sessionkeys)**
+
+- **[stakingApi](#stakingapi)**
 
 - **[taggedTransactionQueue](#taggedtransactionqueue)**
 
 - **[transactionPaymentApi](#transactionpaymentapi)**
 
 - **[transactionPaymentCallApi](#transactionpaymentcallapi)**
+
+- **[trustedQueryApi](#trustedqueryapi)**
 
 - **[xcmPaymentApi](#xcmpaymentapi)**
 
@@ -56,17 +70,17 @@ ___
 
 ## assetConversionApi
  
-### getReserves(asset1: `StagingXcmV4Location`, asset2: `StagingXcmV4Location`): `Option<(u128,u128)>`
+### getReserves(asset1: `StagingXcmV5Location`, asset2: `StagingXcmV5Location`): `Option<(u128,u128)>`
 - **interface**: `api.call.assetConversionApi.getReserves`
 - **runtime**: `assetConversionApi_get_reserves`
 - **summary**:  Returns the size of the liquidity pool for the given asset pair.
  
-### quotePriceExactTokensForTokens(asset1: `StagingXcmV4Location`, asset2: `StagingXcmV4Location`, amount: `u128`, include_fee: `bool`): `Option<u128>`
+### quotePriceExactTokensForTokens(asset1: `StagingXcmV5Location`, asset2: `StagingXcmV5Location`, amount: `u128`, include_fee: `bool`): `Option<u128>`
 - **interface**: `api.call.assetConversionApi.quotePriceExactTokensForTokens`
 - **runtime**: `assetConversionApi_quote_price_exact_tokens_for_tokens`
 - **summary**:  Provides a quote for [`Pallet::swap_exact_tokens_for_tokens`].,, Note that the price may have changed by the time the transaction is executed., (Use `amount_out_min` to control slippage.)
  
-### quotePriceTokensForExactTokens(asset1: `StagingXcmV4Location`, asset2: `StagingXcmV4Location`, amount: `u128`, include_fee: `bool`): `Option<u128>`
+### quotePriceTokensForExactTokens(asset1: `StagingXcmV5Location`, asset2: `StagingXcmV5Location`, amount: `u128`, include_fee: `bool`): `Option<u128>`
 - **interface**: `api.call.assetConversionApi.quotePriceTokensForExactTokens`
 - **runtime**: `assetConversionApi_quote_price_tokens_for_exact_tokens`
 - **summary**:  Provides a quote for [`Pallet::swap_tokens_for_exact_tokens`].,, Note that the price may have changed by the time the transaction is executed., (Use `amount_in_max` to control slippage.)
@@ -95,6 +109,21 @@ ___
 - **interface**: `api.call.auraUnincludedSegmentApi.canBuildUpon`
 - **runtime**: `auraUnincludedSegmentApi_can_build_upon`
 - **summary**:  Whether it is legal to extend the chain, assuming the given block is the most, recently included one as-of the relay parent that will be built against, and, the given relay chain slot.,, This should be consistent with the logic the runtime uses when validating blocks to, avoid issues.,, When the unincluded segment is empty, i.e. `included_hash == at`, where at is the block, whose state we are querying against, this must always return `true` as long as the slot, is more recent than the included block itself.
+
+___
+
+
+## authorizedAliasersApi
+ 
+### authorizedAliasers(target: `XcmVersionedLocation`): `Result<Vec<XcmRuntimeApisAuthorizedAliasesOriginAliaser>, XcmRuntimeApisAuthorizedAliasesError>`
+- **interface**: `api.call.authorizedAliasersApi.authorizedAliasers`
+- **runtime**: `authorizedAliasersApi_authorized_aliasers`
+- **summary**:  Returns locations allowed to alias into and act as `target`.
+ 
+### isAuthorizedAlias(origin: `XcmVersionedLocation`, target: `XcmVersionedLocation`): `Result<bool, XcmRuntimeApisAuthorizedAliasesError>`
+- **interface**: `api.call.authorizedAliasersApi.isAuthorizedAlias`
+- **runtime**: `authorizedAliasersApi_is_authorized_alias`
+- **summary**:  Returns whether `origin` is allowed to alias into and act as `target`.
 
 ___
 
@@ -199,6 +228,16 @@ ___
 ___
 
 
+## getParachainInfo
+ 
+### parachainId(): `PolkadotParachainPrimitivesPrimitivesId`
+- **interface**: `api.call.getParachainInfo.parachainId`
+- **runtime**: `getParachainInfo_parachain_id`
+- **summary**:  Retrieve the parachain id used for runtime.
+
+___
+
+
 ## locationToAccountApi
  
 ### convertLocation(location: `XcmVersionedLocation`): `Result<AccountId32, XcmRuntimeApisConversionsError>`
@@ -229,12 +268,87 @@ ___
 ___
 
 
+## nominationPoolsApi
+ 
+### balanceToPoints(pool_id: `u32`, new_funds: `u128`): `u128`
+- **interface**: `api.call.nominationPoolsApi.balanceToPoints`
+- **runtime**: `nominationPoolsApi_balance_to_points`
+- **summary**:  Returns the equivalent points of `new_funds` for a given pool.
+ 
+### memberNeedsDelegateMigration(member: `SpCoreCryptoAccountId32`): `bool`
+- **interface**: `api.call.nominationPoolsApi.memberNeedsDelegateMigration`
+- **runtime**: `nominationPoolsApi_member_needs_delegate_migration`
+- **summary**:  Returns true if the delegated funds of the pool `member` needs migration.,, Once a pool has successfully migrated to the strategy, [`DelegateStake`](pallet_nomination_pools::adapter::DelegateStake), the funds of the, member can be migrated from pool account to the member's account. Use, [`migrate_delegation`](pallet_nomination_pools::Call::migrate_delegation), to migrate the funds of the pool member.
+ 
+### memberPendingSlash(member: `SpCoreCryptoAccountId32`): `u128`
+- **interface**: `api.call.nominationPoolsApi.memberPendingSlash`
+- **runtime**: `nominationPoolsApi_member_pending_slash`
+- **summary**:  Returns the pending slash for a given pool member.,, If pending slash of the member exceeds `ExistentialDeposit`, it can be reported on, chain.
+ 
+### memberTotalBalance(who: `SpCoreCryptoAccountId32`): `u128`
+- **interface**: `api.call.nominationPoolsApi.memberTotalBalance`
+- **runtime**: `nominationPoolsApi_member_total_balance`
+- **summary**:  Returns the total contribution of a pool member including any balance that is unbonding.
+ 
+### pendingRewards(who: `SpCoreCryptoAccountId32`): `u128`
+- **interface**: `api.call.nominationPoolsApi.pendingRewards`
+- **runtime**: `nominationPoolsApi_pending_rewards`
+- **summary**:  Returns the pending rewards for the member that the AccountId was given for.
+ 
+### pointsToBalance(pool_id: `u32`, points: `u128`): `u128`
+- **interface**: `api.call.nominationPoolsApi.pointsToBalance`
+- **runtime**: `nominationPoolsApi_points_to_balance`
+- **summary**:  Returns the equivalent balance of `points` for a given pool.
+ 
+### poolAccounts(pool_id: `u32`): `(AccountId32,AccountId32)`
+- **interface**: `api.call.nominationPoolsApi.poolAccounts`
+- **runtime**: `nominationPoolsApi_pool_accounts`
+- **summary**:  Returns the bonded account and reward account associated with the pool_id.
+ 
+### poolBalance(pool_id: `u32`): `u128`
+- **interface**: `api.call.nominationPoolsApi.poolBalance`
+- **runtime**: `nominationPoolsApi_pool_balance`
+- **summary**:  Total balance contributed to the pool.
+ 
+### poolNeedsDelegateMigration(pool_id: `u32`): `bool`
+- **interface**: `api.call.nominationPoolsApi.poolNeedsDelegateMigration`
+- **runtime**: `nominationPoolsApi_pool_needs_delegate_migration`
+- **summary**:  Returns true if the pool with `pool_id` needs migration.,, This can happen when the `pallet-nomination-pools` has switched to using strategy, [`DelegateStake`](pallet_nomination_pools::adapter::DelegateStake) but the pool, still has funds that were staked using the older strategy, [TransferStake](pallet_nomination_pools::adapter::TransferStake). Use, [`migrate_pool_to_delegate_stake`](pallet_nomination_pools::Call::migrate_pool_to_delegate_stake), to migrate the pool.
+ 
+### poolPendingSlash(pool_id: `u32`): `u128`
+- **interface**: `api.call.nominationPoolsApi.poolPendingSlash`
+- **runtime**: `nominationPoolsApi_pool_pending_slash`
+- **summary**:  Returns the pending slash for a given pool.
+
+___
+
+
 ## offchainWorkerApi
  
 ### offchainWorker(header: `SpRuntimeHeader`): `Null`
 - **interface**: `api.call.offchainWorkerApi.offchainWorker`
 - **runtime**: `offchainWorkerApi_offchain_worker`
 - **summary**:  Starts the off-chain task for given block header.
+
+___
+
+
+## relayParentOffsetApi
+ 
+### relayParentOffset(): `u32`
+- **interface**: `api.call.relayParentOffsetApi.relayParentOffset`
+- **runtime**: `relayParentOffsetApi_relay_parent_offset`
+- **summary**:  Fetch the slot offset that is expected from the relay chain.
+
+___
+
+
+## runtimeViewFunction
+ 
+### executeViewFunction(query_id: `FrameSupportViewFunctionsViewFunctionId`, input: `Bytes`): `Result<Bytes, FrameSupportViewFunctionsViewFunctionDispatchError>`
+- **interface**: `api.call.runtimeViewFunction.executeViewFunction`
+- **runtime**: `runtimeViewFunction_execute_view_function`
+- **summary**:  Execute a view function query.
 
 ___
 
@@ -250,6 +364,26 @@ ___
 - **interface**: `api.call.sessionKeys.generateSessionKeys`
 - **runtime**: `sessionKeys_generate_session_keys`
 - **summary**:  Generate a set of session keys with optionally using the given seed., The keys should be stored within the keystore exposed via runtime, externalities.,, The seed needs to be a valid `utf8` string.,, Returns the concatenated SCALE encoded public keys.
+
+___
+
+
+## stakingApi
+ 
+### erasStakersPageCount(era: `u32`, account: `SpCoreCryptoAccountId32`): `u32`
+- **interface**: `api.call.stakingApi.erasStakersPageCount`
+- **runtime**: `stakingApi_eras_stakers_page_count`
+- **summary**:  Returns the page count of exposures for a validator `account` in a given era.
+ 
+### nominationsQuota(balance: `u128`): `u32`
+- **interface**: `api.call.stakingApi.nominationsQuota`
+- **runtime**: `stakingApi_nominations_quota`
+- **summary**:  Returns the nominations quota for a nominator with a given balance.
+ 
+### pendingRewards(era: `u32`, account: `SpCoreCryptoAccountId32`): `bool`
+- **interface**: `api.call.stakingApi.pendingRewards`
+- **runtime**: `stakingApi_pending_rewards`
+- **summary**:  Returns true if validator `account` has pages to be claimed for the given era.
 
 ___
 
@@ -310,6 +444,21 @@ ___
 - **interface**: `api.call.transactionPaymentCallApi.queryWeightToFee`
 - **runtime**: `transactionPaymentCallApi_query_weight_to_fee`
 - **summary**:  Query the output of the current `WeightToFee` given some input.
+
+___
+
+
+## trustedQueryApi
+ 
+### isTrustedReserve(asset: `XcmVersionedAsset`, location: `XcmVersionedLocation`): `Result<bool, XcmRuntimeApisTrustedQueryError>`
+- **interface**: `api.call.trustedQueryApi.isTrustedReserve`
+- **runtime**: `trustedQueryApi_is_trusted_reserve`
+- **summary**:  Returns if the location is a trusted reserve for the asset.,, # Arguments, * `asset`: `VersionedAsset`., * `location`: `VersionedLocation`.
+ 
+### isTrustedTeleporter(asset: `XcmVersionedAsset`, location: `XcmVersionedLocation`): `Result<bool, XcmRuntimeApisTrustedQueryError>`
+- **interface**: `api.call.trustedQueryApi.isTrustedTeleporter`
+- **runtime**: `trustedQueryApi_is_trusted_teleporter`
+- **summary**:  Returns if the asset can be teleported to the location.,, # Arguments, * `asset`: `VersionedAsset`., * `location`: `VersionedLocation`.
 
 ___
 
