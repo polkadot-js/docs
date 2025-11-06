@@ -14,17 +14,37 @@ The following sections contain the module constants, also known as parameter typ
 
 - **[balances](#balances)**
 
+- **[bounties](#bounties)**
+
+- **[childBounties](#childbounties)**
+
+- **[claims](#claims)**
+
 - **[collatorSelection](#collatorselection)**
+
+- **[convictionVoting](#convictionvoting)**
+
+- **[delegatedStaking](#delegatedstaking)**
 
 - **[foreignAssets](#foreignassets)**
 
+- **[indices](#indices)**
+
 - **[messageQueue](#messagequeue)**
+
+- **[multiBlockElection](#multiblockelection)**
+
+- **[multiBlockElectionVerifier](#multiblockelectionverifier)**
+
+- **[multiBlockMigrations](#multiblockmigrations)**
 
 - **[multisig](#multisig)**
 
 - **[nftFractionalization](#nftfractionalization)**
 
 - **[nfts](#nfts)**
+
+- **[nominationPools](#nominationpools)**
 
 - **[parachainSystem](#parachainsystem)**
 
@@ -34,7 +54,19 @@ The following sections contain the module constants, also known as parameter typ
 
 - **[proxy](#proxy)**
 
+- **[recovery](#recovery)**
+
+- **[referenda](#referenda)**
+
 - **[revive](#revive)**
+
+- **[scheduler](#scheduler)**
+
+- **[session](#session)**
+
+- **[society](#society)**
+
+- **[staking](#staking)**
 
 - **[stateTrieMigration](#statetriemigration)**
 
@@ -44,11 +76,15 @@ The following sections contain the module constants, also known as parameter typ
 
 - **[transactionPayment](#transactionpayment)**
 
+- **[treasury](#treasury)**
+
 - **[uniques](#uniques)**
 
 - **[utility](#utility)**
 
 - **[vesting](#vesting)**
+
+- **[voterList](#voterlist)**
 
 - **[xcmpQueue](#xcmpqueue)**
 
@@ -82,7 +118,7 @@ ___
 - **interface**: `api.consts.assetConversion.poolSetupFee`
 - **summary**:    A one-time fee to setup the pool. 
  
-### poolSetupFeeAsset: `StagingXcmV4Location`
+### poolSetupFeeAsset: `StagingXcmV5Location`
 - **interface**: `api.consts.assetConversion.poolSetupFeeAsset`
 - **summary**:    Asset class from [`Config::Assets`] used to pay the [`Config::PoolSetupFee`]. 
 
@@ -164,6 +200,74 @@ ___
 ___
 
 
+## bounties
+ 
+### bountyDepositBase: `u128`
+- **interface**: `api.consts.bounties.bountyDepositBase`
+- **summary**:    The amount held on deposit for placing a bounty proposal. 
+ 
+### bountyDepositPayoutDelay: `u32`
+- **interface**: `api.consts.bounties.bountyDepositPayoutDelay`
+- **summary**:    The delay period for which a bounty beneficiary need to wait before claim the payout. 
+ 
+### bountyUpdatePeriod: `u32`
+- **interface**: `api.consts.bounties.bountyUpdatePeriod`
+- **summary**:    The time limit for a curator to act before a bounty expires. 
+
+   The period that starts when a curator is approved, during which they must execute or  update the bounty via `extend_bounty_expiry`. If missed, the bounty expires, and the  curator may be slashed. If `BlockNumberFor::MAX`, bounties stay active indefinitely,  removing the need for `extend_bounty_expiry`. 
+ 
+### bountyValueMinimum: `u128`
+- **interface**: `api.consts.bounties.bountyValueMinimum`
+- **summary**:    Minimum value for a bounty. 
+ 
+### curatorDepositMax: `Option<u128>`
+- **interface**: `api.consts.bounties.curatorDepositMax`
+- **summary**:    Maximum amount of funds that should be placed in a deposit for making a proposal. 
+ 
+### curatorDepositMin: `Option<u128>`
+- **interface**: `api.consts.bounties.curatorDepositMin`
+- **summary**:    Minimum amount of funds that should be placed in a deposit for making a proposal. 
+ 
+### curatorDepositMultiplier: `Permill`
+- **interface**: `api.consts.bounties.curatorDepositMultiplier`
+- **summary**:    The curator deposit is calculated as a percentage of the curator fee. 
+
+   This deposit has optional upper and lower bounds with `CuratorDepositMax` and  `CuratorDepositMin`. 
+ 
+### dataDepositPerByte: `u128`
+- **interface**: `api.consts.bounties.dataDepositPerByte`
+- **summary**:    The amount held on deposit per byte within the tip report reason or bounty description. 
+ 
+### maximumReasonLength: `u32`
+- **interface**: `api.consts.bounties.maximumReasonLength`
+- **summary**:    Maximum acceptable reason length. 
+
+   Benchmarks depend on this value, be sure to update weights file when changing this value 
+
+___
+
+
+## childBounties
+ 
+### childBountyValueMinimum: `u128`
+- **interface**: `api.consts.childBounties.childBountyValueMinimum`
+- **summary**:    Minimum value for a child-bounty. 
+ 
+### maxActiveChildBountyCount: `u32`
+- **interface**: `api.consts.childBounties.maxActiveChildBountyCount`
+- **summary**:    Maximum number of child bounties that can be added to a parent bounty. 
+
+___
+
+
+## claims
+ 
+### prefix: `Bytes`
+- **interface**: `api.consts.claims.prefix`
+
+___
+
+
 ## collatorSelection
  
 ### kickThreshold: `u32`
@@ -190,6 +294,36 @@ ___
 ### potId: `FrameSupportPalletId`
 - **interface**: `api.consts.collatorSelection.potId`
 - **summary**:    Account Identifier from which the internal Pot is generated. 
+
+___
+
+
+## convictionVoting
+ 
+### maxVotes: `u32`
+- **interface**: `api.consts.convictionVoting.maxVotes`
+- **summary**:    The maximum number of concurrent votes an account may have. 
+
+   Also used to compute weight, an overly large value can lead to extrinsics with large  weight estimation: see `delegate` for instance. 
+ 
+### voteLockingPeriod: `u32`
+- **interface**: `api.consts.convictionVoting.voteLockingPeriod`
+- **summary**:    The minimum period of vote locking. 
+
+   It should be no shorter than enactment period to ensure that in the case of an approval,  those successful voters are locked into the consequences that their votes entail. 
+
+___
+
+
+## delegatedStaking
+ 
+### palletId: `FrameSupportPalletId`
+- **interface**: `api.consts.delegatedStaking.palletId`
+- **summary**:    Injected identifier for the pallet. 
+ 
+### slashRewardFraction: `Perbill`
+- **interface**: `api.consts.delegatedStaking.slashRewardFraction`
+- **summary**:    Fraction of the slash that is rewarded to the caller of pending slash to the agent. 
 
 ___
 
@@ -229,6 +363,15 @@ ___
 ___
 
 
+## indices
+ 
+### deposit: `u128`
+- **interface**: `api.consts.indices.deposit`
+- **summary**:    The deposit needed for reserving an index. 
+
+___
+
+
 ## messageQueue
  
 ### heapSize: `u32`
@@ -252,6 +395,83 @@ ___
 - **summary**:    The amount of weight (if any) which should be provided to the message queue for  servicing enqueued items `on_initialize`. 
 
    This may be legitimately `None` in the case that you will call  `ServiceQueues::service_queues` manually or set [`Self::IdleMaxServiceWeight`] to have  it run in `on_idle`. 
+
+___
+
+
+## multiBlockElection
+ 
+### pages: `u32`
+- **interface**: `api.consts.multiBlockElection.pages`
+- **summary**:    The number of pages. 
+
+   The snapshot is created with this many keys in the storage map. 
+
+   The solutions may contain at MOST this many pages, but less pages are acceptable as  well. 
+ 
+### signedPhase: `u32`
+- **interface**: `api.consts.multiBlockElection.signedPhase`
+- **summary**:    Duration of the signed phase. 
+ 
+### signedValidationPhase: `u32`
+- **interface**: `api.consts.multiBlockElection.signedValidationPhase`
+- **summary**:    Duration of the singed validation phase. 
+
+   The duration of this should not be less than `T::Pages`, and there is no point in it  being more than `SignedPhase::MaxSubmission::get() * T::Pages`. TODO: integrity test for  it. 
+ 
+### targetSnapshotPerBlock: `u32`
+- **interface**: `api.consts.multiBlockElection.targetSnapshotPerBlock`
+- **summary**:    The number of snapshot targets to fetch per block. 
+ 
+### unsignedPhase: `u32`
+- **interface**: `api.consts.multiBlockElection.unsignedPhase`
+- **summary**:    Duration of the unsigned phase. 
+ 
+### voterSnapshotPerBlock: `u32`
+- **interface**: `api.consts.multiBlockElection.voterSnapshotPerBlock`
+- **summary**:    The number of snapshot voters to fetch per block. 
+
+___
+
+
+## multiBlockElectionVerifier
+ 
+### maxBackersPerWinner: `u32`
+- **interface**: `api.consts.multiBlockElectionVerifier.maxBackersPerWinner`
+- **summary**:    Maximum number of backers, per winner, per page. 
+ 
+### maxBackersPerWinnerFinal: `u32`
+- **interface**: `api.consts.multiBlockElectionVerifier.maxBackersPerWinnerFinal`
+- **summary**:    Maximum number of backers, per winner, among all pages of an election. 
+
+   This can only be checked at the very final step of verification. 
+
+   NOTE: at the moment, we don't check this, and it is in place for future compatibility. 
+ 
+### maxWinnersPerPage: `u32`
+- **interface**: `api.consts.multiBlockElectionVerifier.maxWinnersPerPage`
+- **summary**:    Maximum number of supports (aka. winners/validators/targets) that can be represented in  a page of results. 
+ 
+### solutionImprovementThreshold: `Perbill`
+- **interface**: `api.consts.multiBlockElectionVerifier.solutionImprovementThreshold`
+- **summary**:    The minimum amount of improvement to the solution score that defines a solution as  "better". 
+
+___
+
+
+## multiBlockMigrations
+ 
+### cursorMaxLen: `u32`
+- **interface**: `api.consts.multiBlockMigrations.cursorMaxLen`
+- **summary**:    The maximal length of an encoded cursor. 
+
+   A good default needs to selected such that no migration will ever have a cursor with MEL  above this limit. This is statically checked in `integrity_test`. 
+ 
+### identifierMaxLen: `u32`
+- **interface**: `api.consts.multiBlockMigrations.identifierMaxLen`
+- **summary**:    The maximal length of an encoded identifier. 
+
+   A good default needs to selected such that no migration will ever have an identifier  with MEL above this limit. This is statically checked in `integrity_test`. 
 
 ___
 
@@ -363,6 +583,29 @@ ___
 ___
 
 
+## nominationPools
+ 
+### maxPointsToBalance: `u8`
+- **interface**: `api.consts.nominationPools.maxPointsToBalance`
+- **summary**:    The maximum pool points-to-balance ratio that an `open` pool can have. 
+
+   This is important in the event slashing takes place and the pool's points-to-balance  ratio becomes disproportional. 
+
+   Moreover, this relates to the `RewardCounter` type as well, as the arithmetic operations  are a function of number of points, and by setting this value to e.g. 10, you ensure  that the total number of points in the system are at most 10 times the total_issuance of  the chain, in the absolute worse case. 
+
+   For a value of 10, the threshold would be a pool points-to-balance ratio of 10:1.  Such a scenario would also be the equivalent of the pool being 90% slashed. 
+ 
+### maxUnbonding: `u32`
+- **interface**: `api.consts.nominationPools.maxUnbonding`
+- **summary**:    The maximum number of simultaneous unbonding chunks that can exist per member. 
+ 
+### palletId: `FrameSupportPalletId`
+- **interface**: `api.consts.nominationPools.palletId`
+- **summary**:    The nomination pool's pallet id. 
+
+___
+
+
 ## parachainSystem
  
 ### selfParaId: `u32`
@@ -377,6 +620,18 @@ ___
 ### advertisedXcmVersion: `u32`
 - **interface**: `api.consts.polkadotXcm.advertisedXcmVersion`
 - **summary**:    The latest supported version that we advertise. Generally just set it to  `pallet_xcm::CurrentXcmVersion`. 
+ 
+### maxLockers: `u32`
+- **interface**: `api.consts.polkadotXcm.maxLockers`
+- **summary**:    The maximum number of local XCM locks that a single account may have. 
+ 
+### maxRemoteLockConsumers: `u32`
+- **interface**: `api.consts.polkadotXcm.maxRemoteLockConsumers`
+- **summary**:    The maximum number of consumers a single remote lock may have. 
+ 
+### universalLocation: `StagingXcmV5Junctions`
+- **interface**: `api.consts.polkadotXcm.universalLocation`
+- **summary**:    This chain's Universal Location. 
 
 ___
 
@@ -453,6 +708,62 @@ ___
 ___
 
 
+## recovery
+ 
+### configDepositBase: `u128`
+- **interface**: `api.consts.recovery.configDepositBase`
+- **summary**:    The base amount of currency needed to reserve for creating a recovery configuration. 
+
+   This is held for an additional storage item whose value size is  `2 + sizeof(BlockNumber, Balance)` bytes. 
+ 
+### friendDepositFactor: `u128`
+- **interface**: `api.consts.recovery.friendDepositFactor`
+- **summary**:    The amount of currency needed per additional user when creating a recovery  configuration. 
+
+   This is held for adding `sizeof(AccountId)` bytes more into a pre-existing storage  value. 
+ 
+### maxFriends: `u32`
+- **interface**: `api.consts.recovery.maxFriends`
+- **summary**:    The maximum amount of friends allowed in a recovery configuration. 
+
+   NOTE: The threshold programmed in this Pallet uses u16, so it does  not really make sense to have a limit here greater than u16::MAX.  But also, that is a lot more than you should probably set this value  to anyway... 
+ 
+### recoveryDeposit: `u128`
+- **interface**: `api.consts.recovery.recoveryDeposit`
+- **summary**:    The base amount of currency needed to reserve for starting a recovery. 
+
+   This is primarily held for deterring malicious recovery attempts, and should  have a value large enough that a bad actor would choose not to place this  deposit. It also acts to fund additional storage item whose value size is  `sizeof(BlockNumber, Balance + T * AccountId)` bytes. Where T is a configurable  threshold. 
+
+___
+
+
+## referenda
+ 
+### alarmInterval: `u32`
+- **interface**: `api.consts.referenda.alarmInterval`
+- **summary**:    Quantization level for the referendum wakeup scheduler. A higher number will result in  fewer storage reads/writes needed for smaller voters, but also result in delays to the  automatic referendum status changes. Explicit servicing instructions are unaffected. 
+ 
+### maxQueued: `u32`
+- **interface**: `api.consts.referenda.maxQueued`
+- **summary**:    Maximum size of the referendum queue for a single track. 
+ 
+### submissionDeposit: `u128`
+- **interface**: `api.consts.referenda.submissionDeposit`
+- **summary**:    The minimum amount to be used as a deposit for a public referendum proposal. 
+ 
+### tracks: `Vec<(u16,PalletReferendaTrackDetails)>`
+- **interface**: `api.consts.referenda.tracks`
+- **summary**:    A list of tracks. 
+
+   Note: if the tracks are dynamic, the value in the static metadata might be inaccurate. 
+ 
+### undecidingTimeout: `u32`
+- **interface**: `api.consts.referenda.undecidingTimeout`
+- **summary**:    The number of blocks after submission that a referendum must begin being decided by.  Once this passes, then anyone may cancel the referendum. 
+
+___
+
+
 ## revive
  
 ### chainId: `u64`
@@ -494,6 +805,154 @@ ___
    #### Warning 
 
    Do **not** set to `true` on productions chains. 
+
+___
+
+
+## scheduler
+ 
+### maximumWeight: `SpWeightsWeightV2Weight`
+- **interface**: `api.consts.scheduler.maximumWeight`
+- **summary**:    The maximum weight that may be scheduled per block for any dispatchables. 
+ 
+### maxScheduledPerBlock: `u32`
+- **interface**: `api.consts.scheduler.maxScheduledPerBlock`
+- **summary**:    The maximum number of scheduled calls in the queue for a single block. 
+
+   NOTE:  + Dependent pallets' benchmarks might require a higher limit for the setting. Set a  higher limit under `runtime-benchmarks` feature. 
+
+___
+
+
+## session
+ 
+### keyDeposit: `u128`
+- **interface**: `api.consts.session.keyDeposit`
+- **summary**:    The amount to be held when setting keys. 
+
+___
+
+
+## society
+ 
+### challengePeriod: `u32`
+- **interface**: `api.consts.society.challengePeriod`
+- **summary**:    The number of [Config::BlockNumberProvider] blocks between membership challenges. 
+ 
+### claimPeriod: `u32`
+- **interface**: `api.consts.society.claimPeriod`
+- **summary**:    The number of [Config::BlockNumberProvider] blocks on which new candidates can claim  their membership and be the named head. 
+ 
+### graceStrikes: `u32`
+- **interface**: `api.consts.society.graceStrikes`
+- **summary**:    The maximum number of strikes before a member gets funds slashed. 
+ 
+### maxBids: `u32`
+- **interface**: `api.consts.society.maxBids`
+- **summary**:    The maximum number of bids at once. 
+ 
+### maxLockDuration: `u32`
+- **interface**: `api.consts.society.maxLockDuration`
+- **summary**:    The maximum duration of the payout lock. 
+ 
+### maxPayouts: `u32`
+- **interface**: `api.consts.society.maxPayouts`
+- **summary**:    The maximum number of payouts a member may have waiting unclaimed. 
+ 
+### palletId: `FrameSupportPalletId`
+- **interface**: `api.consts.society.palletId`
+- **summary**:    The societies's pallet id 
+ 
+### periodSpend: `u128`
+- **interface**: `api.consts.society.periodSpend`
+- **summary**:    The amount of incentive paid within each period. Doesn't include VoterTip. 
+ 
+### votingPeriod: `u32`
+- **interface**: `api.consts.society.votingPeriod`
+- **summary**:    The number of [Config::BlockNumberProvider] blocks on which new candidates should be  voted on. Together with  `ClaimPeriod`, this sums to the number of blocks between candidate intake periods. 
+
+___
+
+
+## staking
+ 
+### bondingDuration: `u32`
+- **interface**: `api.consts.staking.bondingDuration`
+- **summary**:    Number of eras that staked funds must remain bonded for. 
+ 
+### historyDepth: `u32`
+- **interface**: `api.consts.staking.historyDepth`
+- **summary**:    Number of eras to keep in history. 
+
+   Following information is kept for eras in `[current_era -  HistoryDepth, current_era]`: `ErasValidatorPrefs`, `ErasValidatorReward`,  `ErasRewardPoints`, `ErasTotalStake`, `ClaimedRewards`,  `ErasStakersPaged`, `ErasStakersOverview`. 
+
+   Must be more than the number of eras delayed by session.  I.e. active era must always be in history. I.e. `active_era >  current_era - history_depth` must be guaranteed. 
+
+   If migrating an existing pallet from storage value to config value,  this should be set to same value or greater as in storage. 
+ 
+### maxEraDuration: `u64`
+- **interface**: `api.consts.staking.maxEraDuration`
+- **summary**:    Maximum allowed era duration in milliseconds. 
+
+   This provides a defensive upper bound to cap the effective era duration, preventing  excessively long eras from causing runaway inflation (e.g., due to bugs). If the actual  era duration exceeds this value, it will be clamped to this maximum. 
+
+   Example: For an ideal era duration of 24 hours (86,400,000 ms),  this can be set to 604,800,000 ms (7 days). 
+ 
+### maxExposurePageSize: `u32`
+- **interface**: `api.consts.staking.maxExposurePageSize`
+- **summary**:    The maximum size of each `T::ExposurePage`. 
+
+   An `ExposurePage` is weakly bounded to a maximum of `MaxExposurePageSize`  nominators. 
+
+   For older non-paged exposure, a reward payout was restricted to the top  `MaxExposurePageSize` nominators. This is to limit the i/o cost for the  nominator payout. 
+
+   Note: `MaxExposurePageSize` is used to bound `ClaimedRewards` and is unsafe to  reduce without handling it in a migration. 
+ 
+### maxInvulnerables: `u32`
+- **interface**: `api.consts.staking.maxInvulnerables`
+- **summary**:    Maximum number of invulnerable validators. 
+ 
+### maxPruningItems: `u32`
+- **interface**: `api.consts.staking.maxPruningItems`
+- **summary**:    Maximum number of storage items that can be pruned in a single call. 
+
+   This controls how many storage items can be deleted in each call to `prune_era_step`.  This should be set to a conservative value (e.g., 100-500 items) to ensure pruning  doesn't consume too much block space. The actual weight is determined by benchmarks. 
+ 
+### maxUnlockingChunks: `u32`
+- **interface**: `api.consts.staking.maxUnlockingChunks`
+- **summary**:    The maximum number of `unlocking` chunks a [`StakingLedger`] can  have. Effectively determines how many unique eras a staker may be  unbonding in. 
+
+   Note: `MaxUnlockingChunks` is used as the upper bound for the  `BoundedVec` item `StakingLedger.unlocking`. Setting this value  lower than the existing value can lead to inconsistencies in the  `StakingLedger` and will need to be handled properly in a runtime  migration. The test `reducing_max_unlocking_chunks_abrupt` shows  this effect. 
+ 
+### maxValidatorSet: `u32`
+- **interface**: `api.consts.staking.maxValidatorSet`
+- **summary**:    The absolute maximum of winner validators this pallet should return. 
+
+   As this pallet supports multi-block election, the set of winner validators *per  election* is bounded by this type. 
+ 
+### planningEraOffset: `u32`
+- **interface**: `api.consts.staking.planningEraOffset`
+- **summary**:    Number of sessions before the end of an era when the election for the next era will  start. 
+
+   - This determines how many sessions **before** the last session of the era the staking  election process should begin. 
+
+  - The value is bounded between **1** (election starts at the beginning of the last session) and `SessionsPerEra` (election starts at the beginning of the first session  of the era). 
+
+   #### Example: 
+
+  - If `SessionsPerEra = 6` and `PlanningEraOffset = 1`, the election starts at the beginning of session `6 - 1 = 5`. 
+
+  - If `PlanningEraOffset = 6`, the election starts at the beginning of session `6 - 6 = 0`, meaning it starts at the very beginning of the era. 
+ 
+### sessionsPerEra: `u32`
+- **interface**: `api.consts.staking.sessionsPerEra`
+- **summary**:    Number of sessions per era, as per the preferences of the **relay chain**. 
+ 
+### slashDeferDuration: `u32`
+- **interface**: `api.consts.staking.slashDeferDuration`
+- **summary**:    Number of eras that slashes are deferred by, after computation. 
+
+   This should be less than the bonding duration. Set to 0 if slashes  should be applied immediately, without opportunity for intervention. 
 
 ___
 
@@ -582,6 +1041,39 @@ ___
 ___
 
 
+## treasury
+ 
+### burn: `Permill`
+- **interface**: `api.consts.treasury.burn`
+- **summary**:    Percentage of spare funds (if any) that are burnt per spend period. 
+ 
+### maxApprovals: `u32`
+- **interface**: `api.consts.treasury.maxApprovals`
+- **summary**:    DEPRECATED: associated with `spend_local` call and will be removed in May 2025.  Refer to <https://github.com/paritytech/polkadot-sdk/pull/5961> for migration to `spend`. 
+
+   The maximum number of approvals that can wait in the spending queue. 
+
+   NOTE: This parameter is also used within the Bounties Pallet extension if enabled. 
+ 
+### palletId: `FrameSupportPalletId`
+- **interface**: `api.consts.treasury.palletId`
+- **summary**:    The treasury's pallet id, used for deriving its sovereign account ID. 
+ 
+### payoutPeriod: `u32`
+- **interface**: `api.consts.treasury.payoutPeriod`
+- **summary**:    The period during which an approved treasury spend has to be claimed. 
+ 
+### potAccount: `AccountId32`
+- **interface**: `api.consts.treasury.potAccount`
+- **summary**:    Gets this pallet's derived pot account. 
+ 
+### spendPeriod: `u32`
+- **interface**: `api.consts.treasury.spendPeriod`
+- **summary**:    Period between successive spends. 
+
+___
+
+
 ## uniques
  
 ### attributeDepositBase: `u128`
@@ -636,6 +1128,51 @@ ___
 ### minVestedTransfer: `u128`
 - **interface**: `api.consts.vesting.minVestedTransfer`
 - **summary**:    The minimum amount transferred to call `vested_transfer`. 
+
+___
+
+
+## voterList
+ 
+### bagThresholds: `Vec<u64>`
+- **interface**: `api.consts.voterList.bagThresholds`
+- **summary**:    The list of thresholds separating the various bags. 
+
+   Ids are separated into unsorted bags according to their score. This specifies the  thresholds separating the bags. An id's bag is the largest bag for which the id's score  is less than or equal to its upper threshold. 
+
+   When ids are iterated, higher bags are iterated completely before lower bags. This means  that iteration is _semi-sorted_: ids of higher score tend to come before ids of lower  score, but peer ids within a particular bag are sorted in insertion order. 
+
+   #### Expressing the constant 
+
+   This constant must be sorted in strictly increasing order. Duplicate items are not  permitted. 
+
+   There is an implied upper limit of `Score::MAX`; that value does not need to be  specified within the bag. For any two threshold lists, if one ends with  `Score::MAX`, the other one does not, and they are otherwise equal, the two  lists will behave identically. 
+
+   #### Calculation 
+
+   It is recommended to generate the set of thresholds in a geometric series, such that  there exists some constant ratio such that `threshold[k + 1] == (threshold[k] *  constant_ratio).max(threshold[k] + 1)` for all `k`. 
+
+   The helpers in the `/utils/frame/generate-bags` module can simplify this calculation. 
+
+   #### Examples 
+
+   - If `BagThresholds::get().is_empty()`, then all ids are put into the same bag, and  iteration is strictly in insertion order. 
+
+  - If `BagThresholds::get().len() == 64`, and the thresholds are determined according to the procedure given above, then the constant ratio is equal to 2. 
+
+  - If `BagThresholds::get().len() == 200`, and the thresholds are determined according to the procedure given above, then the constant ratio is approximately equal to 1.248. 
+
+  - If the threshold list begins `[1, 2, 3, ...]`, then an id with score 0 or 1 will fall into bag 0, an id with score 2 will fall into bag 1, etc. 
+
+   #### Migration 
+
+   In the event that this list ever changes, a copy of the old bags list must be retained.  With that `List::migrate` can be called, which will perform the appropriate migration. 
+ 
+### maxAutoRebagPerBlock: `u32`
+- **interface**: `api.consts.voterList.maxAutoRebagPerBlock`
+- **summary**:    Maximum number of accounts that may be re-bagged automatically in `on_idle`. 
+
+   A value of `0` (obtained by configuring `type MaxAutoRebagPerBlock = ();`) disables  the feature. 
 
 ___
 

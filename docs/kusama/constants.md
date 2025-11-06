@@ -42,10 +42,6 @@ The following sections contain the module constants, also known as parameter typ
 
 - **[multisig](#multisig)**
 
-- **[nis](#nis)**
-
-- **[nisCounterpartBalances](#niscounterpartbalances)**
-
 - **[nominationPools](#nominationpools)**
 
 - **[onDemandAssignmentProvider](#ondemandassignmentprovider)**
@@ -61,6 +57,8 @@ The following sections contain the module constants, also known as parameter typ
 - **[registrar](#registrar)**
 
 - **[scheduler](#scheduler)**
+
+- **[session](#session)**
 
 - **[slots](#slots)**
 
@@ -312,9 +310,15 @@ ___
 - **interface**: `api.consts.electionProviderMultiPhase.betterSignedThreshold`
 - **summary**:    The minimum amount of improvement to the solution score that defines a solution as  "better" in the Signed phase. 
  
+### maxBackersPerWinner: `u32`
+- **interface**: `api.consts.electionProviderMultiPhase.maxBackersPerWinner`
+- **summary**:    Maximum number of voters that can support a winner in an election solution. 
+
+   This is needed to ensure election computation is bounded. 
+ 
 ### maxWinners: `u32`
 - **interface**: `api.consts.electionProviderMultiPhase.maxWinners`
-- **summary**:    The maximum number of winners that can be elected by this `ElectionProvider`  implementation. 
+- **summary**:    Maximum number of winners that an election supports. 
 
    Note: This must always be greater or equal to `T::DataProvider::desired_targets()`. 
  
@@ -479,88 +483,6 @@ ___
 ### maxSignatories: `u32`
 - **interface**: `api.consts.multisig.maxSignatories`
 - **summary**:    The maximum amount of signatories allowed in the multisig. 
-
-___
-
-
-## nis
- 
-### basePeriod: `u32`
-- **interface**: `api.consts.nis.basePeriod`
-- **summary**:    The base period for the duration queues. This is the common multiple across all  supported freezing durations that can be bid upon. 
- 
-### fifoQueueLen: `u32`
-- **interface**: `api.consts.nis.fifoQueueLen`
-- **summary**:    Portion of the queue which is free from ordering and just a FIFO. 
-
-   Must be no greater than `MaxQueueLen`. 
- 
-### intakePeriod: `u32`
-- **interface**: `api.consts.nis.intakePeriod`
-- **summary**:    The number of blocks between consecutive attempts to dequeue bids and create receipts. 
-
-   A larger value results in fewer storage hits each block, but a slower period to get to  the target. 
- 
-### maxIntakeWeight: `SpWeightsWeightV2Weight`
-- **interface**: `api.consts.nis.maxIntakeWeight`
-- **summary**:    The maximum amount of bids that can consolidated into receipts in a single intake. A  larger value here means less of the block available for transactions should there be a  glut of bids. 
- 
-### maxQueueLen: `u32`
-- **interface**: `api.consts.nis.maxQueueLen`
-- **summary**:    Maximum number of items that may be in each duration queue. 
-
-   Must be larger than zero. 
- 
-### minBid: `u128`
-- **interface**: `api.consts.nis.minBid`
-- **summary**:    The minimum amount of funds that may be placed in a bid. Note that this  does not actually limit the amount which may be represented in a receipt since bids may  be split up by the system. 
-
-   It should be at least big enough to ensure that there is no possible storage spam attack  or queue-filling attack. 
- 
-### minReceipt: `Perquintill`
-- **interface**: `api.consts.nis.minReceipt`
-- **summary**:    The minimum amount of funds which may intentionally be left remaining under a single  receipt. 
- 
-### palletId: `FrameSupportPalletId`
-- **interface**: `api.consts.nis.palletId`
-- **summary**:    The treasury's pallet id, used for deriving its sovereign account ID. 
- 
-### queueCount: `u32`
-- **interface**: `api.consts.nis.queueCount`
-- **summary**:    Number of duration queues in total. This sets the maximum duration supported, which is  this value multiplied by `Period`. 
- 
-### thawThrottle: `(Perquintill,u32)`
-- **interface**: `api.consts.nis.thawThrottle`
-- **summary**:    The maximum proportion which may be thawed and the period over which it is reset. 
-
-___
-
-
-## nisCounterpartBalances
- 
-### existentialDeposit: `u128`
-- **interface**: `api.consts.nisCounterpartBalances.existentialDeposit`
-- **summary**:    The minimum amount required to keep an account open. MUST BE GREATER THAN ZERO! 
-
-   If you *really* need it to be zero, you can enable the feature `insecure_zero_ed` for  this pallet. However, you do so at your own risk: this will open up a major DoS vector.  In case you have multiple sources of provider references, you may also get unexpected  behaviour if you set this to zero. 
-
-   Bottom line: Do yourself a favour and make it at least one! 
- 
-### maxFreezes: `u32`
-- **interface**: `api.consts.nisCounterpartBalances.maxFreezes`
-- **summary**:    The maximum number of individual freeze locks that can exist on an account at any time. 
- 
-### maxLocks: `u32`
-- **interface**: `api.consts.nisCounterpartBalances.maxLocks`
-- **summary**:    The maximum number of locks that should exist on an account.  Not strictly enforced, but used for weight estimation. 
-
-   Use of locks is deprecated in favour of freezes. See `https://github.com/paritytech/substrate/pull/12951/` 
- 
-### maxReserves: `u32`
-- **interface**: `api.consts.nisCounterpartBalances.maxReserves`
-- **summary**:    The maximum number of named reserves that can exist on an account. 
-
-   Use of reserves is deprecated in favour of holds. See `https://github.com/paritytech/substrate/pull/12951/` 
 
 ___
 
@@ -734,6 +656,15 @@ ___
 ___
 
 
+## session
+ 
+### keyDeposit: `u128`
+- **interface**: `api.consts.session.keyDeposit`
+- **summary**:    The amount to be held when setting keys. 
+
+___
+
+
 ## slots
  
 ### leaseOffset: `u32`
@@ -751,11 +682,11 @@ ___
  
 ### challengePeriod: `u32`
 - **interface**: `api.consts.society.challengePeriod`
-- **summary**:    The number of blocks between membership challenges. 
+- **summary**:    The number of [Config::BlockNumberProvider] blocks between membership challenges. 
  
 ### claimPeriod: `u32`
 - **interface**: `api.consts.society.claimPeriod`
-- **summary**:    The number of blocks on which new candidates can claim their membership and be the  named head. 
+- **summary**:    The number of [Config::BlockNumberProvider] blocks on which new candidates can claim  their membership and be the named head. 
  
 ### graceStrikes: `u32`
 - **interface**: `api.consts.society.graceStrikes`
@@ -783,7 +714,7 @@ ___
  
 ### votingPeriod: `u32`
 - **interface**: `api.consts.society.votingPeriod`
-- **summary**:    The number of blocks on which new candidates should be voted on. Together with  `ClaimPeriod`, this sums to the number of blocks between candidate intake periods. 
+- **summary**:    The number of [Config::BlockNumberProvider] blocks on which new candidates should be  voted on. Together with  `ClaimPeriod`, this sums to the number of blocks between candidate intake periods. 
 
 ___
 
@@ -821,6 +752,10 @@ ___
 - **summary**:    The maximum number of `unlocking` chunks a [`StakingLedger`] can  have. Effectively determines how many unique eras a staker may be  unbonding in. 
 
    Note: `MaxUnlockingChunks` is used as the upper bound for the  `BoundedVec` item `StakingLedger.unlocking`. Setting this value  lower than the existing value can lead to inconsistencies in the  `StakingLedger` and will need to be handled properly in a runtime  migration. The test `reducing_max_unlocking_chunks_abrupt` shows  this effect. 
+ 
+### maxValidatorSet: `u32`
+- **interface**: `api.consts.staking.maxValidatorSet`
+- **summary**:    The absolute maximum of winner validators this pallet should return. 
  
 ### sessionsPerEra: `u32`
 - **interface**: `api.consts.staking.sessionsPerEra`
@@ -983,6 +918,12 @@ ___
    #### Migration 
 
    In the event that this list ever changes, a copy of the old bags list must be retained.  With that `List::migrate` can be called, which will perform the appropriate migration. 
+ 
+### maxAutoRebagPerBlock: `u32`
+- **interface**: `api.consts.voterList.maxAutoRebagPerBlock`
+- **summary**:    Maximum number of accounts that may be re-bagged automatically in `on_idle`. 
+
+   A value of `0` (obtained by configuring `type MaxAutoRebagPerBlock = ();`) disables  the feature. 
 
 ___
 
@@ -992,3 +933,15 @@ ___
 ### advertisedXcmVersion: `u32`
 - **interface**: `api.consts.xcmPallet.advertisedXcmVersion`
 - **summary**:    The latest supported version that we advertise. Generally just set it to  `pallet_xcm::CurrentXcmVersion`. 
+ 
+### maxLockers: `u32`
+- **interface**: `api.consts.xcmPallet.maxLockers`
+- **summary**:    The maximum number of local XCM locks that a single account may have. 
+ 
+### maxRemoteLockConsumers: `u32`
+- **interface**: `api.consts.xcmPallet.maxRemoteLockConsumers`
+- **summary**:    The maximum number of consumers a single remote lock may have. 
+ 
+### universalLocation: `StagingXcmV5Junctions`
+- **interface**: `api.consts.xcmPallet.universalLocation`
+- **summary**:    This chain's Universal Location. 
