@@ -271,7 +271,7 @@ Retrieves the essential balance details for an account, such as free balance and
  ```javascript
  const ALICE = 'F7Hs';
 
- api.derive.balances.all(ALICE, ({ accountId, lockedBalance }) => {
+ api.derive.balances.account(ALICE, ({ accountId, lockedBalance }) => {
    console.log(`The account ${accountId} has a locked balance ${lockedBalance} units.`);
  });
  ``` 
@@ -285,7 +285,7 @@ Retrieves the complete balance information for an account, including free balanc
  ```javascript
  const ALICE = 'F7Hs';
 
- api.derive.balances.account(ALICE, (accountInfo) => {
+ api.derive.balances.all(ALICE, (accountInfo) => {
    console.log(
      `${accountInfo.accountId} info:`,
      Object.keys(accountInfo).map((key) => `${key}: ${accountInfo[key]}`)
