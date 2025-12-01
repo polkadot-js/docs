@@ -18,6 +18,16 @@ When using the util-crypto packages with RN, due to a lack of support, an [asm.j
 
 While the fallback is fully tested and equivalent to the WASM version, it does add some memory load to the application build process. Additionally simnce the asm.js bundle is quite large, the build process is by no means fast. Ensure that you adjust your build flags to include `NODE_OPTIONS=--max_old_space_size=8192`, for instance doing `NODE_OPTIONS=--max_old_space_size=8192 yarn run ios`
 
+## Why do I get the same mnemonics on React Native (Expo) Android?
+
+When using `expo-crypto` on Android, `mnemonicGenerate()` may produce deterministic (repeated) mnemonics. This occurs because Polkadot's ASMJS calls `crypto.getRandomValues()` during initialization, before expo-crypto's lazy `SecureRandom` is ready, resulting in zero-entropy being cached.
+
+**Solutions:**
+- Remove `expo-crypto` from dependencies, or
+- Use `mnemonicGenerate(12, undefined, true)` to force JavaScript-only mode
+
+See [polkadot-js/wasm#598](https://github.com/polkadot-js/wasm/issues/598) for technical details.
+
 
 ## I don't have WASM available in my environment
 
