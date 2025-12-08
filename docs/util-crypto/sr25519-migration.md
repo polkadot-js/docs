@@ -42,10 +42,10 @@ function signMessage() {
 You no longer need to call `cryptoWaitReady()` for sr25519 operations. The following patterns are now unnecessary:
 
 ```javascript
-// ❌ OLD - No longer needed
+// OLD - No longer needed
 await cryptoWaitReady();
 
-// ❌ OLD - No longer needed
+// OLD - No longer needed
 if (isReady) {
   // sr25519 operations
 }
@@ -66,7 +66,7 @@ All sr25519 functions are ready to use immediately upon import.
 ### Key Generation
 
 ```javascript
-// ✅ NEW - Synchronous
+// NEW - Synchronous
 import { sr25519PairFromSeed } from '@polkadot/util-crypto';
 
 const seed = new Uint8Array(32); // Your seed
@@ -76,7 +76,7 @@ const keypair = sr25519PairFromSeed(seed);
 ### Signing
 
 ```javascript
-// ✅ NEW - Synchronous
+// NEW - Synchronous
 import { sr25519Sign } from '@polkadot/util-crypto';
 
 const message = new Uint8Array([1, 2, 3, 4]);
@@ -86,7 +86,7 @@ const signature = sr25519Sign(message, keypair);
 ### Verification
 
 ```javascript
-// ✅ NEW - Synchronous
+// NEW - Synchronous
 import { sr25519Verify } from '@polkadot/util-crypto';
 
 const isValid = sr25519Verify(message, signature, publicKey);
@@ -95,7 +95,7 @@ const isValid = sr25519Verify(message, signature, publicKey);
 ### Key Derivation
 
 ```javascript
-// ✅ NEW - Synchronous
+// NEW - Synchronous
 import { sr25519DeriveHard, sr25519DeriveSoft } from '@polkadot/util-crypto';
 
 // Hard derivation
@@ -108,7 +108,7 @@ const derivedSoft = sr25519DeriveSoft(keypair, chainCode);
 ### VRF Operations
 
 ```javascript
-// ✅ NEW - Synchronous
+// NEW - Synchronous
 import { sr25519VrfSign, sr25519VrfVerify } from '@polkadot/util-crypto';
 
 const vrfSignature = sr25519VrfSign(message, keypair, context);
@@ -152,7 +152,7 @@ The library was funded by the Polkadot Treasury and developed specifically for t
 #### Example 1: Creating and Signing with a Keypair
 
 ```javascript
-// ❌ OLD
+// OLD
 import { cryptoWaitReady, sr25519PairFromSeed } from '@polkadot/util-crypto';
 
 async function createAndSign(seed, message) {
@@ -161,7 +161,7 @@ async function createAndSign(seed, message) {
   return pair.sign(message);
 }
 
-// ✅ NEW
+// NEW
 import { sr25519PairFromSeed } from '@polkadot/util-crypto';
 
 function createAndSign(seed, message) {
@@ -173,7 +173,7 @@ function createAndSign(seed, message) {
 #### Example 2: Batch Verification
 
 ```javascript
-// ❌ OLD
+// OLD
 async function verifyMultiple(signatures) {
   await cryptoWaitReady();
   return signatures.map(({ msg, sig, pub }) => 
@@ -181,7 +181,7 @@ async function verifyMultiple(signatures) {
   );
 }
 
-// ✅ NEW
+// NEW
 function verifyMultiple(signatures) {
   return signatures.map(({ msg, sig, pub }) => 
     sr25519Verify(msg, sig, pub)
@@ -192,7 +192,7 @@ function verifyMultiple(signatures) {
 #### Example 3: Initialization in React
 
 ```javascript
-// ❌ OLD
+// OLD
 function MyComponent() {
   const [ready, setReady] = useState(false);
   
@@ -204,7 +204,7 @@ function MyComponent() {
   return <App />;
 }
 
-// ✅ NEW
+// NEW
 function MyComponent() {
   // No initialization needed - just use it!
   return <App />;
