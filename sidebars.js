@@ -127,6 +127,7 @@ module.exports = {
     ],
     'Crypto Utilities': [
       'util-crypto/intro',
+      'util-crypto/sr25519-migration',
       {
         Examples: [
           'util-crypto/examples/intro',
