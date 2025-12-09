@@ -133,6 +133,8 @@ The pure JS implementation is ideal for:
 - Mobile applications (better compatibility)
 - Applications requiring immediate cryptographic operations
 
+> You can optionally call `cryptoWaitReady()` during initialization to ensure async crypto imports are fully available before use. This works safely alongside synchronous usage and won’t interfere with other crypto imports, which can be useful in projects that rely on multiple crypto libraries or shared initialization logic.
+
 ## Security & Audits
 
 The `@scure/sr25519` library has undergone multiple independent security audits. All audit reports are publicly available:
