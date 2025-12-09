@@ -143,7 +143,7 @@ The library was funded by the Polkadot Treasury and developed specifically for t
 ## Node.js Version Requirements
 
 - **Current**: Node.js v18+ (using `@scure/sr25519` v0.2.x)
-- **Future**: Node.js v20+ recommended (for ESM-only v0.3.x updates)
+- **Future**: Node.js v20+ recommended (for ESM-only v0.3.x/v1.x updates)
 
 ## Common Patterns
 
